@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 10 — 自由意志问题</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .sub {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .note-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .note-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>自由意志问题</h1>
+<p class="lesson-meta">第 10 课 &middot; ~15 分钟 &middot; 哲学核心难题</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：你将理解自由意志问题是什么、为什么它如此难解、主要立场有哪些、以及为什么即便科学无法最终裁决，这个问题依然对你的每一天有切实影响。
+</div>
+
+<h2>问题在哪里</h2>
+<p>
+  自由意志问题问的是一个看起来简单、实则深不见底的问题：<strong>你的选择真的由你决定吗？</strong> 说"喝咖啡而不是茶"这种决定当然看起来是自由的。但当你追问"为什么你想喝咖啡？"——答案会指向你的口味偏好、昨天的习惯、咖啡因成瘾的生理机制。再追问"这些偏好为什么存在？"——答案是你的基因、成长环境、神经发育。每一个"你"的决定背后，都有一连串前因。如果你承认因果律（一切事件都有原因），那么你的"选择"似乎只是因果链条的最后一环。
+</p>
+
+<div class="note-box">
+  <strong>思想实验：拉普拉斯的恶魔</strong>。19 世纪法国学者拉普拉斯设想：如果有一个智能体知道宇宙中每一个粒子在某一时刻的位置和动量，并拥有足够的计算能力，它就能根据物理定律预测未来每一刻、回溯过去每一刻。在这样的宇宙中，根本没有"选择"的位置——你读到这里，在几亿年前就被宇宙初始条件注定会读了。
+</div>
+
+<h2>三大立场</h2>
+
+<div class="card">
+  <h3>决定论（Determinism）</h3>
+  <p class="sub">宇宙像精密的钟表，每一个事件都由前一个事件完全决定。</p>
+  <ul class="examples">
+    <li>你的"选择"只是大脑中一系列生化反应的必然结果。</li>
+    <li>如果一切由因果决定，道德责任的基础就不存在了——你不能为"本该如此"的事负责。</li>
+    <li>斯宾诺莎："人们认为自己自由，只是因为意识到了自己的欲望，却不知道决定这些欲望的原因。"</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>自由意志论（Libertarianism）</h3>
+  <p class="sub">人在某些关键时刻确实可以做出不被决定的选择。</p>
+  <ul class="examples">
+    <li>注意：这里的"libertarian"不是政治意义上的自由主义者，而是形而上学意义上的"意志自由论者"。</li>
+    <li>支持论据：我们的主观体验就是自由的；量子力学的不确定性为自由意志留下了物理空间。</li>
+    <li>困难：如果选择不被决定，那它就是随机的——随机等于自由吗？一个随机冒出的念头，是你的"选择"吗？</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>兼容论（Compatibilism）</h3>
+  <p class="sub">自由意志与决定论可以共存——自由意志不需要脱离因果链。</p>
+  <ul class="examples">
+    <li>关键改写：自由不是"没有原因"，而是"行为出于你自己的意愿，而非外部强制"。</li>
+    <li>哈耶克："自由的含义是，一个人的行动不依赖于他人或他人的强制，而依赖于他自己所遵循的规则。"</li>
+    <li>当代主流：丹尼特、哈里斯（有趣，哈里斯是决定论者但用兼容论方式讨论政治自由）等。</li>
+  </ul>
+</div>
+
+<h2>科学带来的新挑战</h2>
+<p>
+  20 世纪 60 年代，心理学家本杰明·利贝特（Ben Libet）做了一个著名实验：让受试者自由选择何时移动手指，同时监测他们的大脑活动。结果发现，<strong>大脑的"准备电位"（readiness potential）在受试者"意识到自己要做决定"之前约 300 毫秒就已经启动了</strong>。这意味着——你的意识可能只是一个事后解释器，真正做决定的"你"早在你的"你"意识到之前就发生了。
+</p>
+<p>
+  后来的 fMRI 实验更进一步：科学家能在受试者意识决定之前<span class="blank">7-10 秒</span>，通过大脑活动预测他的选择，准确率超过 60%。这并不意味着自由意志不存在，但确实给直觉泼了一大盆冷水。
+</p>
+
+<div class="note-box">
+  <strong>常见误解</strong>：决定论不等于宿命论。宿命论说"无论你怎么做，结果都一样"；决定论说"你的行为（包括你的思考、犹豫和决定）本身就是原因的一部分"。决定论恰恰意味着你的选择有因果效力。
+</div>
+
+<h2>为什么这个问题影响你</h2>
+<p>
+  自由意志不是纯粹的形而上学游戏。它直接影响你的：
+</p>
+<ul class="examples">
+  <li><strong>道德判断</strong>：如果一个人犯罪是因为大脑肿瘤压迫了他的杏仁核，我们要惩罚他吗？还是治疗他？20 世纪加州的 <strong>Wesley Hodgson 案</strong>——一个原本温和的银行职员突然疯狂虐待儿童，后来发现是脑瘤。切除肿瘤后行为恢复正常。判有罪还是治有病？</li>
+  <li><strong>自我改变</strong>：如果你相信"我就是这种性格"（决定论倾向），你会更少尝试改变。如果你相信"我可以自由选择不这样做"（自由意志论倾向），你会更有动力去改变。</li>
+  <li><strong>对他人</strong>：如果你意识到别人的行为也受基因、环境、过去的因果影响，你会更容易产生共情——"他不是"坏"，他只是做出了在特定条件下最可能的选择。"</li>
+</ul>
+
+<h2>一张对比表</h2>
+<div class="card" style="overflow-x:auto;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <tr style="border-bottom:2px solid var(--border);">
+      <th style="text-align:left;padding:0.5rem;">立场</th>
+      <th style="text-align:left;padding:0.5rem;">决定论成立？</th>
+      <th style="text-align:left;padding:0.5rem;">自由意志存在？</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;"><strong>硬决定论</strong></td>
+      <td style="padding:0.5rem;">是</td>
+      <td style="padding:0.5rem;">否（幻觉）</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;"><strong>自由意志论</strong></td>
+      <td style="padding:0.5rem;">否</td>
+      <td style="padding:0.5rem;">是</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;"><strong>兼容论</strong></td>
+      <td style="padding:0.5rem;">是</td>
+      <td style="padding:0.5rem;">是（重新定义的）</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;"><strong>硬不可知论</strong></td>
+      <td style="padding:0.5rem;">可能无法确定</td>
+      <td style="padding:0.5rem;">可能无法确定</td>
+    </tr>
+  </table>
+</div>
+
+<div class="note-box">
+  <strong>注意</strong>：硬不可知论（Hard Incompatibilism）——如果自由意志要求因果上的独立性（这不可能），而决定论可能成立（目前看来概率很大），那么无论决定论是不是真的，自由意志都不存在。这是哲学家蒂莫西·威尔顿（Timothy O'Connor）等人的立场。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验理解</h2>
+  <p>每题选择一个答案，点击后显示解释。共 10 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">考察基本概念</div>
+    <div class="sentence">拉普拉斯的恶魔思想实验说明了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">宇宙中存在一个全能的神</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">如果一切由物理定律决定，未来可以被完全预测</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">辨析立场</div>
+    <div class="sentence">以下哪个说法属于兼容论（Compatibilism）？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">即使世界是决定论的，只要行为出于自愿，就是自由的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">决定论为真，所以我们没有自由意志</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">自由意志论的困难</div>
+    <div class="sentence">自由意志论面临的主要反驳是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">没有人真的感到自己是自由的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">如果选择不被决定，它就是随机的，随机不等于自由</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">利贝特实验</div>
+    <div class="sentence">利贝特实验中，"准备电位"在受试者意识到决定之前大约多长时间出现？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 300 毫秒</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 3 小时</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">概念辨析</div>
+    <div class="sentence">决定论和宿命论的区别在于？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">决定论认为一切是随机的，宿命论认为一切被注定</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">决定论认为你的选择本身是因果链的一部分，宿命论认为无论你怎么选结果都一样</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">应用到现实</div>
+    <div class="sentence">如果一个人因为脑瘤而突然暴力，从硬决定论角度看，最合理的做法是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">治疗他的疾病，而非惩罚他</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为自由意志不存在，所以惩罚和医疗都没意义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">哲学家的立场</div>
+    <div class="sentence">斯宾诺莎对自由意志的态度最接近哪个说法？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">自由意志是真实的，我们确能自由选择</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">自由意志是一种幻觉——我们知道自己想要什么，但不知道想要的原因</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">量子力学与自由意志</div>
+    <div class="sentence">量子不确定性能否为自由意志提供物理基础？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">可以——量子随机性证明了意志可以不被决定</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不能——随机事件不等于有意识的选择，随机不是自由</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q9">
+    <span class="q-num">Q9</span>
+    <div class="context">兼容论的核心</div>
+    <div class="sentence">兼容论重新定义"自由"为？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全不受任何原因影响的行动</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">行为出于自身意愿，而非外部强制</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q10">
+    <span class="q-num">Q10</span>
+    <div class="context">自由意志的实际影响</div>
+    <div class="sentence">实验发现，相信"决定论为真"的人更可能在实验中做什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">更少帮助他人、更多作弊——因为道德约束感减弱</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">更多地帮助他人——因为更理解他人的行为</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 自由意志问题没有标准答案，这正是它迷人的地方。你更倾向哪种立场？为什么？告诉我你的想法，我们可以深入讨论。
+  <br><br>
+  <strong>延伸阅读：</strong>
+  <br>- 丹尼特《自由进化》——兼容论的经典辩护
+  <br>- 丹尼尔·丹尼特《意识的解释》——意识作为"用户幻觉"
+  <br>- 罗伯特·特里维尔斯《欺骗与自我欺骗》——进化心理学视角
+  <br><br>
+  <a href="../reference/free-will-quick-ref.html" class="resource-link">查看速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-epistemology.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-mind-body-problem.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '拉普拉斯的恶魔是一个思想实验，不是说真的有神。它的核心意思是：如果宇宙是完全决定论的（每个事件由前因完全决定），那么理论上可以精确预测一切。', wrong: '恶魔只是个思想实验的假设。真正要说明的是——在完全决定论的框架下，未来的所有事件在理论上都可以从当前状态完全推导出来。' },
+    q2: { correct: '兼容论的关键在于重新定义"自由"：自由不是没有原因，而是行为不是被外部强加的，而是出于自己的意愿。即使这个意愿本身是因果决定的，它仍然是"你的"意愿。', wrong: '这是硬决定论的立场。硬决定论说决定论为真，所以自由意志不存在。兼容论则说"自由意志和决定论可以共存"。' },
+    q3: { correct: '这是自由意志论最经典的难题：如果选择不被任何原因决定，它就是随机的。但随机不等于自由——如果我的决定是随机的，那凭什么说"我"选择了它？', wrong: '恰恰相反，绝大多数人都觉得自己是自由的。这不是反驳的理由，而是自由意志论的起点。真正的反驳是：不被决定的选择 = 随机 = 不是真正的选择。' },
+    q4: { correct: '利贝特实验发现准备电位在意识决定前约 300 毫秒就出现了。后来的 fMRI 研究把这个时间拉到了 7-10 秒。', wrong: '3 小时显然是错的。利贝特发现的是 300 毫秒，这是一个非常短的时间窗口，但足以让许多哲学家和科学家开始质疑"有意识的自由决定"这个概念。' },
+    q5: { correct: '决定论认为你的选择本身就是因果链的一环——你的思考、犹豫、权衡都是原因的一部分。宿命论则认为结果已经注定，不管你怎么选都一样。前者承认你的行为有因果效力，后者完全否定了。', wrong: '恰恰相反：决定论认为一切有原因（不是随机），宿命论说一切注定（不是由你的行为决定）。这两个概念经常被混淆，但它们的区别非常关键。' },
+    q6: { correct: '硬决定论认为，如果行为由不可控的生理原因导致，那么"惩罚"（作为一种道德回应）就不适用——就像你不会惩罚一个故障的机器，而是修理它。', wrong: '硬决定论并不否认行动的后果。即使自由意志不存在，仍然可以选择治疗或隔离危险的人，只不过理由从"道德应得"变成了"因果管理"。' },
+    q7: { correct: '斯宾诺莎认为我们知道自己想要什么（比如想吃蛋糕），但往往不知道为什么想吃（基因倾向、广告、童年记忆），所以误以为自己在自由地选择。他认为真正的自由是理解这些因果，而非摆脱它们。', wrong: '斯宾诺莎恰恰认为自由意志是一种幻觉。他不是说人们觉得自己不自由，而是说人们觉得自己自由——但这种感觉基于对原因的无知。' },
+    q8: { correct: '这是一个常见误区。量子不确定性确实打破了严格的决定论，但"随机"和"自由"之间隔着巨大的鸿沟。如果你的某个决定是量子随机产生的，那仍然不是"你"的有意识选择。', wrong: '量子随机性只是打破了严格决定论，但没有正面回答自由意志问题。它把"一切都是注定的"替换成了"有些东西是随机的"，但随机不等于有意识的自由选择。' },
+    q9: { correct: '兼容论将自由定义为"不受外部强制"——你可以自由选择喝咖啡是因为你想喝，即使你的"想"本身是因果决定的。这种自由与决定论不矛盾，因为因果链经过了"你"。', wrong: '不受任何原因影响的行动在逻辑上是不可能的——任何行动都有原因。兼容论的核心就是接受因果链，同时重新定义什么是真正的自由。' },
+    q10: { correct: '社会心理学实验（如 Vohs & Schooler 2008）发现，被诱导相信决定论的人更少愿意帮助他人、更多可能在测验中作弊。因为"反正一切都已注定"的信念会削弱道德约束感。', wrong: '虽然理论上理解决定论可能增加共情，但实验数据恰恰相反：被诱导相信决定论的人在实验中表现得更不道德。这表明哲学信仰对行为的实际影响可能与我们直觉不同。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 10;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score >= 8) label.textContent = 'Excellent! You have a solid understanding of the free will debate.';
+      else if (score >= 6) label.textContent = 'Good work! Review the explanations for the ones you missed.';
+      else label.textContent = 'Re-read the lesson and try again — this is one of the hardest questions in philosophy.';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

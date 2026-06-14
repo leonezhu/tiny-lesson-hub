@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 — Articles (a / an / the): The Tricky Part of English</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .article-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .article-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .article-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .article-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .article-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .article-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .rule-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .rule-box h3 {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .rule-box .rule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .rule-box .rule-table th,
+  .rule-box .rule-table td {
+    text-align: left;
+    padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rule-box .rule-table th {
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .rule-box .rule-table td strong {
+    color: var(--accent);
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Articles (a / an / the): The Tricky Part of English</h1>
+<p class="lesson-meta">Lesson 2 · ~10 minutes · Grammar foundation</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll know when to use <em>a</em>, <em>an</em>, or <em>the</em> — and, just as importantly, when to use <strong>nothing at all</strong>. This is one of the hardest things for Chinese speakers because Chinese has no articles.
+</div>
+
+<h2>The Core Idea</h2>
+<p>
+  Chinese doesn't have articles. You say <em>wǒ kàn le shū</em> (我看了书), and the listener figures out if it's a book, the book, or books from context. English forces you to be specific with every noun. Articles are small, but they carry information about whether the listener can identify <strong>which</strong> thing you mean.
+</p>
+
+<div class="article-card">
+  <h3><strong>a</strong> — one, any, non-specific, singular, countable</h3>
+  <p class="form">Use with singular countable nouns that are <strong>new information</strong> or <strong>any member of a group</strong>. Sound rule: before a consonant <em>sound</em>.</p>
+  <ul class="examples">
+    <li>I need <strong>a</strong> pen. (any pen will do — not a specific one)</li>
+    <li>She's <strong>a</strong> good engineer. (one member of the group "engineers")</li>
+    <li>He has <strong>a</strong> car. (first mention — listener doesn't know which one)</li>
+  </ul>
+</div>
+
+<div class="article-card">
+  <h3><strong>an</strong> — same as <em>a</em>, but before vowel <em>sounds</em></h3>
+  <p class="form">The sound changes for ease of pronunciation. Before a vowel <em>sound</em>, not just a vowel <em>letter</em>.</p>
+  <ul class="examples">
+    <li>I had <strong>an</strong> email. (the "e" is pronounced)</li>
+    <li>It's <strong>an</strong> hour. ("h" is silent → sounds like "our")</li>
+    <li>She has <strong>an</strong> MBA. ("M" is pronounced "em" → vowel sound)</li>
+    <li>A university → "yoo" is a consonant sound, so it's <strong>a</strong>, not <strong>an</strong>.</li>
+  </ul>
+</div>
+
+<div class="article-card">
+  <h3><strong>the</strong> — specific, known, or unique</h3>
+  <p class="form">Use when both speaker and listener know <strong>which one</strong>. Works with singular, plural, countable, and uncountable.</p>
+  <ul class="examples">
+    <li>Can you pass <strong>the</strong> salt? (the one on the table — we both see it)</li>
+    <li><strong>The</strong> report you sent me was great. (specific — you know which one)</li>
+    <li><strong>The</strong> sun rises in the east. (there's only one)</li>
+    <li>I read <strong>the</strong> news today. (the news on TV / paper — a specific source)</li>
+  </ul>
+</div>
+
+<div class="article-card">
+  <h3><strong>zero article (∅)</strong> — nothing at all</h3>
+  <p class="form">No article needed for <strong>plural countables in general</strong>, <strong>uncountable nouns</strong>, and many fixed expressions.</p>
+  <ul class="examples">
+    <li>I love <strong>music</strong>. (not "the music" — music in general)</li>
+    <li><strong>Cats</strong> are amazing animals. (cats in general, plural)</li>
+    <li>She goes to <strong>work</strong> by bus. (fixed expression — no article)</li>
+    <li>He's in <strong>hospital</strong>. (UK English — no article for institutional use)</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>Key insight for Chinese speakers:</strong> When you say 猫在桌子上 (Cats on the table), Chinese doesn't need an article. English always does — if you mean <em>specific</em> cats, use <strong>the</strong>: "The cats are on the table." If you mean <em>cats in general</em>, use <strong>zero</strong>: "Cats are smart." There is no "māo" option that works for both.
+</div>
+
+<h2>Decision Flow: Which Article?</h2>
+
+<div class="rule-box">
+  <h3>Step-by-step</h3>
+  <table class="rule-table">
+    <tr><th>Step</th><th>Question</th><th>Answer</th></tr>
+    <tr><td>1</td><td>Is the noun countable and singular?</td><td>If <strong>no</strong> → either <strong>the</strong> or <strong>∅</strong>. If <strong>yes</strong> → continue.</td></tr>
+    <tr><td>2</td><td>Is it a specific, known noun?</td><td>If <strong>yes</strong> → <strong>the</strong>. If <strong>no</strong> → continue.</td></tr>
+    <tr><td>3</td><td>Does the next word start with a vowel <em>sound</em>?</td><td>If <strong>yes</strong> → <strong>an</strong>. If <strong>no</strong> → <strong>a</strong>.</td></tr>
+  </table>
+</div>
+
+<h2>Common Pitfalls</h2>
+
+<div class="rule-box">
+  <h3>❌ Don't use "the" when talking in general</h3>
+  <p><strong>Wrong:</strong> I love the dogs. <strong>Right:</strong> I love dogs. (dogs in general — plural, zero article)</p>
+  <p><strong>Wrong:</strong> The exercise is good. <strong>Right:</strong> Exercise is good. (uncountable, general — zero article)</p>
+</div>
+
+<div class="rule-box">
+  <h3>❌ Don't use "a/an" with uncountable nouns</h3>
+  <p><strong>Wrong:</strong> I need an information. <strong>Right:</strong> I need some information. / I need <strong>a</strong> piece of information.</p>
+  <p><strong>Wrong:</strong> She gave me an advice. <strong>Right:</strong> She gave me <strong>a</strong> piece of advice.</p>
+</div>
+
+<div class="rule-box">
+  <h3>❌ "The" with first mention, "a" with second mention</h3>
+  <p>First time you introduce something: <strong>a/an</strong>. Once it's known: <strong>the</strong>.</p>
+  <p>"I saw <strong>a</strong> bird yesterday. <strong>The</strong> bird was blue."</p>
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Article</h2>
+  <p>Pick the correct article (or ∅ = no article). There are 10 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">Introducing something new for the first time.</div>
+    <div class="sentence">I saw ________ interesting film last night.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">a</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">the</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">Talking about a specific film both people know about.</div>
+    <div class="sentence">________ film I saw last night was amazing.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">A</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">The</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Talking about something in general — dogs as a species.</div>
+    <div class="sentence">________ are loyal animals.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">A</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">∅ (no article)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">Before a word starting with a silent "h".</div>
+    <div class="sentence">It's ________ hour of the day I look forward to most.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">a</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">an</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Before a word starting with "u" but a "y" consonant sound.</div>
+    <div class="sentence">She's ________ university student.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">a</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">an</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Uncountable noun in general — water.</div>
+    <div class="sentence">I can't live without ________ water.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">the</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">∅ (no article)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">A specific river — both people know which one.</div>
+    <div class="sentence">We took a walk along ________ Thames.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">the</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">∅ (no article)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Fixed expression with "work".</div>
+    <div class="sentence">She leaves ________ work at 5pm every day.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">the</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">∅ (no article)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q9">
+    <span class="q-num">Q9</span>
+    <div class="context">Second mention — the listener now knows which one.</div>
+    <div class="sentence">He bought ________ new phone. ________ phone is from Apple.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">a / The</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">the / A</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q10">
+    <span class="q-num">Q10</span>
+    <div class="context">Before an abbreviation where the letter is pronounced with a vowel sound.</div>
+    <div class="sentence">He works as ________ FBI agent.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">a</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">an</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — articles are subtle, and even advanced learners still double-check them. That's normal. Not sure whether to use "the" or nothing? That's exactly what we should talk about.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b1-b2-grammar/articles" target="_blank">British Council: Articles at B1–B2</a> — interactive exercises with instant feedback.
+  <br><br>
+  <a href="../reference/articles-a-an-the.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0001-big-four-tenses.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-prepositions-of-time-and-place.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"A" is used for first mention of a singular countable noun that is not specific. "I saw a film" — the listener doesn\'t know which film yet.',
+      wrong: '"The" implies both people know which film. On first mention, you use "a": "I saw a film." Only on the second mention would you say "the film."'
+    },
+    q2: {
+      correct: '"The" is used because both speaker and listener know which film — it\'s the one mentioned in the previous sentence (even if implied).',
+      wrong: '"A" would mean any film. But here you\'re talking about a specific one — the one you saw last night. That\'s "the".'
+    },
+    q3: {
+      correct: 'When talking about a whole group in general (dogs as a species), use zero article with plural nouns. "Cats are smart", "Dogs are loyal."',
+      wrong: '"A dogs" is grammatically impossible (a is singular). "The dogs" would mean specific dogs we can see. For the general idea, use nothing: "Dogs are loyal animals."'
+    },
+    q4: {
+      correct: '"Hour" has a silent "h" → it starts with a vowel sound (/aʊər/). So it\'s "an hour", not "a hour". The rule is about SOUND, not spelling.',
+      wrong: '"H" in "hour" is silent — it\'s pronounced "our". Words starting with a vowel SOUND take "an": an hour, an honest person, an heir.'
+    },
+    q5: {
+      correct: '"University" starts with a "y" consonant sound (/juː/). Even though "u" is a vowel letter, the SOUND is "yoo" → consonant sound → "a".',
+      wrong: '"University" sounds like "yoo-niversity". The "y" is a consonant sound. Consonant sounds get "a": a university, a European, a one-eyed cat.'
+    },
+    q6: {
+      correct: '"Water" is uncountable. When speaking about an uncountable noun in general, use zero article: I love music, I need water, I can\'t live without sugar.',
+      wrong: '"The water" would mean specific water we can see. If you\'re talking about water in general (the substance), no article: "I can\'t live without water."'
+    },
+    q7: {
+      correct: 'Rivers, seas, and mountain ranges always take "the": the Thames, the Pacific, the Alps. It\'s a fixed English rule.',
+      wrong: 'Geographical names like rivers, oceans, and groups of mountains always use "the": the Thames, the Mediterranean, the Himalayas. It\'s a memorised pattern.'
+    },
+    q8: {
+      correct: '"Leave work", "go to school", "be in hospital" (UK), "go to bed" — these are fixed expressions with zero article when referring to the activity, not the building.',
+      wrong: '"The work" would mean specific work (e.g., "the work on my computer"). But "leave work" is a fixed expression meaning "finish your job for the day" — no article.'
+    },
+    q9: {
+      correct: 'First mention → "a" (introducing new info). Second mention → "The" (now it\'s known). "He bought a new phone. The phone is from Apple."',
+      wrong: 'The order is always "a" first (new info), then "the" (known info). You can\'t say "The phone is from Apple" first, because the listener doesn\'t know which phone yet.'
+    },
+    q10: {
+      correct: '"FBI" is pronounced /ɛf biː ai/ — starts with the sound "eh" (a vowel). So it\'s "an FBI agent", not "a FBI agent". Again, sound matters, not spelling.',
+      wrong: '"FBI" starts with the letter "F", which sounds like "ef" — a vowel sound. Vowel sounds → "an": an FBI agent, an HTML file, an MP3 player.'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 10;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! Articles are second nature to you.';
+      else if (score >= 7) label.textContent = 'Strong work! Review the ones you missed — the explanations will help.';
+      else label.textContent = 'Keep going! Articles take practice. Re-read the rules above and focus on the "why".';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

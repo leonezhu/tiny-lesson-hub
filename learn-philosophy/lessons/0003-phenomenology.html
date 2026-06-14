@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 — 现象学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    margin-top: 0;
+  }
+
+  .content-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-card ul li {
+    padding: 0.2rem 0;
+    position: relative;
+  }
+
+  .content-card ul li::marker {
+    color: var(--accent);
+  }
+
+  .quote-block {
+    background: #f7f9fb;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  .quote-block .attribution {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .practical-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .practical-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>现象学：回到事物本身</h1>
+<p class="lesson-meta">第3课 · ~12 分钟 · 哲学方法论</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解现象学的核心方法——悬搁（epoché）、本质直观和意向性分析，学会用现象学的视角观察自己的意识经验。学完后你能识别意识如何构造经验，并将这一思维工具应用到产品设计、心理学和 AI 研究中。
+</div>
+
+<h2>什么是现象学？</h2>
+
+<p>现象学（Phenomenology）是二十世纪最重要的哲学运动之一，由德国哲学家<b>埃德蒙德·胡塞尔</b>在 1900 年创立。它的核心口号只有四个字：</p>
+
+<div class="quote-block">
+  "回到事物本身！"（Zu den Sachen selbst!）
+  <span class="attribution">—— 胡塞尔</span>
+</div>
+
+<p>听起来简单？这句话的含义极其深刻。它的意思是：不要被理论、假设、科学模型或日常偏见干扰，去直接描述你<b>在意识中实际经历到的东西</b>。</p>
+
+<p>举个例子：当你看到一棵树时，通常你会说"那是一棵橡树，高约 10 米，属于被子植物门"——这些都是科学分类和知识判断。现象学要求你停下来，问一个完全不同的问题：<b>"这棵树在意识中是如何呈现的？"</b></p>
+
+<p>现象学不是关于"树是什么"，而是关于"树如何出现在你的意识里"。这个转向——从"世界是什么"转向"世界如何在意识中呈现"——被称为哲学史上的"转向"。</p>
+
+<h2>胡塞尔的三个工具</h2>
+
+<div class="content-card">
+  <h3>1. 悬搁（Epoché）—— 暂停你的信念</h3>
+  <p>这不是怀疑主义。笛卡尔说"我怀疑一切"，目的是找到不可怀疑的基础。现象学的悬搁不同——它不是说"我不确定世界是否存在"，而是说<b>"世界是否存在这个事实，先放一边。让我专注于经验本身的样貌。"</b></p>
+  <p><b>生活中的例子：</b> 当你看到一张愤怒的脸，你的第一个反应可能是"他不高兴了，我需要道歉或退让"。现象学的悬搁让你暂停这个判断，转而观察：我看到了哪些肌肉运动？光线如何落在脸上？我的身体有什么感受？先不问"他在想什么"，只描述"我看到什么"。</p>
+  <p><b>常见错误</b>：把悬搁当成否认现实。悬搁不是"世界不存在"，而是"关于世界的假设先别用"。就像摄影师拍一张照片前先清空镜头——不是否认世界，是为了更准确地捕捉。</p>
+</div>
+
+<div class="content-card">
+  <h3>2. 本质直观（Wesensschau）—— 抓住事物的"本质"</h3>
+  <p>在悬搁之后，你可以通过<b>自由想象变换</b>来识别一个现象的本质特征。想象一张椅子——你可以改变它的颜色、材质、形状，但总有一些东西不能变：如果它不能用来坐，它就不再是椅子。那个"不能改变的部分"就是椅子的本质（"椅性"）。</p>
+  <p>这个工具的强大之处在于：它不需要统计数据或实验，只需要有意识的想象。哲学家用它分析"正义"、"时间"、"他者"等抽象概念的本质结构。</p>
+  <p><b>关键洞察</b>：本质不是藏在现象背后的"隐藏现实"，而是你可以在现象本身中直观到的结构。你不需要离开经验去找到本质——本质就在经验之中。</p>
+</div>
+
+<div class="content-card">
+  <h3>3. 意向性（Intentionality）—— 意识总是关于某物的意识</h3>
+  <p>这是现象学最核心的发现之一。胡塞尔指出：<b>意识从来不"空转"——你总是"关于某物"的意识。</b>你恐惧的是某事，你爱的是某人，你想象的是一个场景，你回忆的是一段经历。意识像一束光，永远照向某个对象。</p>
+  <p>这个洞见打破了"主观 vs 客观"的传统二分法。意识不是关在脑袋里的封闭空间——它的本质就是指向外部。你在意识中永远和世界纠缠在一起。</p>
+  <p><b>跨学科回响</b>：这个发现在现代心理学中得到了独立验证。认知科学中的"预测编码理论"（predictive coding）和"具身认知"（embodied cognition）都建立在同一个原则上：心智不是信息处理器，而是与世界互动的动态过程。</p>
+</div>
+
+<h2>从胡塞尔到海德格尔：现象学的转向</h2>
+
+<p>胡塞尔的现象学关注意识结构，但他的学生<b>马丁·海德格尔</b>做了更重要的转向。</p>
+
+<div class="content-card">
+  <h3>从"意识"到"存在"</h3>
+  <p>海德格尔认为，胡塞尔仍然被困在传统主体-客体的框架里：意识作为主体，世界作为客体。海德格尔提出：<b>人不是先作为"主体"再"认识世界"</b>——人从一开始就已经"在世界之中"（In-der-Welt-sein，Being-in-the-world）。</p>
+  <p>想象你用锤子钉钉子。当你熟练使用时，你不会想着"这是一把锤子，它由金属和木头构成"——锤子"上手"（zuhanden）了，它成为你与世界互动的透明媒介。只有当锤子坏了，它才变成了"现成在手"（vorhanden）的客体——你才注意到它是一个物件。</p>
+  <p>海德格尔的这个观察极其深刻：<b>我们与世界的第一重关系不是"认识"，而是"使用"和"参与"</b>。理论思考是二手的，实践参与才是原初的。</p>
+</div>
+
+<div class="content-card">
+  <h3>梅洛-庞蒂：身体是知觉的中心</h3>
+  <p>法国现象学家梅洛-庞蒂进一步指出：<b>不是大脑在感知，是身体在感知。</b>你的身体不是"一件物体"，而是你通往世界的原初通道。你的手"知道"门把手的位置，不需要你先用眼睛看再用脑子计算。</p>
+  <p>这个观点直接挑战了计算主义（mind = 信息处理器）的认知科学范式。梅洛-庞蒂说：认知不是内部表征的运算，而是身体在环境中的实时协调。</p>
+</div>
+
+<h2>现象学 vs 其他哲学流派</h2>
+
+<p>把现象学放在整个哲学地图中看，它的独特性会更清晰：</p>
+
+<div class="content-card">
+  <h3>现象学 vs 分析哲学</h3>
+  <ul>
+    <li><b>分析哲学</b>：通过逻辑和语言分析来澄清问题。维特根斯坦说"哲学病源于语言休息"，治疗方法是分析语言的用法。</li>
+    <li><b>现象学</b>：通过描述意识经验的结构来揭示问题。胡塞尔说"理论模型是对经验的二次抽象"，治疗方法是回到经验本身。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>现象学 vs 存在主义</h3>
+  <ul>
+    <li>存在主义从现象学方法出发，但关注的是<b>人的生存处境</b>（自由、死亡、荒诞）。</li>
+    <li>胡塞尔的现象学关注的是<b>意识经验的结构</b>，而非人的生存困境。</li>
+    <li>萨特把两者结合起来——用现象学方法分析存在主义主题。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>现象学 vs 科学主义</h3>
+  <ul>
+    <li><b>科学主义</b>：世界就是物理定律的运作，意识可以还原为神经活动。</li>
+    <li><b>现象学</b>：任何理论模型都是对活生生经验的"二次抽象"。把意识简化为神经放电，就像把一首交响乐简化为声波频率——技术上"正确"，但遗漏了最重要的东西。</li>
+  </ul>
+</div>
+
+<h2>现象学的实际应用</h2>
+
+<div class="content-card">
+  <h3>产品设计：让功能"自我呈现"</h3>
+  <p>Donald Norman 提出的可用性设计原则——"可见性"（visibility）——本质上是现象学的工程化。一个好的界面不是让用户去读说明书的，而是让操作的可能性通过界面"自我呈现"给用户。你看到按钮就知道它能点——不需要解释。</p>
+  <p>这直接来自现象学的洞见：经验不需要被"解释"才有效。一把好的锤子，在你手上是透明的；一个优秀的产品，在用户手里也是透明的。</p>
+</div>
+
+<div class="content-card">
+  <h3>AI 研究：从符号到具身</h3>
+  <p>符号 AI 假设智能是内部符号的运算。 Rodney Brooks 的"包容架构"（Subsumption Architecture）彻底颠覆了这个假设——智能不需要内部表征，只需要身体在环境中的实时反应。这正是梅洛-庞蒂身体现象学的工程实现。</p>
+  <p>当代具身 AI（Embodied AI）的核心问题——如何让 AI 拥有"身体"来与世界互动——本质上就是一个现象学问题。</p>
+</div>
+
+<div class="content-card">
+  <h3>心理学：从症状到经验</h3>
+  <p>传统精神病学把抑郁症看作是"症状集合"（失眠、食欲下降、情绪低落）。现象学心理学则问：<b>"抑郁者的世界经验是什么样的？"</b>答案可能是：世界失去了色彩，所有行动都变得沉重，时间感被拉长。这不是"症状"——这是一个全新的存在方式。</p>
+  <p>这种视角的转变对治疗至关重要：不是"消除症状"，而是"重新构建经验的意义"。</p>
+</div>
+
+<h2>胡塞尔的"生活世界"</h2>
+
+<p>胡塞尔晚年提出"生活世界"（Lebenswelt）概念——所有科学理论都预设了一个前提：<b>我们首先生活在日常的、前理论的生活中。</b></p>
+
+<p>在你用温度计测量体温之前，你已经有"冷"和"热"的经验。在你用经济学模型分析市场之前，你已经有买卖、议价、信任的日常实践。<b>生活世界是所有理论和科学的土壤。</b></p>
+
+<p>现象学的任务就是描述这个生活世界——不是用理论去覆盖它，而是让它的结构自行显现。</p>
+
+<div class="practical-box">
+  <strong>今天的练习：</strong> 花五分钟，选一件你每天接触的物品（手机、杯子、椅子）。然后用现象学的悬搁方法观察它：不要说"这是手机"，而是描述光线如何落在屏幕上、它在你手掌中的重量分布、你拿起它时身体肌肉的微妙感觉。你会发现，当你停止命名和分类，事物会以一种全新的方式呈现。这就是现象学的力量——<b>它不是告诉你新东西，而是让你以新的方式看已有的东西。</b>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解现象学</h2>
+  <p>根据现象学的核心思想，判断以下情境。每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">胡塞尔的"悬搁"（Epoché）方法。</div>
+    <div class="sentence">悬搁的真正含义是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">怀疑世界是否存在</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">暂停关于世界存在的假设，专注于经验本身</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你正在观察一朵花。</div>
+    <div class="sentence">现象学的方法要求你——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">分析它的生物分类和化学成分</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">描述它在你的意识中如何呈现为"一朵花"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你想象一把椅子可以有不同的颜色、材质和形状。</div>
+    <div class="sentence">在本质直观中，你永远不能改变的是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">椅子的颜色</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"可供坐的"这个结构</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">胡塞尔对意识的定义。</div>
+    <div class="sentence">"意向性"指的是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">意识是一个封闭的内部空间</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">所有意识都是"关于某物的意识"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">海德格尔的"上手状态"（Zuhandenheit）。</div>
+    <div class="sentence">当你熟练地使用 hammer 钉钉子时——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">hammer 是"上手的"——它成为你与世界互动的透明媒介</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">hammer 是"现成在手的"——你清楚地意识到它是一个工具</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">海德格尔的核心概念"此在"（Dasein）。</div>
+    <div class="sentence">"此在"的定义是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">任何有意识的生物</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">唯一追问自身存在的存在者——人是"在世界之中存在"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">梅洛-庞蒂的"身体知觉"理论。</div>
+    <div class="sentence">梅洛-庞蒂认为——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">身体只是大脑控制的一台机器</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">身体是知觉和意义的中心，而非仅仅是物体</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你是一名 UI 设计师。</div>
+    <div class="sentence">现象学对你的设计工作的启发是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">用户需要阅读详细的操作说明才能使用界面</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">好的设计让操作可能性通过界面"自我呈现"给用户</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q9">
+    <span class="q-num">Q9</span>
+    <div class="context">你是一名 AI 研究员。</div>
+    <div class="sentence">现象学对 AI 研究的贡献是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">AI 只需要内部符号运算，不需要"身体"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">智能可能源于身体与环境的实时互动，而非内部计算</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有想法？</strong> 现象学是最"贴近经验"的哲学——它不要求你记住任何理论，只要求你认真观察自己正在经历什么。你对哪个部分最有感触？是悬搁的"清空"，还是本质直观的"抓住结构"？或者你在哪个场景下最想试试这个工具？我们一起来想。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://plato.stanford.edu/entries/phenomenology/" target="_blank">Stanford Encyclopedia of Philosophy — Phenomenology</a> — 学术深度，系统梳理现象学从胡塞尔到当代的发展脉络。
+  <br><br>
+  <a href="../reference/phenomenology-overview.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0002-existentialism.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-analytic-philosophy.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '悬搁不是怀疑主义。笛卡尔怀疑世界存在以寻找不可怀疑的基础；胡塞尔的悬搁是说"世界是否存在"这个判断先别用——不是否认，而是暂时搁置，专注于经验本身的样貌。就像摄影师清空调焦——不是否认世界存在，而是为了更准确地捕捉。', wrong: '"怀疑世界是否存在"是笛卡尔的方法论怀疑。胡塞尔的悬搁不同：他不是说"我不确定世界是否存在"，而是"关于世界存在的假设先放一边，让我专注于经验本身"。' },
+    q2: { correct: '现象学的核心要求：回到事物本身，不要通过科学分类或日常偏见来观察。"这是玫瑰"是分类判断，"一朵花在我的意识中如何呈现"才是现象学描述。现象学关注的是"如何呈现"而非"是什么"。', wrong: '分析生物分类和化学成分是植物学的方法，不是现象学的方法。现象学要求你暂停这些科学判断，回到你在意识中实际经验到的东西——花的颜色、形状、气味如何在你的感知中构造。' },
+    q3: { correct: '本质直观（Wesensschau）的核心：通过自由想象变换，你改变椅子的所有偶然属性（颜色、材质、形状），但总有一些东西不能变——"可供坐"。这个"不变的部分"就是本质。它不是藏在椅子背后的隐藏现实，而是你可以在任何一把椅子中直接直观到的结构。', wrong: '椅子的颜色是最容易改变的偶然属性之一。你完全可以想象一把红色、蓝色或透明的椅子。本质直观寻找的是在所有可能变化中保持不变的"结构"，而非某个具体属性。' },
+    q4: { correct: '意向性是现象学最核心的发现：意识从不"空转"——它总是关于某物的意识。你恐惧的是某事，你爱的是某人，你想象的是一个场景。意识像一束光，永远指向某个对象。这打破了"主体在脑子里，世界在外面"的二分法。', wrong: '胡塞尔恰恰反对"意识是封闭内部空间"的观点。意向性理论证明：意识的本质就是"指向外部"。你无法有"纯粹的"意识——它永远关联着某个对象。' },
+    q5: { correct: '海德格尔的"上手状态"描述的是熟练使用工具时的透明感：锤子在你手中是"透明"的，它不再是一个被观察的客体，而是你与世界互动的媒介。只有当锤子坏了（不上手了），它才变成"现成在手的"对象——你才注意到它"是什么"。', wrong: '"现成在手"（vorhanden）发生在锤子坏了的时候——你才注意到它是一个物件。当锤子上手上手时，你根本不会想到它是一个"工具"，你只是在钉钉子。' },
+    q6: { correct: '海德格尔的"此在"（Dasein）不是泛指任何有意识的东西，而是特指"唯一追问自身存在的存在者"。人类的独特之处不在于"我有意识"，而在于"我的存在对我是个问题"。而且此在的本质是"在世界之中存在"——不是孤立的主体，而是嵌入在意义网络中的存在。', wrong: '海德格尔的"此在"有非常精确的含义——它是"唯一追问自身存在的存在者"。石头没有意识，狗可能有某种意识，但只有人追问"我为何存在"。而且此在的核心不是"意识"，而是"在世界之中存在"的参与性。' },
+    q7: { correct: '梅洛-庞蒂的革命性观点：身体不是"一件被大脑控制的物体"，而是我们感知世界的"原初媒介"。你的手"知道"门把手在哪里，不需要你先看再算。身体图示（body schema）是前意识的、即时的——这是认知科学后来独立验证的。', wrong: '把身体视为"机器"是计算主义认知科学的立场。梅洛-庞蒂恰恰反对这个观点——他认为身体不是信息处理器控制的机械，而是意义和知觉的中心。身体不是被大脑"操控"的物体——身体本身就是知觉。' },
+    q8: { correct: 'Donald Norman 的"可见性"原则本质上是现象学的工程化：好的界面让操作可能性通过界面"自我呈现"，不需要用户阅读说明书。这直接来自现象学的洞见——经验不需要被解释才有效。一把好锤子是透明的，一个优秀的产品也是透明的。', wrong: '如果用户需要阅读详细说明书才能使用，说明界面没有做到"让功能自我呈现"。现象学的悬搁告诉你：不要让用户先学习"这是什么按钮"，而是让按钮的用途在视觉上就清晰可见。' },
+    q9: { correct: 'Rodney Brooks 的"包容架构"和当代具身 AI 研究都受到现象学的启发：智能不是内部符号运算，而是身体在环境中的实时适应。梅洛-庞蒂的身体现象学为"AI 需要身体"提供了哲学论证——没有身体的参与，就没有真正的智能。', wrong: '符号 AI 的假设正是梅洛-庞蒂和现象学要批判的。如果 AI 只靠内部符号运算就能智能，那就等于否定了现象学的核心洞见——智能源于身体与环境的互动，而非内部表征的计算。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 9;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对现象学的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾你答错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的内容再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

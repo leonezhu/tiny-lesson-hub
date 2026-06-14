@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 — 全球化与去全球化</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+    --green-bg: #e8f5e9;
+    --green-border: #4caf50;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card, .timeline-card, .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .timeline-card .event {
+    padding: 0.35rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card .event::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .china-note, .chinese-note, .key-idea {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .china-note strong, .chinese-note strong, .key-idea strong { color: #e65100; }
+
+  .green-box {
+    background: var(--green-bg);
+    border-left: 3px solid var(--green-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .green-box strong { color: var(--correct); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>全球化与去全球化</h1>
+<p class="lesson-meta">第12课 &middot; ~12分钟 &middot; 经济史与地缘政治</p>
+
+<div class="goal-box">
+  <strong>学完本课</strong>，你将理解全球化不是一个单向进程，而是一个在扩张与收缩之间摇摆的周期；能运用"罗德里克不可能三角"和"波兰尼双向运动"框架分析当下的中美脱钩、英国脱欧等现象；并理解"去全球化"不是全球化的终结，而是它的重组。
+</div>
+
+<h2>为什么全球化会"逆涨"？</h2>
+<p>
+  1990年代到2008年，全球化进入了"超级全球化"阶段：全球贸易占GDP比重超过60%，跨国供应链深度交织，资本和信息自由流动。但2008年金融危机之后，钟摆开始回摆——英国脱欧、美国加征关税、供应链"近岸化"，"去全球化"成为新闻常客。
+</p>
+<p>
+  但历史告诉我们：<strong>全球化不会消失，它只会改变形态</strong>。理解这个周期的规律，比判断"全球化结束了吗"这个问题重要得多。
+</p>
+
+<h2>全球化三次大周期</h2>
+
+<div class="timeline-card">
+  <h3>第一波：1870–1914</h3>
+  <p><strong>技术驱动：</strong>蒸汽船、铁路和电报将世界的地理距离压缩到前所未有的程度。</p>
+  <ul>
+    <li>全球贸易量增长约10倍</li>
+    <li>约5500万欧洲人移民到美洲和澳大利亚</li>
+    <li>利物浦与芝加哥的小麦价差从57.6%降至15.6%</li>
+    <li>金本位制度提供了稳定的国际货币锚</li>
+  </ul>
+  <p><strong>终结原因：</strong>第一次世界大战（1914）以暴力方式终结了这波全球化。各国关闭边境、实行贸易管制、放弃金本位。1930年美国斯姆特-霍利关税法引发全球报复性加税，全球贸易在1929-1933年间萎缩约66%。</p>
+</div>
+
+<div class="timeline-card">
+  <h3>第二波：1945–2008</h3>
+  <p><strong>制度框架：</strong>二战后美国主导构建了布雷顿森林体系——IMF维持汇率稳定，世界银行资助重建，GATT（后升级为WTO）逐步降低关税。这一模式被称为"嵌入式自由主义"：自由贸易被嵌入在各国福利国家的缓冲机制中。</p>
+  <ul>
+    <li>GATT八轮谈判将工业品平均关税从40%降至不到5%</li>
+    <li>1995年WTO成立，引入争端解决机制</li>
+    <li>2001年中国加入WTO——约15亿人进入全球劳动力市场</li>
+    <li>1990-2008年金融全球化达到巅峰</li>
+  </ul>
+  <p><strong>积累的矛盾：</strong>发达国家制造业岗位持续流失（美国1979-2009年失去约600万个），资本回报率远超劳动回报率，收益集中在沿海都市和资本所有者手中。</p>
+</div>
+
+<div class="timeline-card">
+  <h3>第三波：2008至今——"再全球化"</h3>
+  <p><strong>转折点：</strong>2008年金融危机暴露了金融全球化的系统性风险。雷曼兄弟倒闭在几周内传导到全球每个角落。</p>
+  <ul>
+    <li>全球贸易占GDP比重在2008年后下降，但2022年已回到历史高位附近</li>
+    <li>供应链从"效率优先"转向"安全+效率"双目标</li>
+    <li>服务贸易（数字服务、金融、教育）快速增长</li>
+    <li>格局变化：从"单一全球市场"转向"多个区域网络"</li>
+  </ul>
+</div>
+
+<h2>核心框架：为什么周期会反复</h2>
+
+<div class="concept-card">
+  <h3>罗德里克"不可能三角"</h3>
+  <p>经济学家丹尼·罗德里克提出了理解全球化的最深刻框架：<strong>民主政治、国家主权和超全球化——三者最多只能同时存在两个。</strong></p>
+  <ul>
+    <li><strong>超级全球化 + 民主</strong> → 必须牺牲部分国家主权（如欧盟）</li>
+    <li><strong>超级全球化 + 国家主权</strong> → 必须牺牲民主（如威权国家的出口导向模式）</li>
+    <li><strong>民主 + 国家主权</strong> → 必须牺牲超级全球化（如当前的脱钩趋势）</li>
+  </ul>
+  <p>当全球化进程太快、分配太不均时，民主机制会通过选票将其纠正——英国脱欧和特朗普当选正是这种纠正的体现。</p>
+</div>
+
+<div class="concept-card">
+  <h3>波兰尼的"双向运动"</h3>
+  <p>卡尔·波兰尼在《大转型》（1944）中提出：每当市场力量过度扩张、侵入社会生活每一个角落时，社会就会产生保护性反弹。这不是"进步"或"落后"的问题，而是<strong>系统自我调节的必然</strong>。</p>
+  <ul>
+    <li>19世纪自由贸易 → 20世纪初社会立法和工会运动</li>
+    <li>1990年代超级全球化 → 2010年代民粹反弹</li>
+    <li>每一次反弹都可能导致全球化进程的调整，而非终结</li>
+  </ul>
+</div>
+
+<div class="key-idea">
+  <strong>核心洞察：</strong>全球化不是线性进步，而是钟摆。每一次"逆全球化"浪潮都有相似的触发机制：经济不平等加剧、本地社群被全球化冲击、政治精英对民意的忽视。理解这个周期，是理解当下中美脱钩、英国脱欧、右翼民粹崛起的历史钥匙。
+</div>
+
+<h2>中美脱钩：21世纪的去全球化</h2>
+<p>
+  2018年开始的中美贸易战标志着系统性脱钩的开始。到2024年，美国对华关税覆盖率已从贸易战前的约3%升至约20%。但脱钩远超关税范畴：
+</p>
+<ul>
+  <li><strong>技术脱钩：</strong>美国对中国半导体出口管制，限制华为获取先进芯片和EDA工具</li>
+  <li><strong>供应链重组：</strong>"中国+1"战略、近岸外包到墨西哥和越南</li>
+  <li><strong>金融脱钩：</strong>中概股审计纠纷、去风险（de-risking）叙事</li>
+  <li><strong>数据脱钩：</strong>TikTok的命运之争、跨境数据流动限制</li>
+</ul>
+
+<div class="china-note">
+  <strong>关键区别：</strong>不同于1914年的暴力断裂和1930年代的全面闭关锁国，当前的"去全球化"更像是一种结构性的缓慢分离。全球经济仍深度互联，但在关键技术领域（半导体、AI、量子计算）正在形成多个竞争性技术阵营。
+</div>
+
+<h2>全球化与网络效应</h2>
+<p>
+  从<strong>网络效应</strong>角度看，全球供应链形成了一个高度互联的网络。节点的故障（如疫情、地震、政治冲突）可以通过网络传播为系统性冲击。这也是为什么"效率优先"的全球化模式在面临冲击时如此脆弱。
+</p>
+<p>
+  同时，技术标准本身也具有网络效应：一旦某种标准（如USB-C、Wi-Fi）获得足够多的用户，新标准很难取代它。这就是为什么中美在技术标准上的竞争至关重要——它决定的不是哪家公司赢，而是哪个生态体系能主导未来。
+</p>
+
+<div class="green-box">
+  <strong>给个体的启示：</strong>全球化周期带来的冲击对某些人是灾难，但对能够从中获益的人是机会。理解周期比预测方向更重要——全球化会扩张，也会收缩，但不会消失。在不确定性中建立多元连接（地理上、技能上、网络上），是最稳健的策略。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解全球化周期</h2>
+  <p>选择每个问题最正确的答案，每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">关于第一波全球化（1870-1914）</div>
+    <div class="sentence">以下哪项最能解释第一波全球化为何终结？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">技术进步放缓，运输成本重新上升</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">第一次世界大战引发各国关闭边境</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">罗德里克"不可能三角"</div>
+    <div class="sentence">根据不可能三角，如果一个国家坚持民主制度和充分的主权，那么它必然意味着什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">它无法实现超级全球化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">它必须加入欧盟</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">第二次世界大战后</div>
+    <div class="sentence">布雷顿森林体系的核心特征是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全自由的资本流动，没有任何管制</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">自由贸易嵌入各国福利国家的缓冲机制中</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">全球化分配效应</div>
+    <div class="sentence">米兰诺维奇的"大象曲线"揭示了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">全球化使所有人同等受益</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">亚洲新兴中产阶级和全球前1%获益最大，发达国家中产阶级增长停滞</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">1930年代</div>
+    <div class="sentence">斯姆特-霍利关税法（1930年）的恶果是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">引发全球报复性加税，贸易萎缩约66%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">成功保护了美国制造业，促进了经济复苏</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">当代全球化</div>
+    <div class="sentence">当前"去全球化"最准确的描述是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">全球化正在被彻底终结</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">全球化正在"再全球化"——从单一市场转向多个区域网络</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">中国加入WTO（2001年）</div>
+    <div class="sentence">中国加入WTO对全球化的意义是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">标志着全球化的终结</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">全球化史上最大一次劳动力整合——约15亿人进入全球劳动力市场</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">波兰尼"双向运动"</div>
+    <div class="sentence">根据波兰尼的理论，2010年代民粹主义和贸易保护主义的兴起是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">历史的倒退，应该被谴责</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">市场过度扩张后的必然社会保护性反弹</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>思考题：</strong>全球化周期告诉我们"扩张和收缩交替出现"。如果当前正处于收缩期，你认为下一次扩张的驱动力会是什么？是AI驱动的生产力提升？还是气候变化催生的新合作模式？<br><br>
+  <strong>推荐阅读：</strong><a href="https://www.penguinrandomhouse.com/books/398005/guns-germs-and-steel/" target="_blank">《枪炮、病菌与钢铁》</a>——贾雷德·戴蒙德。理解地理和环境如何塑造文明兴衰。<br><br>
+  <a href="../reference/全球化与去全球化.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0011-zhong-guo-gai-ge-kai-fang.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '第一波全球化的终结不是技术原因，而是政治暴力。第一次世界大战（1914）引发各国关闭边境、实行贸易管制、放弃金本位，全球化在一夜之间崩溃。', wrong: '1914年的终结不是因为技术进步放缓——恰恰相反，那时的运输和通信技术在不断改善。终结的原因是第一次世界大战的政治和军事冲击。' },
+    q2: { correct: '不可能三角的核心就是"三选二"。坚持民主（民意会要求保护本国工人）+ 主权（国家有权制定自己的经济政策）→ 必然无法实现超级全球化。', wrong: '加入欧盟只是"超级全球化 + 民主"的一个例子，但不是必然结果。不可能三角说的是三者的逻辑约束关系，不是具体的制度安排。' },
+    q3: { correct: '"嵌入式自由主义"是布雷顿森林体系的核心特征：自由贸易被嵌入在各国福利国家的缓冲机制中。政府可以用社会保障来缓解全球化对弱势群体的冲击。', wrong: '布雷顿森林体系恰恰不是完全自由的资本流动。它是有管制的自由化——汇率固定、资本流动受限制、贸易逐步自由化。完全自由是1990年代"超级全球化"的特征。' },
+    q4: { correct: '"大象曲线"的名字来源于收入增长的分布形状：亚洲新兴中产阶级（曲线中部大幅上升）和全球前1%（顶部上升），而发达国家中产阶级几乎平坦。', wrong: '大象曲线恰恰证明了全球化不是"所有人同等受益"。它揭示了全球化的分配效应是不均匀的——有人是大象的脚（受益少），有人是大象的鼻子（受益多）。' },
+    q5: { correct: '斯姆特-霍利关税法将两万多种进口商品的关税提高到历史最高水平。其他国家报复性加税，导致全球贸易在1929-1933年间萎缩了约66%，加剧了大萧条。', wrong: '斯姆特-霍利关税法的后果恰恰相反。它非但没有保护美国制造业，反而引发了全球贸易战，使贸易萎缩66%，加速了经济危机。这是保护主义的经典反面教材。' },
+    q6: { correct: '当前趋势是"再全球化"而非"逆全球化"：全球贸易占GDP比重在2022年已回到历史高位附近，但格局从"单一全球市场"转向"多个区域网络"。', wrong: '全球化没有被"彻底终结"。贸易总量仍在增长，但结构在变化——从效率优先转向安全+效率，从单一市场转向区域网络。这是重组，不是终结。' },
+    q7: { correct: '中国加入WTO是全球化史上最大的劳动力市场整合事件。约15亿中国人进入全球价值链，成为"世界工厂"，推动了1990-2008年超级全球化的巅峰。', wrong: '中国加入WTO不是全球化的终结——相反，它标志着全球化达到了前所未有的深度和广度。15亿新劳动力的加入是超级全球化的巅峰表现。' },
+    q8: { correct: '波兰尼的理论认为，市场力量过度扩张后，社会必然产生保护性反弹。这不是道德判断（好或坏），而是系统自我调节的必然机制。民粹主义和贸易保护主义就是这种反弹的体现。', wrong: '波兰尼的理论不是道德判断——他不认为保护主义是"好"的或"坏"的，而是理解它为系统自我调节的必然。把它简单贴上"倒退"标签，恰恰忽略了背后的深层社会动力。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对全球化周期的理解非常到位。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

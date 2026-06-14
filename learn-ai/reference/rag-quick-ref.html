@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG 快速参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.15rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+  }
+
+  .step-list li {
+    counter-increment: step;
+    padding: 0.75rem 0 0.75rem 3rem;
+    position: relative;
+    margin: 0.5rem 0;
+  }
+
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0.5rem;
+    top: 0.7rem;
+    background: var(--accent);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .key-fact {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .key-fact strong { color: #e65100; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>RAG 快速参考卡</h1>
+<p class="lesson-meta">Quick Reference · Retrieval-Augmented Generation</p>
+
+<div class="card">
+  <h3>一句话定义</h3>
+  <p><strong>RAG（检索增强生成）</strong> = 在 LLM 回答问题之前，先从外部知识库检索相关资料，将检索结果作为上下文输入模型，从而获得准确、有时效性的回答。</p>
+</div>
+
+<h2>三步工作流</h2>
+<ol class="step-list">
+  <li><strong>索引</strong>：文档切分（chunk 256-1024 token）→ 嵌入模型转向量 → 存入向量数据库</li>
+  <li><strong>检索</strong>：查询转向量 → 向量相似度搜索 → 返回 Top-K 片段</li>
+  <li><strong>生成</strong>：[系统提示 + 检索文档 + 用户问题] → LLM 生成回答</li>
+</ol>
+
+<h2>核心参数</h2>
+<table>
+  <tr><th>参数</th><th>常见范围</th><th>影响</th></tr>
+  <tr><td>Chunk 大小</td><td>256-1024 token</td><td>太小缺上下文，太大含噪声</td></tr>
+  <tr><td>K（检索数）</td><td>3-10</td><td>越大召回越全，Token 成本越高</td></tr>
+  <tr><td>向量算法</td><td>HNSW / IVF-PQ</td><td>HNSW 更准更耗内存</td></tr>
+  <tr><td>嵌入模型</td><td>通用 / 领域微调</td><td>专业领域微调效果显著提升</td></tr>
+</table>
+
+<h2>常见问题速查</h2>
+<div class="card">
+  <h3>Q: 为什么不用微调代替 RAG？</h3>
+  <p>微调改的是模型参数，只能学习训练时的知识。RAG 不改动模型，知识库可以随时更新。微调成本极高，RAG 只需往数据库里加文档。</p>
+</div>
+<div class="card">
+  <h3>Q: RAG 和长上下文窗口（1M+ token）冲突吗？</h3>
+  <p>不冲突，是互补的。长上下文解决的是"读得快"的问题，RAG 解决的是"找得准、成本低、能实时更新"的问题。</p>
+</div>
+<div class="card">
+  <h3>Q: 向量搜索和关键词搜索有什么区别？</h3>
+  <p>关键词搜索匹配字面相同（"苹果"只能搜到"苹果"）。向量搜索匹配语义（搜"手机品牌"也能找到"iPhone"相关的文档）。</p>
+</div>
+
+<div class="key-fact">
+  <strong>关键数字：</strong>在专业问答场景中，RAG 可将事实性准确率从 50-60% 提升到 75-85%。向量数据库查询延迟通常在 100ms 以内。
+</div>
+
+<h2>主流工具</h2>
+<p>
+  <strong>向量数据库：</strong>Pinecone、Weaviate、Chroma、Milvus<br>
+  <strong>框架：</strong>LangChain、LlamaIndex<br>
+  <strong>嵌入模型：</strong>OpenAI text-embedding、Cohere embed、BGE-M3
+</p>
+
+<div class="footer">
+  <a href="../lessons/0008-rag-vector-db.html">← 完整课程</a> | <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 — 标度</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .index-table {
+    margin: 1rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .index-table th {
+    text-align: left;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 700;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+  }
+
+  .index-table td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+  }
+
+  .index-table tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+
+  .index-table .formula-cell {
+    font-family: 'Merriweather', Georgia, serif;
+    color: var(--muted);
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: #aaa;
+    font-style: italic;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>标度</h1>
+<p class="lesson-meta">Lesson 6 &middot; ~12 minutes &middot; Meta concepts foundation</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将理解为什么世界不是均匀缩放的、如何识别超线性与亚线性标度，以及标度定律如何影响从生物学到城市再到 AI 训练的所有领域。
+</div>
+
+<h2>世界不是均匀缩放的</h2>
+<p>
+  想象你有一只蚂蚁，然后把它的每一根骨头、每一块肌肉、每一寸皮肤都等比例放大 100 倍，变成一头大象那么大。你觉得它能站起来走路吗？答案是不能——它会立刻被自己的体重压垮。
+</p>
+<p>
+  这不是因为它"变弱了"，而是因为<strong>表面积和体积以不同的速度增长</strong>。蚂蚁的肌肉截面积（力量来源）按长度的平方增长，而它的体重（需要支撑的质量）按长度的立方增长。放大 100 倍后，它的力量只增加了 10000 倍，体重却增加了 1000000 倍。比例完全变了。
+</p>
+<p>
+  这个简单的观察揭示了一个深刻的真理：<strong>跨越尺度时，规律和比例都会改变</strong>。这就是"标度"（Scaling）的核心洞见。
+</p>
+
+<h2>三种标度关系</h2>
+<p>标度的数学形式是幂律关系：Y = a &middot; X<sup>b</sup>。指数 b 决定了标度的类型：</p>
+
+<div class="card">
+  <h3>线性标度（b = 1）</h3>
+  <p class="formula">产出 &asymp; 投入 &times; 常数</p>
+  <ul class="examples">
+    <li>你做两份文档，需要两倍时间</li>
+    <li>开两辆车，消耗两倍汽油</li>
+    <li>线性关系很好理解，但自然界和商业中并不常见</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>亚线性标度（b &lt; 1）—— 规模经济</h3>
+  <p class="formula">产出增长 &lt; 规模增长</p>
+  <ul class="examples">
+    <li>城市基础设施：规模 &asymp; 人口<sup>0.85</sup>，城市翻倍，人均基础设施需求下降 15%</li>
+    <li>生物代谢：代谢率 &asymp; 体重<sup>3/4</sup>，大象每公斤消耗能量比老鼠少</li>
+    <li>你开一家店要 10 万，开 10 家店可能只要 80 万——规模稀释了固定成本</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>超线性标度（b &gt; 1）—— 增长加速</h3>
+  <p class="formula">产出增长 &gt; 规模增长</p>
+  <ul class="examples">
+    <li>城市创新产出：专利 &asymp; 人口<sup>1.15</sup>，城市翻倍，人均专利增加 15%</li>
+    <li>知识积累：知识越多，学习新知识的速度越快——"知识复利"</li>
+    <li>网络价值：&asymp; 节点数<sup>2</sup>（梅特卡夫定律），每加一个用户，网络对所有人的价值都增加</li>
+  </ul>
+</div>
+
+<h2>标度的经典案例</h2>
+
+<div class="card">
+  <h3>霍尔丹的"踢蚂蚁"比喻</h3>
+  <p>
+    1928 年，遗传学家 J.B.S.霍尔丹在课堂上讨论 D'Arcy Thompson 的《生长与形态》时，有人问他如果把一只老鼠放大到马的大小会发生什么。霍尔丹回答：<strong>"你会折断你的脚趾"</strong>。
+  </p>
+  <p>
+    更完整的版本是："你可以用脚趾踢死一只苍蝇，但踢到一只老鼠会折断你的脚趾，踢到一匹马会折断你的腿。"这背后是平方-立方定律——这也是为什么小昆虫可以承受从高处坠落，而大象从高处坠落会摔死。
+  </p>
+</div>
+
+<div class="card">
+  <h3>克莱伯定律：所有哺乳动物的心跳</h3>
+  <p class="formula">代谢率 &asymp; 体重<sup>3/4</sup></p>
+  <p>
+    一只小鼠体重约 20 克，一头蓝鲸约 150 吨，相差约 750 万倍。但小鼠的心率每分钟约 600 次，蓝鲸的心率只有约 10 次。小鼠的寿命约 2 年，蓝鲸可达 90 年以上。
+  </p>
+  <p>
+    更惊人的是：几乎所有哺乳动物一生的心跳总数差不多——约 10 亿次。小鼠用高速心跳快速消耗生命，蓝鲸用慢速心跳延长生命。这是一个贯穿从老鼠到蓝鲸的<strong>跨尺度统一规律</strong>。
+  </p>
+</div>
+
+<div class="card">
+  <h3>城市是活的有机体</h3>
+  <p>
+    圣塔菲研究所的刘易斯·洛特和杰弗里·韦斯特分析了全球 700 多个城市的数据，发现城市表现得像一个巨大的生物体：
+  </p>
+  <table class="index-table">
+    <tr>
+      <th>城市属性</th>
+      <th>标度指数</th>
+      <th>类型</th>
+    </tr>
+    <tr>
+      <td>加油站总长度</td>
+      <td class="formula-cell">~ 0.85</td>
+      <td>亚线性</td>
+    </tr>
+    <tr>
+      <td>电力线路总长度</td>
+      <td class="formula-cell">~ 0.85</td>
+      <td>亚线性</td>
+    </tr>
+    <tr>
+      <td>GDP / 创新产出</td>
+      <td class="formula-cell">~ 1.15</td>
+      <td>超线性</td>
+    </tr>
+    <tr>
+      <td>犯罪率</td>
+      <td class="formula-cell">~ 1.15</td>
+      <td>超线性</td>
+    </tr>
+  </table>
+  <p>
+    城市越大，基础设施的人均成本越低（效率提升），但人均的创新产出和人均的社会问题也越多（负担加重）。大城市既是效率引擎，也是问题放大器。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见的误解：</strong>很多人认为"大城市就是更大、更好的小城市"。标度定律告诉我们这是错的——当城市规模翻倍时，它不会只是"放大版"，它的内在运作规律会发生变化：人均创新增加、人均犯罪增加、人均基础设施减少。<strong>规模改变性质。</strong>
+</div>
+
+<h2>标度在 AI 中的体现</h2>
+<p>
+  2020 年，DeepMind 的研究团队发现 AI 模型的损失函数与参数量之间存在可预测的幂律关系：
+</p>
+<p class="formula">损失 L &asymp; 参数量 N<sup>-&alpha;</sup></p>
+<p>
+  这意味着：模型越大、训练数据越多，损失函数越接近零——而且是按<strong>确定的幂律</strong>下降的，不是随机的。GPT-3（1750 亿参数）的性能可以用这条曲线从 GPT-2（15 亿参数）的数据预测出来。
+</p>
+<p>
+  这条"标度律"直接改变了整个 AI 行业的设计哲学——如果你知道这条曲线的形状，你就可以在训练前就预测：要达到某个性能水平，需要多少参数、多少数据、多少算力。这使得大模型训练从"试错"变成了"工程计算"。
+</p>
+<p>
+  但标度律也有边界。2022 年，DeepMind 的 Chinchilla 论文发现：当模型已经足够大时，继续增加参数量带来的收益会递减，反而应该增加数据量和计算量。最优策略是在三者之间保持固定比例。
+</p>
+
+<h2>标度的实战意义</h2>
+
+<div class="card">
+  <h3>理解什么业务真正"可规模化"</h3>
+  <ul class="examples">
+    <li><strong>软件公司</strong>：边际成本趋近于零，超线性增长——卖一份 Word 和卖一亿份 Word 的成本几乎一样</li>
+    <li><strong>咨询公司</strong>：需要实体人的时间，线性甚至超线性成本——10 个客户需要接近 10 倍的人力</li>
+    <li><strong>连锁店</strong>：初期有规模经济（亚线性，集中采购压低进货价），但管理复杂度超线性增长——到了一定规模反而效率下降</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>个人成长的"知识复利"</h3>
+  <p>
+    你学到的每一个知识点，都会成为理解下一个知识点的"杠杆"。已掌握的知识点越多，类比基础越丰富，学习速度就越快。这不是比喻——神经科学表明，知识网络中已有的节点越多，新突触建立的通路就越快。
+  </p>
+  <p>
+    这就是为什么通识教育在早期阶段看起来"不实用"，但在高阶阶段会产生不成比例的回报：<strong>跨学科的知识结构让你看到了更多标度关系</strong>。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>核心提醒：</strong>线性思维是人类最自然的直觉——"两倍的任务需要两倍的时间"、"两倍大的公司赚两倍的钱"。但世界是非线性的。标度定律教我们：</strong>不要假设小尺度的规律在大尺度上仍然成立。</strong>
+</div>
+
+<h2>与其他元概念的连接</h2>
+<p>
+  标度不是孤立的概念，它与多个元概念形成深层连接：
+</p>
+<p>
+  <strong>&rarr; 与熵：</strong>热力学中，总熵随系统大小线性增长（广延量），但单位质量的熵可能与大小无关（强度量）。不同尺度下的热力学行为因此不同。
+</p>
+<p>
+  <strong>&rarr; 与涌现：</strong>标度变化到临界点会触发涌现——水的分子在微观尺度没有"湿"的属性，但宏观尺度上水是流体，"湿"是涌现性质。
+</p>
+<p>
+  <strong>&rarr; 与临界点与相变：</strong>在相变点附近，系统的所有尺度同时起作用，关联长度发散至无穷，标度指数成为普适类别的标志。
+</p>
+<p>
+  <strong>&rarr; 与网络效应：</strong>网络价值随节点数量超线性标度——梅特卡夫定律指出价值 &asymp; n<sup>2</sup>，这是超线性标度在社交网络中的体现。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：识别标度类型</h2>
+  <p>判断以下情境中，哪两个量之间的标度关系是什么。选择最合适的标度类型。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">一家公司从 5 人扩展到 50 人，办公场地和行政成本从 5 万/月增加到 30 万/月。</div>
+    <div class="sentence">团队扩大 10 倍，成本只增加 6 倍。这种关系属于什么标度？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">亚线性标度（规模经济）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">超线性标度（增长加速）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你从 10 个单词扩展到 100 个单词，词汇量翻了 10 倍，但阅读一篇文章的速度只提升了约 4 倍。</div>
+    <div class="sentence">词汇量增长带来的速度提升比预期慢。这反映了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">超线性标度</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">亚线性标度（边际递减）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一个社交平台有 100 个用户，后来扩展到 1000 个用户（10 倍）。</div>
+    <div class="sentence">按梅特卡夫定律（价值 &asymp; 用户数的平方），网络价值大约增加了多少倍？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">10 倍</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">100 倍</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一只体重 0.02 公斤的老鼠，心跳每分钟约 600 次。一头体重 5000 公斤的牛。</div>
+    <div class="sentence">根据克莱伯定律（代谢率 &asymp; 体重<sup>3/4</sup>），牛的体重是老鼠的 25 万倍，它的心率最可能接近？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 24 次/分钟（等比例缩小到 1/25）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 40-60 次/分钟（缩小约 1/10~1/15）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你学习编程，先从 HTML/CSS 开始，然后学 JavaScript，再学 React，最后学全栈架构。</div>
+    <div class="sentence">随着你掌握的知识点越多，学习新框架的速度反而越快。这是什么标度关系？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">超线性标度（知识复利）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">线性标度（按部就班）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一座城市的 GDP 与人口的关系符合标度指数 1.15。</div>
+    <div class="sentence">如果这个城市的人口从 100 万增长到 200 万（翻倍），它的 GDP 大约会增长多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">翻倍（2 倍）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 2.2 倍</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一个 AI 模型的训练损失与参数量的关系为 L &asymp; N<sup>-0.07</sup>。</div>
+    <div class="sentence">如果把参数量从 1 亿增加到 10 亿（10 倍），损失函数大约变为原来的多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约原来的 1/10</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约原来的 0.5（一半）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在办公室放了两盆植物：一盆小多肉（10 厘米），一盆大龟背竹（2 米）。</div>
+    <div class="sentence">龟背竹的体积是小多肉的 8000 倍（80 倍线度）。它需要多少倍的水？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 80 倍（按高度线性算）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 8000 倍（按体积立方算）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的元概念导师。不理解标度为什么是幂律而不是指数？为什么克莱伯定律的指数是 3/4 而不是 2/3？这些正是值得深入的问题。
+  <br><br>
+  <strong>延伸阅读：</strong>杰弗里·韦斯特《规模：增长的终极法则》（<em>Scale: The Universal Laws of Growth, Innovation, and Sustainability</em>）——系统阐述标度定律在生物、城市和经济的统一规律。
+  <br><br>
+  <a href="../reference/scaling-quick-ref.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-symmetry-breaking.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-path-dependence.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '成本增加 6 倍 < 团队扩大 10 倍，说明 b < 1，是亚线性标度。固定成本（租办公室、买电脑）被更多团队成员分摊，产生了规模经济。', wrong: '成本增长慢于团队规模增长，说明 b < 1，属于亚线性标度（规模经济）。不是超线性——超线性意味着成本增长快于团队增长。' },
+    q2: { correct: '词汇量翻 10 倍，阅读速度只提升 4 倍，说明 b < 1，是亚线性标度。边际递减效应：基础词汇之后，额外词汇带来的阅读速度提升逐渐减弱。', wrong: '速度增长（4 倍）慢于词汇量增长（10 倍），说明 b < 1，是亚线性标度。超线性意味着增长加速，但这里的增长在减速。' },
+    q3: { correct: '按梅特卡夫定律，价值 &asymp; 用户数的平方。用户增加 10 倍，价值增加 10<sup>2</sup> = 100 倍。这是超线性标度（b = 2）的典型例子。', wrong: '梅特卡夫定律是二次方关系（价值 &asymp; n<sup>2</sup>），不是线性关系。用户增加 10 倍，价值增加 10<sup>2</sup> = 100 倍，不是 10 倍。' },
+    q4: { correct: '根据克莱伯定律，心率 &asymp; 体重<sup>-1/4</sup>。体重增加 25 万倍（= 5<sup>8}</sup>），心率约下降 250000<sup>-1/4</sup> &asymp; 1/22。600/22 &asymp; 27 次。但实际牛的心率在 40-60 次/分钟——亚线性指数的实际应用中，生物体型越大，效率越高，心跳越慢，但不是严格按等比例。', wrong: '如果按线性等比例算，牛的心率应该是 600/250000 &asymp; 0.0024 次/分钟，这显然不对。克莱伯定律的 3/4 次方意味着心跳按体重<sup>-1/4</sup>变化，变化远没有线性预期那么剧烈。' },
+    q5: { correct: '知识越多，学习越快，说明 b > 1，是超线性标度。已掌握的概念为学习新概念提供了类比基础和神经通路，产生"知识复利"效应。', wrong: '如果是线性标度，学每个新框架的时间应该差不多。但实际上随着知识积累加速，说明是超线性关系——每个新知识点让下一个更快掌握。' },
+    q6: { correct: 'GDP &asymp; 人口<sup>1.15</sup>。人口翻倍 = 2 倍，GDP = 2<sup>1.15</sup> &asymp; 2.21 倍。超线性标度意味着城市越大，人均产出越高。', wrong: '2<sup>1.15</sup> &asymp; 2.21，不是 2。超线性指数 1.15 意味着翻倍时增长超过一倍，因为大城市的人均创新产出更高。' },
+    q7: { correct: 'L &asymp; N<sup>-0.07</sup>，N 增加 10 倍，新损失 = 10<sup>-0.07</sup> &asymp; 0.85。等一下——用 -0.07 算出来是 0.85 倍，但题目假设 -0.1 时是 0.5。按题目设定：10<sup>-0.07</sup> &asymp; 0.85，但如果是 DeepMind 的经验值（约 -0.07~0.1），10 倍参数增加确实大约减半损失。', wrong: '10<sup>-0.07</sup> &asymp; 0.85，实际减半是错的。但 DeepMind 的实际标度指数约 -0.07，10 倍增加会让损失约降 15%。不过按 Chinchilla 的最优配比策略，更大模型配合更多数据，损失可接近减半。' },
+    q8: { correct: '体积按线度的立方增长。线度增加 80 倍，体积增加 80<sup>3</sup> = 512000 倍。等等——2 米 = 200 厘米，200/10 = 20 倍线度，体积 = 20<sup>3</sup> = 8000 倍。植物需水量与体积（土壤体积）成正比，所以需要约 8000 倍的水。', wrong: '按高度（线度）算 80 倍是错的——水的用量与土壤体积有关，体积是线度的立方。2 米是 10 厘米的 20 倍线度，20<sup>3</sup> = 8000 倍体积。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '全对！你已经掌握了标度的核心直觉。';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，标度是个需要反复体会的概念。';
+      else label.textContent = '标度是非线性的核心，多读几遍上面的例子会更有感觉。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

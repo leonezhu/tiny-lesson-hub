@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 集合论与无限</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .math-block {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>集合论与无限 — 速查卡片</h1>
+<p class="lesson-meta">参考卡 · 数学与逻辑 · <a href="../lessons/0010-jihetuanyuwuxian.html">← 完整课程</a></p>
+
+<div class="card">
+  <h3>核心概念</h3>
+  <p><strong>集合（Set）</strong>：元素的容器。集合论研究集合之间的关系与运算。</p>
+  <p><strong>基数（Cardinality）</strong>：集合"大小"的度量。两个集合基数相等 ↔ 存在一一对应（双射）。</p>
+  <p><strong>一一对应（Bijection）</strong>：两个集合元素一一配对，不多不少。这是比较无穷集合大小的唯一可靠方法。</p>
+</div>
+
+<div class="card">
+  <h3>关键结果</h3>
+  <ul>
+    <li><strong>N（自然数）</strong> 可数，基数 = ℵ₀（阿列夫零）</li>
+    <li><strong>Z（整数）</strong> 可数，基数 = ℵ₀ — 可以枚举为 0, 1, -1, 2, -2, …</li>
+    <li><strong>Q（有理数）</strong> 可数，基数 = ℵ₀ — 可以按分子分母之和枚举</li>
+    <li><strong>R（实数）</strong> 不可数，基数 = 2^ℵ₀ > ℵ₀</li>
+    <li><strong>Cantor 定理</strong>：|P(S)| > |S| 对任何集合 S 成立</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>对角线论证（核心思路）</h3>
+  <div class="math-block">
+    假设 (0,1) 中的实数可枚举为 r₁, r₂, r₃, …<br>
+    构造 x：第 n 位 ≠ rₙ 的第 n 位<br>
+    → x ≠ 列表中任一 rₙ → 矛盾<br>
+    → (0,1) 不可数
+  </div>
+</div>
+
+<div class="card">
+  <h3>无穷阶梯</h3>
+  <div class="math-block">
+    ℵ₀ &lt; 2^ℵ₀ &lt; 2^(2^ℵ₀) &lt; …<br>
+    没有最大的无穷
+  </div>
+</div>
+
+<div class="card">
+  <h3>常见误解</h3>
+  <ul>
+    <li>❌ "无穷很大" → ✅ 无穷是一种结构类型，不是"非常大"</li>
+    <li>❌ "有理数比整数多" → ✅ 它们一样大（都是 ℵ₀）</li>
+    <li>❌ "无限集合不能和子集一样大" → ✅ 无限集合可以和真子集等势</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0010-jihetuanyuwuxian.html">← 完整课程</a>
+</div>
+
+</body>
+</html>

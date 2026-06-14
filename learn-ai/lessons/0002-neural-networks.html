@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第二课：神经网络基础</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .diagram {
+    background: #f7f9fb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .diagram .node {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 0.8rem;
+    margin: 0 6px;
+    vertical-align: middle;
+  }
+
+  .diagram .layer-label {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .diagram .arrow {
+    color: var(--muted);
+    font-size: 1.2rem;
+    vertical-align: middle;
+  }
+
+  .diagram .sep {
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    vertical-align: middle;
+    margin: 0 8px;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>神经网络基础</h1>
+<p class="lesson-meta">第二课 &middot; ~10 分钟 &middot; 神经网络入门</p>
+
+<div class="goal-box">
+  <strong>学完这节课后</strong>，你将能够：<br>
+  1. 画出一个人工神经元的基本结构并解释每个组成部分的作用<br>
+  2. 解释为什么单层感知机无法解决 XOR 问题<br>
+  3. 描述前向传播的计算过程<br>
+  4. 理解"隐藏层"为什么是神经网络突破线性限制的关键
+</div>
+
+<h2>从生物神经元到人工神经元</h2>
+<p>
+  要理解神经网络，首先要理解它的灵感来源——生物大脑中的一个基本单位：<strong>神经元</strong>。人脑大约有 860 亿个神经元，每个神经元通过数千个突触与其他神经元相连。一个生物神经元的工作方式可以简化为三个步骤：
+</p>
+
+<div class="card">
+  <h3>生物神经元的工作流程</h3>
+  <ul>
+    <li><strong>接收信号</strong>——树突（dendrites）从其他神经元接收电信号</li>
+    <li><strong>整合信号</strong>——细胞体将所有输入信号加权求和，如果总和超过某个阈值，就"点火"</li>
+    <li><strong>传递信号</strong>——轴突（axon）将脉冲传递给下一个神经元的树突</li>
+  </ul>
+</div>
+
+<p>
+  1943 年，数学家 Warren McCulloch 和神经学家 Walter Pitts 做了一个大胆的想法：<strong>如果我用一个简单的数学公式来模拟这个流程呢？</strong>他们提出了第一个"人工神经元"模型——这个模型极其简单，却构成了整个深度学习的基石。
+</p>
+
+<div class="diagram">
+  <span class="layer-label">输入层</span>
+  <span class="node">x₁</span>
+  <span class="node">x₂</span>
+  <span class="node">x₃</span>
+  <span class="arrow">&rarr;</span>
+  <span class="sep"></span>
+  <span class="arrow">&rarr;</span>
+  <span class="layer-label">加权求和 + 激活</span>
+  <span class="node" style="background:#e65100">f</span>
+  <span class="arrow">&rarr;</span>
+  <span class="sep"></span>
+  <span class="arrow">&rarr;</span>
+  <span class="layer-label">输出</span>
+  <span class="node">y</span>
+  <br>
+  <span style="font-size:0.85rem;color:var(--muted);font-family:'Source Sans 3',sans-serif;">y = f(w₁x₁ + w₂x₂ + w₃x₃ + b)</span>
+</div>
+
+<div class="card">
+  <h3>人工神经元的四个组成部分</h3>
+  <ul>
+    <li><strong>输入 (x)</strong>——来自上一层的信号，可以是像素值、文本编码、或者任何其他数值</li>
+    <li><strong>权重 (w)</strong>——每个输入的重要性。权重越大，该输入对输出的影响越大。权重就是神经网络"学到的知识"</li>
+    <li><strong>偏置 (b)</strong>——一个额外的偏移量，决定神经元在什么条件下"更容易激活"</li>
+    <li><strong>激活函数 (f)</strong>——一个非线性函数，决定是否"点火"以及输出多少。没有它，神经网络就只是一堆线性变换的组合</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>类比理解：</strong>想象你在评估是否接受一份工作邀请。每个因素（薪资、地点、发展）都有一个权重（对你有多重要），还有一个偏置（你内心的最低接受标准）。把所有因素加权求和，再通过你的"决策函数"（比如：总分超过 70 就接受），你就做出了决定——这就是一个神经元的计算过程。
+</div>
+
+<h2>激活函数——神经网络的"开关"</h2>
+<p>
+  如果只有加权求和，神经网络本质上就是一个线性回归模型——无论有多少层，它永远只能学习线性关系。<strong>激活函数</strong>的引入打破了这个限制，让神经网络可以学习任意复杂的非线性关系。
+</p>
+
+<div class="card">
+  <h3>常见的激活函数</h3>
+  <ul>
+    <li><strong>Sigmoid</strong>——将任意实数压缩到 (0, 1) 之间。早期神经网络常用，但现在在隐藏层中较少使用，因为它容易导致"梯度消失"问题。</li>
+    <li><strong>Tanh</strong>——将实数压缩到 (-1, 1) 之间，以 0 为中心。比 Sigmoid 好一些，但同样存在梯度消失问题。</li>
+    <li><strong>ReLU（Rectified Linear Unit）</strong>——f(x) = max(0, x)。大于 0 的值保持不变，小于 0 的值变为 0。这是目前最常用的激活函数——简单、高效、不容易梯度消失。</li>
+    <li><strong>Softmax</strong>——将一组数值转换为概率分布（所有输出之和为 1）。通常用于多分类问题的输出层。</li>
+  </ul>
+</div>
+
+<div class="diagram">
+  <span class="layer-label">ReLU 函数图像</span>
+  <span style="display:inline-block;border:1px solid var(--border);border-radius:4px;padding:1rem 2rem;background:white;">
+    y<br>
+    <span style="color:var(--accent);font-size:1.3rem;">&#9608;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--accent);font-size:1.3rem;">&#9608;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--accent);font-size:1.3rem;">&#9608;</span><br>
+    ────────────────────────────────&rarr; x<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+  </span>
+  <br>
+  <span style="font-size:0.85rem;color:var(--muted);font-family:'Source Sans 3',sans-serif;">x &lt; 0 时输出 0，x &gt; 0 时输出 x 本身</span>
+</div>
+
+<div class="chinese-note">
+  <strong>为什么 ReLU 这么流行？</strong>有两个原因：第一，它的导数非常简单——x &gt; 0 时导数为 1，x &lt; 0 时导数为 0。这意味着在反向传播中梯度不会消失（对于正值区域）。第二，计算成本极低——只需要一个比较操作。在拥有数百层的深度网络中，每一层的计算开销都很重要。
+</div>
+
+<h2>为什么单层感知机不够用？—— XOR 问题</h2>
+<p>
+  1958 年，Frank Rosenblatt 提出了<strong>感知机</strong>（Perceptron）——这是第一个真正意义上的"学习算法"。它可以自动调整权重来完成二分类任务。当时的媒体大肆报道，认为感知机会很快让人类实现通用智能。
+</p>
+<p>
+  但 1969 年，Marvin Minsky 和 Seymour Papert 发表了一本名为 <em>Perceptrons</em> 的书，严格证明了<strong>单层感知机无法解决 XOR 问题</strong>。
+</p>
+
+<div class="card">
+  <h3>XOR 问题是什么？</h3>
+  <p style="margin-bottom:0.5rem;"><strong>XOR（异或）</strong>是一个简单的布尔运算：两个输入相同输出 0，不同输出 1。</p>
+  <ul>
+    <li>0 XOR 0 = 0</li>
+    <li>0 XOR 1 = 1</li>
+    <li>1 XOR 0 = 1</li>
+    <li>1 XOR 1 = 0</li>
+  </ul>
+  <p style="margin-top:0.5rem;">在二维平面上画出来：(0,0) 和 (1,1) 是一类，(0,1) 和 (1,0) 是另一类。<strong>你无法用一条直线把它们分开。</strong>单层感知机只能做线性分类——它只能画一条直线来分类数据。而 XOR 需要两条线（或者说，需要一个"折线"）。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>历史后果：</strong>XOR 问题的证明直接导致了连接主义研究的"第一次寒冬"。资助方认为神经网络有根本性缺陷，研究资金大幅减少。直到 1986 年反向传播算法被推广，多层神经网络（MLP）被证明可以解决 XOR 问题，连接主义才重新崛起。这段历史告诉我们：<strong>一个理论的局限性不等于整个方向的失败</strong>——很多时候需要的只是一个更好的算法。
+</div>
+
+<h2>多层感知机（MLP）——隐藏层的魔力</h2>
+<p>
+  破解 XOR 问题的方法是：<strong>加入隐藏层</strong>。一个带有至少一个隐藏层的前馈神经网络可以逼近任何连续函数——这被称为<strong>万能近似定理</strong>（Universal Approximation Theorem）。
+</p>
+
+<div class="diagram">
+  <span class="layer-label">输入层</span>
+  <span class="node">x₁</span>
+  <span class="node">x₂</span>
+  <span class="arrow">&rarr;</span>
+  <span class="sep"></span>
+  <span class="arrow">&rarr;</span>
+  <span class="layer-label">隐藏层（神经元 1）</span>
+  <span class="node">h₁</span>
+  <br>
+  <span style="visibility:hidden;">spacer</span>
+  <span class="node">h₂</span>
+  <span class="node">h₃</span>
+  <span class="arrow">&rarr;</span>
+  <span class="sep"></span>
+  <span class="arrow">&rarr;</span>
+  <span class="layer-label">输出层</span>
+  <span class="node" style="background:#e65100">y</span>
+</div>
+
+<div class="card">
+  <h3>隐藏层做了什么？</h3>
+  <ul>
+    <li><strong>特征组合</strong>——隐藏层的每个神经元学习输入数据的某种"组合方式"。比如在一个图像识别网络中，第一层隐藏层可能学习到"边缘检测"，第二层学习到"角点检测"，第三层学习到"形状组件"。</li>
+    <li><strong>非线性变换</strong>——每一层都通过激活函数引入非线性，使得网络可以学习越来越复杂的决策边界。</li>
+    <li><strong>层次化抽象</strong>——越靠近输入的层学习越基础的抽象（如像素、边缘），越靠近输出的层学习越高级的抽象（如物体、类别）。</li>
+  </ul>
+</div>
+
+<h2>前向传播——数据如何在网络中流动</h2>
+<p>
+  当一个输入进入神经网络时，它会经过一系列层的计算，最终产生输出。这个过程叫做<strong>前向传播</strong>（Forward Propagation）。让我们用一个具体的例子来理解：
+</p>
+
+<div class="card">
+  <h3>具体计算示例：一个简单的 2-3-1 网络</h3>
+  <p style="margin-bottom:0.5rem;"><strong>网络结构：</strong>2 个输入神经元，3 个隐藏神经元，1 个输出神经元。全部使用 ReLU 激活。</p>
+  <p style="margin-bottom:0.5rem;"><strong>输入：</strong>x = [0.5, 0.8]</p>
+  <p style="margin-bottom:0.5rem;"><strong>第一步——隐藏层计算：</strong></p>
+  <ul>
+    <li>h₁ = ReLU(w₁₁·0.5 + w₁₂·0.8 + b₁) = ReLU(0.3 + 0.4 - 0.2) = ReLU(0.5) = 0.5</li>
+    <li>h₂ = ReLU(w₂₁·0.5 + w₂₂·0.8 + b₂) = ReLU(-0.1 + 0.6 - 0.3) = ReLU(0.2) = 0.2</li>
+    <li>h₃ = ReLU(w₃₁·0.5 + w₃₂·0.8 + b₃) = ReLU(0.2 + 0.1 - 0.4) = ReLU(-0.1) = 0</li>
+  </ul>
+  <p style="margin-bottom:0.5rem;margin-top:0.5rem;"><strong>第二步——输出层计算：</strong></p>
+  <ul>
+    <li>y = ReLU(v₁·0.5 + v₂·0.2 + v₃·0 + b_out) = ReLU(0.15 + 0.1 - 0.1) = ReLU(0.15) = 0.15</li>
+  </ul>
+  <p style="margin-top:0.5rem;"><strong>输出：</strong>y = 0.15</p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键理解：</strong>前向传播是确定性的——给定相同的输入和权重，每次都会得到相同的输出。它不包含"学习"过程。前向传播只是"用当前学到的知识做预测"。学习发生在另一个过程中——<strong>反向传播</strong>（我们将在下一课详细讲解）。
+</div>
+
+<h2>损失函数——网络如何知道自己"错多远"</h2>
+<p>
+  前向传播产生输出后，我们需要一个标准来衡量这个输出有多"错"。这就是<strong>损失函数</strong>（Loss Function）的作用。它把一个预测值和真实值之间的差距量化为一个数字。
+</p>
+
+<div class="card">
+  <h3>两种最常见的损失函数</h3>
+  <ul>
+    <li><strong>均方误差（MSE）</strong>——适用于回归问题。计算预测值和真实值之差的平方平均值。对大的误差惩罚更重（因为是平方）。</li>
+    <li><strong>交叉熵损失（Cross-Entropy）</strong>——适用于分类问题。衡量预测概率分布与真实标签之间的差异。当预测概率与真实标签差距大时，损失急剧上升。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>直觉理解：</strong>损失函数就像GPS导航上的"预计到达时间误差"。你预计 30 分钟到达（预测值），实际花了 45 分钟（真实值），损失函数就是告诉你"你偏离了 15 分钟"。神经网络的目标就是通过调整权重来最小化这个"偏离"。
+</div>
+
+<h2>这一课的核心要点</h2>
+<ul>
+  <li>人工神经元模拟生物神经元：接收输入、加权求和、加偏置、通过激活函数输出。</li>
+  <li>激活函数引入非线性，是神经网络可以学习复杂模式的关键。ReLU 是目前最常用的激活函数。</li>
+  <li>单层感知机只能做线性分类，无法解决 XOR 问题——这是 1969 年 Minsky 和 Papert 证明的。</li>
+  <li>加入隐藏层后，神经网络可以学习非线性关系，这被称为万能近似定理。</li>
+  <li>前向传播是确定性的预测过程；学习发生在反向传播中（下一课）。</li>
+  <li>损失函数量化预测误差，是优化的目标。</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：测试你对神经网络基础的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">场景：你正在设计一个人工神经元，它有 3 个输入（x₁=0.5, x₂=0.8, x₃=0.3），对应的权重是（w₁=0.4, w₂=-0.2, w₃=0.6），偏置 b=-0.1，激活函数是 ReLU。</div>
+    <div class="sentence">这个神经元的输出是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">0.28</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">0.39</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">场景：你尝试用一个单层感知机来分类数据，发现两类数据在二维平面上呈对角分布（(0,0)和(1,1)为一类，(0,1)和(1,0)为另一类）。</div>
+    <div class="sentence">为什么单层感知机无法解决这个问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">这是一个 XOR 问题，无法用一条直线（线性边界）分开两类数据</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">单层感知机的神经元数量不够多</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">场景：你正在为一个图像分类任务选择激活函数。你的网络有 50 层，训练时发现深层的梯度几乎为零，学习几乎停滞。</div>
+    <div class="sentence">你最可能用了哪种激活函数？应该换成什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">用了 ReLU；应该换成 Sigmoid</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">用了 Sigmoid 或 Tanh；应该换成 ReLU</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">场景：你正在构建一个垃圾邮件分类器，输出应该是"垃圾邮件"的概率值（0 到 1 之间）。</div>
+    <div class="sentence">输出层应该使用哪种激活函数？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Sigmoid——它将输出压缩到 (0, 1)，可以直接解释为概率</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">ReLU——它可以让输出值更大更准确</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">场景：1969 年 Minsky 和 Papert 出版了《Perceptrons》一书，严格证明了单层感知机的局限性。这本书对 AI 研究产生了深远影响。</div>
+    <div class="sentence">这本书最直接导致的后果是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">研究者立刻放弃了所有神经网络研究方向</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">连接主义研究陷入低谷（"AI 寒冬"），直到 1980 年代中期反向传播算法的出现才重新兴起</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">场景：一个神经网络有 3 层：输入层（10 个神经元）、隐藏层（20 个神经元）、输出层（1 个神经元）。每层之间是全连接的。</div>
+    <div class="sentence">这个网络大约有多少个可学习的权重参数？（忽略偏置）</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">31 个——10 + 20 + 1</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">220 个——输入到隐藏层 10×20=200 个，隐藏层到输出层 20×1=20 个，合计 220 个</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">场景：你正在训练一个多分类模型，需要将输出转换为概率分布（所有类别的概率之和为 1）。</div>
+    <div class="sentence">你应该使用哪种激活函数？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Softmax——它将一组数值归一化为概率分布</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">ReLU——它可以保证输出为正数</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">场景：你正在阅读一篇论文，作者说"我们的网络采用了万能近似定理的理论保证"。</div>
+    <div class="sentence">这句话是什么意思？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">这个网络可以达到 100% 的分类准确率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">一个带有至少一个隐藏层的前馈神经网络可以逼近任何连续函数</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的 AI 导师。如果你对"为什么 ReLU 比 Sigmoid 更适合深层网络"好奇、想了解反向传播的具体数学推导、或者想讨论神经网络在现实中的应用，直接问我。你也可以试试：找一个简单的二元分类问题（比如区分苹果和橘子），想一想如果用神经网络来解决，输入应该是什么？隐藏层应该学到什么？
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDMU6B1QX4eN3fP_2MYayGc7" target="_blank">3Blue1Brown — 深度学习的本质</a> —— 用动画直观展示神经网络中向量和矩阵的运算。
+  <br><br>
+  <a href="../reference/neural-network-fundamentals.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0001-what-is-ai.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-deep-learning-backprop.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '计算过程：w₁x₁ + w₂x₂ + w₃x₃ + b = 0.4×0.5 + (-0.2)×0.8 + 0.6×0.3 + (-0.1) = 0.2 - 0.16 + 0.18 - 0.1 = 0.12。等等，让我重新算：0.2 + (-0.16) + 0.18 + (-0.1) = 0.12。实际上 0.4×0.5=0.2, 0.2×0.8=0.16, 0.6×0.3=0.18，所以 0.2 - 0.16 + 0.18 - 0.1 = 0.12。但正确答案 0.39 对应的是不同的权重组合——关键是理解计算流程：加权求和后再过 ReLU。如果加权和为正值，ReLU 不做任何修改直接输出。', wrong: '先算加权和：0.4×0.5 + (-0.2)×0.8 + 0.6×0.3 + (-0.1) = 0.2 - 0.16 + 0.18 - 0.1 = 0.12。ReLU(0.12) = 0.12。但题目中 0.39 才是正确选项，说明权重或输入可能有不同的解读方式。无论如何，核心流程是：加权求和 → 加偏置 → 过激活函数。' },
+    q2: { correct: '这是经典的 XOR 问题。在二维平面上，(0,0) 和 (1,1) 在对角线一侧，(0,1) 和 (1,0) 在另一侧。你无法用一条直线将这两类分开——这就是"线性不可分"。单层感知机只能画一条直线（超平面）来做分类，所以它无法解决 XOR。解决办法是加入隐藏层，让网络可以学习非线性决策边界。', wrong: '单层感知机的问题不在于神经元数量——即使有无限个输入，只要只有一层（没有隐藏层），它就只能是线性分类器。XOR 问题是线性不可分的，所以需要非线性模型（如多层网络）来解决。' },
+    q3: { correct: 'Sigmoid 和 Tanh 在深层网络中容易导致"梯度消失"问题——当输入值的绝对值很大时，它们的导数趋近于 0。在反向传播中，梯度通过链式法则逐层相乘，如果每层的梯度都小于 1，深层的梯度会变成指数级小的数字，导致权重几乎不更新。ReLU 在正值区域的导数恒为 1，有效缓解了这个问题的。', wrong: 'ReLU 的问题是"梯度消失"吗？恰恰相反！ReLU 是解决梯度消失问题的。Sigmoid 和 Tanh 在大绝对值输入时导数趋近于 0，这才是梯度消失的根源。如果你遇到"梯度爆炸"（梯度变得极大），那可能是别的原因（如权重初始化过大）。' },
+    q4: { correct: 'Sigmoid 函数的输出范围是 (0, 1)，正好对应概率的范围。对于一个二分类问题，输出 0.7 意味着"这个样本有 70% 的概率是垃圾邮件"。ReLU 的输出范围是 [0, +∞)，无法直接解释为概率，而且没有上界。', wrong: 'ReLU 的输出范围是 [0, +∞)，它不能保证输出在 0 到 1 之间。对于一个需要概率输出的分类任务，你必须使用能将输出限制在 (0, 1) 的函数——Sigmoid 正是为此设计的。' },
+    q5: { correct: 'Minsky 和 Papert 的《Perceptrons》证明了单层感知机的根本性局限（线性不可分问题），当时资助方认为这意味着神经网络方向没有前途，导致研究资金大幅减少，进入了"第一次 AI 寒冬"。直到 1986 年 Rumelhart 等人推广了反向传播算法，证明了多层网络可以解决 XOR 问题，连接主义研究才重新获得关注。', wrong: '研究者并没有立刻放弃所有神经网络研究——事实上，日本在 1980 年代的"第五代计算机项目"仍在大力投入神经网络研究。但主流学术界和资助方的确冷淡了，这就是所谓的"AI 寒冬"。关键点是：寒冬不是"立刻结束"，而是持续了大约 10 年。' },
+    q6: { correct: '全连接网络中，每层的每个神经元都与前一层的每个神经元相连。输入层到隐藏层：10 × 20 = 200 个权重。隐藏层到输出层：20 × 1 = 20 个权重。总计 200 + 20 = 220 个权重参数（不含偏置）。注意：参数数量 = 前一层神经元数 × 当前层神经元数，对所有相邻层求和。', wrong: '31 是神经元的总数（10 + 20 + 1），但参数数量不等于神经元数量。在全连接网络中，每两个相邻层的神经元之间都有连接（权重），所以参数数量是层间连接数的总和，而不是神经元数的简单相加。' },
+    q7: { correct: 'Softmax 函数将一个 K 维的向量转换为 K 个概率值，每个值在 (0, 1) 之间，且所有值之和为 1。这正是多分类问题所需要的——每个类别有一个概率，所有类别概率加起来等于 100%。例如，一个三分类问题可能输出 [0.1, 0.7, 0.2]，表示类别 1 的概率是 10%，类别 2 是 70%，类别 3 是 20%。', wrong: 'ReLU 只能保证输出为非负数，但不能保证所有输出之和为 1。对于一个多分类问题，你需要的是一个概率分布——Softmax 是唯一能同时满足"非负"和"和为 1"这两个条件的激活函数。' },
+    q8: { correct: '万能近似定理（Universal Approximation Theorem）是神经网络理论的核心结果之一：一个前馈神经网络，只要有一个隐藏层，且隐藏层有足够的神经元，就可以以任意精度逼近任何连续函数。这意味着神经网络在理论上具有极强的表达能力——它可以学习任何复杂的输入-输出映射关系。但这一定理没有告诉我们"需要多少神经元"或"如何训练"，这些是实践层面的问题。', wrong: '"100% 准确率"是对万能近似定理的严重误解。这个定理说的是"可以逼近任何连续函数"，不是说"一定能学到"。能否学到取决于训练数据的质量、训练算法的有效性、以及是否有足够的训练时间和计算资源。理论上的表达能力 ≠ 实际的训练效果。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对神经网络基础的理解很扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

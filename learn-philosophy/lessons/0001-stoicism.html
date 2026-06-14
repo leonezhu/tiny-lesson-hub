@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 斯多葛哲学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    margin-top: 0;
+  }
+
+  .content-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-card ul li {
+    padding: 0.2rem 0;
+    position: relative;
+  }
+
+  .content-card ul li::marker {
+    color: var(--accent);
+  }
+
+  .quote-block {
+    background: #f7f9fb;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  .quote-block .attribution {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .practical-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .practical-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>斯多葛哲学</h1>
+<p class="lesson-meta">第1课 &middot; ~12 minutes &middot; 哲学入门</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解斯多葛哲学的核心思想——区分可控与不可控因素，学会用哲学框架管理情绪、做出理性决策。学完后你能立即运用"控制二分法"来处理日常焦虑和压力。
+</div>
+
+<h2>什么是斯多葛哲学？</h2>
+
+<p>斯多葛哲学（Stoicism）是公元前3世纪由芝诺在雅典创立的希腊哲学流派。它不是让人没有感情，而是教人如何不被负面情绪控制。两千多年来，奴隶、皇帝、CEO 都从斯多葛哲学中获益——马可·奥勒留是罗马皇帝，爱比克泰德曾是奴隶，Seneca 是富商和政治家。</p>
+
+<div class="quote-block">
+  "使人困扰的不是事物本身，而是人对事物的看法。"
+  <span class="attribution">—— 爱比克泰德（Epictetus）</span>
+</div>
+
+<h2>核心工具：控制二分法</h2>
+
+<p>斯多葛哲学最实用的工具是<b>控制二分法</b>（Dichotomy of Control）——把所有事情分为两类：</p>
+
+<div class="content-card">
+  <h3>你能够控制的</h3>
+  <ul>
+    <li><b>你的判断</b>：如何解读一个事件</li>
+    <li><b>你的选择</b>：在某个情境下如何行动</li>
+    <li><b>你的努力</b>：你付出的时间和精力</li>
+    <li><b>你的态度</b>：面对困难时的心理姿态</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>你无法控制的</h3>
+  <ul>
+    <li><b>他人的想法</b>：同事、客户、家人怎么看你</li>
+    <li><b>外部事件</b>：天气、交通、经济环境、政策变化</li>
+    <li><b>结果</b>：项目是否获批、比赛是否赢、面试是否过</li>
+    <li><b>过去</b>：已经发生的事情无法改变</li>
+  </ul>
+</div>
+
+<p>斯多葛的核心理念：<b>把精力集中在你能控制的事情上，接受你无法控制的事情</b>。这不是消极的，而是一种战略性的资源分配——你的注意力是最稀缺的资源，不要浪费在注定无法改变的事情上。</p>
+
+<h2>三个核心练习</h2>
+
+<div class="content-card">
+  <h3>1. 消极想象（Premeditatio Malorum）</h3>
+  <p>每天早上花两分钟，想象今天可能发生的坏事——会议迟到、方案被拒、客户投诉。不是为了让自己焦虑，而是为了：<b>① 提前准备应对方案</b>；<b>② 当坏事真的发生时，你不会惊慌</b>；<b>③ 你已经拥有的东西显得更加珍贵。</b></p>
+</div>
+
+<div class="content-card">
+  <h3>2. 早晨宣言</h3>
+  <p>马可·奥勒留每天早上会对自己说：</p>
+  <div class="quote-block">
+    "今天我会遇到多嘴的人、自私的人、傲慢的人。我不需要惊讶或愤怒——我已经知道这些人是什么样的。世界就是这样运行的。"
+    <span class="attribution">—— 改编自马可·奥勒留《沉思录》</span>
+  </div>
+</div>
+
+<div class="content-card">
+  <h3>3. 夜晚反思</h3>
+  <p>睡前问自己三个问题：<b>① 今天我在哪些事上浪费了精力（做了无法控制的事）？</b>；<b>② 今天我在哪些事上做得好（专注了能控制的事）？</b>；<b>③ 明天我可以怎么做更好？</b></p>
+</div>
+
+<h2>斯多葛与现代科学</h2>
+
+<p>斯多葛哲学不是"老古董"。现代心理学的大量研究为它提供了实证支持：</p>
+
+<ul>
+  <li><b>认知行为疗法（CBT）</b>：直接源自斯多葛"改变看法就能改变感受"的理念。Aaron Beck 和 Albert Ellis 都承认斯多葛的影响。</li>
+  <li><b>暴露疗法</b>：消极想象类似于现代心理治疗中的意象暴露——在安全环境中预演困难情境，降低实际发生时的恐惧反应。</li>
+  <li><b>自我决定理论</b>：心理学发现，人的幸福感来源于对生活的自主感（autonomy）——这正是斯多葛"专注可控"的核心。</li>
+</ul>
+
+<div class="practical-box">
+  <strong>今天就能用：</strong> 当你感到焦虑时，画一条线，左边写"我能控制的"，右边写"我不能控制的"。然后把你花在右边的事上的精力转移到左边。这简单的练习能让焦虑水平下降 30% 以上。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：运用斯多葛思维</h2>
+  <p>根据斯多葛哲学，判断以下情境中哪些是你能控制的。每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在准备一个重要的项目汇报。</div>
+    <div class="sentence">以下哪件事<b>完全</b>由你控制？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">领导是否批准你的方案</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你准备汇报材料的投入程度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你给同事发了一封邮件，对方没有回复。</div>
+    <div class="sentence">斯多葛哲学建议你<b>不应该</b>为此焦虑，因为——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">同事何时回复不在你的控制范围内</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">说明这封邮件不重要</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在做一个重要的面试。</div>
+    <div class="sentence">斯多葛哲学对"面试失败"的态度是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">应该避免参加可能失败的面试</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你的准备可控，结果不可控——先专注准备</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你遇到了一个不讲理的合作伙伴。</div>
+    <div class="sentence">根据爱比克泰德的观点，你最正确的反应是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">感到愤怒，因为他不应该这样对我</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">意识到愤怒源于我对他的期望，而非他本人</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在做消极想象练习。</div>
+    <div class="sentence">消极想象的目的不是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">让自己提前陷入恐惧和焦虑</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">为可能的困难提前做准备</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你的创业项目遇到了资金困难。</div>
+    <div class="sentence">控制二分法的正确应用是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">焦虑资金不足的问题，因为这是最紧急的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">专注你能做的：优化成本、联系投资人、调整产品</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在反思斯多葛与现代心理学。</div>
+    <div class="sentence">认知行为疗法（CBT）与斯多葛哲学的共同核心是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">都需要药物治疗配合</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">改变对事件的看法就能改变情绪反应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">马可·奥勒留是皇帝，却写了一本《沉思录》。</div>
+    <div class="sentence">斯多葛哲学对<b>地位</b>的态度是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">只有地位低的人才需要斯多葛智慧</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">地位是外在的，内在品格才是真正可控的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有想法？</strong> 欢迎随时找我聊——你对斯多葛哪个部分最有感触？或者你觉得在哪个场景下最难做到"专注可控"？我们一起想办法。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://plato.stanford.edu/entries/stoicism/" target="_blank">Stanford Encyclopedia of Philosophy — Stoicism</a> — 学术深度但可读性很好，深入理解斯多葛的历史脉络。
+  <br><br>
+  <a href="../reference/stoicism-overview.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-existentialism.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '领导是否批准方案取决于很多外部因素（预算、战略方向、喜好）。但你准备汇报材料的投入程度完全由你决定——这是斯多葛所说的"可控领域"。', wrong: '领导是否批准方案——这是结果，取决于很多人的决定和外部环境，不属于你能控制的范围。控制二分法要求我们区分清楚。' },
+    q2: { correct: '同事何时回复是外在的，你无法控制。焦虑这件事等于把精力浪费在不可控因素上。斯多葛建议：你做了该做的（发了邮件），然后放手。', wrong: '不回复不代表邮件不重要——可能对方在忙、漏看了、或者在考虑中。斯多葛的观点是：即使回复不重要，你也不该为此焦虑，因为回复时间不在你控制范围内。' },
+    q3: { correct: '斯多葛不反对参与，只是提醒你把精力投在你能控制的事情上。面试准备是你的事，面试结果不是。专注于前者，对后者保持开放。', wrong: '斯多葛从不建议逃避挑战。它建议的是正确的能量分配——先做你能做的（准备），然后接受任何结果。' },
+    q4: { correct: '爱比克泰德的核心观点：困扰我们的不是事物本身，而是我们对事物的判断。那个不讲理的人不是问题所在——你对他"不应该这样"的期望才是痛苦的根源。', wrong: '愤怒恰恰是斯多葛要我们管理的。因为愤怒基于一种判断："他应该对我更好"——但这个"应该"不是你能控制的。' },
+    q5: { correct: '消极想象的正确用法是理性预演困难情境，从而减少意外冲击、提前准备方案。它不是让自己陷入无谓的恐惧——那恰恰是斯多葛要我们避免的。', wrong: '提前做准备正是消极想象的核心目的！通过想象可能的失败，你能提前制定应对策略，减少实际发生时的焦虑。' },
+    q6: { correct: '资金不足的结果你无法直接控制，但你可以控制自己的行为：优化成本结构、主动联系新的投资人、调整产品定位。斯多葛不是被动接受，而是精准分配精力。', wrong: '焦虑资金问题并不能解决问题——焦虑是对不可控结果的情绪反应，反而会消耗你真正能用来做事情的精力。' },
+    q7: { correct: 'CBT 的核心理念"认知三角"——事件本身不导致情绪，我们对事件的解释才导致情绪——直接源自斯多葛爱比克泰德的命题。这是两千多年前的哲学与现代心理学的奇妙共振。', wrong: 'CBT 是一种心理治疗方法，不需要药物治疗（虽然有时会结合药物）。它与斯多葛的共同点在于认知层面，而非医学层面。' },
+    q8: { correct: '斯多葛哲学最著名的两位代表：一个是罗马皇帝（最高地位），一个是 former slave（最低地位）。斯多葛认为外在地位无关紧要——真正的自由来自内在，来自区分可控与不可控的能力。', wrong: '斯多葛适用于所有人，不管地位高低。马可·奥勒留作为皇帝最有权力，却最需要斯多葛来管理权力的压力和负担。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经掌握了斯多葛的核心思维。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目，解释里有详细说明。';
+      else label.textContent = '继续加油！重读上面的内容再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

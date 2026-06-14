@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第九课：AI Agent</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .workflow-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    background: var(--accent-light);
+    border-radius: 6px;
+  }
+
+  .workflow-step .step-num {
+    background: var(--accent);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .workflow-step .step-content h3 {
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  code {
+    background: #f5f5f5;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>AI Agent——让 AI 从"回答"走向"行动"</h1>
+<p class="lesson-meta">Lesson 9 &middot; ~10 minutes &middot; AI 前沿技术</p>
+
+<div class="goal-box">
+  <strong>本节课目标</strong>，你将理解 AI Agent 的核心架构——为什么它不只是"更强的提示词"，而是一种全新的软件范式。学完后你能解释 Agent Loop 的四步循环，区分 Agent 与传统 AI 应用的不同，并了解主流 Agent 框架。
+</div>
+
+<h2>为什么需要 AI Agent？</h2>
+<p>
+  在第 7 课和第 8 课中，我们学习了 LLM 和 RAG。但无论是聊天机器人还是知识库问答，它们本质上都是"你问它答"——被动地接收指令、返回文本。然而现实中很多任务不是问答，而是需要<span style="font-weight:600">自主决策、连续行动、使用工具</span>。
+</p>
+<p>
+  比如：你让 LLM 写一份报告，它只会返回文本。但如果你让它"调研三家竞争对手的产品定价，生成对比表格并保存到指定文件夹"——这就需要一个能<span style="font-weight:600">搜索网页、调用 API、编写代码、写入文件</span>的系统。这就是 AI Agent。
+</p>
+
+<div class="chinese-note">
+  <strong>核心区别：</strong>传统 AI = 输入文本，输出文本。AI Agent = 感知环境 → 推理规划 → 执行动作 → 反思调整，形成一个自主闭环。
+</div>
+
+<h2>AI Agent 的四步循环（Agent Loop）</h2>
+<p>
+  Agent 的核心是一个持续运行的循环，它让 AI 从"单次对话"变成"自主执行任务"。这个循环可以简化为四个步骤：
+</p>
+
+<div class="workflow-step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <h3>感知（Observe）</h3>
+    <p>Agent 接收来自环境的输入——用户的请求、当前系统状态、之前行动的反馈。就像人用眼睛和耳朵收集信息一样，Agent 通过 API、文件读取、数据库查询等方式感知世界。</p>
+  </div>
+</div>
+
+<div class="workflow-step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h3>思考（Think / Planning）</h3>
+    <p>Agent 利用 LLM 进行推理：分析当前状态、制定行动计划、决定下一步该做什么。这一步是 Agent 的"大脑"——它需要理解用户意图、评估可用工具、做出决策。常用的推理模式包括 ReAct（推理+行动交替）、Plan-and-Execute（先规划再执行）等。</p>
+  </div>
+</div>
+
+<div class="workflow-step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <h3>行动（Act）</h3>
+    <p>Agent 执行具体的动作——调用 API、运行代码、搜索互联网、发送消息、修改文件。关键是这些动作是<span style="font-weight:600">动态选择</span>的，不是硬编码的。Agent 根据当前需求自动决定使用哪些工具。</p>
+  </div>
+</div>
+
+<div class="workflow-step">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    <h3>反思（Reflect）</h3>
+    <p>Agent 检查结果是否达到预期。如果没有——调整策略，重新规划，继续循环。如果达到了——终止循环，返回结果。这个反思能力让 Agent 能在出错时自我修正，而不是像传统程序那样直接崩溃。</p>
+  </div>
+</div>
+
+<h2>与传统 AI 应用的对比</h2>
+<p>理解 Agent 的关键是对比它和传统系统的差异：</p>
+
+<div class="concept-card">
+  <h3>传统 AI 应用（聊天机器人 / RAG）</h3>
+  <ul style="list-style: none; padding: 0;">
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>流程：</strong>用户输入 → LLM 生成 → 返回文本 → 结束
+    </li>
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>控制流：</strong>一次请求，一次响应，没有循环
+    </li>
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>工具使用：</strong>通常没有，或仅静态配置
+    </li>
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>错误处理：</strong>无法自我修正，用户需要重新提问
+    </li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>AI Agent</h3>
+  <ul style="list-style: none; padding: 0;">
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>流程：</strong>感知 → 规划 → 行动 → 反思 →（循环）→ 完成
+    </li>
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>控制流：</strong>多轮循环，每一步的输出影响下一步
+    </li>
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>工具使用：</strong>动态选择工具，按需组合
+    </li>
+    <li style="padding: 0.3rem 0; padding-left: 1.2rem; position: relative;">
+      <span style="position: absolute; left: 0; color: var(--accent); font-weight: 700;">→</span>
+      <strong>错误处理：</strong>反思后自我修正，多轮尝试直到成功
+    </li>
+  </ul>
+</div>
+
+<h2>Agent 的关键组件</h2>
+<p>一个完整的 Agent 系统需要以下组件协同工作：</p>
+
+<div class="concept-card">
+  <h3>大脑（LLM）</h3>
+  <p>LLM 是 Agent 的推理核心，负责理解意图、制定计划、做出决策。选择哪个模型很重要——长上下文、强推理能力的模型（如 Claude、GPT-4）更适合做 Agent 的大脑。</p>
+</div>
+
+<div class="concept-card">
+  <h3>工具箱（Tools）</h3>
+  <p>Agent 需要能调用的外部能力，例如：搜索、计算器、代码执行、数据库查询、API 调用、文件读写。工具越多、越灵活，Agent 能完成的任务就越复杂。</p>
+</div>
+
+<div class="concept-card">
+  <h3>记忆（Memory）</h3>
+  <p>Agent 需要记住之前的步骤和结果。短期记忆通常用对话历史实现，长期记忆可以借助向量数据库（RAG）存储知识。好的记忆机制让 Agent 在多轮对话中保持一致性。</p>
+</div>
+
+<div class="concept-card">
+  <h3>规划器（Planner）</h3>
+  <p>决定任务分解策略。简单任务可能不需要规划，但复杂任务需要 Agent 先将大目标拆成子任务，再逐一执行。规划能力决定了 Agent 处理复杂任务的成功率。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>一个现实例子：</strong>你让 Agent "帮我对比三家公司的股价并写一份简短分析"。Agent 需要：① 搜索这三家公司的股票代码 ② 调用金融 API 获取股价数据 ③ 计算涨幅 ④ 搜索相关新闻 ⑤ 综合分析 ⑥ 生成报告。每一步都需要 Agent 自主选择工具和判断，而不是预先写好的流程。
+</div>
+
+<h2>两种典型的 Agent 模式</h2>
+
+<h3>模式一：ReAct（推理 + 行动交替）</h3>
+<p>
+  ReAct 是目前最常用的 Agent 模式——"Thought-Action-Observation"循环。Agent 在每个步骤中交替进行思考和行动：
+</p>
+<pre><code>Thought: 我需要先找到这三家公司的股票代码
+Action: 搜索("腾讯 阿里巴巴 美团 股票代码")
+Observation: 腾讯(0700.HK)、阿里巴巴(9988.HK)、美团(3690.HK)
+
+Thought: 现在获取最新的股价数据
+Action: 调用金融API("0700.HK", "9988.HK", "3690.HK")
+Observation: 腾讯 380 HKD, 阿里巴巴 75 HKD, 美团 110 HKD
+
+Thought: 还需要搜索近期新闻...
+Action: 搜索("腾讯 阿里巴巴 美团 近期新闻")
+...（继续循环直到完成）</code></pre>
+
+<h3>模式二：Plan-and-Execute（先规划，后执行）</h3>
+<p>
+  Agent 先用 LLM 制定完整计划，然后逐步执行。这种方式适合任务明确、步骤可预测的场景：
+</p>
+<pre><code>Plan:
+1. 搜索三家公司基本信息
+2. 获取最近一个月的股价数据
+3. 计算涨跌幅和波动率
+4. 搜索近期相关新闻
+5. 综合对比并生成报告
+6. 保存到 ~/Documents/stock_analysis.md
+
+Step 1: 搜索... [完成]
+Step 2: 获取数据... [完成]
+Step 3: 计算... [完成]
+...（按计划执行，如需调整再回退到规划）</code></pre>
+
+<div class="chinese-note">
+  <strong>模式选择：</strong>ReAct 更灵活，适合开放式任务（"帮我做一个报告"）；Plan-and-Execute 更可控，适合步骤清晰的复杂任务（"部署这个应用到服务器"）。实际系统中经常混合使用两种模式。
+</div>
+
+<h2>主流 Agent 框架</h2>
+<p>
+  目前主流的 Agent 框架包括：
+</p>
+
+<div class="concept-card">
+  <h3>LangChain / LangGraph</h3>
+  <p>Python/JS 生态中最流行的 Agent 框架。LangChain 提供了完整的工具链和抽象层，LangGraph 则引入了状态机和有向图的概念，让 Agent 的流程可以被可视化编排。适合构建生产级的 Agent 系统。</p>
+</div>
+
+<div class="concept-card">
+  <h3>AutoGPT / BabyAGI</h3>
+  <p>早期的自主 Agent 项目，展示了 LLM 如何自行分解任务、管理待办列表、持续执行。它们的价值在于理念——证明了 Agent 的可行性，虽然实际稳定性和效率仍需改进。</p>
+</div>
+
+<div class="concept-card">
+  <h3>OpenAI Function Calling</h3>
+  <p>OpenAI 官方提供的结构化输出接口，让 LLM 可以直接"调用函数"而非生成文本。虽然不是完整的 Agent 框架，但为构建轻量级 Agent 提供了最基础的支撑。</p>
+</div>
+
+<h2>Agent 的挑战与局限</h2>
+<p>
+  尽管 Agent 前景广阔，但当前仍面临几个核心挑战：
+</p>
+
+<ul style="list-style: none; padding: 0; margin: 1rem 0;">
+  <li style="padding: 0.4rem 0; padding-left: 1.2rem; position: relative;">
+    <span style="position: absolute; left: 0; color: var(--warn-border); font-weight: 700;">!</span>
+    <strong>无限循环：</strong>Agent 可能在错误的路径上反复尝试，消耗大量 token 和成本。必须设置最大迭代次数和超时限制。
+  </li>
+  <li style="padding: 0.4rem 0; padding-left: 1.2rem; position: relative;">
+    <span style="position: absolute; left: 0; color: var(--warn-border); font-weight: 700;">!</span>
+    <strong>成本失控：</strong>每多一轮循环就多一次 API 调用。复杂任务可能需要几十轮推理，成本可能超过直接人工处理。
+  </li>
+  <li style="padding: 0.4rem 0; padding-left: 1.2rem; position: relative;">
+    <span style="position: absolute; left: 0; color: var(--warn-border); font-weight: 700;">!</span>
+    <strong>幻觉风险：</strong>Agent 可能"发明"不存在的 API 或工具，导致执行失败。幻觉在工具调用场景中后果更严重。
+  </li>
+  <li style="padding: 0.4rem 0; padding-left: 1.2rem; position: relative;">
+    <span style="position: absolute; left: 0; color: var(--warn-border); font-weight: 700;">!</span>
+    <strong>调试困难：</strong>多轮循环的执行路径难以追踪，问题可能出现在任意一轮，不像传统代码那样容易调试。
+  </li>
+</ul>
+
+<div class="chinese-note">
+  <strong>现实认知：</strong>Agent 不是万能药。目前最适合的场景是"目标明确但路径不确定的任务"——比如"调研某话题"、"分析某问题"。对于步骤固定的任务，传统自动化（脚本、工作流引擎）反而更可靠、更便宜。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解 AI Agent</h2>
+  <p>通过以下问题检验你对 AI Agent 核心概念的理解。每题有 2 个选项，点击选择后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">Agent 与传统聊天机器人的最大区别是什么？</div>
+    <div class="sentence">以下哪项是 AI Agent 的核心特征？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">更大的上下文窗口</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">感知-规划-行动-反思的自主循环</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你让 Agent 帮你写一份产品竞品分析报告。</div>
+    <div class="sentence">在"Thought: 我需要先搜索竞品数据 → Action: 调用搜索 API"这一步中，Agent 处于 Agent Loop 的哪个阶段？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">感知与思考（Observe + Think）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">反思（Reflect）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Agent 在执行复杂任务时。</div>
+    <div class="sentence">Agent 可能"发明"一个不存在的 API 并试图调用它，这属于哪个挑战？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">无限循环</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">幻觉风险</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">Agent 的反思阶段（Reflect）。</div>
+    <div class="sentence">如果 Agent 发现上一步搜索 API 返回了空结果，它最合理的做法是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接返回"没有找到结果"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">调整搜索策略，换关键词重新搜索</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">选择 Agent 模式。</div>
+    <div class="sentence">你需要 Agent 完成一个步骤明确的任务："依次调用 5 个 API 接口获取数据，合并后生成 CSV 文件"。最合适的 Agent 模式是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Plan-and-Execute（先规划后执行）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">ReAct（推理+行动交替）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">对比传统 AI 应用与 Agent。</div>
+    <div class="sentence">以下哪个场景最适合使用 AI Agent？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">固定格式的报表生成（每天 9 点自动拉取数据生成 PDF）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"帮我调研这个行业的最新动态，整理成一份简报"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Agent 的内存管理。</div>
+    <div class="sentence">在多轮 Agent 循环中，为什么记忆（Memory）很重要？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">记忆让 Agent 看起来更像一个"人"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">记忆让 Agent 记住之前的步骤和结果，避免重复工作</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">评估 Agent 系统的成本。</div>
+    <div class="sentence">一个 Agent 在完成一个复杂任务的过程中可能进行 20 轮循环，每轮调用一次 LLM。这种成本问题主要出现在哪个阶段？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">每轮循环的"思考"（Think）阶段都需要 LLM 推理</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">每轮循环的"行动"（Act）阶段都需要 LLM 推理</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我是你的 AI 导师。不确定 Agent Loop 和传统循环有什么区别？那正好，我们应该深入聊聊。直接输入你的问题，我会详细解答。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://langchain.com/" target="_blank">LangChain 官方文档</a> — 动手实践是理解 Agent 的最好方式，从构建一个最简单的搜索 Agent 开始。
+  <br><br>
+  <a href="../reference/ai-agent.html" class="resource-link">查看速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-rag-vector-db.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-rlhf-alignment.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'AI Agent 的核心是自主循环（感知→规划→行动→反思），这让它能在无人工干预的情况下连续执行多步任务。更大的上下文窗口只是模型能力的增强，不是 Agent 的本质特征。', wrong: '上下文窗口大小是 LLM 模型的能力指标，不是 Agent 的架构特征。Agent 的本质是自主决策和执行循环，无论模型大小，Agent 都有这个四步循环。' },
+    q2: { correct: '"Thought" 和 "Action" 属于感知与思考阶段。Agent 先理解当前状态，再决定用什么工具，然后执行。这对应 Agent Loop 的前两步：Observe + Think。', wrong: '反思阶段是对比"计划结果"和"实际结果"的差异。搜索 API 是在执行具体动作，不是评估结果，所以属于思考阶段而非反思。' },
+    q3: { correct: '幻觉（Hallucination）在 Agent 中尤其危险——Agent 可能编造不存在的工具名或 API 参数，导致执行失败。这比纯文本生成中的幻觉后果更严重。', wrong: '无限循环是指 Agent 在同一任务上反复尝试。编造不存在的 API 属于"模型输出不符合事实"，是幻觉问题。' },
+    q4: { correct: 'Agent 的反思能力正是体现在这里：当结果不符合预期时，调整策略并重新执行，而不是直接放弃。这就是"反思→修正→重试"循环的意义。', wrong: '直接返回失败结果等于放弃了 Agent 的核心价值——自主解决问题的能力。反思阶段的目的就是发现不足并改进。' },
+    q5: { correct: '任务步骤明确、路径可预测时，Plan-and-Execute 更高效。Agent 先制定完整计划，再一步步执行，避免了 ReAct 模式中每轮都重新推理的开销。', wrong: 'ReAct 适合路径不确定、需要实时决策的场景（如"帮我分析"）。对于已知步骤的任务，每轮都"思考"会增加不必要的成本和延迟。' },
+    q6: { correct: '"调研行业动态"目标明确但路径不确定——Agent 需要自主决定搜什么、怎么组织信息、如何呈现。这正是 Agent 最擅长的"开放路径"任务。', wrong: '固定流程的报表生成完全可以用传统自动化（定时脚本 + 模板）完成，成本低、可靠性高。用 Agent 反而增加不确定性和开销。' },
+    q7: { correct: '记忆让 Agent 在循环中保持上下文——知道已经做了什么、结果如何、下一步该做什么。没有记忆，Agent 每轮都会"从零开始"，可能重复已执行的操作。', wrong: 'Agent 的"拟人化"是外在表现，不是技术目标。记忆的核心作用是避免信息丢失、支撑多步推理和决策，是功能性的而非外观性的。' },
+    q8: { correct: '每轮循环中，"思考"阶段需要 LLM 进行推理（"我现在应该做什么？"），这是最耗 token 的部分。行动阶段（如调用 API）通常是低成本的固定操作。20 轮循环 = 20 次 LLM 调用。', wrong: '行动阶段调用的是预定义的 API 或工具，成本相对较低。真正的 token 开销来自每轮的"思考"——LLM 需要根据上下文推理下一步，这才是主要的成本来源。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你已经完全理解了 AI Agent 的核心概念。';
+      else if (score >= 6) label.textContent = '不错！回顾一下错题的解释，你会掌握得更牢固。';
+      else label.textContent = '继续加油！重新阅读上面的内容后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

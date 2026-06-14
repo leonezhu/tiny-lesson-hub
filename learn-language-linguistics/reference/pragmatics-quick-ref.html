@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>语用学速查卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root {
+    --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa;
+    --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9;
+    --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.6rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.1rem; margin-top: 2rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 0.75rem 0; }
+  .card h3 { font-size: 1rem; color: var(--accent); margin-bottom: 0.25rem; }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li { padding: 0.2rem 0 0.2rem 1.2rem; position: relative; }
+  .card ul li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .quote { background: #f7f9fb; border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; font-style: italic; }
+  .footnote { color: var(--muted); font-size: 0.85rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; }
+  .footnote a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<h1>语用学速查卡</h1>
+<p class="meta">Quick Reference &middot; 语言与语言学</p>
+
+<h2>核心定义</h2>
+<p>语用学 = 研究语境中的语言使用。语义学问"这句话什么意思"，语用学问"说话人想表达什么"。</p>
+
+<h2>三大框架</h2>
+<div class="card">
+  <h3>1. 格莱斯会话含义理论（Gricean Implicature）</h3>
+  <ul>
+    <li>数量准则：信息适量，不多不少</li>
+    <li>质量准则：说真话、有证据</li>
+    <li>关系准则：说的要相关</li>
+    <li>方式准则：清晰、有序、无歧义</li>
+  </ul>
+  <p style="margin-top:0.5rem"><em>违反准则 = 隐含意义</em></p>
+</div>
+<div class="card">
+  <h3>2. 言语行为理论（Speech Act Theory）</h3>
+  <ul>
+    <li>言内行为：说出话语本身</li>
+    <li>言外行为：话语的执行功能（请求、命令、承诺…）</li>
+    <li>言后行为：话语产生的效果</li>
+    <li>六类：断言、指令、承诺、表情、宣告</li>
+  </ul>
+</div>
+<div class="card">
+  <h3>3. 礼貌理论（Politeness Theory）</h3>
+  <ul>
+    <li>积极面子：被认可和喜欢的愿望</li>
+    <li>消极面子：行动自由不受干涉的愿望</li>
+    <li>请求/批评 = 威胁面子 → 需要礼貌策略</li>
+    <li>情态动词增加语言距离 = 减轻面子威胁</li>
+  </ul>
+</div>
+
+<h2>关键例子</h2>
+<div class="quote">"你能把盐递给我吗？" → 字面是能力问句，实际是请求</div>
+<div class="quote">推荐信只写"英语好，出勤高" → 隐含"学术表现一般"</div>
+<div class="quote">"ちょっと…"（日）→ 字面"考虑一下"，实际通常拒绝</div>
+
+<h2>术语表</h2>
+<p><strong>语用迁移失败：</strong>跨文化沟通中因语用规则差异导致的误解，比语法错误更难宽容</p>
+<p><strong>会话含义：</strong>通过违反格莱斯准则传递的隐含意义</p>
+<p><strong>面子威胁行为（FTA）：</strong>威胁听话人面部的言语行为，如请求、批评</p>
+
+<p class="footnote">← <a href="../lessons/0005-pragmatics.html">返回课程</a></p>
+</body>
+</html>

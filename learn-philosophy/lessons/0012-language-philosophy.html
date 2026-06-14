@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程 12 — 语言哲学：语言如何塑造思维</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语言哲学：语言如何塑造思维</h1>
+<p class="lesson-meta">课程 12 &middot; ~15 minutes &middot; 哲学入门最后一课</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将理解语言哲学关注的核心问题：语言如何影响我们思考世界的方式？你能识别"语言决定思维"的强弱版本，并能用萨丕尔-沃尔夫假说、维特根斯坦的语言游戏等工具来分析日常语言现象。
+</div>
+
+<h2>为什么要学语言哲学？</h2>
+<p>
+  你有没有注意过，中文里没有冠词（a/an/the），而英语却有一套复杂的冠词系统？这不只是语法差异——它反映了两门语言对"确定性"的不同敏感度。又如，中文用"下雨了"这样无主语句描述自然现象，英语却说"It is raining"，需要一个形式主语"it"来占位。
+</p>
+<p>
+  语言哲学的核心主张是：<strong>语言不只是表达思想的工具，语言本身就在塑造思想</strong>。这听起来抽象，但它直接影响我们做决策、理解世界、甚至感受情绪的方式。
+</p>
+
+<h2>核心问题一：语言决定思维吗？</h2>
+
+<div class="concept-card">
+  <h3>萨丕尔-沃尔夫假说（语言相对论）</h3>
+  <p>
+    20世纪30年代，语言学家爱德华·萨丕尔和本杰明·沃尔夫提出：<strong>你使用的语言决定了你感知世界的方式。</strong>
+  </p>
+  <p>
+    <strong>强版本（语言决定论）</strong>：语言完全决定思维。如果你没有表达某个概念的词汇，你就无法思考那个概念。这个版本已被当代研究广泛否定。
+  </p>
+  <p>
+    <strong>弱版本（语言相对论）</strong>：语言影响思维习惯。不同的语言鼓励使用者以不同方式注意世界。这个版本有大量实证支持。
+  </p>
+  <p><strong>经典例子：</strong>霍皮语（北美原住民语言）中没有英语那样的"过去-现在-将来"时间形态。沃尔夫认为，这导致霍皮人对时间的感知与英语使用者不同——他们更关注事件的完成和持续，而非时间点。虽然沃尔夫的原始论证被批评有夸大，但当代研究确实发现语言差异会影响认知习惯。</p>
+  <ul class="examples">
+    <li>俄语中有两个不同的词表示"蓝色"：синий（深蓝）和 голубой（浅蓝）。研究发现，俄语使用者区分浅蓝和深蓝的速度比英语使用者更快——因为他们语言中这两个是截然不同的颜色范畴。</li>
+    <li>中文用颜色词形容数字：" red number"（红数，好的）vs "blue number"（蓝数，坏的）。这在一定程度上影响中国人在赌博决策中的风险偏好。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>中文思考题：</strong>中文里"差不多就行"这个表达，反映了一种怎样的思维习惯？它和英语中"good enough"有什么微妙差异？（提示：考虑"差不多"和"good enough"各自暗示了什么？）
+</div>
+
+<h2>核心问题二：语言塑造现实？</h2>
+
+<div class="concept-card">
+  <h3>维特根斯坦：语言游戏</h3>
+  <p>
+    哲学家维特根斯坦在《哲学研究》中提出：<strong>语言的意义不在于它"对应"什么客观实体，而在于它如何在生活实践中被使用。</strong>
+  </p>
+  <p>
+    他把语言使用比作"游戏"——就像棋子的意义来自它在棋局中的规则，而不是它是什么材质做的。一个词的意义就是它在语言游戏中的用法。
+  </p>
+  <p><strong>经典例子：</strong>同一个词"公平"，在经济学语言游戏中可能指"效率最大化的结果"，在伦理学语言游戏中可能指"资源平均分配"，在日常争吵中可能指"对我有利"。不是词本身有错，而是它在不同的"游戏规则"下有不同的含义。</p>
+  <p><strong>"语言的界限就是世界的界限。"</strong>——维特根斯坦《逻辑哲学论》。这句话的意思是：你能思考的，受限于你拥有的概念和词汇。如果你没有"量子纠缠"这个概念，你就无法在思考中操作这个概念。
+  </p>
+</div>
+
+<h2>核心问题三：描述性还是规范性？</h2>
+
+<div class="concept-card">
+  <h3>述行语与断言语</h3>
+  <p>
+    语言哲学家约翰·奥斯汀提出一个重要区分：<strong>有些话语不是在"描述"世界，而是在"做"事情。</strong>
+  </p>
+  <p>
+    <strong>断言语</strong>只是描述事实："地上有一滩水。"这句话真或假取决于地面状态。<br>
+    <strong>述行语</strong>本身就在创造事实："我宣布你们成为夫妻。"这句话一说出口，事实就改变了。
+  </p>
+  <p><strong>日常例子：</strong></p>
+  <ul class="examples">
+    <li>"我承诺明天给你答案。"——不是描述，而是创造了一个义务。</li>
+    <li>"我道歉。"——不是描述一个心理状态，而是执行了道歉这个行为。</li>
+    <li>"我保证这个产品安全。"——不是陈述，而是承担法律责任。</li>
+  </ul>
+  <p>
+    这个区分为什么重要？因为它揭示了我们日常语言中大量话语不是"对错的"而是"有效的或无效的"。一个承诺在什么条件下才算数？一个道歉需要满足什么才算真诚？这些不是真假问题，而是社会规范问题。
+  </p>
+</div>
+
+<h2>常见思维陷阱</h2>
+
+<div class="concept-card">
+  <h3>1. 词语幻觉</h3>
+  <p>
+    以为一个词有名称就对应一个实在的事物。比如"公平"有名字，所以我们以为"公平"是一个独立存在的实体。但实际上"公平"只是我们用来描述一组复杂社会直觉的标签。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 二元语言陷阱</h3>
+  <p>
+    语言倾向于制造二元对立：主观vs客观、自由vs必然、先天vs后天。但现实往往比语言提供的二分法复杂得多。"语言是好的工具，但不是好的主人。"
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 元语言混淆</h3>
+  <p>
+    争论时常常在"谈论语言"和"谈论事物"之间来回切换。比如两个人争论"人生有没有意义"——一个人说的"意义"是指"目的"，另一个人说的"意义"是指"客观价值"。他们其实在说不同的事，却以为在争论同一件事。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>关联前几课：</strong>因果性（第1课）告诉我们每个现象都有原因。语言哲学进一步追问：<strong>语言本身是不是因果性的？</strong>它不只是被动反映现实，它也在主动建构现实——述行语就是一个最好的例子。
+</div>
+
+<h2>为什么这对你有用？</h2>
+<p>
+  语言哲学的实用价值在于：<strong>当你意识到语言在塑造思维时，你就能选择性地"升级"你的思维工具。</strong>
+</p>
+<p>
+  具体来说，学会语言哲学后，你在面对争议和困惑时能多做一步：<strong>问"你用的这个词到底是什么意思？"</strong>很多时候，90%的争论不过是两个人在用同一个词指代不同的东西。把语言搞清楚，争论往往会自然消解。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：识别语言如何塑造思维</h2>
+  <p>以下每题有两个选项，选择你认为最正确的。点击后立即查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在讨论萨丕尔-沃尔夫假说。</div>
+    <div class="sentence">关于"强版本"（语言决定论），当代学术界的态度是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">广泛接受</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基本否定</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在和朋友争论"公平"的定义。</div>
+    <div class="sentence">根据维特根斯坦的语言游戏理论，你认为最合理的做法是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">问"你在这个语境下说的'公平'具体指什么"</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接给出'公平'的客观定义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在写一封工作邮件，要确认一个会议。</div>
+    <div class="sentence">根据奥斯汀的述行语理论，以下哪句话是"述行语"（在做事情，而不是描述事实）？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"明天上午10点有一个会议"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"我确认下周三的会议改到周五"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在比较中文和英语的时间表达。</div>
+    <div class="sentence">中文没有动词时态变化（"我去"可以指过去、现在或将来），这最支持哪种观点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">中文使用者无法思考时间概念</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">中文鼓励用时间副词而非动词形态表达时间</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你听到两个人争论"人性本善还是本恶"。</div>
+    <div class="sentence">从语言哲学角度看，这个争论最可能的问题是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">"善"和"恶"的定义不清，双方在说不同的事</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">问题本身无意义，因为人性只有一个答案</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在阅读"语言的界限就是世界的界限"。</div>
+    <div class="sentence">这句话的准确理解是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">世界只有语言说出来的部分存在</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你无法思考你无法用语言表达的概念</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在比较不同语言的颜色系统。</div>
+    <div class="sentence">研究发现，有独立词汇区分"深蓝"和"浅蓝"的语言使用者，在颜色辨别任务中表现更好。这支持：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">弱版本的萨丕尔-沃尔夫假说（语言影响认知习惯）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">强版本的萨丕尔-沃尔夫假说（语言决定一切思维）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在做投资决策。</div>
+    <div class="sentence">中文用"红"表示上涨（好运），英语用"green"表示上涨。当你用中文读财经新闻时：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">语言色彩可能潜移默化影响你对市场的情绪反应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">颜色词汇对决策完全没有影响</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有思考题吗？</strong>问我任何疑问——这是哲学课，没有标准答案，只有更好的问题。你觉得"语言决定思维"还是"思维决定语言"？这个争论本身就是语言哲学最核心的问题之一。
+  <br><br>
+  <strong>推荐延伸阅读：</strong>Stanford Encyclopedia of Philosophy 的"Philosophy of Language"条目 — 系统梳理语言哲学的各个分支。
+  <br><br>
+  <a href="../reference/language-philosophy.html" class="resource-link">查看速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0011-mind-body-problem.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '强版本（语言决定论）已经被大量研究证伪。如果语言完全决定思维，那么不会翻译"color"的人就无法区分颜色——但事实并非如此。', wrong: '强版本认为语言完全决定思维，这意味着不会某个词就无法思考对应概念。这已被跨文化认知科学广泛否定。' },
+    q2: { correct: '维特根斯坦认为词的意义在于它在具体语言游戏中的用法。在争论中追问"你在这个语境下是什么意思"，比试图给出"客观定义"更符合语言哲学的精神。', wrong: '维特根斯坦反对"客观定义"的假设——他认为词的意义来自它在具体实践中的使用，而不是某种抽象对应关系。' },
+    q3: { correct: '"我确认……改到周五"这个话一说出口，事实就改变了——会议时间被重新安排了。这就是述行语的典型特征：话语本身在执行一个行为。', wrong: '"明天有一个会议"只是描述一个事实，可以被验证为真或假。而"我确认改到周五"不是在描述，是在执行一个社会行为。' },
+    q4: { correct: '中文用时间副词（昨天、明天）而非动词变位来表达时间，这说明语言差异影响的是表达方式的习惯，而非思维能力本身。', wrong: '即使中文没有时态变化，中文使用者依然能精确思考过去、现在和未来。语言形式不影响基本思维能力，只影响表达习惯。' },
+    q5: { correct: '这是典型的元语言混淆——两个人用的是同一个词"善/恶"，但各自指代不同的概念（生物学本能 vs 社会规范）。语言哲学的建议是：先澄清定义。', wrong: '虽然定义确实模糊，但这并不意味着问题"无意义"。澄清了定义后，争论往往能转向更有建设性的方向。' },
+    q6: { correct: '维特根斯坦说的是你思考能力的界限受限于你的概念和语言工具。不是世界"只有语言说出的部分存在"，而是你对世界的思考能力受语言限制。', wrong: '这句话不是本体论主张（关于世界是否存在），而是认识论主张（关于你能思考什么）。' },
+    q7: { correct: '语言影响认知习惯（俄语使用者更快区分颜色）不等于语言决定一切思维。强版本会被否定——你不会说"颜色"的人就无法区分颜色。弱版本更有说服力。', wrong: '这个实验只证明语言有微弱影响（辨别速度更快），远不足以证明语言"决定一切"。强版本已被证伪。' },
+    q8: { correct: '这就是弱版本萨丕尔-沃尔夫假说的核心：语言中的颜色词汇会潜移默化地影响情绪反应和决策。虽然影响不大，但确实存在。', wrong: '研究发现语言确实对决策有可测量的影响（如颜色编码影响风险偏好），所以"完全没有影响"的说法不正确。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你对语言哲学最核心的几个理论有了清晰的理解。';
+      else if (score >= 6) label.textContent = '不错！语言哲学最烧脑的就是这些微妙区分——重读错题的解释。';
+      else label.textContent = '继续加油！语言哲学挑战直觉，多思考几遍就会豁然开朗。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

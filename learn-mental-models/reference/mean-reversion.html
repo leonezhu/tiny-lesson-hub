@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 均值回归</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>均值回归</h1>
+<p class="lesson-meta">快速参考卡 · 多元思维模型系列</p>
+
+<h2>一句话定义</h2>
+<div class="formula-box">
+  极端表现之后，结果趋向于长期平均值
+</div>
+
+<h2>核心公式</h2>
+<div class="card">
+  <p><strong>观察到的表现 = 真实能力 × 运气系数</strong></p>
+  <ul>
+    <li>运气系数 &gt; 1：超常表现（不可持续）</li>
+    <li>运气系数 = 1：稳定表现（真实能力）</li>
+    <li>运气系数 &lt; 1：低于预期表现（不可持续）</li>
+  </ul>
+</div>
+
+<h2>关键洞察</h2>
+<div class="card">
+  <ul>
+    <li>极端表现包含大量运气成分，运气不可持续</li>
+    <li>回归均值 ≠ 能力下降，而是运气正常化</li>
+    <li>管理者常误将均值回归当作管理效果</li>
+    <li>追逐年度冠军基金是最经典的均值回归陷阱</li>
+  </ul>
+</div>
+
+<h2>跨学科应用</h2>
+<div class="card">
+  <h3>投资</h3>
+  <p>分散投资而非追逐近期冠军基金；行业利润率偏离后会因竞争回归</p>
+  <h3>医学</h3>
+  <p>极端症状自然趋向正常范围——临床试验需要对照组</p>
+  <h3>AI</h3>
+  <p>正则化 = 算法层面的均值回归，防止模型记住噪声</p>
+  <h3>运动</h3>
+  <p>"Hot Hand"是谬误——连续命中后下一投命中率通常回落</p>
+</div>
+
+<h2>常见误判</h2>
+<div class="card">
+  <ul>
+    <li>将运气导致的成功归因为能力 → 过度扩张</li>
+    <li>在好表现后批评、差表现后表扬 → 惩罚好行为</li>
+    <li>用单年极值判断长期趋势 → 统计错觉</li>
+  </ul>
+</div>
+
+<h2>关键人物</h2>
+<div class="card">
+  <ul>
+    <li><strong>Francis Galton (1889)</strong>：发现身高遗传中的均值回归，创立回归分析</li>
+    <li><strong>Francis Edgeworth (1845-1926)</strong>：扩展到经济和社会科学</li>
+    <li><strong>Daniel Kahneman</strong>：揭示管理者的均值回归误判</li>
+  </ul>
+</div>
+
+<h2>与相关模型的连接</h2>
+<div class="card">
+  <ul>
+    <li><strong>概率思维</strong>：均值回归是概率思维的核心组成部分</li>
+    <li><strong>贝叶斯推理</strong>：先验收缩效应与之密切相关</li>
+    <li><strong>幸存者偏差</strong>：极端成功既可能是运气，也可能只是幸存者</li>
+    <li><strong>正态分布与肥尾</strong>：肥尾意味着极端值更常见，但回归依然存在</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0008-mean-reversion.html">学习课程</a> | 多元思维模型系列
+</div>
+
+</body>
+</html>

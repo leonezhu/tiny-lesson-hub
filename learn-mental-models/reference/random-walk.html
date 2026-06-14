@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 随机游走</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-meta a { color: var(--accent); text-decoration: none; }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .ref-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .ref-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .ref-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ref-card ul li {
+    padding: 0.15rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .ref-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    padding: 0.5rem 0.75rem;
+    background: #f7f9fb;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>随机游走 <span class="tag">Mental Model</span></h1>
+<p class="card-meta"><a href="../lessons/0010-random-walk.html">← 返回完整课程</a></p>
+
+<h2>一句话定义</h2>
+<p>每一步的方向随机且独立，下一步仅取决于当前位置——系统没有记忆，也没有"应该回到"的中心。</p>
+
+<h2>核心公式</h2>
+<div class="formula">S<sub>t</sub> = S<sub>0</sub> + Σ X<sub>i</sub> （典型位移 ≈ √n）</div>
+
+<h2>关键性质</h2>
+<div class="ref-card">
+  <ul>
+    <li>无记忆性：下一步与历史无关</li>
+    <li>期望值 = 起点，但典型距离 = √n</li>
+    <li>一维游走在正负半轴的累计时间中位数为 0（弧光定律）</li>
+    <li>路径处处不可导，放大任意一段都同样混乱</li>
+  </ul>
+</div>
+
+<h2>vs 均值回归</h2>
+<div class="ref-card">
+  <p><strong>随机游走</strong>：无中心引力，过去不预示未来（股价、汇率）</p>
+  <p><strong>均值回归</strong>：有中心引力，偏离后会自然回来（身高、成绩）</p>
+</div>
+
+<h2>常见认知陷阱</h2>
+<div class="ref-card">
+  <ul>
+    <li>赌徒谬误："连出 5 次正面，下次该反面了"</li>
+    <li>趋势幻觉：在噪声中"看到"不存在的模式</li>
+    <li>把好运当能力：随机波动 ≠ 技能证明</li>
+  </ul>
+</div>
+
+<h2>应用领域</h2>
+<div class="ref-card">
+  <ul>
+    <li>金融：有效市场假说、被动投资</li>
+    <li>物理：布朗运动、扩散方程</li>
+    <li>生物：基因漂变、分子扩散</li>
+    <li>CS：PageRank、MCMC 采样</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0009-compound-effect.html">上一课：复利效应</a> | <a href="../index.html">目录</a>
+</div>
+
+</body>
+</html>

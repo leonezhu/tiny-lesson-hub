@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 — 第一性原理思维</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .step-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 1.6rem;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第一性原理思维</h1>
+<p class="lesson-meta">Lesson 7 &middot; ~10 minutes &middot; 多元思维模型</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够解释什么是第一性原理思维、它和类比推理的区别在哪里、如何运用"分解—重建"三步骤来解决复杂问题，以及它为什么是突破性创新的底层引擎。
+</div>
+
+<h2>什么是第一性原理思维？</h2>
+<p>
+  第一性原理思维（First Principles Thinking）是一种将复杂问题逐层拆解到不可再分的基本事实，然后从零出发、基于这些事实向上推理的思维方式。它拒绝接受"一直以来都是这样做的"这类类比推理，而是追问："这件事在物理世界中到底可能或不可能？"
+</p>
+<p>
+  亚里士多德在《形而上学》中首次提出这个概念："每个系统中存在一个最基本的前提，它不能被违反，也不能被证明。"这就是第一性原理——系统的起点，一切推理从这里开始。
+</p>
+
+<div class="concept-card">
+  <h3>类比推理 vs 第一性原理</h3>
+  <p>理解第一性原理，关键是先理解它的对立面——<strong>类比推理</strong>（Analogical Thinking）：</p>
+  <ul class="examples">
+    <li><strong>类比推理</strong>："别人这么做，我也这么做，稍微改进一点"——适合渐进式改进，但永远无法产生突破性创新。</li>
+    <li><strong>第一性原理</strong>："这件事的基本构成是什么？我能从零开始重新设计吗？"——可能痛苦且不确定，但能打破天花板。</li>
+  </ul>
+</div>
+
+<h2>三步骤：分解—重建</h2>
+<p>第一性原理思维不是一种天赋，而是一套可训练的<strong>方法论</strong>：</p>
+
+<div class="concept-card">
+  <h3><span class="step-num">1</span> 识别并澄清假设</h3>
+  <p>列出关于这个问题你"理所当然"接受的所有前提。这些前提中有多少是真的物理限制？有多少只是历史偶然或社会惯例？</p>
+  <p style="color: var(--muted); font-size: 0.9rem;"><em>例如："火箭本来就很贵"是一个假设，不是一个物理定律。</em></p>
+</div>
+
+<div class="concept-card">
+  <h3><span class="step-num">2</span> 分解为基本事实</h3>
+  <p>将每个假设继续向下追问，直到到达不可再分的层面——那些可以通过实验验证或逻辑推导的最小事实。</p>
+  <p style="color: var(--muted); font-size: 0.9rem;"><em>例如：火箭由什么材料组成？航空级铝合金、钛、铜、碳纤维。这些材料在市场上的价格是多少？</em></p>
+</div>
+
+<div class="concept-card">
+  <h3><span class="step-num">3</span> 从零重建</h3>
+  <p>只基于那些基本事实，重新设计解决方案。不参考"别人怎么做"，只参考"物理世界允许什么"。</p>
+  <p style="color: var(--muted); font-size: 0.9rem;"><em>例如：如果材料成本只占火箭售价的2%，那么问题不在材料贵，而在供应链低效和过度定制化。能不能自己造？</em></p>
+</div>
+
+<h2>经典案例</h2>
+
+<div class="concept-card">
+  <h3>Elon Musk 与 SpaceX</h3>
+  <p>2002 年的 Musk 想做的事——降低太空运输成本——在传统航天行业看来是痴人说梦。一枚火箭大约 6500 万美元，这个价格已经是行业共识了。Musk 没有接受这个共识，而是做了三件事：</p>
+  <ul class="examples">
+    <li><strong>分解：</strong>火箭由什么组成？铝合金、钛、铜、碳纤维。</li>
+    <li><strong>追问：</strong>这些原材料在市场上的总成本不到火箭售价的 2%。</li>
+    <li><strong>重建：</strong>问题不在材料，在低效的供应链。自己设计发动机、自己建工厂、自己造火箭。</li>
+  </ul>
+  <p>结果：Starship 的目标发射成本约 200 万美元，比传统火箭降低了约 30 倍。</p>
+</div>
+
+<div class="concept-card">
+  <h3>欧几里得几何学</h3>
+  <p>古希腊数学家欧几里得的《几何原本》是第一性原理思维的数学化版本。他从 5 条公理出发——两点之间线段最短、所有直角相等……——推导出了整个平面几何体系。这不是从已有知识中归纳出来的，而是从不可再分的基本真理向上构建的。</p>
+</div>
+
+<div class="concept-card">
+  <h3>Transformer 与 AI</h3>
+  <p>2017 年 Vaswani 等人发表的 Transformer 论文是 AI 领域的第一性原理案例。传统 NLP 系统依赖语言学专家设计复杂的手动规则，而 Transformer 直接从"语言建模的本质是预测下一个 token"这一基本事实出发，用自注意力机制和纯神经网络实现了所有 NLP 任务——效果比之前所有方法都好得多。</p>
+</div>
+
+<h2>跨学科连接</h2>
+
+<div class="concept-card">
+  <h3>物理学 → Ab initio 计算</h3>
+  <p>计算材料学从薛定谔方程出发，直接计算原子间的相互作用，无需任何经验参数——这就是"第一性原理计算"（ab initio）的名字来源。</p>
+</div>
+
+<div class="concept-card">
+  <h3>生物学 → 中心法则</h3>
+  <p>Crick 提出"DNA → RNA → 蛋白质"是对遗传信息流动的第一性原理描述。从此出发，推导出了基因编辑、mRNA 疫苗等整个现代生物技术产业。</p>
+</div>
+
+<div class="concept-card">
+  <h3>哲学 → 笛卡尔的普遍怀疑</h3>
+  <p>笛卡尔在《谈谈方法》中要求悬置一切未经证明的信念，只保留"我思故我在"这一不可怀疑的起点，然后从这个起点重建整个知识体系。这与第一性原理思维的"分解—重建"步骤完全一致。</p>
+</div>
+
+<div class="concept-card">
+  <h3>复杂系统 → 生命游戏</h3>
+  <p>Conway 的"生命游戏"仅用四条简单规则就模拟了极其复杂的细胞演化模式。从极简的基本规则出发，涌现出令人惊讶的复杂性——这正是第一性原理思维在复杂系统中的体现。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键区分：</strong>第一性原理思维 ≠ 凡事从零开始。日常决策中使用类比推理完全没问题且更高效。第一性原理适用于<strong>那些长期被锁定、所有人都用类比推理导致内卷的领域</strong>——当你想打破天花板而不是做渐进改进时，才需要它。
+</div>
+
+<h2>如何训练第一性原理思维</h2>
+
+<div class="concept-card">
+  <h3>追问五个"为什么"</h3>
+  <p>面对一个问题，连续追问五次"为什么"或"这是真的吗"，迫使你超越表面假设：</p>
+  <ul class="examples">
+    <li>"这个功能太贵了做不了" → 为什么？ → "因为需要太多工程师时间" → 为什么需要这么多？ → 因为有大量手工逻辑 → 这些手工逻辑能自动化吗？ → 用 AI 做代码生成……</li>
+    <li>每一层追问都在剥掉一层"理所当然"的假设。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>检查清单</h3>
+  <p>在做重要决策时，问自己：</p>
+  <ul class="examples">
+    <li>我接受的这个前提，是一个物理限制还是一个社会惯例？</li>
+    <li>如果完全没有历史记录，我会怎么解决这个问题？</li>
+    <li>有没有人已经用完全不同的路径解决了类似问题？</li>
+    <li>如果资源无限/资源为零，我会怎么做？</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：运用第一性原理</h2>
+  <p>以下每道题描述了一个场景或一个问题，选择最符合第一性原理思维的回答。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">一家餐厅发现每份菜的成本总是比竞争对手高 20%。</div>
+    <div class="sentence">运用第一性原理思维，首先应该做什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">研究竞争对手的定价和成本结构</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">列出每道菜的所有输入，逐项分析成本来源</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你认为"在线教育不可能替代传统课堂"。</div>
+    <div class="sentence">哪一个问题最符合第一性原理思维？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">为什么其他在线教育平台没有成功？</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">教育的本质是传递知识和改变行为，在线方式能完成这些基本功能吗？</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一家公司想降低物流成本。</div>
+    <div class="sentence">以下哪种做法属于第一性原理思维？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">跟竞争对手一样使用快递服务以降低成本</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">分析"商品从 A 到 B"的基本物理约束，重新设计配送网络</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">笛卡尔的"普遍怀疑"方法。</div>
+    <div class="sentence">这与第一性原理思维的什么关系？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">完全一致——都要求先摧毁所有未经证明的信念，再从零重建</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全无关，笛卡尔的方法只适用于哲学领域</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在考虑是否要转行做 AI。</div>
+    <div class="sentence">以下哪种思考方式属于第一性原理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"现在做 AI 的人都在赚钱，所以我也要做"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"AI 的核心能力是什么？我的哪些技能与之匹配？市场真正需要的是什么？"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">欧几里得的《几何原本》用了多少条公理作为起点？</div>
+    <div class="sentence">这体现了第一性原理思维的什么特点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">公理越多越可靠，所以应该尽可能多设公理</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">从极少数的基本真理出发，可以推导出一个庞大而完整的体系</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你发现团队一直在用同一个框架做数据分析，效率很低。</div>
+    <div class="sentence">用第一性原理思维重新设计，第一步应该是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">去看其他公司用什么框架，然后换更好的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">分析"数据分析"需要完成哪些基本步骤，再看现有工具是否匹配</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">以下关于第一性原理思维的说法，哪个是正确的？</div>
+    <div class="sentence"></div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">第一性原理思维应该用在每一个日常决策中，因为它总是最优的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">第一性原理思维适合突破性的、被锁定的问题，日常小事用类比推理更高效</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的思维模型导师。不确定某个问题该用第一性原理还是类比推理？这就是最好的起点。直接提问，我们一起拆解。
+  <br><br>
+  <strong>延伸阅读：</strong><a href="https://www.goodreads.com/book/show/30186197-stuff-things-break" target="_blank">《创新者的窘境》— Clayton Christensen</a> — 理解为什么行业领导者无法用第一性原理思维打破自我颠覆的魔咒。
+  <br><br>
+  <a href="../reference/first-principles.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-network-effects.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-mean-reversion.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确。第一性原理的第一步是分解——列出所有输入并逐项分析。竞争对手的做法是类比推理，可能他们也有自己的假设和问题。只有先搞清楚自己成本的结构，才能找到真正的改进点。',
+      wrong: '研究竞争对手是类比推理——"别人怎么做我就怎么做"。第一性原理思维的第一步是分解你自己系统的基本构成：每道菜用了什么材料、多少份量、谁的劳动时间……找到真正的成本来源。'
+    },
+    q2: {
+      correct: '正确。"教育的本质是什么？在线方式能完成这些功能吗？"——这是从基本事实出发重新审视问题，而不是被"在线教育不可能"这个假设困住。事实上，2020 年之后的实践已经证明线上教育在某些场景下效果更好。',
+      wrong: '"为什么其他平台没有成功？"仍然被"在线教育不可能替代传统课堂"这个假设困住了。第一性原理要求你先放下这个假设，回到"教育的基本功能是什么"这个更基础的问题。'
+    },
+    q3: {
+      correct: '正确。分析"商品从 A 到 B"的基本物理约束（距离、重量、时间窗口、温度要求），然后重新设计配送网络——这就是从零出发的第一性原理思考。竞争对手的做法是类比推理。',
+      wrong: '跟竞争对手用一样的快递服务是类比推理——"别人这么做，所以我也这么做"。这最多只能做到和对手一样好，不可能产生突破性成本优势。'
+    },
+    q4: {
+      correct: '正确。笛卡尔的普遍怀疑要求你暂停一切未经证明的信念，只保留"我思故我在"这一个不可怀疑的起点，然后从这里重建知识体系。这正是第一性原理思维"分解—重建"三步法的哲学版。',
+      wrong: '笛卡尔的方法虽然起源于哲学，但其"先摧毁假设、再从零重建"的结构是第一性原理思维的通用模式。物理学、生物学、工程学都在用类似的思路。'
+    },
+    q5: {
+      correct: '正确。将问题分解为"AI 的核心能力是什么？我的技能匹配吗？市场需要什么？"——这就是从基本事实出发做决策。而"别人都在做"是典型的类比推理。',
+      wrong: '"现在做 AI 的人都在赚钱"是类比推理，不是第一性原理。你并没有分析 AI 的本质、你的能力和市场需求，只是在跟随趋势。跟风赚钱可能，但不是基于推理的决策。'
+    },
+    q6: {
+      correct: '正确。欧几里得从 5 条公理出发，推导出了整个平面几何体系——数千个定理。这说明：只要从正确的少数基本真理出发，可以构建一个非常庞大、完整且有用的知识体系。这就是第一性原理的力量。',
+      wrong: '公理并非越多越好。公理越多，系统越复杂、越容易自相矛盾。欧几里得的优雅正在于用极少的公理覆盖了尽可能多的推导——少而精确才是第一性原理的精髓。'
+    },
+    q7: {
+      correct: '正确。第一性原理的第一步是分解——分析数据分析这个行为的基本步骤（获取数据、清洗、分析、可视化……），然后看工具是否真正匹配这些步骤。竞争对手的工具可能根本不合适你。',
+      wrong: '看别人用什么工具然后换更好的，这是典型的类比推理。它假设"别人用的=好的"，但没有验证这个工具是否真正匹配你的基本需求。'
+    },
+    q8: {
+      correct: '正确。第一性原理思维是有认知成本的——分解和重建需要大量精力。它应该用在那些"所有人都用类比推理导致内卷、你想突破天花板"的场景。日常小事用类比推理完全合理，效率更高。',
+      wrong: '第一性原理思维非常消耗认知资源。如果用它在"中午吃什么""走哪条路上班"这类日常决策上，效率反而很低。类比推理在日常生活中是完全合理的——第一性原理应该用在真正重要的事情上。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对第一性原理思维的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得不错！看看错题的解释，理解为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

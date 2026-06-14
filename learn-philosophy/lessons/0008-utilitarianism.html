@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 功利主义伦理学：最大化整体幸福的行为准则</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    margin-top: 0;
+  }
+
+  .content-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-card ul li {
+    padding: 0.2rem 0;
+    position: relative;
+  }
+
+  .content-card ul li::marker {
+    color: var(--accent);
+  }
+
+  .quote-block {
+    background: #f7f9fb;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  .quote-block .attribution {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .practical-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .practical-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>功利主义伦理学：最大化整体幸福的行为准则</h1>
+<p class="lesson-meta">第8课 &middot; ~12 分钟 &middot; 三大伦理框架之一——后果主义的巅峰形态</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解功利主义伦理学的核心原则、经典形态及其当代发展。你将掌握"最大幸福原则"的逻辑结构，区分边沁与密尔的功利主义差异，识别功利主义面临的经典反驳，并能够在道德决策中应用功利主义分析方法。学完后你将能够解释为什么功利主义成为现代公共政策、AI伦理和全球健康领域最重要的伦理框架之一。
+</div>
+
+<h2>功利主义：一个极其简单、极其激进的主张</h2>
+
+<p>功利主义（Utilitarianism）是伦理学中最简洁也最具争议的理论之一。它的核心主张可以用一句话概括：<b>一个行为的道德价值，完全由它产生的后果决定——更具体地说，由它给所有相关者带来的幸福总量决定</b>。</p>
+
+<p>这个主张有两个激进的意味：第一，它拒绝任何行为本身的内在道德性（"撒谎就是错的"——功利主义说"要看撒谎的后果"）；第二，它要求我们平等地计算每个人的幸福（"国王的一单位快乐 = 乞丐的一单位快乐"）。</p>
+
+<div class="quote-block">
+  "行为正确的原则，在于它能增加快乐的程度；错误的原则，在于它倾向于产生相反的效果。"<br>
+  杰里米&middot;边沁，《道德与立法原理导论》（1789）
+</div>
+
+<div class="practical-box">
+  <strong>关键洞察：</strong> 功利主义不是"只顾自己快乐"——恰恰相反。它要求你把"自己"从道德计算中移除，把所有受影响的人同等对待。你的幸福不比你邻居的幸福多一丁点分量。这个要求极其苛刻，这也是功利主义被批评"太理想化"的原因。
+</div>
+
+<h2>功利主义的思想基因</h2>
+
+<p>功利主义诞生于18世纪末的启蒙运动时期，当时欧洲的思想家正在用新的方式思考社会和政治问题。边沁（Jeremy Bentham）和密尔（John Stuart Mill）不是象牙塔里的哲学家——他们是法律改革者和社会活动家，希望用理性原则来改造现实世界。</p>
+
+<div class="content-card">
+  <h3>功利主义的三个核心信念</h3>
+  <ul>
+    <li><b>后果主义</b>：一个行为的对错完全由其后果决定，而非动机、意图或行为类型本身。</li>
+    <li><b>福祉主义</b>：福祉（幸福、快乐、偏好满足）是唯一内在善的事物——除了让事物变得更好，没有别的标准可以用来评判后果。</li>
+    <li><b>范围平等</b>：每个人的福祉在道德计算中具有同等权重，没有人的福祉天生更重要。</li>
+  </ul>
+  <p>这三个信念组合在一起，就导出了功利主义的标志性原则：<b>最大幸福原则</b>——我们应该选择那个能为最多的人产生最大净幸福的行动。</p>
+</div>
+
+<h2>边沁：快乐的算盘</h2>
+
+<p>杰里米&middot;边沁（1748-1832）是功利主义的创始人，他的方法极其量化——他甚至设计了一种"快乐计算法"（felicific calculus），试图给每种快乐标注分值。在边沁看来，快乐的维度包括：<b>强度</b>（有多强烈）、<b>持续时间</b>（持续多久）、<b>确定性</b>（有多可能发生）、<b>接近性</b>（多久之后发生）、<b>丰度</b>（是否会产生更多快乐）、<b>纯度</b>（是否伴随痛苦）和<b>范围</b>（影响多少人）。</p>
+
+<div class="content-card">
+  <h3>边沁的激进平等</h3>
+  <p>边沁有一句名言："数量问题一旦澄清，'权力'这一别名便毫无意义。"他的意思是：一旦你开始做道德计算，一个人的幸福就和另一个人的幸福完全一样重要。他进一步将此逻辑延伸到动物权利——"问题不在于它们能否推理，也不在于它们能否说话，而在于它们能否感受痛苦。"这在18世纪是极其超前（甚至有些荒唐）的观点。</p>
+</div>
+
+<h2>密尔：更精致的功利主义</h2>
+
+<p>约翰&middot;斯图尔特&middot;密尔（John Stuart Mill，1806-1873）是边沁的外甥和思想继承人，但他觉得边沁的版本太过粗糙。密尔在《功利主义》（1863）中做了两个关键修正：</p>
+
+<div class="content-card">
+  <h3>1. 质的区分</h3>
+  <p>边沁认为快乐只有量的区别—— push-pin（一种游戏）和诗歌一样好，只要它带来的快乐量相同。密尔反对："做一个不满足的人，胜过做一只满足的猪；做一个不满足的苏格拉底，胜过做一个愚蠢的傻瓜。"密尔提出，有些快乐在<b>质上</b>高于其他快乐——智力快乐、审美快乐、道德快乐优于单纯的感官快乐。</p>
+</div>
+
+<div class="content-card">
+  <h3>2. 规则功利主义</h3>
+  <p>密尔将讨论从"单个行为的后果"转向了"遵循规则的后果"。不是说每个行为单独计算，而是我们应该遵循那些如果被普遍遵守就能最大化幸福的规则。这缓解了功利主义经常被批评的"计算负担"问题——你不需要每次做决定时都算一遍，只需要遵循那些已知的良好规则。</p>
+</div>
+
+<div class="quote-block">
+  "在规则之下，幸福——不管是功利主义的幸福还是其他幸福——是可能的。在规则之外，它只是偶然发生的。"<br>
+  理查德&middot;黑尔斯（对密尔思想的解读）
+</div>
+
+<h2>功利主义的经典反驳</h2>
+
+<p>功利主义自诞生以来就面临猛烈批评。以下是最著名的几个反驳：</p>
+
+<div class="content-card">
+  <h3>反驳一：正义问题——"惩罚无辜者"</h3>
+  <p>假设一个小镇发生了一起恶性犯罪，公众愤怒、社会秩序受到威胁。警察发现了一个可以被定罪的人——但他实际上是无辜的。如果公开审判和惩罚这个人能平息公众愤怒、恢复秩序、避免更大的混乱，功利主义的计算器会告诉你：惩罚他是正确的。</p>
+  <p>这听起来荒谬。哲学家罗伯特&middot;诺齐克称之为"效用理论"——它把社会视为一个单一的人，可以任意分配痛苦和幸福，而不管个体权利。功利主义在这里面临的挑战是：它似乎无法为"个人权利不可侵犯"提供坚实基础。</p>
+</div>
+
+<div class="content-card">
+  <h3>反驳二：要求太高</h3>
+  <p>如果功利主义是正确的——每个行为都应该最大化整体幸福——那么你就不应该花钱买新衣服、吃一顿好的、或者买一个游戏机，除非你能证明这些钱用于捐赠给有效慈善事业会产生更大的幸福。哲学家彼得&middot;辛格（Peter Singer）甚至说，如果你路过一个浅水池看到一个小孩子要淹死，你停下衣服弄脏了的代价远小于孩子的命——所以你不救他就是道德错误的。</p>
+  <p>批评者说：这要求太高了，不现实。一个伦理理论应该指导普通人如何做，而不是要求每个人都成为道德圣人。</p>
+</div>
+
+<div class="content-card">
+  <h3>反驳三：不可通约性</h3>
+  <p>功利主义假设所有快乐和幸福都可以用同一个度量衡来比较和相加。但"读一本好书的快乐"和"吃一顿美食的快乐"能用同一个数字衡量吗？"失去亲人的痛苦"和"失去工作的痛苦"可以相加吗？批评者说，这些体验在质上完全不同，无法被塞进一个统一的"幸福数值"。</p>
+</div>
+
+<h2>功利主义的当代复兴</h2>
+
+<p>尽管面临这些批评，功利主义在过去五十年经历了惊人的复兴。原因之一是它极其适合用于<b>公共政策分析</b>——政府做预算决策、分配医疗资源、制定环保政策时，本质上就是在做功利主义计算。</p>
+
+<div class="content-card">
+  <h3>有效利他主义运动</h3>
+  <p>彼得&middot;辛格、威廉&middot;麦克阿什（William MacAskill）等人发起的"有效利他主义"（Effective Altruism）运动是当代功利主义最引人注目的实践。它的核心方法论极其功利主义：<b>用证据和理性分析来决定如何最有效地帮助他人</b>。例如，$100 在发达国家买一杯好咖啡和 $100 在发展中国家购买防疟疾蚊帐——后者拯救的生命远远多于前者带来的微小快乐。功利主义提供了评估"哪种善行更值得做"的清晰标准。</p>
+</div>
+
+<div class="content-card">
+  <h3>AI伦理与AI对齐</h3>
+  <p>功利主义正在成为AI伦理讨论的核心框架之一。在AI对齐（AI Alignment）研究中，如何定义"人类福祉"以及如何量化"系统的道德后果"是两个核心问题。功利主义的"幸福最大化"目标为AI系统提供了一个清晰、可计算的方向——虽然如何定义和测量"幸福"仍是巨大的技术挑战。</p>
+</div>
+
+<div class="content-card">
+  <h3>全球健康与全球不平等</h3>
+  <p>一个在发达国家患有白内障的病人，花费$4000美元手术就能恢复视力。同样的$4000美元，可以用$40的成本给100个发展中国家的人提供治疗沙眼（会导致失明的眼部感染）的药物。功利主义要求你认识到：在道德上，100个人的健康 > 1个人的健康。这不是冷酷——这是承认"道德平等"的必然推论。</p>
+</div>
+
+<h2>功利主义 vs 其他伦理框架</h2>
+
+<p>功利主义最大的竞争对手是义务论（以康德为代表）和德性伦理学（以亚里士多德为代表）。理解它们的差异是掌握现代伦理学地图的关键。</p>
+
+<div class="content-card">
+  <h3>三框架对比</h3>
+  <ul>
+    <li><b>功利主义</b>问："这个行为会产生什么后果？"——关注<b>结果</b>。正确 = 产生最多幸福的行为。</li>
+    <li><b>义务论</b>问："这个行为本身符合道德规则吗？"——关注<b>行为类型</b>。正确 = 符合道德义务的行为（无论后果如何）。</li>
+    <li><b>德性伦理学</b>问："有德性的人会怎么做？"——关注<b>品格</b>。正确 = 一个具有智慧、勇气、节制、正义等美德的人会做的行为。</li>
+  </ul>
+  <p><b>经典例子</b>：撒谎。功利主义说"看后果"——如果撒谎能拯救生命，那就应该撒谎。义务论说"撒谎就是错的"——无论后果如何，撒谎违反了绝对道德律。德性伦理学说"一个诚实但有智慧的人会怎么做？"——也许在特定情况下，诚实的品格和仁慈的品格发生冲突，需要智慧来权衡。</p>
+</div>
+
+<div class="practical-box">
+  <strong>今天的练习：</strong> 想想你最近做的一个道德相关决定——比如是否告诉朋友一个可能让他不舒服的真相。用三种框架分别分析：功利主义者会怎么想？义务论者会怎么想？一个有德性的人会怎么做？三种框架得出的结论一致吗？不一致时，你倾向于哪个？
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解功利主义</h2>
+  <p>根据功利主义伦理学的核心概念，判断以下情境。每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">功利主义的三个核心信念。</div>
+    <div class="sentence">功利主义判断一个行为"正确"的标准是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">行为是否符合道德义务或规则，无论后果如何</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">行为产生的后果能否为最多的人带来最大的净幸福</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">边沁与密尔的差异。</div>
+    <div class="sentence">密尔（John Stuart Mill）与边沁（Jeremy Bentham）在快乐问题上的关键分歧是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">边沁认为快乐只有量的区别，密尔认为快乐还有质的区别</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">边沁关注规则功利主义，密尔关注行为功利主义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">功利主义的经典反驳——"惩罚无辜者"思想实验。</div>
+    <div class="sentence">功利主义在这个思想实验中面临的挑战是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">功利主义无法计算出哪个后果带来的快乐更多</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">功利主义似乎可以为侵犯个人权利（如惩罚无辜者）提供道德辩护</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">密尔的"质的区分"理论。</div>
+    <div class="sentence">"做一个不满足的苏格拉底，胜过做一个愚蠢的傻瓜"这句话的核心意思是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">苏格拉底比傻瓜更聪明，所以他应该被尊重</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">智力快乐在质上高于感官快乐，即使前者的满足程度可能更低</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">功利主义在AI伦理中的应用。</div>
+    <div class="sentence">在AI对齐研究中，功利主义框架提供的核心价值是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">为AI系统提供一个不可侵犯的道德规则列表</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为AI提供一个清晰、可计算的方向——最大化系统产生的整体福祉</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">义务论与功利主义的对比。</div>
+    <div class="sentence">面对"撒谎"这个行为，义务论与功利主义的根本区别在于——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">功利主义认为撒谎永远不对，义务论认为要看后果</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">义务论关注行为本身是否符合道德规则，功利主义关注撒谎的后果</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">边沁的"快乐计算法"。</div>
+    <div class="sentence">边沁提出给快乐标注分值的主要目的是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">量化每个人的道德品质，区分好人和坏人</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为道德决策提供一个客观的、可计算的标准</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">有效利他主义（Effective Altruism）。</div>
+    <div class="sentence">有效利他主义的功利主义方法论核心是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">每个人都应该把全部收入捐赠给慈善事业</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">用证据和理性分析来决定如何最有效地帮助他人，最大化每单位资源的积极影响</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——功利主义最让人纠结的地方在于它既"简单"又"苛刻"。为什么计算幸福不能只看你自己？"惩罚无辜者"思想实验真的能反驳功利主义吗？如果功利主义这么有缺陷，为什么它还是公共政策领域最主流的伦理框架？这就是我该出场的时候。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://www.britannica.com/topic/utilitarianism" target="_blank">Britannica — Utilitarianism</a> — 对功利主义历史和不同版本的清晰概述。
+  <br><br>
+  <a href="../reference/utilitarianism-overview.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-buddhist-philosophy.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-epistemology.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '功利主义的核心是后果主义——一个行为的对错完全由其后果决定。具体来说，正确 = 能为最多的人带来最大净幸福的行为。这不涉及内在道德规则或个人品格，只看结果。', wrong: '义务论（如康德的伦理学）才认为行为对错取决于是否符合道德规则，与后果无关。功利主义恰恰相反：即使一个行为"表面上"符合规则，如果后果糟糕，它也是错的。' },
+    q2: { correct: '边沁认为所有快乐在本质上都是同质的，区别只在数量（强度、持续时间等维度）。密尔则提出了质的区分——智力快乐、审美快乐在质上高于感官快乐，"做一个不满足的苏格拉底胜过做一只满足的猪"。注意：边沁是行为功利主义者，密尔发展了规则功利主义的元素，所以选项1是正确的区分。', wrong: '实际上选项2把两人说反了——边沁更倾向于行为功利主义（直接计算每个行为的后果），密尔引入了规则功利主义的元素（遵循能最大化幸福的规则）。' },
+    q3: { correct: '"惩罚无辜者"思想实验揭示了一个核心问题：如果功利主义的计算器告诉你"牺牲一个无辜者可以拯救更多人的生命"，它会说"应该做"——但这违背了我们对个人权利的基本直觉。功利主义面临的最大挑战就是为"个人权利不可侵犯"提供基础。', wrong: '功利主义完全能够计算后果——问题不在于它算不出来，而在于计算结果可能违背我们对正义的直觉。如果无法计算出后果，那不是功利主义的问题，是所有后果主义理论都会遇到的问题。' },
+    q4: { correct: '密尔对边沁的最大修正就是提出了"质的区分"。他认为有些快乐在质上高于其他快乐——智力、审美和道德快乐优于单纯的感官快乐。即使苏格拉底不满足、傻瓜很满足，密尔也会说苏格拉底的生活更好，因为他的快乐在质上更高。', wrong: '这不是关于"尊重"的问题——密尔是在讨论快乐的质与量。他的核心论点是：人类作为有理性能力的存在者，一旦体验过智力快乐，就不会愿意回到纯粹感官快乐的狀態，哪怕后者更"满足"。' },
+    q5: { correct: '功利主义为AI对齐提供了一个清晰、可计算的目标函数——最大化系统产生的整体福祉。虽然"如何定义和测量福祉"是巨大挑战，但功利主义至少给出了一个明确的方向。相比之下，义务论需要列出不可违反的规则列表，这在AI系统中极难实现。', wrong: '功利主义不提供一个"不可侵犯的规则列表"——那正是义务论的特征。功利主义的核心恰恰是：规则是工具性的，只有在能最大化幸福时才应该遵守。' },
+    q6: { correct: '这是义务论与功利主义最根本的分歧。义务论关注行为本身——撒谎就是撒谎，不管它产生什么后果。功利主义关注后果——如果撒谎能拯救生命或减少痛苦，那它就是对的。同一个行为，两种完全不同的判断方式。', wrong: '选项1完全说反了。功利主义说"看后果"——如果撒谎后果好，就应该撒谎；义务论说"规则优先"——撒谎违反了诚实的道德律，所以是错的，无论后果如何。' },
+    q7: { correct: '边沁设计"快乐计算法"的动机是追求道德决策的客观性。他认为道德不应该基于直觉、传统或权威，而应该基于一个可计算的标准——快乐和痛苦。虽然这种量化方法在后来受到大量批评，但其目标（为道德提供客观基础）在启蒙运动时代是革命性的。', wrong: '边沁不是要量化"道德品质"——他关注的是行为的后果。"好人和坏人"是德性伦理学或义务论的范畴。边沁的快乐计算法是为了帮助人们在做道德决策时，客观地比较不同选择的后果。' },
+    q8: { correct: '有效利他主义的核心方法论是功利主义的：用证据和理性分析来评估慈善行动的"每单位影响"。$100 给发达国家买一杯好咖啡 vs. $100 在发展中国家购买防疟疾蚊帐——后者拯救的生命远多于前者带来的微小快乐。这就是功利主义的平等计算：每个人的福祉同等重要。', wrong: '有效利他主义不要求"全部收入捐赠"——它要求的是在个人生活中做出"最有效的慈善选择"。有人可能选择捐出20%的收入，也有人选择50%。关键是选择"最有效"的用法，而非捐赠比例本身。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你已经掌握了功利主义的核心原则、经典反驳及其当代发展。';
+      else if (score >= 6) label.textContent = '不错！功利主义的"最大幸福原则"看似简单但内涵丰富——重读错题解释。';
+      else label.textContent = '继续加油！功利主义最核心的是理解"后果主义+福祉主义+范围平等"这三个信念的组合。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

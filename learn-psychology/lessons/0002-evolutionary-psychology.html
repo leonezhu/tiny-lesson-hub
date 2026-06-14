@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>进化心理学 — 我们心智的远古设计</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>进化心理学：我们心智的远古设计</h1>
+<p class="lesson-meta">第 2 课 · ~10 分钟 · 心理学基础</p>
+
+<div class="goal-box">
+  <strong>本课结束，你将能够：</strong>解释为什么人类会有跨文化一致的心理倾向（如对甜食的偏好、对蛇的恐惧、择偶差异），并理解"自然选择的谬误"——进化解释不等于道德辩护。
+</div>
+
+<h2>核心假设：你的大脑是石器时代的产品</h2>
+<p>
+  进化心理学的核心观点非常简洁：<strong>人类的心智不是为现代环境设计的，而是为大约100万年前的非洲大草原设计的。</strong>我们的祖先在觅食、择偶、合作、防御和育幼这些任务上，经历了数百万年的自然选择和性选择压力。那些有助于生存的基因——偏好高热量食物、快速识别蛇和蜘蛛、倾向于信任自己群体的人——被保留了下来。
+</p>
+<p>
+  这意味着一个简单但颠覆性的推论：<strong>许多"非理性"行为，实际上只是过时的适应性在错误的环境中被激活了。</strong>
+</p>
+
+<h2>三大核心理论</h2>
+
+<div class="concept-card">
+  <h3>适应性设计</h3>
+  <p class="term">Adaptive Design — 心理机制是为解决祖先环境中的适应性问题而被选择出来的</p>
+  <p>
+    进化心理学认为，人类心智不是单一的通用处理器，而是由许多专门的心理机制组成的"瑞士军刀"。每个机制解决一个特定的适应性问题：
+  </p>
+  <ul class="examples">
+    <li><strong>觅食偏好：</strong>对糖和脂肪的强烈偏好。在食物稀缺的远古时代，能大量摄入高热量食物的人活得更久。但在现代超市里，同样的机制导致了肥胖流行。</li>
+    <li><strong>威胁检测：</strong>人类对蛇和蜘蛛的恐惧反应速度比对枪和电线快得多。祖先环境中，没能快速识别蛇的人被吃掉了；现代环境中，这种过度警觉导致焦虑症。</li>
+    <li><strong>语言习得：</strong>乔姆斯基认为人类天生具备"普遍语法"机制——这正是一个进化形成的心理模块，专门解决祖先群体中的复杂社交沟通问题。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>配偶选择与性选择</h3>
+  <p class="term">Sexual Selection — 巴尔斯（Robert Buss）的跨文化择偶研究</p>
+  <p>
+    进化心理学最有影响力的应用领域。巴尔斯在37个文化、31个国家（覆盖六大洲）的样本中发现了一致的择偶偏好模式：
+  </p>
+  <ul class="examples">
+    <li><strong>女性普遍更看重男性的资源和社会地位：</strong>因为女性怀孕和育幼的生物学成本极高，选择一个能提供资源的配偶是进化上的最优策略。</li>
+    <li><strong>男性普遍更看重女性的年轻和身体对称性：</strong>这两个信号在进化史上直接关联生育力。</li>
+    <li><strong>男女都同等重视"善良"和"智力"：</strong>因为好的合作者和养育者（无论男女）在任何环境中都有价值。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>亲本投资理论</h3>
+  <p class="term">Parental Investment Theory — 特里弗斯（Robert Trivers），1972</p>
+  <p>
+    特里弗斯的理论解释了择偶差异的根本原因：<strong>投资多的一方在选择配偶时更挑剔，投资少的一方更倾向于竞争多个配偶。</strong>
+  </p>
+  <ul class="examples">
+    <li>在人类中，女性的生物学投资（怀孕9个月、哺乳、育幼期长）远大于男性，因此女性更挑剔。</li>
+    <li>这在动物界同样适用：雄孔雀有华丽尾羽但不管后代，雌性孔雀选择配偶更谨慎。</li>
+    <li>在那些男性参与育幼程度高的文化（如瑞典），性别差异明显缩小——说明生物学倾向可以被文化弱化，但不会消失。</li>
+  </ul>
+</div>
+
+<h2>进化与"自然主义的谬误"</h2>
+<div class="chinese-note">
+  <strong>重要区分：</strong>理解一个行为的进化根源，不等于认为它是"对的"或"不可改变的"。<strong>"自然存在的" ≠ "应该存在的"。</strong>暴力、偏见和歧视也有进化根源——但这绝不意味着它们不能被克服。进化解释提供的是"为什么存在"的答案，不是"是否应该接受"的答案。
+</div>
+<p>
+  例如：内群体偏见（偏好自己的人）有进化根源——在远古小型群体中，不信任外群体的人是活下来的。但现代社会中，这种偏见会导致种族主义和国际冲突。理解它的来源，正是为了更有意识地克服它。
+</p>
+
+<h2>为什么这与你有关</h2>
+<p>
+  进化心理学不是学术玩具，它解释了太多日常现象：
+</p>
+<ul class="examples">
+  <li><strong>为什么减肥这么难？</strong>因为你的大脑仍然在"为饥荒时代设计"——高热量食物=生存优势。你的意志力和百万年的进化本能对抗，概率上你输了。</li>
+  <li><strong>为什么社交媒体让人上瘾？</strong>它利用了你对社会地位的进化敏感（点赞=群体接纳信号）和对新奇事物的注意偏向。</li>
+  <li><strong>为什么广告总是用性和恐惧？</strong>因为它们激活了你大脑中最古老、最深处的进化模块。</li>
+</ul>
+
+<h2>关键人物</h2>
+<p>
+  <strong>大卫·巴斯（David Buss）</strong> — 《欲望的博弈》，跨文化择偶研究的奠基人。<br>
+  <strong>罗伯特·特里弗斯（Robert Trivers）</strong> — 亲本投资理论、互惠利他理论的提出者。<br>
+  <strong>史蒂芬·平克（Steven Pinker）</strong> — 《心智探奇》，将进化心理学框架扩展到语言、道德、艺术等几乎所有人类行为领域。<br>
+  <strong>理查德·道金斯（Richard Dawkins）</strong> — 《自私的基因》，提出"基因中心"进化观。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>选出最符合进化心理学框架的解释。共 8 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">为什么很多人天生就喜欢甜食和高脂肪食物？</div>
+    <div class="sentence">从进化心理学角度看，这是因为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">在食物稀缺的远古时代，偏好高热量食物的人更容易存活</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">现代食品公司通过营销故意让人上瘾</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一个心理学家研究发现：女性在选择长期伴侣时，更倾向于选择收入较高的男性。</div>
+    <div class="sentence">进化心理学会如何解释这一现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">这是父权社会文化建构的结果</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">女性在生育和育幼中的生物学投资更大，资源丰富的配偶能提高后代存活率</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">进化心理学的核心假设是：</div>
+    <div class="sentence">人类心智的本质是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">一块空白的石板（tabula rasa），由后天经验完全塑造</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">由进化形成的专门心理机制组成的集合体</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一个人对蛇的恐惧远远超过对汽车的恐惧，尽管汽车每年造成的死亡远多于蛇。</div>
+    <div class="sentence">进化心理学如何解释这种"不理性"的恐惧？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">祖先环境中能快速识别蛇的人存活率更高，因此这种恐惧反应被自然选择强化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">这是因为人们平时看电视和电影里蛇的镜头比汽车事故的镜头多</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">特里弗斯的亲本投资理论预测：</div>
+    <div class="sentence">在配偶选择中，投资更少的一方通常会：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">在选择配偶时更加挑剔和谨慎</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">倾向于竞争更多配偶而不是专注单一关系</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一个人说："种族歧视是人类的自然天性，进化心理学都证明了。"</div>
+    <div class="sentence">关于"自然主义的谬误"，以下哪个说法是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是的，进化解释了来源就等于为它辩护</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不对——"存在"不等于"应该存在"，理解进化根源恰恰是为了克服偏见</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">为什么社交媒体会让人上瘾？</div>
+    <div class="sentence">从进化心理学角度，以下哪个解释最合理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为社交媒体使用了复杂的编程算法</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它利用了人类对社会地位和群体接纳信号敏感的进化心理机制</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">以下哪个学科与进化心理学的联系最为直接？</div>
+    <div class="sentence">进化心理学将自然选择原理应用于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">宏观经济学的市场行为</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">心理机制和适应性行为的研究</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的心理学导师。对某个概念的解释有怀疑？那就是好事，保持批判性思维。直接提问，我会解释给你听。
+  <br><br>
+  <strong>延伸阅读推荐：</strong> <a href="https://www.amazon.cn/dp/7508647434" target="_blank">《自私的基因》</a>（理查德·道金斯）— 从基因中心视角理解进化逻辑； <a href="https://www.amazon.cn/dp/7508612690" target="_blank">《心智探奇》</a>（史蒂芬·平克）— 用进化框架解释语言、道德、艺术的起源。
+  <br><br>
+  <a href="../reference/evolutionary-psychology.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0001-cognitive-psychology-intro.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-social-psychology.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确。在食物稀缺的远古环境中，能高效摄入高热量食物的人是生存优势——这个偏好被写进了我们的进化遗产。现代社会的肥胖问题，正是这个古老机制与全新食物环境"不匹配"的结果。',
+      wrong: '营销确实有影响，但进化心理学关注的是更深层的原因：即使在没有任何营销的情况下，人类依然会偏好甜食和高脂肪食物——这是因为我们的祖先环境需要这样的偏好才能生存。'
+    },
+    q2: {
+      correct: '正确。特里弗斯的亲本投资理论指出：在生育和育幼中投资更大的一方（通常是女性），在选择配偶时会更加挑剔，寻找能提供资源和保护的伴侣。这是一个跨文化一致的模式。',
+      wrong: '文化确实有影响，但巴斯在37个文化中的研究发现，即使控制了文化变量，这个模式依然显著存在——说明它有深层的生物学基础，不仅仅是文化建构。'
+    },
+    q3: {
+      correct: '正确。进化心理学的核心观点（由平克系统阐述）是：人类心智不是单一的通用处理器，而是由许多专门解决特定适应性问题（觅食、择偶、防御、合作）的心理机制组成的"瑞士军刀"。',
+      wrong: '洛克的"白板说"在心理学史上很重要，但现代进化心理学认为心智不是空白的——它带有大量进化塑造的先天结构和偏好。'
+    },
+    q4: {
+      correct: '正确。进化心理学解释了为什么我们会对进化上重要的威胁（蛇、蜘蛛、黑暗）产生强烈的恐惧反应——这些恐惧反应在远古环境中帮助我们存活。汽车虽然更危险，但它在进化史上出现的时间太短，大脑没有形成专门的恐惧机制。',
+      wrong: '媒体曝光确实会影响恐惧程度，但研究发现：即使是在没有蛇的文化中长大的孩子，也天生更容易对蛇图片产生恐惧反应。这说明恐惧机制至少部分是先天的。'
+    },
+    q5: {
+      correct: '正确。特里弗斯的理论非常优雅：谁的投资更大，谁就更挑剔。男性在繁殖上的生物学投资相对较小（精子成本低），所以进化倾向是"尽量多传播基因"——倾向于竞争更多配偶。',
+      wrong: '投资少的一方反而更挑剔——这正好说反了。投资越大，放弃的机会成本越高，自然选择会倾向于让这一方更谨慎地选择伴侣。'
+    },
+    q6: {
+      correct: '正确。这就是"自然主义的谬误"——从"事物存在"推出"事物应该被接受"是错误的逻辑。进化可以解释偏见为什么存在，但不意味着我们应该接受它。理解进化根源恰恰是为了更有效地克服它。',
+      wrong: '这是经典的自然主义谬误。科学解释一个行为的来源（"为什么存在"）和道德评价（"是否应该接受"）是两个完全独立的维度。很多有害行为也有进化根源。'
+    },
+    q7: {
+      correct: '正确。点赞=群体接纳的信号。在远古环境中，被群体排斥意味着死亡。所以我们对社交反馈极其敏感——这个古老机制被社交媒体完美利用了。编程算法是工具，进化解释的是为什么这个工具这么有效。',
+      wrong: '编程算法确实是技术基础，但进化心理学问的是：为什么社交媒体能对我们的心理产生如此强烈的影响？答案是我们的进化历史中对社交地位和本群体接纳的敏感性。'
+    },
+    q8: {
+      correct: '正确。进化心理学将进化生物学的自然选择和性选择原理直接应用于心理机制的研究——它本质上就是进化生物学与认知心理学的交叉学科。它与进化生物学共享同一个数学框架。',
+      wrong: '市场行为更多是经济学和博弈论的研究对象。进化心理学关注的是心理机制——语言、道德、择偶、合作等人类特有行为的进化起源。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对进化心理学有扎实的掌握。';
+      else if (score >= 6) label.textContent = '做得不错！回顾你做错的题目，解释里告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的概念卡片，然后试试再看一遍。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

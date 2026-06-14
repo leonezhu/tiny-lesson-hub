@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 身心问题</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400,600,700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card-section ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card-section ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .key-term {
+    background: var(--accent-light);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .core-formula {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>身心问题 · 参考卡</h1>
+<p class="card-meta">快速参考 &middot; 哲学核心概念速查</p>
+
+<div class="core-formula">
+  身心问题 = 物理世界（客观、可测量） vs 主观体验（私密、不可约）
+</div>
+
+<h2>五大立场一览</h2>
+
+<div class="card-section">
+  <h3>1. 二元论（Dualism）</h3>
+  <ul>
+    <li>心灵和物质是两种不同实体</li>
+    <li>核心难题：因果互动问题</li>
+    <li>代表：笛卡尔</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>2. 同一论（Identity Theory）</h3>
+  <ul>
+    <li>心理状态 = 大脑状态</li>
+    <li>类比：闪电 = 放电</li>
+    <li>问题：无法解释不同生物体的不同神经实现</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>3. 功能主义（Functionalism）</h3>
+  <ul>
+    <li>心理状态由功能角色定义，不由材料定义</li>
+    <li>多重可实现性：同一心理状态可在不同基质中实现</li>
+    <li>支持AI可能有意识的观点</li>
+    <li>代表：普特南、普莱斯</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>4. 取消唯物主义（Eliminative Materialism）</h3>
+  <ul>
+    <li>日常心理学概念是错误理论</li>
+    <li>类比：燃素 → 氧化反应</li>
+    <li>最激进的物理主义版本</li>
+    <li>代表：丘奇兰德夫妇</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>5. 属性二元论（Property Dualism）</h3>
+  <ul>
+    <li>只有一种实体（物质），但有两种属性（物理+心理）</li>
+    <li>心理属性不可还原为物理属性</li>
+    <li>避免了因果互动问题（因为只有一个实体）</li>
+    <li>代表：查尔莫斯</li>
+  </ul>
+</div>
+
+<h2>三大思想实验</h2>
+
+<div class="card-section">
+  <h3>中文房间（John Searle, 1980）</h3>
+  <p>一个人在房间里按规则手册处理中文符号，输出看似理解中文的回答。他理解中文吗？</p>
+  <p><strong>目的：</strong>反驳强AI——语法操作 ≠ 语义理解。</p>
+</div>
+
+<div class="card-section">
+  <h3>玛丽的房间（Frank Jackson, 1982）</h3>
+  <p>全知物理学家玛丽从未见过颜色，第一次看到红色时学到了新东西吗？</p>
+  <p><strong>目的：</strong>论证存在非物理的事实（感质）。</p>
+</div>
+
+<div class="card-section">
+  <h3>哲学僵尸（David Chalmers, 1996）</h3>
+  <p>物理上完全复制你的人，但没有主观体验。逻辑上可能吗？</p>
+  <p><strong>目的：</strong>如果可能 → 物理主义为假。</p>
+</div>
+
+<h2>关键术语</h2>
+<div class="card-section">
+  <ul>
+    <li><span class="key-term">感质（Qualia）</span> — 主观体验的"是什么感觉"层面</li>
+    <li><span class="key-term">因果封闭性</span> — 物理世界有完整的物理因果链</li>
+    <li><span class="key-term">多重可实现性</span> — 同一心理功能可由不同物理基质实现</li>
+    <li><span class="key-term">还原论</span> — 高级现象可完全解释为低级现象</li>
+    <li><span class="key-term">涌现</span> — 整体具有部分所不具备的新属性</li>
+  </ul>
+</div>
+
+<a href="../lessons/0011-mind-body-problem.html" class="back-link">返回完整课程 →</a>
+
+<div class="footer">
+  <a href="../index.html">哲学课程目录</a>
+</div>
+
+</body>
+</html>

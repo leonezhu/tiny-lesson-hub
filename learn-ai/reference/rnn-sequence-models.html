@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考卡：RNN 与序列模型</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    background: #fafbfc;
+  }
+
+  .card-box .formula {
+    font-family: 'Source Sans 3', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.4rem 0;
+  }
+
+  ul { padding-left: 1.2rem; margin-bottom: 0.5rem; }
+  li { margin-bottom: 0.2rem; }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1cm; max-width: none; font-size: 12pt; }
+  }
+</style>
+</head>
+<body>
+
+<h1>RNN 与序列模型</h1>
+<p class="card-meta">快速参考卡 &middot; AI 课程第五课</p>
+
+<h2>核心问题</h2>
+<div class="card-box">
+  <p>普通神经网络（CNN、MLP）的输入是独立的、固定的。但真实世界很多数据是<strong>序列</strong>：文本、语音、时间序列、视频——顺序至关重要。</p>
+</div>
+
+<h2>RNN 的核心机制</h2>
+<div class="card-box">
+  <h3>隐藏状态（Hidden State）— 网络的"记忆"</h3>
+  <p class="formula">h<sub>t</sub> = tanh(W<sub>hh</sub>h<sub>t-1</sub> + W<sub>xh</sub>x<sub>t</sub>)</p>
+  <p class="formula">y<sub>t</sub> = W<sub>hy</sub>h<sub>t</sub></p>
+  <p>在每个时间步 t，RNN 用当前输入 x<sub>t</sub> 和之前隐藏状态 h<sub>t-1</sub> 更新记忆，然后产生输出。</p>
+</div>
+
+<h2>三种架构</h2>
+<div class="card-box">
+  <p><span class="tag">单向 RNN</span> 从前向后处理（适合时间序列预测）</p>
+  <p><span class="tag">双向 RNN</span> 同时从前向后和从后向前（适合文本理解，需要完整上下文）</p>
+  <p><span class="tag">Encoder-Decoder</span> 编码输入 → 压缩向量 → 解码生成输出（机器翻译、文本摘要）</p>
+</div>
+
+<h2>长期依赖问题</h2>
+<div class="card-box">
+  <p><strong>梯度消失：</strong>长序列中误差信号逐层衰减，网络"忘记"早期信息。</p>
+  <p>比喻：传话游戏——信息经过多人传递后严重失真。</p>
+</div>
+
+<h2>LSTM 的三个门</h2>
+<div class="card-box">
+  <p><span class="tag">遗忘门</span> f<sub>t</sub> = sigmoid(...) → 决定遗忘什么</p>
+  <p><span class="tag">输入门</span> i<sub>t</sub> + C̃<sub>t</sub> → 决定记住什么新信息</p>
+  <p><span class="tag">输出门</span> o<sub>t</sub> → 决定输出什么</p>
+  <p><strong>关键：</strong>细胞状态（Cell State）是一条贯穿所有时间步的"高速公路"，信息可以几乎无损地传递。</p>
+</div>
+
+<h2>GRU（简化版 LSTM）</h2>
+<div class="card-box">
+  <p><span class="tag">更新门</span> — 合并遗忘门和输入门</p>
+  <p><span class="tag">重置门</span> — 控制旧信息如何被新信息覆盖</p>
+  <p>参数更少、训练更快，效果与 LSTM 相近。</p>
+</div>
+
+<h2>典型应用</h2>
+<div class="card-box">
+  <ul>
+    <li>机器翻译、文本生成、情感分析</li>
+    <li>语音识别、音乐生成</li>
+    <li>股票预测、蛋白质结构分析</li>
+  </ul>
+</div>
+
+<h2>与前后的关系</h2>
+<div class="card-box">
+  <p>RNN 的长期依赖问题 → 催生了注意力机制（Attention） → 构成了 Transformer 的核心 → 开启了 LLM 时代。</p>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0005-rnn-sequence-models.html">返回完整课程</a> &middot; 课程 5/12
+</div>
+
+</body>
+</html>

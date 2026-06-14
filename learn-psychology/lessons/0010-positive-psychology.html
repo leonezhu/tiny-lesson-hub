@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>积极心理学 — PERMA模型与幸福感的科学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>积极心理学：PERMA模型与幸福感的科学</h1>
+<p class="lesson-meta">第 10 课 · ~10 分钟 · 心理学进阶概念</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解积极心理学的基本立场——从"修复损伤"到"培育优势"的范式转变。掌握塞利格曼的PERMA模型，能用五个维度评估和提升自己的幸福感，并了解乐观、韧性和心流的科学训练方法。
+</div>
+
+<h2>范式的转变</h2>
+<p>
+  传统心理学在过去一百年里做了很多了不起的工作——它让我们理解了抑郁症、焦虑症、精神分裂症，并开发出有效的治疗方法。但有一个根本性问题：<strong>没有疾病不等于健康</strong>。一个没有精神疾病的人，可能仍然感到空虚、无意义、没有动力。
+</p>
+<p>
+  1998年，马丁·塞利格曼（Martin Seligman）当选为美国心理学会（APA）主席，他在就职演说中提出：<strong>心理学不仅要研究人类的痛苦，也要研究人类的卓越</strong>。这就是积极心理学的诞生——它不是要替代传统心理学，而是补足它遗漏的那一半。
+</p>
+
+<div class="highlight-box">
+  <strong>核心主张：</strong>心理学不仅要研究"怎么从-1恢复到0"，还要研究"怎么从0到+1"。幸福感不是"没有痛苦"，而是由积极情绪、投入感、人际关系、意义感和成就感五个独立维度构成的复杂状态。
+</div>
+
+<h2>PERMA模型：幸福感的五个支柱</h2>
+<p>
+  PERMA是塞利格曼在《飞腾》（Flourish）一书中提出的核心框架。这五个要素各自独立贡献于幸福感，不能简单加总。
+</p>
+
+<div class="card">
+  <h3>P — Positive Emotion（积极情绪）</h3>
+  <ul>
+    <li><strong>包括：</strong>快乐、感恩、满足、希望、愉悦、爱意</li>
+    <li><strong>特点：</strong>最容易被直接测量，也是大多数人想到"幸福"时首先想到的东西</li>
+    <li><strong>关键发现：</strong>积极情绪不是被动的感受——它扩展了你的思维-行动范围（Barbara Fredrickson的"拓展-建构"理论），让你更有创造力、更愿意社交、更能从挫折中恢复</li>
+    <li><strong>例子：</strong>和朋友聊天时的笑声、看到日出的感动、收到感谢消息的温暖</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>E — Engagement（投入）</h3>
+  <ul>
+    <li><strong>核心概念：</strong>完全沉浸于活动中，忘记时间和自我——契克森米哈伊称之为"心流"（flow）</li>
+    <li><strong>特征：</strong>挑战与技能匹配、清晰的目标、即时反馈、行动与意识融合</li>
+    <li><strong>关键发现：</strong>心流状态下，人报告"最不幸福"——因为心流时你在"做事"，不是"感受快乐"。但它同时被评价为"最有意义的体验"。</li>
+    <li><strong>例子：</strong>程序员进入debug状态忘记吃饭、画家沉浸于创作中、运动员在比赛中感觉时间变慢</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>R — Relationships（人际关系）</h3>
+  <ul>
+    <li><strong>核心发现：</strong>哈佛大学长达85年的"成人发展研究"表明，<strong>人际关系的质量是预测幸福感和健康的第一因素</strong>——比收入、社会地位、胆固醇水平都重要</li>
+    <li><strong>不是数量</strong>，是质量——有几个能深夜打电话的人，比1000个社交媒体好友重要得多</li>
+    <li><strong>积极心理学强调：</strong>给予比接受更能带来持久幸福感。实验显示，花钱给别人买东西比花在自己身上更快乐，且这种效果持续更久</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>M — Meaning（意义）</h3>
+  <ul>
+    <li><strong>定义：</strong>服务于比自身更大的目标</li>
+    <li><strong>与积极情绪的区别：</strong>意义不依赖于快乐感受。照顾患病的亲人可能充满痛苦，但那个人会觉得"这有意义"</li>
+    <li><strong>跨文化一致性：</strong>无论什么文化，人们报告的最有意义的事情都涉及连接到他人在乎的东西——家人、社区、信仰、事业</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>A — Accomplishment（成就）</h3>
+  <ul>
+    <li><strong>定义：</strong>追求并达成目标带来的满足感</li>
+    <li><strong>不是外部成就：</strong>不是"赚了多少"或"获得了什么头衔"，而是你为目标努力并达成的过程本身</li>
+    <li><strong>关键发现：</strong>成就动机是独立的幸福感来源——即使没有外部奖励或他人认可，达成目标的满足感本身就有价值</li>
+    <li><strong>例子：</strong>跑完第一个5公里、完成一个搁置已久的项目、学会一道新菜</li>
+  </ul>
+</div>
+
+<h2>为什么幸福不等于"感觉良好"</h2>
+<p>
+  PERMA模型最重要的洞见之一是：<strong>这五个要素各自独立，有时甚至会冲突</strong>。
+</p>
+
+<div class="comparison">
+  <div class="col">
+    <h4>短期快乐 vs 长期幸福</h4>
+    <p>刷社交媒体可能提升P（积极情绪），但会降低E（没有深度投入）、降低R（替代了真实社交）、降低M（没有意义）。这就是为什么"刷了3小时手机后反而更空虚"。</p>
+  </div>
+  <div class="col">
+    <h4>痛苦但有意义的体验</h4>
+    <p>照顾生病的孩子可能让你P很低（疲惫、焦虑），但R很高（与孩子的连接）、M很高（作为父母的意义）、A也可能高（看着孩子康复的成就感）。这种组合是"辛苦但值得的"。</p>
+  </div>
+</div>
+
+<h2>享乐跑步机：为什么快乐难以持久</h2>
+<p>
+  爱德华·迪纳（Ed Diener）和米哈里·契克森米哈伊提出了一个令人不安的发现：<strong>人们会对积极和消极事件都产生适应</strong>。中奖1000万的人，六个月后的快乐水平基本回到基线。遭遇事故截肢的人，一年后的快乐水平也大幅回升。
+</p>
+
+<div class="card">
+  <h3>享乐跑步机的机制</h3>
+  <ul>
+    <li><strong>适应（Hedonic Adaptation）：</strong>大脑会自动将新的刺激水平设为"正常"。新手机很兴奋，但两周后它就只是你的手机了。</li>
+    <li><strong>对比效应：</strong>你的幸福感很大程度上取决于你和谁比较。和同事比你可能觉得不错，和同事中的顶层比你可能觉得很差——尽管你的实际状况没变。</li>
+    <li><strong>基线回归：</strong>基因设定了每个人幸福感的"设定点"，约占幸福差异的50%。剩下的50%中，约10%由生活环境决定，约40%由有意识的活动决定。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>实用洞察：</strong>40%的比例意味着——<strong>你大约有四成的幸福感是可以主动控制的</strong>。这不是说"你要乐观所以你就应该快乐"，而是说：有意识地选择活动（感恩练习、投入感源、深度社交、意义追求），确实能让你的幸福感基线发生可测量的偏移。
+</div>
+
+<h2>乐观的解释风格：可以训练的技能</h2>
+<p>
+  塞利格曼从"习得性无助"转向"习得性乐观"的研究中发现：<strong>乐观不是一种天生的性格</strong>，而是一种解释风格——你对挫折如何归因的方式。
+</p>
+
+<div class="card">
+  <h3>悲观 vs 乐观的解释风格</h3>
+  <div class="comparison">
+    <div class="col">
+      <h4>悲观（永久性/普遍性/内在化）</h4>
+      <p><strong>"永远如此"</strong>——"我总是搞砸"</p>
+      <p><strong>" everywhere"</strong>——"我什么都做不好"</p>
+      <p><strong>"是我的错"</strong>——"都是我的问题"</p>
+    </div>
+    <div class="col">
+      <h4>乐观（暂时性/特定性/外在化）</h4>
+      <p><strong>"这次只是"</strong>——"这次没做好"</p>
+      <p><strong>"这个领域"</strong>——"这个具体项目有挑战"</p>
+      <p><strong>"有多种因素"</strong>——"有我的原因，也有环境因素"</p>
+    </div>
+  </div>
+</div>
+
+<p>
+  关键不是"盲目乐观"——乐观者同样是现实的。他们的区别在于：<strong>将挫折视为可以改变的、局部的、暂时的</strong>。这让你更有动力去解决问题，而不是陷入"做了也没用"的绝望。
+</p>
+
+<h2>积极心理学的日常练习</h2>
+<p>
+  积极心理学有一些经过实验验证的干预措施，每种都有明确的研究数据支持：
+</p>
+
+<div class="card">
+  <h3>感恩日记（3件好事）</h3>
+  <ul>
+    <li><strong>做法：</strong>每天睡前写下3件今天发生的好事，以及为什么发生</li>
+    <li><strong>效果：</strong>实验组坚持8周，幸福感提升25%，抑郁症状降低，睡眠质量改善。效果在6个月后仍然存在</li>
+    <li><strong>机制：</strong>重塑注意力的默认设置——从"今天哪里不对劲"转向"今天哪里还不错"</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>优势识别与应用</h3>
+  <ul>
+    <li><strong>做法：</strong>用VIA性格优势测验识别你的前5项核心优势，然后每天用一种新方式运用它们</li>
+    <li><strong>效果：</strong>与"补短板"策略相比，"发挥优势"策略在提升工作满意度和表现方面效果更显著、更持久</li>
+    <li><strong>例子：</strong>如果你最大的优势是"好奇心"，不要只把它用在学工作上——也可以用来更深入地了解你的家人和朋友</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>善意行动（Acts of Kindness）</h3>
+  <ul>
+    <li><strong>做法：</strong>每周做5次有意的善意行动——给同事带咖啡、写感谢邮件、帮邻居一个小忙</li>
+    <li><strong>效果：</strong>实验显示，一次性做5次善意行动比分散做效果更好——一天内连续做5件善事，能产生强烈的"向上螺旋"效应</li>
+    <li><strong>关键：</strong>善意必须是<span class="foreign">有意的</span>和<span class="foreign">出人意料的</span>。被要求的善行效果大打折扣</li>
+  </ul>
+</div>
+
+<h2>积极心理学的局限</h2>
+<p>
+  积极心理学也面临严肃的批评，理解这些局限能让你更好地使用它：
+</p>
+
+<div class="card">
+  <h3>批评与回应</h3>
+  <ul>
+    <li><strong>"有毒的积极"</strong> — 批评者说积极心理学有时会变成对负面情绪的否定。回应：真正的积极心理学从不否定痛苦——它承认痛苦是人生的真实部分，同时提醒你：痛苦不是全部。</li>
+    <li><strong>"幸福不等于解决问题"</strong> — 一个抑郁的人写感恩日记并不能解决抑郁的根源。回应：积极心理学的干预措施对临床抑郁症患者效果有限，它是"锦上添花"而非"雪中送炭"。</li>
+    <li><strong>"西方中心主义"</strong> — PERMA模型主要基于西方样本。回应：后续跨文化研究确实发现了一些差异——例如东亚文化中"人际关系"维度的权重可能更高。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong>中国传统文化中有丰富的积极心理学资源。"知足常乐"是对抗享乐跑步机的朴素智慧；"修身齐家治国平天下"与PERMA模型有深层共鸣——从个人修养到家庭关系到社会贡献，逐层递进。但也要注意，传统语境中的"忍"和"安分"有时被滥用为对不公的被动接受，这与积极心理学倡导的主动追求有本质区别。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你在比较传统心理学和积极心理学。</div>
+    <div class="sentence">积极心理学与传统心理学的核心区别是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">积极心理学只研究快乐的人</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">传统心理学关注修复损伤，积极心理学关注培育优势和潜能</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：你周末花了一整天画画，忘记看手机、忘记吃饭。</div>
+    <div class="sentence">这种"忘记时间和自我"的状态在积极心理学中被称为？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">积极情绪（Positive Emotion）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">投入/心流（Engagement/Flow）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：你花500元给自己买了一个一直想要的耳机。</div>
+    <div class="sentence">根据积极心理学的研究，哪种做法通常能带来更持久的幸福感？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">花500元请朋友吃一顿饭</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">花500元给自己买一件衣服</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你的项目失败了。</div>
+    <div class="sentence">以下哪种解释风格最符合"乐观"的定义？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"我就是能力不行，以后什么都做不好"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"这次是市场和团队协作的问题，下次我可以调整策略"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：你中了彩票大奖，第一个月非常兴奋。</div>
+    <div class="sentence">六个月后，你的快乐水平最可能出现什么变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">大幅提升——金钱长期影响幸福感</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基本回到中奖前的基线水平</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：一个护士长期照顾重症病人。</div>
+    <div class="sentence">用PERMA模型分析，她最可能在哪些维度上获得幸福感？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">主要是积极情绪（P）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">意义（M）、人际关系（R）和成就感（A），但积极情绪（P）可能不高</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：哈佛大学的85年追踪研究。</div>
+    <div class="sentence">该研究预测幸福感和健康的最重要因素是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">收入和财富积累</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人际关系的质量</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：你对"积极心理学是否太肤浅"感到怀疑。</div>
+    <div class="sentence">以下哪项正确描述了积极心理学的局限？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">积极心理学可以替代药物治疗抑郁症</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">积极心理学的干预对临床抑郁症患者效果有限，它不是万能药</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对PERMA模型的某个维度有疑问、想深入了解心流状态的形成条件，或者好奇如何开始感恩日记练习，直接问我。你也可以试着想想：如果你的一天中有五个PERMA维度，哪些维度今天表现最好？哪个最弱？为什么？
+  <br><br>
+  <strong>推荐资源：</strong> 《飞腾》（Flourish）—— 马丁·塞利格曼。这是PERMA模型的完整阐述，塞利格曼从"习得性无助"研究者到积极心理学创始人的思想转变历程也在书中有所展现。
+  <br><br>
+  <a href="../reference/positive-psychology.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-humanistic-psychology.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-neuroplasticity.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '积极心理学不是要替代传统心理学，而是要补足它。传统心理学擅长修复损伤（治疗精神疾病），积极心理学关注培育优势（促进幸福感和潜能）。两者是互补的——就像医学既要治病也要保健。', wrong: '积极心理学不是"只研究快乐的人"。它研究的是人类幸福感的构成机制，包括如何从低谷中恢复。传统心理学也不是"不研究快乐"——只是它的历史重心在病理方面。' },
+    q2: { correct: '"忘记时间和自我"是心流（flow）的典型特征，也是PERMA中E（Engagement/投入）的核心。契克森米哈伊将心流定义为"挑战与技能匹配时的完全沉浸状态"——在这种状态中，自我意识消退，行动和意识融合。', wrong: '积极情绪（P）指的是快乐、感恩等主观感受。画画时忘记时间不是"感觉快乐"那么简单，而是完全沉浸于活动本身——这是心流/投入（E），不是单纯的积极情绪。' },
+    q3: { correct: '积极心理学的研究反复发现：花钱给别人买东西比花在自己身上带来更持久的幸福感。这是因为社交连接（R维度）是幸福感最稳定的预测因子，而且善意行动能产生"温暖的发光"（warm glow）效应。', wrong: '给自己买东西的快感通常很快适应——新衣服穿一周就不再兴奋了。这就是享乐跑步机效应。把钱花在人际关系上（请朋友吃饭）能同时激活P、R、A多个维度。' },
+    q4: { correct: '乐观的解释风格是"暂时性+特定性+外在化"——把挫折看作暂时的（这次不是永远）、特定的（这个领域不是所有领域）、有多种因素（不只是我的错）。这不是盲目乐观，而是准确的归因：承认问题但相信可以改变。', wrong: '"我就是能力不行，以后什么都做不好"是悲观解释风格的三个特征：永久性（永远如此）、普遍性（什么都做不好）、内在化（全是我的错）。这种归因会导致习得性无助。' },
+    q5: { correct: '这就是"享乐跑步机"（hedonic treadmill）效应——人对积极和消极事件都会产生适应。研究表明，中奖后的快乐峰值通常在几个月内回落。不是说钱不重要——而是人脑会自动将新的生活水平设为"正常"。', wrong: '虽然金钱在基本需求层面确实影响幸福感，但超过某个阈值后，额外收入对幸福感的边际贡献急剧下降。更关键的是，人会对新的生活水平产生适应，这就是享乐跑步机。' },
+    q6: { correct: '照顾重症病人是PERMA模型的经典案例——它可能极大地提升M（意义：帮助他人）、R（与病人及同事的深度连接）、A（看到病人康复的成就感），但P（积极情绪）可能很低，因为工作本身充满压力和悲伤。这说明"幸福"不等于"快乐"。', wrong: '虽然护士可能在P维度上收获有限（照顾重症病人往往辛苦而不是快乐的），但PERMA的核心洞见就是五个维度可以独立变化。她在M、R、A上可能获得很高的幸福感。' },
+    q7: { correct: '哈佛大学成人发展研究是人类历史上最长的纵向研究。其结论明确：关系越好，人就越幸福、越健康、活得更长。不是"朋友越多越好"，而是"关系的质量"——你能否在深夜打电话求助，是否有一个你可以完全信任的人。', wrong: '收入和财富在基本需求满足层面确实影响幸福感，但在哈佛大学的研究中，当基本需求得到满足后，财富对幸福感和健康的预测力远低于人际关系质量。许多富人的研究显示，孤独感比贫穷更致命。' },
+    q8: { correct: '积极心理学的干预措施（如感恩日记、善意行动）对一般人群有明确的积极效果，但对临床抑郁症患者的效果有限。抑郁症是复杂的医学状况，需要专业治疗（药物、心理治疗）。积极心理学是"锦上添花"而非"雪中送炭"。', wrong: '积极心理学不能替代药物治疗抑郁症。它是一个辅助框架，帮助人们在非临床状态下提升幸福感和应对能力。对于临床抑郁症，专业的医学和心理治疗是必要的。说它能"替代"药物是完全错误的。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对积极心理学的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

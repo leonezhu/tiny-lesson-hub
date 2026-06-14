@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 冷战</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .timeline-card .event {
+    padding: 0.35rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card .event::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .timeline-card .event .year {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .concept-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: #f9fafb;
+  }
+
+  .concept-box h3 {
+    margin-top: 0;
+  }
+
+  .concept-box ul {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-box ul li {
+    margin-bottom: 0.35rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第10课：冷战</h1>
+<p class="lesson-meta">第10课 &middot; ~10 分钟 &middot; 现代世界格局的塑造者</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够解释冷战的起源、运行机制、关键转折点，以及它如何塑造了当今的国际秩序——包括中美关系、核武器、北约东扩和阿富汗问题。
+</div>
+
+<h2>什么是冷战</h2>
+<p>冷战（1947–1991年）是第二次世界大战后美国为首的西方阵营与苏联为首的东方阵营之间持续约45年的全面对抗。核心特征是：<strong>两大阵营从未直接交火</strong>，但通过代理人战争、军备竞赛、宣传战和经济竞争展开博弈。</p>
+
+<div class="concept-box">
+  <h3>冷战的三个核心维度</h3>
+  <ul>
+    <li><strong>军事维度</strong>：核军备竞赛 + 代理人战争（朝鲜、越南、阿富汗）</li>
+    <li><strong>经济维度</strong>：市场经济 vs 计划经济，谁能创造更多财富</li>
+    <li><strong>意识形态维度</strong>：自由民主 + 个人主义 vs 共产主义 + 集体主义</li>
+  </ul>
+</div>
+
+<h2>为什么冷战会爆发</h2>
+<p>二战结束时，美苏是盟友——但它们的合作从一开始就建立在互不信任的基础上。</p>
+
+<div class="timeline-card">
+  <h3>从盟友到对手：1945–1949</h3>
+  <div class="event"><span class="year">1945年</span>：纳粹德国和日本崩溃，欧亚大陆出现权力真空</div>
+  <div class="event"><span class="year">1945–1946年</span>：丘吉尔发表"铁幕"演说，西方公开承认世界分裂</div>
+  <div class="event"><span class="year">1947年3月</span>：杜鲁门主义——美国宣布支持所有面临共产主义威胁的自由国家</div>
+  <div class="event"><span class="year">1947年6月</span>：马歇尔计划启动——向西欧提供130亿美元援助</div>
+  <div class="event"><span class="year">1949年</span>：北约成立 + 苏联拥有原子弹 + 中华人民共和国成立——两大阵营正式形成</div>
+</div>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>冷战不是因为某一个人或某一个决策爆发的——它是由结构性矛盾驱动的。美苏各自都有"安全焦虑"：苏联想要东欧缓冲区以防再次被入侵，美国要建立一个开放的国际秩序。这两种安全诉求不可兼容。
+</div>
+
+<h2>核心机制：核威慑与代理人战争</h2>
+
+<div class="concept-box">
+  <h3>相互确保毁灭（MAD）</h3>
+  <p>到1986年巅峰期，美苏拥有约7万枚核弹头，足以多次消灭地球上的所有生命。这创造了一种奇怪的和平——大国之间不再直接开战，因为代价是不可承受的。</p>
+  <p><strong>结果：</strong>全球范围内出现了"长和平"，但代理人战争在亚、非、拉各地爆发。</p>
+</div>
+
+<div class="timeline-card">
+  <h3>主要代理人战争</h3>
+  <div class="event"><strong>朝鲜战争（1950–1953）</strong>：中国 + 苏联 vs 美国 + 韩国 → 最终停留在三八线</div>
+  <div class="event"><strong>越南战争（1955–1975）</strong>：苏联 + 中国 vs 美国 → 美国撤军，北越统一</div>
+  <div class="event"><strong>阿富汗战争（1979–1989）</strong>：苏联入侵，美国通过巴基斯坦支持圣战者 → 苏联撤军，但留下极端主义祸根</div>
+</div>
+
+<h2>冷战的关键转折点</h2>
+
+<h3>古巴导弹危机（1962年）——最接近核战争的时刻</h3>
+<p>苏联在古巴部署核导弹，距美国本土仅145公里。美国实施海上封锁。经过13天对峙，双方各退一步：苏联撤走导弹，美国秘密撤走土耳其的导弹。</p>
+<p><strong>教训：</strong>危机管理比军事力量更重要。核时代没有赢家。</p>
+
+<h3>缓和时期（1970年代）</h3>
+<p>美苏关系短暂缓和，签署了SALT I限制战略武器条约和赫尔辛基协定。但缓和在1979年阿富汗战争后结束。</p>
+
+<h3>终结：戈尔巴乔夫的改革（1985–1991）</h3>
+<p>1985年上台的戈尔巴乔夫推行Glasnost（公开性）和Perestroika（经济重构），本意是改革社会主义制度，结果却加速了它的崩溃。1989年柏林墙倒塌，1991年12月25日苏联国旗从克里姆林宫降下，冷战正式结束。</p>
+
+<div class="concept-box">
+  <h3>为什么苏联输了？</h3>
+  <p>根本原因不是军力不够——苏联的军事力量在1980年代达到巅峰。失败源于经济制度：</p>
+  <ul>
+    <li>计划经济在军事和重工业方面表现出色，但在消费品和科技创新方面远逊于市场经济</li>
+    <li>苏联军费占GDP的15–17%，美国仅5–6%——军备竞赛拖垮了经济</li>
+    <li>GDP统计严重高估了苏联的实际产出（苏联式核算不计入服务、质量和效率）</li>
+  </ul>
+</div>
+
+<h2>冷战的遗产：它如何塑造了今天的世界</h2>
+
+<h3>1. 北约没有解散，反而东扩</h3>
+<p>冷战结束后，北约不仅没有解散，反而向东扩展，吸收了多个前华约成员国和前苏联加盟共和国。这是今天俄乌冲突的历史根源之一。</p>
+
+<h3>2. 核武器的永久遗产</h3>
+<p>核武器没有在冷战中消失——今天约12000枚核弹头分布在9个国家。人类仍然生活在"相互确保毁灭"的阴影下。</p>
+
+<h3>3. 中东的结构性冲突</h3>
+<p>冷战时期的代理人关系塑造了今天的中东格局：美国与以色列、沙特的联盟，伊朗与美国的敌对，以及阿富汗这条从苏联入侵到塔利班再到9/11的因果链。</p>
+
+<h3>4. 全球化的加速</h3>
+<p>冷战后美国主导的开放秩序为全球化和中国崛起提供了条件。中国通过改革开放融入全球经济体系，成为过去40年最重要的地缘政治变量。</p>
+
+<div class="chinese-note">
+  <strong>当代类比——中美竞争：</strong>有人称当前中美关系为"冷战2.0"。相似之处：两个超级大国战略竞争、意识形态差异、技术竞争。关键区别：中美经济高度互依（贸易、投资、供应链），而美苏几乎没有经济往来；中国不是全球意识形态革命输出者。
+</div>
+
+<h2>从博弈论看冷战</h2>
+<p>冷战是博弈论中<strong>"囚徒困境"</strong>的经典案例：美苏双方都希望通过军备竞赛获得安全优势，但理性追求个人最优的结果是双方都投入大量资源在军备上，整体安全水平反而没有改善。只有通过可信的承诺机制（如军控条约和核查制度）才能打破困境。</p>
+
+<div class="chinese-note">
+  <strong>记住四个冷战胜负法则：</strong>① 势力范围的认知差异是冲突的最大来源 ② 军备竞赛是消耗性的 ③ 对话比对抗廉价 ④ 冷战的结束不是必然的——如果戈尔巴乔夫选择了镇压而非改革，结果可能完全不同。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解冷战</h2>
+  <p>选择正确答案，每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解冷战的核心特征</div>
+    <div class="sentence">冷战最核心的特征是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">美苏之间爆发全面核战争</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">美苏通过代理人战争间接对抗，从未直接交火</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解核威慑的机制</div>
+    <div class="sentence">"相互确保毁灭"（MAD）的核心逻辑是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">如果一方发动核攻击，另一方有足够的核武器报复，导致双方都被毁灭</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">双方都承诺永不首先使用核武器</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解冷战的经济维度</div>
+    <div class="sentence">导致苏联解体的根本经济原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">美国对苏联实施了全面的经济禁运</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">计划经济在消费品和科技创新方面远逊于市场经济，军备竞赛拖垮了经济</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解冷战的标志性事件</div>
+    <div class="sentence">标志着冷战正式结束的事件是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">1989年柏林墙倒塌</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">1991年12月25日苏联解体，国旗从克里姆林宫降下</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解冷战的地缘政治遗产</div>
+    <div class="sentence">今天俄乌冲突的历史根源之一是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">苏联时期强制合并了乌克兰和俄罗斯</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">冷战结束后北约东扩，吸收了前华约成员国和前苏联加盟共和国</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解博弈论视角</div>
+    <div class="sentence">从博弈论角度看，冷战军备竞赛是经典的：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">零和博弈——一方获益必然意味着另一方受损</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">囚徒困境——双方理性追求自身安全，结果反而更不安全</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解代理人战争</div>
+    <div class="sentence">以下哪场战争被称为苏联的"越南战争"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">1979–1989年的阿富汗战争</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">1950–1953年的朝鲜战争</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解冷战与当代中美关系的比较</div>
+    <div class="sentence">当前中美竞争与冷战的<em>关键区别</em>是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">中国拥有核武器而苏联没有</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">中美经济高度互依（贸易、投资、供应链），而美苏几乎没有经济往来</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的历史导师。不理解为什么苏联的军备竞赛拖垮了经济？不确定冷战的哪些遗产在今天还能看到？直接问，我来解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.penguinrandomhouse.com/books/398005/guns-germs-and-steel/" target="_blank">《枪炮、病菌与钢铁》</a>——贾雷德·戴蒙德。理解地理和环境如何塑造文明兴衰，帮你跳出"英雄史观"的陷阱。
+  <br><br>
+  <a href="../reference/冷战.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-the-russian-revolution-and-soviet-union.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-zhong-guo-gai-ge-kai-fang.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '冷战的核心特征就是"冷"——两大阵营从未直接交火。所有冲突都通过代理人（朝鲜、越南、阿富汗等）进行。如果爆发直接核战争，那就不再叫"冷"战了。',
+      wrong: '美苏之间从未爆发全面核战争。恰恰相反，正因为双方都害怕核战争，冷战才被称为"冷"战。冲突是通过代理人进行的。'
+    },
+    q2: {
+      correct: 'MAD的逻辑是：你打我，我也能打你，我们都完蛋。因此任何一方都不敢先动手。这不是靠承诺，而是靠"报复能力"本身来维持和平。',
+      wrong: 'MAD不是关于"不首先使用"的承诺。它关于的是"如果你用了，我也有足够的力量摧毁你"。双方都没有做出这样的承诺——核威慑靠的是能力，不是承诺。'
+    },
+    q3: {
+      correct: '苏联的经济问题根源于制度本身。计划经济可以集中资源搞军工和重工业，但无法高效生产消费品，也无法激励科技创新。军费占GDP的15-17%，拖垮了本已脆弱的经济。',
+      wrong: '美国确实对苏联有经济压力，但根本原因不在外部——苏联的计划经济体制在创新和消费品生产方面系统性落后于市场经济。经济竞争才是冷战的长期维度。'
+    },
+    q4: {
+      correct: '柏林墙倒塌（1989年）是冷战结束的<em>象征性</em>事件，但正式结束的标志是1991年12月25日苏联解体——当天苏联国旗从克里姆林宫降下，俄罗斯联邦的三角旗升起。',
+      wrong: '柏林墙倒塌是冷战结束的标志性<em>象征事件</em>，但正式结束的标志是1991年12月25日苏联解体。这两个时间点都重要，但苏联解体的法律意义更重大。'
+    },
+    q5: {
+      correct: '冷战结束后，北约不仅没有解散，反而东扩了三轮，吸收了波兰、匈牙利、捷克、波罗的海三国等国家。俄罗斯认为这违背了冷战结束后的安全承诺，是今天冲突的历史根源之一。',
+      wrong: '乌克兰在苏联时期确实是加盟共和国之一，但这不是俄乌冲突的直接原因。真正的历史根源是冷战结束后北约的东扩——俄罗斯认为西方的安全承诺被破坏了。'
+    },
+    q6: {
+      correct: '囚徒困境：美苏都想安全，但各自增加军备导致对方也增加军备。结果双方都投入更多、但整体安全水平没有改善——这就是理性个人决策导致集体非最优的典型。',
+      wrong: '零和博弈是一方获益必导致另一方受损。但冷战的军备竞赛不是零和——双方都在军备竞赛上花了钱，结果双方都没有更安全。这是囚徒困境，不是零和博弈。'
+    },
+    q7: {
+      correct: '苏联1979年入侵阿富汗，打了十年，消耗了大量国力和声誉。这被称为苏联的"越南战争"——一场打不赢也撤不出的消耗战。',
+      wrong: '朝鲜战争虽然是代理人战争，但它在1953年就结束了，而且中国是主力参战方。被称为苏联"越南战争"的是1979–1989年的阿富汗战争——苏联陷入十年消耗战无法脱身。'
+    },
+    q8: {
+      correct: '这是最关键的结构差异。美苏几乎没有经济往来——苏联的经互会和西方的市场经济完全隔离。而中美之间每年贸易额超过6000亿美元，深度嵌入全球供应链。经济互依降低了全面冲突的可能性。',
+      wrong: '实际上美苏都有核武器——1986年双方加起来就有约7万枚核弹头。关键区别不是核武器，而是经济互依程度：中美经济高度融合，而美苏几乎完全没有经济联系。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对冷战的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第七课：大语言模型 LLM</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>大语言模型 LLM</h1>
+<p class="lesson-meta">第 7 课 &middot; ~12 minutes &middot; 从 Transformer 到 GPT、Claude、Gemini</p>
+
+<div class="goal-box">
+  <strong>本课学完后</strong>，你将能够解释 LLM 的三个训练阶段（预训练、微调、对齐），理解"预测下一个词"如何在规模放大后涌现出推理和编程能力，并能说清缩放定律（Scaling Laws）的含义和它对 AI 发展的意义。
+</div>
+
+<h2>LLM 是什么？</h2>
+<p>
+  大语言模型（Large Language Model, LLM）是以 Transformer 为架构基础，通过在海量文本上学习语言规律和世界知识的神经网络。GPT-4、Claude、Gemini、Llama 都属于 LLM。
+</p>
+<p>
+  LLM 的本质是一个<strong>概率分布建模器</strong>：给定前面的文字，预测下一个字/词是什么。但这个简单目标在规模足够大时，涌现出了令人惊讶的能力——推理、翻译、编程、对话。
+</p>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>LLM 学的不是"知识数据库"，而是一种<strong>世界模型</strong>——关于事物如何关联、因果关系如何运作的内部表示。当你问"地球到月球的距离"时，它不是查表，而是基于训练中见过的无数相关文本，概率性地生成正确答案。
+</div>
+
+<h2>LLM 的三个训练阶段</h2>
+
+<h3>阶段一：预训练（Pre-training）—— 从海量文本中学习语言</h3>
+<div class="concept-card">
+  <h3>做什么</h3>
+  <p>
+    在数千亿到十万亿 token 的文本上训练，目标是<strong>下一个 token 预测</strong>。模型看到文本的前面部分，猜下一个词是什么。猜错了就调整参数，猜对了就保留。
+  </p>
+  <h3>规模对比</h3>
+  <ul class="examples">
+    <li><strong>GPT-3</strong>：5700 亿 token，1750 亿参数</li>
+    <li><strong>PaLM</strong>：7800 亿 token，5400 亿参数</li>
+    <li><strong>GPT-4</strong>：估计 10 万亿 token 以上，参数数量未公开（估计数万亿）</li>
+  </ul>
+  <h3>学到了什么</h3>
+  <p>
+    语法、事实知识、推理模式、不同领域的关联。预训练的损失函数遵循<strong>幂律衰减</strong>——每增加 10 倍数据，损失降低约 0.5-0.7 倍，说明数据越多越好，没有明显天花板。
+  </p>
+</div>
+
+<h3>阶段二：监督微调（SFT）—— 从"续写"到"回答问题"</h3>
+<div class="concept-card">
+  <h3>问题</h3>
+  <p>
+    预训练好的模型只会"续写文本"。你给它一个开头，它接着写。但它不会主动回答问题、不会遵循指令。
+  </p>
+  <h3>解决</h3>
+  <p>
+    用<strong>人工编写的高质量指令-回答对</strong>进一步训练。比如：
+  </p>
+  <ul class="examples">
+    <li>指令："请帮我写一封辞职信"<br>回答："尊敬的领导，我因个人原因决定辞去目前的工作……"</li>
+    <li>指令："Python 中如何读取 CSV 文件？"<br>回答：给出 pandas.read_csv() 的代码示例</li>
+  </ul>
+  <p>
+    这一步让模型学会了"按照人类期望的方式回应"，而不仅仅是"顺着文字往下写"。
+  </p>
+</div>
+
+<h3>阶段三：人类反馈对齐（RLHF / DPO）—— 让输出符合人类偏好</h3>
+<div class="concept-card">
+  <h3>问题</h3>
+  <p>
+    SFT 后的模型虽然能回答问题，但可能：回答太长、语气不好、提供有害信息。我们需要它<strong>更符合人类偏好</strong>。
+  </p>
+  <h3>两种方法</h3>
+  <ul class="examples">
+    <li><strong>RLHF（人类反馈强化学习）</strong>：让人类对多个模型输出排序，训练一个"奖励模型"来模拟人类偏好，然后用强化学习（PPO 算法）优化模型。ChatGPT 用的就是这个方法。</li>
+    <li><strong>DPO（直接偏好优化）</strong>：Claude 用的方法。绕过奖励模型，直接在偏好数据上优化——给模型看"好的回答"和"不好的回答"，让它学会区分。更简洁高效。</li>
+  </ul>
+</div>
+
+<h2>涌现能力：为什么"大"很重要？</h2>
+<p>
+  LLM 最令人困惑的现象是<strong>涌现能力</strong>（Emergent Abilities）——某些能力在模型规模较小时完全不存在，但超过某个阈值后突然出现。
+</p>
+
+<div class="concept-card">
+  <h3>涌现的例子</h3>
+  <ul class="examples">
+    <li><strong>算术</strong>：小模型做加法一塌糊涂，大模型能做多位运算</li>
+    <li><strong>指令跟随</strong>：小模型不理解"请总结这篇文章"是什么意思，大模型能准确执行</li>
+    <li><strong>少样本学习</strong>：给几个例子就让模型学会新任务</li>
+    <li><strong>代码生成</strong>：从自然语言描述生成可运行的代码</li>
+  </ul>
+</div>
+
+<p>
+  这种现象与复杂系统中的<strong>相变</strong>类似——水在 0°C 突然结冰，铁在居里温度突然失去磁性。LLM 在参数量和训练量跨越某个临界点后，也发生了类似的"能力跃迁"。
+</p>
+
+<div class="chinese-note">
+  <strong>重要提醒：</strong>涌现 ≠ 魔法。它仍然是统计学 + 工程学的结果。模型不是"突然变聪明了"，而是在足够大的规模下，之前分散的小能力整合成了更高级的能力。就像一滴水没有湿性，但亿万个水分子聚集起来就有了"湿润"的特性。
+</div>
+
+<h2>缩放定律（Scaling Laws）</h2>
+<p>
+  缩放定律是 LLM 领域最重要的发现之一。它告诉我们：<strong>模型的性能可以通过简单地增加计算资源来预测和改善</strong>。
+</p>
+
+<div class="concept-card">
+  <h3>Kaplan 定律（2020）</h3>
+  <p>
+    训练损失与计算量呈幂律关系：L ∝ C<sup>-α</sup>（α ≈ 0.07）。这意味着计算量每增加 10 倍，损失降低约 0.7 倍。没有"智能奇点"，只有平滑的渐进改进。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>Chinchilla 定律（2022）</h3>
+  <p>
+    在有限计算预算下，最优策略是让<strong>参数量和训练数据量以固定比例同步增长</strong>。一味堆参数而忽略数据量，或相反，都会导致性能次优。
+  </p>
+  <p>
+    这个发现直接改变了行业策略——之前大家拼命增大模型，后来发现数据量同样重要。
+  </p>
+</div>
+
+<h2>LLM 的能力边界</h2>
+<p>
+  理解 LLM 能做什么、不能做什么，和了解它能做什么同样重要。
+</p>
+
+<div class="concept-card">
+  <h3>LLM 擅长的事</h3>
+  <ul class="examples">
+    <li>文本生成、摘要、翻译、改写</li>
+    <li>代码生成与调试</li>
+    <li>问答（基于训练数据中的知识）</li>
+    <li>创意写作、头脑风暴</li>
+    <li>格式转换（JSON ↔ 表格 ↔ 自然语言）</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>LLM 不擅长的事</h3>
+  <ul class="examples">
+    <li><strong>事实准确性保证</strong>：LLM 会编造看似合理但完全错误的事实（"幻觉"）</li>
+    <li><strong>精确推理</strong>：复杂的多步逻辑推理仍然容易出错</li>
+    <li><strong>实时信息</strong>：不知道训练数据截止之后的事情</li>
+    <li><strong>确定性输出</strong>：同样的问题可能得到不同的答案</li>
+    <li><strong>真正的理解</strong>：LLM 没有意识或意图，它只是在统计意义上生成文本</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心理解：</strong>LLM 的"智能"是一种统计智能——它在海量数据中找到了模式和关联，但没有人类意义上的理解、意图或信念。把它当作一个极其强大的"模式匹配引擎"，而不是一个"思考的大脑"。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>选出每个问题的正确答案。每题有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解 LLM 的训练流程</div>
+    <div class="sentence">LLM 训练的正确顺序是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">预训练 → 监督微调（SFT） → 人类反馈对齐（RLHF）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">监督微调 → 预训练 → 人类反馈对齐</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解预训练的目标</div>
+    <div class="sentence">LLM 预训练阶段的核心目标是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">学习特定任务（如翻译、分类）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">预测下一个 token（词/字）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解监督微调（SFT）的作用</div>
+    <div class="sentence">预训练后的模型需要 SFT 的原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">让模型学会遵循指令，而不是只续写文本</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">预训练模型无法理解语言</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解涌现能力</div>
+    <div class="sentence">"涌现能力"指的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">程序员在模型中刻意编程实现的功能</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">模型规模达到阈值后突然出现的、训练时未明确设计的能力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解缩放定律</div>
+    <div class="sentence">Chinchilla 定律的核心结论是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">模型越大越好，数据量不重要</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在有限预算下，参数量和训练数据量应同步增长</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解 RLHF 与 DPO</div>
+    <div class="sentence">DPO 与 RLHF 的主要区别是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">DPO 不需要任何人类反馈数据</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">DPO 绕过奖励模型，直接在偏好数据上优化</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解 LLM 的本质</div>
+    <div class="sentence">LLM 回答"地球到月球的距离"时，它的机制是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">查询内置的知识数据库/表格</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基于训练数据中的统计模式，概率性地生成答案</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解 LLM 的能力边界</div>
+    <div class="sentence">以下哪项是 LLM 的典型局限？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">可能编造看似合理但错误的事实（幻觉）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">无法生成任何形式的内容</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的 AI 导师。觉得某个概念还不清晰？这正是我们该深入讨论的地方。直接输入你的问题，我会详细解释。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://www.youtube.com/watch?v=7xHGZeDOckY" target="_blank">3Blue1Brown — But what is a GPT? (Neural Networks)</a> — 用动画直观解释 GPT 的工作原理，是理解 LLM 的最佳视频资源之一。
+  <br><br>
+  <a href="../reference/llm-overview.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-llm-overview.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-rag-vector-db.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'LLM 的标准训练流程是：先在海量文本上做预训练（学习通用语言能力），再用人工编写的指令-回答对做微调（学会遵循指令格式），最后用人类反馈做对齐（让输出符合人类偏好）。这三步缺一不可。', wrong: '正确的顺序必须是预训练在前——模型需要先学会语言本身，才能学习特定的指令格式。SFT 在预训练之后，RLHF 在最后。' },
+    q2: { correct: '预训练的核心目标就是"预测下一个 token"——给定前面的文字，猜下一个词是什么。这是一个自监督学习任务，不需要人工标注。通过这个简单目标，模型学会了语法、知识和推理模式。', wrong: '预训练不学习特定任务。翻译、分类等下游任务是微调阶段才涉及的。预训练的唯一目标是下一个 token 预测，它是通用的，不针对任何特定任务。' },
+    q3: { correct: '预训练模型只会"续写文本"——给它一个开头，它接着写。但它不会主动回答问题、不会遵循指令。SFT 用人工编写的指令-回答对训练，让模型学会"按照人类期望的方式回应"。', wrong: '预训练模型当然能理解语言——它读过互联网上几乎所有的公开文本。问题不在于"不理解"，而在于它只知道"续写"，不知道"回答问题"。SFT 解决了这个问题。' },
+    q4: { correct: '涌现能力是指：在模型规模较小时完全不存在的某种能力，在参数量和训练量跨越某个临界点后突然出现了。这不是程序员刻意设计的，而是大规模统计学习的自然结果。', wrong: '涌现能力恰恰不是刻意编程实现的。它是模型在规模放大后自然展现出的新能力——就像单个水分子没有"湿性"，但亿万个水分子聚集起来就有了。' },
+    q5: { correct: 'Chinchilla 定律发现：在有限计算预算下，最优策略是让参数量和训练数据量以固定比例同步增长。一味增大模型而忽略数据量会导致过拟合；只增加数据而参数不足则学不够。两者需要平衡。', wrong: 'Chinchilla 定律恰恰反对"模型越大越好"的观点。它指出，如果数据量不够，盲目增大模型是浪费计算资源。参数量和数据量应该按比例一起增长。' },
+    q6: { correct: 'RLHF 需要三步：训练奖励模型 → PPO 强化学习 → 优化策略。DPO 更简洁——它不需要单独的奖励模型，直接用人类偏好的数据（好的回答 vs 不好的回答）来优化模型。Claude 用的就是 DPO。', wrong: 'DPO 仍然需要人类反馈数据——它只是不用奖励模型这个中间环节。RLHF 和 DPO 的区别在于优化方式，而不在于是否需要人类数据。' },
+    q7: { correct: 'LLM 没有内置的知识数据库或表格。它回答任何问题时，都是在基于训练数据中的统计模式，概率性地生成答案。当你问"地球到月球的距离"时，它生成的是与训练中见过的类似问答最匹配的文本。', wrong: 'LLM 没有查表功能。它不是数据库，而是一个生成模型。它的回答是基于统计模式概率生成的，这也是为什么它有时会"幻觉"——生成了看起来合理但实际上错误的答案。' },
+    q8: { correct: '幻觉（Hallucination）是 LLM 的典型问题——模型会生成看似合理但完全错误的事实。这是因为 LLM 的目标是生成"看起来合理的文本"，而不是"准确的文本"。它不确定时会编造一个 plausible-sounding 的答案。', wrong: 'LLM 恰恰非常擅长生成各种形式的内容——文本、代码、表格、对话等。它的主要局限不是"不能生成"，而是"不能保证生成内容的准确性和可靠性"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对 LLM 的核心概念理解得很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的内容，然后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

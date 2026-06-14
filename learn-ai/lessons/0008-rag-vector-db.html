@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第八课：RAG 与向量数据库</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .workflow-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    background: var(--accent-light);
+    border-radius: 6px;
+  }
+
+  .step-num {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-content h3 {
+    margin-top: 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>RAG 与向量数据库</h1>
+<p class="lesson-meta">Lesson 8 &middot; ~10 minutes &middot; RAG &amp; 向量检索</p>
+
+<div class="goal-box">
+  <strong>通过本节课</strong>，你将理解 RAG（检索增强生成）为什么出现、它如何工作，以及为什么它是企业级 AI 应用的事实标准。学完后你能向别人解释"为什么大模型需要外挂知识库"。
+</div>
+
+<h2>大模型的"记忆困境"</h2>
+<p>
+  大语言模型有一个根本性的矛盾：<strong>它知道很多，但它不知道"现在"的事</strong>。
+</p>
+<p>
+  GPT-4 的训练数据截止于 2023 年初，Qwen 或 Claude 的训练数据也有各自的截止日期。这意味着它们无法回答此后发生的事件——不管那个事件有多重要。此外，模型在参数中"记住"的知识是静态的，一旦训练完成就不再更新。重新训练整个模型的代价极其高昂，而且每次重训又会丢失旧知识。
+</p>
+<p>
+  更麻烦的是<strong>幻觉</strong>问题：当模型不知道答案时，它会自信地编造一个。2023 年的一项研究发现，即使在微调后，大模型在事实性问答中的幻觉率仍然高达 20-30%。
+</p>
+
+<h2>RAG 的核心思路</h2>
+<p>
+  RAG（Retrieval-Augmented Generation，检索增强生成）的思路很简单：<strong>在回答问题之前，先翻一翻参考资料</strong>。
+</p>
+<p>
+  传统 LLM 的提问流程是：用户提问 → 模型凭"记忆"回答。RAG 的流程是：用户提问 → <strong>先检索</strong>外部知识库 → 将检索结果作为上下文 → 模型基于参考资料回答。
+</p>
+<p>
+  这种方法由 Facebook AI 在 2020 年首次提出。它的核心贡献在于：把知识从"模型参数"转移到"外部可更新的知识库"，从而同时解决了知识过时和幻觉两个问题。
+</p>
+
+<div class="concept-card">
+  <h3>类比理解：硬盘 vs 内存</h3>
+  <p>
+    RAG 中的向量数据库相当于<strong>外部硬盘</strong>——容量近乎无限，存储成本低，可以随时更新。LLM 的模型参数相当于<strong>内存</strong>——容量有限（上下文窗口大小受限），推理成本高昂（Token 越多越贵），但处理速度快。RAG 的价值在于让模型在做重要决策前先"检索"相关记忆，而不是完全依赖直觉。
+  </p>
+</div>
+
+<h2>RAG 的三个步骤</h2>
+
+<div class="workflow-step">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <h3>索引（Indexing）</h3>
+    <p>
+      将外部文档切分成小块（chunk），每块 256-1024 个 token。然后用嵌入模型（embedding model）将每个块转换为高维向量，存入向量数据库（如 Pinecone、Weaviate、Chroma）。这个过程还建立从原始文档到向量索引的反向映射，确保最终回答可以追溯信息来源。
+    </p>
+  </div>
+</div>
+
+<div class="workflow-step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h3>检索（Retrieval）</h3>
+    <p>
+      用户提出问题后，先用同一个嵌入模型将查询转换为向量，然后在向量数据库中进行相似性搜索，通常返回最相关的 K 个片段（K 取值 3-10，视场景而定）。向量搜索的本质是找到语义上最接近的文档片段，而不是关键词匹配。
+    </p>
+  </div>
+</div>
+
+<div class="workflow-step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <h3>生成（Generation）</h3>
+    <p>
+      将用户问题、检索到的文档片段和一个系统提示（如"基于以下信息回答问题"）一起发送给 LLM。模型被约束在检索到的知识范围内生成回答。这一步的输入格式大致是：<em>[系统提示] + [检索文档 1] + [检索文档 2] + ... + [用户问题]</em> → 模型输出。
+    </p>
+  </div>
+</div>
+
+<h2>关键设计决策</h2>
+
+<table>
+  <tr>
+    <th>决策点</th>
+    <th>选项</th>
+    <th>影响</th>
+  </tr>
+  <tr>
+    <td>Chunk 大小</td>
+    <td>256 token vs 1024 token</td>
+    <td>太小丢失上下文，太大引入噪声</td>
+  </tr>
+  <tr>
+    <td>向量索引算法</td>
+    <td>HNSW vs IVF-PQ</td>
+    <td>精度与速度的权衡，HNSW 更准但内存消耗大</td>
+  </tr>
+  <tr>
+    <td>检索数量 K</td>
+    <td>Top-3 vs Top-10</td>
+    <td>K 越大召回越全，但 Token 成本和噪声也越高</td>
+  </tr>
+  <tr>
+    <td>嵌入模型</td>
+    <td>通用模型 vs 领域微调</td>
+    <td>医疗、法律等专业领域用领域微调效果显著提升</td>
+  </tr>
+</table>
+
+<div class="chinese-note">
+  <strong>Chunk 大小是 RAG 中最常见的坑：</strong>很多初学者把整篇文档直接塞进向量数据库，结果检索到的片段过于宽泛，包含大量无关信息。记住：chunk 的目标是让每个片段<strong>刚好</strong>包含一个完整的信息单元——既不要碎片化，也不要当百科全书。
+</div>
+
+<h2>RAG 与上下文窗口的关系</h2>
+<p>
+  RAG 和 LLM 的上下文窗口（Context Window）是<strong>互补</strong>的关系，不是竞争关系。
+</p>
+<p>
+  RAG 相当于"海选"——从海量文档中筛选出最相关的片段。上下文窗口相当于"精读"——把筛选后的精华塞进模型的可读范围内。即使上下文窗口扩展到 1M+ token（如 Gemini 1.5 Pro），RAG 仍然不可替代，因为：<strong>① 减少噪音干扰（太多无关信息会导致模型忽略重点）② 成本控制（100 万 token 的推理成本远高于检索 1000 token）③ 实时性（数据库秒级更新 vs 模型重训数周）</strong>。
+</p>
+
+<h2>为什么 RAG 成为企业 AI 的事实标准</h2>
+<p>
+  在 ChatGPT 上线之初，企业面临一个核心问题：如何让 AI 访问私有数据？RAG 给出了最优雅的解决方案——<strong>不改动模型本身，只在模型前面加一层检索系统</strong>。
+</p>
+<p>
+  Salesforce 的 Einstein GPT 将 RAG 作为核心架构，连接 CRM 中的客户数据。LangChain 和 LlamaIndex 等开源框架将 RAG 封装为标准化工具链。研究表明，在专业问答场景中，RAG 可以将事实性准确率从基线的 50-60% 提升到 75-85%。
+</p>
+<p>
+  在个人层面，RAG 被用来构建"和你的知识库对话"——把读过的书籍摘要、课堂笔记、研究论文存入向量数据库，再用 RAG 实现个性化搜索。这种应用的边际成本极低，存储开销可以忽略不计。
+</p>
+
+<h2>跨学科连接</h2>
+<p>
+  RAG 的设计原理与多个学科的核心思想相通。<strong>认知科学</strong>中的双系统理论可以类比 RAG 架构：系统 1（快速、直觉）对应 LLM 的生成能力，系统 2（慢速、推理）对应检索过程——人类在做重要决策时也会先"检索"记忆再作答。<strong>信息论</strong>中的信源编码理论指出，信息传递需要在压缩率与保真度之间权衡——RAG 的 chunk 大小选择本质上就是在做这种权衡。<strong>图书馆学</strong>中的信息检索体系直接启发了 RAG 的索引策略，从杜威十进分类法到现代语义搜索，核心挑战完全同构。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验理解</h2>
+  <p>共有 8 道题。点击你认为正确的选项，查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解 RAG 的核心动机</div>
+    <div class="sentence">以下哪个问题是 RAG 想要解决的核心问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">让模型训练速度更快</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">让模型使用外部最新知识回答问题</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">RAG 的三个步骤</div>
+    <div class="sentence">RAG 工作流程的正确顺序是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">索引 → 检索 → 生成</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">生成 → 索引 → 检索</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Chunk 大小的权衡</div>
+    <div class="sentence">如果 chunk 设得太小（比如只有 50 个 token），最可能出现的问题是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">检索到的片段缺少上下文，无法提供有意义的信息</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">向量数据库的索引速度会变慢</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">嵌入模型的作用</div>
+    <div class="sentence">嵌入模型（Embedding Model）在 RAG 中做什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">将文本翻译成另一种语言</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">将文本转换为高维向量，用于语义搜索</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">RAG vs 上下文窗口</div>
+    <div class="sentence">为什么 RAG 不会随着长上下文模型的兴起而被淘汰？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为长上下文模型不够准确</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为 RAG 在噪音控制、成本和实时性方面仍有不可替代的优势</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">认知科学类比</div>
+    <div class="sentence">在认知科学的"双系统理论"类比中，RAG 的检索过程对应哪个系统？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 2——慢速、有意识的推理过程</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 1——快速、直觉的反应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">检索数量 K 的权衡</div>
+    <div class="sentence">在 RAG 中，如果将 K（检索片段数量）从 3 增加到 10，最可能的后果是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">召回更全面但 Token 成本和噪声增加</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">检索速度显著变慢</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">企业应用</div>
+    <div class="sentence">一个企业想用 AI 客服系统回答关于自家产品的常见问题，最合适的技术方案是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">重新训练一个专门的客服模型</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在产品手册上建立 RAG 系统</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑惑？</strong>来聊聊——chunk 大小为什么没有"最优解"？为什么向量搜索能找到语义相关但字面不同的文档？这些都是很好的问题。直接问我，我来解释。<br><br>
+  <strong>延伸阅读：</strong><a href="https://www.deeplearning.ai/short-courses/" target="_blank">DeepLearning.AI RAG 课程</a> —— 深入理解 RAG 工程实践。<br><br>
+  <a href="../reference/rag-quick-ref.html" class="resource-link">查看参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-llm-overview.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-ai-agent.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'RAG 的核心动机是让模型在回答问题时能引用外部、最新、可更新的知识——而不是依赖训练时"记住"的静态参数。', wrong: 'RAG 不改变模型训练速度。它的目标是让模型能用上训练数据之外的新知识，特别是实时更新的知识。' },
+    q2: { correct: 'RAG 的顺序是：先索引（把文档向量化存好），然后检索（搜索相关片段），最后生成（基于搜索结果回答）。', wrong: '生成必须在检索之后——没有参考资料就无法做"增强生成"。顺序一定是：索引 → 检索 → 生成。' },
+    q3: { correct: 'Chunk 太小意味着每个片段只包含很少的信息。检索出来的片段可能只是一句话的碎片，丢失了必要的上下文，模型无法据此给出有意义的回答。', wrong: 'Chunk 小主要影响的是检索质量（信息碎片化），而不是索引速度。实际上 chunk 越小索引反而越快。' },
+    q4: { correct: '嵌入模型将文本映射为高维向量（通常是几百到几千维的数字），这样语义相近的文本在向量空间中距离就近，从而支持"语义搜索"而非关键词匹配。', wrong: '翻译是机器翻译模型的任务。嵌入模型做的是"编码"——把文本变成向量，用于计算语义相似度。' },
+    q5: { correct: '即使上下文窗口很大，RAG 仍然有价值：① 控制噪音（太多信息反而让模型忽略重点）② 降低成本（100 万 token 的推理成本极高）③ 实时更新（数据库秒级更新 vs 重训模型数周）。', wrong: '长上下文模型在准确性的提升上有限——关键问题是成本和实时性。RAG 的检索机制让系统可以在不重训的情况下随时更新知识库。' },
+    q6: { correct: '系统 2 是慢速、有意识、需要努力的推理过程——正如 RAG 的检索需要先"翻找"资料再作答。系统 1 才是直觉式的快速反应（对应 LLM 不经检索直接生成）。', wrong: '系统 1 对应的是直觉式的快速生成——不需要检索，凭"记忆"直接回答。检索增强对应的是系统 2 的深思熟虑过程。' },
+    q7: { correct: 'K 越大，召回的相关文档越多（覆盖率提高），但同时会引入更多 Token（成本增加），也可能混入不相关片段（噪声增加）。这是 RAG 设计中最经典的权衡。', wrong: 'K 的变化主要影响的是生成阶段的 token 输入量和质量，对检索阶段的速度影响相对较小——向量搜索本身是并行的。' },
+    q8: { correct: '产品手册是结构化的外部知识，用 RAG 可以将其转化为可问答的知识库。相比重新训练模型，RAG 成本低、更新快、无需专业 AI 团队。', wrong: '重新训练一个客服模型需要大量标注数据、专业 AI 团队和持续维护成本。RAG 用现有文档就能搭建系统，边际成本极低。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你已经完全掌握了 RAG 的核心概念。';
+      else if (score >= 6) label.textContent = '不错！回顾一下错题的解释，你会掌握得更牢固。';
+      else label.textContent = '继续加油！重新阅读上面的内容后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

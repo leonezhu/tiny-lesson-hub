@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：图灵机与可计算性速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card-section .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    background: var(--accent-light);
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th {
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  td {
+    padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr:nth-child(even) td { background: var(--accent-light); }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>图灵机与可计算性速查卡</h1>
+<p class="lesson-meta">参考卡 &middot; 对应 Lesson 8</p>
+
+<div class="card-section">
+  <h3>图灵机五要素</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>无限长纸带</strong>（tape）— 分格，每格含一个符号</li>
+    <li><strong>读写头</strong>（head）— 一次读/写一格，可左/右移动</li>
+    <li><strong>有限状态集合</strong>（Q）— 起始/接受/拒绝状态</li>
+    <li><strong>字母表</strong>（Σ）— 允许写入的符号（通常 {0, 1}）</li>
+    <li><strong>转移函数</strong> δ: Q × Σ → Q × Σ × {L, R}</li>
+  </ol>
+</div>
+
+<div class="card-section">
+  <h3>通用图灵机（UTM）</h3>
+  <p class="formula">UTM 可以模拟任何图灵机：输入 = 目标机器编码 + 输入数据</p>
+  <p>核心洞见：<strong>程序即数据</strong>——程序和数据存在同一存储中，这就是通用计算机的理论基础。</p>
+</div>
+
+<div class="card-section">
+  <h3>停机问题（Halting Problem）</h3>
+  <p><strong>结论</strong>：不存在通用算法能判断任意程序在任意输入上是否停止。</p>
+  <p><strong>证明方法</strong>：对角线法（Cantor 1891）— 构造程序 D(P)：H(P,P) 说停→D 循环；H(P,P) 说不停→D 停止。D(D) → 矛盾。</p>
+  <p><strong>本质</strong>：不是"技术限制"，而是<strong>逻辑上不存在</strong>解法。</p>
+</div>
+
+<div class="card-section">
+  <h3>Church-Turing 论题</h3>
+  <p>任何"有效可计算"的函数都可以被图灵机计算。</p>
+  <p>等价模型：&lambda;-演算 = 递归函数 = 马尔可夫算法 = 图灵机</p>
+  <p>性质：无法严格证明（"有效可计算"是非形式概念），但所有已知模型都与图灵机等价。</p>
+</div>
+
+<div class="card-section">
+  <h3>关键区分</h3>
+  <table>
+    <tr><th></th><th>可计算性</th><th>复杂度</th></tr>
+    <tr><td><strong>问题</strong></td><td>能不能算？</td><td>能高效算吗？</td></tr>
+    <tr><td><strong>回答</strong></td><td>存在算法吗？</td><td>多项式时间吗？</td></tr>
+    <tr><td><strong>不可解</strong></td><td>停机问题</td><td>NP-难问题</td></tr>
+    <tr><td><strong>本质</strong></td><td>"永远做不到"</td><td>"等不起"</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>跨学科连接</h3>
+  <p><strong>数学</strong>：与 Gödel 不完备定理、Church 判定问题——同一"不可解"本质</p>
+  <p><strong>物理学</strong>：Landauer 原理——擦除 1 bit 至少产生 kT ln 2 热量</p>
+  <p><strong>生物学</strong>：DNA 复制 = 分子级图灵机</p>
+  <p><strong>哲学</strong>：图灵测试——行为主义意识定义</p>
+  <p><strong>信息论</strong>：Kolmogorov 复杂度 = 最短程序长度</p>
+</div>
+
+<div class="card-section">
+  <h3>关键人物</h3>
+  <table>
+    <tr><th>人物</th><th>贡献</th><th>时间</th></tr>
+    <tr><td>Gödel</td><td>不完备定理</td><td>1931</td></tr>
+    <tr><td>Church</td><td>&lambda;-演算、判定问题不可解</td><td>1936</td></tr>
+    <tr><td>Turing</td><td>图灵机、停机问题、UTM</td><td>1936</td></tr>
+    <tr><td>Turing</td><td>图灵测试</td><td>1950</td></tr>
+    <tr><td>Landauer</td><td>计算的热力学极限</td><td>1961</td></tr>
+    <tr><td>Wolfram</td><td>计算等价原理</td><td>2002</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0008-turing-ji-ke-ji-suan-xing.html">&larr; 返回课程</a> | <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — 科学革命</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .content-card .sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .content-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .content-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>科学革命</h1>
+<p class="lesson-meta">第4课 · ~15 分钟 · 关键转折点</p>
+
+<div class="goal-box">
+  <strong>通过本课你将学会</strong>：理解科学革命如何从"权威驱动"转向"证据驱动"，以及为什么这个范式转换比任何单个科学发现都更重要。
+</div>
+
+<h2>什么是科学革命？</h2>
+<p>
+  科学革命（约 1543—1687 年）是人类历史上最大的一次认知转型：从"书上怎么说"转向"实验怎么说"。在此之前，欧洲的知识权威是亚里士多德和盖伦——两千年前的古人。在此之前，宇宙的中心是地球，人的身体由四种"体液"平衡，疾病是"灵魂和体液出了问题"。
+</p>
+<p>
+  科学革命用不到一百年的时间，把这些几乎全部推翻。这不只是科学史上的一个章节——它是"现代世界"诞生的核心事件。没有科学革命，就没有工业革命，没有电力，没有互联网，也没有今天的你坐在这里用手机读历史。
+</p>
+
+<h2>关键人物与转折</h2>
+
+<div class="content-card">
+  <h3>1543：哥白尼与《天体运行论》</h3>
+  <p class="sub">"太阳才是中心，地球只是普通行星"</p>
+  <ul>
+    <li>哥白尼临终前出版《天体运行论》，提出日心说。这不是第一个提出日心说的人（古希腊阿里斯塔克早说过），但第一个用数学模型完整重建的人。</li>
+    <li>意义：地球不再是宇宙中心，人类也不再是"上帝特意创造的中心存在"。第一次认知地震。</li>
+    <li>对比：在布鲁诺因此被烧死之前，哥白尼本人非常谨慎——他把书寄给教皇，附了一封谦卑的信。这没用几年。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>1600-1632：伽利略 — 望远镜改变了世界</h3>
+  <p class="sub">"如果它能动，它就动——不管你信不信亚里士多德"</p>
+  <ul>
+    <li>1609年，伽利略用望远镜看到：木星有四颗卫星（证明不是所有天体都绕地球转）、月球有山（证明天体不"完美"）、金星有相位（证明金星绕太阳转）。</li>
+    <li>1632年出版《关于托勒密和哥白尼两大世界体系的对话》——用意大利语写的，面向大众。这是策略：绕过学术圈的拉丁语壁垒。</li>
+    <li>1633年被宗教裁判所审判，被判"终身软禁"。传说他低声说："地球确实它在转。"历史学家怀疑真实性，但故事传了几百年。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>1687：牛顿与《自然哲学的数学原理》</h3>
+  <p class="sub">"站在巨人的肩膀上"</p>
+  <ul>
+    <li>牛顿在《原理》中提出万有引力定律和三大运动定律——用<em>同一个数学公式</em>同时解释了苹果落地和月球绕地。</li>
+    <li>关键突破：他发明了微积分（和莱布尼茨各自独立）作为工具。没有数学工具，就没有精确的物理。</li>
+    <li>牛顿之后，宇宙变成了一台可以预测的机器。如果你知道初始条件，理论上你能算出未来的一切——这就是"牛顿式世界观"。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>方法论革命：培根、笛卡尔与科学方法</h3>
+  <p class="sub">"不要相信权威，要相信证据和推理"</p>
+  <ul>
+    <li><strong>培根</strong>（1561-1626）：在《新工具》中提出"归纳法"——从大量观察中总结规律。他批判了"四假象"（偏见）：种族假象（人的本能偏见）、洞穴假象（个人偏见）、市场假象（语言混淆）、剧场假象（哲学体系误导）。</li>
+    <li><strong>笛卡尔</strong>（1596-1650）：提出"普遍怀疑"——只相信经过严格逻辑推导才能成立的结论。他的名言"我思故我在"就是怀疑一切之后唯一剩下的真理。</li>
+    <li>合在一起：培根提供"从观察出发"，笛卡尔提供"从逻辑出发"。这就是现代科学方法的两翼。</li>
+  </ul>
+</div>
+
+<h2>科学革命的结构特征</h2>
+<p>
+  科学革命不是某个天才突然顿悟，而是一个<span style="font-weight:600">系统性的结构性变化</span>。它有三个必要条件同时满足才发生：
+</p>
+
+<div class="content-card">
+  <h3>1. 印刷术的普及</h3>
+  <p>古登堡印刷术（约1450年）让知识传播成本降低了90%以上。学者不再依赖手抄本——哥白尼的、伽利略的、牛顿的书可以同时在几个城市流通。知识的"更新速度"从几年变成几个月。</p>
+</div>
+
+<div class="content-card">
+  <h3>2. 学术共同体的形成</h3>
+  <p>1660年英国皇家学会成立（世界上最早的科学组织），1666年法国科学院成立。科学家开始<strong>正式地、系统地交流</strong>——分享数据、互相批评、建立标准。从"孤独的智者"变成"协作的网络"。</p>
+</div>
+
+<div class="content-card">
+  <h3>3. 数学语言的成熟</h3>
+  <p>没有微积分、没有解析几何，牛顿的《原理》就不可能写出。科学革命之所以叫"革命"，很大程度上是因为<strong>它发明了一套全新的语言</strong>来描述自然——而且这套语言精确到可以预测你明天什么时候日出。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>重要对比：</strong>与此同时期（16-17世纪），中国处于明末清初。宋应星的《天工开物》（1637年）记录了大量技术知识，但中国没有发展出类似的"科学方法"——没有把自然现象用数学公式精确表达的传统，也没有形成"挑战权威、用实验验证"的制度化机制。这是李约瑟之谜的核心：为什么科学革命发生在欧洲而非中国？
+</div>
+
+<h2>科学革命为什么重要？</h2>
+<p>
+  科学革命的意义不在于哥白尼说对了还是说错了（实际上他的模型仍然不够精确——直到开普勒用椭圆修正了圆形轨道）。真正重要的是它建立的<strong>方法论范式</strong>：
+</p>
+<p>
+  <strong>权威驱动 vs 证据驱动。</strong>在这个范式之前，知识来自于"古人说过什么"。在这个范式之后，知识来自于"证据说了什么"。这个转换的冲击波至今仍在回荡——它不仅是科学的革命，也是政治革命（民主）、经济革命（市场）、社会革命（个人权利）的思想源头。
+</p>
+
+<div class="chinese-note">
+  <strong>当代启示：</strong>今天我们在社交媒体上看到很多"我觉得"、"我认为"、"我听说"——这些是权威驱动思维的变体。科学革命的遗产是：<strong>任何观点的强度应该与支撑它的证据强度成正比</strong>。证据强，观点就强；证据弱，观点就该弱。这是一个简单的原则，但它在公共话语中几乎从未被严格执行过。
+</div>
+
+<div class="followup">
+  <strong>下一步思考：</strong>科学革命建立了"用证据说话"的范式。但证据本身是怎么来的？这就引出了一个更深的问题——我们如何确定自己收集的证据是可靠的？这通向<strong>概率思维</strong>和<strong>不确定性</strong>的概念，也是后续"工业革命"和"启蒙运动"的核心。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>选出最符合历史逻辑的答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">科学革命的核心特征是什么？</div>
+    <div class="sentence">科学革命最重要的突破是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">从"权威驱动"转向"证据驱动"</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">发明了新的望远镜和显微镜</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">哥白尼的日心说为什么在当时具有革命性？</div>
+    <div class="sentence">哥白尼理论的核心冲击在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它证明地球是扁的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">地球不再是宇宙中心，人类不再是"特殊的"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">伽利略为什么被宗教裁判所审判？</div>
+    <div class="sentence">伽利略受审判的直接原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">他拒绝承认木星有卫星</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">他用观测证据支持日心说，挑战了教会支持的亚里士多德体系</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">牛顿的《原理》为什么是里程碑？</div>
+    <div class="sentence">牛顿的突破在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">他发现了万有引力的物理机制</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">他用同一个数学框架统一解释了天体运动和地面物体运动</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">培根提出的"四假象"是指什么？</div>
+    <div class="sentence">培根认为阻碍科学认知的四大障碍是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">愚笨、懒惰、偏见、无知</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">种族假象、洞穴假象、市场假象、剧场假象</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">科学革命为什么能发生？</div>
+    <div class="sentence">以下哪个不是科学革命发生的必要条件？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">印刷术普及</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">民主制度的建立</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">笛卡尔的"普遍怀疑"是什么？</div>
+    <div class="sentence">笛卡尔的方法论核心是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">怀疑一切宗教信仰</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">只相信经过严格逻辑推导才能成立的结论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">同时期中国与欧洲对比</div>
+    <div class="sentence">17世纪中叶，中国与欧洲在知识生产上的关键差异在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">中国有技术记录但无系统化方法论和学术共同体</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">中国的科技水平远低于欧洲</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——不管是关于科学革命的细节，还是它为什么重要。不理解某个概念？这正是我们需要讨论的地方。
+  <br><br>
+  <strong>延伸阅读：</strong><a href="https://zh.wikipedia.org/wiki/%E7%A7%91%E5%AD%A6%E9%9D%A9%E5%91%BD" target="_blank">维基百科：科学革命</a> — 更详细的时间线和人物介绍。
+  <br><br>
+  <a href="../reference/kexue-geming.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-dahanghai-era.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-faguo-dageming.html">下一课</a> | <a href="../reference/kexue-geming.html">速查卡</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '科学革命的核心不是某个具体发现，而是"怎么知道"的方法转变——从"书上怎么说"到"证据怎么说"。望远镜是工具，不是革命本身。', wrong: '望远镜是重要工具，但科学革命的本质是方法论的转换：从依赖权威转向依赖证据。这是更深层、更持久的变化。' },
+    q2: { correct: '日心说的核心冲击不是天文层面的，而是认知层面的——它把人从"宇宙中心"的位置上移开了。这动摇了整个世界观。', wrong: '地球的形状早已通过其他观测知道了。哥白尼的革命性不在于说地球是扁的，而在于说地球不再是宇宙的中心。' },
+    q3: { correct: '伽利略用望远镜观测到的证据直接挑战了亚里士多德体系，而亚里士多德体系是教会支持的正统教义。他用证据对抗权威，这就是问题所在。', wrong: '伽利略恰恰是用望远镜证明了木星有卫星！他的问题是这些证据与教会支持的亚里士多德体系相冲突。' },
+    q4: { correct: '牛顿的突破是"统一"——一个数学框架同时解释天上和地上的运动。苹果落地和月球绕地服从同一规律，这改变了人类对宇宙的理解。', wrong: '牛顿给出了万有引力的数学描述，但他并不知道引力的物理机制（爱因斯坦后来用时空弯曲解释了）。关键是统一框架，而非解释机制。' },
+    q5: { correct: '培根的四假象：种族假象（人类共同的本能偏见）、洞穴假象（个人偏见）、市场假象（语言混乱）、剧场假象（哲学体系的误导）。', wrong: '培根的四假象是哲学层面的概念，不是个人品质。它们描述的是系统性的认知陷阱，而不是"笨"或"懒"。' },
+    q6: { correct: '科学革命发生在16-17世纪，而民主制度要到18-19世纪才大规模建立。印刷术、学术共同体、数学语言是三个必要条件——民主制度不是其中之一。', wrong: '科学革命发生时（1543-1687），欧洲还没有现代民主制度。革命的发生与印刷术、学术共同体、数学工具有直接因果关系。' },
+    q7: { correct: '笛卡尔的"普遍怀疑"不是怀疑一切——而是把一切未经严格逻辑推导的结论都悬置，直到找到无可置疑的起点（"我思故我在"）。', wrong: '笛卡尔并不是怀疑宗教信仰。他的怀疑是方法论的：在认识论层面，只接受经过严密推理才能确立的结论。' },
+    q8: { correct: '《天工开物》记录了大量先进技术，但中国没有发展出将自然现象数学化、以及制度化挑战权威的方法论。这是"李约瑟之谜"的核心。', wrong: '17世纪的中国在农业、冶金、造船等技术方面并不落后于欧洲。问题不在于技术水平，而在于知识生产的方法论和制度。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对科学革命有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题——解释里包含了关键洞察。';
+      else label.textContent = '继续加油！重读上面的内容，重点关注方法论转换的逻辑。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

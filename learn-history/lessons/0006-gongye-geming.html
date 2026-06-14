@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 工业革命</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .content-card .sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .content-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .content-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>工业革命</h1>
+<p class="lesson-meta">第6课 &middot; ~12 minutes &middot; 现代世界的起点</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将理解工业革命为什么发生在18世纪的英国而不是其他地方，它带来的经济、社会和政治变革如何塑造了现代世界，以及为什么"大分流"（Great Divergence）是人类历史上最重要的转折点之一。
+</div>
+
+<h2>为什么是英国？</h2>
+<p>
+  工业革命不是凭空发生的。英国在18世纪拥有了一组罕见的"完美条件"组合：丰富的煤炭资源（当时唯一的化石能源）、完善的殖民贸易网络提供原材料和市场、产权保护制度让企业家敢于投资、农业革命释放了大量农村劳动力，以及科学文化对技术创新的包容和奖励。
+</p>
+
+<div class="content-card">
+  <h3>工业革命的五个先决条件</h3>
+  <ul>
+    <li><strong>煤炭：</strong>英国的浅层煤矿易于开采，而且煤炭的能量密度是木柴的数倍。没有煤炭，就没有蒸汽机。</li>
+    <li><strong>农业革命：</strong>圈地运动和耕作技术革新使 fewer 农民产出了更多粮食，释放了劳动力进城。</li>
+    <li><strong>产权与金融：</strong>1688年"光荣革命"后，英国建立了相对稳定的法治体系和股票市场，资本可以被大规模动员。</li>
+    <li><strong>殖民帝国：</strong>印度棉花、加勒比蔗糖、北美烟草——原材料和市场的全球网络。</li>
+    <li><strong>文化氛围：</strong>启蒙思想和"机制兄弟"（Mechanic's Institutes）让工匠和科学家可以在同一空间里交流想法。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>工业革命不是因为英国人"更聪明"，而是因为制度和技术恰好在那个时候、那个地点交汇。同样的条件如果没有同时满足，工业革命就不会在那个时间发生——它可能提前或推迟。这种"多要素同时到位"的模式，在历史中反复出现。
+</div>
+
+<h2>第一次工业革命（约1760-1840）</h2>
+<p>
+  以纺织机械和蒸汽机为核心，标志着从手工业生产向机器生产的根本性转变。
+</p>
+
+<div class="content-card">
+  <h3>核心技术突破</h3>
+  <h3>纺织机械</h3>
+  <p class="sub">从手工到自动化的第一步</p>
+  <ul>
+    <li><strong>珍妮纺纱机</strong>（1764，哈格里夫斯）：一次纺多根纱线，效率提高8倍。但靠人力驱动。</li>
+    <li><strong>水力纺纱机</strong>（1769，阿克莱特）：用水力驱动，首次建立了"工厂"——集中劳动力的生产场所。</li>
+    <li><strong>骡机</strong>（1779，克朗普顿）：结合了珍妮机和水力机的优点，生产出了又细又结实的纱。</li>
+    <li><strong>动力织布机</strong>（1785，卡特赖特）：机械化织布，进一步提高了效率。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>蒸汽机——通用动力的诞生</h3>
+  <p class="sub">詹姆斯·瓦特1769年的改良是整个革命的核心</p>
+  <ul>
+    <li>纽科门蒸汽机早已存在，但效率极低，只能用于矿井排水。</li>
+    <li>瓦特的改良（独立冷凝器）将效率提高了4倍以上，蒸汽机从此可以用于任何地方。</li>
+    <li>蒸汽机不仅是工厂的动力——它改变了交通（火车、轮船）、采矿、冶金——几乎所有产业。</li>
+    <li>到1830年代，英国已有数千台蒸汽机在运转，总功率超过十万马力。</li>
+  </ul>
+</div>
+
+<h2>第二次工业革命（约1870-1914）</h2>
+<p>
+  如果第一次工业革命是关于"机器替代人力"，第二次就是关于"科学引领产业"。钢材、电力、化学品和石油——这些不再是工匠的试错发明，而是实验室的直接产物。
+</p>
+
+<div class="content-card">
+  <h3>第二次工业革命的关键技术</h3>
+  <ul>
+    <li><strong>钢铁：</strong>贝塞麦转炉炼钢法（1856）让钢铁从奢侈品变成大宗商品。铁路、桥梁、摩天大楼都依赖它。</li>
+    <li><strong>电力：</strong>从法拉第的电磁感应到爱迪生的灯泡，电力将动力从"集中"变成了"分散"——每个房间、每台机器都可以独立供电。</li>
+    <li><strong>化学工业：</strong>从染料到化肥到炸药，化学合成技术创造了全新的产业门类。</li>
+    <li><strong>内燃机与石油：</strong>1885年卡尔·本茨发明汽车，1903年莱特兄弟首次飞行——石油成为新的战略资源。</li>
+    <li><strong>电信：</strong>电报、电话彻底改变了信息传播的速度，世界第一次实现了"即时通信"。</li>
+  </ul>
+</div>
+
+<h2>社会冲击：前所未有的变化</h2>
+<p>
+  工业革命的影响不仅仅是"生产的商品更多了"。它从根本上重构了人类社会的组织结构。
+</p>
+
+<div class="content-card">
+  <h3>城市化的爆炸</h3>
+  <ul>
+    <li>1800年，全球只有约3%的人口住在城市。到1900年，这一比例超过14%。</li>
+    <li>曼彻斯特的人口从1772年的不到1万人增长到1851年的35万人。</li>
+    <li>快速城市化带来了严重的问题：贫民窟、霍乱、空气和水污染——城市基础设施远远跟不上人口增长。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>新的社会阶层</h3>
+  <ul>
+    <li><strong>资产阶级（中产阶级）：</strong>工厂主、商人、专业人士——他们既不贵族也不农民，但拥有资本和技能。这一阶层最终获得了对政治的主导权。</li>
+    <li><strong>无产阶级（工人阶级）：</strong>从农村来到城市的"自由"劳动者——他们出卖劳动力换取工资。没有生产资料，只能靠体力谋生。</li>
+    <li>这两个阶级的对立，构成了后来150年阶级斗争和国际政治的基本框架。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>女性的角色转变</h3>
+  <ul>
+    <li>工业革命之前，生产主要在家庭内部进行（家庭作坊），男性和女性都在家里工作。</li>
+    <li>工厂制度创造了"家庭"与"工作场所"的分离——出现了"男主外女主内"的中产阶级家庭模式。</li>
+    <li>但贫困家庭的妇女和儿童大量进入纺织工厂工作——19世纪初英国纺织厂中60%的工人是女工和童工。</li>
+    <li>这引发了第一批劳工保护立法和女权运动的萌芽。</li>
+  </ul>
+</div>
+
+<h2>大分流：为什么只有英国先起飞？</h2>
+<p>
+  在1700年，西欧和中国江南的经济水平可能差不多。但此后不到200年，英国的人均GDP已经远超中国。这个"大分流"（Great Divergence）是经济史学家争论最激烈的问题之一。
+</p>
+
+<div class="content-card">
+  <h3>主要解释理论</h3>
+  <ul>
+    <li><strong>地理决定论（贾雷德·戴蒙德）：</strong>欧亚大陆的东西轴向便于技术传播；而美洲和非洲的南北轴向阻碍了跨气候带扩散。但地理决定论不能解释为什么工业革命发生在英国而不是中国——中日韩都位于欧亚大陆。</li>
+    <li><strong>制度论（道格拉斯·诺斯）：</strong>英国建立了保护产权和创新的制度体系，而中国的大一统帝国缺乏竞争性压力。诺斯认为，谁能更好地保护知识产权和投资回报，谁就能持续创新。</li>
+    <li><strong>能源约束论（威廉·诺德豪斯）：</strong>英国煤炭丰富且靠近地表，而中国木材资源丰富、煤炭偏远。英国是"被迫"找到化石能源解法的，而中国没有这种紧迫感。</li>
+    <li><strong>文化论（马克斯·韦伯）：</strong>新教伦理强调勤奋、理性、节俭，恰好契合资本主义精神。这个论点争议最大，因为天主教地区后来也实现了工业化。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>重要思考题：</strong>今天，印度、越南、尼日利亚正在经历类似英国18世纪的条件——廉价劳动力、全球市场需求、基础设施改善。工业革命还会"再来一次"吗？还是说那些先发优势（科技积累、制度惯性、能源路径依赖）使得后来的追赶变得越来越困难？
+</div>
+
+<h2>环境代价</h2>
+<p>
+  工业革命不仅改变了人类的经济和社会结构——它也改变了地球本身。煤炭和石油的大规模使用，开启了人类有意识地改变地球化学循环的时代。
+</p>
+
+<div class="content-card">
+  <h3>工业革命的生态影响</h3>
+  <ul>
+    <li>英国泰晤士河在1850年代被称为"大粪坑"——未经处理的生活污水和工业废料直接排入河中。</li>
+    <li>曼彻斯特的天空常年被煤烟笼罩，1873年和1880年的两次"伦敦大烟雾"分别造成超过4000人直接死亡。</li>
+    <li>全球大气二氧化碳浓度从工业革命前的约280ppm上升到了今天的420ppm以上。</li>
+    <li>环境问题的工业化治理思路——"先污染、后治理"——成为许多后来工业化国家的模式。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>全球化的两面</h3>
+  <ul>
+    <li>正面：工业品变得极其便宜，全球贫困率在19世纪开始下降。全球贸易量爆炸式增长。</li>
+    <li>负面：殖民地成为原材料供应地和工业品倾销市场。印度手纺织业的崩溃就是典型——英国产的机制纺织品摧毁了印度持续千年的纺织手工业。</li>
+    <li>全球化不是"自然"的——它是由军事力量、工业优势和制度设计共同维持的体系。</li>
+  </ul>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的历史导师。某个概念不理解？某个细节想深入了解？直接说，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong>《全球通史》（斯塔夫里阿诺斯）——从全球视角理解工业革命在世界历史中的地位。
+  <br><br>
+  <a href="../reference/gongye-geming.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-faguo-dageming.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-meiji-reshaping.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '英国的浅层煤矿是关键。蒸汽机需要大量燃料——没有煤炭，就没有工业革命。中国的煤矿虽然也丰富，但大多位于北方偏远地区，运输成本太高。', wrong: '英国并不以"聪明"著称。关键是地理和资源的组合：煤炭就在工厂附近，不需要花大价钱运输。这种"能源可及性"是工业革命的首要前提。' },
+    q2: { correct: '瓦特的改良使蒸汽机效率提高了4倍以上，从"只能用于矿井"变成了"可以用于任何产业"。这是工业革命从纺织扩展到全产业的关键转折点。', wrong: '纽科门蒸汽机效率太低，只适用于有浅层煤矿的矿井（可以直接用蒸汽机排水）。瓦特的独立冷凝器使效率大幅提升，蒸汽机才能真正成为"通用动力"。' },
+    q3: { correct: '曼彻斯特1772年不到1万人，1851年达到35万人——不到80年增长35倍。这是人类历史上最剧烈的城市化之一。', wrong: '1800年全球城市化率大约只有3%，1900年大约是14%——虽然增长了近5倍，但绝对值仍然很低。大部分人口仍然是农民。' },
+    q4: { correct: '戴蒙德的解释是地理和轴向——但中国也在欧亚大陆。所以地理论无法解释"为什么是中国之外的地区"。诺斯的制度论和文化论提供了不同的解释维度。', wrong: '地理决定论只能解释部分现象。中日韩都位于欧亚大陆，但只有英国率先工业化。这说明除了地理之外，还有制度、资源分布、文化等关键变量。' },
+    q5: { correct: '这是马克思所说的"原始积累"——农民被剥夺了土地，被迫成为无产者。在英国，这是通过"圈地运动"（enclosure）完成的——将公有地私有化，驱逐佃农。', wrong: '这不是简单的"农民自愿进城"——圈地运动本质上是通过法律和暴力手段将农民从土地上驱逐出去，使他们"自由"地出卖劳动力。这个过程极其残酷。' },
+    q6: { correct: '英国机制纺织品摧毁了印度纺织业——这个案例被称为"去工业化"。印度曾经是世界上最发达的纺织国，工业革命的后果之一是全球产业格局的暴力重组。', wrong: '全球化不是双赢的——它是通过殖民、军事和经济优势强加的。印度纺织业的崩溃是"去工业化"的典型案例：殖民地被迫接受"只生产原材料、只消费制成品"的角色。' },
+    q7: { correct: '伦敦大烟雾（Great Smog）是工业污染的标志性事件。1952年的那一次实际上造成了约12000人死亡——但1873和1880年的烟雾事件也各导致超过4000人直接死亡。', wrong: '伦敦烟雾的影响是真实的、严重的。它不仅是感官上的"脏"——煤烟中的二氧化硫和颗粒物导致了严重的呼吸道疾病和大量死亡。这就是为什么后来有了清洁空气法案。' },
+    q8: { correct: '工业革命最深刻的变化是"家庭"和"工作场所"的分离。在此之前，生产在家庭中进行——男性和女性一起工作。工厂制度创造了一种新的社会秩序：工作日、时钟时间、纪律和分层管理。', wrong: '工业革命确实改变了时间观念，但最深刻的变化是生产组织方式的重构。"上班"和"回家"变成了两个完全不同的时空——这种分离是人类社会前所未有的。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对工业革命的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！复习一下答错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的例子再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

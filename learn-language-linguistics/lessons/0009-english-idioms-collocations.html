@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 英语习语与搭配</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .idiom-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .idiom-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .idiom-card .idiom {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .idiom-card .meaning {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .idiom-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .idiom-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .idiom-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .collocation-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .collocation-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .collocation-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .collocation-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .collocation-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .collocation-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .wrong-example {
+    color: var(--wrong);
+    text-decoration: line-through;
+  }
+
+  .correct-example {
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>英语习语与搭配</h1>
+<p class="lesson-meta">第9课 · ~12分钟 · 语用学与词汇深度</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够区分英语习语和搭配的概念差异，掌握最常见的15组搭配模式，并能在真实语境中正确选用表达——不再说出"I made a question"这种"每个词都对但母语者不说"的句子。
+</div>
+
+<h2>习语 vs 搭配：两个不同的概念</h2>
+<p>
+  中国学习者最常混淆的就是<strong>习语（idiom）</strong>和<strong>搭配（collocation）</strong>。它们长得很像——都是"固定表达"——但背后的机制完全不同。
+</p>
+
+<div class="idiom-card">
+  <h3>习语（Idiom）— 不可拆解的整体</h3>
+  <p class="meaning">习语的含义无法从字面单词推断出来。它是文化编码的"密码"。</p>
+  <p class="idiom">"It's raining cats and dogs."</p>
+  <ul class="examples">
+    <li>字面意思：正在下猫和狗。（荒谬）</li>
+    <li>实际含义：雨下得很大。</li>
+    <li>你不能把cats换成dogs以外的任何动物——"raining pigs and chickens"没人听得懂。</li>
+  </ul>
+  <p class="idiom" style="margin-top:0.5rem;">"Break the ice."</p>
+  <ul class="examples">
+    <li>字面意思：打破冰。（字面上可以做，但含义完全不同）</li>
+    <li>实际含义：在社交场合中打破沉默、消除尴尬。</li>
+    <li>"Let me break the ice" = "让我来开场"。</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>搭配（Collocation）— 习惯性的词的组合</h3>
+  <p class="meaning">搭配是两个或多个<strong>字面意思都能理解</strong>的词习惯性组合在一起。每个词的含义都是字面的，只是它们"经常一起出现"。</p>
+  <p class="formula">make + decision（不是 do + decision）</p>
+  <ul class="examples">
+    <li><strong>make a decision</strong> — "做一个决定"（每个词都是字面意思，但只能用 make）</li>
+    <li><strong>do homework</strong> — "做作业"（只能用 do，不能说 make homework）</li>
+    <li><strong>heavy rain</strong> — "大雨"（英文用 heavy，中文用"大"，语言选择不同）</li>
+    <li><strong>fast food</strong> — "快餐"（英文用 fast，中文用"快"，但英文不说 quick food）</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>为什么这很重要：</strong>搭配错误（collocation errors）是中国学习者最"显眼"的错误。说"I made a question"（而不是ask a question）的人，每个单词的翻译都是对的，但母语者立刻能听出这不是母语者说的——就像中文里说"我的意见很小"而不是"我的意见很小"（应该说"我的意见很浅/很有限"）。搭配是语言的"肌肉记忆"。
+</div>
+
+<h2>10组你必须知道的高频搭配</h2>
+<p>这些搭配覆盖了工作中90%的书面和口语表达。每组给出<strong>正确形式</strong>、<strong>常见错误</strong>和<strong>例句</strong>。</p>
+
+<div class="collocation-card">
+  <h3>1. make vs do — 最经典的搭配陷阱</h3>
+  <p class="formula"><strong>MAKE</strong> + decision, a mistake, progress, money, a plan, an effort, a suggestion<br>
+    <strong>DO</strong> + homework, research, business, a favor, the dishes, exercise, nothing</p>
+  <ul class="examples">
+    <li><span class="correct-example">I need to make a decision.</span> × I need to do a decision.</li>
+    <li><span class="correct-example">She did a lot of research before publishing.</span> × She made a lot of research.</li>
+    <li><span class="correct-example">We made significant progress this quarter.</span> × We did significant progress.</li>
+  </ul>
+  <p class="chinese-comparison" style="margin-top:0.5rem;"><strong>中文对比：</strong>中文里"做决定"和"做作业"都用"做"。但英语严格区分：抽象的、创造性的用 <strong>make</strong>；执行性的、体力性的用 <strong>do</strong>。</p>
+</div>
+
+<div class="collocation-card">
+  <h3>2. ask vs say vs tell — 说"说"的正确方式</h3>
+  <p class="formula"><strong>ASK</strong> + question / someone for something<br>
+    <strong>SAY</strong> + something (to someone)<br>
+    <strong>TELL</strong> + someone + something / tell a story / tell the truth</p>
+  <ul class="examples">
+    <li><span class="correct-example">Can I ask you a question?</span> × Can I say you a question? / Can I tell you a question?</li>
+    <li><span class="correct-example">He said the report was ready.</span> × He asked the report was ready.</li>
+    <li><span class="correct-example">She told me the news yesterday.</span> × She said me the news. （say后面不能直接跟宾语）</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>3. give vs take — 方向性搭配</h3>
+  <p class="formula"><strong>GIVE</strong> advice, feedback, a presentation, permission, an answer<br>
+    <strong>TAKE</strong> advice, notes, action, responsibility, a break</p>
+  <ul class="examples">
+    <li><span class="correct-example">Can you give me some feedback?</span> × Can you take me some feedback?</li>
+    <li><span class="correct-example">We need to take action now.</span> × We need to give action now.</li>
+    <li><span class="correct-example">She took my advice and changed her approach.</span> × She gave my advice.</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>4. have vs make — 安排与执行</h3>
+  <p class="formula"><strong>HAVE</strong> a meeting, a discussion, a problem, a chance, trouble<br>
+    <strong>MAKE</strong> an appointment, a reservation, arrangements</p>
+  <ul class="examples">
+    <li><span class="correct-example">Let's have a meeting on Monday.</span> × Let's make a meeting on Monday.</li>
+    <li><span class="correct-example">I made an appointment with the doctor.</span> × I had an appointment with the doctor. （后者意思是"我有一个预约"，不是"我安排了一个预约"）</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>5. do/make/take + a look — 常见动作搭配</h3>
+  <p class="formula"><strong>TAKE</strong> a look, a break, a seat, a photo, a walk<br>
+    <strong>DO</strong> a quick look over (informal)<br>
+    <strong>MAKE</strong> a quick look (WRONG — this is a common mistake)</p>
+  <ul class="examples">
+    <li><span class="correct-example">Can you take a look at this?</span> × Can you make a look at this?</li>
+    <li><span class="correct-example">Let me take a look at the document.</span></li>
+  </ul>
+</div>
+
+<h2>5个高频职场习语</h2>
+<p>这些习语在英语工作环境中极其常见——它们不是"高级英语"，而是<strong>日常英语</strong>。中国学习者不知道它们时，会硬翻译字面意思，导致沟通效率大幅下降。</p>
+
+<div class="idiom-card">
+  <h3>1. "Get the ball rolling"</h3>
+  <p class="meaning">开始某件事（尤其是项目或会议）。</p>
+  <ul class="examples">
+    <li>Let's <strong>get the ball rolling</strong> — 让我们开始吧。</li>
+    <li>Who wants to <strong>get the ball rolling</strong> on this project?</li>
+  </ul>
+</div>
+
+<div class="idiom-card">
+  <h3>2. "On the same page"</h3>
+  <p class="meaning">所有人对同一件事有相同的理解，意见一致。</p>
+  <ul class="examples">
+    <li>Before we proceed, I want to make sure we're all <strong>on the same page</strong>. — 在继续之前，我想确保大家意见一致。</li>
+    <li>Let's align on the requirements so we're all <strong>on the same page</strong>.</li>
+  </ul>
+</div>
+
+<div class="idiom-card">
+  <h3>3. "Touch base"</h3>
+  <p class="meaning">短暂联系或交流一下。</p>
+  <ul class="examples">
+    <li>Let's <strong>touch base</strong> next week. — 我们下周简短联系一下。</li>
+    <li>I just want to <strong>touch base</strong> on the project status. — 我想确认一下项目进展。</li>
+  </ul>
+</div>
+
+<div class="idiom-card">
+  <h3>4. "Circle back"</h3>
+  <p class="meaning">回头再来讨论（通常是因为现在不是好时机）。</p>
+  <ul class="examples">
+    <li>This is a good point — let's <strong>circle back</strong> on it later. — 这个观点很好——我们稍后再讨论。</li>
+    <li>I don't have the answer right now, but I'll <strong>circle back</strong> with you tomorrow.</li>
+  </ul>
+</div>
+
+<div class="idiom-card">
+  <h3>5. "Bottom line"</h3>
+  <p class="meaning">关键要点、最重要的结论（原意来自会计的"底线"）。</p>
+  <ul class="examples">
+    <li><strong>The bottom line</strong> is that we need more budget. — 关键问题是我们需要更多预算。</li>
+    <li>There are a lot of details, but <strong>the bottom line</strong> is simple. — 细节很多，但核心很简单。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>文化注释：</strong>这些习语大多来自体育（ball rolling）、阅读（same page）、航海/电话（touch base）、循环（circle back）和商业（bottom line）。理解它们的文化背景，能帮助你在记忆时建立联想——这不是死记硬背，而是理解"为什么这个词组长这样"。
+</div>
+
+<h2>常见错误：中式英语搭配</h2>
+<p>以下是最常见的中式英语搭配错误。记住这些，你就能立刻让自己的英语听起来更自然。</p>
+
+<table class="comparison-table">
+  <tr>
+    <th>中式英语（错误）</th>
+    <th>正确英语</th>
+    <th>为什么错</th>
+  </tr>
+  <tr>
+    <td>I <span class="wrong-example">opened</span> the computer.</td>
+    <td>I <span class="correct-example">turned on</span> the computer. / I <span class="correct-example">booted up</span> the computer.</td>
+    <td>中文说"打开电脑"，但英语中电脑用 turn on。"Open"用于有物理开合的东西（门、盒子）。</td>
+  </tr>
+  <tr>
+    <td>My opinion is <span class="wrong-example">small</span>.</td>
+    <td>My opinion is <span class="correct-example">limited</span>. / I have <span class="correct-example">limited knowledge</span>.</td>
+    <td>"意见很小"是直译。英语中意见不用大小形容，用"limited/limited experience"。</td>
+  </tr>
+  <tr>
+    <td>I <span class="wrong-example">learned</span> the knowledge.</td>
+    <td>I <span class="correct-example">acquired</span> the knowledge. / I <span class="correct-example">learned</span> about it.</td>
+    <td>learn通常不直接跟"知识"作宾语。learn的是技能或信息本身，knowledge要用acquire/gain。</td>
+  </tr>
+  <tr>
+    <td>We <span class="wrong-example">did</span> the meeting.</td>
+    <td>We <span class="correct-example">had</span> the meeting. / We <span class="correct-example">held</span> the meeting.</td>
+    <td>会议用have或hold，不用do。do用于执行任务，会议是一个事件。</td>
+  </tr>
+  <tr>
+    <td>He <span class="wrong-example">gave</span> a smile at me.</td>
+    <td>He <span class="correct-example">smiled</span> at me. / He gave me <span class="correct-example">a smile</span>.</td>
+    <td>英语有两种结构：动词+介词(smiled at me) 或 给+宾语+名词(gave me a smile)。混合结构是错误的。</td>
+  </tr>
+</table>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>这些错误的共同根源是<strong>逐词翻译</strong>。中文里每个词单独看都是对的，但英语是"搭配驱动"的——不是每个词单独翻译，而是整个词组作为一个单元来记忆。就像中文说"下雨"不说"落雨"，虽然"落"和"下"意思相近，但搭配是固定的。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：选出正确表达</h2>
+  <p>共 8 题。每题选择最自然的英语表达。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在会议上想让大家开始讨论。</div>
+    <div class="sentence">"Let's _______ on this project!"</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">open the ball</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">get the ball rolling</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你想请求同事帮你检查一份文档。</div>
+    <div class="sentence">"Can you _______ at this document?"</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">take a look</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">make a look</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你想问导师一个问题。</div>
+    <div class="sentence">"Can I _______ you a question?"</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">say</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">ask</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你想确保团队成员理解一致。</div>
+    <div class="sentence">"Let's make sure everyone is _______."</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">on the same page</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">on the same book</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你想告诉同事你会稍后回复他的问题。</div>
+    <div class="sentence">"I don't know the answer yet, but I'll _______ with you tomorrow."</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">loop back</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">circle back</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你想说"我们做了很多调研"。</div>
+    <div class="sentence">"We _______ a lot of _______ before making the decision."</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">made ... decision</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">did ... research</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你想说"关键在于预算不足"。</div>
+    <div class="sentence">"The _______ is that we don't have enough budget."</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">last line</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">bottom line</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你想提醒老板给员工反馈。</div>
+    <div class="sentence">"Could you _______ the team some feedback?"</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">take</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">give</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我是你的语言导师。不确定某个搭配为什么只能用这个词？这正是我们需要讨论的地方。直接提问，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong>《Collins COBUILD 英语搭配词典》— 通过真实例句理解词语如何自然搭配，比死记硬背词汇表有效得多。
+  <br><br>
+  <a href="../reference/idioms-collocations.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-english-core-grammar-patterns.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-cantonese-tone-system.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Get the ball rolling" 是固定习语，意思是"开始某事"。你不能用"open the ball"——这不是一个有效的英语表达，"open"和"ball rolling"从不这样搭配。', wrong: '"Open the ball" 不是英语表达。"Get the ball rolling" 是一个固定习语，意思是开始做某事，就像足球比赛开球一样。你不能把get换成open。' },
+    q2: { correct: '"Take a look" 是固定搭配。"Look" 在这里是名词，英语中说"take a look"而不是"make a look"。这是搭配习惯，不是逻辑选择。', wrong: '"Make a look" 是错误的。"Look" 作为名词时，习惯搭配动词是"take"——"take a look"。你不能说"make a look"，就像不能说"make a walk"一样。' },
+    q3: { correct: '"Ask a question" 是唯一正确的搭配。"Say" 不能直接跟"you a question"（say + 直接内容），"tell" 不能跟"question"搭配。', wrong: '"Say you a question" 是错误的。Say 后面跟的是"说的内容"，不是"对谁说的"——你应该说"say to you a question"，但这也别扭。正确做法是用 ask：ask someone a question。' },
+    q4: { correct: '"On the same page" 是习语，表示"意见一致、理解相同"。"On the same book" 是字面翻译——英语中没有任何这样的表达。', wrong: '"On the same book" 不是英语表达。"On the same page" 来自会议中每个人看同一页材料的场景，引申为"意见一致"。' },
+    q5: { correct: '"Circle back" 是职场习语，意思是"回头再来讨论"。"Loop back" 偶尔也在IT语境中使用，但在标准商务英语中，"circle back" 才是正确搭配。', wrong: '"Loop back" 在某些IT语境中偶尔被使用，但它不是标准的商务习语。"Circle back" 是正式英语中"回头再谈"的标准表达。' },
+    q6: { correct: '"Do research" 和 "make a decision" 是两个不同的正确搭配。Research 用 do，decision 用 make。你不能说"made research"或"did a decision"。', wrong: '"Made ... decision" 填第一个空是错误的。虽然"make a decision"是正确的搭配，但这里需要填的是"我们做了很多调研"——research 搭配 do，不是 make。' },
+    q7: { correct: '"The bottom line" 是习语，意思是"关键要点/核心结论"。"Last line" 字面意思是"最后一行"，不是习语。', wrong: '"Last line" 只是字面意思"最后一行"，比如文件的最末一行。"The bottom line" 来自会计的"底线/总计行"，引申为"最重要的结论"。' },
+    q8: { correct: '"Give feedback" 是固定搭配。"Give" 表示"给予"——你把反馈给团队。"Take feedback" 意思完全相反——表示"接受反馈"。', wrong: '"Take feedback" 的意思是"接受反馈"，不是"给反馈"。如果你想让老板给团队反馈，应该用"give"：give the team feedback。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对英语习语和搭配掌握得很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下答错题目的解释，理解为什么。';
+      else label.textContent = '继续加油！重读上面的内容，重新尝试理解这些搭配模式。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

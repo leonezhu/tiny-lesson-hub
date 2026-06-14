@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 9 — 正和与零和（Positive-Sum &amp; Zero-Sum）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>正和与零和（Positive-Sum &amp; Zero-Sum）</h1>
+<p class="lesson-meta">Lesson 9 &middot; ~10 minutes &middot; 元概念 #9</p>
+
+<div class="goal-box">
+  <strong>通过本课</strong>，你将学会区分"正和博弈"和"零和博弈"，理解为什么大多数值得追求的关系和制度是正和的，以及如何识别那些伪装成正和的零和陷阱。这是经济学、博弈论、人际关系和国际政治的核心分野。
+</div>
+
+<h2>核心直觉</h2>
+<p>
+  想象两个人分一块披萨。如果披萨大小固定，你多吃一口，我就少一口——<strong>这就是零和：一方的收益等于另一方的损失，总和不变</strong>。但如果你我合作烤出一块更大的披萨，两个人都比原来吃得多——<strong>这就是正和：通过合作创造新价值，每个人的收益都大于零</strong>。
+</p>
+<p>
+  零和思维是直觉的——你抢到我就不有了。但正和思维是反直觉的：为什么我赢了你也会赢？答案是<strong>协作、分工、创新</strong>可以在系统中创造新的价值。理解这两种博弈类型，决定了你是一个"掠夺者"还是一个"建设者"。
+</p>
+
+<h2>零和：固定的饼</h2>
+
+<div class="tense-card">
+  <h3>什么是零和博弈</h3>
+  <p>零和博弈指的是：系统中参与者的收益和为零。一方获得的 = 另一方失去的。总和固定不变。</p>
+  <ul class="examples">
+    <li>赌博：你和赌友的筹码总量不变，你赢的钱就是我输的钱</li>
+    <li>乒乓球比赛：你赢了，我就输了。冠军只有一个</li>
+    <li>抢座：公交车上一个空座，你坐了我就不能坐</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>零和思维的危险</h3>
+  <p>零和思维本身没错——在某些场景中它确实是正确的（比如比赛）。但错误地把正和场景判断为零和，会导致巨大的价值损失：</p>
+  <ul class="examples">
+    <li>贸易：如果认为国际贸易是零和（你出口多就是因为我进口多），你就会失去贸易带来的互利</li>
+    <li>职场竞争：如果认为同事升职意味着你失去机会，你就会选择打压同事而不是提升自己</li>
+    <li>关系中的权力争夺：如果认为关系中的"赢"就是让对方"输"，关系就会破裂</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键判断标准：</strong>这个场景中，价值是固定的还是可扩展的？如果双方可以通过协作让饼变大，它就是正和的。如果必须"你的就是我的"，它就是零和的。
+</div>
+
+<h2>正和：把饼做大</h2>
+
+<div class="tense-card">
+  <h3>比较优势：分工创造的奇迹</h3>
+  <p>大卫·李嘉图的比较优势理论揭示了正和的核心机制：即使一方在所有方面都更优秀，双方仍然可以通过专业化分工和交换获益。</p>
+  <ul class="examples">
+    <li>一个律师打字比助理快，但律师每小时赚 1000 元，助理每小时赚 50 元。律师应该专注于写法律文书，让助理做文档整理——两个人合作产出的总价值远大于各自做一切</li>
+    <li>国际贸易：越南种咖啡效率高，德国造机器效率高。越南出口咖啡、德国出口机器，两国的总产出都大于自给自足</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>知识共享：最纯粹的正和</h3>
+  <p>知识是正和博弈的完美范例——你分享一个想法，不会失去它，反而可能因为对方的反馈而变得更好。</p>
+  <ul class="examples">
+    <li>开源软件：开发者公开代码，全世界都可以使用和贡献，每个人的效率都提高了</li>
+    <li>学术发表：论文公开后，全球研究者在此基础上继续推进，整个领域的知识总量呈指数增长</li>
+    <li>你教别人一个概念，不仅帮助了对方，自己也会通过讲解加深理解</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>正和关系的特征</h3>
+  <p>正和互动通常具有这些特征：</p>
+  <ul class="examples">
+    <li><strong>信息可以重复使用：</strong>你说的话不会消耗掉，对方可以反复学习和应用</li>
+    <li><strong>协作有增量收益：</strong>1+1&gt;2，合作产出的价值大于各自独立行动</li>
+    <li><strong>信任是放大器：</strong>信任程度越高，协作越顺畅，正和效应的规模越大</li>
+    <li><strong>时间是盟友：</strong>正和关系会随着时间积累复利——知识、信任、合作关系都在增长</li>
+  </ul>
+</div>
+
+<h2>混合博弈：大多数真实场景</h2>
+<p>
+  现实世界中，纯粹的零和或纯粹的"正和"很少见。大多数场景是<strong>混合博弈</strong>——既有竞争性又有合作性。理解这一点很重要：
+</p>
+
+<div class="tense-card">
+  <h3>囚徒困境：为什么正和会被破坏</h3>
+  <p>两个囚徒各自面临"合作"或"背叛"的选择。如果两人都合作，每人判 1 年（最佳结果）。如果一人背叛一人合作，背叛者释放、合作者判 10 年。如果都背叛，每人判 5 年。</p>
+  <p>
+    从个人理性出发，每个人都会选择背叛，结果变成（5, 5）——双方都比（1, 1）更差。这就是<strong>个人理性导致集体非理性</strong>，正和变成了负和。
+  </p>
+  <ul class="examples">
+    <li>军备竞赛：两个国家各自扩军，结果双方都更不安全（负和）</li>
+    <li>价格战：两家公司降价竞争，利润都下降，消费者短期获益但长期选择变少</li>
+    <li>公地悲剧：每个牧民都多养一头羊，草地最终退化，所有人受损</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心挑战：</strong>正和博弈不会自动实现。它需要<strong>信任、沟通、重复互动</strong>和<strong>制度设计</strong>。没有这些，个人理性会将合作拉向背叛。学习设计能让合作自动发生的机制（如重复博弈中的"以牙还牙"策略），是正和思维的高级形态。
+</div>
+
+<h2>实用框架：判断场景类型的三个问题</h2>
+
+<div class="tense-card">
+  <h3>1. 价值是否可创造？</h3>
+  <p>问自己：我们能不能通过协作、分工或创新创造新的价值？如果可以，这就是正和空间。如果资源完全固定（如一块固定大小的土地），它就是零和的。</p>
+</div>
+
+<div class="tense-card">
+  <h3>2. 互动是一次性的还是重复的？</h3>
+  <p>一次性的互动更容易滑向零和（没有未来合作的惩罚）；重复互动建立了声誉和未来回报的预期，鼓励合作。</p>
+  <ul class="examples">
+    <li>你只和一个客户交易一次，你可能会欺诈；但如果你要和他长期合作，欺骗的成本会超过短期收益</li>
+    <li>网上匿名评论容易变成零和攻击，因为不需要承担未来后果</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>3. 是否存在制度促进合作？</h3>
+  <p>好的制度设计可以让正和博弈自动发生。法律、合同、市场机制、声誉系统——这些都是在个人理性与集体理性之间架桥。</p>
+  <ul class="examples">
+    <li>专利制度：虽然垄断有零和成分，但它激励了创新，创造了巨大的正和</li>
+    <li>信用评级：让"守信"变得有利可图，从而鼓励合作行为</li>
+    <li>开源社区的规则设计：通过透明的贡献记录和社区认可，让合作者获得回报</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>实践意义：</strong>当你面临一个决策时，先判断它是零和还是正和。如果是正和的——选择合作、分享、投资关系。如果是零和的——选择竞争、效率、最优策略。最危险的错误是把正和当零和：在可以做大蛋糕的时候选择切蛋糕，放弃了整个未来。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别博弈类型</h2>
+  <p>判断以下场景中，哪些是零和、哪些是正和？点击选择。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">两个国家进行贸易：A 国出口电子产品，B 国出口农产品。</div>
+    <div class="sentence">这是零和博弈吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是，A 国赚的 B 国就亏了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不是，两国通过分工和交换都获得了更多选择</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一场围棋比赛的决赛，冠军只有一个奖杯。</div>
+    <div class="sentence">这是零和博弈吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，一个赢就必然另一个输，总价值固定</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，两位棋手都通过比赛提高了水平</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">两个团队成员共享一个数据库和工具库，互相学习对方的代码，最终两个人都提高了效率。</div>
+    <div class="sentence">这是正和博弈吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，知识共享创造了增量价值，双方的收益都大于零</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，知识是固定的，分享只是转移不是创造</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">两家公司陷入价格战：每家公司都将产品降价 20%，结果利润都大幅下降。</div>
+    <div class="sentence">这属于什么类型的博弈？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">正和博弈，因为消费者受益了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">负和博弈，个人理性导致集体非理性，双方都受损</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在工作中主动教会新同事你的技能，新同事效率提升后反过来帮你处理了部分工作。</div>
+    <div class="sentence">这体现了正和博弈吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，你付出了知识，但获得了时间回报和更强的合作关系</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，你在教会竞争对手，自己可能失去优势</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一片公共牧场，每个牧民都想多养一头羊增加收入，但草场承载力有限。</div>
+    <div class="sentence">这属于什么类型的博弈？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">正和博弈，每个牧民都在最大化自己的收入</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">负和博弈（公地悲剧），个人理性导致集体非理性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一个团队内部竞争有限的晋升名额，成员开始隐瞒信息和阻止对方。</div>
+    <div class="sentence">这属于什么类型的博弈？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">零和博弈，晋升名额固定，一个的赢必然另一个的输</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">正和博弈，竞争会让团队选出更优秀的人</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">两个人共同创业：一个负责产品，一个负责销售，公司价值增长了 10 倍，每个人都获得了比单独工作更多的回报。</div>
+    <div class="sentence">这属于什么类型的博弈？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">零和博弈，因为每个人获得的股份比例是固定的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正和博弈，协作创造了远大于独立行动的总价值</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的元概念导师。不理解为什么囚徒困境中理性人会选择背叛？不理解为什么正和博弈需要制度保障？为什么有些看似正和的场景其实是零和的？这些正是深入思考的好问题。
+  <br><br>
+  <strong>延伸阅读：</strong>约翰·纳什《非合作博弈论》（<em>A Theory of Games and Economic Behavior</em>，与冯·诺依曼合著）——博弈论的奠基之作；罗伯特·阿克塞尔罗德《合作的进化》（<em>The Evolution of Cooperation</em>）——为什么在囚徒困境中合作可以战胜背叛。
+  <br><br>
+  <a href="../reference/positive-sum-zero-sum.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-critical-points-phase-transitions.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-fitness-landscape.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '国际贸易是正和博弈的经典例子。两国通过比较优势进行分工：A 国生产自己更有优势的电子产品，B 国生产农产品，然后交换。结果两国都有比自给自足更多的选择和更低的价格——双方的收益都大于零。', wrong: '贸易不是"你赢我输"。通过分工和交换，每个国家都可以消费超出自己生产能力的组合。A 国出口电子产品换回农产品，B 国出口农产品换回电子产品——双方都比不贸易时获益。' },
+    q2: { correct: '围棋决赛是零和博弈：冠军只有一个，你赢了我必然输。奖杯和荣誉是固定价值的资源，无法通过协作增加——这符合零和博弈的定义。', wrong: '虽然比赛可能让棋手提高水平（间接的正和），但比赛本身的结构是零和的：一场比赛只有一个赢家，一个输家。比赛结果是固定的，无法创造新的价值。' },
+    q3: { correct: '知识共享是正和博弈的典型——知识库可以被无限复用而不损耗。两人互相学习后效率都提升了，总产出大于各自独立工作之和（1+1>2），这是典型的正和。', wrong: '知识不是固定资源。你分享给同事一个工具，你并没有失去它，反而同事的改进可能反过来帮助你。更重要的是，两人协作产生的总价值大于各自独立行动之和。' },
+    q4: { correct: '价格战是负和博弈：两家公司都降价导致利润下降，消费者短期获益但长期选择减少。个人理性（降价竞争）导致了集体非理性（双方都受损），这是典型的负和。', wrong: '消费者短期获益但长期受损。价格战中双方利润都下降，从公司角度看这是负和博弈——每个企业的损失加总大于消费者获得的收益。长期来看市场选择减少，消费者最终受损。' },
+    q5: { correct: '这体现了正和：虽然你教了新同事，但你获得了时间回报（对方帮你处理部分工作）和更强的合作关系。更重要的是，团队整体的效率提升了，这为未来的协作创造了更多可能性。', wrong: '在重复互动和协作环境中，分享技能不是"教会竞争对手"，而是建立信任和协作网络。新同事的效率提升也会减少你的工作压力，你获得的时间回报可能超过教学成本。这就是正和——你创造了超出初始投入的价值。' },
+    q6: { correct: '公地悲剧是负和博弈的经典案例：每个牧民都理性地多养一头羊，但草场承载力的损耗由所有人分担。最终结果是草地退化、羊群饿死，每个人的收益都小于不养那么多羊的情况——集体非理性导致集体受损。', wrong: '个体理性不等于集体理性。每个牧民多养一头羊确实增加了自己的收入（个体收益），但草场退化的成本由所有人分担，最终导致所有人的收入都下降。当所有牧民都做出同样的"理性"决策时，结果是负和。' },
+    q7: { correct: '晋升名额是固定的——一个位置只能有一个人。当成员开始隐瞒信息和阻止对方时，他们在一个零和的竞争中，个人的"赢"必然意味着另一个人的"输"。这还导致了团队整体效率下降的负效应。', wrong: '竞争本身不一定让场景变成正和。当资源（晋升名额）是固定的、零和的，而成员又采取了不合作的策略（隐瞒信息、互相阻止），这就不再是"竞争产生优胜者"的正和逻辑，而是纯粹的零和甚至负和博弈。' },
+    q8: { correct: '创业是正和博弈的完美例子：分工协作产生了远超各自独立工作的总价值。10 倍的价值增长意味着两个人通过合作创造了全新的财富——每个人的收益都远大于零，而且远大于不合作的baseline。', wrong: '股份比例固定并不意味着博弈是零和的。关键不在于每个人分到的比例，而在于合作的总价值（10 倍增长）远大于独立工作的总和。即使每个人的比例不变，正和博弈的核心是"总价值增长"而不是"固定蛋糕的分配"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '全对！你已经掌握了正和与零和的核心直觉。';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，区分零和与正和是判断场景的第一步。';
+      else label.textContent = '正和与零和的核心是"价值是否可创造"，多读几遍上面的例子会更有感觉。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 法家思想：以法治国、势术法并用</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    margin-top: 0;
+  }
+
+  .content-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-card ul li {
+    padding: 0.2rem 0;
+    position: relative;
+  }
+
+  .content-card ul li::marker {
+    color: var(--accent);
+  }
+
+  .quote-block {
+    background: #f7f9fb;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  .quote-block .attribution {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .practical-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .practical-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>法家思想：以法治国、势术法并用</h1>
+<p class="lesson-meta">第6课 · ~12 分钟 · 中国政治哲学的另一条主线</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解法家思想的核心框架——\"法\"、\"势\"、\"术\"三位一体的统治逻辑。你将掌握法家如何从零和博弈的人性预设出发，构建一套不依赖道德、只依赖制度和激励的政治操作系统。学完后你将能够识别现代组织中的\"法家逻辑\"——绩效制度、KPI、合规体系——并评估其有效性和伦理代价。
+</div>
+
+<h2>法家的核心问题：在乱世中如何生存？</h2>
+
+<p>法家形成于战国时期（公元前475-221年），那是中国历史上最混乱、最残酷的时代之一。诸侯国之间不断征伐，外交和军事手段灵活到近乎无底线。在这样的环境下，法家提出了一个极其务实的回答：<b>不要依赖君主的道德品质，而要依赖制度设计</b>。</p>
+
+<div class="quote-block">
+  \"法不阿贵，绳不挠曲。刑过��不避大臣，赏善不遗匹夫。\"<br>
+  法律不偏袒权贵，墨线不迁就曲木。惩罚不回避大臣，奖赏不漏掉平民。<br>
+  <span class="attribution">——《韩非子·有度》</span>
+</div>
+
+<p>这句话是法家思想最精炼的纲领：法律面前人人平等——至少在理论上是如此。在等级森严的古代中国，这种主张是极其激进的。但法家的真正创新不在于\"平等\"，而在于他们<b>完全排除了道德作为治理的基础</b>。</p>
+
+<div class="practical-box">
+  <strong>关键洞察：</strong> 儒家用道德教化来治理国家，法家用制度和激励来治理国家。前者假设\"人会向善\"，后者假设\"人趋利避害\"。法家不是认为人\"坏\"——而是认为不管人好还是坏，制度都应该对\"人实际是什么样\"起作用，而不是对\"人应该是什么样\"起作用。
+</div>
+
+<h2>韩非子：法家的集大成者</h2>
+
+<p>法家不是一个人，而是一个思想传统。它融合了三个来源：<b>商鞅的\"法\"、申不害的\"术\"、慎到的\"势\"</b>，最终由韩非子（约公元前280-233年）整合成一套完整的体系。</p>
+
+<div class="content-card">
+  <h3>法——制度与规则</h3>
+  <p>商鞅在秦国推行的变法是最著名的实践。他建立了一套<b>明确、公开、可执行的规则体系</b>：赏罚分明、法律条文公开、执行一致。商鞅最著名的改革是\"连坐制\"——一个人犯罪，邻居不举报则同罚。这种做法的残酷性不言而喻，但它创造了一个令人震惊的结果：秦国从西陲小国变成了战国最强。</p>
+  <p><b>核心逻辑</b>：法律的目的不是\"公平\"，而是<b>改变行为激励</b>。当赏罚的规则足够清晰和一致时，人会自动按照制度期望的方向行动——不需要道德教育，不需要说服，只需要让\"正确的事\"成为\"对自己最有利的选择\"。</p>
+</div>
+
+<div class="content-card">
+  <h3>术——操控与手段</h3>
+  <p>申不害提出的\"术\"关注的是君主如何<b>控制和评估臣下</b>。术的核心是\"循名责实\"：你宣称你能做什么（名），你就必须实际做到什么（实）。如果做不到，就惩罚。君主不应该透露自己的偏好和意图——臣下无法揣测君主的心思，就无法投机取巧。</p>
+  <p><b>现代对应</b>：这有点像现代的\"信息不对称管理\"。好的管理者不会在所有时候都让自己的想法完全透明——如果下属知道领导对每个方案的确切态度，他们只会迎合而不说实话。术的本质就是保持\"必要的不可预测性\"。</p>
+</div>
+
+<div class="content-card">
+  <h3>势——权力与位置</h3>
+  <p>慎到强调<b>\"势\"——地位本身带来的权力</b>。他说：\"飞龙乘云，腾蛇游雾\"——龙能飞、蛇能游，不是因为他们天生强大，而是因为他们占据了有利的位置（云和雾）。君主不需要比臣下更有智慧或更勇敢——他的权威来自他的<b>位置</b>，而不是他的个人品质。</p>
+  <p><b>关键推论</b>：制度的有效性不取决于执行者的个人品德，而取决于权力结构本身。一个平庸的人坐在有\"势\"的位置上，能产生比贤人离开那个位置后更大的影响。</p>
+</div>
+
+<h2>法家的人性预设：好利恶害</h2>
+
+<p>法家思想的基础是一个极其冷酷但极其诚实的人性观察：<b>人都是趋利避害的</b>。韩非子在《难一》中举了一个著名的例子：工匠希望人富贵（因为他能卖棺材和车马），木匠也希望人富贵——这不是因为工匠和木匠善良，而是因为他们<b>从别人的富贵中获利</b>。</p>
+
+<div class="content-card">
+  <h3>与儒家的根本对立</h3>
+  <p>儒家说\"人皆可以为尧舜\"——人性向善，可以通过教育改善。法家说\"人皆有好利之心\"——人性趋利，只能通过制度引导。这不是\"性善\"和\"性恶\"的简单对立——法家根本不关心人性\"善\"还是\"恶\"，他们关心的是：<b>如果人天生趋利避害，你能设计什么样的制度来让这种行为服务于公共利益</b>？</p>
+  <p>韩非子有一句名言：\"臣尽死力以与君市，君重爵禄以与臣市\"——臣下用尽力气来和君主做交易，君主用爵位俸禄来和臣下做交易。这不是敌对关系，而是一种冷酷的契约观。在法家看来，承认这种交易本质比用道德来粉饰它更诚实、也更有效。</p>
+</div>
+
+<h2>秦始皇：法家的终极实验</h2>
+
+<p>公元前221年，秦王嬴政统一六国，建立秦朝——这是法家思想在现实中达到的巅峰。秦朝做了几件改变中国历史走向的事：</p>
+
+<div class="content-card">
+  <h3>书同文、车同轨、统一度量衡</h3>
+  <p>统一文字、车轨宽度、度量衡标准。这不是文化工程——这是<b>降低治理成本的制度工程</b>。当所有人都用同样的文字、同样的度量衡时，跨地区的行政管理和经济整合就成了可能。这是法家\"标准化思维\"的极致体现。</p>
+</div>
+
+<div class="content-card">
+  <h3>焚书坑儒</h3>
+  <p>这是法家思想最臭名昭著的一面。韩非子认为：学术思想的分歧会导致\"私学\"的兴起，而\"私学\"会挑战法律的统一性。所以必须控制信息流通，禁止私学和异端思想。秦始皇采纳了这一建议，焚烧了除了医药、卜筮和农书以外的所有书籍，并活埋了四百多名儒生。</p>
+  <p><b>历史教训</b>：秦朝只存在了15年（公元前221-206年）就灭亡了。它的迅速崩溃不是因为法家制度\"效率低\"——恰恰相反，法家制度创造了中国历史上第一个高效的中央集权帝国。问题在于：<b>法家制度只有征服功能，没有凝聚功能</b>。它能让你征服天下，但不能让你赢得民心。</p>
+</div>
+
+<div class="practical-box">
+  <strong>关键区分：</strong> 法家不是\"暴政\"的同义词。法家提供了一种理解制度的深刻视角——制度不依赖道德自觉，而依赖激励结构。这个视角在管理学、经济学和政治学中仍然至关重要。问题不在于法家\"太严\"，而在于它<b>只有一套工具</b>——当所有问题都被简化为\"激励是否足够\"时，你就会失去理解合作、信任、忠诚和认同的能力。
+</div>
+
+<h2>法家与现代制度的共鸣</h2>
+
+<p>法家思想在现代生活中无处不在——只是换了个名字。以下对应展示了古代政治哲学与现代管理的同构性：</p>
+
+<div class="content-card">
+  <h3>KPI 与赏罚制度</h3>
+  <p>现代企业的KPI制度是法家\"赏罚分明\"的直接传承。当你的绩效工资完全取决于你完成的指标数量时——你不需要被\"教育\"要有责任心，制度本身就在驱动你。法家会说：这不叫\"冷酷\"，这叫\"诚实\"——你明确告诉员工\"这样做得到奖励，那样做受到惩罚\"，比用企业文化来暗示更清晰。</p>
+</div>
+
+<div class="content-card">
+  <h3>合规与内控</h3>
+  <p>现代公司的合规部门、内部审计、反腐败制度——这些都是\"法\"的现代版本。它们不依赖\"每个人都是好员工\"的假设，而是假设\"如果没有监督，总有人会投机\"。合规制度的核心就是让违规的成本高于收益——这正是法家\"刑过不避大臣\"的现代诠释。</p>
+</div>
+
+<div class="content-card">
+  <h3>算法管理</h3>
+  <p>外卖平台的骑手算法、网约车的价格调度——这是法家\"术\"的极致进化。算法不需要信任骑手，不需要了解骑手的处境，只需要通过数据监控（名）和奖惩机制（实）来精确控制行为。法家会认为这是\"循名责实\"的完全实现——唯一的区别是，韩非子用的是竹简和印章，外卖平台用的是GPS和AI。</p>
+</div>
+
+<h2>法家 vs 道家 vs 儒家：三种治理范式</h2>
+
+<p>理解这三种中国主要思想传统的最有效方式，是将它们看作应对\"组织问题\"的不同策略：</p>
+
+<div class="content-card">
+  <h3>三种范式对比</h3>
+  <ul>
+    <li><b>儒家</b>：通过教化让人成为更好的人 → 适用于稳定社会，长期文化建设。代价：在危机中反应慢，在利益冲突面前无力。</li>
+    <li><b>法家</b>：通过制度让人无法不做事 → 适用于危机管理、快速整合。代价：缺乏凝聚力，依赖高压，不可持续。</li>
+    <li><b>道家</b>：通过不干预让系统自组织 → 适用于复杂、创新的系统。代价：在需要快速决策时可能过于缓慢。</li>
+  </ul>
+  <p><b>现代启示</b>：最好的组织往往同时包含三种逻辑——用儒家的价值观凝聚人心（使命和愿景），用儒家的价值观凝聚人心（使命和愿景），用法家的制度保证执行力，用道家的智慧在不确定中留有余地。</p>
+</div>
+
+<h2>三位代表人物</h2>
+
+<div class="content-card">
+  <h3>商鞅（约公元前390-338年）——制度的设计师</h3>
+  <p>商鞅最初在魏国不受重用，转投秦国后推行了彻底的社会重构：废除世袭贵族特权，建立军功爵制，推行连坐法。他的改革让秦国从一个边陲弱国变成了超级大国。但最终商鞅自己也被他自己建立的制度反噬——秦孝公死后，新君主清算商鞅，他死于自己设计的\"连坐\"。韩非子在《五蠹》中引用商鞅的命运说：\"不法法而法其故，祸及商君\"——不遵循法的精神而只沿用旧法，就会招致祸患。</p>
+</div>
+
+<div class="content-card">
+  <h3>韩非子——系统的观察者</h3>
+  <p>韩非子是韩国的公子，天生口吃，不善言辞但极擅写作。他的老师荀子（儒家）相信\"人性可善\"，但韩非子从荀子的\"性恶论\"出发，推导出了完全相反的结论：如果人性本恶，那么道德教化毫无意义，必须依靠制度。韩非子的著作《韩非子》五十五篇是法家思想的百科全书，秦始皇读后说\"我得见此人，死而无憾'。</p>
+</div>
+
+<div class="content-card">
+  <h3>李斯（？-公元前208年）——实践的悲剧</h3>
+  <p>李斯和韩非子是同门（都师从荀子），但李斯选择了实践而韩非子停留在理论。李斯帮助秦始皇完成了统一，建立了秦朝的官僚体系。但他最终被自己的政敌赵高陷害，死于他参与建立的严酷法律之下。李斯的一生是法家思想最讽刺的注脚：设计制度的人，最终被制度吞噬。</p>
+</div>
+
+<div class="practical-box">
+  <strong>今天的练习：</strong> 想一个你熟悉的组织——公司、学校或社团。分析它的治理方式：（1）主要依赖什么？是领导者的个人魅力（儒家式的\"贤人政治\"）？还是明确的规则（法家式的\"法治\"）？还是松散的共识（道家式的\"无为而治\"）？（2）这种方式在什么情况下有效？在什么情况下失效？（3）如果加入另一种逻辑，会怎样改变这个组织的表现？
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解法家思想</h2>
+  <p>根据法家思想的核心概念，判断以下情境。每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">韩非子的\"法\"、申不害的\"术\"、慎到的\"势\"是法家的三个支柱。</div>
+    <div class="sentence">\"势\"的核心含义是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">君主的个人权谋和诡计</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">地位本身带来的权力，不依赖个人品质</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">商鞅在秦国的变法。</div>
+    <div class="sentence">\"连坐制\"的设计逻辑是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">让违规成本极高，使人们互相监督</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">通过集体惩罚来培养团队合作精神</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">韩非子的\"臣尽死力以与君市，君重爵禄以与臣市\"。</div>
+    <div class="sentence">这句话表达的观点是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">君主应该像做生意一样对待臣下，不能信任任何人</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">君臣关系本质上是利益交换，承认这一点比用道德粉饰更有效</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">秦朝只存在了15年就灭亡了。</div>
+    <div class="sentence">根据法家思想的分析，秦朝快速灭亡的原因是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">法家制度效率太低，无法维持大一统帝国</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">法家只有征服功能，没有凝聚功能，无法赢得民心</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">\"法不阿贵，绳不挠曲\"。</div>
+    <div class="sentence">这句话强调法家的核心主张是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">法律应该对所有人同样严厉，惩罚不应该有轻重之分</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">法律执行应当一视同仁，不偏袒权贵也不遗漏平民</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">\"循名责实\"。</div>
+    <div class="sentence">\"循名责实\"的核心意思是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">要看别人的名声是否与实际相符，判断其是否诚实</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你承诺做什么，就必须实际做到什么，否则就惩罚</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一家公司的KPI制度。</div>
+    <div class="sentence">从法家角度看，KPI制度的优势是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">让员工觉得公司很公平</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">通过明确的赏罚激励来驱动行为，不依赖员工的道德自觉</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">韩非子的\"飞龙乘云\"比喻。</div>
+    <div class="sentence">慎到说\"飞龙乘云，腾蛇游雾\"是为了说明——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">龙和蛇的力量来自它们所处的环境（云和雾），而非自身</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">君主的权威来自其地位（势），而非个人品质</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——法家思想最反直觉的地方在于，它承认人性中\"趋利避害\"的一面，却从中推导出了一套看似冷酷但极其有效的治理逻辑。不理解\"势\"和\"术\"的区别？不确定法家和暴政的边界在哪里？这就是我该出场的时候。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://ctext.org/shangjunshu" target="_blank">《商君书》原文（CTEXT 中英双语）</a> — 法家的原始文本比任何二手解释都更震撼，尤其是商鞅对\"强国弱民\"的直接论述。
+  <br><br>
+  <a href="../reference/fajia-overview.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-daoism-taoism.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-buddhist-philosophy.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '\"势\"不是权谋或诡计——那是\"术\"的内容。势的核心是：地位本身带来的权力。龙能飞不是因为它是龙，而是因为它在云上。君主不需要比臣下聪明——他的权威来自位置，而不是品质。', wrong: '\"权谋和诡计\"是\"术\"的定义，不是\"势\"。势是关于地位与权力的结构关系：任何人坐在某个位置上，就自动获得了相应的权威。这与个人能力无关。' },
+    q2: { correct: '连坐制的逻辑是：当一个人的犯罪行为会导致邻居受罚时，邻居会主动监督甚至举报。这大大降低了信息收集成本——制度本身创造了互相监督的激励，不需要额外的监察人员。', wrong: '连坐制与\"团队合作\"毫无关系。它的目的不是培养合作精神，而是通过恐惧和利益计算来维持秩序。法家从不关心\"精神\"——只关心\"行为结果\"。' },
+    q3: { correct: '韩非子不否认君臣之间有利益，而是认为：承认这种利益交换比用\"忠诚\"来粉饰更诚实、更有效。当赏罚规则清晰时，臣下自然会用尽力气——不需要道德教化。', wrong: '法家不是反对信任——他们是认为信任不可靠。制度不应该建立在对\"好人\"的期待上，而应该对\"所有人都会趋利避害\"这个事实起作用。' },
+    q4: { correct: '法家创造了强大的征服机器，但它只靠恐惧维持秩序。恐惧可以让人服从，但不能让人认同。一旦高压解除（秦孝公、秦始皇去世），秩序就迅速崩溃。法家缺少\"凝聚力\"的工具。', wrong: '秦朝灭亡不是因为法家制度\"效率低\"——恰恰相反，它创造了当时最高效的集权体制。问题是效率只面向单一目标（征服和税收），当环境变化时，缺乏弹性。' },
+    q5: { correct: '这句话的核心是\"法律面前一视同仁\"——不分贵贱。墨线不迁就曲木，法律也不迁就权贵。在等级社会提出这种主张是极其激进的，因为它挑战了贵族特权。', wrong: '法律仍然应该有轻重之分——法家主张的是\"罚当其罪\"，不是\"所有人罚一样\"。关键是执行时不因身份而偏袒或歧视。' },
+    q6: { correct: '\"名\"是你宣称能做什么（职位描述、承诺），\"实\"是你实际做到了什么。\"循名责实\"就是对照你的承诺来评估你的表现——做不到就惩罚。这是法家\"术\"的核心机制。', wrong: '\"名声\"不是\"名\"的含义。这里的\"名\"指\"名义上的职责\"——你被赋予的角色应该做什么，而不是别人对你的评价。循名责实是一种制度化的考核方法。' },
+    q7: { correct: 'KPI是法家\"赏罚分明\"的现代版本——员工不需要被教育\"要有责任心\"，制度本身通过赏罚驱动行为。法家会说：这不叫冷酷，这叫诚实。', wrong: 'KPI制度的核心不是公平感——事实上很多员工觉得KPI不公平。它的核心优势是清晰：规则透明、执行一致，不依赖管理者的主观判断或员工的情感投入。' },
+    q8: { correct: '慎到的比喻说明：权力不是来自个人品质，而是来自位置。龙乘风才能飞，蛇乘雾才能游——同样，君主必须占据\"势\"（君位）才能行使权威。换一个普通人坐在君位上，效果依然。', wrong: '这不是关于环境的哲学——慎到的重点不是\"环境决定一切\"，而是\"地位决定权力\"。他想要证明的是：制度性的位置比个人的贤能更重要。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你已经掌握了法家思想的三大支柱及其现代意义。';
+      else if (score >= 5) label.textContent = '不错！法家思想最反直觉——重新阅读错题的解释，特别注意\"法\"\"势\"\"术\"的区别。';
+      else label.textContent = '继续加油！法家的核心是理解\"制度比道德更可靠\"——回到上面的内容，重点看三种范式对比。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

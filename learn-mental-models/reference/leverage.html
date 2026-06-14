@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 杠杆</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f7f9fb;
+    border-radius: 4px;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>杠杆</h1>
+<p class="card-meta">参考卡 · 多元思维模型 · Lesson 12</p>
+
+<h2>核心公式</h2>
+<p class="formula">产出 = 努力 × 杠杆率</p>
+<p>杠杆不是"走捷径"，而是找到正确的系统位置让小力量产生大结果。</p>
+
+<h2>四种杠杆类型</h2>
+
+<div class="concept-card">
+  <h3>1. 劳动力杠杆</h3>
+  <p>让别人为你工作。最原始、最难管理的杠杆。管理 N 个人的难度远超 N 倍。</p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 资本杠杆</h3>
+  <p>用钱生钱。通用性强但需要"借"——有成本。过度杠杆化会导致无限下行风险。</p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 代码杠杆</h3>
+  <p>写一次，运行无限次。边际成本为零，具备"睡眠能力"。21 世纪最强大的杠杆。</p>
+</div>
+
+<div class="concept-card">
+  <h3>4. 媒体杠杆</h3>
+  <p>内容一次创作，影响无限人。边际成本为零但需要"观众"变量。分发竞争激烈。</p>
+</div>
+
+<h2>关键原则</h2>
+<ul class="examples">
+  <li>先用零杠杆把事做对，再用杠杆放大</li>
+  <li>在低杠杆率的事上高杠杆 = 更快地做错事</li>
+  <li>代码和媒体不需要别人同意就能使用——最佳的个人杠杆</li>
+  <li>杠杆放大一切：好判断和好能力被放大，坏判断和坏能力也被放大</li>
+  <li>最安全的杠杆是那些不需要"还"的：代码和媒体</li>
+</ul>
+
+<h2>与其他模型的连接</h2>
+<ul class="examples">
+  <li><strong>复利</strong>：杠杆在金融领域的具体应用；代码/媒体也有累积效应</li>
+  <li><strong>临界质量</strong>：媒体/资本需要跨越阈值才能产生指数级影响</li>
+  <li><strong>第一性原理</strong>：选择杠杆前必须先理解真正的价值创造是什么</li>
+</ul>
+
+<div class="footer">
+  <a href="0012-leverage.html">← 返回课程</a> | <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

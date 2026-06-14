@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 — 语言学概览</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语言学概览</h1>
+<p class="lesson-meta">第 2 课 &middot; ~12 分钟 &middot; 学科导论</p>
+
+<div class="goal-box">
+  <strong>本课结束的时候</strong>，你将能够描述语言学的定义、六大核心分支及其研究对象，理解语言的层级结构和并行处理机制，并说出三个主要语言学流派（生成语法、功能主义、认知语言学）的核心主张。
+</div>
+
+<h2>什么是语言学？</h2>
+<p>
+  语言学（Linguistics）不是教你怎么说话——你从出生起就已经会说话了。语言学是研究人类语言的<strong>科学</strong>：它揭示语言的本质（是什么）、功能（做什么）、结构（怎么组织）和演化（如何变化）。
+</p>
+<p>
+  语言学的核心定义不是"一种交流工具"，而是<strong>一个复杂的、层级化的、先天与后天共同塑造的认知系统</strong>。语言的每个层级——从最小的声音单位到最大规模的对话结构——都有自己的规则系统和自主性。
+</p>
+
+<h2>六大核心分支</h2>
+<p>
+  语言学不是单一学科，而是由多个分支组成的层级系统。每个分支研究语言的一个特定层面，但它们不是独立的——理解一个句子需要同时处理所有层级的信息。
+</p>
+
+<div class="concept-card">
+  <h3>1. 语音学（Phonetics）— 声音的物理产生</h3>
+  <p>研究人类能够发出的所有声音的物理属性。通过 IPA（国际音标）系统，语音学家记录了全球约 160 种不同的发音部位和方式。中文的"七"（qī）和"西"（xī）在英语母语者听来可能相似，但语音学分析显示两者的发音部位完全不同——前者舌面接近硬腭，后者舌叶接近齿龈。</p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 音系学（Phonology）— 声音的模式和组织</h3>
+  <p>研究特定语言中哪些声音组合是"合法的"。英语允许 "str-" 开头（"strong"），但不允许 "tnk-" 开头；中文普通话不允许辅音结尾，所以没有以 "-ng" 之外的辅音结尾的音节。音系学解释了为什么外国人说的"英语"听起来"怪怪的"——即使单个音发对了，组合方式可能违反了目标语言的音系规则。</p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 形态学（Morphology）— 词的构成</h3>
+  <p>研究词的内部结构。英语的 "unhappiness" 包含三个形态素：un-（否定前缀）、happy（词根）、-ness（名词后缀）。汉语的构词策略更依赖组合——"电脑" = 电 + 脑，"手机" = 手 + 机，"互联网" = 互 + 联 + 网。不同语言在"如何用最小单位构建大单位"上策略迥异。</p>
+</div>
+
+<div class="concept-card">
+  <h3>4. 句法学（Syntax）— 句子的结构规则</h3>
+  <p>研究词语如何组合成合法的句子。Chomsky 的经典案例："颜色不绿，想法疯狂地睡觉"——这句话语法完全正确（形容词 + 名词 + 副词 + 动词），但语义荒谬。这证明了<strong>句法和语义是独立运作的模块</strong>：大脑先判断"这像不像一句话"，再判断"这有没有意义"。</p>
+</div>
+
+<div class="concept-card">
+  <h3>5. 语义学（Semantics）— 意义的编码</h3>
+  <p>研究语言符号与它所表达的意义之间的关系。"晨星"和"暮星"指的是同一个天体（金星），但涵义（sense）不同——这就是为什么"我知道晨星是金星"提供新信息，而"我知道金星是金星"不提供新信息。语义学研究的就是这种"同指不同义"的微妙差异。</p>
+</div>
+
+<div class="concept-card">
+  <h3>6. 语用学（Pragmatics）— 语境中的意义使用</h3>
+  <p>研究"说了什么"和"意欲表达什么"之间的差距。当有人说"你能把盐递给我吗？"，字面意思是询问能力，实际含义是请求。Grice 的"合作原则"指出：人们默认对话者遵循量的准则（不说多余的话）、质的准则（不说假话）、关系准则（说的话相关）、方式准则（清楚明白）。违反这些准则会产生"会话含义"——这正是语用学的核心研究对象。</p>
+</div>
+
+<h2>语言的处理：大脑如何同时工作</h2>
+<p>
+  当你听到"猫追老鼠"这六个字时，大脑在约 200 毫秒内<strong>并行</strong>完成了以下处理：
+</p>
+<ul class="examples">
+  <li><strong>语音解码</strong>：将声波模式匹配到音位 /mao/ /zhui/ /lao/shu/</li>
+  <li><strong>词法分析</strong>：确定"猫""追""老鼠"的词性</li>
+  <li><strong>句法解析</strong>：识别主谓宾结构（猫=施事，老鼠=受事）</li>
+  <li><strong>语义整合</strong>：理解"猫"在做"追"这个动作</li>
+  <li><strong>语用推断</strong>：说话者为什么在此时提到这句话？</li>
+</ul>
+<p>
+  所有这些处理在不到一秒内<strong>自动</strong>完成——这是人类认知系统最精密的工作之一。对比之下，AI 模型需要数秒甚至更长时间，且每个步骤是串行而非并行执行的。
+</p>
+
+<h2>三大理论视角</h2>
+<p>
+  语言学不是铁板一块——不同理论流派从不同角度解释语言的本质。理解这三种视角，是进入语言学殿堂的"入门钥匙"。
+</p>
+
+<div class="concept-card">
+  <h3>生成语法（Generative Grammar）— Chomsky</h3>
+  <p><strong>核心主张：</strong>人类天生具有"语言习得装置"（LAD），所有语言共享深层的普遍语法结构。</p>
+  <p>
+    Chomsky 发现，儿童在有限的语言输入下，能够产出和理解他们从未听过的句子。这表明他们不是简单模仿，而是在内部构建语法规则。他的著名测试句"颜色不绿，想法疯狂地睡觉"证明了：人类对"语法正确"的直觉独立于"意义合理"。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>功能主义（Functionalism）— Halliday</h3>
+  <p><strong>核心主张：</strong>语言结构由交际功能塑造，而非抽象规则。</p>
+  <p>
+    Halliday 提出语言的三大元功能：<strong>概念功能</strong>（描述经验）、<strong>人际功能</strong>（建立和维护社会关系）、<strong>语篇功能</strong>（组织信息流）。这意味着语言的每一个结构选择——主动还是被动、陈述还是疑问——都是在同时完成这三种功能。中文的"把"字句（"我把饭吃了"）与"被"字句（"饭被我吃了"）传递相同的事实信息，但焦点和人际功能截然不同。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>认知语言学（Cognitive Linguistics）— Lakoff & Johnson</h3>
+  <p><strong>核心主张：</strong>语言结构反映认知结构和身体经验。</p>
+  <p>
+    《我们赖以生存的隐喻》揭示了人类如何用空间经验来理解抽象概念："up"表示积极（情绪高涨、地位提升），"down"表示消极（情绪低落、地位下降）。这不是修辞手法，而是认知的基本结构。英语说 "increase prices"（提高价格）但 "decrease temperatures"（降低温度），中文说"高涨的情绪"但"低迷的市场"——这些隐喻系统塑造了我们对抽象概念的思考方式。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>这三种视角不是互相排斥的。它们像不同倍率的显微镜——生成语法关注语言最深层的结构共性，功能主义关注语言在真实交际中的动态使用，认知语言学关注语言与一般认知的关联。理解语言的完整图景需要同时使用这三个视角。
+</div>
+
+<h2>语言学为什么重要？</h2>
+
+<div class="concept-card">
+  <h3>对 AI 的意义</h3>
+  <p>
+    LLM 的强大能力（生成、翻译、摘要）掩盖了一个事实：它们是否真正"理解"语言，仍然是开放问题。区分"统计相关性"和"语义理解"的关键在于识别语言中的<strong>系统性能力</strong>——如跨域迁移、反事实推理、以及语用推理（理解讽刺和暗示）。理解语言学六大层级的差异，是评估 AI 语言能力的框架。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>对语言学习的意义</h3>
+  <p>
+    了解语言习得机制后，你会发现成年人的语言学习机制与儿童不同——更多依赖显性学习和元语言意识，而非隐性的模式发现。针对非母语者，语音（母语中没有的音位最难）、语序、虚词的习得难度依次递减。知道了这些，就可以更有策略地分配学习时间。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>对社会理解的意义</h3>
+  <p>
+    不理解语言的机制，就无法真正理解跨文化沟通中的误解根源。成都的三语环境（普通话、四川话、英语）就是一个活的语言接触实验室——每种语言在不同的社会领域发挥作用，这种多语分配不是随机的，而是社会结构在语言层面的投影。语言选择是身份信号，语码切换是身份协商的策略。
+  </p>
+</div>
+
+<h2>为什么"语言学概览"是这门课的起点</h2>
+<p>
+  你刚才学到的六大分支——语音学、音系学、形态学、句法学、语义学、语用学——不仅是语言学教材的标准目录，更是你理解后续所有课程的"导航地图"。
+</p>
+<p>
+  下一课 <strong>语音系统对比</strong> 将从语音学和音系学入手，对比普通话、粤语和英语的发音差异；<strong>句法学</strong> 将深入句法层面的结构规则；<strong>语用学</strong> 将研究语境如何改变意义的理解。每一课都锚定在六大分支的某一两个之上。掌握了这个概览框架，后续的学习就有了坐标。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：语言学的层次与理论</h2>
+  <p>以下题目检验你对语言学分支和理论视角的理解。选择最合适的选项。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你想理解"颜色不绿，想法疯狂地睡觉"为什么语法正确但语义荒谬。</div>
+    <div class="sentence">这说明语言学的哪两个分支是相对独立的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">句法学与语义学</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">语音学与音系学</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你注意到英语允许 "str-" 开头的单词（如 "strong"），但不允许 "tnk-" 开头。</div>
+    <div class="sentence">这是哪个语言学分支的研究对象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">句法学——句子中词的排列顺序</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">音系学——特定语言中合法的声音组合</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一位外语学习者说"I very like it"，发音和语法结构都没有大问题，只是 "very" 应该用 "really"。</div>
+    <div class="sentence">这主要反映了哪个层面的错误？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">语义学——"very" 和 "really" 的用法差异涉及意义编码</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">语音学——发音方式不正确</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">朋友说"你能把盐递给我吗？"，你理解这是请求而非询问能力。</div>
+    <div class="sentence">这是哪个语言学分支在起作用？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">句法学——理解句子的结构</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">语用学——理解语境中的隐含意义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你认为语言结构是由交际功能塑造的——语言的每一个结构选择都在同时完成概念表达、关系维护和信息组织。</div>
+    <div class="sentence">你采用的是哪种语言学理论视角？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">生成语法——关注先天的普遍语法结构</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">功能主义——语言结构由交际功能塑造</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你发现人们用"提高情绪"（up）、"地位提升"来理解积极事物，用"情绪低落"、"地位下降"来理解消极事物。</div>
+    <div class="sentence">这支持了哪种语言学理论？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">认知语言学——语言结构反映身体经验的隐喻系统</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">功能主义——语言结构由交际需求塑造</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Chomsky 用"颜色不绿，想法疯狂地睡觉"这个句子证明了什么？</div>
+    <div class="sentence">以下哪项是他的核心论点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">语义比句法更重要——没有意义的句子不算真正的句子</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">句法和语义是独立运作的模块——语法正确的句子不一定有意义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你听到"猫追老鼠"时，大脑在不到一秒内同时完成了语音解码、词法分析、句法解析、语义整合和语用推断。</div>
+    <div class="sentence">这说明了语言处理的什么特点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">并行处理——多个语言层级同时运作</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">串行处理——一个层级完成后才进入下一个</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q9">
+    <span class="q-num">Q9</span>
+    <div class="context">"电脑"=电+脑，"手机"=手+机——汉语大量使用这种构词策略。</div>
+    <div class="sentence">这主要涉及语言学的哪个分支？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">形态学——研究词的内部结构和构词策略</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">句法学——研究句子的结构规则</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q10">
+    <span class="q-num">Q10</span>
+    <div class="context">你想知道"晨星"和"暮星"为什么指向同一个天体但有不同涵义。</div>
+    <div class="sentence">这是哪个语言学分支的核心问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">音系学——研究声音的模式</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">语义学——研究语言符号与意义之间的关系</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>问我任何关于语言学的问题——不确定六大分支的区别？不确定生成语法和功能主义哪个更适合你？这正是我们应该讨论的地方。直接输入你的问题，我会解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.amazon.cn/dp/750047580X" target="_blank">《语言本能》</a>（Steven Pinker）——从认知科学视角理解语言的本质。<br>
+  <br>
+  <a href="../reference/linguistics-overview.html" class="resource-link">查看速查卡片</a>
+</div>
+
+<div class="footer">
+  <a href="0001-language-identity.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-phonetic-systems.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"颜色不绿，想法疯狂地睡觉"语法结构完美（形容词+名词+副词+动词），但语义荒谬。这证明了句法和语义是独立模块——句法判断"这像不像一句话"，语义判断"这有没有意义"。', wrong: '"颜色不绿"确实是"名词+形容词"的句法结构，但问题的核心是为什么"语法正确但语义荒谬"——这恰恰说明了句法和语义的独立性，而不是语音学的范畴。' },
+    q2: { correct: '音系学研究的是特定语言中哪些声音组合是"合法的"。英语的 "str-" 是合法的词首组合，而 "tnk-" 不是——这不是句法问题，是音系规则的限制。', wrong: '句法学研究的是词语如何组合成句子，不是音节或词首的声音组合。"str-" vs "tnk-" 是音系层面的合法性问题，不是句子结构问题。' },
+    q3: { correct: '"Very" 修饰形容词（very good），"really" 修饰动词（really like）。这是语义层面的选择——两个词的意义覆盖范围不同，属于语义学/词汇语义学的范畴。', wrong: '"I very like it" 的发音完全没有问题，问题出在 "very" 修饰动词 "like" 违反了英语的语义规则，不是语音学的问题。' },
+    q4: { correct: '这是典型的语用学问题——理解"说了什么"和"意欲表达什么"之间的差距。字面是询问能力，实际是请求，这需要通过语境推断"会话含义"。', wrong: '句法学帮助你理解句子的结构（这是一个疑问句形式），但无法解释为什么你理解它是请求而不是疑问。这个理解发生在句法分析之后的语用层面。' },
+    q5: { correct: 'Halliday 的功能主义认为语言的三大元功能（概念、人际、语篇）塑造了语言结构。你描述的"每一个结构选择同时完成三种功能"正是功能主义的核心主张。', wrong: '生成语法关注的是人类先天的普遍语法结构（LAD），而不是交际功能如何塑造语言。你描述的是功能主义的视角。' },
+    q6: { correct: 'Lakoff & Johnson 的认知语言学发现：人类用空间经验（up/down）来理解抽象概念。"提高情绪"和"情绪低落"是同一隐喻系统的两个方向——积极=上，消极=下。', wrong: '功能主义关注语言结构如何服务于交际需求。但你描述的现象（用空间方位理解抽象概念）是认知语言学的隐喻理论核心，不是交际功能的问题。' },
+    q7: { correct: 'Chomsky 用这个测试句证明了句法和语义的独立性——"颜色不绿，想法疯狂地睡觉"符合所有句法规则，但语义完全荒谬。这说明大脑先判断"语法性"再判断"有意义"。', wrong: '恰恰相反——这个句子证明了语义不能替代句法。没有意义的句子依然是"句子"，因为它符合句法结构。Chomsky 的观点是句法独立于语义。' },
+    q8: { correct: '大脑在不到一秒内同时完成语音解码、词法分析、句法解析、语义整合和语用推断——这是并行处理。多个语言层级同时运作，而不是一个接一个地串行处理。', wrong: '如果语言处理是串行的，我们应该能"感觉"到先听到声音、再识别词性、再解析结构……但我们不能。这种不可分离的处理过程证明了并行性。' },
+    q9: { correct: '形态学研究词的内部结构和构词策略。"电脑"、"手机"这种"名词+名词"的构词方式是汉语形态学的典型例子——通过组合已有词汇创造新概念。', wrong: '句法学研究的是词语如何组合成句子的规则。"电脑"是一个词而不是一个句子，研究它的构成属于形态学范畴，不是句法学。' },
+    q10: { correct: 'Frege 提出的"涵义（sense）vs 指称（reference）"区分正是语义学的核心问题。"晨星"和"暮星"指称同一物体（金星），但涵义不同——这就是语义学研究的问题。', wrong: '音系学研究的是声音的排列和组合规则。"晨星"和"暮星"的音系结构完全不同，但问题关注的是它们为什么"指向同一事物但有不同涵义"——这是语义学的问题。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 10;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对语言学的六大分支和三大理论视角有扎实的理解。';
+      else if (score >= 7) label.textContent = '做得不错！回顾你做错的题目——解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的概念卡片再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

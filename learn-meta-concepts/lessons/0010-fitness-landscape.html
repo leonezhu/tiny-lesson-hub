@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 10 — 适应度景观</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+  }
+
+  .concept-card .highlight {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.6rem 0.8rem;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+  }
+
+  .case-study {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: #f9fafb;
+  }
+
+  .case-study strong { color: var(--accent); display: block; margin-bottom: 0.3rem; }
+
+  ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.3rem; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>适应度景观</h1>
+<p class="lesson-meta">Lesson 10 &middot; ~12 minutes &middot; 元概念与基本法则 · 优化搜索的核心隐喻</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够用"适应度景观"的框架分析任何优化问题——从企业战略到个人职业发展，理解为什么"最优解往往不是最完美的"，以及为什么穿越"山谷"是突破瓶颈的关键。
+</div>
+
+<h2>什么是适应度景观？</h2>
+<p>
+  1932 年，遗传学家 Sewall Wright 提出了一个极具影响力的隐喻：<strong>进化就像一群登山者在浓雾中攀登一座山脉</strong>。每个登山者代表一个生物种群，地形的高度代表适应度——海拔越高，生存与繁殖的成功率越大。登山者的每一步都是一种基因突变：如果新位置更高，突变被保留；如果更低，被淘汰。
+</p>
+<p>
+  但这个隐喻最深刻的地方在于：<strong>登山者只能看到周围几步的地形</strong>。他无法俯瞰全局，不知道哪座才是真正的最高峰。当他发现周围四个方向都比自己脚下低时，他就认为已经到了"顶峰"——但实际上，他可能只是山脚下的一个小土包。
+</p>
+
+<div class="concept-card">
+  <h3>三个关键特征</h3>
+  <p><strong>① 局部信息约束</strong>：登山者只能看到相邻位置的信息。当所有方向的适应度都更低时，自然选择就会停止——这就是<strong>局部最优陷阱</strong>。你以为到了最高峰，其实只是小山包。</p>
+  <p><strong>② 地形流动</strong>：景观不是静止的。环境在变化，其他物种也在进化。多个物种的适应度山峰互相影响，形成了"共适应景观"。捕食者与猎物的关系就是一面移动的镜子——猎物的山峰随着捕食者的进化而不断变形。</p>
+  <p><strong>③ 山谷穿越机制</strong>：从一座山峰到另一座更高的山峰，必须穿越适应度更低的山谷。自然界中有两种方式：基因漂变（小种群的随机漂移，偶然跌入山谷）和景观本身流动（原来的山峰沉入山谷，迫使群体迁移）。</p>
+</div>
+
+<h2>经典案例：柯达的局部最优</h2>
+
+<div class="case-study">
+  <strong>案例：柯达——站在自己的山巅，却看不见更高的山峰</strong>
+  柯达在胶片摄影领域已经登上了全球最高峰：它拥有最强的技术、最大的市场份额、最深的品牌护城河。但数码摄影才是真正的、更高的山峰。问题是，柯达的登山者被困在自己山峰的顶部，看不到山谷另一边的风景。它的核心业务流程、利润模型、组织文化，全部围绕胶片摄影优化——跨越山谷意味着主动降低适应度（放弃利润丰厚的胶片业务），而这正是局部最优的锁定效应所阻止的。
+</div>
+
+<div class="highlight" style="background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1.5rem 0; font-size: 0.95rem;">
+  <strong>关键洞察：</strong>Netflix 做对了什么？它在 DVD 租赁业务已经盈利时，主动牺牲短期利润进入流媒体市场——这不是因为预见了未来，而是它明白：在旧山峰上继续打磨永远不会到达新山峰。Hastings 用"战略性下降"（减少 DVD 利润）穿越了山谷，到达了更高的山峰（流媒体）。
+</div>
+
+<h2>Google 的 70-20-10 框架</h2>
+<p>
+  Google 提出了一个著名的资源分配原则，直接将适应度景观理论化为企业战略：
+</p>
+<ul>
+  <li><strong>70% 资源投入核心业务</strong>——在当前山峰上继续攀升（搜索、广告）</li>
+  <li><strong>20% 资源投入相邻业务</strong>——探索附近的山峰（YouTube、地图等）</li>
+  <li><strong>10% 资源投入激进创新</strong>——在未知区域寻找全新的高山峰（Waymo、Verily）</li>
+</ul>
+<p>
+  这个框架的核心逻辑是：<strong>单一登山者必然被困在局部最优，多个登山者同时探索不同区域，更可能有人发现更高的山峰</strong>。多样性不是道德选择，而是<strong>探索策略</strong>。
+</p>
+
+<h2>为什么"最优"往往是"够用"？</h2>
+<p>
+  适应度景观的最后一个关键特性是：<strong>景观是动态的</strong>。环境在变，竞争对手在变，技术范式在变。这意味着今天的"最高峰"明天可能就不再是了。进化不追求绝对最优，只追求"比竞争对手好一点"——这就是 J. Maynard Smith 提出的<strong>红皇后假说</strong>：你必须不停奔跑，才能保持在原地。
+</p>
+<p>
+  这个洞察解释了为什么现实中几乎看不到"完美解决方案"。当一个系统接近全局最优时，景观可能已经开始变化了。因此，适应不是终点的状态，而是一个持续的过程。
+</p>
+
+<h2>跨学科应用</h2>
+<p>适应度景观的思想渗透到几乎所有学科：</p>
+
+<div class="concept-card">
+  <h3>🔬 生物学：自然选择的数学化</h3>
+  <p>生物种群在基因型空间上的运动就是最原始的适应度景观搜索。遗传算法（Kenneth De Jong, 1975）直接借用这个概念设计优化算法。</p>
+</div>
+
+<div class="concept-card">
+  <h3>🤖 AI 工程：损失景观</h3>
+  <p>深度神经网络的训练可以看作在千万维的"损失景观"中寻找最低点。梯度下降就是登山者朝最陡下坡走一步——但千万维空间中的地形极其复杂，充满无数局部极小值和鞍点。Adam 优化器（2014）试图解决的就是"陡峭山谷"中的振荡问题。</p>
+</div>
+
+<div class="concept-card">
+  <h3>🧠 心理学：习惯与改变</h3>
+  <p>改变习惯需要经历短期的不适（适应度暂时下降），才能到达更高的山峰。"损失厌恶"的心理学机制使得山谷穿越格外困难——失去的痛苦大于获得的快乐，导致人们宁愿停在次优位置也不愿冒险。</p>
+</div>
+
+<div class="concept-card">
+  <h3>📈 经济学：创造性破坏</h3>
+  <p>Schumpeter 的"创造性破坏"就是摧毁旧山峰顶部、攀登新山峰的过程。QWERTY 键盘的锁定效应是路径依赖的经典案例——它先爬上了一座山峰，用户习惯形成的山谷让后来的竞争者难以跨越。</p>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的元概念导师。不理解为什么"穿越山谷"比"继续爬坡"更重要？这正是值得深入讨论的核心问题。直接提问，我会为你拆解。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.princeton.edu/~mjp/fitnesslandscapes.html" target="_blank">Sewall Wright 的原始论文</a>（适应度景观概念的来源）；Stuart Kauffman <em>At Home in the Universe</em>（涌现与自组织的经典论述）
+  <br><br>
+  <a href="../reference/fitness-landscape.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-positive-sum-zero-sum.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'Kodak 不是没有技术能力——它在数码技术上实际上是最早发明者之一（1975 年就研发了第一台数码相机）。问题不在于"能不能"，而在于"敢不敢"。继续爬坡意味着在胶片领域最大化利润；穿越山谷意味着放弃现有利润去探索未知。局部最优陷阱的核心不是能力不足，而是战略惯性。', wrong: 'Kodak 的困境不是因为"不够努力"或"技术不行"。它在胶片领域已经是最优的了。问题的根源是：继续在当前山峰上攀登，永远不会到达数码摄影这座更高的山峰。必须接受短期的适应度下降（放弃胶片利润）才能穿越山谷。' },
+    q2: { correct: '"附近山峰"意味着在现有能力范围内拓展。20% 的资源分配正好对应 Google 框架中的"相邻业务"——不是从零开始寻找全新山峰，而是在现有山峰周边探索。这比 70% 的核心业务更有探索性，但又比 10% 的激进创新更有聚焦性。', wrong: '"寻找全新山峰"对应的是 Google 的 10% 激进创新（如 Waymo）。20% 的资源分配目标是"相邻业务"——即在现有核心能力的附近寻找改进机会，而不是完全未知的领域。这是介于稳定和创新之间的中间地带。' },
+    q3: { correct: '"比竞争对手好一点"正是红皇后假说的核心逻辑。在共适应景观中，你的山峰高度取决于竞争对手的位置。如果你停在原地不动，竞争对手的进化会让你的相对位置下降。因此"不停奔跑才能保持在原地"——这就是适应性景观的动态本质。', wrong: '这不是"平庸主义"。红皇后假说说的是：在动态的共适应景观中，绝对的最优是不可持续的目标，因为竞争对手也在进化。但"保持竞争力"不等于"不求最优"——你需要持续进化，但接受"最优"是移动的目标。' },
+    q4: { correct: '损失景观就是神经网络的适应度景观。梯度下降 = 向最陡下坡走一步。但高维空间中有数千万的局部极小值和鞍点，梯度下降找到的通常不是全局最低点，而是"足够好"的局部谷地。这就是为什么不同随机种子训练的模型性能不同——它们可能停在不同的"山峰"上。', wrong: '梯度下降确实找到的通常不是全局最优。在千万维的参数空间中，梯度下降是一个局部搜索算法，它沿着当前点的梯度反方向走一步。找到的是局部最优——"足够低"的谷地，而非"最低"的谷地。这就是不同随机种子产生不同性能的原因。' },
+    q5: { correct: '改变习惯需要经历短期的不适——适应度下降。从"刷手机"到"锻炼"的过渡期，你会感到不舒服（适应度降低），才能到达更高山峰（更健康的生活）。损失厌恶使得这个过程格外困难：失去刷手机的快乐（痛苦）大于获得健康的快乐（满足），所以你宁愿停在原地。', wrong: '不是"意志力不够强"的问题。损失厌恶是一种认知偏差：失去的痛苦大约是获得快乐的 2 倍。这意味着从次优习惯转向更优习惯时，大脑会放大"失去"的感知，让你觉得"不值得冒险"。理解这一点比单纯"增强意志力"更有效。' },
+    q6: { correct: '多样性让多个种群同时在景观的不同区域搜索。如果所有种群都集中在同一座山峰，没有人会发现旁边更高的山峰。投资组合的跨资产类别分散化、企业的产品线多元化，本质上都是在景观上部署多个探索者——用多样性对抗局部最优的必然性。', wrong: '多样化不是"不把鸡蛋放在一个篮子里"的简单风险管理。它的深层逻辑是：在适应度景观上，单一探索者必然被困在局部最优。多个探索者同时搜索不同区域，发现更高山峰的概率大大增加。多样性是探索策略，不只是为了降低风险。' },
+    q7: { correct: 'Google 的 70-20-10 框架正是适应度景观理论在企业管理中的制度化应用。70% 在现有山峰（搜索广告）、20% 在附近山峰（YouTube/地图）、10% 在未知区域（Waymo）。这不是随意分配的——它精确对应了"深耕、邻近探索、远距离搜索"三种景观策略。', wrong: '70-20-10 框架不是简单的财务预算分配。它本质上是对适应度景观的三种搜索策略：70% 是"继续攀登当前山峰"（exploit），20% 是"探索邻近山峰"（near-explore），10% 是"远距离搜索新山峰"（far-explore）。忽略任何一部分都会导致景观搜索策略的失衡。' },
+    q8: { correct: '价值投资与价值投资的本质区别在于：你是继续在已知的价值区域"爬坡"（选择一只低 P/E 股票并长期持有），还是愿意穿越山谷去寻找尚未被发现的价值区域（投资一家暂时亏损但商业模式独特的公司）。后者需要接受短期的适应度下降（账面亏损）来换取到达更高山峰的可能（超额收益）。', wrong: '价值投资不是简单地"买便宜的"。在适应度景观的框架下，寻找被低估的资产意味着穿越市场共识的山谷——当大多数人认为某家公司没有价值时，其"股价山峰"暂时很低。真正有洞察力的投资者愿意承受短期的市场嘲笑（适应度下降），穿越这个共识山谷，到达长期价值释放的高峰。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '全对！你已经掌握了适应度景观的核心直觉。';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，理解"穿越山谷"的关键在于接受短期不适。';
+      else label.textContent = '适应度景观的核心是"局部最优陷阱"和"山谷穿越"，多读几遍上面的案例会更有感觉。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

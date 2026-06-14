@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 英语介词隐喻网络</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .mapping-diagram {
+    background: #f7f9fc;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+  }
+
+  .mapping-diagram .arrow {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .mapping-diagram ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .mapping-diagram ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .mapping-diagram ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .example-box {
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 1rem;
+    margin: 0.5rem 0;
+    background: #fafbfd;
+  }
+
+  .example-box em {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>英语介词隐喻网络</h1>
+<p class="lesson-meta">第 7 课 &middot; ~12 分钟 &middot; 认知语义学核心概念</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够解释英语介词不是随意选择的语法标记，而是一个基于身体经验的隐喻系统；能够用"空间→时间→抽象"的三层映射框架理解介词的多义网络；并能在写作和口语中更有意识地使用介词。
+</div>
+
+<h2>为什么这个概念如此重要</h2>
+<p>
+  很多英语学习者有一个根深蒂固的问题：<strong>永远搞不清什么时候用 in、on 还是 at。</strong> 中文里一个"在"字可以解决所有空间表达，但英语至少有十几个介词来表达微妙的空间关系。如果你试图通过死记硬背来记住每个介词的用法，你永远会陷入"又忘了"的循环。
+</p>
+<p>
+  认知语言学家 George Lakoff 和 Mark Johnson 在 1980 年的经典著作 <em>Metaphors We Live By</em>（《我们赖以生存的隐喻》）中揭示了一个颠覆性的事实：<strong>英语介词不是语法工具，而是认知工具。</strong> 它们构成了一套基于身体经验的隐喻映射系统——我们用具体的空间经验来理解抽象概念。
+</p>
+
+<h2>三层映射结构</h2>
+<p>
+  每一个核心介词的意义都遵循同一个模式：从身体可直接感知的空间关系出发，逐步扩展到时间和抽象领域。
+</p>
+
+<div class="mapping-diagram">
+  <strong>通用映射公式：</strong><br>
+  <span class="arrow">空间义（本义）</span> → <span class="arrow">时间义（隐喻一）</span> → <span class="arrow">抽象义（隐喻二/三）</span>
+</div>
+
+<div class="concept-card">
+  <h3>UP / DOWN：方向即评价</h3>
+  <p>
+    UP 是最能体现"身体经验→抽象概念"映射的介词。你每天用身体感受重力——向上需要努力，向下是放松。这种身体体验深刻影响了英语的表达方式。
+  </p>
+  <ul>
+    <li><strong>空间</strong>：physical upward movement → "The balloon went up."</li>
+    <li><strong>时间/数量</strong>：increasing → "Prices are going up." / "The meeting is coming up."</li>
+    <li><strong>抽象</strong>：positive state / control / status → "Her spirits rose." / "He's up 15% this quarter." / "She got promoted — she's up in the company."</li>
+  </ul>
+  <div class="example-box">
+    <em>"I'm feeling up"</em> = 情绪好 &nbsp;|&nbsp; <em>"I'm feeling down"</em> = 情绪差
+  </div>
+  <p>
+    DOWN 的映射方向完全相反：减少、消极状态、地位降低。"Sales dropped." / "His mood went down." / "He was brought down by the scandal."
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>IN / OUT：容器隐喻</h3>
+  <p>
+    IN 和 OUT 围绕一个更基本的认知结构——<strong>容器隐喻</strong>（Container Metaphor）展开。人类最早的身体经验就是"我在我的身体里面，世界在外面"。这个最简单的区分扩展成了极其丰富的表达网络。
+  </p>
+  <ul>
+    <li><strong>IN</strong>：inside a container → involved / participating / controlled → "She's into music." / "Get in touch." / "Think inside the box."</li>
+    <li><strong>OUT</strong>：outside a container → expressed / visible / finished → "Speak out." / "The news came out." / "Finish out the project."</li>
+  </ul>
+  <div class="example-box">
+    <em>"Think outside the box"</em> 的字面意思是"跳出盒子"——盒子是容器隐喻，代表既定的思维框架。这个习语的深层含义正是"打破既有框架"。
+  </div>
+</div>
+
+<div class="concept-card">
+  <h3>ON：表面接触与持续覆盖</h3>
+  <p>
+    ON 的核心意象是"两个物体之间的表面接触"。这个空间概念扩展到了几乎所有你用 on 的场景：
+  </p>
+  <ul>
+    <li><strong>空间</strong>：surface contact → "The book is on the table."</li>
+    <li><strong>技术媒介</strong>：continuous coverage → "on the internet" / "on TV" / "on the phone"</li>
+    <li><strong>状态</strong>：active engagement → "on duty" / "on fire" / "on vacation"</li>
+    <li><strong>注意力</strong>：focus projection → "focus on..." / "concentrate on..."</li>
+  </ul>
+  <div class="chinese-note">
+    <strong>为什么是 "on the internet" 而不是 "in the internet"？</strong> 因为 on 的"表面接触/持续覆盖"意象恰好描述了互联网作为一种覆盖性媒介——你在互联网的"表面层"活动，而不是在它"里面"。理解了这一点，就不再需要死记硬背了。
+  </div>
+</div>
+
+<div class="concept-card">
+  <h3>INTO：深入探索</h3>
+  <p>
+    INTO 的空间义是"从外向内移动"。这个动作本身就包含了"深入"的意象，因此它在抽象用法中几乎总是表示深入分析、投入参与或状态的转变。
+  </p>
+  <ul>
+    <li><strong>空间</strong>：movement from outside to inside → "She walked into the room."</li>
+    <li><strong>分析</strong>：deep investigation → "We need to look into this problem."</li>
+    <li><strong>投入</strong>：full engagement → "He's really into jazz music."</li>
+    <li><strong>转变</strong>：change of state → "The caterpillar turned into a butterfly."</li>
+  </ul>
+  <div class="example-box">
+    <em>"Look into this"</em> 中的 into 暗示"深入探究"——into 的空间义是从外向内移动，隐喻为"深入分析问题内部"。
+  </div>
+</div>
+
+<h2>为什么直译必然失败</h2>
+<p>
+  中文说"在会议上"用"在"，英文说 "at the meeting"；中文说"在网上"，英文说 "on the internet"。如果逐字翻译"在"→"at/in/on"，永远找不到规律。
+</p>
+<p>
+  理解隐喻网络后你会发现：<strong>每个介词都有一个核心的空间意象</strong>，所有其他用法都是从这个核心意象通过隐喻扩展出来的。一旦你掌握了核心意象，就不需要再死记硬背了。
+</p>
+
+<div class="chinese-note">
+  <strong>跨语言洞察：</strong> 中文也用空间方向隐喻抽象概念——"上级/下级"表达地位高低，"前天/后天"表达时间，"心情低落/情绪高涨"表达情绪。这说明不同语言共享同样的身体经验基础，只是具体映射方式略有不同。这正是人类思维的共性。
+</div>
+
+<h2>学术与商务场景中的应用</h2>
+<p>
+  学术写作和商务英语中大量使用短语动词（phrasal verbs）和介词短语，它们的隐喻底层都是空间概念：
+</p>
+<ul>
+  <li><strong>"point out"</strong>：out 表示"使可见"——把某个东西从背景中"拉出来"让你看到</li>
+  <li><strong>"bring about"</strong>：about 表示"环绕/导致"——让某事发生、促成变化</li>
+  <li><strong>"lead to"</strong>：to 表示"指向终点"——引导事物到达某个结果</li>
+  <li><strong>"result in"</strong>：in 表示"落入某种状态"——最终落入的结果</li>
+  <li><strong>"account for"</strong>：for 表示"替代/代表"——为某事提供解释或比例</li>
+  <li><strong>"come up with"</strong>：up 表示"浮现"——想法从思维深处"浮上来"</li>
+</ul>
+
+<h2>关键人物与理论</h2>
+<p>
+  <strong>George Lakoff &amp; Mark Johnson</strong>（1980）：《我们赖以生存的隐喻》，隐喻认知理论的奠基之作。提出"隐喻不只是修辞，更是思维方式"。
+</p>
+<p>
+  <strong>Raymond Gibbs</strong>（1994）：《心智的诗学》，实验证明人在理解隐喻表达时确实激活了空间认知区域。
+</p>
+<p>
+  <strong>Anna Stec</strong>（2009）：对波兰语-英语介词隐喻的系统对比研究，验证了隐喻映射的跨语言共性。
+</p>
+
+<h2>与认知科学的深层连接</h2>
+<p>
+  介词隐喻网络是<strong>具身认知</strong>（Embodied Cognition）理论的核心证据。具身认知认为：思维不是抽象符号运算，而是根植于身体与环境的互动。你的身体结构（直立行走、有上下之分）、你的感官经验（容器内外、远近高低）构成了你最底层的认知框架，而语言——包括最基础的介词——都是从这些框架中长出来的。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：识别介词的隐喻层</h2>
+  <p>下面每道题描述了一个介词的使用场景。请选择最能解释该用法的隐喻映射层。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">句子："Prices are going up."</div>
+    <div class="sentence">这里的 "up" 属于哪一层隐喻映射？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">空间义——气球升空</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">时间/数量义——数值增加</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">句子："We need to look into this problem."</div>
+    <div class="sentence">"into" 在此处的隐喻含义是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">深入探究——从外向内移动</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">物理进入——走进某个房间</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">句子："She's really into music."</div>
+    <div class="sentence">"into" 在此处表达的是什么含义？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">物理位置——在音乐里面</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">深度投入——积极参与</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">句子："Think outside the box."</div>
+    <div class="sentence">这个习语背后的核心隐喻是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">字面意思——真的离开一个盒子</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">容器隐喻——打破既定思维框架</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">句子："The company is up 15% this quarter."</div>
+    <div class="sentence">"up" 在此处映射到了哪个抽象领域？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">商业绩效——正向增长</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">物理高度——公司楼层升高</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">句子："He was brought down by the scandal."</div>
+    <div class="sentence">"down" 在此处的隐喻映射方向是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">位置下降——从楼上到楼下</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">地位/状态降低——被丑闻打击</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">句子："This paper focuses on climate change."</div>
+    <div class="sentence">"focus on" 中的 "on" 体现了什么核心意象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">表面接触——放在桌子上</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">注意力投射——将注意力聚焦到目标上</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">句子："The caterpillar turned into a butterfly."</div>
+    <div class="sentence">"into" 在此处表达的是哪种隐喻扩展？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">空间移动——从一个地方到另一个地方</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">状态转变——从一种形态变为另一种</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——我是你的语言学导师。不确定某个介词为什么这样用？这正是我们需要讨论的地方。直接输入你的问题，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong> George Lakoff &amp; Mark Johnson, <em>Metaphors We Live By</em>（1980）——隐喻认知理论的奠基之作。
+  <br><br>
+  <a href="../reference/preposition-metaphors.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-language-contact-borrowing.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-english-core-grammar-patterns.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Prices are going up" 中 prices（价格）是抽象的数量概念。up 从空间义（向上移动）扩展到了数量/时间义（数值增加）。这是隐喻的第一层扩展。', wrong: '"气球升空"是 up 的空间本义，但这里说的是价格，是抽象的数量变化。up 在这里映射到了"数值增加"的层面。' },
+    q2: { correct: '"Look into" 中的 into 表示"从外向内移动"，隐喻为"深入分析问题"。into 的空间义是从外往里走，抽象义就是深入探究。', wrong: '"走进房间"是 into 的空间本义。但在学术/商务语境中，"look into" 是比喻性的——你不是真的走进问题，而是在深入分析。' },
+    q3: { correct: '"She\'s really into music" 中的 into 表示深度投入和参与。into 从"容器内"的概念扩展到了"全身心投入某事"的抽象义。', wrong: '"在音乐里面"是字面理解。实际上 into 在这里表达的是兴趣和参与度——她非常热爱音乐，全身心地投入其中。' },
+    q4: { correct: '"Think outside the box" 是容器隐喻的经典例子。"box" 代表既定的思维框架，"outside" 意味着跳出这个框架进行创新思考。', wrong: '"真的离开一个盒子"是字面理解。这个习语是比喻性的——box 不是物理盒子，而是指思维中的既有框架和限制。' },
+    q5: { correct: '"Up 15%" 中的 up 映射到了商业绩效领域。up 的空间义（向上）→ 数量义（增加）→ 商业义（业绩增长）。这是三层映射的完整链条。', wrong: '"公司楼层升高"是空间本义。这里说的是季度业绩增长了 15%，up 映射到了商业绩效的抽象层面。' },
+    q6: { correct: '"Brought down by the scandal" 中的 down 表示地位或状态的降低。down 的空间义（向下）→ 抽象义（消极状态/地位降低）。', wrong: '"从楼上到楼下"是空间本义。这里说的是丑闻对他的打击——他的声誉或地位被降低了，down 映射到了状态/地位的抽象层面。' },
+    q7: { correct: '"Focus on" 中的 on 体现了"注意力投射"的核心意象——将注意力像光线一样投射到一个目标表面上。这与 on 的"表面接触"空间义一脉相承。', wrong: '"放在桌子上"是 on 的空间本义（表面接触）。但在学术写作中，"focus on" 表达的是注意力的投射和聚焦，不是物理放置。' },
+    q8: { correct: '"Turned into" 中的 into 表示状态转变。into 的空间义（从外到内）扩展为"从一种形态转变为另一种形态"，这是隐喻的第二层抽象。', wrong: '"从一个地方到另一个地方"是空间移动义。毛毛虫变成蝴蝶不是位置变化，而是形态/本质的转变，into 在这里表示状态的转换。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对介词隐喻网络理解得很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下答错题目的解释，理解为什么。';
+      else label.textContent = '继续加油！重读上面的内容，重新尝试理解这些隐喻映射。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

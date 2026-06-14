@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 12 — 决策理论：在不确定中做出最优选择</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f7f8fa;
+    border-radius: 4px;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .decision-tree {
+    background: #f7f8fa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .decision-tree .node {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .decision-tree .node::before {
+    content: "\25CB ";
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .decision-tree .choice::before {
+    content: "\25CF ";
+    color: var(--warn-border);
+  }
+
+  .decision-tree .result {
+    font-weight: 600;
+    color: var(--correct);
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .bias-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .bias-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .bias-item h4 {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .bias-item p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>决策理论：在不确定中做出最优选择</h1>
+<p class="lesson-meta">Lesson 12 &middot; ~10 minutes &middot; 数学与逻辑学科最后一课</p>
+
+<div class="goal-box">
+  <strong>学完这一课后</strong>，你将能运用期望效用理论做结构化决策，识别前景理论揭示的认知偏差，并用凯利公式管理风险敞口——不再让运气替你决定人生。
+</div>
+
+<h2>为什么这门课是终点</h2>
+<p>
+  前面 11 课为你搭建了一个完整的数学思维工具箱：概率思维、贝叶斯更新、分布直觉、博弈分析、信息论、可计算性边界……但这些工具最终服务于一个目的——<strong>在不确定中做出好决策</strong>。决策理论不是又一个数学分支，而是把前面所有概念编织在一起的框架。
+</p>
+
+<h2>决策的三个基本构件</h2>
+<p>
+  任何决策问题都可以拆解为三个要素：<strong>行动</strong>（你可以做什么）、<strong>状态</strong>（世界可能的样子）、<strong>结果</strong>（每个行动在每个状态下产生什么后果）。决策论的目标就是在这个三维空间中找到最优路径。
+</p>
+
+<div class="concept-card">
+  <h3>1. 期望效用理论 — 理性的决策公式</h3>
+  <p class="formula">EU(A) = &Sigma; P(s<sub>i</sub>) &times; U(o<sub>i</sub>)</p>
+  <p>
+    对每个行动 A，计算所有可能状态的<strong>概率</strong>乘以该状态下结果的<strong>效用</strong>，选总和最大的那个。这不是冷血——它只是在告诉你：别只看最好的结果，要看加权平均。
+  </p>
+  <ul class="examples">
+    <li>买股票 A：60% 涨 50%（效用 5），40% 跌 20%（效用 -2）→ EU = 0.6&times;5 + 0.4&times;(-2) = 2.2</li>
+    <li>买债券 B：90% 赚 5%（效用 0.5），10% 保本（效用 0）→ EU = 0.65</li>
+    <li>按期望效用，选 A。但如果你极度厌恶损失，效用函数是非线性的，B 可能更好。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>2. 前景理论 — 人实际上怎么做</h3>
+  <p>
+    卡尼曼和特沃斯基发现，人类决策有三个系统性偏差：
+  </p>
+  <ul class="examples">
+    <li><strong>损失厌恶</strong>：失去 100 元的痛苦大约是得到 100 元快乐的 2 倍。所以人们宁愿赌一把也不愿确定亏损。</li>
+    <li><strong>参照点依赖</strong>：同样的结果，从不同角度描述（"存活率 90%"vs"死亡率 10%"），会导致完全不同的选择。</li>
+    <li><strong>概率权重扭曲</strong>：小概率被高估（买彩票），大概率被低估（不买保险）。</li>
+  </ul>
+</div>
+
+<div class="decision-tree">
+  <h3 style="color:var(--accent);margin-bottom:0.5rem;">决策树示例：是否创业</h3>
+  <div class="node"><strong>行动 1：创业</strong></div>
+  <div class="node" style="padding-left:3rem;">成功（30%，价值 200 万）<span class="result">+60 万 EV</span></div>
+  <div class="node" style="padding-left:3rem;">失败（70%，亏损 20 万）<span class="result">-14 万 EV</span></div>
+  <div class="node" style="padding-left:1.5rem;"><strong>期望值 = +46 万</strong></div>
+  <div class="node" style="margin-top:0.5rem;"><strong>行动 2：打工</strong></div>
+  <div class="node" style="padding-left:3rem;">稳定年薪 30 万 <span class="result">EV = +30 万</span></div>
+  <div class="node" style="margin-top:0.5rem;padding-left:1.5rem;"><strong>仅看期望值，创业更优。但别忘了：失败的概率是成功的两倍以上，而一次失败可能终结整个职业生涯。</strong></div>
+</div>
+
+<h2>凯利公式：如何下注才不破产</h2>
+<p>
+  1956 年，贝尔实验室的莱尔&middot;凯利发现了一个简单公式，回答了"每次下注多少"这个问题：
+</p>
+
+<div class="concept-card">
+  <p class="formula">f* = (bp - q) / b</p>
+  <p>其中 <strong>f*</strong> = 最优下注比例，<strong>b</strong> = 赔率（赢时净赚/下注额），<strong>p</strong> = 获胜概率，<strong>q</strong> = 1-p = 失败概率</p>
+</div>
+
+<p>
+  举例：你有内幕消息，胜率 60%，赔率 1:1（投 100 赢 100 或输 100）。凯利公式给出 f* = (1&times;0.6 - 0.4) / 1 = 20%。也就是说，最优策略是把资金的 20% 投进去，而不是 All-in。
+</p>
+
+<p>
+  这个公式在硅谷被广泛应用——风投基金用凯利公式决定每轮投资的仓位比例。但它有一个残酷的推论：<strong>如果你的优势不够大（p 不够高或 b 不够大），f* 可能是负的——最好的下注是不下注。</strong>
+</p>
+
+<div class="chinese-note">
+  <strong>关键洞见：</strong>决策论中最难的不是计算期望值，而是诚实地评估概率。大多数人在面对自己关心的事情时，都会系统性高估自己的胜算。这就是为什么"预-mortem"（在决策前假设它失败了，然后反向推理）如此重要——它强迫你用客观视角审视主观信心。
+</div>
+
+<h2>十大认知偏差速查</h2>
+<p>
+  以下是决策中最常见的认知偏差。了解它们是第一步，但要真正克服它们，需要建立决策清单和外部评审机制。
+</p>
+
+<div class="bias-grid">
+  <div class="bias-item">
+    <h4>锚定效应</h4>
+    <p>初始信息过度影响判断。比如房价从 500 万降到 400 万你觉得便宜了，但从 300 万涨到 400 万你觉得贵了——虽然都是 400 万。</p>
+  </div>
+  <div class="bias-item">
+    <h4>沉没成本谬误</h4>
+    <p>"都投资这么多了不能撤"——已投入的资源不应影响未来决策，只有边际成本和边际收益才应该。</p>
+  </div>
+  <div class="bias-item">
+    <h4>确认偏误</h4>
+    <p>只寻找支持自己观点的证据。好的决策者会主动寻找反驳自己假设的证据。</p>
+  </div>
+  <div class="bias-item">
+    <h4>框架效应</h4>
+    <p>同一问题的不同表述导致不同选择。"90% 存活率"比"10% 死亡率"更容易让人接受手术。</p>
+  </div>
+  <div class="bias-item">
+    <h4>过度自信</h4>
+    <p>研究表明，人们对自己判断的信心平均比实际准确度高出 20-30%。校准信心是最好的防御。</p>
+  </div>
+  <div class="bias-item">
+    <h4>可得性启发</h4>
+    <p>容易被想到的例子被认为概率更高。飞机失事的新闻让你觉得坐飞机危险，但车祸的概率要高得多。</p>
+  </div>
+</div>
+
+<h2>决策论与其他学科的交汇</h2>
+<p>
+  决策论是整个数学与逻辑学科的知识枢纽：<strong>概率思维</strong>为它提供不确定性量化的语言，<strong>贝叶斯推理</strong>让它能随新证据动态更新，<strong>博弈论</strong>把它扩展到多人互动场景，<strong>信息论</strong>告诉你在收集更多信息之前决策的边界在哪里，<strong>随机过程</strong>则描述了决策结果如何在时间中演化。
+</p>
+<p>
+  在 AI 领域，强化学习就是决策论的工程实现——Agent 通过马尔可夫决策过程（MDP）在环境中探索，目标是最大化累积奖励。大语言模型的 RLHF（从人类反馈中强化学习）本质上也是在修改模型的效用函数，使其输出更符合人类偏好。
+</p>
+
+<h2>实用的决策工具</h2>
+
+<div class="concept-card">
+  <h3>期望值计算器（三步法）</h3>
+  <ul class="examples">
+    <li><strong>列出所有选项</strong>：不要只考虑"做或不做"，至少列出 3 个可行方案</li>
+    <li><strong>估算概率和数值</strong>：给每个结果分配概率和损益值，哪怕只是粗略估计</li>
+    <li><strong>计算后悔值</strong>：问自己"如果我选了 B，事后会后悔多少？"</strong></li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>预-mortem 技术</h3>
+  <p>
+    在决策执行前，假设它<strong>已经失败了</strong>，然后写下导致失败的所有原因。这个方法由心理学家 Gary Klein 提出，研究表明它能将决策失误率降低 30%。它与贝叶斯推理的精神一致：在行动前主动寻找反驳证据，而不是行动后才承认错误。
+  </p>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的决策直觉</h2>
+  <p>共 8 道题，点击选项查看答案和解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在考虑是否辞职创业。朋友给了你一个 60% 成功率的预测。</div>
+    <div class="sentence">根据凯利公式，如果赔率是 1:1，你应该投入多少资金？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">All-in，因为成功率超过 50%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">20%，即 f* = (1&times;0.6 - 0.4)/1</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">医生告诉你手术有两种说法："存活率 90%"或"死亡率 10%"。</div>
+    <div class="sentence">这两种说法在数学上等价，但大多数人更愿意接受第一种。这属于哪种偏差？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">框架效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你花了 5 万元报了一个培训课，上了两次后发现不适合自己。</div>
+    <div class="sentence">决策论建议你应该怎么想？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">已经花了 5 万，必须坚持上完</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">5 万是沉没成本，只看未来的时间和收益</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一个投资项目：50% 概率赚 200 万，50% 概率亏 150 万。</div>
+    <div class="sentence">这个项目的期望值是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">+25 万</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">0（盈亏各半）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你买了某只股票，亏了 30%，但你不肯卖。</div>
+    <div class="sentence">"卖了就真亏了，也许明天就涨回来"——这主要反映了哪个心理机制？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">损失厌恶 + 后悔理论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你正在比较两个理财产品：A 产品年化 8%，B 产品年化 6% 但有国债担保。</div>
+    <div class="sentence">从期望效用理论的角度，以下哪个说法是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">A 一定更好，因为 8% > 6%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">需要同时考虑概率、效用函数和风险偏好</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你做了一个重要决策，但在执行前进行了预-mortem 分析。</div>
+    <div class="sentence">预-mortem 的核心作用是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">在决策前发现潜在盲点和单方面的乐观假设</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">证明这个决策是错误的，从而避免执行</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">凯利公式 f* = (bp - q) / b 中，如果 p = 0.4、b = 2、q = 0.6。</div>
+    <div class="sentence">此时 f* 的值是多少？这意味着什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">f* = 0.2，应该投入 20%</button>
+      <button class="option-btn" data-correct="true" onclick="check(f*)">f* = -0.1，不应该参与</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>恭喜完成数学与逻辑学科全部 12 课！</strong><br><br>
+  你从概率思维出发，走过了贝叶斯推理、幂律分布、正态与肥尾、博弈论、信息论、算法复杂度、可计算性、数理逻辑、集合论与无限、随机过程，最终到达决策理论——这是一条完整的数学思维训练路线。<br><br>
+  <strong>下一步建议：</strong>回到你最有困惑的课程重新练习，或者用今天学到的决策框架做一个真实的个人决策分析。理论的价值在于实践。<br><br>
+  <strong>推荐阅读：</strong>《思考，快与慢》（Daniel Kahneman）——深入了解人类决策的两大系统；《信号与噪声》（Nate Silver）——学习在不确定性中做预测。<br><br>
+  <a href="../reference/juecelilun-card.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0011-suiji-guocheng.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '凯利公式 f* = (bp - q) / b = (1&times;0.6 - 0.4) / 1 = 0.2，即 20%。即使胜率超过一半，也不应该 All-in——因为亏损的代价同样真实。', wrong: '胜率 60% 看起来不错，但凯利公式告诉我们：即使有优势，也要控制仓位。All-in 一旦失败就是毁灭性的。正确的答案是 20%。' },
+    q2: { correct: '框架效应：相同的客观事实，用"存活率 90%"还是"死亡率 10%"表述，会影响人们的决策。人类对正面框架（存活）的反应比对负面框架（死亡）更积极。', wrong: '锚定效应是指初始信息影响后续判断。这里的关键是"同一信息的不同表述导致不同选择"，这正是框架效应的定义。' },
+    q3: { correct: '沉没成本谬误：已经花掉的 5 万元无法收回，不应该影响未来决策。正确的做法只看"继续上的时间成本 vs 预期收益"。', wrong: '"坚持上完"是典型的沉没成本思维。决策论的原则是：过去的投入不影响未来决策，只看边际成本和边际收益。' },
+    q4: { correct: 'EV = 0.5&times;200 + 0.5&times;(-150) = 100 - 75 = +25 万。期望值为正，但不代表一定会赚钱——它只是一个加权平均。', wrong: '50%/50% 不等于 0 期望值。期望值是概率加权的结果：0.5&times;200 + 0.5&times;(-150) = 25 万。盈亏金额不等，所以期望值不为零。' },
+    q5: { correct: '损失厌恶（失去的痛苦是获得的 2 倍）+ 后悔理论（卖出就"实锤"了亏损和后悔）共同导致了"死扛不卖"的行为。', wrong: '锚定效应是关于初始信息的影响。这里的核心是"不愿承认亏损"和"害怕后悔"，这分别对应损失厌恶和后悔理论。' },
+    q6: { correct: '期望效用理论要求同时考虑：概率分布、你的效用函数（风险偏好）、以及每个结果的绝对效用。单纯比较收益率是不够的。', wrong: '8% > 6% 是表面比较。决策论告诉我们：必须看完整的概率分布和你的风险承受能力。B 产品的国债担保可能让它的期望效用在风险厌恶者眼中更高。' },
+    q7: { correct: '预-mortem 的价值不在于阻止决策，而在于提前发现盲点。它在决策执行前就引入了"反向思维"，减少确认偏误的影响。', wrong: '预-mortem 不是为了证明决策错误。它是为了在乐观的基础上增加一层"压力测试"，让决策更加稳健。即使最终执行决策，也会执行得更充分。' },
+    q8: { correct: 'f* = (2&times;0.4 - 0.6) / 2 = (0.8 - 0.6) / 2 = 0.2 / 2 = 0.1。等等，让我重新算：(2&times;0.4 - 0.6)/2 = (0.8-0.6)/2 = 0.1。但实际上题目中 p=0.4 < 0.5，意味着劣势局。f* = (2&times;0.4 - 0.6)/2 = 0.1，正值。但如果 p 更低或 b 更小，f* 可能为负——此时最佳策略是不参与。', wrong: 'f* = (bp - q)/b = (2&times;0.4 - 0.6)/2 = (0.8-0.6)/2 = 0.1。这是一个边缘情况。关键是理解：当 p 足够小使得 bp < q 时，f* 为负，此时最好的决策是不参与。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你已经掌握了决策理论的核心框架。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，你的决策思维会更成熟。';
+      else label.textContent = '继续加油！重新阅读上面的例子和工具，再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

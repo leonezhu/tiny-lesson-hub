@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 正和与零和</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>正和与零和（Positive-Sum &amp; Zero-Sum）</h1>
+<p class="meta">Meta Concepts · 参考卡</p>
+
+<div class="card">
+  <h3>零和博弈：固定的饼</h3>
+  <p>一方收益 = 另一方损失，总和固定不变。典型特征：<strong>价值不可扩展</strong>。</p>
+  <ul class="examples">
+    <li>赌博、比赛、抢座、分配固定资源</li>
+    <li>零和思维在固定资源场景中是理性的</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>正和博弈：把饼做大</h3>
+  <p>通过协作、分工、创新创造新价值。1+1&gt;2，每个人的收益都大于零。典型特征：<strong>价值可创造</strong>。</p>
+  <ul class="examples">
+    <li>国际贸易（比较优势）、知识共享、开源协作、创业合伙</li>
+    <li>正和关系的放大器：信任、重复互动、制度设计</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>负和博弈：合作失败的代价</h3>
+  <p>个人理性导致集体非理性，双方都受损。核心问题：<strong>没有制度保护合作</strong>。</p>
+  <ul class="examples">
+    <li>囚徒困境、价格战、军备竞赛、公地悲剧</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>判断三步：</strong>① 价值是否可创造？→ 可创造 = 正和；固定 = 零和 ② 互动是一次性还是重复？→ 重复鼓励合作 ③ 是否有制度促进合作？→ 制度让正和自动发生
+</div>
+
+<div class="card">
+  <h3>关键概念速查</h3>
+  <ul class="examples">
+    <li><strong>比较优势：</strong>即使一方在所有方面都更强，分工交换仍然创造正和</li>
+    <li><strong>囚徒困境：</strong>个人理性与集体理性的冲突——没有制度时合作难以维持</li>
+    <li><strong>公地悲剧：</strong>个体理性行为导致集体资源枯竭——负和博弈</li>
+    <li><strong>重复博弈：</strong>有未来预期时，合作比背叛更有价值</li>
+    <li><strong>以牙还牙（Tit for Tat）：</strong>在重复囚徒困境中最优策略——先合作，然后模仿对方上一步</li>
+  </ul>
+</div>
+
+<a href="../lessons/0009-positive-sum-zero-sum.html" class="back-link">← 返回完整课程</a>
+
+<div class="footer">
+  Meta Concepts · 参考卡 · 第 9 课
+</div>
+
+</body>
+</html>

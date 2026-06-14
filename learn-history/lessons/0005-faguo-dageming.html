@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 法国大革命</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .content-card .sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .content-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .content-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>法国大革命</h1>
+<p class="lesson-meta">第5课 · ~15 分钟 · 政治革命的模板</p>
+
+<div class="goal-box">
+  <strong>通过本课你将学会</strong>：理解法国大革命如何从一个"没钱了"的财政危机，演变为一场彻底重塑欧洲政治秩序的爆炸性事件，以及它为什么至今仍是理解现代政治的钥匙。
+</div>
+
+<h2>背景：一个快要爆炸的系统</h2>
+<p>
+  1789年的法国，表面上是欧洲最强大的国家——人口最多、军队最多、文化最辉煌。但内部已经千疮百孔。问题的核心可以用一句话概括：<strong>旧制度（Ancien Régime）已经无法运转，但没有任何人有能力建立新制度。</strong>
+</p>
+
+<div class="content-card">
+  <h3>三重危机</h3>
+  <ul>
+    <li><strong>财政危机：</strong>法国参与了七年战争（1756-1763）和美国独立战争（1775-1783），债台高筑。国家收入的50%以上用来还利息。国王路易十六尝试向贵族征税，被贵族组成的最高法院拒绝——没有人愿意为这个烂摊子买单。</li>
+    <li><strong>粮食危机：</strong>1788-1789年法国遭遇恶劣天气，小麦绝收。面包价格飙升至工人工资的80%以上。巴黎的工人每天挣多少？约21苏，买一块面包要花10苏——一家三口就吃不起了。</li>
+    <li><strong>合法性危机：</strong>启蒙运动的思想（卢梭的"社会契约"、伏尔泰的批判、孟德斯鸠的分权理论）在知识界广泛传播。精英阶层开始问一个危险的问题："如果权力不是上帝赋予的，那它凭什么存在？"</li>
+  </ul>
+</div>
+
+<h2>1789：旧制度崩塌的一年</h2>
+
+<div class="content-card">
+  <h3>三级会议与国民议会</h3>
+  <p class="sub">"他们想投票，我们让他们建共和国"</p>
+  <ul>
+    <li>1789年5月，路易十六被迫召开自1614年以来从未召开过的<strong>三级会议</strong>——三个等级（教士、贵族、第三等级）各自开会投票。问题：第三等级代表了两千万人（占人口98%），但投票权和前两个等级各相等——永远被2:1压制。</li>
+    <li>第三等级要求"按人头投票"被拒后，他们单方面宣布自己为<strong>国民议会</strong>（National Assembly）。这是革命的第一步：一个社会团体宣布自己代表全体人民，比国王更有合法性。</li>
+    <li>6月20日，网球场宣言——国民议会成员锁在网球场里发誓"不制定出宪法绝不解散"。这是现代宪政主义的诞生时刻。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>7月14日：攻占巴士底狱</h3>
+  <p class="sub">"从那一天起，旧制度就死了"</p>
+  <ul>
+    <li>巴黎人民因为国王调动军队到巴黎附近而恐慌，上街寻找武器。7月14日，他们攻占了巴士底狱——一座象征王权专制的前狱。</li>
+    <li>当时的巴士底狱里只有7个囚犯（都不是政治犯），战略价值几乎为零。但它的<strong>象征价值是巨大的</strong>——它是王权专制的物理标志。把它炸毁，等于向整个欧洲宣告：人民可以推翻一个政权。</li>
+    <li>这件事的后续影响比事件本身更重要：它建立了"人民在行动"的模式——不是议会辩论，不是请愿上书，而是直接的、暴力的人民行动。这个模式在后来每一场革命中都被复制。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>8月4日之夜：封建制度被废除</h3>
+  <ul>
+    <li>在巴黎事件的刺激下，各省爆发了"大恐慌"——农民烧毁地契、攻击贵族庄园。在国民议会里，一些有远见的贵族代表在8月4日晚上连夜提出废除封建特权。</li>
+    <li>8月26日，国民议会通过《人权和公民权宣言》——用一句话概括："人生来且始终自由平等，社会差别只能基于共同利益。"</li>
+    <li>这份宣言是革命最重要的文件，它把启蒙运动的政治哲学变成了法律文本。它直接影响了后来几乎所有国家的宪法，包括美国《独立宣言》的精神延续——但法国版更激进。</li>
+  </ul>
+</div>
+
+<h2>革命的加速与失控（1791-1794）</h2>
+
+<div class="content-card">
+  <h3>从改良到革命</h3>
+  <ul>
+    <li>1791年宪法试图建立君主立宪制——保留国王但限制他的权力。但路易十六暗中联系外国势力（奥地利和普鲁士）想复辟。1791年6月，他试图出逃被抓回（瓦雷纳事件）。信任彻底破产。</li>
+    <li>1792年8月10日，巴黎民众再次起义，攻入杜伊勒里宫，王室被囚禁。君主制被正式推翻。9月，新选举产生的<strong>国民公会</strong>宣布成立法兰西第一共和国。</li>
+    <li>1793年1月21日，路易十六在巴黎革命广场被送上断头台。这是欧洲历史上第一个被公开处决的国王。整个欧洲君主制世界为之震动。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>雅各宾派与恐怖统治（1793-1794）</h3>
+  <p class="sub">"没有美德，恐怖就是有害的；没有恐怖，美德就是无力的"——罗伯斯庇尔</p>
+  <ul>
+    <li>法国当时处于内外交困：反法同盟从四面八方入侵，国内旺代地区爆发了保王党叛乱。救亡压力催生了最极端的解决方案。</li>
+    <li><strong>罗伯斯庇尔</strong>（1758-1794）领导的雅各宾派建立了"革命专政"。革命法庭每周处决数十人，高峰时期巴黎每周死刑超过100人。"嫌疑犯条例"允许逮捕任何"言行、言论、著作"与自由和平等不一致的人——标准极其模糊。</li>
+    <li>估计在整个恐怖统治期间，全法国有约17,000人被正式处决，另有约25,000人在没有审判的情况下被杀害。这不是偶然的暴力——它是"用暴力来实现美德"的逻辑必然。</li>
+  </ul>
+</div>
+
+<h2>革命的影响：为什么它 mattered</h2>
+
+<div class="content-card">
+  <h3>1. 现代政治的发明</h3>
+  <p>法国大革命定义了现代政治的几乎所有核心概念：<strong>民族国家、公民权、人权、左派与右派（源自议会中坐在左边还是右边的位置）、革命本身</strong>。我们今天争论的"自由vs平等"、"秩序vs变革"的框架，是这场革命建立的。</p>
+</div>
+
+<div class="content-card">
+  <h3>2. 拿破仑：革命的继承者和背叛者</h3>
+  <p>1799年，拿破仑·波拿巴通过雾月政变夺取权力。他做了两件事：一是结束了革命的内乱，二是把革命的核心成果（《民法典》、法律面前人人平等、废除封建制度）推广到整个欧洲。拿破仑的军队走到哪里，就把法国大革命的原则带到哪里——用炮舰传播自由主义。</p>
+</div>
+
+<div class="content-card">
+  <h3>3. 革命的两难困境</h3>
+  <p>法国大革命留下了一直困扰现代政治的根本问题：<strong>当人民有权推翻政府时，这个权力该不该被限制？用暴力推翻一个不公正的制度后，新制度会不会变成另一种不公正？</strong>这个问题在20世纪的每一场革命中重复出现——俄罗斯、中国、古巴、伊朗。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>重要对比：</strong>法国大革命与同时期的美国独立战争有根本不同。美国革命是"精英革命"——主要由有产精英领导，目标是"保卫已有的自由"免受外部（英国）侵犯。法国革命是"社会革命"——底层民众深度参与，目标是"从头开始创造新世界"。美国革命保留了现有的社会结构（包括奴隶制），法国革命则彻底摧毁了旧的社会等级。这也是为什么法国革命比美国革命更血腥、更深远、也更不可预测。
+</div>
+
+<h2>法国大革命的教训</h2>
+<p>
+  法国大革命给后世留下了一个核心教训：<strong>推翻旧制度很容易，建立新制度极难。</strong>革命可以一夜之间炸毁巴士底狱，但建立稳定的宪政民主需要几十年甚至上百年的反复试错。法国在1789年之后经历了：君主立宪 → 第一共和国 → 拿破仑帝国 → 波旁复辟 → 七月王朝 → 第二共和国 → 第二帝国 → 第三共和国——总共8次政权更迭，花了80年才稳定下来。
+</p>
+<p>
+  对今天的启示：<strong>激进变革的代价往往被低估，渐进改良的局限也常被高估。</strong>最好的制度变革通常发生在两者之间——有明确的方向感（像革命者一样有理想），但有对复杂性的敬畏（像改良者一样务实）。
+</p>
+
+<div class="followup">
+  <strong>下一步思考：</strong>法国大革命推翻了旧制度，但新制度能运行多久？要理解这个问题，我们需要看工业革命如何从根本上改变社会结构——这是下一课的主题。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>选出最符合历史逻辑的答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">法国大革命爆发的根本原因是什么？</div>
+    <div class="sentence">以下哪个选项最能概括革命爆发的根本原因？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">面包价格上涨导致人民愤怒</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">旧制度的三重危机：财政、粮食、合法性同时达到临界点</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">1789年6月的网球场宣言意味着什么？</div>
+    <div class="sentence">国民议会成员发誓"不制定宪法不解散"的核心意义是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">他们想和国王谈判修改税收政策</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">一个社会团体宣布自己代表全体人民，合法性高于国王</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">为什么攻占巴士底狱意义重大，尽管它实际战略价值很低？</div>
+    <div class="sentence">巴士底狱事件的核心意义在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它摧毁了法国最重要的军事堡垒</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它是王权专制的象征性摧毁，建立了"人民直接行动"的模式</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">路易十六被处决为什么震撼了整个欧洲？</div>
+    <div class="sentence">处决国王的核心冲击是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">法国因此获得了更多的领土</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它证明了人民可以合法地处决"神授"的统治者，动摇了所有君主制的合法性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">罗伯斯庇尔的恐怖统治体现了革命中的什么逻辑？</div>
+    <div class="sentence">"用暴力实现美德"的核心问题是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">罗伯斯庇尔个人心理变态</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">当一套理念声称拥有绝对正确性时，它就获得了消灭一切反对者的正当性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">法国大革命与美国独立战争的关键区别是什么？</div>
+    <div class="sentence">最本质的区别在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">法国革命更血腥，所以更失败</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">美国是精英领导的"保卫自由"革命，法国是民众参与的"重建世界"社会革命</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">《人权和公民权宣言》的历史意义是什么？</div>
+    <div class="sentence">它最重要的贡献是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">结束了法国国内的战争</button>
+      <button class="option-btn" data-correct="true" onclick="check(it)">把启蒙运动的哲学变成了法律文本，成为后来各国宪法的蓝本</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">法国大革命留下的核心政治难题是什么？</div>
+    <div class="sentence">"推翻旧制度容易，建立新制度极难"的核心含义是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">革命者应该一开始就不使用暴力</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">制度的稳定需要时间、妥协和对复杂性的敬畏，不能靠一夜之间的理想主义实现</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——不管是关于大革命的细节，还是它为什么重要。不理解某个概念？这正是我们需要讨论的地方。
+  <br><br>
+  <strong>延伸阅读：</strong><a href="https://zh.wikipedia.org/wiki/%E6%B3%95%E5%9B%BD%E5%A4%A7%E9%9D%A9%E5%91%BD" target="_blank">维基百科：法国大革命</a> — 更详细的时间线和事件介绍。
+  <br><br>
+  <a href="../reference/faguo-dageming.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-kexue-geming.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-gongye-geming.html">下一课</a> | <a href="../reference/faguo-dageming.html">速查卡</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '面包价格上涨是直接触发因素，但根本原因是三重危机同时爆发：财政破产（债台高筑）、粮食危机（绝收）、合法性危机（启蒙思想动摇了旧制度的理论基础）。任何一个单独因素都不足以引爆革命，但三者叠加就不可逆转了。', wrong: '面包价格确实是一个重要因素——1789年巴黎工人花80%的工资买面包——但它是触发因素而非根本原因。根本原因是旧制度的系统性崩溃，三重危机同时达到临界点。' },
+    q2: { correct: '网球场宣言的核心在于：第三等级宣布自己代表全体人民。这不是在和国王谈判——而是在说"我们比你更有合法性"。这是现代民主的核心逻辑：合法性来自被统治者，而非统治者。', wrong: '他们不是在谈判。他们单方面宣布自己为国民议会，并在没有国王授权的情况下发誓制定宪法。这是对王权合法性的直接挑战。' },
+    q3: { correct: '巴士底狱只有7个囚犯，战略价值几乎为零。真正重要的是它是王权专制的物理象征——炸毁它等于向全世界宣告"人民可以推翻一个政权"。这个模式成为后来所有革命的模板。', wrong: '巴士底狱不是重要的军事堡垒，它的实际军事价值很低。它的意义完全在于象征——它是专制王权的物理标志。炸毁象征比炸毁堡垒更有力量。' },
+    q4: { correct: '处决路易十六的意义不在于地理或军事——而在于它是"神授君权"概念的首次公开处决。它向世界证明：如果人民认为一个国王不合法，他就真的不合法了。这个逻辑威胁到所有君主。', wrong: '处决国王和领土扩张没有直接关系。真正震撼欧洲的是它摧毁了"君权神授"的神话——如果一个国王可以被公开处决，那所有国王的合法性都成了问题。' },
+    q5: { correct: '罗伯斯庇尔的问题不在于他个人"变态"——而在于一种危险的逻辑：当一套理念声称自己完全正确时，它就获得了消灭反对者的正当性。"消灭敌人就是实现美德"——这是所有极权主义的种子。', wrong: '把恐怖统治归因于个人心理问题是浅薄的。罗伯斯庇尔确实相信自己在"实现美德"——他的问题在于相信"美德"可以有统一的标准，并且可以用暴力强制执行。这是制度性的危险，不只是个人问题。' },
+    q6: { correct: '美国革命是"精英革命"——有产精英领导，目标是保卫已有的自由免受外部侵犯，保留了奴隶制等既有社会结构。法国革命是"社会革命"——底层民众深度参与，目标是彻底摧毁旧社会等级从头开始。这两个模式定义了后来几乎所有革命。', wrong: '法国革命并不比美国革命"更失败"——它的影响远比美国革命深远。关键区别不在于血腥程度，而在于革命的性质：一个是"保卫自由"（美国），一个是"重建世界"（法国）。' },
+    q7: { correct: '《人权宣言》把启蒙运动的抽象哲学变成了可操作的法律文本——"人生而自由平等"从此有了法律效力。它直接影响了后来的美国权利法案、联合国人权宣言，以及几乎所有现代宪法。', wrong: '《人权宣言》没有结束战争——法国在宣言通过之后还打了20多年的战争。它的真正意义在于思想层面：把哲学变成了法律，为现代宪政奠定了基础。' },
+    q8: { correct: '法国用了80年经历了8次政权更迭才稳定下来（从1789到1870年第三共和国）。革命可以一夜之间炸毁旧制度，但建立稳定的新制度需要妥协、试错和对复杂性的敬畏。理想主义如果不被现实约束，往往会走向它的反面。', wrong: '不主张暴力不是答案。暴力推翻旧制度有时是必要的，但问题在于暴力之后的制度建设。法国大革命的教训不是"不要革命"，而是"革命之后需要比革命前更深的智慧和耐心"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对法国大革命的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！复习一下答错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的例子再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

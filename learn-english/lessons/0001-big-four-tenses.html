@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 — The Big 4 Tenses You Use Every Day</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>The Big 4 Tenses You Use Every Day</h1>
+<p class="lesson-meta">Lesson 1 &middot; ~10 minutes &middot; Grammar foundation</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to choose the correct tense for the 4 most common situations in English — covering roughly 90% of what you say and write at work.
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  In Chinese, you show time with words like 昨天, 现在, 已经 — the verb never changes. In English, <strong>the verb itself must change</strong>. Getting this wrong is the #1 mistake Mandarin speakers make, even at B1 level. The good news: you really only need four tenses for most situations.
+</p>
+
+<h2>The Big 4</h2>
+
+<div class="tense-card">
+  <h3>1. Present Simple — habits, facts, schedules</h3>
+  <p class="form">I/you/we/they <strong>work</strong> &middot; he/she/it <strong>works</strong></p>
+  <ul class="examples">
+    <li>I <strong>work</strong> from home three days a week.</li>
+    <li>The meeting <strong>starts</strong> at 10.</li>
+    <li>She <strong>doesn't use</strong> that tool anymore.</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>2. Present Continuous — happening now, or near-future plans</h3>
+  <p class="form">I <strong>am working</strong> &middot; she <strong>is working</strong> &middot; they <strong>are working</strong></p>
+  <ul class="examples">
+    <li>I <strong>'m working</strong> on the report right now.</li>
+    <li>We<strong>'re meeting</strong> the client tomorrow. <em>(future plan)</em></li>
+    <li>What <strong>are</strong> you <strong>doing</strong>?</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>3. Past Simple — completed actions at a specific time</h3>
+  <p class="form">I <strong>worked</strong> &middot; she <strong>went</strong> &middot; they <strong>finished</strong></p>
+  <ul class="examples">
+    <li>I <strong>sent</strong> the email yesterday.</li>
+    <li>We <strong>launched</strong> the feature last week.</li>
+    <li>She <strong>went</strong> to Berlin for a conference.</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>4. Present Perfect — experience, recent changes, result matters now</h3>
+  <p class="form">I <strong>have worked</strong> &middot; she <strong>has gone</strong> &middot; they <strong>have finished</strong></p>
+  <ul class="examples">
+    <li>I <strong>have finished</strong> the report. <em>(it's done — result now)</em></li>
+    <li>She<strong>'s been</strong> to Tokyo three times. <em>(experience)</em></li>
+    <li>Have you <strong>seen</strong> the new design? <em>(at any time up to now)</em></li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>The hardest choice:</strong> Past Simple vs Present Perfect. Chinese uses 已经 + verb for both. In English: did you mention <em>when</em>? "I have finished the report" = no time mentioned, result matters now. "I finished the report yesterday" = specific time → Past Simple.
+</div>
+
+<h2>Quick check: signal words</h2>
+<p>These words tell you which tense to use:</p>
+<p>
+  <strong>Present Simple:</strong> always, usually, every day, often, sometimes<br>
+  <strong>Present Continuous:</strong> now, right now, at the moment, currently<br>
+  <strong>Past Simple:</strong> yesterday, last week, in 2020, two days ago<br>
+  <strong>Present Perfect:</strong> already, yet, just, ever, never, for, since
+</p>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Tense</h2>
+  <p>Pick the verb form that fits the context. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You're talking about your daily routine.</div>
+    <div class="sentence">I ________ at 7am every morning.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">am waking up</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">wake up</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">You're on a call right now.</div>
+    <div class="sentence">Sorry, I ________ on another task. Can I call you back?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">'m working</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">work</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Talking about last week.</div>
+    <div class="sentence">We ________ the new feature last Monday.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">have launched</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">launched</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You finished something and want to report it.</div>
+    <div class="sentence">I ________ the report. It's on your desk.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">finished</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">'ve finished</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Talking about a colleague's schedule.</div>
+    <div class="sentence">She ________ to the office on Fridays.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">comes</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">is coming</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">You visited Shanghai in March.</div>
+    <div class="sentence">I ________ to Shanghai in March.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">went</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">have gone</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Asking about someone's life experience.</div>
+    <div class="sentence">________ you ever ________ sushi?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Did ... try</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Have ... tried</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Future plan already arranged.</div>
+    <div class="sentence">We ________ the team dinner at 7pm on Friday.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">have</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">'re having</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Not sure why one answer is right and another is wrong? That's exactly what we should talk about. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/free-resources/listening/b2" target="_blank">British Council B2 Listening</a> — practice hearing these tenses in natural speech.
+  <br><br>
+  <a href="../reference/tenses-big-four.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-articles-a-an-the.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Every morning" = habit → Present Simple. "Wake up" not "am waking up".', wrong: '"Every morning" signals a habit. Habits and routines always use Present Simple: "I wake up".' },
+    q2: { correct: '"Right now" → Present Continuous. "I\'m working on another task" = happening at this moment.', wrong: 'You\'re on a call NOW. "Right now" needs Present Continuous: "I\'m working", not "I work".' },
+    q3: { correct: '"Last Monday" = specific time → Past Simple. "We launched".', wrong: '"Last Monday" is a specific past time. That means Past Simple: "launched", not Present Perfect.' },
+    q4: { correct: 'No time mentioned, result matters now → Present Perfect. "I\'ve finished" = it\'s done, here it is.', wrong: 'There\'s no specific time word here. The point is the result NOW. Use Present Perfect: "I\'ve finished".' },
+    q5: { correct: '"On Fridays" = recurring schedule → Present Simple. "She comes".', wrong: '"On Fridays" is a regular schedule. Regular/repeated = Present Simple: "She comes".' },
+    q6: { correct: '"In March" = specific time → Past Simple. "I went".', wrong: '"In March" pins it to a specific time. Specific time → Past Simple: "I went", not "have gone".' },
+    q7: { correct: '"Ever" + life experience → Present Perfect. "Have you ever tried?"', wrong: '"Ever" signals experience — at any time in your life. That\'s Present Perfect: "Have you ever tried?"' },
+    q8: { correct: 'Arranged future plan → Present Continuous. "We\'re having dinner at 7".', wrong: 'A plan you\'ve already arranged = Present Continuous for future: "We\'re having the dinner".' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You have a solid grasp of the Big 4.';
+      else if (score >= 6) label.textContent = 'Good work! Review the ones you missed — the explanations tell you why.';
+      else label.textContent = 'Keep going! Re-read the examples above and try again.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

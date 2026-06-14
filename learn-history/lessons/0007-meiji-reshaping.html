@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 明治维新</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .event-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .event-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .event-card .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .event-card .details {
+    list-style: none;
+    padding: 0;
+  }
+
+  .event-card .details li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .event-card .details li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .timeline-item {
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    border-left: 3px solid var(--accent);
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    left: -6.5px;
+    top: 1rem;
+  }
+
+  .timeline-item .year {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.95rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #f8f9fa;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>明治维新：日本如何在三十年内从封建走向现代</h1>
+<p class="lesson-meta">第7课 · ~10分钟 · 历史转折</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够解释明治维新为何是日本历史上最重要的转折点，理解其"自上而下改革"的独特模式，并能将明治维新与中国同时期的洋务运动、戊戌变法进行对比分析。
+</div>
+
+<h2>背景：黑船来航与幕末危机</h2>
+<p>
+  1853年，美国海军准将佩里率领四艘黑色蒸汽战舰驶入江户湾（今东京湾）。这些船被日本人称为"黑船"，它们的烟囱冒出黑烟，炮口对准岸边的防御工事。佩里递交了一封信，要求日本开放港口通商。
+</p>
+<p>
+  这并非普通的"外交事件"——它暴露了日本在军事和技术上的全面落后。更致命的是，它动摇了德川幕府统治的合法性：一个连外国船只都无法抵御的政府，如何证明自己有资格统治？
+</p>
+
+<div class="timeline-item">
+  <span class="year">1853年</span> — 佩里黑船来航，日本被迫开国
+</div>
+<div class="timeline-item">
+  <span class="year">1858年</span> — 日美修好通商条约，日本丧失关税自主权
+</div>
+<div class="timeline-item">
+  <span class="year">1867年</span> — 明治天皇即位，德川庆喜"大政奉还"
+</div>
+<div class="timeline-item">
+  <span class="year">1868年</span> — 明治维新正式开始，王政复古大号令
+</div>
+<div class="timeline-item">
+  <span class="year">1889年</span> — 大日本帝国宪法颁布，亚洲第一部成文宪法
+</div>
+<div class="timeline-item">
+  <span class="year">1894-1895年</span> — 甲午战争，日本击败清朝，确立东亚强国地位
+</div>
+
+<h2>四大核心改革</h2>
+
+<div class="event-card">
+  <h3>1. 废藩置县：从封建割据到中央集权</h3>
+  <p class="subtitle">1871年，明治政府做出了一项惊人的决定——废除全国260多个藩国，设立由中央政府直接管辖的府县。</p>
+  <ul class="details">
+    <li>此前：日本名义上是天皇的国家，实际由德川幕府和260多个半独立藩国统治</li>
+    <li>改革措施：藩主全部撤出领地，迁居东京；地方长官由中央任命</li>
+    <li>代价：许多武士阶层失去领地和俸禄，引发了士族叛乱（如西南战争）</li>
+    <li>结果：日本首次建立了真正的中央集权国家，可以统一征税、征兵、立法</li>
+  </ul>
+</div>
+
+<div class="event-card">
+  <h3>2. 四民平等与废除武士特权</h3>
+  <p class="subtitle">1872年，明治政府宣布"四民平等"——士（武士）、农、工、商在法律上完全平等。</p>
+  <ul class="details">
+    <li>武士失去了佩刀权、世袭俸禄和垄断军职的特权</li>
+    <li>但武士阶层在教育、官僚体系中仍占优势——改革的红利并不均匀</li>
+    <li>1876年，秩禄处分彻底切断了武士的经济来源</li>
+    <li>结果：社会流动性增强，但武士的失落感催生了多次叛乱</li>
+  </ul>
+</div>
+
+<div class="event-card">
+  <h3>3. 殖产兴业：国家主导的工业化</h3>
+  <p class="subtitle">明治政府不是让市场自然发展，而是由国家亲自下场创办工厂、铁路和电信。</p>
+  <ul class="details">
+    <li>政府兴建了现代化的纺织厂、造船厂、矿山、铁路网</li>
+    <li>聘请数千名外籍专家（"お雇い外国人"），仅1875年就有约3000人</li>
+    <li>1880年代后，将多数国营企业低价出售给有政商关系的商人（财阀雏形）</li>
+    <li>结果：1868-1900年，日本工业年均增长率约4%，远超同期中国</li>
+  </ul>
+</div>
+
+<div class="event-card">
+  <h3>4. 文明开化：全面学习西方</h3>
+  <p class="subtitle">"和魂洋才"——保持日本精神内核，全面吸收西方技术和制度。</p>
+  <ul class="details">
+    <li>1872年颁布学制，建立全国义务教育体系，识字率十年内从约40%升至80%</li>
+    <li>1873年采用阳历（格里高利历），废除农历</li>
+    <li>岩仓使节团（1871-1873）：100多名精英考察欧美12国，直接影响了后续改革方向</li>
+    <li>结果：日本在短短30年内完成了欧洲花了两个世纪完成的现代化进程</li>
+  </ul>
+</div>
+
+<h2>明治维新 vs 洋务运动：同样的挑战，不同的命运</h2>
+<p>
+  这是历史比较中最经典的对照案例。中日两国几乎在同一时刻面对西方的冲击，但结果截然不同。
+</p>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>维度</th>
+      <th>明治维新（日本）</th>
+      <th>洋务运动（中国）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>改革深度</td>
+      <td>制度、文化、社会全面改革</td>
+      <td>"中学为体，西学为用"——只改技术</td>
+    </tr>
+    <tr>
+      <td>政治结构</td>
+      <td>推翻旧政权，建立新中央</td>
+      <td>在旧体制框架内修补</td>
+    </tr>
+    <tr>
+      <td>教育改革</td>
+      <td>全国义务教育体系</td>
+      <td>少数新式学堂（京师同文馆等）</td>
+    </tr>
+    <tr>
+      <td>经济模式</td>
+      <td>国家主导→财阀私有</td>
+      <td>"官督商办"——官僚控制</td>
+    </tr>
+    <tr>
+      <td>最终结果</td>
+      <td>1895年击败清朝</td>
+      <td>1895年败给日本</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>洋务运动的失败不是因为中国人不够聪明——曾国藩、李鸿章都是当时最杰出的人才。根本原因是他们试图在一个腐朽的制度框架内植入现代技术，就像在一辆牛车上装喷气发动机。明治维新的成功在于它改变了整个"车"——制度、文化、社会结构一起变。
+</div>
+
+<h2>代价与阴影</h2>
+<p>
+  明治维新常被描绘为一场成功的现代化故事，但它也有沉重的代价：
+</p>
+<ul class="details">
+  <li><strong>农民负担：</strong>地税改革（1873年）要求农民用现金纳税，导致大量农民破产，农村暴动频发</li>
+  <li><strong>军国主义萌芽：</strong>明治宪法赋予天皇极大权力，军队独立于内阁，为后来的侵略扩张埋下伏笔</li>
+  <li><strong>文化断裂：</strong>全面西化导致传统工艺、语言、生活方式遭到破坏，至今仍有争议</li>
+  <li><strong>殖民扩张：</strong>1895年甲午战争后，日本开始了对朝鲜（1910年正式吞并）和中国台湾的殖民统治</li>
+</ul>
+
+<h2>历史意义</h2>
+<p>
+  明治维新的深远意义在于它证明了：<strong>后发国家可以在短时间内完成现代化转型</strong>。在此之前，所有人都认为现代化是西方独有的产物——只有经历了文艺复兴、启蒙运动、工业革命的国家才能成为现代国家。明治维新打破了这个迷思。
+</p>
+<p>
+  但明治维新也留下了一个未解的问题：当一个国家通过"自上而下"的改革迅速强大后，它如何避免走向帝国主义和军国主义？这个问题困扰了日本整整半个世纪，直到1945年才以惨痛的方式得到回答。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：理解明治维新</h2>
+  <p>选择每个问题的最佳答案。每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解改革的前提条件</div>
+    <div class="sentence">明治维新得以启动的关键政治前提是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">日本拥有强大的资产阶级推动了改革</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">幕府权威崩塌，天皇获得政治合法性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解废藩置县的本质</div>
+    <div class="sentence">废藩置县的核心目的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">建立中央集权，实现统一征税和征兵</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">消除武士阶层的经济收入</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">比较中日改革</div>
+    <div class="sentence">洋务运动与明治维新最根本的区别在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">日本更重视军事改革</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">日本进行了制度层面的根本性改革</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解殖产兴业的策略</div>
+    <div class="sentence">明治政府在工业化初期采取的主要策略是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">国家直接创办工厂和基础设施，后期转给私人财阀</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全依靠外国资本投资</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解岩仓使节团的意义</div>
+    <div class="sentence">岩仓使节团（1871-1873）对明治改革的最大贡献是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">与欧美列强签订了平等通商条约</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">实地考察欧美制度后制定了更符合实际的改革方案</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解明治维新的代价</div>
+    <div class="sentence">1873年的地税改革导致了以下哪个后果？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">农民获得了土地所有权，农村经济繁荣</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">大量农民因现金纳税破产，引发农村暴动</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解明治宪法的特点</div>
+    <div class="sentence">1889年颁布的《大日本帝国宪法》最大的特点是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">赋予天皇极大权力，军队独立于内阁</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">确立了议会至上的民主制度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解明治维新的历史意义</div>
+    <div class="sentence">明治维新对世界历史最重要的意义是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">使日本成为世界上最大的经济体</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">证明了后发国家可以在短时间内完成现代化</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>问我任何关于明治维新的问题——为什么它成功了？为什么后来走向了军国主义？和中国的改革有什么不同？随时提问，我会详细解释。
+  <br><br>
+  <strong>推荐阅读：</strong>《菊与刀》（鲁思·本尼迪克特）——理解日本文化的深层结构，有助于理解明治维新的文化维度。
+  <br><br>
+  <a href="../reference/meiji-reshaping.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-gongye-geming.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-yidajianzheng.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '黑船来航暴露了幕府的无能，导致其合法性崩塌。倒幕势力以"尊王攘夷"为口号，最终推翻了德川政权，天皇重新获得政治权威。没有这个前提，明治维新不可能发生。', wrong: '日本当时几乎没有强大的资产阶级。明治维新的推动者是下级武士（如萨摩、长州藩），而非商人阶级。资产阶级在日本工业化过程中是后来才崛起的。' },
+    q2: { correct: '废藩置县的根本目的是消除地方割据，建立一个可以统一征税、征兵、立法的中央集权国家。武士俸禄问题是附带结果，而非主要目的。', wrong: '消除武士收入是废藩置县的结果之一，但不是核心目的。核心目的是政治整合——把260多个半独立的藩变成由中央直接管理的府县。' },
+    q3: { correct: '洋务运动坚持"中学为体，西学为用"，只学技术不改制度。明治维新则是制度、文化、社会全方位的改革。这是两者最根本的区别，也是结果迥异的根源。', wrong: '两国都重视军事改革——北洋水师就是洋务运动的成果之一。区别不在于重视什么，而在于改革的深度和广度。' },
+    q4: { correct: '明治政府先由国家出资建设基础设施和工厂（如富冈制丝厂、横滨造船所），积累了技术和经验后，在1880年代将这些企业低价出售给政商关系密切的私人财阀。', wrong: '日本并没有依赖外国资本。相反，明治政府刻意保持国家对经济的控制权，同时利用外国技术人才（"お雇い外国人"）来加速学习。' },
+    q5: { correct: '岩仓使节团历时近两年考察了12个欧美国家，亲眼看到了西方的制度、教育、军事和工业。回国后，他们提出的改革方案更加务实和系统化，直接影响了后续的政策制定。', wrong: '岩仓使节团并没有签订平等通商条约。事实上，在1894年之前，日本一直无法修改不平等条约中的关税自主权和领事裁判权条款。' },
+    q6: { correct: '地税改革要求农民用现金（而非实物）缴纳地税，但当时农村货币化程度很低。农民被迫低价出售农产品换钱，导致大量破产。这引发了1870年代的多次农村暴动。', wrong: '地税改革实际上剥夺了农民的土地保障——地税变成了固定的现金负担，无论收成好坏都要缴纳。这导致了许多农民破产，而非经济繁荣。' },
+    q7: { correct: '明治宪法确立了天皇的绝对权威和军队的"帷幄上奏权"（军队可直接向天皇报告，绕过内阁）。这一制度设计为后来的军国主义铺平了道路。', wrong: '明治宪法远非民主制度。它虽然设立了议会（帝国议会），但议会的权力非常有限，天皇保留了解散议会、任命内阁和统帅军队的全部权力。' },
+    q8: { correct: '明治维新最重要的世界意义在于它打破了"现代化=西方化"的迷思。一个非西方国家通过系统性改革在30年内完成了现代化，这为后来的土耳其（坦齐马特）、泰国乃至中国都提供了参考。', wrong: '日本从未成为世界上最大的经济体。即使在1940年，日本的GDP也只有美国的约1/4。但它的"追赶速度"确实震惊了世界。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对明治维新的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！复习一下答错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

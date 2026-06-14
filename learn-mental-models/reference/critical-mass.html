@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：临界质量</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .card p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+  .card ul { padding-left: 1.2rem; margin-bottom: 0.5rem; }
+  .card li { margin-bottom: 0.25rem; font-size: 0.95rem; }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    background: #f7f9fb;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>临界质量</h1>
+<p class="meta">参考卡 &middot; 多元思维模型 &middot; ~3 minutes 阅读</p>
+
+<div class="card">
+  <h2>定义</h2>
+  <p>系统从一种状态跃迁到另一种状态所需的最小积累量。阈值之前投入看似无效，越过阈值后系统自我维持并加速。</p>
+</div>
+
+<div class="card">
+  <h2>直觉模型</h2>
+  <div class="formula">x &lt; x<sub>c</sub> → 输出 ≈ 0（沉默期）<br>x &ge; x<sub>c</sub> → 输出跃升 + 自我加速</div>
+  <p>S 形曲线：前期缓慢 → 中期加速 → 后期趋缓</p>
+</div>
+
+<div class="card">
+  <h2>跨学科例子</h2>
+  <ul>
+    <li><strong>物理学</strong>：铀-235 达到临界质量后链式反应自维持；超导在临界温度下电阻归零</li>
+    <li><strong>生物学</strong>：群体感应——细菌在密度超过阈值后集体切换行为模式</li>
+    <li><strong>社会学</strong>：Granovetter 模型——社会运动的参与率越过阈值后不可逆</li>
+    <li><strong>商业</strong>：社交网络在 30% 渗透率后整个通信习惯切换</li>
+    <li><strong>学习</strong>：学语言到 500 词后，边际效益急剧上升</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>与相关概念的区别</h2>
+  <ul>
+    <li><strong>vs 复利</strong>：复利从第一天就开始增长（平滑加速），临界质量在阈值前几乎为零（阶跃突变）</li>
+    <li><strong>vs 网络效应</strong>：网络效应是临界质量的一种实现机制，临界质量是更一般的数学模式</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>实践工具</h2>
+  <ul>
+    <li>面对长期无果的投入时问：是否存在已知的临界点？接近了吗？值得到达到吗？</li>
+    <li>区分\"坚持\"和\"沉没成本\"的关键：系统是否在向自我维持的模式演进？</li>
+    <li>创业策略：集中资源到达临界质量，然后让正反馈接管</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0011-critical-mass.html">回到完整课程</a>
+</div>
+
+</body>
+</html>

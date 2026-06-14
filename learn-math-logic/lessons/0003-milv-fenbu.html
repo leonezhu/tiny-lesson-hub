@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 — 幂律分布：20% 的人拿走 80% 的世界</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>幂律分布：20% 的人拿走 80% 的世界</h1>
+<p class="lesson-meta">Lesson 3 &middot; ~10 minutes &middot; 数学与逻辑 &middot; 概率分布</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够识别什么是幂律分布、理解为什么它无处不在（从财富分配到城市规模），知道它与正态分布的根本区别，并学会用幂律思维避免"平均数陷阱"。
+</div>
+
+<h2>帕累托的最初发现：不平等是自然的</h2>
+<p>
+  1896 年，意大利经济学家 Vilfredo Pareto 在研究财富分配时发现了一个令人不安的现象：大约 20% 的人口占据了 80% 的财富。他进一步检查了其他国家的数据——英国、法国、德国——结果几乎都一样。这不是意大利特有的社会问题，而是一种数学规律。
+</p>
+<p>
+  他将这个关系表达为：当自变量 X 增加一个单位时，因变量 Y 的相对变化率与 X 本身成比例。用公式表示就是：
+</p>
+
+<div class="concept-card">
+  <h3>幂律公式</h3>
+  <div class="formula">
+    P(X = x) = k &middot; x<sup>−&alpha;</sup><br>
+    其中 &alpha; 是幂指数（通常 1 &lt; &alpha; &lt; 3），k 是归一化常数
+  </div>
+  <p>关键特征：<strong>没有典型的值</strong>。正态分布有一个"典型"的中间值（比如人的身高约 170cm），但幂律分布中极小值和极大值可以同时存在，且极大值的量级远超"平均"。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>帕累托的 80/20 法则：</strong>这是幂律分布在现实中最广为人知的表现形式，但它不是精确的数学定律，而是经验观察。在幂律世界中，20% 的输入通常产生 80% 的输出——但有时是 10% 产生 95%，有时是 30% 产生 70%。关键是：<em>少数因素主导了结果</em>。
+</div>
+
+<h2>幂律 vs 正态：两种完全不同的世界</h2>
+<p>
+  这是本课最重要的区分。我们日常经验中的大部分分布是<strong>正态分布</strong>（钟形曲线）——身高、体重、考试成绩都集中在平均值附近，极端值极少。但幂律分布的世界完全不同：
+</p>
+
+<div class="concept-card">
+  <h3>正态分布 vs 幂律分布</h3>
+  <ul class="examples">
+    <li><strong>平均值有意义吗？</strong> 正态分布中，平均值代表"典型情况"。幂律分布中，平均值经常被极端值严重扭曲——全球 0.0001% 的人拥有的财富超过下半球所有人</li>
+    <li><strong>极端事件有多极端？</strong> 正态分布中，超过 3 个标准差的概率是 0.3%。幂律分布中，极端事件比正态分布的预测要常见得多——这就是"肥尾"（fat tail）</li>
+    <li><strong>可预测性</strong> 正态分布中，你可以根据历史数据预测未来。幂律分布中，黑天鹅事件（前所未见的极端事件）是常态而非例外</li>
+    <li><strong>典型值</strong> 正态分布有一个典型的中间值。幂律分布没有——它要么全部很小（绝大多数单词只出现一次），要么全部很大（顶级富豪的财富无法用"平均"描述）</li>
+  </ul>
+</div>
+
+<p>
+  一个具体例子：如果你生活在一个正态分布的世界里，最富有的邻居可能比你富有 10 倍。如果你生活在一个幂律分布的世界里，最富有的邻居可能比你富有 1000 万倍。这两种情境下，"平均财富"这个统计量的含义完全不同。
+</p>
+
+<h2>幂律分布无处不在</h2>
+<p>
+  幂律分布不是某个特定领域的现象，而是<strong>复杂系统的普遍特征</strong>。以下都是幂律分布的实例：
+</p>
+
+<div class="concept-card">
+  <h3>现实世界中的幂律</h3>
+  <ul class="examples">
+    <li><strong>财富分配：</strong>全球最富有的 1% 人口拥有约 45% 的全球财富</li>
+    <li><strong>城市规模：</strong>一个国家的第二大城市人口通常是最小城市的约 10-50 倍（齐普夫定律）</li>
+    <li><strong>互联网流量：</strong>访问量最大的 10% 网站占据了超过 50% 的总流量</li>
+    <li><strong>地震能量：</strong>里氏震级每增加 1 级，能量释放增加约 32 倍——地震震级分布遵循幂律</li>
+    <li><strong>社交网络：</strong>Instagram 上最活跃的 1% 用户发布了超过 50% 的内容</li>
+    <li><strong>单词频率：</strong>英语中最常用的 100 个单词占据了约 50% 的阅读材料</li>
+    <li><strong>公司规模：</strong>市值最大的 10 家公司价值超过所有其他上市公司的总和</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>幂律分布之所以普遍，是因为它产生于<strong>正反馈过程</strong>（positive feedback）——即"赢家通吃"或"富者愈富"的机制。一旦某个因素在竞争中取得微小优势，这个优势会不断自我强化，最终产生极端的不平等。理解这一点，你就能预测哪些领域会出现幂律分布。
+</div>
+
+<h2>为什么会出现幂律分布：三种机制</h2>
+<p>
+  幂律分布不是巧合，它由特定的生成机制驱动。理解这些机制是运用幂律思维的关键：
+</p>
+
+<div class="concept-card">
+  <h3>机制 1：偏好连接（Preferential Attachment）</h3>
+  <p>
+    "越多人知道的东西，越多人会知道它。"这在网络科学中称为<strong>马太效应</strong>——已有优势会吸引更多优势。一个具体的例子：在学术论文引用中，一篇论文被引用的次数越多，它被进一步引用的概率就越大。这就是为什么只有少数论文获得了绝大部分的引用。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>机制 2：累积优势（Cumulative Advantage）</h3>
+  <p>
+    与偏好连接类似，但强调的是"时间上的自我强化"。Robert Merton 称之为"马太效应"——"凡有的，还要加给他，叫他有余"。在职业生涯中，一个早期的小成功（如第一篇论文被高引）会吸引更多资源（经费、合作者、关注），这些资源又带来更多成功。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>机制 3：选择过程（Selection）</h3>
+  <p>
+    当大量实验/尝试中存在一个选择机制时，幂律分布自然出现。最经典的例子是<strong>进化</strong>：基因突变是随机的（大量尝试），但自然选择只保留适应性最强的那些结果。最终存活物种的体型、繁殖率、分布范围都呈现幂律特征。
+  </p>
+</div>
+
+<h2>幂律思维在日常决策中的应用</h2>
+
+<div class="concept-card">
+  <h3>投资策略：拥抱而非分散</h3>
+  <p>
+    在风投领域，幂律分布是基本现实——一个成功的项目（如 Airbnb 或 Uber）的回报可以超过其他所有项目的总和。这颠覆了传统"分散投资"的逻辑。对于幂律分布的资产，集中投资于你最有信心的少数标的，反而比过度分散更理性。但这只适用于回报呈幂律分布的情况（如创业投资），不适用于回报呈正态分布的情况（如日常消费）。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>职业规划：追求峰值而非平均</h3>
+  <p>
+    在大多数行业中，收入分布呈幂律。这意味着成为某个领域的顶尖 1% 比达到前 20% 带来的回报增量远远大于从零到 20% 的增量。策略建议：<strong>不要追求"还不错"，而要在少数关键能力上达到顶尖水平</strong>。这就是"T 型人才"的深层数学依据——在某一维度达到幂律的头部。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>内容创作：网络效应下的幂律</h3>
+  <p>
+    YouTube 上 1% 的频道获得了 50% 以上的观看量。但幂律分布不是"先者通吃"的死刑判决——在幂律世界中，"长尾"仍然有重要价值。关键在于理解你的领域是否由幂律驱动，如果是，就要同时服务于头部（追求爆款）和长尾（保持持续产出），因为两者都有价值。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>把幂律分布当作万能解释模板。不是所有不平等都是幂律！比如考试分数通常近似正态分布——把考试分数当作幂律来"分析"就是误用了。判断方法：画一张 <strong>对数-对数图</strong>（log-log plot），如果数据点近似一条直线，那才是幂律分布。
+</div>
+
+<h2>谁在研究幂律分布</h2>
+
+<div class="concept-card">
+  <h3>Albert-László Barabási — 无标度网络</h3>
+  <p>
+    物理学家 Barabási 在 1999 年提出"无标度网络"（Scale-Free Network）概念，指出互联网、社交网络、蛋白质相互作用网络等大多数真实网络都遵循幂律-degree 分布。他发现这些网络的关键特征是：大多数节点只有很少的连接，但少数"枢纽节点"（hubs）连接了海量其他节点。移除随机节点不会破坏网络，但移除枢纽节点会让网络崩溃。这一发现对理解互联网韧性、流行病传播和网络攻击策略至关重要。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>Benoit Mandelbrot — 肥尾与金融</h3>
+  <p>
+    分形几何之父 Mandelbrot 早在 1963 年就指出，金融市场收益率的分布不是正态的，而是幂律肥尾的。他因此批判了现代金融理论中广泛使用的正态假设——Black-Scholes 期权定价模型和 VaR（风险价值）模型低估了极端市场事件的概率。他有一句名言："市场可以崩溃得比你想象的要厉害得多。"2008 年金融危机验证了他的警告。
+  </p>
+</div>
+
+<h2>对数-对数图：识别幂律的工具</h2>
+<p>
+  幂律分布在普通坐标图上看起来像一个快速衰减的曲线，几乎无法识别。但如果我们在 <strong>对数-对数坐标系</strong>（log-log plot）中绘制它，幂律会变成一条直线——这是识别幂律最直观的方法。
+</p>
+
+<div class="concept-card">
+  <h3>为什么对数-对数图能揭示幂律</h3>
+  <div class="formula">
+    对 P(X=x) = k &middot; x<sup>−&alpha;</sup> 两边取对数：<br>
+    log P = log k − &alpha; &middot; log x<br>
+    这是一条斜率为 −&alpha; 的直线！
+  </div>
+  <p>
+    这是幂律分布的数学签名——在对数-对数图上呈线性，斜率的绝对值就是幂指数 &alpha;。&alpha; 越大，尾部越"瘦"（极端事件越少）；&alpha; 越小，尾部越"肥"（极端事件越频繁）。
+  </p>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我是你的数学思维导师。不确定为什么某个答案是正确的？这正是我们需要讨论的地方。直接输入你的问题，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.goodreads.com/book/show/17014635-networks-crowds-and-markets" target="_blank">《网络、群体与市场》— Barabási 等</a>，深入了解幂律分布如何在真实网络中涌现。
+  <br><br>
+  <a href="../reference/0003-milv-fenbu.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0002-beiyes-souli.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-zhengtai-yu-feiwei.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '幂律分布的核心特征是"没有典型值"——大多数观测值很小，但极少数观测值极大。正态分布有一个明确的中心峰值，而幂律分布没有。', wrong: '幂律分布不是集中在中间，而是集中在极小值附近，但拖着一条很长的"肥尾"延伸到极大值。它不是钟形，而是一个快速衰减的曲线。' },
+    q2: { correct: '幂指数 &alpha; 控制尾部厚度。&alpha; 越小（接近 1），尾部越肥，极端事件越频繁；&alpha; 越大，尾部越瘦，分布越"正态化"。这是幂律分布的核心参数。', wrong: '&alpha; 不是控制分布的高度，而是控制衰减速度。较小的 &alpha; 意味着分布衰减更慢，尾部更"肥"，极端事件更可能出现。' },
+    q3: { correct: '全球最富有的 0.0001% 人群的财富超过了下半球所有人的总和——这就是幂律分布的极端表现。平均值在这里完全没有意义，因为极端值严重扭曲了统计量。', wrong: '全球财富分布远非正态——它遵循幂律。最富有的 0.0001% 超过了下半球所有人，这意味着财富分配极度集中，不是"大多数人中等、少数人富有"的模式。' },
+    q4: { correct: '正反馈是幂律的核心驱动力——"赢家通吃"机制让微小优势不断自我强化，最终产生极端不平等。偏好连接、累积优势和选择过程都是正反馈的具体形式。', wrong: '幂律不是随机过程的结果——随机过程通常产生正态分布。幂律需要正反馈机制：已经领先的人/物会获得额外优势，形成"富者愈富"的循环。' },
+    q5: { correct: '在对数-对数坐标图上，幂律 P = kx^−&alpha; 变为 log P = log k − &alpha; log x，这是一条直线。直线的斜率就是 −&alpha;，这是识别幂律的数学签名。', wrong: '对数-对数图上的直线是幂律的独特签名。正态分布在普通坐标上是钟形曲线，在对数-对数图上不是直线。只有幂律会产生线性关系。' },
+    q6: { correct: '幂律分布中，头部回报远大于所有其他回报的总和。在风投中，一个成功项目的回报可以超过其他项目的总和——所以集中投资于你最有信心的少数标的更理性。', wrong: '正态分布才适合分散投资，因为各标的回报差异不大。幂律分布中，极少数的"独角兽"贡献了绝大部分回报——分散投资反而稀释了你捕获头部的能力。' },
+    q7: { correct: '偏好连接是"越多人知道的越多人会知道"的机制。论文引用、网站流量、社交媒体关注都遵循这个逻辑——已有优势的会获得更多优势。', wrong: '正态分布中各要素地位平等。偏好连接恰恰相反：它是不平等的生成器——优势会累积，强者会更强，这正是幂律的根源。' },
+    q8: { correct: '幂律不是万能解释模板。考试分数通常近似正态分布，只有当你画对数-对数图看到直线时，才能确认是幂律。错误使用幂律解释所有不平等是常见谬误。', wrong: '幂律确实不是普遍的——很多自然和社会现象遵循正态分布。判断方法是对数-对数图：只有当数据在对数-对数图上呈直线时，才是幂律分布。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对幂律分布有扎实的掌握。';
+      else if (score >= 6) label.textContent = '做得好！回顾错题的解释，你会更深刻地理解幂律分布。';
+      else label.textContent = '继续加油！重读上面的例子和概念，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

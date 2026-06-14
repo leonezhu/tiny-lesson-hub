@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 — 粤语语法特色</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card .ipa {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .highlight-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>粤语语法特色</h1>
+<p class="lesson-meta">第12课 · ~15分钟 · 语法系统</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解粤语语法不是一套"错误的普通话"，而是一套独立发展、规则严密的语法系统。掌握双宾语结构、体标记系统、副词后置和比较句四大核心差异，能从类型学和演化角度解释这些差异的成因。
+</div>
+
+<h2>核心前提：粤语语法是独立的语法系统</h2>
+<p>
+  很多人潜意识里认为粤语只是"说得不标准的普通话"，但语言学告诉我们：<strong>粤语语法有一套完整的、自洽的规则体系</strong>。它不是普通话的变体，而是与普通话平行发展的另一条分支。两者的差异不是"对错"问题，而是"不同的语法参数设置"。
+</p>
+<p>
+  粤语语法保留了大量上古汉语的特征（如双宾语语序），同时在体标记系统、副词位置、倒装结构等方面发展出了独特的系统。这些差异的复杂度不亚于英语与法语之间的语法差异。
+</p>
+
+<div class="highlight-box">
+  <strong>关键认知转变：</strong>不要问"粤语哪里和普通话不一样"，而要问"粤语的语法参数是如何设置的"。每一种语法系统都是对同一套交际需求的不同解决方案。
+</div>
+
+<h2>一、双宾语结构：V + 直宾 + 间宾</h2>
+<p>
+  粤语的双宾语结构是上古汉语语序的活化石。普通话的双宾语结构是"动词 + 介词 + 间宾 + 直宾"（<em>给我一本书</em>），而粤语直接采用"动词 + 直宾 + 间宾"：<strong>畀本书我</strong>（give book me）。
+</p>
+
+<div class="concept-card">
+  <h3>双宾语结构对比</h3>
+  <table>
+    <thead>
+      <tr><th>结构类型</th><th>粤语</th><th>普通话</th><th>历史来源</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>V + 直宾 + 间宾</td><td>畀本书我</td><td>给我一本书</td><td>上古汉语标准语序</td></tr>
+      <tr><td>动词 + 介词 + 间宾 + 直宾</td><td>拿本书畀我</td><td>给我一本书</td><td>介词化</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  这种"V + 直 + 间"结构在《论语》《孟子》等上古汉语文献中是标准语序，在普通话中已经被"V + 介词 + 间 + 直"取代，但在粤语中完整保留。从类型学角度看，这与英语的"give me a book"完全一致——有趣的是，<strong>英语母语者反而更容易理解粤语的双宾语结构</strong>。
+</p>
+
+<div class="chinese-note">
+  <strong>类型学意义：</strong>世界语言的双宾语结构主要有两种类型：SVO+VDO（动词+直宾+间宾，如粤语、英语）和SVO+VDI（动词+间宾+直宾，如法语、部分罗曼语）。粤语和英语属于同一类型，这是巧合还是反映了某种普遍的人类语言倾向？语言类型学仍在探索中。
+</div>
+
+<h2>二、体标记系统：语法化程度极高的动态标记</h2>
+<p>
+  粤语的体标记（aspect marker）是其语法体系中最精密的部分。体标记表示动作的状态（完成、进行、经历等），而不是时态（过去、现在、未来）。普通话只有三个体标记（了、着、过），而粤语发展出六个精细化体标记：
+</p>
+
+<div class="concept-card">
+  <h3>粤语六大体标记</h3>
+  <table>
+    <thead>
+      <tr><th>标记</th><th>语法功能</th><th>普通话对应</th><th>例句</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>紧</strong> [zan2]</td><td>完成体（动作刚结束）</td><td>了</td><td>食紧饭（刚吃完饭）</td></tr>
+      <tr><td><strong>住</strong> [zyu6]</td><td>进行体</td><td>在……着呢</td><td>食住饭（正在吃饭）</td></tr>
+      <tr><td><strong>过</strong> [gwo3]</td><td>经历体</td><td>过</td><td>去三次过（去过三次）</td></tr>
+      <tr><td><strong>晒</strong> [sai3]</td><td>完成体（全部消耗）</td><td>光了/完了</td><td>食晒（全部吃完）</td></tr>
+      <tr><td><strong>紧</strong> [zan2]</td><td>进行体（部分语境）</td><td>在</td><td>行紧路（正在走路）</td></tr>
+      <tr><td><strong>紧</strong></td><td>持续体</td><td>着</td><td>开紧门（门开着）</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  <strong>"晒"的语法化路径</strong>尤其值得注意：本义为"日晒"（具体动词）→"晒乾"（全部暴露）→"全部完成"（体标记）。这种从具体动词到体标记的演变路径，与英语"going to → gonna"（将来时标记）经历了完全相同的语法化机制。这说明不同语言的语法化遵循着相似的认知路径。
+</p>
+
+<p>
+  <strong>与英语体系统的对比：</strong>英语只有进行体（be + -ing）、完成体（have + -ed）和经历体（have + -ed + ever）三个体范畴，而粤语有六个。这意味着粤语在表达动作状态时提供了更精细的粒度——比如区分"刚完成"（紧）和"全部完成"（晒），英语需要用额外的副词（just / all up）来表达同样的含义。
+</p>
+
+<h2>三、副词后置："先"的独特位置</h2>
+<p>
+  粤语中大量副词的位置与普通话形成系统性对立，其中最显著的是<strong>副词"先"的后置</strong>。在普通话中，"先"出现在主语之后、动词之前（<em>你先走</em>），而在粤语中，"先"总是出现在句末或动词短语之后：
+</p>
+
+<div class="concept-card">
+  <h3>副词位置对比</h3>
+  <table>
+    <thead>
+      <tr><th>副词</th><th>粤语</th><th>普通话</th><th>语法差异</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>先</td><td>你行先</td><td>你先走</td><td>粤语"先"后置</td></tr>
+      <tr><td>净</td><td>佢净食饭</td><td>他只吃饭</td><td>"净"≈"只"，位置灵活</td></tr>
+      <tr><td>都</td><td>我都唔知</td><td>我都不知道</td><td>与普通话一致，但频率更高</td></tr>
+      <tr><td>先</td><td>食完饭先</td><td>吃完饭再……</td><td>"先"出现在条件从句末尾</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  从生成语法角度看，粤语的"先"位于句尾的<strong>焦点位置</strong>（focus position），而非主语后的状语位置。这不仅是语序差异，更反映了两种语言在句法树中对副词的参数化设定不同。
+</p>
+
+<div class="chinese-note">
+  <strong>类型学稀有性：</strong>副词"先"的后置在汉语方言中主要见于粤语和部分客家话。在世界范围内，"先/after"出现在句末的语言相当稀少，这使得粤语在副词语序的类型学分类中具有独特地位。
+</div>
+
+<h2>四、倒装与强调结构</h2>
+<p>
+  粤语存在多种普通话没有的倒装结构，主要用于话题化和强调：
+</p>
+
+<div class="concept-card">
+  <h3>粤语倒装结构</h3>
+  <ul class="examples">
+    <li><strong>宾语前置（话题化）</strong>："呢本书我睇完喇"（这本书我读完了）——"呢本书"是话题化的宾语，类似于日语"は/が"的话题-焦点结构。</li>
+    <li><strong>状语后置</strong>："行去学校先至快呀"——"先至快"是一种加强语气的后置结构。</li>
+    <li><strong>"VP唔VP"正反问句</strong>：粤语用"唔"替代普通话的"不"，如"你去唔去？"而非"你去不去？"</li>
+    <li><strong>"有+VP"疑问</strong>："你有冇去？"（你去没去？）——"有"作为助动词的用法是粤语的特色。</li>
+  </ul>
+</div>
+
+<h2>五、比较句的特殊结构</h2>
+<p>
+  粤语的比较句不使用"比"字结构，而是采用<strong>"S + 形容词 + 过 + S"</strong>结构，这与英语的"than"在功能上完全对应：
+</p>
+
+<div class="concept-card">
+  <h3>比较句结构对比</h3>
+  <table>
+    <thead>
+      <tr><th>结构</th><th>粤语</th><th>普通话</th><th>英语</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>比较</td><td>我高过你</td><td>我比你高</td><td>I am taller than you</td></tr>
+      <tr><td>程度</td><td>佢好过佢老豆</td><td>他比他爸好</td><td>He is better than his dad</td></tr>
+      <tr><td>不如</td><td>我唔够高佢</td><td>我不如你高</td><td>I'm not as tall as you</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  <strong>"唔够"结构</strong>值得特别关注：粤语使用"够"的否定式来表达"不及"（"我不够高佢" = 我不如你高），而普通话使用完全不同的词"不如"。这体现了两种语言在表达比较关系时采用了不同的语义策略。
+</p>
+
+<h2>为什么粤语语法很重要？</h2>
+
+<div class="concept-card">
+  <h3>对语言类型学的价值</h3>
+  <p>
+    粤语语法提供了汉藏语系内部语法演变的关键参照。普通话的语法结构在很大程度上受到了阿尔泰语系（蒙古、满）的影响，而粤语由于岭南地区的地理隔离，较少受到北方语系的影响，保留了更多纯正的汉语类型特征。通过比较粤语与普通话的语法差异，可以追溯汉语从上古到中古再到现代的语法演变路径。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>对第二语言习得的启示</h3>
+  <p>
+    英语母语者学粤语时，发现粤语的双宾语结构（V + 直 + 间）与英语"give me a book"完全一致——这正是英语的语序。这意味着英语母语者在学习粤语语法时，在某些结构上比汉语母语者更具"直觉优势"。同时，粤语的体标记系统比英语更精细，为理解"语法范畴的粒度"提供了天然实验室。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>对计算语言学的意义</h3>
+  <p>
+    在 NLP 中，粤语语法的独特性构成了资源稀缺语言（low-resource language）的核心挑战。体标记系统、副词位置、双宾语语序都需要专门的句法分析和生成模型。一个能处理粤语语法多样性的模型，自然能更好地处理普通话、客家话、闽南语等其他汉语变体。
+  </p>
+</div>
+
+<div class="followup">
+  <strong>恭喜完成！</strong>你已经完成了本学科的最后一步——从语言身份认同到语言学概览，从语音系统到句法学、语用学、语言接触、英语介词隐喻、英语核心语法、英语习语、粤语声调、粤语与中古汉语，再到今天的粤语语法特色。你现在拥有了一个跨分支的语言学知识框架。<br><br>
+  <strong>下一步建议：</strong>回到目录页浏览已学课程，思考各章节之间的连接。也可以继续阅读多元思维模型学科，看看语言学如何与其他思维模型交叉。<br><br>
+  <strong>延伸阅读：</strong>Simpson (Andrew)《粤语体标记的生成语法分析》——用现代句法理论系统分析粤语语法的核心论文。
+  <br><br>
+  <a href="../reference/cantonese-grammar.html" class="resource-link">查看速查卡</a>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下8道题涵盖本课核心知识点，每道题有两个选项，点击选择后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">双宾语结构</div>
+    <div class="sentence">粤语"畀本书我"的语序结构是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">动词 + 间宾 + 直宾</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">动词 + 直宾 + 间宾</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">体标记系统</div>
+    <div class="sentence">粤语体标记"晒"[sai3]的本义是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">日晒</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">晒干</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">副词位置</div>
+    <div class="sentence">粤语"你行先"中"先"的位置与普通话有何不同？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">粤语"先"在前，普通话"先"在后</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">粤语"先"在后（后置），普通话"先"在前</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">比较句</div>
+    <div class="sentence">粤语"我高过你"中"过"的功能相当于英语的哪个词？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">more</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">than</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">正反问句</div>
+    <div class="sentence">粤语正反问句"你去唔去？"中"唔"的作用是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">相当于普通话的"不"，用于构成正反疑问</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">相当于普通话的"不"，用于构成正反疑问</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">语法化</div>
+    <div class="sentence">粤语"晒"从具体动词演变为体标记的过程，与英语哪个结构的语法化路径相同？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">going to → gonna</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">did not → didn't</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">类型学</div>
+    <div class="sentence">英语母语者为何在学习粤语双宾语结构时具有"直觉优势"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为英语和粤语都属于汉藏语系</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为英语的双宾语语序（give me a book）与粤语一致</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">比较句</div>
+    <div class="sentence">粤语"我唔够高佢"使用了哪种比较策略？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">使用"唔够"表示"比……不够"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">使用"唔够"的否定式表达"不及"（不如）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="0011-cantonese-middle-chinese.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"畀本书我"的结构是动词(畀) + 直宾(本书) + 间宾(我)，这是上古汉语的标准语序，也是与英语"give me a book"一致的V+直+间类型。', wrong: '"畀本书我"是动词+直宾+间宾，不是动词+间宾+直宾。普通话的"给我一本书"才是V+间+直结构。' },
+    q2: { correct: '"晒"的本义是"日晒"（太阳晒东西），经过"晒乾→全部暴露→全部完成"的语义扩展路径，最终语法化为表示"全部完成"的体标记。', wrong: '"晒干"是"晒"的引申义，但不是本义。"晒"的本义就是"日晒"——让东西在阳光下干燥。' },
+    q3: { correct: '粤语"先"后置（"你行先"），普通话"先"前置（"你先走"）。这是两种语言在副词语序上的系统性参数差异。', wrong: '恰恰相反——粤语"先"是后置的（"你行先"），普通话"先"是前置的（"你先走"）。' },
+    q4: { correct: '"过"在粤语比较句中功能完全对应英语的"than"，都是引出比较对象的标记。"我高过你" ≈ "I am taller than you"。', wrong: '"过"的功能更接近"than"（引出比较对象），而非"more"（比较级标记）。"高"本身已经包含了比较级的含义。' },
+    q5: { correct: '"唔"在粤语中正反问句中相当于普通话的"不"，用于构成"VP唔VP"的正反疑问句式。"你去唔去？" = "你去不去？"', wrong: '"唔"在粤语中就是"不"的意思，在正反问句中起同样的否定作用。"你去唔去？"和"你去不去？"是完全对应的结构。' },
+    q6: { correct: '"晒"从具体动词（日晒）→体标记（全部完成）的语法化路径，与英语"going to"（具体动作）→"gonna"（将来时标记）完全同构。', wrong: '"didn\'t"是从"did not"的缩合而来，属于语音缩减（contraction），不是语法化。"going to → gonna"才是语法化。' },
+    q7: { correct: '英语的双宾语结构是"give me a book"（动词+直宾+间宾），与粤语"畀本书我"的语序完全一致。所以英语母语者在这一点上有直觉优势。', wrong: '英语和粤语不属于同一语系（英语是印欧语，粤语是汉藏语）。英语母语者的优势来自语序的巧合一致，而非语系关系。' },
+    q8: { correct: '"唔够"是"够"的否定式，在粤语比较句中用来表达"不及"（不如）。"我唔够高佢" = "我不如你高"。这与普通话使用完全不同的词"不如"形成了类型学差异。', wrong: '"唔够"不是"比……不够"，而是"够"的否定式来表达"不及"。这是一个独立的比较策略，与"比"字句完全不同。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对粤语语法特色有了全面的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下答错题目的解释，加深理解。';
+      else label.textContent = '继续加油！重读上面的内容，特别是体标记和副词后置部分。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

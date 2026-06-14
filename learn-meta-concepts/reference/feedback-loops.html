@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>速查卡：反馈回路</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root {
+    --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa;
+    --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9;
+    --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px; line-height: 1.7; color: var(--text); background: var(--bg);
+    max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem;
+  }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.5rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .card-meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.5rem; }
+  ul { margin-bottom: 0.75rem; padding-left: 1.2rem; }
+  li { margin-bottom: 0.25rem; }
+  .card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 0.75rem 0; }
+  .card h3 { font-size: 1rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 3px; margin-right: 0.25rem; }
+  .footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<h1>反馈回路</h1>
+<p class="card-meta">元概念速查卡 &middot; 课程 4 &middot; ~3 minutes</p>
+
+<div class="card">
+  <h3>核心定义</h3>
+  <p>系统的输出作为未来输入返回到系统中，形成循环因果链。正反馈放大偏差，负反馈抵消偏差。</p>
+  <p><span class="tag">核心特征</span>时间延迟</p>
+</div>
+
+<h2>正反馈</h2>
+<div class="card">
+  <h3>结构：A → B → C → 放大 A</h3>
+  <ul>
+    <li>复利：A = P(1+r)^n</li>
+    <li>流行病传播：R0 值决定指数增长速度</li>
+    <li>社交网络效应：用户越多→价值越大→更多用户</li>
+    <li>2008 金融危机：房价下跌→抵押贬值→抛售→再下跌</li>
+  </ul>
+</div>
+
+<h2>负反馈</h2>
+<div class="card">
+  <h3>结构：A → B → C → 抑制 A</h3>
+  <ul>
+    <li>体温调节：37°C 目标值，误差 <0.1°C</li>
+    <li>血糖调节：进食→血糖↑→胰岛素→吸收→血糖↓</li>
+    <li>恒温器：设定目标值→检测偏差→纠正</li>
+    <li>捕食者-猎物：Lotka-Volterra 周期振荡</li>
+  </ul>
+</div>
+
+<h2>延迟 × 反馈 = 系统行为</h2>
+<div class="card">
+  <ul>
+    <li><strong>无延迟：</strong>稳定</li>
+    <li><strong>适度延迟：</strong>振荡</li>
+    <li><strong>过长延迟：</strong>混沌 / 矫枉过正</li>
+  </ul>
+  <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--muted);">Sterman：管理失败的根源 = 对反馈延迟的误判</p>
+</div>
+
+<h2>关键人物</h2>
+<div class="card">
+  <ul>
+    <li>Wiener (1948) — 控制论创始人</li>
+    <li>Meadows — 《系统之美》《增长极限》</li>
+    <li>Sterman — 《Business Dynamics》，反馈延迟量化</li>
+    <li>Lovelock — 盖亚假说</li>
+    <li>Soros — 反身性理论</li>
+  </ul>
+</div>
+
+<h2>常见陷阱</h2>
+<div class="card">
+  <ul>
+    <li>线性思维（A→B）忽略回路结构</li>
+    <li>症状解：处理表面症状却忽略深层反馈</li>
+    <li>Goodhart 定律：指标成为目标后失效</li>
+    <li>正反馈失控：没有负反馈制衡的增长</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <span>反馈回路参考卡 &middot; 元概念系列</span>
+  <a href="../lessons/0004-feedback-loops.html">← 返回课程</a>
+</div>
+</body>
+</html>

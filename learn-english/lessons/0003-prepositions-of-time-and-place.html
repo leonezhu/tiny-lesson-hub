@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 — Prepositions of Time & Place</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .prep-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .prep-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .prep-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .prep-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .prep-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #f7f9fb;
+  }
+
+  .comparison-table td strong {
+    color: var(--accent);
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .triplet {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .triplet-col {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .triplet-col h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .triplet-col.in { background: #e3f2fd; }
+  .triplet-col.on { background: #f3e5f5; }
+  .triplet-col.at { background: #e8f5e9; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+
+  @media (max-width: 500px) {
+    .triplet { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Prepositions of Time &amp; Place</h1>
+<p class="lesson-meta">Lesson 3 &middot; ~10 minutes &middot; Grammar foundation</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll know which preposition to use — <em>in</em>, <em>on</em>, or <em>at</em> — for time and place. Mastering this will eliminate one of the most common errors for Mandarin speakers.
+</div>
+
+<h2>The Golden Rule: Specificity</h2>
+<p>
+  The same three prepositions are used for both time and place. The pattern is the same every time:
+</p>
+<p>
+  <strong>at</strong> = very specific &nbsp;·&nbsp; <strong>on</strong> = more specific &nbsp;·&nbsp; <strong>in</strong> = general / large
+</p>
+<p>
+  Think of it as a funnel — from specific to broad. This applies to <strong>both</strong> time and place. Once you internalize this, you won't need to memorize endless rules.
+</p>
+
+<div class="chinese-note">
+  <strong>Why this is hard for Chinese speakers:</strong> Chinese uses different words for time and place (在点、在天的、在地的). English uses the same three prepositions for both — <em>at, on, in</em> — with the same specificity logic. Transfer the logic, not the words.
+</div>
+
+<h2>Prepositions of Time</h2>
+
+<div class="prep-card">
+  <h3>AT — most specific points</h3>
+  <p class="form">Specific clock time · Specific moments</p>
+  <ul class="examples">
+    <li><strong>at</strong> 7:30am</li>
+    <li><strong>at</strong> noon · <strong>at</strong> midnight · <strong>at</strong> sunrise</li>
+    <li><strong>at</strong> the moment · <strong>at</strong> Christmas (the holiday period)</li>
+    <li>The meeting starts <strong>at</strong> 3pm.</li>
+  </ul>
+</div>
+
+<div class="prep-card">
+  <h3>ON — days and dates</h3>
+  <p class="form">Days of the week · Specific dates · Named days</p>
+  <ul class="examples">
+    <li><strong>on</strong> Monday · <strong>on</strong> my birthday · <strong>on</strong> New Year's Day</li>
+    <li><strong>on</strong> June 15th · <strong>on</strong> Sunday morning</li>
+    <li>I'll see you <strong>on</strong> Friday.</li>
+    <li>The deadline is <strong>on</strong> March 1st.</li>
+  </ul>
+</div>
+
+<div class="prep-card">
+  <h3>IN — longer periods</h3>
+  <p class="form">Months · Years · Seasons · Decades · Parts of the day</p>
+  <ul class="examples">
+    <li><strong>in</strong> January · <strong>in</strong> 2025 · <strong>in</strong> the 1990s</li>
+    <li><strong>in</strong> summer · <strong>in</strong> the morning/afternoon/evening</li>
+    <li>She was born <strong>in</strong> Chengdu.</li>
+    <li>We're going <strong>in</strong> October.</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>Common trap:</strong> <em>in</em> the morning / afternoon / evening — but <em>on</em> Monday morning. When a specific day is added, switch to <strong>on</strong>.
+</div>
+
+<h2>Prepositions of Place</h2>
+
+<div class="prep-card">
+  <h3>AT — specific points / locations</h3>
+  <p class="form">A particular place on a map · A building as a point</p>
+  <ul class="examples">
+    <li><strong>at</strong> the bus stop · <strong>at</strong> the door · <strong>at</strong> reception</li>
+    <li>She's <strong>at</strong> work · I'm <strong>at</strong> home</li>
+    <li>Let's meet <strong>at</strong> the café on Main Street.</li>
+  </ul>
+</div>
+
+<div class="prep-card">
+  <h3>ON — surfaces · Lines · Floors</h3>
+  <p class="form">Things you can touch with your hand · Streets · Floors of a building</p>
+  <ul class="examples">
+    <li>The book is <strong>on</strong> the table.</li>
+    <li>My office is <strong>on</strong> the 12th floor.</li>
+    <li>The house is <strong>on</strong> Park Avenue.</li>
+    <li>There's a coffee stain <strong>on</strong> my shirt!</li>
+  </ul>
+</div>
+
+<div class="prep-card">
+  <h3>IN — enclosed spaces · Large areas</h3>
+  <p class="form">Inside something · Cities · Countries · Rooms</p>
+  <ul class="examples">
+    <li>The keys are <strong>in</strong> my bag.</li>
+    <li>He lives <strong>in</strong> Shanghai.</li>
+    <li>She's <strong>in</strong> the kitchen.</li>
+    <li>There are lots of trees <strong>in</strong> the garden.</li>
+  </ul>
+</div>
+
+<h2>The Triplet: Same Words, Same Logic</h2>
+<p>See how the same three prepositions work identically for time and place:</p>
+
+<div class="triplet">
+  <div class="triplet-col in">
+    <h3>in</h3>
+    <p><strong>Time:</strong> in 2025<br>in July<br>in the morning</p>
+    <p><strong>Place:</strong> in Beijing<br>in the room<br>in China</p>
+  </div>
+  <div class="triplet-col on">
+    <h3>on</h3>
+    <p><strong>Time:</strong> on Monday<br>on June 1st<br>on my birthday</p>
+    <p><strong>Place:</strong> on the table<br>on the wall<br>on floor 3</p>
+  </div>
+  <div class="triplet-col at">
+    <h3>at</h3>
+    <p><strong>Time:</strong> at 5pm<br>at noon<br>at midnight</p>
+    <p><strong>Place:</strong> at the door<br>at home<br>at the station</p>
+  </div>
+</div>
+
+<h2>Quick Reference: Time Prepositions</h2>
+<table class="comparison-table">
+  <tr><th>Level</th><th>At (specific)</th><th>On (medium)</th><th>In (general)</th></tr>
+  <tr><td><strong>Time</strong></td><td>at 3pm, at noon</td><td>on Monday, on May 5th</td><td>in 2025, in July</td></tr>
+  <tr><td><strong>Place</strong></td><td>at the door, at home</td><td>on the table, on Main St</td><td>in Beijing, in the room</td></tr>
+</table>
+
+<div class="chinese-note">
+  <strong>Exception to memorize:</strong> <em>at night</em> (not "in the night" in normal usage). But say <em>in the morning</em> and <em>in the evening</em>. This is just one of those irregular things — treat it as a fixed phrase.
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Preposition</h2>
+  <p>Pick the correct preposition. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You're scheduling a meeting.</div>
+    <div class="sentence">Let's meet ________ 3pm on Thursday.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">at</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">on</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">Talking about when you started your job.</div>
+    <div class="sentence">I started this job ________ January 2024.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">at</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">in</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Describing where someone lives.</div>
+    <div class="sentence">She lives ________ Shanghai, China.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">at</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">in</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You're sending a file and it's late.</div>
+    <div class="sentence">Sorry — the email is ________ my desk. Let me find it!</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">in</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">on</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Inviting someone to dinner.</div>
+    <div class="sentence">Can we grab dinner ________ Saturday?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">on</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">in</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Your friend is waiting for you.</div>
+    <div class="sentence">I'm ________ the bus stop now. Where are you?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">at</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">on</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">You're talking about the season.</div>
+    <div class="sentence">It gets really hot ________ summer.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">at</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">in</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">The important exception.</div>
+    <div class="sentence">I'm not a night owl — I don't study ________ night.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">at</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">in</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Struggling to remember which preposition goes where? That's normal. The key is practicing in context, not memorizing lists. Try writing 5 sentences about your day using <em>at</em>, <em>on</em>, and <em>in</em> — I'll check them for you.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b1-b2-grammar/prepositions-of-place-and-time" target="_blank">British Council — Prepositions of Place and Time</a> — extra practice exercises.
+  <br><br>
+  <a href="../reference/prepositions-time-place.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0002-articles-a-an-the.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-conditionals-real-unreal-mixed.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"3pm" is a specific clock time → at. We use "at" for precise times: at 3pm, at 7:30am, at noon.', wrong: '"3pm" is a specific point on the clock. For clock times, always use "at": at 3pm, not "on 3pm".' },
+    q2: { correct: '"January 2024" is a month and year → in. We use "in" for months, years, and longer periods.', wrong: '"January" is a month. For months and years, use "in": in January 2024, not "on January".' },
+    q3: { correct: '"Shanghai, China" is a city/country → in. We use "in" for cities, countries, and large enclosed areas.', wrong: '"Shanghai" is a city. For cities and countries, always use "in": in Shanghai, not "at Shanghai".' },
+    q4: { correct: '"Desk" is a surface → on. We use "on" for things resting on a surface.', wrong: 'A desk is a surface — things rest ON it. "On my desk" means lying on the surface, not IN it (which would mean inside the desk drawer).' },
+    q5: { correct: '"Saturday" is a day of the week → on. We always use "on" with days.', wrong: '"Saturday" is a specific day. For days of the week, always use "on": on Saturday, not "in Saturday".' },
+    q6: { correct: '"The bus stop" is a specific point/location → at. We use "at" for specific locations as points on a map.', wrong: '"The bus stop" is a specific point. For points and locations as spots, use "at": at the bus stop.' },
+    q7: { correct: '"Summer" is a season → in. Seasons are long periods, so we use "in".', wrong: '"Summer" is a season (a long period). For seasons, months, and years, use "in": in summer, in July, in 2024.' },
+    q8: { correct: '"At night" is a fixed exception! We say "at night" but "in the morning" and "in the evening".', wrong: 'This is one of the tricky exceptions: we say "at night" (no "the"), but "in the morning" and "in the evening". Just memorize "at night" as a set phrase.' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You\'ve got prepositions down cold.';
+      else if (score >= 6) label.textContent = 'Good work! Review the ones you missed — the explanations tell you why.';
+      else label.textContent = 'Keep going! Re-read the specificity rule: at = specific, on = medium, in = general.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

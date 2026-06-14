@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 12 — 网络效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>网络效应：连接创造指数价值</h1>
+<p class="lesson-meta">Lesson 12 · ~10 分钟 · 元概念与基本法则</p>
+
+<div class="goal-box">
+  <strong>学完这节课后</strong>，你将能够理解"网络效应"——即一个产品或服务的价值随着用户数量增加而增长的核心机制，并能识别现实世界中网络效应的不同类型、临界点以及其对竞争格局的深远影响。
+</div>
+
+<h2>为什么这个概念重要</h2>
+<p>
+  20 世纪的商业逻辑是"规模经济"——工厂越大，单个成本越低。21 世纪的商业逻辑是"网络效应"——用户越多，价值越大。Facebook 有三十亿用户之所以比一个只有你一个人的社交软件有价值，不是因为技术更先进，而是因为<strong>连接本身创造了价值</strong>。网络效应是理解数字经济、平台竞争和社会技术系统最关键的元概念之一。
+</p>
+
+<h2>核心定义</h2>
+
+<div class="concept-card">
+  <h3>网络效应（Network Effects）</h3>
+  <p class="formula">当系统的价值随参与者数量增加而增长时，存在网络效应。</p>
+  <p>网络效应指的是：一个产品或服务对每个用户产生的价值，取决于有多少其他用户也在使用该服务。这不是简单的"人多就好"——它描述的是价值以非线性的方式随着网络规模增长的现象。</p>
+  <ul class="examples">
+    <li>电话——只有一部电话什么都不是，有了两部就可以通话，有了百万部就改变了文明。</li>
+    <li>微信——你用微信不是因为发消息功能多强，而是因为所有人都在用。</li>
+    <li>操作系统——Windows 用户越多，开发者越愿意为其写软件，软件越多越吸引用户。</li>
+    <li>集市——菜贩越多的集市，消费者越多；消费者越多，菜贩越多——良性循环。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>梅特卡夫定律（Metcalfe's Law）</h3>
+  <p class="formula">网络价值 ≈ 用户数的平方（n^2）</p>
+  <p>罗伯特·梅特卡夫（以太网发明者）提出：一个通信网络的价值与网络中用户数的平方成正比。两人网络有 1 个连接，四人网络有 6 个连接，百人网络有 4,950 个连接。这意味着网络效应的增长速度远超线性。</p>
+</div>
+
+<h2>网络效应的类型</h2>
+<p>
+  网络效应不是单一现象，它有多种表现形式。理解这些类型有助于你判断一个商业模式的真正壁垒：
+</p>
+
+<div class="concept-card">
+  <h3>直接网络效应</h3>
+  <p><strong>用户越多，对每个用户直接越有价值。</strong> 最典型的例子是通信工具——电话、微信、WhatsApp。你用微信的价值直接取决于你的联系人在不在上面。这是最直观的网络效应类型。</p>
+</div>
+
+<div class="concept-card">
+  <h3>间接网络效应</h3>
+  <p><strong>用户越多，吸引互补产品越多；互补产品越多，吸引更多用户。</strong> 操作系统就是典型：Windows 用户多吸引开发者，应用多吸引用户，iOS 和安卓同理。平台经济的本质就是间接网络效应。</p>
+</div>
+
+<div class="concept-card">
+  <h3>数据网络效应</h3>
+  <p><strong>用户越多，数据越多；数据越多，服务越好；服务越好，吸引更多用户。</strong> 搜索引擎和推荐系统依赖这种效应——Google 之所以搜索更准，不是因为算法更聪明，而是因为万亿次搜索积累了更丰富的用户行为数据。数据网络效应正在成为 AI 时代最重要的竞争壁垒。</p>
+</div>
+
+<div class="concept-card">
+  <h3>双边（多边）市场网络效应</h3>
+  <p><strong>两类或多类用户群体相互吸引。</strong> 打车平台需要司机和乘客；电商需要买家和卖家；支付平台需要商户和消费者。关键挑战是"鸡生蛋还是蛋生鸡"——如何启动网络。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong> "所有平台都有网络效应"。实际上很多所谓的"平台"并没有真正的网络效应。比如一个新闻 App，用户数量多并不让它对每个读者更有价值——它只是规模经济（更好的内容采编团队），而不是网络效应。真正的网络效应的标志是：用户增长本身就改善了产品体验。
+</div>
+
+<h2>网络效应与竞争格局</h2>
+
+<div class="concept-card">
+  <h3>赢家通吃与"赢者拿大"</h3>
+  <p>网络效应最惊人的结果是<strong>市场集中化</strong>。因为领先者拥有更多用户，用户更多意味着更高价值，更高价值又吸引更多用户——这是一个自我强化的正反馈循环（还记得课程 4 的"反馈回路"吗？）。这种循环最终导致市场被一个或少数几个领导者主导。</p>
+  <p><strong>案例：</strong> 在中国，微信在即时通讯领域几乎独占市场；在美国，Facebook（Meta）在社交网络领域占据主导地位；在全球，Windows 长期占据 PC 操作系统最大份额。这不是因为它们的技术最好，而是因为网络效应创造的转换成本。</p>
+</div>
+
+<div class="concept-card">
+  <h3>转换成本与锁定效应</h3>
+  <p>网络效应天然产生转换成本。当你从微信切换到另一个社交软件时，即使那个软件功能更强，你也需要说服你所有的联系人也切换——这几乎不可能实现。你的社会关系被"锁定"在网络中，形成了一种<strong>结构性壁垒</strong>。</p>
+</div>
+
+<div class="concept-card">
+  <h3>临界点（Tipping Point）</h3>
+  <p>网络效应有一个关键特征：<strong>存在临界点</strong>。在网络规模到达临界点之前，增长缓慢甚至停滞；一旦越过临界点，增长会加速爆发。这跟你学过的"临界点与相变"（课程 8）是同一个原理——量变到质变。平台公司烧钱获取用户，本质上是在追赶临界点。</p>
+</div>
+
+<h2>跨学科实例</h2>
+
+<div class="concept-card">
+  <h3>生物学：群体感应（Quorum Sensing）</h3>
+  <p>细菌通过分泌化学信号分子来感知周围种群密度。当信号浓度达到阈值（临界点），整个菌群突然改变行为——从分散活动转为协同攻击宿主。这是自然界中最古老的网络效应：个体价值随群体规模而跃升。一个细菌什么都不是，十亿个细菌就是致命的感染。</p>
+</div>
+
+<div class="concept-card">
+  <h3>经济学：标准竞争</h3>
+  <p>VHS 和 Betamax 录像带的标准之争是经典案例。Betamax 画质更好，但 VHS 格式因为更早获得广泛采用，录制节目时间更长（更适合看电影），用户基数更大。最终 VHS 成为标准——不是因为技术更好，而是因为网络效应。一旦 VHS 达到了临界用户数，录像店只进 VHS 磁带，消费者只买 VHS 设备——网络效应决定了技术标准，而不是技术决定标准。</p>
+</div>
+
+<div class="concept-card">
+  <h3>社会学：语言与文化的网络效应</h3>
+  <p>为什么英语成为全球通用语？不是因为它最适合学习，而是因为使用它的人最多——更多人学习它，因为它有用；更多人用它，它就越有用。这是一个正反馈循环。类似地，普通话在中国、法语在外交领域、西班牙语在美洲的传播都遵循网络效应的逻辑。</p>
+</div>
+
+<h2>网络效应的局限性</h2>
+<p>
+  网络效应不是万能的。它有自己的边界和副作用：
+</p>
+
+<div class="concept-card">
+  <h3>迪廷格定律（Dunbar's Number）</h3>
+  <p>人类稳定的社交网络规模大约是 150 人。超过这个数，关系质量急剧下降。这意味着"越多用户越好"并不适用于所有类型的网络——当网络规模超出人类认知能力时，需要分层结构（比如微信群、兴趣社区）来维持价值。</p>
+</div>
+
+<div class="concept-card">
+  <h3>负网络效应：拥堵与噪音</h3>
+  <p>网络可以变得太拥挤。论坛帖子太多让人找不到有用的内容；交通网络太堵让出行效率下降；社交媒体信息过载让人焦虑。好的网络平台需要在"规模"和"质量"之间找到平衡点。这就是为什么微信要推出"视频号"而不是把短视频塞进朋友圈——它需要为不同类型的内容创造独立的网络结构。</p>
+</div>
+
+<div class="concept-card">
+  <h3>反垄断与监管</h3>
+  <p>网络效应导致的"赢家通吃"可能带来市场垄断。Facebook 收购 Instagram 和 WhatsApp 后，监管机构和学者开始质疑这种并购是否损害了竞争。网络效应不是天生的垄断，但当领先者利用其网络地位扩展到相邻市场时，就可能产生不公平的竞争壁垒。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>与之前课程的连接：</strong> 网络效应本质上是一个<strong>正反馈回路</strong>（课程 4），它产生<strong>非线性增长</strong>（与课程 8 的"临界点"相关），最终可能形成<strong>路径依赖</strong>（课程 7）——一旦某个网络占据了主导地位，后来者很难超越它。这些概念相互交织，构成了理解复杂系统的基础。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：选择正确答案</h2>
+  <p>下面有 8 道题目，考察你对网络效应的理解。每题选择一个答案，点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">比较两种商业模式。</div>
+    <div class="sentence">以下哪个业务真正具有网络效应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">一家大型连锁餐厅——店面越多覆盖范围越广</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">一个社交平台——用户越多对每个用户越有价值</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">VHS vs Betamax 的案例。</div>
+    <div class="sentence">为什么 VHS 最终胜出了画质更好的 Betamax？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">VHS 获得了更大用户基数，触发了网络效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">VHS 的画质更好</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你正在分析一个电商平台的竞争策略。</div>
+    <div class="sentence">以下哪种策略最能帮助平台跨越"临界点"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">加大广告投放吸引单个消费者</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">补贴商家吸引更多卖家，从而吸引买家形成良性循环</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">讨论 AI 时代的数据网络效应。</div>
+    <div class="sentence">为什么大型语言模型公司越来越重视用户数据？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">更多用户数据让模型更准确，模型更好吸引更多用户</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">数据越多可以用于广告精准投放赚钱</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">分析社交平台的负网络效应。</div>
+    <div class="sentence">以下哪种情况属于"负网络效应"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">用户增长导致广告增多</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">用户增长导致信息过载，内容质量下降</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">思考"迪廷格定律"。</div>
+    <div class="sentence">迪廷格定律（150人社交上限）说明了网络效应的什么局限？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">网络规模超过人类认知能力后需要分层结构</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">超过 150 人后网络价值就变成零</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">判断一个平台的网络效应类型。</div>
+    <div class="sentence">滴滴出行的司机-乘客双向匹配属于哪种网络效应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接网络效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">双边市场网络效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">比较网络效应与规模经济。</div>
+    <div class="sentence">以下哪项最能区分网络效应和规模经济？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">网络效应只适用于科技公司，规模经济只适用于制造业</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">网络效应中用户增长改善产品价值，规模经济中用户增长降低生产成本</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 问我任何疑问——我是你的元概念导师。不理解网络效应为什么会导致"赢家通吃"？这正是我们该讨论的地方。直接提问，我来解释。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://www.nassimtaleb.org/books/antifragile" target="_blank">纳西姆·塔勒布，《反脆弱》</a>——讨论系统如何在不确定性和波动中获益，与网络效应的正反馈密切相关。
+  <br><br>
+  <a href="../reference/network-effects.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0011-redundancy-robustness.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '真正具有网络效应的业务是：用户增长本身改善产品体验。社交平台用户越多，可连接的人越多，每个用户获得的沟通价值就越大。连锁餐厅是规模经济（更好的供应链、品牌效应），而不是网络效应——你去的餐厅和 100 家餐厅对单个顾客的价值提升不同。', wrong: '连锁餐厅是典型的规模经济——店面多了供应链成本更低、品牌更知名，但这不等于网络效应。你吃的那家餐厅不会因为连锁店多了就变得更好吃。网络效应要求"用户越多，产品本身对每个用户越好"。' },
+    q2: { correct: 'Betamax 技术更优但用户基数小。VHS 通过更长的录制时间和更早的市场渗透获得了更大的用户群。用户多了，录像店只进 VHS 磁带，消费者只买 VHS 设备——网络效应让 VHS 成为事实标准。技术优势在网络效应面前被超越了。', wrong: 'Betamax 画质确实更好，但这在消费市场中不是决定性因素。网络效应创造了"生态锁定"——用户不是选择最好的产品，而是选择最有用户的生态。这就是"技术标准之争"中经常出现的现象。' },
+    q3: { correct: '双边市场的核心挑战是"鸡生蛋"问题。通过补贴商家吸引更多卖家，可以产生间接网络效应——买家发现商品丰富就来注册，买家增多又吸引更多卖家——形成正向循环，最终跨越临界点。这是 Uber、淘宝等平台通用的启动策略。', wrong: '单靠广告吸引消费者是单向增长。如果只有买家没有卖家，平台就没有价值。双边市场必须同时培育两端的用户群，通过补贴一侧来吸引另一侧，才能真正启动网络效应。' },
+    q4: { correct: '这就是数据网络效应的核心逻辑：更多用户 → 更多交互数据 → 模型训练更准确 → 体验更好 → 吸引更多用户。Google、Facebook 和 AI 公司都依赖这个循环。数据网络效应是数字时代最深的护城河——后来者即使算法更好，没有数据也追不上。', wrong: '广告确实是平台赚钱的方式，但用户数据的核心价值首先在于改善产品服务本身。AI 模型使用数据是为了让推荐更准、对话更好——这才是留住用户的基础。广告是商业变现，不是数据网络效应的本质。' },
+    q5: { correct: '负网络效应发生在"人太多导致体验变差"的场景。信息过载是最典型的例子——微信朋友圈太多人发内容，你会错过重要消息；微博热搜太多人讨论，优质内容被噪音淹没。好的平台需要管理这种负效应：通过分组、过滤、算法排序来维持质量。', wrong: '广告增多是商业问题，不是网络效应的直接结果。它可能影响用户体验，但不属于"负网络效应"的范畴。负网络效应特指用户规模本身导致产品价值下降——信息过载直接破坏了平台的内容质量。' },
+    q6: { correct: '迪廷格定律指出人类稳定社交关系的上限约为 150 人。当网络超过这个规模，个体无法维持有意义的连接。因此大型社交平台需要引入分层结构（群聊、兴趣社区、算法推荐）来替代纯个人关系管理。这告诉我们：网络效应不是无限的——人类认知能力是硬约束。', wrong: '迪廷格定律不是说网络价值归零。它说的是个体层面的认知上限。大型网络通过结构创新（群组、层级、算法）可以突破个人关系限制，但原始的生物约束仍然存在——这也是为什么微信要做视频号而不是只做朋友圈。' },
+    q7: { correct: '滴滴需要司机和乘客两个群体——司机多乘客等待时间短，乘客多司机收入高。两群体相互吸引、相互依赖，这是典型的双边市场网络效应。解决"鸡生蛋"问题是这类平台的核心挑战。', wrong: '直接网络效应是指同一群体用户越多对每个用户越好（如微信）。滴滴的司机和乘客是不同的群体，它们的价值是相互依赖的——司机价值来自乘客数量，乘客价值来自司机数量，这才是双边市场网络效应的特征。' },
+    q8: { correct: '关键区别在于价值增长的机制：规模经济是"做大更便宜"——用户多导致生产成本降低，产品可以卖得更便宜；网络效应是"人多更有价值"——用户多直接改善产品体验。一个面包店可能有规模经济（大批量采购更便宜），但没有网络效应；微信有网络效应（你朋友多它才有用），但不一定有规模经济。', wrong: '两种效应都不局限于特定行业。制造企业可以通过客户社区获得网络效应，科技公司也可以有规模经济。真正的区别在于价值增长机制：一个是成本侧的优化（规模经济），一个是价值侧的增强（网络效应）。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对网络效应的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉你为什么。';
+      else label.textContent = '继续学习！重新阅读上面的概念卡片，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

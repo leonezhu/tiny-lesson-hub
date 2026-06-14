@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 贝叶斯推理</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 4px 4px 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card-section ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card-section ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: #fff8e1;
+    border-left: 3px solid #f9a825;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>贝叶斯推理 — 快速参考卡</h1>
+<p class="lesson-meta">参考卡 &middot; 数学与逻辑</p>
+
+<div class="formula-box">
+  P(H|E) = P(E|H) &times; P(H) / P(E)
+</div>
+
+<div class="card-section">
+  <h3>四个核心概念</h3>
+  <ul>
+    <li><strong>P(H) 先验概率</strong>——看到证据前，对假设 H 的初始信念</li>
+    <li><strong>P(E|H) 似然</strong>——H 为真时，观察到证据 E 的概率</li>
+    <li><strong>P(E) 证据概率</strong>——P(E|H)P(H) + P(E|~H)P(~H)，所有情况下 E 的总概率</li>
+    <li><strong>P(H|E) 后验概率</strong>——看到证据 E 后，H 为真的更新概率</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>计算步骤</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li>确定先验概率 P(H)</li>
+    <li>确定似然 P(E|H) 和假阳性率 P(E|~H)</li>
+    <li>计算证据 P(E) = P(E|H)P(H) + P(E|~H)P(~H)</li>
+    <li>代入公式：P(H|E) = P(E|H)P(H) / P(E)</li>
+    <li>后验 = 下一次更新的先验（迭代）</li>
+  </ol>
+</div>
+
+<div class="card-section">
+  <h3>经典案例速查</h3>
+  <p><strong>医学检测（1% 发病率，90% 敏感性，5% 假阳性）：</strong>阳性后真实患病概率约 15.4%——不是 90%。</p>
+  <p><strong>两次独立阳性：</strong>概率从 1% → 15.4% → 76.6%。</p>
+</div>
+
+<div class="card-section">
+  <h3>常见认知陷阱</h3>
+  <ul>
+    <li><strong>基础比率忽视</strong>——只看检测准确率，忽略疾病本身有多罕见</li>
+    <li><strong>先验抵抗</strong>——极端先验需要极其强大的证据才能改变</li>
+    <li><strong>确认偏误</strong>——只寻找支持自己先验的证据</li>
+    <li><strong>过度反应</strong>——给单个证据赋予过高权重</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>贝叶斯更新是迭代的。每一次新证据到来，后验成为新的先验，公式重新运行一遍。初始先验的影响会随证据积累而逐渐减弱——这就是贝叶斯一致性。
+</div>
+
+<div class="footer">
+  <a href="../lessons/0002-beiyes-souli.html">查看完整课程</a> | <a href="../index.html">返回目录</a>
+</div>
+
+</body>
+</html>

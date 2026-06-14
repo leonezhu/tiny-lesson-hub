@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考卡：神经网络基础</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula {
+    background: #f7f9fb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>神经网络基础 · 快速参考卡</h1>
+<p class="lesson-meta">来自 AI 课程第 2 课</p>
+
+<h2>人工神经元</h2>
+<div class="formula">
+  y = f(w₁x₁ + w₂x₂ + ... + wₙxₙ + b)
+</div>
+<p>输入 × 权重 + 偏置 → 激活函数 → 输出</p>
+
+<h2>四个组成部分</h2>
+<div class="card">
+  <ul>
+    <li><strong>输入 (x)</strong>——来自上一层的信号</li>
+    <li><strong>权重 (w)</strong>——每个输入的重要性（学到的知识）</li>
+    <li><strong>偏置 (b)</strong>——神经元的激活门槛</li>
+    <li><strong>激活函数 (f)</strong>——引入非线性</li>
+  </ul>
+</div>
+
+<h2>常用激活函数</h2>
+<div class="card">
+  <ul>
+    <li><strong>ReLU</strong>：f(x) = max(0, x) — 最常用，高效，缓解梯度消失</li>
+    <li><strong>Sigmoid</strong>：f(x) = 1/(1+e⁻ˣ) — 输出 (0,1)，用于二分类输出层</li>
+    <li><strong>Tanh</strong>：f(x) = (eˣ - e⁻ˣ)/(eˣ + e⁻ˣ) — 输出 (-1,1)，以 0 为中心</li>
+    <li><strong>Softmax</strong>：输出概率分布（和为 1），用于多分类输出层</li>
+  </ul>
+</div>
+
+<h2>XOR 问题</h2>
+<p>单层感知机无法解决的经典问题：两类数据在平面上呈对角分布，无法用一条直线分开。证明了解决方案必须是<strong>非线性</strong>的——需要隐藏层。</p>
+
+<h2>前向传播流程</h2>
+<div class="card">
+  <ul>
+    <li><strong>输入层</strong> → 接收原始数据</li>
+    <li><strong>隐藏层</strong> → 每层做加权求和 + 激活，逐层提取高级特征</li>
+    <li><strong>输出层</strong> → 产生最终预测</li>
+  </ul>
+</div>
+
+<h2>万能近似定理</h2>
+<p>一个带有至少一个隐藏层的前馈神经网络，只要隐藏层有足够多的神经元，就可以以任意精度逼近任何连续函数。</p>
+
+<h2>损失函数</h2>
+<div class="card">
+  <ul>
+    <li><strong>MSE（均方误差）</strong>——回归问题：衡量预测值与真实值的平方差</li>
+    <li><strong>交叉熵</strong>——分类问题：衡量预测概率分布与真实标签的差异</li>
+  </ul>
+</div>
+
+<h2>关键人物</h2>
+<div class="card">
+  <ul>
+    <li>M McCulloch & W Pitts (1943) — 第一个人工神经元模型</li>
+    <li>Frank Rosenblatt (1958) — 感知机与学习规则</li>
+    <li>Minsky & Papert (1969) — 《Perceptrons》，揭示单层局限</li>
+    <li>Rumelhart et al. (1986) — 多层反向传播的实践证明</li>
+    <li>Geoffrey Hinton (2006+) — 深度学习革命</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0002-neural-networks.html">返回完整课程</a> · <a href="perceptron.html">参考卡：感知机</a>
+</div>
+
+</body>
+</html>

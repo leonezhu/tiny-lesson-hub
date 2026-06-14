@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 中国改革开放</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+    --green-bg: #e8f5e9;
+    --green-border: #4caf50;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card, .timeline-card, .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .timeline-card .event {
+    padding: 0.35rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card .event::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background: #f8f9fa;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .milestone-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    border-left: 4px solid #4caf50;
+  }
+
+  .milestone-box strong { color: var(--correct); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>中国改革开放</h1>
+<p class="lesson-meta">第11课 · ~15分钟 · 现代中国历史的分水岭</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：解释改革开放的渐进式机制，说明为什么它在当时是"逆惯性"的选择，列举关键的改革节点，并理解改革开放如何改变了中国与世界。
+</div>
+
+<h2>为什么学这一课</h2>
+<p>
+  1978年是中国现代史上最大的"相变"。在此之前，中国经历了文革十年的混乱：经济濒临崩溃、国际孤立、官僚体系瘫痪。如果按当时的惯性——政治动员、封闭自守——中国很可能走上更极端的路线。但中国选择了相反的方向：经济优先、面向世界、市场化探索。
+</p>
+<p>
+  理解改革开放，就是理解一个文明如何在废墟上重新起步。对今天的你而言，改革开放的核心启示是：<strong>渐进式系统转型比激进颠覆更可持续</strong>——这条原则不仅适用于国家，也适用于组织、团队，甚至个人的职业转型。
+</p>
+
+<h2>改革开放前的"不可能"局面</h2>
+<p>
+  要理解改革开放的艰难程度，先看1976年的中国站在什么位置上。
+</p>
+
+<div class="comparison-table">
+  <table>
+    <thead>
+      <tr><th>维度</th><th>文革结束后的现实</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>经济</td><td>工业体系被运动冲击，农业效率极低，外汇储备几乎为零</td></tr>
+      <tr><td>观念</td><td>"正确路线 = 革命优先"，市场机制被视为禁区</td></tr>
+      <tr><td>官僚体系</td><td>大量干部被打击，专业性损毁，人才断层</td></tr>
+      <tr><td>国际环境</td><td>与苏联敌对，与美国未完全建交，深度孤立</td></tr>
+      <tr><td>科技教育</td><td>教育体系破坏十年，科技严重断档</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>从这些条件来看，最自然的路线是"继续政治化、继续封闭"——这是系统惯性。改革开放走的恰恰是逆惯性的路线，这在比较政治学里属于"低概率事件"。它之所以成功，不是因为条件有利，而是因为决策层抓住了三个历史窗口。
+</div>
+
+<h2>三大历史窗口</h2>
+
+<div class="milestone-box">
+  <strong>窗口一：文革让"继续革命"失去社会基础</strong><br>
+  十年动荡让全社会达成共识：不能再搞运动了。国民的普遍心态是"要吃饭，不要运动"。这种现实压力为改革提供了最广泛的社会支持。
+</div>
+
+<div class="milestone-box">
+  <strong>窗口二：高层形成罕见的改革共识</strong><br>
+  虽然高层内部理念各异，但在一点上达成空前一致：<strong>必须发展经济，不能再搞斗争。</strong>这种共识在政治史上极其罕见。
+</div>
+
+<div class="milestone-box">
+  <strong>窗口三："摸着石头过河"的渐进策略</strong><br>
+  不是一次性颠覆，而是逐步突破——农村改革先行（风险小），特区试点（不影响全国），市场要素渐进引入（避免体系崩溃），意识形态慢慢调整（避免剧烈冲突）。
+</div>
+
+<h2>改革的核心机制：渐进式制度变迁</h2>
+<p>
+  改革开放最关键的特征不是"改了"，而是<strong>"怎么改的"</strong>。与苏联和东欧国家的"休克疗法"（一夜之间自由化）不同，中国采取了渐进式改革，核心策略有：
+</p>
+
+<h3>1. 经济特区——局部实验，成功经验推广</h3>
+<p>
+  1980年设立深圳、珠海、汕头、厦门四个经济特区。特区不是简单的"开放口岸"，而是制度试验田：在这里可以尝试外资企业、市场定价、劳动合同等在当时国内尚属"禁区"的制度。一旦成功，就向全国推广。深圳从1979年GDP仅1.96亿元的渔村，到2023年约3.46万亿元的科技创新中心，是最极端的案例。
+</p>
+
+<h3>2. 农村家庭联产承包责任制——改变激励机制</h3>
+<p>
+  1978年，安徽小岗村18户农民秘密签订契约，将集体土地分包到户。这一"自下而上"的创新随后被中央认可并推向全国。改革前后的数据对比惊人：
+</p>
+<div class="timeline-card">
+  <h3>农村改革成效（1978-1984）</h3>
+  <div class="event">农业年均增长率 7.7%</div>
+  <div class="event">粮食产量大幅增长</div>
+  <div class="event">农民收入翻番以上</div>
+  <div class="event">为后续工业化积累了原始资本</div>
+</div>
+
+<h3>3. 价格双轨制——过渡性制度设计</h3>
+<p>
+  同一商品有"计划价格"（政府定价）和"市场价格"两种价格体系。这看起来低效，甚至创造了腐败空间（有人利用价差倒卖牟利），但它避免了激进改革可能导致的经济崩溃。这是一种"带着旧壳换内脏"的过渡策略。
+</p>
+
+<h3>4. 乡镇企业——非国有部门的增长引擎</h3>
+<p>
+  在国企改革尚未启动的情况下，乡镇企业（集体所有制、面向市场）迅速崛起，吸收了农村剩余劳动力，成为80年代经济增长的重要动力。这种"双轨并行"的模式是渐进式改革的典型产物。
+</p>
+
+<h2>关键节点</h2>
+
+<div class="timeline-card">
+  <h3>改革开放大事年表</h3>
+  <div class="event"><strong>1978</strong> 十一届三中全会召开，确立改革开放路线；小岗村包产到户</div>
+  <div class="event"><strong>1980</strong> 设立深圳、珠海、汕头、厦门经济特区</div>
+  <div class="event"><strong>1984</strong> 城市经济体制改革启动，价格双轨制正式确立</div>
+  <div class="event"><strong>1992</strong> 邓小平南巡讲话，"发展才是硬道理"，改革进入加速期</div>
+  <div class="event"><strong>1997</strong> 中共十五大确立社会主义市场经济体制</div>
+  <div class="event"><strong>2001</strong> 中国加入WTO，深度融入全球价值链</div>
+  <div class="event"><strong>2008</strong> 全球金融危机后，中国推出四万亿刺激计划，进入新阶段</div>
+  <div class="event"><strong>2013+</strong> 从"世界工厂"向创新中心转型，面对新的结构性挑战</div>
+</div>
+
+<h2>全球影响：不只是中国的事</h2>
+<p>
+  改革开放改变了世界经济的格局：
+</p>
+<ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
+  <li style="margin-bottom: 0.5rem;">中国占全球GDP的比重从1978年的约1.7%上升到2023年的约18%</li>
+  <li style="margin-bottom: 0.5rem;">约8亿人口摆脱贫困，这是人类历史上最大规模的减贫</li>
+  <li style="margin-bottom: 0.5rem;">2001-2013年间出口年均增长约20%，成为"世界工厂"</li>
+  <li style="margin-bottom: 0.5rem;">中国对初级产品的需求推动了澳大利亚、巴西等资源国的繁荣</li>
+  <li style="margin-bottom: 0.5rem;">中国的制造业出口推动了全球"低通胀高增长"的黄金时代</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>跨学科连接：</strong>改革开放是<strong>制度经济学</strong>中"渐进式改革"的最佳案例。从<strong>比较优势</strong>角度看，中国以劳动密集型产业起步——改革开放初期拥有丰富的廉价劳动力，通过出口纺织品和玩具进入全球市场，积累了资本和技术。从<strong>路径依赖</strong>角度看，早期的特区试点和乡镇企业塑造了后续的改革方向，既有优势也有局限。
+</div>
+
+<h2>今天的挑战：从"世界工厂"到"创新中心"</h2>
+<p>
+  改革开放不是完成时，而是进行时。今天的中国面临新的结构性挑战：
+</p>
+<div class="comparison-table">
+  <table>
+    <thead>
+      <tr><th>阶段</th><th>驱动力</th><th>模式</th><th>当前挑战</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1978-2001</td><td>农村改革 + 外资进入</td><td>劳动密集型出口</td><td>打破计划经济惯性</td></tr>
+      <tr><td>2001-2012</td><td>加入WTO + 全球价值链</td><td>"世界工厂"</td><td>从加工贸易向品牌升级</td></tr>
+      <tr><td>2012至今</td><td>自主创新 + 数字经济</td><td>向创新中心转型</td><td>人口老龄化、技术封锁、内需不足</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="goal-box" style="border-left-color: var(--correct); background: var(--green-bg);">
+  <strong style="color: var(--correct);">核心总结：</strong>改革开放的最大教训是——制度变革的核心不是"废除旧的"，而是"建立新的并让它赢"。家庭联产承包责任制没有立刻废除人民公社，乡镇企业没有立刻冲击国企，特区没有立刻改变全国——它们只是先在小范围证明了自己更好，然后自然蔓延。这种"让正确的事自然胜利"的智慧，在任何层级都适用。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解改革开放的逻辑</h2>
+  <p>共8题，每题选择一个选项，点击后立即看到解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">对比中国与苏联的改革方式。</div>
+    <div class="sentence">中国改革开放与苏联"休克疗法"的关键区别是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">中国改革速度更快</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">中国采取渐进式，苏联一夜自由化</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">1978年的小岗村。</div>
+    <div class="sentence">安徽小岗村的改革模式是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">家庭联产承包责任制（包产到户）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">建立乡镇企业</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解"摸着石头过河"。</div>
+    <div class="sentence">为什么价格双轨制看似低效却被采用？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为政府无法制定统一价格</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">避免激进改革导致经济崩溃的过渡策略</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">深圳的发展。</div>
+    <div class="sentence">1979年深圳的GDP大约是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">196亿元人民币</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">1.96亿元人民币</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解改革开放成功的条件。</div>
+    <div class="sentence">改革开放成功的关键社会基础是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">全社会对"不能再搞运动"达成共识</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">外部资金的大量注入</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">从制度经济学角度分析。</div>
+    <div class="sentence">农村改革之所以迅速成功，核心原因是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">农民突然获得了更多土地</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">激励机制的改变——多劳多得</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">中国加入WTO后的影响。</div>
+    <div class="sentence">2001年加入WTO后，中国出口年均增长约？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">5%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">20%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解渐进式改革的哲学。</div>
+    <div class="sentence">改革开放最核心的治理智慧是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">先废除旧的制度，再建立新制度</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在小范围先证明新模式更好，再自然推广</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>思考题：</strong>如果改革开放发生在今天（AI时代、全球化退潮、地缘政治紧张），同样的渐进式策略还有效吗？你认为中国下一轮改革的关键突破口会是什么？<br><br>
+  <strong>推荐阅读：</strong><a href="https://www.penguinrandomhouse.com/books/398005/guns-germs-and-steel/" target="_blank">《枪炮、病菌与钢铁》</a>——贾雷德·戴蒙德。理解地理和环境如何塑造文明兴衰。<br><br>
+  <a href="../reference/中国改革开放.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0010-the-cold-war.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-quan-qiu-hua-yu-qu-quan-qiu-hua.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '中国采取渐进式改革——特区试点、农村先行、价格双轨制，避免了一夜自由化的剧烈震荡。苏联的"休克疗法"试图一次性完成市场化，导致了经济崩溃和社会动荡。', wrong: '中国的改革恰恰比苏联更"慢"。但"慢"不是缺点——渐进式改革让社会经济有适应的时间，这是中国成功的关键。' },
+    q2: { correct: '小岗村18户农民签下"生死契约"，将集体土地分包到户，实行家庭联产承包责任制。这是中国农村改革的起点，随后被中央认可并推向全国。', wrong: '乡镇企业是80年代城市经济改革的重要成果，但小岗村的核心创新是包产到户——改变农村激励机制。' },
+    q3: { correct: '价格双轨制是一种"带着旧壳换内脏"的过渡策略。它虽然低效且创造了寻租空间，但避免了激进改革可能导致的经济崩溃，让市场力量逐步壮大。', wrong: '不是因为政府"无法"制定统一价格，而是故意选择双轨制作为渐进过渡。单轨制在当时政治经济条件下风险太大。' },
+    q4: { correct: '1979年深圳GDP仅1.96亿元人民币——一个渔村的规模。到2023年已达约3.46万亿元。40多年增长了上万个量级。', wrong: '196亿太夸张了。深圳1979年还是一个贫穷的小渔村，GDP只有1.96亿元。这个起点与今天的成就形成惊人对比。' },
+    q5: { correct: '最关键的社会基础是：文革让全社会达成共识——不能再搞运动了。"要吃饭，不要运动"是当时最普遍的民意。这种共识为改革提供了最广泛的支持。', wrong: '外部资金确实重要，但改革开放成功的关键是内部共识：全社会都意识到必须转向经济发展。' },
+    q6: { correct: '核心是激励机制的改变。家庭联产承包责任制让农民"多劳多得"——以前在大田里干多干少都一样，现在多干活就多收获。制度经济学认为，激励机制比行政命令重要得多。', wrong: '土地面积没有增加，增加的是激励机制。同样是这些土地，同样的农民，改革后产量大增——证明改变激励机制的力量。' },
+    q7: { correct: '2001-2013年间，中国出口年均增长约20%。加入WTO标志着中国深度融入全球价值链，成为"世界工厂"。', wrong: '5%太低了。加入WTO后中国深度融入全球贸易体系，出口年均增长约20%，是全球化黄金时代的典型表现。' },
+    q8: { correct: '这是渐进式改革最核心的智慧：不在正面推翻旧制度，而是在小范围证明新模式更好，让它自然蔓延。家庭承包制没有立刻废除公社，特区没有立刻改变全国——它们只是先赢了自己这一亩三分地。', wrong: '废除旧的再建新的——这是"休克疗法"的思路。渐进式改革的精髓恰恰相反：先让新的生长出来，旧的自然被边缘化。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对改革开放的逻辑理解很透彻。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

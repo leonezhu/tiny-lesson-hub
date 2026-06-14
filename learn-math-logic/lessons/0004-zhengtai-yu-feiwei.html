@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 — 正态分布与肥尾效应：世界的两种数学面孔</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>正态分布与肥尾效应：世界的两种数学面孔</h1>
+<p class="lesson-meta">Lesson 4 &middot; ~10 minutes &middot; 数学与逻辑 &middot; 概率分布进阶</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够区分正态分布和肥尾分布的世界，理解为什么大多数人错误地用正态分布框架来分析现实决策，掌握\"杠铃策略\"的基本逻辑，并学会判断某个情境属于\"中间世界\"还是\"极端世界\"。
+</div>
+
+<h2>两种世界，两种数学</h2>
+<p>
+  想象你是一位投资者，正在评估一只基金的风险。你打开数据一看——过去 20 年的年收益率标准差是 15%。一个基于正态分布的模型告诉你：\"出现 -50% 亏损的概率是百万分之一。\"但如果你在 2008 年买了这只基金，你会发现这个\"百万分之一\"在几年内就发生了。
+</p>
+<p>
+  这个故事的核心是：世界有两种数学结构，而你用来分析世界的工具决定了你能看到什么、看不到什么。
+</p>
+
+<div class="concept-card">
+  <h3>中间世界（Middle World）——正态分布</h3>
+  <ul class="examples">
+    <li>典型值有明确意义：人的平均身高约 170cm</li>
+    <li>极端事件概率极低：3 个标准差之外 ≈ 0.3%</li>
+    <li>大部分数据集中在平均值附近</li>
+    <li>事件之间大致独立</li>
+    <li>例子：身高、体重、测量误差、标准化考试成绩</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>极端世界（Extreme World）——肥尾分布</h3>
+  <ul class="examples">
+    <li>没有\"典型\"值：你无法描述\"典型\"的股市日收益率</li>
+    <li>极端事件比你想象的常见得多</li>
+    <li>尾部概率显著高于正态分布预测</li>
+    <li>事件之间高度相关：恐慌会传染，从众会放大</li>
+    <li>例子：金融市场回报、战争规模、城市人口、地震能量、创业收益</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键区分：</strong>判断一个领域属于\"中间世界\"还是\"极端世界\"，最简单的方法是问自己：<em>如果极端事件发生的频率比正态分布预测高 100 倍，我的决策会改变吗？</em>如果答案是\"会\"，那你就在一个肥尾世界里。
+</div>
+
+<h2>中心极限定理：为什么正态分布如此普及</h2>
+<p>
+  正态分布无处不在的核心原因是<strong>中心极限定理</strong>（Central Limit Theorem, CLT）。这个定理说：如果你把大量<strong>独立的</strong>随机因素加在一起，它们的总和就趋近正态分布。
+</p>
+
+<div class="concept-card">
+  <h3>中心极限定理的直观理解</h3>
+  <p>
+    想象你在扔 100 枚硬币。正面算 +1，反面算 -1。100 枚硬币的总和大约是 0（正反面各半），偶尔会偏离到 ±10 左右，但偏离到 ±50 几乎不可能——这就是一个近似正态分布的形状。每个硬币是独立的，互不影响。
+  </p>
+  <p>
+    但如果你扔的不是硬币，而是<strong>相互影响的因素</strong>呢？比如股票价格——一只股票跌了会引发更多人卖出，导致更多股票下跌。这种<strong>正反馈</strong>打破了独立性假设，正态分布就失效了。
+  </p>
+</div>
+
+<p>
+  这就是为什么身高可以用正态分布精确描述（基因 + 营养等微小独立因素叠加），但金融市场不能用（恐慌传播、羊群效应使事件高度相关）。
+</p>
+
+<h2>塔勒布的\"烤肉架\"：极端世界的生存法则</h2>
+<p>
+  纳西姆·塔勒布提出过一个著名的比喻——<strong>\"土耳其问题\"</strong>（The Turkey Problem）。一只火鸡被饲养了 1000 天，每一天人类的喂养行为都强化了它的信念：\"这个人对我很好，我很安全。\"第 1000 天（感恩节），它的信念崩塌了——它被杀了。
+</p>
+
+<div class="concept-card">
+  <h3> Turkey 问题的数学本质</h3>
+  <p>
+    火鸡用过去 1000 天的数据拟合了一个正态分布模型——\"我的体重每天都增加，误差在可接受范围内\"。但正态分布模型无法预测那个从未出现过、一旦出现就会致命的极端事件。肥尾世界中的关键事件<strong>不在你的历史数据范围内</strong>——它们发生在\"三 sigma 之外\"，而正态分布说那里什么都没有。
+  </p>
+  <p>
+    2008 年的金融系统就是一只火鸡。VaR 模型基于历史数据，认为\"百万分之一的崩溃概率\"不存在。然后它发生了——不是因为模型精度不够，而是因为它从根本上忽略了肥尾的可能性。
+  </p>
+</div>
+
+<h2>三种判断工具：你的领域属于哪个世界？</h2>
+
+<div class="concept-card">
+  <h3>工具 1：最大观测值与平均值之比</h3>
+  <p>
+    在一个正态分布的数据集中，最大观测值不会比平均值大太多（通常不超过 3-5 倍）。但在肥尾分布中，最大观测值可以比平均值大 <strong>数千倍</strong>。比如全球人口的平均财富约 4 万美元，但最富有的 10 个人的财富之和超过了 30 亿人的财富总和。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>工具 2：对数-对数图的线性</h3>
+  <p>
+    如果你把数据画在对数-对数图上，呈现一条直线——这是幂律/肥尾分布的签名（上一课讲过）。正态分布在对数-对数图上是一条弯曲的线。这是最实用的识别工具。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>工具 3：\"这个极端事件会颠覆一切吗？\"</h3>
+  <p>
+    最简单也最有效的直觉测试：如果极端事件发生的概率从 \"几乎不可能\" 变成 \"一定会发生\"，你的整个策略需要推翻重来——那你就是一个肥尾世界的参与者。
+  </p>
+  <p>
+    创业公司：一个成功退出（IPO）的回报超过 100 倍——极端事件定义了整个回报结构。&rarr; 肥尾</p>
+  <p>
+    便利店日常运营：日销售额波动在 ±10% 以内——极端波动极少见。&rarr; 正态
+  </p>
+</div>
+
+<h2>杠铃策略：在肥尾世界中如何做决策</h2>
+<p>
+  在肥尾世界中，传统的\"中等风险均衡配置\"策略往往是最糟糕的选择——因为它既暴露于下行风险（可能遭受重大损失），又限制了上行收益（无法捕获极端正面的事件）。
+</p>
+
+<div class="concept-card">
+  <h3>杠铃策略的核心逻辑</h3>
+  <p>
+    把资源分配到两个极端：
+  </p>
+  <ul class="examples">
+    <li><strong>一端：极度安全。</strong> 90% 的资金放在国债等几乎不可能亏损的资产中。这确保了任何极端负面事件都不会摧毁你——你永远不会成为\"被杀的火鸡\"。</li>
+    <li><strong>另一端：高上行风险。</strong> 10% 的资金投入到高潜在回报、但可能全部损失的项目中（如初创企业、期权、个人品牌投资）。这些投资的回报如果成功，会远远超过所有安全资产的总和——这就是肥尾分布的精髓。</li>
+    <li><strong>完全不碰中间地带。</strong> 中等风险、中等回报的投资（如蓝筹股、共同基金）在肥尾世界中是最差的——下行风险不小，上行空间有限。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>现实案例：</strong>塔勒布的基金在 2008 年金融危机中赚了数十亿美元——不是因为市场崩盘对他有利，而是因为他持有了大量看跌期权（极端下行时的巨额收益）。他的策略就是杠铃：大部分资金在安全资产中，小部分在\"如果市场崩盘就赚翻\"的赌注上。
+</div>
+
+<h2>肥尾思维在日常生活中的应用</h2>
+
+<div class="concept-card">
+  <h3>职业选择</h3>
+  <p>
+    大多数人的职业决策在正态思维下操作：\"找个稳定的工作，稳步晋升。\"但在肥尾世界中，收入分布遵循幂律——成为某个领域的顶尖 1% 带来的回报远超\"中等成功\"。更有效的策略：保持基本收入的安全底线（安全端），同时用业余时间尝试高潜在回报的事情（创业、内容创作、股权投资）。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>健康与长寿</h3>
+  <p>
+    身高服从正态分布——极端身高罕见。但寿命呢？在一些研究中，百岁老人的数量远超正态分布预测——寿命有肥尾特征。这意味着：<strong>少数关键因素（不吸烟、适度运动、良好社交）可能影响远超平均值</strong>，而非\"每天都做得好一点\"的渐进式改善。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>投资决策</h3>
+  <p>
+    如果你相信某些资产回报是肥尾的（如加密资产、早期股权投资），那么分散持有 20 只\"看起来不错\"的股票反而不如：把大部分资金放在安全资产，小部分集中在你最看好的 1-2 个高上限机会上。前提是——你真的理解那个资产的回报分布结构。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>混淆\"不确定性\"和\"肥尾\"。肥尾不是说\"我不知道会发生什么\"，而是说\"极端事件发生的概率比正态分布预测的高得多\"。不确定性意味着概率未知；肥尾意味着概率分布有肥尾——两者不同，但都要求你用不同的决策框架。
+</div>
+
+<h2>谁在研究正态分布的局限</h2>
+
+<div class="concept-card">
+  <h3>卡尔·弗里德里希·高斯（1777-1855）</h3>
+  <p>
+    正态分布以他的名字命名（\"高斯分布\"）。他最初用正态分布来建模天文观测的误差——这个场景恰恰是正态分布最适用的：大量微小、独立的测量误差叠加。高斯的成就和局限在于：他的方法太成功了，以至于人们把它推广到了它本不该去的领域。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>本华·曼德博（1924-2010）</h3>
+  <p>
+    分形几何的创始人。1963 年，他在《金融时报》上发表了一篇被广泛忽略的论文，证明棉花价格变动不服从正态分布——市场收益率具有肥尾特征。当时的金融学主流嘲笑他为\"异端\"。45 年后，2008 年金融危机证明了他的判断。曼德博还说了一句至今被忽视的话：<strong>\"如果价格在金融市场上的波动真的像当时模型假设的那样温和有序，那才是一个异常事件。\"</strong>
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>纳西姆·塔勒布（1960-）</h3>
+  <p>
+    前期权交易员、数学家。他的《黑天鹅》（2007）一书系统阐述了肥尾思维如何颠覆我们对历史、金融和决策的理解。塔勒布的核心贡献不是数学上的——而是认识论上的：他迫使人们承认，<em>我们不知道的事情，远比我们知道的重要</em>。他在《反脆弱》（2012）中进一步提出：在肥尾世界中，最优策略不是\"抗脆弱\"（抵抗冲击），而是\"反脆弱\"（从冲击中获益）——比如你的杠铃策略。
+  </p>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我是你的数学思维导师。不确定为什么某个答案是正确的？这正是我们需要讨论的地方。直接输入你的问题，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.goodreads.com/book/show/6739973-black-swan" target="_blank">《黑天鹅》— Nassim Taleb</a>，理解为什么不可预测的极端事件比一切已知的已知更重要。
+  <br><br>
+  <a href="../reference/0004-zhengtai-yu-feiwei.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-milv-fenbu.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-boyi-lun-jichu.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '正态分布的核心是\"中间世界\"——典型值有明确意义，极端事件极罕见（3σ 之外 ≈ 0.3%）。身高约 170cm 是典型值，极端身高（如 ±4σ）极罕见。', wrong: '幂律分布没有典型值，最大观测值可以是平均值的数千倍。正态分布的最大值不会偏离平均值太多（通常不超过 3-5 倍），极端事件极罕见。' },
+    q2: { correct: '中心极限定理要求\"大量独立的随机因素\"。金融市场中的恐慌传播和羊群效应使事件高度相关，打破了独立性假设，所以正态分布失效。', wrong: '肥尾不是\"更多数据\"造成的，而是\"事件相关性\"造成的。独立事件叠加趋向正态分布；相关事件（如恐慌传染）趋向肥尾。' },
+    q3: { correct: '火鸡问题揭示了正态分布模型的根本缺陷：基于历史数据拟合的模型无法预测从未出现过的极端事件。在肥尾世界中，\"百万分之一\"可能在几年内就发生。', wrong: '火鸡问题不是说\"数据量太少\"，而是说正态分布模型本身忽略了肥尾可能性——即使有更多数据，如果模型假设是正态的，它仍然会系统性低估极端风险。' },
+    q4: { correct: '杠铃策略在两端配置资源：极度安全的一端确保你不会因极端负面事件崩溃，高上行风险的一端让你捕获极端正面事件。不碰中间——中等风险/回报在肥尾世界中最差。', wrong: '杠铃不是\"50-50 分配\"——它是\"绝大部分安全 + 小部分高风险\"。中等风险投资（蓝筹股、共同基金）下行风险不小但上行有限，在肥尾世界中是最差选择。' },
+    q5: { correct: '最大观测值是平均值的数千倍——这是肥尾的典型特征。正态分布中最大值不会偏离平均值太多。全球最富有的 10 人财富超过 30 亿人总和，就是极端肥尾。', wrong: '正态分布的最大值不会比平均值大太多（3-5 倍以内）。如果最大观测值是平均值的数千倍，那是明显的肥尾/幂律分布。' },
+    q6: { correct: '便利店日销售额在 ±10% 波动，极端波动极罕见——这说明分布尾部很\"瘦\"，事件相互独立。这是典型的正态/中间世界特征。', wrong: '肥尾世界中极端事件比正态预测常见得多。如果日销售额极端波动（如 ±50%）频繁出现，那才是肥尾。±10% 的稳定波动说明这不是肥尾。' },
+    q7: { correct: '曼德博 1963 年就指出棉花价格不服从正态分布，但被主流嘲笑。45 年后 2008 年危机证明了他——当时 VaR 模型假设正态分布，将崩盘视为\"百万分之一\"。', wrong: '高斯是正态分布的提出者，他的方法成功到被错误推广。真正揭露正态分布在金融中失效的是曼德博和后来的塔勒布——他们用实证数据证明了肥尾的存在。' },
+    q8: { correct: '不确定性 = 概率未知；肥尾 = 概率分布有肥尾（极端事件更常见）。不确定性的应对是\"保留灵活性\"，肥尾的应对是\"杠铃策略\"。两者不同但都需要超越正态思维的决策方式。', wrong: '混淆这两个概念是危险的。不确定性意味着\"我不知道概率\"，所以应该保守行事。肥尾意味着\"我知道极端事件更常见\"，所以应该主动追求不对称收益——应对方式完全不同。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对正态分布和肥尾分布有了扎实的掌握。';
+      else if (score >= 6) label.textContent = '做得好！回顾错题的解释，你会更深刻地理解这两种世界的区别。';
+      else label.textContent = '继续加油！重读上面的例子和概念，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

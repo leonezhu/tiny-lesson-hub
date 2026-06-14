@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>进化心理学 · 速查参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .concept-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .concept-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .key-point {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.7rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .key-point strong { color: #e65100; }
+
+  .person-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .person-list li {
+    padding: 0.3rem 0;
+  }
+
+  .person-list li strong { color: var(--accent); }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>进化心理学 · 速查参考卡</h1>
+<p class="card-meta">第 2 课 · 核心概念速览</p>
+
+<p>用自然选择和性选择框架解释人类心理特征的学科。核心假设：<strong>人类心智是为约100万年前的非洲大草原环境设计的。</strong></p>
+
+<h2>三大理论</h2>
+
+<div class="concept-card">
+  <h3>1. 适应性设计</h3>
+  <p class="term">Adaptive Design</p>
+  <ul>
+    <li>心智是专门心理机制的集合，不是单一通用处理器</li>
+    <li>每个机制解决特定适应性问题（觅食、择偶、防御…）</li>
+    <li>过时的适应性在错误环境中导致"非理性"行为</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>2. 性选择与配偶选择</h3>
+  <p class="term">Sexual Selection — 巴尔斯（Buss）跨文化研究</p>
+  <ul>
+    <li>女性 → 偏好资源丰富的配偶（生育投资成本高）</li>
+    <li>男性 → 偏好年轻、对称性（生育力信号）</li>
+    <li>两性都重视善良和智力（任何文化中都有价值）</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>3. 亲本投资理论</h3>
+  <p class="term">Parental Investment Theory — 特里弗斯（Trivers），1972</p>
+  <ul>
+    <li>投资大的一方 → 选择时更挑剔</li>
+    <li>投资小的一方 → 倾向于竞争更多配偶</li>
+    <li>在育幼参与高的文化中，性别差异缩小但不消失</li>
+  </ul>
+</div>
+
+<h2>关键区分</h2>
+
+<div class="key-point">
+  <strong>自然主义的谬误：</strong>"存在" ≠ "应该接受"。理解行为的进化根源，是为了更好地克服它，不是为它辩护。
+</div>
+
+<h2>关键人物</h2>
+<ul class="person-list">
+  <li><strong>巴尔斯</strong> — 《欲望的博弈》，跨文化择偶研究</li>
+  <li><strong>特里弗斯</strong> — 亲本投资理论、互惠利他</li>
+  <li><strong>平克</strong> — 《心智探奇》，全面进化框架</li>
+  <li><strong>道金斯</strong> — 《自私的基因》，基因中心观</li>
+</ul>
+
+<h2>实际应用速览</h2>
+<ul>
+  <li><strong>减肥为什么难？</strong>——大脑为饥荒设计，高热量 = 生存</li>
+  <li><strong>社交媒体为什么上瘾？</strong>——利用了社交地位敏感的进化机制</li>
+  <li><strong>广告为什么用性和恐惧？</strong>——激活最古老的心理模块</li>
+</ul>
+
+<div class="footer">
+  <a href="../lessons/0002-evolutionary-psychology.html">返回完整课程</a>
+</div>
+
+</body>
+</html>

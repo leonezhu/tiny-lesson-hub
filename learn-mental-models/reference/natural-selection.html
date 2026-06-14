@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 自然选择</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    color: var(--accent);
+  }
+
+  .card .step {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 1.4rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 0.4rem;
+  }
+
+  .warn {
+    background: #fff8e1;
+    border-left: 3px solid #f9a825;
+    padding: 0.6rem 0.8rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+
+  .warn strong { color: #e65100; }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  ul { padding-left: 1.2rem; margin-bottom: 0.6rem; }
+  li { margin-bottom: 0.2rem; }
+</style>
+</head>
+<body>
+
+<h1>自然选择 — 参考卡</h1>
+<p class="meta">多元思维模型 · 生物学类比 · 速查</p>
+
+<h2>核心机制：四步算法</h2>
+
+<div class="card">
+  <h3><span class="step">1</span>变异（Variation）</h3>
+  <p>同种群个体之间存在可遗传的差异。变异是选择的原材料。</p>
+</div>
+
+<div class="card">
+  <h3><span class="step">2</span>竞争（Competition）</h3>
+  <p>资源有限，个体为生存和繁殖展开竞争。</p>
+</div>
+
+<div class="card">
+  <h3><span class="step">3</span>选择（Selection）</h3>
+  <p>适应环境的性状被保留。"适应度"=留下后代的相对数量，不是"最强壮"。</p>
+</div>
+
+<div class="card">
+  <h3><span class="step">4</span>累积（Accumulation）</h3>
+  <p>有利变异经世代叠加，微小优势产生巨大差异。</p>
+</div>
+
+<h2>常见应用领域</h2>
+<ul>
+  <li><strong>遗传算法</strong>：适应度函数筛选最优解</li>
+  <li><strong>市场竞争</strong>：消费者用购买投票，熊彼特的"创造性破坏"</li>
+  <li><strong>文化演化</strong>：memes和思想在群体中传播和留存</li>
+  <li><strong>产品设计</strong>：A/B测试、小步快跑、快速迭代</li>
+</ul>
+
+<h2>关键洞察</h2>
+<p>自然选择是"盲"的——没有目标，没有远景规划。但它能产生复杂秩序。<strong>不要追求一次性的完美方案，而是建立迭代和选择的机制。</strong></p>
+
+<div class="warn">
+  <strong>常见误解：</strong>"适者生存"≠"最强壮生存"。"适应"指的是在当前环境下的繁殖成功率，而非物理能力。在稳定环境中，保守策略可能比激进策略更有适应度。
+</div>
+
+<h2>核心人物</h2>
+<ul>
+  <li><strong>达尔文</strong> — 《物种起源》（1859）</li>
+  <li><strong>道金斯</strong> — 《自私的基因》，基因中心视角</li>
+  <li><strong>熊彼特</strong> — 创造性破坏理论</li>
+  <li><strong>丹尼特</strong> — 《达尔文的危险观念》，自然选择作为通用算法</li>
+</ul>
+
+<a href="../lessons/0005-natural-selection.html" class="resource-link">返回完整课程</a>
+
+<div class="footer">
+  <a href="../lessons/0005-natural-selection.html">完整课程：自然选择</a>
+</div>
+
+</body>
+</html>

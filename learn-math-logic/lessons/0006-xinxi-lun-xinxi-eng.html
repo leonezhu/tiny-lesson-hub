@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 — 信息论：信息、熵与压缩的本质</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .formula-box .formula-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .highlight-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .highlight-box strong { color: #e65100; }
+
+  .comparison-table {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th, .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>信息论：信息、熵与压缩的本质</h1>
+<p class="lesson-meta">Lesson 6 &middot; ~12 minutes &middot; 信息度量基础</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够理解\"信息\"的数学定义——为什么\"意料之外的消息\"比\"意料之中的消息\"包含更多信息，掌握熵的计算直觉，并能用信息论思维解释为什么压缩、通信、甚至加密都共享同一个核心原理。
+</div>
+
+<h2>信息到底是什么？</h2>
+<p>
+  在日常生活中，\"信息\"意味着\"有意义的内容\"。但在信息论中，信息是一个精确的数学概念——它的核心直觉非常简单：<strong>信息的多少，取决于它有多意外。</strong>
+</p>
+
+<p>
+  举个例子：如果你的天气预报说\"明天太阳会从东边升起\"，这句话传递了多少信息？几乎为零——因为你早就知道了。但如果天气预报说\"明天下午三点会下冰雹\"，信息量就很大——因为你无法预测。
+</p>
+
+<div class="card">
+  <h3>核心直觉：信息量与意外程度成正比</h3>
+  <ul>
+    <li><strong>高概率事件</strong> = 低信息量。比如\"地球明天还存在\"——你知道这是真的，所以这句话几乎不包含信息。</li>
+    <li><strong>低概率事件</strong> = 高信息量。比如\"地球明天不存在了\"——如果你收到这条消息，你会立即意识到它包含了巨大的信息量。</li>
+    <li><strong>确定性事件</strong>（概率=1）= 零信息量。你不会因为\"1+1=2\"得到任何新信息。</li>
+  </ul>
+</div>
+
+<h2>熵：不确定性的度量</h2>
+<p>
+  克劳德·香农（Claude Shannon）在1948年创立了信息论，他给出的核心概念是<strong>熵（Entropy）</strong>。熵衡量的是一个随机变量的\"不确定程度\"或\"平均信息量\"。
+</p>
+
+<p>
+  <strong>直觉理解：</strong>熵越高，意味着你越无法预测下一个结果，因此每次观察到的结果带给你的平均信息量就越大。
+</p>
+
+<div class="formula-box">
+  <div class="formula-label">香农熵公式</div>
+  H(X) = &minus;&sum;<sub>i</sub> P(x<sub>i</sub>) &middot; log<sub>2</sub>(P(x<sub>i</sub>))
+</div>
+
+<p>
+  公式看起来很复杂，但直觉很简单：<strong>每个可能结果的\"信息量\"（&minus;log P）乘上它出现的概率，然后把所有结果加起来。</strong>
+</p>
+
+<h2>两个世界：公平的硬币 vs 两面都是正面的硬币</h2>
+<p>
+  让我们用具体的例子感受熵的力量。
+</p>
+
+<p><strong>情境一：一枚公平的硬币</strong>——正面和反面各50%概率。</p>
+
+<div class="formula-box">
+  <div class="formula-label">公平硬币的熵</div>
+  H = &minus;[0.5 &middot; log<sub>2</sub>(0.5) + 0.5 &middot; log<sub>2</sub>(0.5)] = 1 bit
+</div>
+
+<p><strong>情境二：一枚两面都是正面的硬币</strong>——100%是正面。</p>
+
+<div class="formula-box">
+  <div class="formula-label">假硬币的熵</div>
+  H = &minus;[1.0 &middot; log<sub>2</sub>(1.0)] = 0 bits
+</div>
+
+<p>
+  结果很直观：假硬币的结果是确定的（你每次都能看到正面），所以每次\"观察\"它不需要任何信息来消除不确定性。而公平硬币每次都会给你1 bit的新信息——因为它完全不可预测。
+</p>
+
+<div class="highlight-box">
+  <strong>关键洞察：</strong>熵 = 不确定性的度量 = 你为消除这种不确定性所需的信息量。0 bits = 完全确定，1 bit = 在两个等概率结果中做出选择。
+</div>
+
+<h2>信息量的单位：比特（bit）</h2>
+<p>
+  \"比特\"不仅仅是\"0或1\"的缩写。它是一个<strong>信息量单位</strong>，表示\"在两个等概率选项中做出选择所需的信息量\"。
+</p>
+
+<table class="comparison-table">
+  <tr>
+    <th>事件</th>
+    <th>概率</th>
+    <th>信息量（bits）</th>
+  </tr>
+  <tr>
+    <td>硬币正面</td>
+    <td>0.5</td>
+    <td>1.00</td>
+  </tr>
+  <tr>
+    <td>抛掷两次，HH</td>
+    <td>0.25</td>
+    <td>2.00</td>
+  </tr>
+  <tr>
+    <td>掷骰子是6</td>
+    <td>1/6</td>
+    <td>2.58</td>
+  </tr>
+  <tr>
+    <td>从100个数中选中</td>
+    <td>0.01</td>
+    <td>6.64</td>
+  </tr>
+  <tr>
+    <td>从10亿个数中选中</td>
+    <td>10<sup>&minus;9</sup></td>
+    <td>29.90</td>
+  </tr>
+</table>
+
+<p>
+  你会发现：从10亿个数中猜中一个，需要约30 bit的信息量——刚好对应一个30位的二进制数。这就是为什么二进制编码如此自然。
+</p>
+
+<h2>熵与压缩：为什么一切都能被压缩？</h2>
+<p>
+  信息论最深刻的洞见之一：<strong>熵给出了无损压缩的极限。</strong>一个数据源的熵越低，它就越能被压缩。
+</p>
+
+<div class="card">
+  <h3>霍夫曼编码：用最短的代码表示最频繁的事件</h3>
+  <p><strong>例子：</strong>假设你有一段文本，只包含字母 A、B、C、D，它们的出现频率分别是：</p>
+  <ul>
+    <li>A: 50%</li>
+    <li>B: 25%</li>
+    <li>C: 15%</li>
+    <li>D: 10%</li>
+  </ul>
+  <p><strong>朴素编码</strong>（每个字母用2位表示）：</p>
+  <ul>
+    <li>A=00, B=01, C=10, D=11 → 每个字母固定2位</li>
+  </ul>
+  <p><strong>霍夫曼编码</strong>（用短码表示高频字母）：</p>
+  <ul>
+    <li>A=0 (1位) &mdash;&mdash; 最常见，用最短码</li>
+    <li>B=10 (2位) &mdash;&mdash; 次常见</li>
+    <li>C=110 (3位)</li>
+    <li>D=111 (3位)</li>
+  </ul>
+  <p><strong>效果：</strong>平均每个字母只需 0.5&times;1 + 0.25&times;2 + 0.15&times;3 + 0.10&times;3 = 1.6 bits，比2位少了20%。熵约为1.85 bits，所以1.6已经非常接近理论极限。</p>
+</div>
+
+<div class="highlight-box">
+  <strong>为什么ZIP能压缩文件？</strong>因为真实数据不是随机的——有重复模式、有频率分布。熵越低的文件（越有规律），越能被压缩。真正的随机数据（熵最大）是无法被无损压缩的。
+</div>
+
+<h2>为什么信息论重要？</h2>
+<p>
+  香农的信息论不只是关于\"怎么压缩文件\"。它是整个数字时代的基础：
+</p>
+
+<div class="card">
+  <h3>四大应用领域</h3>
+  <ul>
+    <li><strong>通信：</strong>5G、Wi-Fi、光纤——所有无线通信都在信道容量定理的框架下设计。香农证明了一个信道的\"容量上限\"，工程师的目标就是逼近它。</li>
+    <li><strong>加密：</strong>加密的本质是制造\"不确定性\"。一个好的加密算法应该让密文的熵尽可能高，让攻击者无法从密文中推断出任何信息。</li>
+    <li><strong>人工智能：</strong>信息熵是决策树算法（如ID3、C4.5）的核心——它用\"信息增益\"来决定哪个特征最能消除不确定性。交叉熵也是神经网络损失函数的重要组成部分。</li>
+    <li><strong>数据科学：</strong>特征选择、异常检测、聚类——所有这些方法都在做同一件事：在数据中寻找模式（低熵区域），忽略噪声（高熵区域）。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>一个跨领域的直觉</h3>
+  <p>
+    想想热力学中的\"熵\"（混乱度）和信息论中的\"熵\"（不确定性）。它们本质上是同一个概念：
+  </p>
+  <ul>
+    <li>物理熵：气体分子越混乱，系统熵越高 → 你越难预测某个分子的位置</li>
+    <li>信息熵：事件越不确定，信息熵越高 → 你越难预测下一个结果</li>
+  </ul>
+  <p>
+    <strong>熵 = 你\"不知道\"的量。</strong>
+  </p>
+</div>
+
+<h2>常见错误</h2>
+
+<div class="highlight-box">
+  <strong>错误1：\"熵越高越好\"或\"熵越低越好\"。</strong><br>
+  熵本身没有好坏。在通信中，我们希望信号的低熵部分携带信息，高熵噪声被消除。在密码学中，我们希望密钥的熵足够高（不可预测），但信息的熵要低（能被压缩传输）。语境决定一切。
+</div>
+
+<div class="highlight-box">
+  <strong>错误2：\"信息 = 有意义\"。</strong><br>
+  在信息论中，\"1+1=2\"和\"猫在草地上\"的信息量可能完全不同——这取决于你对它们的预期概率。信息论的\"信息\"是客观的数学量，不依赖于内容是否有意义。一条乱码如果完全随机，信息量极高（熵最大）；一条你早已知道的事实，信息量接近零。
+</div>
+
+<div class="highlight-box">
+  <strong>错误3：\"熵就是\"混乱\"或\"无序\"\"。</strong><br>
+  虽然\"不确定性\"和\"混乱\"在直觉上相关，但熵是一个精确的统计量。一叠整齐的扑克牌和洗牌后的扑克牌，从信息论角度看，\"整齐的排列\"可能熵更低（因为你可以预测下一张牌），但这不是说\"整齐的扑克牌\"在物理上熵更低。两个领域的\"熵\"有数学联系，但不是一回事。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：测试你的信息直觉</h2>
+  <p>以下是 8 道情景题。选择你认为正确的选项，点击后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在抛掷一枚公平硬币。抛了10次，全是正面。</div>
+    <div class="sentence">第11次抛出正面的信息量与第1次抛出正面的信息量相比：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">第11次的信息量更大，因为连续11次正面更罕见</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">两者相同，每次抛掷是独立的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">比较两个数据源的熵。</div>
+    <div class="sentence">数据源A只产生\"AAAAA\"，数据源B随机产生\"0\"和\"1\"（各50%）。哪个熵更高？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">数据源B，因为结果不确定</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">数据源A，因为它更\"有序\"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你收到一条天气预报：\"明天有太阳\"。</div>
+    <div class="sentence">这条消息的信息量很低，因为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">\"太阳\"这个词没有信息价值</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">\"明天有太阳\"是高概率事件，所以信息量少</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一个文件被压缩软件压缩了50%。</div>
+    <div class="sentence">这意味着原始文件的熵大约是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">比原始数据的熵高一倍</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约为原始数据每符号位数的50%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">霍夫曼编码的直觉。</div>
+    <div class="sentence">为什么霍夫曼编码能为每个字符分配不同长度的编码？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">为了让编码更难被破解</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">高频字符用短码，降低平均编码长度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">加密算法设计。</div>
+    <div class="sentence">一个好的加密密文应该具有以下哪个特征？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">高熵——看起来完全随机</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">低熵——容易记忆</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">掷一枚公平的六面骰子。</div>
+    <div class="sentence">掷出结果的信息量（以 bits 为单位）约为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">2.58 bits</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">6 bits</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解熵和压缩的关系。</div>
+    <div class="sentence">以下哪种数据最不可能被无损压缩？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">一篇英文小说</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">真正随机的字节序列</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我对任何概念都乐于深入讨论。不理解熵为什么和压缩有关？不清楚霍夫曼编码是怎么\"贪心地\"分配短码的？直接问，我会一步步解释。
+  <br><br>
+  <strong>推荐阅读：</strong>《信息简史》（Jim Enders）—— 用故事讲信息论的科普佳作，读完会对\"信息\"有一个全新的世界观。
+  <br><br>
+  <a href="../reference/xinxi-ling-xi-card.html" class="resource-link">查看参考速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-boyi-lun-jichu.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-suanfa-fu-za-du.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '每次抛硬币是独立事件。第1次和第11次的熵完全相同（都是1 bit）。连续11次正面确实罕见（概率 1/2048），但那是\"事前\"的预测。抛掷之后，每次结果都是独立的1 bit信息。',
+      wrong: '虽然\"连续11次正面\"罕见，但每次抛掷是独立的。第11次的结果仍然是一个公平硬币的抛出，信息量 = 1 bit，和第1次相同。'
+    },
+    q2: {
+      correct: '熵衡量的是\"不确定性\"。数据源B的结果完全不可预测（50/50），所以熵最高（1 bit/符号）。数据源A的结果完全确定（永远是A），熵 = 0。',
+      wrong: '\"有序\"在直觉上似乎熵低，但信息论的熵关心的是\"你能否预测下一个结果\"。数据源A总是输出A，你完全可以预测，所以熵 = 0，是最低的可能值。'
+    },
+    q2: {
+      correct: '信息量与事件概率成反比。\"明天有太阳\"的概率非常高（比如99%），所以它带给你的信息量极低（&minus;log<sub>2</sub>(0.99) &asymp; 0.015 bits）。只有低概率事件才携带大量信息。',
+      wrong: '\"太阳\"这个词本身可能没有特别的信息价值，但关键是整个事件的概率。\"明天有太阳\"之所以信息量低，是因为它太不可能被否定了。'
+    },
+    q4: {
+      correct: '压缩50%意味着原始数据中大约50%的位是\"冗余\"的。冗余度越高，熵越低。一个完美可压缩到50%的文件，其每符号的熵大约是原始表示的50%。',
+      wrong: '熵是数据的固有属性，压缩不会改变或\"产生\"熵。压缩只是去除了冗余，揭示了数据中真实的熵水平。'
+    },
+    q5: {
+      correct: '霍夫曼编码是一种\"贪心\"算法：它给最高频的字符分配最短的编码（可能只有1位），给最低频的字符分配最长的编码。这样平均下来，每个字符的编码长度最短。',
+      wrong: '霍夫曼编码不是为了加密，而是为了压缩。它的目标是让高频字符用短码，从而降低平均编码长度，不是为了提高安全性。'
+    },
+    q6: {
+      correct: '加密密文的熵应该尽可能高，接近随机数据的熵。如果密文有低熵的模式（比如某些字节出现更频繁），攻击者就能从中推断信息。一个安全的加密算法应该让密文看起来完全随机。',
+      wrong: '如果密文低熵，意味着它有规律可循，攻击者可以利用这些规律进行破解。好的加密应该是\"不可分辨于随机\"的。'
+    },
+    q7: {
+      correct: '公平骰子：每个面概率 = 1/6。熵 = &minus;6 &times; (1/6) &times; log<sub>2</sub>(1/6) = log<sub>2</sub>(6) &asymp; 2.585 bits。大约2.6 bits的信息量。',
+      wrong: '6 bits 对应的是从 2<sup>6</sup> = 64 个等概率选项中做出选择。骰子只有6个面，所以熵 = log<sub>2</sub>(6) &asymp; 2.58 bits，不是6。'
+    },
+    q8: {
+      correct: '真正随机的数据已经处于最大熵状态——每个符号出现的概率相等，没有任何可检测的模式或冗余。无损压缩算法寻找的是数据中的规律和重复，随机数据没有这些。',
+      wrong: '英文小说虽然包含很多内容，但它有大量的冗余（英语的自然语言结构、常见的单词模式），可以被高效压缩。随机数据没有这种冗余，所以最不可能被压缩。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对信息论的直觉非常扎实。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，你的理解会更深刻。';
+      else label.textContent = '继续加油！重新阅读上面的例子，再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

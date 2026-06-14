@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 第一性原理思维</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.15rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第一性原理思维 — 快速参考卡</h1>
+<p class="meta">Learn Mental Models &middot; Lesson 7 &middot; 约 3 分钟读完</p>
+
+<div class="formula">
+  方法：假设 → 分解为基本事实 → 从零重建
+</div>
+
+<h2>核心对比</h2>
+
+<div class="card">
+  <h3>类比推理</h3>
+  <p>"别人怎么做，我就怎么做，稍微改进一点。"</p>
+  <p style="color: var(--muted); font-size: 0.9rem;">适合：渐进式改进、日常决策、时间紧的情况</p>
+</div>
+
+<div class="card">
+  <h3>第一性原理思维</h3>
+  <p>"这件事的基本构成是什么？我能从零开始重新设计吗？"</p>
+  <p style="color: var(--muted); font-size: 0.9rem;">适合：被锁定的领域、想突破天花板、长期高价值决策</p>
+</div>
+
+<h2>三步法</h2>
+
+<div class="card">
+  <h3>1. 识别假设</h3>
+  <p>列出你"理所当然"接受的所有前提。区分哪些是物理限制，哪些是社会惯例。</p>
+</div>
+
+<div class="card">
+  <h3>2. 分解为基本事实</h3>
+  <p>将每个假设继续追问，直到不可再分的最小事实——可以通过实验验证或逻辑推导的单位。</p>
+</div>
+
+<div class="card">
+  <h3>3. 从零重建</h3>
+  <p>只基于基本事实，重新设计解决方案。不参考"别人怎么做"。</p>
+</div>
+
+<h2>经典案例</h2>
+
+<div class="card">
+  <h3>SpaceX — Musk 的火箭案例</h3>
+  <ul>
+    <li>假设："火箭本来就很贵"（约 6500 万美元）</li>
+    <li>分解：材料只占成本的 2%（铝合金、钛、碳纤维）</li>
+    <li>重建：问题在供应链低效 → 自己造 → 成本降低 30 倍</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>欧几里得几何学</h3>
+  <ul>
+    <li>5 条公理 → 整个平面几何体系（数千定理）</li>
+    <li>从不可再分的基本真理向上构建</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Transformer — AI 架构革新</h3>
+  <ul>
+    <li>基本事实："语言建模 = 预测下一个 token"</li>
+    <li>不再手工设计规则 → 用自注意力机制直接建模</li>
+  </ul>
+</div>
+
+<h2>日常应用</h2>
+<p>
+  <span class="tag">产品</span> 不分析对手，从用户真实需求出发重新设计<br>
+  <span class="tag">技术</span> 不复制现有架构，从性能/成本/扩展性约束出发重设计<br>
+  <span class="tag">决策</span> 不比较"别人选哪个"，分解为核心能力/追求/需求三个基本问题<br>
+  <span class="tag">学习</span> 追问 5 个"为什么"，每层剥掉一层假设
+</p>
+
+<p class="back-link">
+  ← <a href="../lessons/0007-first-principles.html">返回完整课程</a> | <a href="../index.html">课程目录</a>
+</p>
+
+<div class="footer">
+  <a href="../lessons/0006-network-effects.html">上一课</a> | <a href="../index.html">目录</a> | <a href="../lessons/0008-mean-reversion.html">下一课</a>
+</div>
+
+</body>
+</html>

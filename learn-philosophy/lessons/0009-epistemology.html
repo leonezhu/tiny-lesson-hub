@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 认识论：我们如何知道我们所知道的</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .theory-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .theory-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .theory-card .definition {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .theory-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .theory-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .theory-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>认识论：我们如何知道我们所知道的</h1>
+<p class="lesson-meta">第9课 · ~12 分钟 · 哲学核心工具</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够解释知识是什么（JTB理论）、区分不同形式的怀疑论、理解盖梯尔问题如何挑战传统知识定义，并在日常生活中识别认识论陷阱。
+</div>
+
+<h2>认识论是什么</h2>
+<p>
+  认识论（Epistemology）研究的是<span style="font-weight:600">知识的本质、来源和范围</span>。来自希腊语 <em>episteme</em>（知识）和 <em>logos</em>（研究/理论）。它回答的核心问题是："你怎么知道你知道了？"
+</p>
+<p>
+  这不是一个哲学家的消遣问题——它每天都在影响你的判断。当你看新闻时，你怎么知道信息来源可靠？当你凭记忆说某个日期时，你怎么知道没记错？在社交媒体时代，认识论从学术变成了生存技能。
+</p>
+
+<h2>知识的传统定义：JTB 理论</h2>
+<p>
+  两千多年来，哲学界的标准定义是<strong>JTB理论</strong>——知识是<strong>被辩护的真信念</strong>（Justified True Belief）。三个条件缺一不可：
+</p>
+
+<div class="theory-card">
+  <h3>JTB = Justified True Belief</h3>
+  <p class="definition">一个命题 P 要成为知识，必须满足三个条件：</p>
+  <ul class="examples">
+    <li><strong>信念（Belief）</strong>：你必须相信 P 为真。如果你不知道自己在相信什么，就不能说你知道。</li>
+    <li><strong>真理（Truth）</strong>：P 必须为真。你不能"知道"一个错误的事情——你只能错误地相信它。</li>
+    <li><strong>辩护（Justification）</strong>：你必须有好的理由相信 P。猜测虽然可能碰巧正确，但不算知识。</li>
+  </ul>
+</div>
+
+<p>
+  举例：你看到窗外的绿色物体，相信它是苹果（信念），它确实是苹果（真理），你有视觉证据支持（辩护）——这就是知识。但如果只是猜对了，不算知识。
+</p>
+
+<h2>盖梯尔问题：JTB 的崩溃</h2>
+<p>
+  1963年，哲学家 <strong>爱德蒙·盖梯尔（Edmund Gettier）</strong>发表了三页纸的论文，彻底颠覆了知识论。他发现 JTB 的三个条件仍然<strong>不够</strong>——即使三个条件都满足，也可能是"碰巧对了"，不算真正的知识。
+</p>
+
+<div class="theory-card">
+  <h3>盖梯尔的牛棚思想实验</h3>
+  <p class="definition">经典案例：你走进农场，看到田野里有一个黑白相间的物体，确信它是一头黑白花牛。你的信念、真理、辩护三个条件都满足——但等等，那其实是一块黑白相间的纸板，真正的牛藏在后面的谷仓里。</p>
+  <ul class="examples">
+    <li>你相信有一头牛吗？是的。</li>
+    <li>有牛存在吗？是的（在谷仓里）。</li>
+    <li>你有辩护吗？是的，你看到了"像牛的东西"。</li>
+    <li>但这是知识吗？不——你的信念碰巧为真，但不是因为正确的理由。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心教训</strong>：知识不仅仅是碰巧对的事情。JTB 理论被证明是有缺陷的——哲学家们至今仍在争论如何修补它。这本身就是认识论最大的里程碑事件。
+</div>
+
+<h2>主要知识来源</h2>
+<p>哲学家通常识别五种获取知识的途径：</p>
+
+<div class="theory-card">
+  <h3>1. 感知（Perception）</h3>
+  <p>通过感官获取信息。最直观也最不可靠——你的感官可以被欺骗（错觉、幻觉、梦境）。</p>
+</div>
+
+<div class="theory-card">
+  <h3>2. 理性（Rationalism / Reason）</h3>
+  <p>通过逻辑推理获得知识，不依赖感官。数学知识（如 2+2=4）被认为是理性知识——你不需要去称量任何东西来验证它。</p>
+</div>
+
+<div class="theory-card">
+  <h3>3. 权威（Testimony）</h3>
+  <p>从他人那里获得知识。事实上，我们绝大部分的知识来自他人——教科书、新闻、专家、朋友。问题是：我们该如何判断谁值得信任？</p>
+</div>
+
+<div class="theory-card">
+  <h3>4. 记忆（Memory）</h3>
+  <p>你知道自己昨天吃了什么。但记忆可以被篡改、扭曲、完全虚构。你如何确定你的记忆就是真实的过去，而不是被暗示植入的？</p>
+</div>
+
+<div class="theory-card">
+  <h3>5. 直觉（Intuition）</h3>
+  <p>不需要推理就"知道"某事为真。直觉在道德判断和数学中都很常见，但直觉也常被证实是错的——它可靠吗？</p>
+</div>
+
+<h2>怀疑论：我们到底知道多少？</h2>
+<p>
+  怀疑论（Skepticism）不是"什么都不信"的消极态度，而是一种严格的哲学立场：我们可能比我们以为的知道的更少。
+</p>
+
+<div class="theory-card">
+  <h3>笛卡尔的恶魔论证</h3>
+  <p class="definition">笛卡尔想象有一个邪恶的恶魔在系统地欺骗他的所有感官。如果这是可能的，你如何确定你不是在梦中？如何确定外部世界真实存在？</p>
+  <p>
+    笛卡尔的解决方案：<strong>"我思故我在"（Cogito, ergo sum）</strong>——即使恶魔欺骗了我，"我"也必须存在才能被欺骗。这是唯一不能怀疑的东西。
+  </p>
+</div>
+
+<div class="theory-card">
+  <h3>缸中之脑（Brain in a Vat）</h3>
+  <p class="definition">你的大脑被取出放在营养液中，一台超级计算机向它发送所有感官信号。你感受到的"现实"——包括你正在阅读这些文字——都是电信号。你怎么知道你不是缸中之脑？</p>
+  <p>
+    这个思想实验是《黑客帝国》的哲学原型。希尔伯特·普特南试图用语义论证反驳它，但争论至今未止。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>日常怀疑论 vs 哲学怀疑论</strong>：日常的"你确定吗？"是实用怀疑，用于纠错。哲学的怀疑论是方法论工具——通过极端假设来测试知识的边界。两者不同但都重要。
+</div>
+
+<h2>当代认识论：美德与社群</h2>
+<p>21世纪的认识论不再只关注个体如何获得知识，还扩展到了新的维度：</p>
+
+<div class="theory-card">
+  <h3>认识论美德（Virtue Epistemology）</h3>
+  <p>借鉴亚里士多德的德性伦理学：好的知识来源于<strong>认知上的优秀品质</strong>——如开放心态、智力谦逊、好奇心和思维严谨。一个具有认识论美德的人会主动寻求反面证据，而不是只看支持自己观点的信息。</p>
+</div>
+
+<div class="theory-card">
+  <h3>社会认识论（Social Epistemology）</h3>
+  <p>知识本质上是社会性的。科学进步靠的是同行评审、合作研究和累积性的集体工作。在信息过载的时代，判断"谁更可信"（证据评估、信源追踪、交叉验证）本身就是认识论技能。</p>
+</div>
+
+<h2>认识论在日常生活中的应用</h2>
+<p>认识论不只是书斋哲学——它是信息时代的核心生存技能：</p>
+
+<p>
+  <strong>识别虚假信息：</strong>一个主张是否经过辩护？证据来自哪里？有没有竞争性的解释？这些信息是否可证伪？这些都是认识论问题。
+</p>
+<p>
+  <strong>避免确认偏误：</strong>人们倾向于只寻找支持已有信念的证据。认识论训练你主动寻找反面证据——这是理性思考的第一步。
+</p>
+<p>
+  <strong>认识论谦逊：</strong>承认自己的知识有边界，比假装什么都知道更有力量。苏格拉底说："我唯一知道的就是我一无所知。"这不是自我贬低——而是精确的自我评估。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：认识论测试</h2>
+  <p>选出最符合认识论原则的答案。共 8 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">根据 JTB 理论，判断以下情况是否构成知识。</div>
+    <div class="sentence">小明猜彩票号码，碰巧猜中了。他有"中奖号码"的知识吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是的——他相信了号码（信念），号码确实中奖（真理），他猜了（辩护）。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不是——虽然碰巧满足三个条件，但他的信念与事实的关联是偶然的，盖梯尔指出JTB不够。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">笛卡尔怀疑论方法的目的。</div>
+    <div class="sentence">笛卡尔试图通过极端怀疑来证明什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">证明外部世界根本不存在，我们应该对所有知识持怀疑态度。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">通过怀疑找到一块不可怀疑的基石——"我思"，然后从这个基点重建知识体系。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">盖梯尔牛棚案例。</div>
+    <div class="sentence">你在农场看到纸板牛，以为是真的牛，而真正的牛藏在后面。为什么这不是知识？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为你的辩护不够充分——纸板牛是视觉错觉。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">虽然信念为真、且你有辩护，但真假之间的关联是运气——你的理由实际上支持的是另一件事。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">知识来源的分类。</div>
+    <div class="sentence">你知道自己住在上海，是因为你出生在这里并生活了多年。这主要依赖哪个知识来源？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">权威——你从父母和朋友那里听说自己住在这里。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">记忆——你直接记住自己的居住经历，这是个人的第一手记忆证据。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">美德认识论的应用。</div>
+    <div class="sentence">下列哪项最符合"认识论美德"的概念？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">快速得出结论，因为思考越慢越容易犹豫不决。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在形成结论前主动寻找反面证据和替代解释。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">区分真理与信念。</div>
+    <div class="sentence">以下哪个条件说明 JTB 中的"真理"要求？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">你不能"知道"一个假命题——如果你相信的错了，最多是错误信念，不是知识。</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">只要你强烈相信某件事，它就是真实的——信念创造了真理。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">社会认识论。</div>
+    <div class="sentence">为什么科学共同体中"同行评审"是认识论实践而非官僚程序？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为同行评审只是让科学家发表论文的必要手续。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为同行评审是对知识的辩护机制——独立专家评估证据质量，确保信念不是偶然的。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">笛卡尔的恶魔论证。</div>
+    <div class="sentence">笛卡尔的恶魔论证中，为什么"我思故我在"是唯一不可怀疑的命题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为这是上帝保证的——上帝不会欺骗我们关于"我在思考"这件事。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为怀疑本身就是一个思想活动——即使被欺骗，也必须有一个"被欺骗的我"存在，怀疑行为自身证明了主体的存在。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——认识论是哲学中最让人"头晕"的领域之一，你有任何困惑都很正常。不知道某个答案为什么对或错？这正是该讨论的地方。直接打出你的问题，我会详细解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://plato.stanford.edu/entries/epistemology/" target="_blank">斯坦福哲学百科：认识论</a> — 最权威的入门资源之一。
+  <br><br>
+  <a href="../reference/epistemology-overview.html" class="resource-link">查看参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-utilitarianism.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-free-will-problem.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '盖梯尔问题正是说明了：JTB三个条件都满足还不够。小明的中奖是运气——信念为真但不是因为正确的理由。运气介入的地方，就不是知识了。', wrong: '猜中彩票是经典盖梯尔案例。虽然有信念、碰巧为真、也有"猜"作为理由，但真理和信念之间的关联是偶然的——运气不等于知识。' },
+    q2: { correct: '笛卡尔的怀疑是方法论工具，不是结论。他通过极端怀疑来找到不可怀疑的基石——"我思"——然后从这个确定的基点开始重建知识。怀疑是为了更坚固地知道。', wrong: '笛卡尔不是要证明世界不存在。相反，他用怀疑来找到不可动摇的基础，再从这个基础"推导"出外部世界的存在（借助上帝的诚实性）。' },
+    q3: { correct: '盖梯尔案例的核心是"真理的运气"。你有辩护（看到了像牛的东西），你相信了，事实上也有牛——但你的辩护指向的是纸板牛，真正的牛是碰巧存在的。真假之间的断裂就是运气。', wrong: '问题不是视觉错觉（虽然纸板确实欺骗了视觉）。核心问题是：你的辩护支持的是"看到牛"，而牛之所以存在是因为另一个原因。这种不匹配就是盖梯尔问题。' },
+    q4: { correct: '你住在上海是你直接记忆的事情——你记得搬来、记得日常环境。记忆是第一手的知识来源，不同于从他人那里听说（权威）或逻辑推理（理性）。', wrong: '虽然你可能听父母说过，但你"知道"自己住在哪里主要靠直接记忆——你每天在走那条路，每天在那个房间醒来。这是第一手的记忆证据。' },
+    q5: { correct: '认识论美德的核心是"认知上的优秀品质"——包括智力谦逊、开放心态、寻求反面证据。主动寻找替代解释正是智力谦逊和开放心态的表现。', wrong: '快速下结论往往导致确认偏误。认识论美德强调的是审慎和公正——考虑证据的质量，而不是速度。' },
+    q6: { correct: 'JTB中的"真理"条件意味着：知识必须关于真实的东西。如果你相信的事情是错的——哪怕有再充分的理由——你最多是在"错误地相信"，而不是"知道"。', wrong: '信念不能创造真理。JTB理论要求信念必须与现实相符。真理是独立于信念存在的——你的信念可能不符合现实，但现实不会因为你的信念而改变。' },
+    q7: { correct: '同行评审是社会认识论的核心机制。它不是官僚程序，而是"辩护"的社会化形式——独立的专家群体评估证据、逻辑和方法，确保知识主张不是偶然的。', wrong: '同行评审远不止是手续。它是知识合法化的社会机制：通过同行共同体的批判性评估，将"有人声称知道"转化为"被共同体认可为知识"。' },
+    q8: { correct: '笛卡尔的洞见是：怀疑本身就是一种思想活动。无论怀疑的内容是什么，怀疑这个行为本身就要求有一个"正在怀疑的主体"。即使恶魔在欺骗你，也必须有一个"被你欺骗的你"存在——这就是不可怀疑的基点。', wrong: '笛卡尔的论证不依赖于上帝。"我思故我在"是在怀疑上帝之前就成立的——它是怀疑方法本身的产物，是纯粹理性自明的真理。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你对认识论的核心概念和推理有了扎实的理解。';
+      else if (score >= 6) label.textContent = '不错！认识论很烧脑——重读错题解释，理解为什么。';
+      else label.textContent = '继续加油！认识论是哲学中最挑战直觉的领域，多思考几遍就会豁然开朗。';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

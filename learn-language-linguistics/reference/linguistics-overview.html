@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>速查卡片 — 语言学概览</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+
+  .key-terms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语言学概览 — 速查卡片</h1>
+<p class="card-meta">共 10 分钟 &middot; 核心概念速记</p>
+
+<div class="card">
+  <h3>语言学的定义</h3>
+  <p>语言学是研究人类语言的科学——揭示语言的本质（是什么）、功能（做什么）、结构（怎么组织）和演化（如何变化）。语言不是"交流工具"，而是<strong>层级化的认知系统</strong>。</p>
+  <div class="key-terms">
+    <span class="tag">语音学</span>
+    <span class="tag">音系学</span>
+    <span class="tag">形态学</span>
+    <span class="tag">句法学</span>
+    <span class="tag">语义学</span>
+    <span class="tag">语用学</span>
+  </div>
+</div>
+
+<div class="card">
+  <h3>六大分支速记</h3>
+  <ul>
+    <li><strong>语音学</strong>：声音的物理产生（IPA 音标、发音部位）</li>
+    <li><strong>音系学</strong>：特定语言中合法的声音组合（"str-"合法，"tnk-"不合法）</li>
+    <li><strong>形态学</strong>：词的构成（un-happy-ness；电脑=电+脑）</li>
+    <li><strong>句法学</strong>：句子的结构规则（"颜色不绿，想法疯狂地睡觉"语法正确但语义荒谬）</li>
+    <li><strong>语义学</strong>：意义的编码（"晨星" vs "暮星"：同指不同义）</li>
+    <li><strong>语用学</strong>：语境中的意义使用（"你能把盐递给我吗？"=请求而非疑问）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>三大理论视角</h3>
+  <ul>
+    <li><strong>生成语法</strong>（Chomsky）：人类天生具有 LAD，所有语言共享普遍语法。句法独立于语义。</li>
+    <li><strong>功能主义</strong>（Halliday）：语言结构由交际功能塑造。三大元功能：概念、人际、语篇。</li>
+    <li><strong>认知语言学</strong>（Lakoff & Johnson）：语言结构反映认知结构。隐喻是思维的基本结构（up=积极，down=消极）。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>语言处理机制</h3>
+  <p>听到"猫追老鼠"时，大脑在约 200ms 内<strong>并行</strong>完成：语音解码 → 词法分析 → 句法解析 → 语义整合 → 语用推断。不到一秒内自动完成——这是人类认知系统最精密的工作之一。</p>
+</div>
+
+<div class="card">
+  <h3>关键人物速记</h3>
+  <ul>
+    <li><strong>Chomsky</strong>：生成语法，普遍语法，句法独立于语义</li>
+    <li><strong>Saussure</strong>：结构主义，能指/所指</li>
+    <li><strong>Halliday</strong>：系统功能语言学，三大元功能</li>
+    <li><strong>Lakoff & Johnson</strong>：认知语言学，隐喻理论</li>
+    <li><strong>Sapir & Whorf</strong>：语言相对论，语言影响思维</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>为什么重要</h3>
+  <ul>
+    <li><strong>AI/NLP</strong>：区分统计相关和语义理解，评估 LLM 能力</li>
+    <li><strong>语言学习</strong>：知道习得难度排序，策略性分配学习时间</li>
+    <li><strong>跨文化沟通</strong>：理解误解根源，语言选择即身份信号</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="0001-language-identity.html">← 上一课：语言与身份认同</a> | <a href="../index.html">目录</a> | <a href="0003-phonetic-systems.html">下一课：语音系统对比</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 俄国革命与苏联</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card h3 {
+    color: var(--accent);
+  }
+
+  .timeline-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .timeline-card ul li {
+    padding: 0.35rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .figure-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .figure-card .name {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .figure-card .role {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>俄国革命与苏联</h1>
+<p class="lesson-meta">第9课 · ~12分钟 · 20世纪政治经济史</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>，你将理解1917年俄国革命为何发生、苏联计划经济如何运作及其成败根源，以及这场实验如何塑造了整个20世纪的国际格局。
+</div>
+
+<h2>为什么这个课题很重要</h2>
+<p>
+  苏联是世界上第一个试图以计划经济和一党制组织全国生活的国家。它的实验提供了20世纪最重要的政治经济比较框架：计划经济在资源动员和重工业发展方面证明了效率，但在创新激励、资源配置和消费者福利方面暴露了系统性缺陷。理解苏联，就是理解20世纪冷战、第三世界革命以及当代制度竞争的历史根源。
+</p>
+
+<h2>时间线：从帝国到超级大国</h2>
+
+<div class="timeline-card">
+  <ul>
+    <li><strong>1914年</strong> — 一战爆发，俄军在坦能堡战役几乎全军覆没，暴露体制无能</li>
+    <li><strong>1915年</strong> — 丢失波兰和波罗的海地区，战争疲劳加剧</li>
+    <li><strong>1917年2月</strong> — 二月革命推翻罗曼诺夫王朝（延续300年的沙皇统治终结）</li>
+    <li><strong>1917年2-10月</strong> — "双重权力"时期：临时政府与苏维埃并存</li>
+    <li><strong>1917年10月</strong> — 布尔什维克发动十月革命，夺取政权</li>
+    <li><strong>1918-1922年</strong> — 内战，红军击败白军和外国干涉军</li>
+    <li><strong>1921年</strong> — 列宁推出新经济政策（NEP），恢复部分市场机制</li>
+    <li><strong>1922年</strong> — 苏联正式成立</li>
+    <li><strong>1928-1940年</strong> — 斯大林五个五年计划，农业集体化与重工业化</li>
+    <li><strong>1945年</strong> — 二战胜利，苏联成为世界超级大国之一</li>
+    <li><strong>1953年</strong> — 斯大林去世，古拉格体系结束（1800万人曾被关押）</li>
+    <li><strong>1991年</strong> — 戈尔巴乔夫改革失败，苏联解体</li>
+  </ul>
+</div>
+
+<h2>革命为什么会发生</h2>
+
+<div class="concept-card">
+  <h3>一战：革命的催化剂</h3>
+  <p>
+    俄国革命的直接原因是第一次世界大战。沙皇俄国的军事失败暴露了整个体制的无能：1914年坦能堡战役俄军几乎全军覆没，1915年又丢失了波兰和波罗的海地区。战争造成的物资短缺、通货膨胀和征兵疲劳在彼得格勒和莫斯科的工人阶级中积累了巨大的不满。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>双重权力：革命的关键窗口</h3>
+  <p>
+    1917年二月革命后，俄国出现了前所未有的<strong>双重权力结构</strong>：资产阶级临时政府掌权，但同时苏维埃（工人和士兵代表会议）也拥有实际影响力。临时政府犯了两个致命错误——继续参战和推迟土地改革——这让它同时失去了城市和农民的支持。
+  </p>
+  <p>
+    布尔什维克则以"和平、面包、土地"三个极其简单的口号获得了广泛共识。这三个口号分别对应了当时俄国三大核心诉求：退出战争、解决饥饿、分配土地。
+  </p>
+</div>
+
+<h2>苏联计划经济：成就与缺陷</h2>
+
+<div class="concept-card">
+  <h3>五年计划的奇迹</h3>
+  <p>
+    1928年斯大林启动第一个五年计划，通过农业集体化和重工业化快速建立工业基础。1928-1940年间，苏联GDP年均增长约9%，从一个落后的农业国一跃成为世界第二大工业强国。这种增长速度在当时是前所未有的。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>结构性缺陷</h3>
+  <p>
+    但这种增长模式存在严重的系统性问题：
+  </p>
+  <ul style="padding-left: 1.2rem; margin-bottom: 0.75rem;">
+    <li style="padding: 0.25rem 0;"><strong>缺乏价格信号</strong> — 中央计划者无法处理数百万种商品的供需信息，导致持续的物资短缺和浪费并存</li>
+    <li style="padding: 0.25rem 0;"><strong>消费资料短缺</strong> — 资源过度倾斜于重工业和军工，普通民众日常生活用品长期匮乏</li>
+    <li style="padding: 0.25rem 0;"><strong>创新激励不足</strong> — 企业只需完成计划指标，没有动力改进技术或提高效率</li>
+    <li style="padding: 0.25rem 0;"><strong>农业效率低下</strong> — 集体化摧毁了传统农业结构，1932-1933年大饥荒造成约700万人死亡</li>
+  </ul>
+  <p>
+    到1980年代，苏联GDP增长率已降至1%以下，物资短缺成为日常现实。
+  </p>
+</div>
+
+<h2>关键人物</h2>
+
+<div class="figure-card">
+  <div class="name">列宁（Vladimir Lenin）</div>
+  <div class="role">布尔什维克领袖 · 十月革命策划者 · 新经济政策提出者</div>
+  <p>
+    列宁是俄国革命的核心人物。他策划并领导了十月革命，建立了世界上第一个社会主义国家。在内战结束后，面对战时共产主义的失败，他果断推出了新经济政策（NEP），在计划经济与市场之间寻求过渡，使经济迅速恢复。
+  </p>
+</div>
+
+<div class="figure-card">
+  <div class="name">斯大林（Joseph Stalin）</div>
+  <div class="role">1920年代末上台 · 全面计划经济 · 农业集体化</div>
+  <p>
+    斯大林在1920年代末巩固权力后，废除了列宁的新经济政策，推行全面计划经济和农业集体化。他通过五个五年计划将苏联变成了工业强国，但也制造了1932-1933年的大饥荒和古拉格劳改营体系，估计有1800万人在1929-1953年间被关押。
+  </p>
+</div>
+
+<div class="figure-card">
+  <div class="name">戈尔巴乔夫（Mikhail Gorbachev）</div>
+  <div class="role">改革与开放 · 苏联解体</div>
+  <p>
+    戈尔巴乔夫在1980年代中期推行的"改革与开放"（Perestroika和Glasnost）本想挽救苏联体制，却加速了其崩溃。这展示了制度改革的<strong>路径依赖</strong>陷阱：当旧体制的合法性基础已经瓦解，试图修补局部问题往往导致系统性的失控。
+  </p>
+</div>
+
+<h2>跨学科连接</h2>
+
+<div class="concept-card">
+  <h3>与制度经济学的关系</h3>
+  <p>
+    苏联的计划经济是制度经济学的教科书案例。缺乏价格信号意味着资源配置必然低效——这是哈耶克"知识分散性"论断的现实验证：信息分散在社会各处，任何中央计划者都无法有效收集和处理。市场不仅传递信息，更通过价格信号激励创新和适应。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>与路径依赖的关系</h3>
+  <p>
+    苏联的改革之所以如此困难，是因为既得利益集团（官僚体系、军工复合体）从旧体制中获益，成为改革的强大阻力。这就是路径依赖：一旦选择了某种制度轨迹，即使它不再最优，改变的成本也会越来越高。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>苏联的经验告诉我们，制度设计必须解决两个核心问题——信息收集和激励兼容。中央计划者在信息收集上败给了市场价格信号，在激励兼容上败给了市场竞争。这两条教训对理解任何大型组织的治理都有意义。
+</div>
+
+<h2>苏联解体的启示</h2>
+<p>
+  1991年苏联解体是20世纪最重要的历史事件之一。戈尔巴乔夫的改革本想挽救体制，却引发了连锁反应：各加盟共和国纷纷要求独立，官僚体系失去凝聚力，经济进一步恶化。这个过程清晰地展示了一个复杂系统的崩溃模式——当多个子系统同时失效，且缺乏有效的反馈调节机制时，系统会在短时间内全面崩溃。
+</p>
+<p>
+  冷战期间，社会主义和资本主义的竞争实际上推动了全球经济制度的演进。西方福利国家的建立，部分就是对社会主义替代方案的回应——资本主义不得不吸收一些社会主义的元素来维持自身的合法性。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：理解俄国革命与苏联</h2>
+  <p>选择最符合历史事实的答案。共8道题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">俄国革命的直接催化剂是什么？</div>
+    <div class="sentence">下列哪项是引发俄国革命的最直接原因？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">第一次世界大战</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">1917年大饥荒</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解二月革命后的局面。</div>
+    <div class="sentence">1917年二月革命后，俄国出现了什么样的政治格局？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">布尔什维克完全掌权</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">临时政府与苏维埃双重权力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解布尔什维克的成功策略。</div>
+    <div class="sentence">布尔什维克赢得广泛支持的三个核心口号不包括：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">和平</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">民主</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解新经济政策（NEP）。</div>
+    <div class="sentence">列宁推出新经济政策（NEP）的目的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">全面推行计划经济</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在计划与市场之间寻求过渡</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解苏联计划经济的成就。</div>
+    <div class="sentence">1928-1940年间，苏联通过五个五年计划实现了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">成为世界第一大经济体</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">从农业国变为世界第二大工业强国</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解苏联计划经济的缺陷。</div>
+    <div class="sentence">苏联计划经济最核心的结构性问题是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人口不足</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">缺乏价格信号导致资源配置低效</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解苏联解体的原因。</div>
+    <div class="sentence">戈尔巴乔夫的"改革与开放"导致了什么结果？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">成功挽救了苏联体制</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">加速了体制的崩溃</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解苏联经验的跨学科意义。</div>
+    <div class="sentence">哈耶克的"知识分散性"论断在苏联案例中得到了怎样的验证？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">中央计划可以比市场更高效</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">信息分散在社会各处，中央无法有效收集和处理</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的历史导师。对某个答案不确定？这正是我们该讨论的地方。直接提问，我会解释清楚。<br><br>
+  <strong>推荐阅读：</strong><a href="https://www.goodreads.com/book/show/15295.History_of_the_Russian_Revolution" target="_blank">托洛茨基《俄国革命史》</a> — 从亲历者角度理解革命全过程。<br><br>
+  <a href="../reference/egeme-jieguo-yu-soulian.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-yidajianzheng.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '第一次世界大战是俄国革命的直接催化剂。沙皇俄国的军事失败暴露了体制的无能，战争造成的物资短缺和征兵疲劳在工人阶级中积累了巨大不满。', wrong: '1917年大饥荒不是事实。真正的原因是第一次世界大战——俄军的惨败、物资短缺和征兵疲劳引爆了长期积累的社会矛盾。' },
+    q2: { correct: '二月革命后形成了"双重权力"格局：资产阶级临时政府和苏维埃（工人和士兵代表会议）并存。这种不稳定的政治结构为十月革命创造了条件。', wrong: '二月革命后布尔什维克并没有完全掌权。实际情况是临时政府和苏维埃并存的双重权力格局，这种不稳定状态持续了八个月。' },
+    q3: { correct: '布尔什维克的三个口号是"和平、面包、土地"——分别对应退出战争、解决饥饿和分配土地。"民主"不是他们的核心口号。', wrong: '布尔什维克的核心口号是"和平、面包、土地"，而不是"民主"。这三个简单口号精准击中了当时俄国三大核心诉求。' },
+    q4: { correct: '新经济政策（NEP）是列宁在战时共产主义失败后推出的过渡方案，恢复了部分市场机制，在计划经济与市场之间寻求平衡。', wrong: 'NEP恰恰是在计划经济（战时共产主义）失败后引入的市场元素。它是列宁的务实选择——在计划与市场之间寻求过渡，而非全面推行计划经济。' },
+    q5: { correct: '五个五年计划让苏联GDP年均增长约9%，从一个落后的农业国变成了世界第二大工业强国。这是人类历史上最快的工业化进程之一。', wrong: '苏联从未成为世界第一大经济体（直到解体都排在美国之后）。但它确实完成了从农业国到世界第二大工业强国的惊人转变。' },
+    q6: { correct: '苏联计划经济最核心的缺陷是缺乏价格信号。没有市场价格，中央计划者无法有效处理数百万种商品的供需信息，导致资源配置低效。', wrong: '苏联不缺人口。真正的核心问题是缺乏价格信号——哈耶克的"知识分散性"论断在此得到验证：信息分散在社会各处，中央无法有效收集和处理。' },
+    q7: { correct: '戈尔巴乔夫的改革本想挽救体制，却引发了连锁反应——各加盟共和国独立、官僚体系失散、经济恶化，最终加速了苏联的解体。', wrong: '改革并未挽救苏联。恰恰相反，Perestroika和Glasnost打破了旧体制的约束但未能建立新的稳定结构，导致系统迅速崩溃。' },
+    q8: { correct: '哈耶克认为知识分散在社会各处，任何中央计划者都无法有效收集和处理。苏联计划经济的失败正是这一论断的现实验证。', wrong: '苏联案例恰恰反驳了"中央计划更高效"的观点。事实证明，分散在市场中的价格信号比任何中央计划都能更有效地协调经济活动。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对俄国革命与苏联有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

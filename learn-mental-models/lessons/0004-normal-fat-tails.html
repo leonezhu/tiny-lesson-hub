@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 — 正态分布与肥尾效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .model-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .model-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .model-card ul {
+    margin: 0.5rem 0;
+    padding-left: 1.2rem;
+  }
+
+  .model-card ul li {
+    margin-bottom: 0.3rem;
+  }
+
+  .model-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .model-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .model-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>正态分布与肥尾效应</h1>
+<p class="lesson-meta">Lesson 4 &middot; ~12 分钟 &middot; 多元思维模型</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：学会区分"正态世界"和"肥尾世界"，理解为什么用错分布类型会导致灾难性决策，并掌握在两种世界中各自最优的决策策略。
+</div>
+
+<h2>两种世界的根本分野</h2>
+<p>
+  想象你站在一个田径场上——每个人的身高各不相同，但绝大多数人聚集在中间，极高和极矮的都很少。这就是<strong>正态分布</strong>的世界。再想象你站在一个赌场里——绝大多数人赢的钱不多，但偶尔会有人赢得倾家荡产，也有人赢走一座金库。这就是<strong>肥尾分布</strong>的世界。
+</p>
+<p>
+  关键在于：<strong>你用哪个世界的规则来决策，决定了你能否活到最后。</strong>
+</p>
+
+<div class="model-card">
+  <h3>田径场世界：正态分布（钟形曲线）</h3>
+  <ul>
+    <li>绝大多数数据集中在均值附近（±3σ 覆盖 99.7%）</li>
+    <li>极端值几乎不可能出现</li>
+    <li>各事件相互独立，互不影响</li>
+    <li>由<strong>中心极限定理</strong>保证：大量微小、独立的随机因素叠加 → 钟形曲线</li>
+  </ul>
+  <ul class="examples">
+    <li>成年男性身高：均值 171cm，超过 191cm（+3σ）的人不到 0.13%</li>
+    <li>测量误差：仪器误差、人为读数误差 → 正态分布</li>
+    <li>标准化考试（SAT、高考）：成绩被设计为近似正态分布</li>
+  </ul>
+</div>
+
+<div class="model-card">
+  <h3>赌场世界：肥尾分布</h3>
+  <ul>
+    <li>尾部概率远高于正态分布预测——极端事件"比你想象的常见得多"</li>
+    <li>各事件相互关联，存在传染性和级联效应</li>
+    <li>均值可能无意义（甚至发散）</li>
+    <li>来源：<strong>事件之间的相关性</strong>——恐慌传播、从众效应、网络效应</li>
+  </ul>
+  <ul class="examples">
+    <li>1987 年"黑色星期一"：道琼斯单日暴跌 22.6%，正态分布下平均 30 亿年才出现一次</li>
+    <li>2008 年金融危机：VaR 模型将崩盘标记为"百万分之一概率"——几年内就发生了</li>
+    <li>战争规模：1940-50 年代收集的 140 多次武装冲突数据，死亡人数服从幂律分布</li>
+    <li>地震：8.0 级地震罕见但绝非"统计学异常"</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心陷阱：</strong>在肥尾世界用正态分布做决策是最危险的认知错误。它给你一个虚假的安全感——"统计显示几乎不可能发生"。在肥尾世界中，"几乎不可能"等于"迟早会发生"。2008 年几乎所有主流风险模型的失效，根源都在这里。
+</div>
+
+<h2>为什么正态思维如此流行？</h2>
+<p>
+  正态分布之所以成为"默认思维"，有三层原因：
+</p>
+<p>
+  <strong>1. 数学优雅：</strong>正态分布只需要两个参数（均值和标准差）就能完全描述。这种简洁性让它成为统计学、金融学的基石。Black-Scholes 期权定价模型的核心前提就是收益率服从正态分布。
+</p>
+<p>
+  <strong>2. 直觉舒适：</strong>钟形曲线符合我们对"大多数人在中间"的日常经验。身高、体重、考试分数——这些日常确实验证了正态分布。但问题是，<strong>日常经验≠整个世界</strong>。
+</p>
+<p>
+  <strong>3. 体制惯性：</strong>统计学家 George Box 有句名言："所有模型都是错的，但有些是有用的。"但一旦某个模型被广泛使用，就会形成"正态神教"（Normal Distribution Faith）——即便数据反复证伪，人们仍然不肯放弃。
+</p>
+
+<h2>识别你身处哪个世界</h2>
+<p>做决策前，先问自己一个问题：<strong>极端事件是"几乎不可能"还是"迟早发生"？</strong></p>
+<p>判断标准：</p>
+<p>
+  <strong>正态世界特征：</strong>事件之间相互独立，极端值没有传染性，均值和中位数有意义，尾部概率随距离急剧衰减。<br>
+  <strong>肥尾世界特征：</strong>事件之间存在相关性/反馈，极端事件可以引发更多极端事件，均值可能无意义，尾部概率衰减缓慢。
+</p>
+
+<div class="model-card">
+  <h3>速查表：哪个世界，用什么策略？</h3>
+  <table style="width:100%;border-collapse:collapse;margin-top:0.5rem;">
+    <tr style="background:var(--accent-light);">
+      <th style="padding:0.5rem;text-align:left;">领域</th>
+      <th style="padding:0.5rem;text-align:left;">类型</th>
+      <th style="padding:0.5rem;text-align:left;">适合策略</th>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">身高、温度</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">正态</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">均值-方差优化</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">投资回报</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">肥尾</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">杠铃策略</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">考试分数</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">正态</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">百分位排名</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">创业结果</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">肥尾</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">下行有限、上行无限</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">金融市场</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">肥尾</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">压力测试 + 尾部对冲</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">城市规模</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">肥尾</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">幂律思维</td>
+    </tr>
+  </table>
+</div>
+
+<h2>关键人物与里程碑</h2>
+<p>
+  <strong>高斯（Carl Friedrich Gauss）：</strong>正态分布以他命名。19 世纪初他在天文学中首次系统使用正态分布来建模观测误差，从此正态分布成为科学的标准工具。
+</p>
+<p>
+  <strong>曼德博（Benoît Mandelbrot）：</strong>1963 年发表论文指出棉花价格变动不服从正态分布，当时被金融学主流嘲笑为"异端"。近半个世纪后，2008 年金融危机证明了他 45 年前的判断。他还提出世界的数学结构是分形的而非高斯的。
+</p>
+<p>
+  <strong>塔勒布（Nassim Nicholas Taleb）：</strong>前交易员、数学家，在《黑天鹅》《反脆弱》《随机漫步的傻瓜》中系统阐述了肥尾思维对决策的影响。他提出的"杠铃策略"——大部分资金放在极度安全的资产，小部分放在高上行风险的激进投资——是肥尾世界中最优策略的直觉表达。
+</p>
+
+<div class="chinese-note">
+  <strong>记住：</strong>曼德博说对了吗？2008 年当他 80 多岁时，金融界终于承认了他的观点——但代价是全球金融体系接近崩溃。肥尾思维的教训，往往以昂贵的学费才能学到。
+</div>
+
+<h2>实际应用指南</h2>
+
+<div class="model-card">
+  <h3>投资：杠铃策略（Barbell Strategy）</h3>
+  <p>不要做"中等风险均衡配置"。把 85-90% 的资金放在极度安全的资产（国债、货币基金），10-15% 放在高上行风险的激进投资（风险投资、期权）。在肥尾世界中，"杠铃"比"中庸"更稳健。</p>
+</div>
+
+<div class="model-card">
+  <h3>风险管理：不要只看单一数字</h3>
+  <p>VaR 模型告诉你"明天有 99% 的概率损失不超过 X 元"。但在肥尾世界，那 1% 的尾部可能让你破产。要用压力测试、情景分析、尾部风险对冲来补充。</p>
+</div>
+
+<div class="model-card">
+  <h3>职业决策：追求"下行有限、上行无限"</h3>
+  <p>在肥尾领域（创业、投资、职业选择），小概率的巨大结果远比重复的小收益重要。做那些"最坏情况也能承受，最好情况能翻倍"的事。</p>
+</div>
+
+<h2>练习：识别分布类型</h2>
+<p>下面有 8 道题，判断每种情境属于正态分布还是肥尾分布，并选择正确的决策策略。</p>
+
+<div class="quiz-section">
+  <h2>Practice</h2>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">一家保险公司评估房屋火灾风险。</div>
+    <div class="sentence">火灾事件之间是否高度相关？这属于哪种分布？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正态分布——独立事件</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">肥尾分布——高度相关</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在考虑是否购买某只股票。</div>
+    <div class="sentence">这只股票属于科技初创公司。你判断它的收益分布类型应该是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">正态分布——可以用均值预测</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">肥尾分布——极少数公司占绝大部分回报</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一个银行的风险官在做年度压力测试。</div>
+    <div class="sentence">根据 2008 年的教训，以下哪种做法最合理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">用多种情景模拟 + 尾部对冲</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">依赖 VaR 模型的 99% 置信区间</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你正在分析公司员工的绩效考核分数。</div>
+    <div class="sentence">如果公司强制要求所有员工评分必须符合"中间多、两头少"的分布，这近似哪种分布？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正态分布</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">肥尾分布</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在规划个人职业路径。</div>
+    <div class="sentence">以下哪个决策策略最适合"肥尾世界"的职业选择？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">追求稳定的中等收益，避免风险</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">追求下行有限、上行无限的选择</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">曼德博 1963 年的发现被主流金融学嘲笑了 45 年。</div>
+    <div class="sentence">原因最可能是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">他数学不够好</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正态思维已成为学科默认范式，挑战它等于挑战学科根基</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在评估一座城市的地震风险。</div>
+    <div class="sentence">以下哪种说法正确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">8.0 级地震是"统计学异常"，正态分布下几乎不可能发生</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">地震规模服从幂律/肥尾分布，大地震是系统常态而非异常</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在做一个投资组合配置决策。</div>
+    <div class="sentence">在肥尾世界的投资环境中，"杠铃策略"的核心思想是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">把资金均匀分配到风险不同的资产中</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">极端保守 + 极端激进，避开中等风险</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>任何关于正态分布和肥尾分布的问题都可以问我。不确定某件事属于哪个世界？这正是我们该讨论的。直接提问，我来帮你分析。<br><br>
+  <strong>推荐延伸阅读：</strong><a href="https://fs.blog/2016/10/fat-tails/" target="_blank">Farnam Street: Fat Tails</a> — 用通俗语言解释为什么肥尾思维改变一切。<br><br>
+  <a href="../reference/normal-fat-tails.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-power-law.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-natural-selection.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '房屋火灾在地理上是相对独立的（除非发生连环火灾）。保险精算通常使用正态/泊松分布来建模独立事件。关键判断标准：单个事件之间是否高度相关。', wrong: '火灾之间不是高度相关的——一栋房子着火不会直接导致另一栋着火（除非是森林火灾）。在独立事件中，正态/泊松分布是合适的模型。' },
+    q2: { correct: '科技初创公司的收益是典型的肥尾分布——极少数公司（如 Facebook、Google）贡献了绝大部分回报，绝大多数公司归零。这就是幂律/肥尾世界。', wrong: '初创公司绝不能用均值来预测回报。绝大多数失败，极少数爆炸性成功——这是典型的肥尾/幂律分布特征。' },
+    q3: { correct: '2008 年的核心教训：单一 VaR 数字在肥尾世界是致命的。压力测试、情景分析、尾部对冲是多维度的必要补充。', wrong: 'VaR 模型在肥尾世界是灾难性的。2008 年几乎所有银行都依赖 VaR，结果"百万分之一"的事件几年内就发生了。' },
+    q4: { correct: '"中间多、两头少"是正态分布（钟形曲线）的典型特征。强制评分分布就是人为制造正态分布。', wrong: '肥尾分布的特点是"少数极端值主导"，与"中间多、两头少"正相反。' },
+    q5: { correct: '肥尾世界的特征是极少数事件决定绝大部分结果。所以策略应该是"下行有限"（亏了能承受）+ "上行无限"（万一中了巨大回报），而不是追求"稳定"。', wrong: '在肥尾世界中追求"稳定"是危险的——你可能错失改变一生的机会。同时，肥尾意味着极端负面事件也真的会发生，"避免风险"本身也是风险。' },
+    q6: { correct: '这是科学社会学中的"范式锁定"（paradigm lock-in）现象。当正态分布成为金融学的默认框架后，挑战它不仅仅是质疑一个公式，而是质疑整个学科的基础假设。', wrong: '曼德博的数学非常出色，他是分形几何的创始人。他被嘲笑不是因为数学不够好，而是因为他的观点挑战了当时金融学的核心范式。' },
+    q7: { correct: '地震规模服从幂律分布（里氏震级每增加 1 级，能量释放增加约 32 倍）。8.0 级地震虽然罕见，但是幂律分布中的"正常事件"，不是"异常"。', wrong: '用正态分布来预测地震是 20 世纪灾害科学的最重要教训之一——正态分布会系统性低估大地震的概率。' },
+    q8: { correct: '杠铃策略的核心是"两边极端，中间空"：大部分极度安全 + 小部分极度高回报。肥尾世界中，中等风险资产可能既不够安全也不够有上行空间。', wrong: '均匀分配（分散化）在正态世界中有效，但在肥尾世界中，"中等风险"资产可能带来"中等损失"——既没有安全性也没有爆发力。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经深刻理解了正态与肥尾的分野。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的那几题，解释告诉你原因。';
+      else label.textContent = '继续！重读上面的内容再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

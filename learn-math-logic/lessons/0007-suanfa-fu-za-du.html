@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 — 算法与复杂度：什么可计算，什么可高效计算</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .complexity-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .complexity-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .complexity-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .complexity-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .complexity-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .complexity-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .complexity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .complexity-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .complexity-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .complexity-table tr:nth-child(even) td {
+    background: var(--accent-light);
+  }
+
+  .complexity-table .time {
+    font-family: 'Merriweather', Georgia, serif;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison-box .box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .comparison-box .box h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .comparison-box .box.left {
+    border-top: 3px solid var(--accent);
+  }
+
+  .comparison-box .box.right {
+    border-top: 3px solid #e65100;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>算法与复杂度</h1>
+<p class="lesson-meta">Lesson 7 &middot; ~12 minutes &middot; 理解计算能力的边界</p>
+
+<div class="goal-box">
+  <strong>学完这一课后</strong>，你将能够：用大 O 记号描述算法效率、理解 P vs NP 问题的含义和重要性、解释为什么某些问题"理论上可解但实际上做不到"，以及理解复杂度分析如何影响现实世界中的系统设计。
+</div>
+
+<h2>两种截然不同的"做不到"</h2>
+
+<p>
+  计算机科学家把"计算机做不到"分成两类，这两类的含义天差地别：
+</p>
+
+<div class="comparison-box">
+  <div class="box left">
+    <h4>第一类：永远做不到</h4>
+    <p>
+      <strong>可计算性</strong>——无论给你多少时间、多少台电脑，这个问题都无解。<br>
+      例如：停机问题（判断一段程序会不会永远运行下去）。这不是硬件不够强，而是逻辑上就不存在通用算法。
+    </p>
+  </div>
+  <div class="box right">
+    <h4>第二类：理论上能做，实际等不起</h4>
+    <p>
+      <strong>复杂度</strong>——问题有解法，但需要的计算量超出了宇宙的寿命。<br>
+      例如：对 200 个整数做全排列。算法存在，但 200! 约等于 10<sup>375</sup>，比宇宙原子总数还多。
+    </p>
+  </div>
+</div>
+
+<p>
+  这就是为什么算法复杂度是计算机科学最重要的基础之一：<strong>可计算性</strong>回答了"什么能做"，<strong>算法复杂度</strong>回答了"什么能<strong>高效</strong>做"。图灵机解决了前者，大 O 记号解决了后者。
+</p>
+
+<h2>大 O 记号：给算法"评级"</h2>
+
+<p>
+  大 O 记号（Big O）是一种"渐进上界"的描述方式。它不看具体跑了多少秒——那取决于电脑有多快——而是看<strong>当输入规模变大时，运行时间增长的速率</strong>。
+</p>
+
+<table class="complexity-table">
+  <tr>
+    <th>复杂度</th>
+    <th>名称</th>
+    <th>日常例子</th>
+    <th>n = 100 万时</th>
+  </tr>
+  <tr>
+    <td>O(1)</td>
+    <td>常数</td>
+    <td>从数组的第 5 个位置取值</td>
+    <td class="time">1 步</td>
+  </tr>
+  <tr>
+    <td>O(log n)</td>
+    <td>对数</td>
+    <td>在已排序的字典中翻找单词</td>
+    <td class="time">20 步</td>
+  </tr>
+  <tr>
+    <td>O(n)</td>
+    <td>线性</td>
+    <td>在名单上挨个找人</td>
+    <td class="time">100 万次</td>
+  </tr>
+  <tr>
+    <td>O(n log n)</td>
+    <td>线性对数</td>
+    <td>快速排序（高效排序算法）</td>
+    <td class="time">2000 万次</td>
+  </tr>
+  <tr>
+    <td>O(n<sup>2</sup>)</td>
+    <td>平方</td>
+    <td>冒泡排序、两两比较</td>
+    <td class="time">10<sup>12</sup> 次</td>
+  </tr>
+  <tr>
+    <td>O(2<sup>n</sup>)</td>
+    <td>指数</td>
+    <td>旅行商问题（暴力穷举）</td>
+    <td class="time">10<sup>300,000</sup> 次</td>
+  </tr>
+</table>
+
+<div class="chinese-note">
+  <strong>最反直觉的一点：</strong>算法的时间复杂度取决于<strong>增长速率</strong>，不是常数系数。一个 O(n) 的算法，哪怕每次循环要做 100 万步，当 n 足够大时，它仍然比一个 O(n<sup>2</sup>) 的算法——哪怕每次循环只花 1 纳秒——更快。因为 100 万 &times; n 最终会小于 n<sup>2</sup>。
+</div>
+
+<h2>最著名的问题：P vs NP</h2>
+
+<p>
+  这是整个计算机科学最核心、悬赏 100 万美元的未解问题。要理解它，先搞清楚两个词：
+</p>
+
+<div class="complexity-card">
+  <h3>P（Polynomial Time）——"能高效求解"</h3>
+  <p class="form">存在多项式时间算法可以<strong>直接解决</strong>的问题</p>
+  <ul class="examples">
+    <li>排序：O(n log n) 就能搞定</li>
+    <li>最短路径（Dijkstra）：O(n<sup>2</sup>) 找到</li>
+    <li>矩阵乘法：O(n<sup>3</sup>) 计算</li>
+    <li>判断一个数是不是质数：O(n<sup>6</sup>) 以内可解（AKS 算法）</li>
+  </ul>
+</div>
+
+<div class="complexity-card">
+  <h3>NP（Nondeterministic Polynomial Time）——"能高效验证"</h3>
+  <p class="form">存在多项式时间算法可以<strong>验证答案是否正确</strong>的问题</p>
+  <ul class="examples">
+    <li>旅行商问题：给你一条路线，几秒就能算出总距离是否小于目标值</li>
+    <li>SAT（布尔可满足性）：给出一组变量赋值，验证公式是否为真——几乎瞬间</li>
+    <li>数独：填完后检查规则——几秒完成</li>
+    <li>RSA 密码破解：给出质因数，验证乘积是否正确——瞬间</li>
+  </ul>
+</div>
+
+<p>
+  所有 P 的问题都属于 NP（如果你能高效求解，自然能高效验证）。但问题是：<strong>NP 是否等于 P？</strong> 也就是说：如果一个问题的答案能高效验证，是否意味着它也一定能高效求解？
+</p>
+
+<p>
+  绝大多数计算机科学家相信 <strong>P &ne; NP</strong>——即存在一些答案能高效验证但无法高效求解的问题。如果 P = NP，那意味着：
+</p>
+
+<ul class="examples">
+  <li>RSA 加密会被瞬间破解（因为因数分解的答案能验证，如果能高效求解，密码体系就崩塌了）</li>
+  <li>蛋白质折叠可以被自动求解（答案是高效的）</li>
+  <li>数学证明可以被自动生成（给定一个定理，能高效找到证明）</li>
+  <li>优化问题不再需要启发式算法——永远能找到最优解</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>为什么这很重要：</strong>如果 P = NP，现实世界将"坍塌"——MIT 教授 Scott Aaronson 的表述。优化、密码学、创造力——这一切都建立在"有些问题答案好验证但求解很难"这个假设上。如果这个假设被推翻，我们整个数字文明的基础将被动摇。
+</div>
+
+<h2>NP-完全问题：最难的"难问题"</h2>
+
+<p>
+  NP-完全（NP-complete）是 NP 中最难的那一类问题。它们有一个神奇性质：<strong>如果任何一个 NP-完全问题找到了多项式时间解法，那么所有 NP 问题都能在多项式时间内求解——即 P = NP。</strong>
+</p>
+
+<p>
+  目前已知的 NP-完全问题超过 10,000 个，包括：
+</p>
+
+<div class="complexity-card">
+  <h3>经典 NP-完全问题</h3>
+  <ul class="examples">
+    <li><strong>旅行商问题（TSP）</strong>：给定 n 个城市，找到访问每个城市恰好一次的最短回路。暴力法要检查 (n-1)! 条路径，n=20 时就完全不可行了。</li>
+    <li><strong>布尔可满足性问题（SAT）</strong>：是否存在一组变量赋值，使得布尔公式为真？这是所有 NP-完全问题的"始祖"（Cook-Levin 定理）。</li>
+    <li><strong>背包问题</strong>：给定物品重量和价值，在容量限制下最大化总价值。物品多了以后，每个物品"放"或"不放"的 2<sup>n</sup> 种组合无法穷举。</li>
+    <li><strong>图着色</strong>：用最少的颜色给地图着色，使相邻区域颜色不同。四色定理保证了 4 色够用，但找到最优着色方案是 NP-完全的。</li>
+    <li><strong>子集和问题</strong>：给定一组数字，是否存在一个子集，其和恰好等于某个目标值？这直接关联到密码学的安全性。</li>
+  </ul>
+</div>
+
+<h2>当精确解不存在时：近似与启发式</h2>
+
+<p>
+  既然 NP-难问题无法高效求解，现实中我们怎么做？答案是三个策略：
+</p>
+
+<div class="complexity-card">
+  <h3>1. 近似算法 —— 保证"足够好"</h3>
+  <p class="form">解不会是最优的，但保证在最优解的某个倍数以内</p>
+  <ul class="examples">
+    <li>TSP 的 Christofides 算法：解不超过最优解的 1.5 倍，运行时间 O(n<sup>3</sup>)</li>
+    <li>背包问题的 FPTAS：可以任意接近最优解，代价是运行时间稍长</li>
+    <li>Google 地图的路线规划：实际用的是近似算法，在毫秒级给出"很好"的路径，而非"绝对最优"</li>
+  </ul>
+</div>
+
+<div class="complexity-card">
+  <h3>2. 启发式 —— "通常效果好，但不保证"</h3>
+  <ul class="examples">
+    <li>模拟退火：模仿金属冷却过程，随机接受"变差"的解以避免陷入局部最优</li>
+    <li>遗传算法：模拟自然选择，迭代优化候选解</li>
+    <li>AlphaFold：不解决蛋白质折叠的 NP-难本质，但用深度学习找到了"生物实践中足够好"的答案</li>
+  </ul>
+</div>
+
+<div class="complexity-card">
+  <h3>3. 专门化 —— 缩小问题范围</h3>
+  <ul class="examples">
+    <li>现实中的"TSP"很少需要访问超过 100 个点——GPS 物流优化通常用专门设计的启发式</li>
+    <li>如果图的度数有限制，图着色问题可以高效求解</li>
+    <li>如果数据有特殊结构（比如稀疏矩阵），很多 O(n<sup>3</sup>) 的算法可以大幅优化</li>
+  </ul>
+</div>
+
+<h2>复杂度在现实世界中的体现</h2>
+
+<p>
+  算法复杂度不只是理论——它每天都在决定什么东西"做得成"、什么东西"做不起"：
+</p>
+
+<p>
+  <strong>搜索引擎</strong>：Google 每天处理约 50 亿次搜索请求。每次搜索需要在毫秒级内从千亿级网页中找到最相关的结果。这要求索引和排序算法必须是 O(log n) 或 O(n)——如果是 O(n<sup>2</sup>)，即使最快的计算机也扛不住。
+</p>
+
+<p>
+  <strong>物流优化</strong>：UPS 的 ORION 系统每天优化 55,000 条投递路线。这是变体 TSP 问题，通过近似算法和启发式，每年节省约 4,000 万英里、减少 30,000 吨 CO<sub>2</sub> 排放。
+</p>
+
+<p>
+  <strong>AI 训练成本</strong>：训练大语言模型的复杂度是 O(n<sup>2</sup>&middot;d)（n = token 数，d = 维度）。GPT-3 的 1750 亿参数意味着训练成本约 10<sup>25</sup> FLOPs——约等于 364 年持续运行 10,000 块 V100 GPU。复杂度分析直接决定了 AI 的可及性和成本。
+</p>
+
+<div class="chinese-note">
+  <strong>核心洞见：</strong>理解算法复杂度，就是理解"计算能力的边界"。它告诉我们：世界并不是一切"理论上可解"的东西都能"实际上做到"。有些问题需要精确解，有些需要好解，有些——我们甚至还没找到好解。而这三种选择之间的分水岭，就是复杂度。
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的数学与逻辑老师。不理解为什么某些问题"理论上可解但实际做不到"？觉得 P vs NP 抽象？这正好是我们该聊的地方。直接提问，我会解释。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://en.wikipedia.org/wiki/Computational_complexity_theory" target="_blank">Wikipedia — Computational Complexity Theory</a> — 深入阅读复杂度分类和 NP-完全性的证明思路。
+  <br><br>
+  <a href="../reference/suanfa-fu-za-du.html" class="resource-link">查看参考速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-xinxi-lun-xinxi-eng.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-turing-ji-ke-ji-suan-xing.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '二分查找每次把搜索范围减半。对于 100 万个元素，log<sub>2</sub>(1,000,000) &asymp; 20 次比较就够了。这就是 O(log n)。',
+      wrong: '即使每次只比较 1 个元素，O(log n) 的意思是"每步都把剩余问题缩小到原来的常数比例"，不是"只做一个操作"。二分查找的核心是"每次排除一半"。'
+    },
+    q2: {
+      correct: '"P &subseteq; NP"意味着所有能高效求解的问题也都能高效验证——这几乎是"废话"。如果你能在多项式时间内找到答案，当然也能在多项式时间内检查答案对不对。',
+      wrong: 'P 和 NP 的关系不是"求解比验证难"，而是"求解和验证是否等价"。P &subseteq; NP 是 trivial 的——能求解自然能验证。真正的问题是反向包含。'
+    },
+    q3: {
+      correct: 'O(n<sup>2</sup>) 和 O(n log n) 的根本区别在于增长速率。n = 1,000,000 时，n log n &asymp; 20,000,000，而 n<sup>2</sup> = 1,000,000,000,000——差了 50,000 倍。当 n 更大时，差异呈爆炸式增长。',
+      wrong: '在 n 很小的时候（比如 n < 10），O(n<sup>2</sup>) 可能比 O(n log n) 快（常数系数更小），但"渐进行为"关心的是 n 趋近无穷时的情况。复杂度比较的不是常数，而是增长速率。'
+    },
+    q4: {
+      correct: 'SAT 是历史上第一个被证明为 NP-完全的问题（Cook-Levin 定理, 1971）。任何 NP 问题都可以"翻译"成 SAT 问题。因此，如果你能高效求解 SAT，就能高效求解所有 NP 问题——P = NP。',
+      wrong: 'SAT 不是"恰好" NP-完全，而是"一切 NP-完全问题的源头"。Cook-Levin 定理证明了所有 NP 问题都可以归约到 SAT——这意味着 SAT 是"最难的"NP 问题之一。'
+    },
+    q5: {
+      correct: 'RSA 密码的安全性基于大整数分解的"困难性"。给定两个大质数 p 和 q，相乘 N = p &times; q 很容易（O(n<sup>2</sup>）），但给定 N 反推 p 和 q——目前没有已知的多项式时间算法。如果 P = NP，分解将变得高效，RSA 就崩溃了。',
+      wrong: 'RSA 不是基于 NP-完全问题（因数分解目前不被认为是 NP-完全的），但它属于 NP 且被认为不在 P 中。无论哪种情况，P = NP 都会让 RSA 不安全。'
+    },
+    q6: {
+      correct: '"近似到 1.5 倍以内"意味着：如果最优解的长度是 1000 英里，Christofides 算法保证找到的路线不超过 1500 英里。这是一个<strong>保证上限</strong>——不是"通常接近最优"，而是"永远不超过最优解的 1.5 倍"。',
+      wrong: '1.5 倍不是随意的——Christofides 算法利用最小生成树和匹配理论，从图论角度证明了"最差情况也不会超过最优解 1.5 倍"。这是数学证明，不是经验观察。'
+    },
+    q7: {
+      correct: 'O(n!) 的增长快到令人恐惧。n = 20 时，20! &asymp; 2.4 &times; 10<sup>18</sup>——即使每秒跑 10 万亿次运算，也需要 77 年。n = 100 时，100! &asymp; 10<sup>157</sup>——远超宇宙原子总数（约 10<sup>80</sup>）。',
+      wrong: 'n = 10 时 10! = 3,628,800，看起来还行。但复杂度看的是"增长速率"，不是"当前值"。阶乘增长比指数还快——每多一个元素，乘上的因子越来越巨大。'
+    },
+    q8: {
+      correct: '如果 P = NP，意味着所有"答案可高效验证"的问题也"可高效求解"。数学证明是一个候选——给定一个定理和一个证明长度上限，如果能高效搜索满足条件的证明序列，那么自动定理证明将成为可能。',
+      wrong: 'P = NP 不等于"所有事情都变得简单"。它特指"可多项式时间验证的问题也多项式时间可解"。比如 O(2<sup>n</sup>) 的问题，如果 P = NP，会被降到多项式时间——但这仍然是"指数到多项式"的跨越。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对算法复杂度的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，你的理解会更深刻。';
+      else label.textContent = '继续加油！重新阅读上面的例子，再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+<div class="footer">
+  <a href="0006-xinxi-lun-xinxi-eng.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-turing-ji-ke-ji-suan-xing.html">下一课</a>
+</div>
+
+</body>
+</html>

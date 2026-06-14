@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 粤语与中古汉语</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card .ipa {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .highlight-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>粤语与中古汉语</h1>
+<p class="lesson-meta">第11课 · ~15分钟 · 历史语言学</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解粤语为何被称为"中古汉语的活化石"，掌握入声韵尾、声调继承和文白异读三大核心对应关系，能用具体例子说明粤语如何保留了普通话已经丢失的中古汉语特征。
+</div>
+
+<h2>什么是中古汉语？</h2>
+<p>
+  中古汉语（Middle Chinese）是指大约公元600年前后、隋唐时期的汉语语音系统。我们没有当时的录音，但通过两部重要的韵书——<strong>《切韵》</strong>（601年）和<strong>《广韵》</strong>（1008年）——学者们重建了这个语音系统。《广韵》收录了26192个字、206个韵部，是中古汉语最完整的记录。
+</p>
+<p>
+  关键问题是：<strong>中古汉语到底是什么样子的？</strong> 答案藏在现代方言中。粤语、闽语、吴语各自保留了中古汉语的不同侧面，而粤语保留得最为完整——它同时拥有入声韵尾、完整的声调格局和大量的文白异读，堪称一个"完整的切片"。
+</p>
+
+<div class="highlight-box">
+  <strong>核心比喻：</strong>如果把汉语方言比作考古地层，普通话是最新的一层（入声已丢失），粤语是最完整保留中古地层的一层。学习粤语，某种程度上就是在"现场"学习中古汉语的发音。
+</div>
+
+<h2>入声韵尾：最直接的证据</h2>
+<p>
+  中古汉语有三种塞音韵尾：<strong>-p、-t、-k</strong>。它们让音节以闭口音结尾，发音短促有力。普通话在元代以后全面丢失了这些韵尾（"入派四声"），入声字分散到了平、上、去、入四声中。而粤语完整维持了这种音节闭合结构。
+</p>
+
+<div class="concept-card">
+  <h3>入声韵尾对照表</h3>
+  <table>
+    <thead>
+      <tr><th>韵尾</th><th>中古韵摄</th><th>粤语示例</th><th>普通话结果</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>-p</strong></td><td>缉韵</td><td>入[jap6]、十[sap6]</td><td>消失，归入开音节</td></tr>
+      <tr><td><strong>-t</strong></td><td>术韵</td><td>笔[bat1]、一[jat1]</td><td>消失，归入开音节</td></tr>
+      <tr><td><strong>-k</strong></td><td>德韵</td><td>国[wok3]、色[sik1]</td><td>消失，归入开音节</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  <strong>动手试试：</strong>用粤语读"十""笔""国"三个字，注意你的嘴唇在最后是闭合的——这就是-p、-t、-k韵尾的物理表现。用普通话读同样的字，你会发现没有这个闭口动作。
+</p>
+
+<h2>声调系统的继承：九声六调从何而来？</h2>
+<p>
+  中古汉语的声调格局是<strong>"四声八调"</strong>：平、上、去、入各分阴阳（全清、次清为一类，全浊、次浊为一类），共8个调类。粤语的"九声六调"正是这一系统的直接继承。
+</p>
+
+<div class="concept-card">
+  <h3>中古 → 粤语声调继承</h3>
+  <table>
+    <thead>
+      <tr><th>中古调类</th><th>粤语调名</th><th>粤拼标记</th><th>调值</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>阴平</td><td>阴平（高平）</td><td>高平调</td><td>55</td></tr>
+      <tr><td>阳平</td><td>阳平（低升）</td><td>低升调</td><td>23</td></tr>
+      <tr><td>阴上</td><td>阴上（高升）</td><td>高升调</td><td>35</td></tr>
+      <tr><td>阳上</td><td>阳上（低降）</td><td>低降调</td><td>21</td></tr>
+      <tr><td>阴去</td><td>阴去（高降）</td><td>高降调</td><td>33</td></tr>
+      <tr><td>阳去</td><td>阳去（低降升）</td><td>低降升调</td><td>22</td></tr>
+      <tr><td>阴入</td><td>阴入（高平入）</td><td>高平入</td><td>5</td></tr>
+      <tr><td>中入</td><td>中入（高升入）</td><td>高升入</td><td>3</td></tr>
+      <tr><td>阳入</td><td>阳入（低降入）</td><td>低降入</td><td>2</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  为什么叫"九声六调"？因为九个调类中，有些调值非常接近，听感上难以区分：阴入与阴平调值相近、中入与阴上相近、阳入与阳平相近。所以实际听到的只有六个不同的音调轮廓，但理论上确实存在九个调类。
+</p>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>普通话只有四个声调（阴平55、阳平35、上声214、去声51），丢失了入声调类。这意味着普通话使用者在学习粤语时，不是在"添加"新东西，而是在"恢复"他们祖先曾经拥有的发音系统。
+</div>
+
+<h2>声母的保守特征</h2>
+<p>
+  中古汉语的声母系统（以《切韵》36字母为代表）在粤语中保留了三项关键特征：
+</p>
+
+<div class="concept-card">
+  <h3>1. 全浊声母的清化规律</h3>
+  <p>中古全浊声母（如並、定、群）在粤语中清化，但送气规律与普通话不同。普通话按"平声送、仄声不送"的规则；粤语则大部分送气，不论平仄。</p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 知章组的分化</h3>
+  <p>中古知、章两组声母在粤语中保持清晰对立，而在普通话中大量合并。这解释了为什么一些粤语读音与普通话读音看起来毫无关联。</p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 见组细音不颚化</h3>
+  <p>中古见组（见、溪、群、晓）在i、y前保持[k]/[kʰ]/[h]不颚化，如"基"[kɐi]而非[ji]。这是与北方话最显著的差异之一。普通话中"基"读[ji]，颚化现象是北方话特有的演变。</p>
+</div>
+
+<h2>文白异读：一个字的两副面孔</h2>
+<p>
+  <strong>文白异读</strong>是粤语与中古汉语关系中最迷人的现象之一。同一个字在"读书音"（文读）和"口语"（白读）中发音不同，反映了不同历史层次的叠加。
+</p>
+
+<div class="concept-card">
+  <h3>文白异读示例</h3>
+  <table>
+    <thead>
+      <tr><th>字</th><th>文读（读书音）</th><th>白读（口语）</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>学</td><td>[hok6]</td><td>[hoak3]</td><td>文读对应中古入声，白读保留更古老韵尾变体</td></tr>
+      <tr><td>食</td><td>[sik6]</td><td>[zik6]</td><td>文读保留全浊声母的清化形式</td></tr>
+      <tr><td>飞</td><td>[fei1]</td><td>[bui1]</td><td>白读保留了更古老的唇音声母</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  文读通常更接近韵书记录的"标准音"（用于读书、正式场合），白读则是日常口语中保留的更古老或更本土的形式。这种现象在粤语中非常丰富，是语言层次分析的宝贵素材。
+</p>
+
+<h2>中古词汇在粤语中的遗存</h2>
+<p>
+  粤语保留了大量中古汉语词汇，这些词汇在普通话中已被替换。这不是粤语"创造"了这些词，而是中古汉语的日常用词在北方话中被替换后，在粤语中保留了下来。
+</p>
+
+<div class="concept-card">
+  <h3>中古词 vs 普通话替换词</h3>
+  <table>
+    <thead>
+      <tr><th>中古词</th><th>粤语</th><th>普通话</th><th>《说文》释义</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>行</td><td>haang4</td><td>走</td><td>"人足曰行"</td></tr>
+      <tr><td>食</td><td>sik6</td><td>吃</td><td>"食，一米也"</td></tr>
+      <tr><td>饮</td><td>jam2</td><td>喝</td><td>"饮，啜也"</td></tr>
+      <tr><td>面</td><td>min6</td><td>脸</td><td>"面，颜前也"</td></tr>
+      <tr><td>衣</td><td>ji1</td><td>衣服</td><td>"衣，依也"</td></tr>
+      <tr><td>颈</td><td>geng2</td><td>脖子</td><td>"颈，项也"</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>实用价值：</strong>当你用粤语读唐诗宋词时，你会发现很多在普通话中不押韵的诗句，用粤语读起来却朗朗上口。这是因为粤语保留了中古的韵母系统，更接近诗歌创作时的实际发音。
+</div>
+
+<h2>高本汉：用粤语重建中古汉语</h2>
+<p>
+  <strong>高本汉（Bernhard Karlgren）</strong>是瑞典汉学家，20世纪初他做了一个开创性的工作：以粤语、吴语等现代方言为证据，首次系统重建了中古汉语音系。他的方法至今仍是历史音韵学的基础。
+</p>
+<p>
+  高本汉的逻辑是：如果现代方言A保留了-p韵尾而方言B丢失了-p韵尾，那么祖先语言很可能有-p韵尾。通过比较多个方言的对应关系，加上韵书的记载，就能推断出中古汉语的完整音系。
+</p>
+
+<div class="followup">
+  <strong>下一步：</strong>学完本课后，你可以尝试用粤语发音读一首唐诗（比如李白的《静夜诗》），感受中古汉语的韵律之美。也可以看看上一课"粤语声调系统"来巩固九声六调的实际运用。<br><br>
+  <strong>延伸阅读：</strong>高本汉《中国音韵学研究》——历史音韵学的奠基之作，展示了如何用方言证据重建古代语音。
+  <br><br>
+  <a href="../reference/yue-chinese-middle-chinese.html" class="resource-link">查看速查卡</a>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下8道题涵盖本课核心知识点，每道题有两个选项，点击选择后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">入声韵尾的识别</div>
+    <div class="sentence">以下哪个字的粤语读音保留了中古汉语的塞音韵尾？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">花 [faa1]</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">十 [sap6]</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">普通话 vs 粤语的入声</div>
+    <div class="sentence">普通话中"入派四声"指的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">入声字分散到平、上、去、入四声中</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">入声合并为一个统一的声调</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">声调系统</div>
+    <div class="sentence">中古汉语的声调格局是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">四声四调</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">四声八调</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">词汇对应</div>
+    <div class="sentence">粤语"食"[sik6]对应普通话的哪个词？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">喝</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">吃</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">文白异读</div>
+    <div class="sentence">粤语中"文读"和"白读"的主要区别是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">文读是粤语，白读是普通话</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">文读是读书音，白读是口语</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">历史语言学</div>
+    <div class="sentence">谁首次以粤语等现代方言为证据系统重建了中古汉语音系？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">高本汉（Bernhard Karlgren）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">赵元任</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">见组不颚化</div>
+    <div class="sentence">粤语中"基"读[kɐi]而非[ji]，这体现了什么现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">粤语有颚化现象</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">见组细音不颚化</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">《广韵》</div>
+    <div class="sentence">《广韵》收录了多少个字？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约12000字</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">26192字</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="0010-cantonese-tone-system.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-cantonese-grammar.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"十"[sap6]以-p韵尾结尾，嘴唇最后闭合。这是中古入声韵尾-p的直接继承。"花"[faa1]是开音节，没有塞音韵尾。', wrong: '"花"[faa1]是开音节发音，没有塞音韵尾。"十"[sap6]以-p结尾，发音时嘴唇要闭合——这正是中古入声韵尾-p的保留。' },
+    q2: { correct: '"入派四声"指入声字在元代以后分散到了平、上、去、入四个声调中，不再作为一个独立的调类存在。', wrong: '普通话不是把入声"合并"为一个声调，而是把入声字"拆分"到了平、上、去三个声调中（即"入派三声"）。' },
+    q3: { correct: '中古汉语有四声（平、上、去、入），每声又分阴阳（全清、次清 vs 全浊、次浊），共四声八调。', wrong: '四声四调是简化说法。中古汉语的四声各分阴阳两类，所以是八调而非四调。' },
+    q4: { correct: '"食"[sik6]在粤语中对应普通话的"吃"。这个词在中古汉语中就是"食"，普通话后来改用"吃"。', wrong: '"喝"对应的是粤语的"饮"[jam2]。"食"对应的是普通话的"吃"——都是中古汉语的日常用词在粤语中的遗存。' },
+    q5: { correct: '文读是"读书音"，用于朗读、正式场合，更接近韵书记录的标准音。白读是"口语"，是日常交流中使用的本土发音。', wrong: '文读和白读都是粤语内部的两种读音，不是粤语和普通话的区别。文读偏书面正式，白读偏口语日常。' },
+    q6: { correct: '高本汉（Bernhard Karlgren）是瑞典汉学家，20世纪初以粤语、吴语等现代方言为证据，首次系统重建了中古汉语音系。', wrong: '赵元任也是著名语言学家，但"以方言重建中古音"这一开创性工作是由高本汉完成的。' },
+    q7: { correct: '"基"[kɐi]保留了中古见组声母[k]，没有像普通话那样颚化为[j]。这是粤语声母系统保守特征的典型例证。', wrong: '粤语恰恰是"不颚化"——见组声母在i、y前保持[k]音，不像普通话颚化为[j]。"基"[kɐi]就是例证。' },
+    q8: { correct: '《广韵》于公元1008年刊行，收录26192字、206个韵部，是中古汉语音韵体系最完整的记录。', wrong: '12000字远少于实际数量。《广韵》实际收录26192字，是研究中古汉语最重要的韵书。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对粤语与中古汉语的关系有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下答错题目的解释，加深理解。';
+      else label.textContent = '继续加油！重读上面的内容，特别是入声韵尾和声调继承部分。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

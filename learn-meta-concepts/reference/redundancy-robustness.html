@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：冗余与稳健</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .ref-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>冗余与稳健</h1>
+<p class="ref-meta">元概念 · 课程 11 · 快速参考卡</p>
+
+<div class="card">
+  <h2>核心定义</h2>
+  <p><strong>冗余（Redundancy）：</strong>系统中超出"最低必需"的备份或替代组件。</p>
+  <p><strong>稳健（Robustness）：</strong>系统在扰动下维持核心功能的能力。</p>
+</div>
+
+<div class="card">
+  <h2>关键原理</h2>
+  <ul>
+    <li>冗余以<strong>非线性</strong>方式提升稳健性——第一个备份效果最大</li>
+    <li><strong>异构冗余</strong>（不同原理）比同构冗余更有效，防止共同模式故障</li>
+    <li>最优冗余 = 当冗余成本 = 故障期望损失 × 风险降低幅度</li>
+    <li>冗余是一种<strong>前瞻性投资</strong>，不是补救措施</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>跨学科实例</h2>
+  <ul>
+    <li><strong>生物：</strong>基因冗余、双肾、免疫多样性</li>
+    <li><strong>工程：</strong>三重冗余航空系统、数据中心多级备份</li>
+    <li><strong>经济：</strong>多地供应链、安全库存、近岸外包</li>
+    <li><strong>生态：</strong>生物多样性 = 生态位冗余</li>
+    <li><strong>金融：</strong>分散投资 = 财务冗余</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>常见误区</h2>
+  <ul>
+    <li>× "冗余就是浪费" → 冗余是保险的数学表达</li>
+    <li>× "越多冗余越好" → 有最优量，取决于失效后果</li>
+    <li>× "同构冗余够用" → 异构冗余才能防共同模式故障</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>关联概念</h2>
+  <span class="tag">路径依赖</span>
+  <span class="tag">临界点与相变</span>
+  <span class="tag">反脆弱</span>
+  <span class="tag">鲁棒性与脆弱性</span>
+  <span class="tag">共同演化</span>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0011-redundancy-robustness.html">← 完整课程</a>
+</div>
+
+</body>
+</html>

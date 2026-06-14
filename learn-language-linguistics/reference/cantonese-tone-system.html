@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 粤语声调系统</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+  }
+
+  th {
+    background: var(--accent);
+    color: white;
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  td {
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.6rem;
+  }
+
+  tr:nth-child(even) { background: #f8f9fa; }
+
+  .tone-value {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-align: center;
+    color: var(--accent);
+  }
+
+  .jyutping {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>粤语声调系统 · 快速参考卡</h1>
+<p class="card-meta">来自第 10 课 · 6 基本调 + 3 入声 = 9 调</p>
+
+<h2>六个基本声调</h2>
+<table>
+  <thead>
+    <tr><th>名称</th><th>Jyutping</th><th>调值</th><th>代表字</th><th>路径</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>高平（阴平）</td><td class="jyutping">A, 1</td><td class="tone-value">55</td><td>诗 si1</td><td>平直</td></tr>
+    <tr><td>高升（阴上）</td><td class="jyutping">B, 2</td><td class="tone-value">35</td><td>史 si2</td><td>上扬</td></tr>
+    <tr><td>高去（阴去）</td><td class="jyutping">C, 3</td><td class="tone-value">33</td><td>试 si3</td><td>平直</td></tr>
+    <tr><td>低平（阳平）</td><td class="jyutping">D, 4</td><td class="tone-value">23</td><td>时 si4</td><td>微升</td></tr>
+    <tr><td>低升（阳上）</td><td class="jyutping">E, 5</td><td class="tone-value">22</td><td>市 si5</td><td>平直</td></tr>
+    <tr><td>低去（阳去）</td><td class="jyutping">F, 6</td><td class="tone-value">21</td><td>事 si6</td><td>下降</td></tr>
+  </tbody>
+</table>
+
+<h2>三个入声调</h2>
+<table>
+  <thead>
+    <tr><th>名称</th><th>对应调</th><th>调值</th><th>代表字</th><th>韵尾</th><th>时长</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>高入 G</td><td>第 1 声</td><td class="tone-value">5</td><td>拾 sap1</td><td>-p</td><td>短</td></tr>
+    <tr><td>中入 H</td><td>第 3 声</td><td class="tone-value">3</td><td>杀 sat3</td><td>-t</td><td>短</td></tr>
+    <tr><td>低入 J</td><td>第 6 声</td><td class="tone-value">1</td><td>质 zat6</td><td>-k</td><td>短</td></tr>
+  </tbody>
+</table>
+
+<h2>关键事实速查</h2>
+<p>
+  <strong>信息量：</strong>log₂(9) ≈ 3.17 比特/音节（普通话约 2 比特）<br>
+  <strong>入声时长：</strong>约为非入声字的一半<br>
+  <strong>语调叠加：</strong>约 ±1.5 个半音的微调<br>
+  <strong>脑区：</strong>右半球（音高处理）在声调语言中更活跃<br>
+  <strong>历史：</strong>保留中古汉语入声和完整韵尾系统
+</p>
+
+<div class="footer">
+  <a href="../lessons/0010-cantonese-tone-system.html">← 回到第 10 课</a>
+</div>
+
+</body>
+</html>

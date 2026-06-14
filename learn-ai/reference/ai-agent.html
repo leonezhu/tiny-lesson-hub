@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent — 速查卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.15rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.35rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 { margin-top: 0; }
+
+  .loop-diagram {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .loop-diagram .arrow {
+    display: inline-block;
+    margin: 0 0.5rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .loop-diagram .step {
+    display: inline-block;
+    background: white;
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0.3rem;
+  }
+
+  ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.3rem; }
+
+  code {
+    background: #f5f5f5;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  pre code { background: none; color: inherit; padding: 0; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>AI Agent — 速查卡</h1>
+<p class="lesson-meta">参考卡 &middot; 源自 Lesson 9</p>
+
+<h2>Agent Loop 四步循环</h2>
+<div class="loop-diagram">
+  <span class="step">感知 Observe</span><span class="arrow">→</span>
+  <span class="step">思考 Think</span><span class="arrow">→</span>
+  <span class="step">行动 Act</span><span class="arrow">→</span>
+  <span class="step">反思 Reflect</span><span class="arrow">↺</span>
+  <div style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">循环直到任务完成</div>
+</div>
+
+<h2>核心组件</h2>
+<div class="card">
+  <h3>大脑（LLM）</h3>
+  <p>推理核心，负责理解意图、制定计划、做出决策</p>
+</div>
+<div class="card">
+  <h3>工具箱（Tools）</h3>
+  <p>搜索、API 调用、代码执行、文件读写等外部能力</p>
+</div>
+<div class="card">
+  <h3>记忆（Memory）</h3>
+  <p>短期（对话历史）+ 长期（向量数据库 / RAG）</p>
+</div>
+<div class="card">
+  <h3>规划器（Planner）</h3>
+  <p>任务分解策略，决定如何把大目标拆成子任务</p>
+</div>
+
+<h2>两种典型模式</h2>
+<div class="card">
+  <h3>ReAct（推理+行动交替）</h3>
+  <p><code>Thought → Action → Observation → Thought → Action → ...</code></p>
+  <p style="font-size:0.9rem; color:var(--muted);">适合：开放路径任务，需要实时决策</p>
+</div>
+<div class="card">
+  <h3>Plan-and-Execute（先规划后执行）</h3>
+  <p><code>Plan: [1,2,3,4,5] → Execute 1 → Execute 2 → ...</code></p>
+  <p style="font-size:0.9rem; color:var(--muted);">适合：步骤明确的复杂任务</p>
+</div>
+
+<h2>Agent vs 传统 AI</h2>
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.95rem;">
+  <thead>
+    <tr style="border-bottom:2px solid var(--border);">
+      <th style="text-align:left; padding:0.5rem;">维度</th>
+      <th style="text-align:left; padding:0.5rem;">传统 AI</th>
+      <th style="text-align:left; padding:0.5rem;">Agent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">流程</td>
+      <td style="padding:0.5rem;">一次请求一次响应</td>
+      <td style="padding:0.5rem;">多轮循环</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">工具</td>
+      <td style="padding:0.5rem;">通常没有</td>
+      <td style="padding:0.5rem;">动态选择</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">错误处理</td>
+      <td style="padding:0.5rem;">无法自修</td>
+      <td style="padding:0.5rem;">反思修正</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>主流框架</h2>
+<ul>
+  <li><strong>LangChain / LangGraph</strong> — Python/JS，生产级首选</li>
+  <li><strong>AutoGPT / BabyAGI</strong> — 早期自主 Agent 项目</li>
+  <li><strong>OpenAI Function Calling</strong> — 轻量级 Agent 基础</li>
+</ul>
+
+<h2>常见挑战</h2>
+<ul>
+  <li>无限循环 → 设最大迭代次数</li>
+  <li>成本失控 → 每轮 LLM 推理都消耗 token</li>
+  <li>幻觉风险 → 编造不存在的工具/API</li>
+  <li>调试困难 → 多轮路径难以追踪</li>
+</ul>
+
+<div class="footer">
+  <a href="../lessons/0009-ai-agent.html">← 完整课程</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — Modal Verbs for Politeness &amp; Hedging</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card, .modal-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .modal-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .modal-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .modal-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .modal-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .politeness-scale {
+    margin: 1.5rem 0;
+  }
+
+  .politeness-scale .level {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px dotted var(--border);
+  }
+
+  .politeness-scale .level:last-child { border-bottom: none; }
+
+  .politeness-scale .rank {
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 80px;
+    font-size: 0.9rem;
+  }
+
+  .politeness-scale .example {
+    font-size: 0.95rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th, .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+  }
+
+  .comparison-table tr:nth-child(even) { background: #fafafa; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Modal Verbs for Politeness &amp; Hedging</h1>
+<p class="lesson-meta">Lesson 5 &middot; ~12 minutes &middot; Workplace communication</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to use <em>could, would, might, may, should</em> to soften requests, hedge claims, and sound more professional — without changing your core message. This is the difference between sounding direct and sounding diplomatic.
+</div>
+
+<h2>Why this matters at B2 level</h2>
+<p>
+  At B1, you get things done. At B2, you need to <strong>manage relationships</strong>. Modal verbs are your primary tool for politeness in English. In Chinese, tone particles (吧, 啊, 嘛) and context handle politeness. In English, you change the <strong>modal verb</strong> before the main verb.
+</p>
+<p>
+  This is especially important in written communication — emails, reviews, feedback — where there's no tone of voice to soften your words.
+</p>
+
+<h2>The Politeness Scale</h2>
+<p>
+  You can express the same request at different levels of directness. Here's the spectrum from most direct to most polite:
+</p>
+
+<div class="politeness-scale">
+  <div class="level">
+    <span class="rank">Direct</span>
+    <span class="example">"Send me the report." <em>— blunt, only for close colleagues</em></span>
+  </div>
+  <div class="level">
+    <span class="rank">Can</span>
+    <span class="example">"Can you send me the report?" <em>— common, acceptable with peers</em></span>
+  </div>
+  <div class="level">
+    <span class="rank">Could</span>
+    <span class="example">"Could you send me the report?" <em>— standard polite, safe in any situation</em></span>
+  </div>
+  <div class="level">
+    <span class="rank">Would</span>
+    <span class="example">"Would you mind sending me the report?" <em>— very polite, formal</em></span>
+  </div>
+  <div class="level">
+    <span class="rank">Might</span>
+    <span class="example">"I might be able to help." <em>— hedging, not making promises</em></span>
+  </div>
+</div>
+
+<h2>Three Key Uses</h2>
+
+<div class="modal-card">
+  <h3>1. Polite Requests (Could / Would / May)</h3>
+  <p class="form">Could you...? &middot; Would you mind...? &middot; May I...?</p>
+  <ul class="examples">
+    <li><strong>Could</strong> you take a look at this when you have a moment?</li>
+    <li><strong>Would</strong> you mind walking me through this?</li>
+    <li><strong>May</strong> I ask a question about the budget?</li>
+    <li><strong>Could</strong> I possibly get an extension until Friday?</li>
+  </ul>
+  <div class="chinese-note">
+    <strong>Common mistake:</strong> "Can you send me the report?" isn't wrong — it's just less polite. With senior colleagues or clients, always prefer <em>Could</em> or <em>Would</em>. With close teammates, <em>Can</em> is fine.
+  </div>
+</div>
+
+<div class="modal-card">
+  <h3>2. Hedging — Softening Claims (May / Might / Could / Possibly)</h3>
+  <p class="form">may be &middot; might suggest &middot; could indicate &middot; possibly</p>
+  <p>
+    Hedging means you're not stating something as absolute fact. It's not about being vague — it's about being <strong>intellectually honest</strong>. In academic and professional writing, hedging is expected.
+  </p>
+  <ul class="examples">
+    <li>These results <strong>may indicate</strong> a trend in the data. <em>(not "prove")</em></li>
+    <li>The issue <strong>might be related to</strong> the recent changes. <em>(not certain)</em></li>
+    <li>This approach <strong>could lead to</strong> improved performance. <em>(a possibility)</em></li>
+    <li>It <strong>is possibly due to</strong> a scheduling conflict. <em>(speculation)</em></li>
+    <li>We <strong>might want to consider</strong> revising the timeline. <em>(gentle suggestion)</em></li>
+  </ul>
+  <div class="chinese-note">
+    <strong>Chinese note:</strong> 在中文里，你说"可能是"或"或许"。在英文中，<em>might</em> 比 <em>may</em> 更不确定，<em>could</em> 更客观。学术/商务写作中，hedge 是标准做法，不要觉得不自信。
+  </div>
+</div>
+
+<div class="modal-card">
+  <h3>3. Hedging in Email Writing</h3>
+  <p>
+    Professional emails are almost entirely hedged. Here's the difference between a B1 and B2 writer:
+  </p>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>B1 (Direct)</th>
+        <th>B2 (Hedged)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>"I disagree with your approach."</td>
+        <td>"I see your point, but I'm not sure this approach might be the most efficient."</td>
+      </tr>
+      <tr>
+        <td>"You need to fix this bug."</td>
+        <td>"It looks like there might be an issue here that we should look into."</td>
+      </tr>
+      <tr>
+        <td>"This is wrong."</td>
+        <td>"I think there might be a small mistake — the data doesn't quite match."</td>
+      </tr>
+      <tr>
+        <td>"Send me the data."</td>
+        <td>"Could you possibly share the data when you get a chance?"</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Modal Verb Quick Reference</h2>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>Modal</th>
+      <th>Core Meaning</th>
+      <th>Politeness</th>
+      <th>Hedging</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Can</strong></td>
+      <td>Ability / informal request</td>
+      <td>Low</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><strong>Could</strong></td>
+      <td>Polite request / possibility</td>
+      <td>Medium</td>
+      <td>Mild</td>
+    </tr>
+    <tr>
+      <td><strong>Would</strong></td>
+      <td>Condition / polite request</td>
+      <td>High</td>
+      <td>Moderate</td>
+    </tr>
+    <tr>
+      <td><strong>May</strong></td>
+      <td>Permission / possibility</td>
+      <td>Medium-High</td>
+      <td>Moderate</td>
+    </tr>
+    <tr>
+      <td><strong>Might</strong></td>
+      <td>Weak possibility</td>
+      <td>Medium</td>
+      <td>Strong (most uncertain)</td>
+    </tr>
+    <tr>
+      <td><strong>Should</strong></td>
+      <td>Recommendation</td>
+      <td>Medium</td>
+      <td>Mild (suggests, doesn't command)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="chinese-note">
+  <strong>Key distinction:</strong> <em>May</em> vs <em>Might</em> — both express possibility, but <em>might</em> is less certain. "It may rain" = it's a real possibility. "It might rain" = it's a slight possibility. In formal writing, both are acceptable; <em>might</em> is safer when you want to avoid overstating.
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Modal</h2>
+  <p>Each question gives you a context. Pick the modal that best fits the situation. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">Writing to a client you don't know well. You want to request data.</div>
+    <div class="sentence">________ you send me the latest metrics?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Can</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Could</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">In a research paper. You want to suggest a conclusion without overstating.</div>
+    <div class="sentence">These findings ________ suggest a correlation between the variables.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">might</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">definitely will</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">You're giving feedback to a junior colleague. You want to be direct but not harsh.</div>
+    <div class="sentence">The report looks good, but I think we ________ revise the executive summary.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" data-correct="false" onclick="check(this)">must</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">might want to</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">Asking your manager if you can attend a conference.</div>
+    <div class="sentence">________ I attend the conference next month?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Would</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Do</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Responding to a client query. You're not 100% sure about the answer.</div>
+    <div class="sentence">The issue ________ be caused by the recent server update. Let me investigate.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">will</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">could</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Writing in a group chat with your team. Informal, quick.</div>
+    <div class="sentence">Hey, you ________ show me that dashboard?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">can</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">might</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">You're making a recommendation in a meeting. You want to be suggestive, not commanding.</div>
+    <div class="sentence">We ________ try a different approach for the next sprint.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">will</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">should</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Writing a formal email to a professor or senior colleague. You want to ask about their opinion.</div>
+    <div class="sentence">________ I ask your thoughts on the proposal?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">May</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Will</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Want to practice hedging in a real email you need to send? Paste it here and we'll make it more diplomatic together.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b2-c1-grammar/modals" target="_blank">British Council B2-C1 Grammar: Modals</a> — more practice with modal verbs in context.
+  <br><br>
+  <a href="../reference/modal-verbs-politeness-hedging.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0004-conditionals-real-unreal-mixed.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-reported-speech-backshifting.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Could" is the standard polite form for requests, especially with clients or people you don\'t know well. "Can" would be too informal.', wrong: '"Can" is acceptable but less polite. With a client you don\'t know well, "Could" is the safer, more professional choice.' },
+    q2: { correct: '"Might" is a hedge — it suggests possibility without claiming certainty. Perfect for research where you can\'t overstate.', wrong: '"Definitely will" is too strong for research writing. You should hedge: "might suggest" or "may suggest" rather than claiming certainty.' },
+    q3: { correct: '"Might want to" is a gentle hedge — it suggests without commanding. Perfect for giving feedback without being harsh.', wrong: '"Must" is too strong and commanding for feedback. "Might want to" softens the suggestion: it\'s a recommendation, not an order.' },
+    q4: { correct: '"Would I ask" is the polite, formal form. Alternatively, "May I ask" also works. Both are appropriate for a manager.', wrong: '"Will" is grammatically incorrect here. The polite form is "Would I ask" or "May I ask" — both show respect.' },
+    q5: { correct: '"Could" expresses possibility without certainty. The server update is a candidate explanation, not a confirmed cause.', wrong: '"Will" claims certainty — you can\'t say "will" when you\'re still investigating. "Could" is the hedge: it\'s one possible cause.' },
+    q6: { correct: '"Can" is perfect for informal team chat. Quick, casual, and natural. "Could" would sound too formal here.', wrong: '"Might" expresses uncertainty, not ability. In a team chat, "Can you show me" is the natural, informal choice.' },
+    q7: { correct: '"Should" expresses a recommendation without commanding. It\'s suggestive, not authoritative — perfect for meeting suggestions.', wrong: '"Will" is a statement of future action, not a suggestion. In a meeting, you want to propose, not declare: "We should try..."'},
+    q8: { correct: '"May" is the formal, polite way to ask permission. With a professor or senior person, "May I ask" shows respect.', wrong: '"Will" is not used to ask permission. "May I ask" or "Would I be able to ask" are the formal, polite forms.' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Excellent! You have a strong grasp of modals and hedging.';
+      else if (score >= 6) label.textContent = 'Good work! Review the ones you missed — the explanations tell you why.';
+      else label.textContent = 'Keep practicing! Modals and hedging take time to master. Re-read the examples above.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

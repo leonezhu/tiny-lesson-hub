@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — 对称与破缺</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card .en {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .definition {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.8;
+  }
+
+  .example-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .example-list li {
+    padding: 0.35rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .example-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .common-mistake {
+    background: #fef2f2;
+    border-left: 3px solid #dc2626;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .common-mistake strong { color: #dc2626; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .ref-card {
+    background: #fafafa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .ref-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .ref-card table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+  }
+
+  .ref-card table td {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-card table tr:last-child td { border-bottom: none; }
+  .ref-card table td:first-child { font-weight: 600; width: 40%; color: var(--accent); }
+
+  .symmetry-demo {
+    text-align: center;
+    padding: 2rem;
+    margin: 1rem 0;
+    background: #fafafa;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .symmetry-demo .symbol {
+    font-size: 3rem;
+    font-family: 'Merriweather', Georgia, serif;
+    color: var(--accent);
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>对称与破缺</h1>
+<p class="lesson-meta">Lesson 5 · ~10 minutes · 元概念 · 对称性与自发破缺</p>
+
+<div class="goal-box">
+  <strong>本节学完后</strong>，你将能够理解<strong>对称性</strong>是什么、为什么它在科学中如此重要，以及<strong>对称破缺</strong>——那个看似矛盾却无处不在的现象：宇宙从完美对称走向丰富多样，正是通过对称的打破。
+</div>
+
+<h2>什么是对称性</h2>
+
+<div class="concept-card">
+  <p class="en">Symmetry — 一个系统在某种变换下保持不变</p>
+  <p class="definition">
+    对称性不是指"左右一样好看"，而是指<strong>无论你做什么操作，结果都不变</strong>。这种"不变性"是物理学和数学中最深刻的概念之一。
+  </p>
+</div>
+
+<p>
+  数学家埃米·诺特（Emmy Noether）在 1915 年证明了物理学中最伟大的定理之一：<strong>每一个对称性都对应一个守恒定律</strong>。这意味着对称性不是装饰，而是宇宙运行的底层规则。
+</p>
+
+<div class="concept-card">
+  <h3>诺特定理的经典例子</h3>
+  <ul class="example-list">
+    <li><strong>时间平移对称</strong>（今天做实验和明天做实验，物理规律相同）→ <strong>能量守恒</strong></li>
+    <li><strong>空间平移对称</strong>（在北京做实验和在纽约做实验，物理规律相同）→ <strong>动量守恒</strong></li>
+    <li><strong>旋转对称</strong>（朝哪个方向做实验都一样）→ <strong>角动量守恒</strong></li>
+    <li><strong>规范对称</strong>（电势的零点可以任意选择）→ <strong>电荷守恒</strong></li>
+  </ul>
+</div>
+
+<div class="symmetry-demo">
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">想象一个完美的圆球放在山顶上</p>
+  <div class="symbol">●</div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">从任何方向看都一样 → 高对称性</p>
+</div>
+
+<h2>对称破缺：为什么世界如此丰富多彩</h2>
+
+<p>
+  如果宇宙是完全对称的，那它会是什么样？一个均匀、单调、没有任何变化的状态。但现实并非如此。<strong>对称破缺（Symmetry Breaking）</strong>解释了完美对称的系统如何产生丰富的多样性。
+</p>
+
+<div class="concept-card">
+  <h3>核心思想</h3>
+  <p class="definition">
+    当一个系统的对称性在基态（最低能量状态）下不再完整保留时，就发生了对称破缺。系统"选择"了一个特定的方向或状态，打破了原有的对称性。
+  </p>
+</div>
+
+<h3>经典比喻：铅笔竖立</h3>
+
+<p>想象一支铅笔尖朝下立在桌面上：</p>
+
+<ul class="example-list">
+  <li><strong>对称状态</strong>：从任何方向看都一样，360° 旋转对称。但这种状态极不稳定。</li>
+  <li><strong>破缺状态</strong>：铅笔倒下，倒向某个特定方向。对称性被打破了，但这是更稳定的状态。</li>
+</ul>
+
+<p>
+  这个简单的比喻贯穿了整个物理学：<strong>对称性往往对应不稳定的高能态，而破缺后的状态虽然不对称，却是稳定的。</strong>
+</p>
+
+<h2>对称破缺的五大实例</h2>
+
+<div class="concept-card">
+  <h3>1. 物理学：希格斯机制</h3>
+  <p>
+    早期宇宙中，所有基本粒子都没有质量，以光速运动——这是高度对称的状态。随着宇宙冷却，<strong>希格斯场</strong>发生了对称破缺，粒子通过与希格斯场相互作用获得了质量。没有这个破缺，就不会有原子、分子、生命。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 生物学：左右不对称的身体</h3>
+  <p>
+    胚胎发育初期，细胞排列几乎是完全对称的。但在某个时刻，<strong>左侧信号通路被激活</strong>，导致心脏偏左、肝脏偏右。这种"手性选择"在分子层面也存在——生命几乎全部使用左旋氨基酸和右旋糖。为什么？至今仍是未解之谜。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 社会：习惯的形成</h3>
+  <p>
+    在一个新社区，住户最初可以选择任何方式处理垃圾、停车、装修。但随着少数人做出选择，其他人跟随（网络效应），最终社区形成了固定的规则和惯例。<strong>最初的微小偏差被放大，对称的选择空间被打破。</strong>这就是路径依赖的另一种表现形式。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>4. 语言学：语言的分化</h3>
+  <p>
+    原始印欧语曾经是一个相对统一的语言系统。当讲者分散到不同地域后，微小的发音差异在隔离中被放大，最终分化出拉丁语、希腊语、梵语、日耳曼语等完全不同的语言。语言的"对称"统一状态被地理和社会因素打破。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>5. 物理学：铁磁体的居里温度</h3>
+  <p>
+    高温时，铁磁体内部的磁矩方向杂乱无章，整体没有磁性（旋转对称）。当温度降到<strong>居里温度</strong>以下，磁矩突然全部指向同一方向，产生了宏观磁场。这是"相变"类型的对称破缺——系统从一个状态突然跳到另一个状态。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>对称破缺不是"破坏"，而是"创造"。没有对称破缺，宇宙只会是一片均匀的粒子汤。正是因为对称性在不同尺度、不同条件下被以不同方式打破，才有了星系、恒星、生命、意识和文明。
+</div>
+
+<h2>对称破缺的类型</h2>
+
+<div class="ref-card">
+  <h4>两种主要类型</h4>
+  <table>
+    <tr>
+      <td><strong>显式破缺</strong></td>
+      <td>外力或外部条件直接破坏了系统的对称性。例如：把铅笔推倒——外力让它倒向某个方向。</td>
+    </tr>
+    <tr>
+      <td><strong>自发破缺</strong></td>
+      <td>系统本身的性质决定了它"必须"选择一个特定状态，尽管物理定律本身是对称的。例如：铅笔无人推动也会倒下——不稳定性导致它自发选择一个方向。</td>
+    </tr>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>自发破缺是更深刻、更有趣的情况。</strong>它说明即使规则完全公平、完全对称，结果也可能不公平、不对称。这在社会科学中也有广泛应用——"公平的规则"不一定产生"公平的结果"。
+</div>
+
+<h2>对称与破缺的深层含义</h2>
+
+<p>
+  对称性是所有元概念中<strong>最抽象、最普适</strong>的一个。它与之前学过的概念紧密相连：
+</p>
+
+<ul class="example-list">
+  <li><strong>与因果性</strong>：对称性决定了"什么可以影响什么"。如果一个系统具有某种对称性，那么因果作用必须保持这种对称。</li>
+  <li><strong>与熵</strong>：熵增加趋向最大无序，但对称破缺产生有序结构。这两者看似矛盾，实则互补——宇宙在整体上熵增，但在局部通过对称破缺形成结构。</li>
+  <li><strong>与涌现</strong>：对称破缺往往是涌现的前奏。当大量粒子的磁矩自发对齐，宏观磁性就"涌现"出来了。</li>
+  <li><strong>与反馈回路</strong>：正反馈放大微小偏差，导致对称破缺；负反馈维持对称状态的稳定。</li>
+</ul>
+
+<p>
+  <em>对称性告诉我们"什么是不变的"，对称破缺告诉我们"变化是如何开始的"。这两者合在一起，构成了理解变化与稳定的最有力框架。</em>
+</p>
+
+<div class="quiz-section">
+  <h2>练习：识别对称与破缺</h2>
+  <p>以下每个场景都涉及对称性或对称破缺。选出最准确的描述。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">物理学中的诺特定理：</div>
+    <div class="sentence">"每一个对称性都对应一个守恒定律"这句话的核心意思是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">宇宙中有很多对称图形，每个都有一个守恒量</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">物理规律的某种不变性（对称性）直接决定了自然界中存在一个守恒量</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一个水分子（H₂O）：</div>
+    <div class="sentence">水分子呈V字形结构，氧原子在顶点，两个氢原子在两侧。它的对称性是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">具有镜面对称——沿氧原子垂直平分线翻转，左右对称</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全对称——从任何角度看都一样</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">铁磁体加热到居里温度以上：</div>
+    <div class="sentence">原本整齐排列的磁矩变得杂乱无章。这描述了：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">对称性恢复——从破缺态回到对称态</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">对称性增强——系统变得更有序</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">新成立的创业团队：</div>
+    <div class="sentence">团队成员最初可以自由选择办公地点、工作流程、沟通方式。但经过几周，大家自然形成了固定模式。这最接近哪种对称破缺？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">显式破缺——老板强制规定了所有流程</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">自发破缺——系统内部动力导致选择了特定模式，而非外部强制</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">诺贝尔奖得主南部阳一郎：</div>
+    <div class="sentence">他在 2008 年获得诺贝尔物理学奖，主要贡献是发现了"自发对称破缺的机制"。这个机制最著名的应用是解释了：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">为什么基本粒子有质量（希格斯机制）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">为什么宇宙中有物质多于反物质</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">铅笔竖立的比喻：</div>
+    <div class="sentence">为什么这个比喻能说明对称破缺？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为铅笔倒下的方向是随机的，所以没有对称性</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为竖立状态高度对称但不稳定，倒下状态不对称但稳定，完美体现了对称破缺的本质</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">对称破缺与涌现的关系：</div>
+    <div class="sentence">以下哪项最能描述两者的关系？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">对称破缺常常是涌现的前奏——大量组分在对称破缺后产生新的宏观性质</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">对称破缺和涌现完全无关，分别属于不同的学科领域</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">日常生活中常见的误解：</div>
+    <div class="sentence">有人说："既然自然规律是对称的（男女平等），为什么社会结果总是不对称（领导层女性少）？"这个反驳最合理的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">这说明自然规律其实并不对称</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">公平的规则（对称性）不一定产生公平的结果——自发对称破缺可以在社会系统中发生</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>对称与破缺是最抽象的概念之一。不确定某个例子算不算对称破缺？给我具体场景，我们一起分析。
+  <br><br>
+  <strong>推荐延伸：</strong>下一节我们将学习 <a href="0006-scaling.html" class="resource-link">标度</a>——理解世界如何随尺度变化。标度定律告诉我们，跨越尺度时规律和比例都会改变。
+  <br><br>
+  <a href="../reference/symmetry-breaking.html" class="resource-link">查看参考卡片</a>
+</div>
+
+<div class="footer">
+  <a href="0004-feedback-loops.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-scaling.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '诺特定理的核心是：物理规律的"不变性"（对称性）直接决定了"守恒量"的存在。不是"很多对称图形"，而是"规律的某种变换不变性"。比如时间平移不变性 → 能量守恒。', wrong: '这不是关于几何图形的对称。诺特定理说的是物理规律本身的对称性——比如"物理规律不随时间改变"——这种抽象对称性对应具体的守恒定律。' },
+    q2: { correct: '水分子是V字形（约104.5°夹角），沿氧原子到两氢夹角平分线的轴翻转，分子看起来不变。这叫镜面对称。但不是球对称——从上下看和从侧面看是不一样的。', wrong: '水分子不是球对称的。球对称意味着从任何角度看起来都一样（比如氦原子）。水分子的V字形结构只保留了镜面对称，旋转180°后氢原子位置会交换。' },
+    q3: { correct: '居里温度以下是磁矩有序排列（破缺态，没有旋转对称）。居里温度以上是磁矩无序（对称态，旋转对称）。加热使系统从破缺态回到对称态——这叫"对称性恢复"。', wrong: '对称性不是"增强"。杂乱无章意味着没有优先方向，这正是旋转对称的特征。有序排列反而打破了旋转对称（所有磁矩指向同一方向）。' },
+    q4: { correct: '自发对称破缺的关键特征是：没有外部强制，系统内部动力导致选择特定状态。创业团队的自然演化就是典型——网络效应和协调偏好放大了初始的微小偏差。', wrong: '题目中没有提到老板强制规定。显式破缺需要有明确的外力（比如法律、命令）。这里描述的是团队自发形成的模式，属于自发破缺。' },
+    q5: { correct: '南部阳一郎发现的"自发对称破缺机制"后来被应用于粒子物理中的希格斯机制。希格斯场的对称破缺赋予了基本粒子质量，这是标准模型的核心部分。', wrong: '物质-反物质不对称是另一个重要的对称破缺问题（CP破缺），但它不是南部阳一郎获得诺贝尔奖的主要贡献。他的工作主要是关于自发对称破缺在粒子物理中的应用。' },
+    q6: { correct: '这个比喻的精妙之处在于：竖立状态具有完整的旋转对称性（任何方向都一样），但不稳定；倒下状态打破了旋转对称（只有一个方向），但是稳定的。这正是对称破缺的核心特征。', wrong: '铅笔倒下的方向确实是随机的，但这不是重点。重点是"对称但不稳定"和"不对称但稳定"之间的张力——这才是对称破缺的本质。' },
+    q7: { correct: '对称破缺创造了"选择"——系统从对称的高能态跳到了不对称的低能态。在这个过程中，新的宏观性质（磁性、超导性等）涌现出来。可以说，没有对称破缺就没有涌现。', wrong: '两者密切相关。对称破缺是许多涌现现象的触发机制。比如铁磁体的宏观磁性、晶体的结构、甚至生命的分子手性，都是对称破缺后涌现出来的。' },
+    q8: { correct: '这正是自发对称破缺在社会系统中的表现。规则可以完全对称（机会均等），但历史路径、网络效应、社会惯性等因素会导致结果不对称。这并不意味着规则不公平。', wrong: '自然规律和社会规则是不同的。物理规律中的对称性（如男女基因差异）和社会规则中的对称性（如反歧视法）是不同层面的概念。不能简单类比。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '全对！对称与破缺的思维已经在你脑子里扎根了。';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，对称破缺是个需要反复体会的概念。';
+      else label.textContent = '对称破缺是最抽象的概念之一，多读几遍上面的例子会更有感觉。';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

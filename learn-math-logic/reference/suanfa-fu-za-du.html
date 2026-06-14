@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：算法与复杂度速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card-section .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    background: var(--accent-light);
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th {
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  td {
+    padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr:nth-child(even) td { background: var(--accent-light); }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>算法与复杂度速查卡</h1>
+<p class="lesson-meta">参考卡 &middot; 对应 Lesson 7</p>
+
+<div class="card-section">
+  <h3>大 O 记号（渐进上界）</h3>
+  <p class="formula">f(n) = O(g(n)) &hArr; 存在常数 C, n<sub>0</sub>，使得对所有 n &gt; n<sub>0</sub>，f(n) &le; C &middot; g(n)</p>
+</div>
+
+<div class="card-section">
+  <h3>复杂度等级速查</h3>
+  <table>
+    <tr><th>复杂度</th><th>名称</th><th>例子</th><th>n=10<sup>6</sup></th></tr>
+    <tr><td>O(1)</td><td>常数</td><td>数组索引</td><td>1</td></tr>
+    <tr><td>O(log n)</td><td>对数</td><td>二分查找</td><td>20</td></tr>
+    <tr><td>O(n)</td><td>线性</td><td>遍历数组</td><td>10<sup>6</sup></td></tr>
+    <tr><td>O(n log n)</td><td>线性对数</td><td>快速排序</td><td>2&times;10<sup>7</sup></td></tr>
+    <tr><td>O(n<sup>2</sup>)</td><td>平方</td><td>冒泡排序</td><td>10<sup>12</sup></td></tr>
+    <tr><td>O(2<sup>n</sup>)</td><td>指数</td><td>TSP（暴力）</td><td>不可行</td></tr>
+    <tr><td>O(n!)</td><td>阶乘</td><td>全排列</td><td>不可行</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>P vs NP</h3>
+  <p><strong>P</strong>：能高效<strong>求解</strong>的问题（多项式时间算法可求解）</p>
+  <p><strong>NP</strong>：能高效<strong>验证</strong>答案的问题（多项式时间算法可验证）</p>
+  <p><strong>P &subseteq; NP</strong>：总是成立（能求解自然能验证）</p>
+  <p><strong>P = NP</strong>：未证明，多数人相信为假</p>
+</div>
+
+<div class="card-section">
+  <h3>NP-完全问题</h3>
+  <p>NP 中最难的问题。任何一个存在多项式时间解法 &rArr; P = NP。</p>
+  <ul>
+    <li>SAT（布尔可满足性）— 始祖，Cook-Levin 定理</li>
+    <li>TSP（旅行商问题）— 最优旅行路线</li>
+    <li>背包问题 — 容量限制下的最优选择</li>
+    <li>图着色 — 最少颜色方案</li>
+    <li>子集和 — 是否存在子集和等于目标</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>三种应对策略</h3>
+  <p><strong>近似算法</strong>：保证解在最优解的 k 倍以内</p>
+  <p><strong>启发式</strong>：通常效果好，不保证最优</p>
+  <p><strong>专门化</strong>：利用问题特殊结构降复杂度</p>
+</div>
+
+<div class="card-section">
+  <h3>关键区分</h3>
+  <p><strong>可计算性</strong> → 能不能算（图灵机）</p>
+  <p><strong>复杂度</strong> → 能不能<strong>高效</strong>算（大 O 记号）</p>
+  <p>一个算法可能"可计算但不可行"——如 O(2<sup>n</sup>)，n=100 时远超宇宙原子总数。</p>
+</div>
+
+<div class="footer">
+  <a href="lessons/0007-suanfa-fu-za-du.html">&larr; 返回课程</a> | <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

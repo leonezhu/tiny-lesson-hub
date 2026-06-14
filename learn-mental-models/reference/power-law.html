@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考卡 — 幂律分布</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+
+  th {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .key-formula {
+    background: var(--accent-light);
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: 'Merriweather', Georgia, serif;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover { opacity: 0.9; }
+
+  footer {
+    margin-top: 3rem;
+    text-align: center;
+    color: #aaa;
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>幂律分布</h1>
+<p class="card-meta">Quick Reference Card &middot; Power Law Distribution</p>
+
+<div class="card-section">
+  <h3>定义</h3>
+  <p>事件发生频率与事件属性的幂次成反比：P(x) ∝ x<sup>-α</sup></p>
+  <p>少数极端事件决定绝大部分结果，平均值在幂律世界中无意义。</p>
+</div>
+
+<div class="key-formula">
+  P(x) ∝ x<sup>-α</sup> &nbsp;&nbsp;（α > 0 为幂指数）
+</div>
+
+<div class="card-section">
+  <h3>四大经典案例</h3>
+  <table>
+    <tr><th>案例</th><th>规律</th><th>幂指数 α ≈</th></tr>
+    <tr><td>财富分布</td><td>80/20 法则（帕累托）</td><td>~1.5-2</td></tr>
+    <tr><td>城市规模</td><td>第 n 大城市 ≈ 1/n 最大城市（齐普夫定律）</td><td>~1</td></tr>
+    <tr><td>语言词频</td><td>第 n 常用词 ≈ 1/n 最常用词频率</td><td>~1</td></tr>
+    <tr><td>互联网流量</td><td>5% 页面 → 50% 访问；1% 视频 → 50% 观看</td><td>~1.5</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>正态分布 vs 幂律分布</h3>
+  <table>
+    <tr><th>特征</th><th>正态分布</th><th>幂律分布</th></tr>
+    <tr><td>典型值</td><td>平均值高度代表性</td><td>平均值无意义</td></tr>
+    <tr><td>极端事件</td><td>几乎不存在</td><td>决定全部结果</td></tr>
+    <tr><td>产生机制</td><td>独立随机变量叠加</td><td>偏好依附（正反馈）</td></tr>
+    <tr><td>决策策略</td><td>追求稳定</td><td>暴露于正向肥尾</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>关键洞见</h3>
+  <ul style="padding-left: 1.5rem;">
+    <li><strong>偏好依附</strong>："富者愈富"——早期小优势通过正反馈被放大</li>
+    <li><strong>平均值陷阱</strong>：一个亿万富翁走进酒吧，"平均财富"不代表任何人</li>
+    <li><strong>投资</strong>：风投回报来自极少数项目，归零是常态</li>
+    <li><strong>产品</strong>：20% 功能驱动 80% 用户行为，重点投入核心功能</li>
+    <li><strong>学习</strong>：掌握 20% 核心概念理解 80% 内容</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h3>关键人物</h3>
+  <ul style="padding-left: 1.5rem;">
+    <li><strong>帕累托</strong>（1848-1923）— 80/20 法则</li>
+    <li><strong>齐普夫</strong>（1902-1950）— 词频幂律（齐普夫定律）</li>
+    <li><strong>曼德博</strong>（1924-2010）— 分形几何、挑战金融正态模型</li>
+    <li><strong>巴拉巴西</strong>— 无标度网络理论</li>
+  </ul>
+</div>
+
+<p>→ 对应课程：<a href="../lessons/0003-power-law.html">Lesson 3：幂律分布</a></p>
+
+<footer>
+TeachHub · 多元思维模型 · 快速参考卡
+</footer>
+
+</body>
+</html>

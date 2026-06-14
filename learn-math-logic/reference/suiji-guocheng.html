@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 随机过程速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.15rem 0;
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .insight {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.7rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .insight strong { color: #e65100; }
+
+  .links {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .links a:hover { text-decoration: underline; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>随机过程速查</h1>
+<p class="meta">参考卡 &middot; 数学与逻辑 Lesson 11</p>
+<p><span class="tag">概率论</span><span class="tag">动态系统</span><span class="tag">跨学科</span></p>
+
+<h2>一句话定义</h2>
+<p><strong>随机过程</strong> = 随时间演化的随机变量序列。不是描述一个确定性的世界，而是描述概率如何随时间演变。</p>
+
+<h2>三大核心类型</h2>
+
+<div class="card">
+  <h3>随机游走（Random Walk）</h3>
+  <div class="formula">S<sub>t</sub> = S<sub>0</sub> + Σ X<sub>i</sub>，典型位移 ∝ √t</div>
+  <ul>
+    <li>每一步独立，方向随机，无记忆</li>
+    <li>扩散律：n 步后距离 ≈ √n</li>
+    <li>应用：股价模型、布朗运动、赌博分析</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>马尔可夫链（Markov Chain）</h3>
+  <div class="formula">P(X<sub>t+1</sub> | X<sub>t</sub>, ..., X<sub>0</sub>) = P(X<sub>t+1</sub> | X<sub>t</sub>)</div>
+  <ul>
+    <li>无记忆性：下一步只取决于当前状态</li>
+    <li>由状态空间 + 转移矩阵定义</li>
+    <li>可收敛到稳态分布</li>
+    <li>应用：PageRank、RL(MDP)、语言模型、排队论</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>泊松过程（Poisson Process）</h3>
+  <div class="formula">P(N(t) = k) = (λt)<sup>k</sup> e<sup>-λt</sup> / k!</div>
+  <ul>
+    <li>描述"单位时间内事件发生次数"</li>
+    <li>事件相互独立，到达率 λ 恒定</li>
+    <li>应用：排队系统、核衰变、网络流量建模</li>
+  </ul>
+</div>
+
+<h2>关键数字</h2>
+<ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
+  <li><strong>Bachelier</strong> (1900) — 首次用随机游走描述股价</li>
+  <li><strong>Einstein</strong> (1905) — 用布朗运动证明原子存在</li>
+  <li><strong>Markov</strong> (1907) — 提出马尔可夫链，分析普希金诗歌</li>
+  <li><strong>Kolmogorov</strong> (1933) — 概率论公理化</li>
+  <li><strong>Black-Scholes</strong> (1973) — 几何布朗运动给期权定价</li>
+  <li><strong>PageRank</strong> (1998) — 马尔可夫链改变信息检索</li>
+</ul>
+
+<h2>常见误区</h2>
+<div class="insight">
+  <strong>赌徒谬误：</strong>"已经连续 5 次正面，下次必然是反面"——这是对随机游走无记忆性的根本误解。每次投掷都是独立的。
+</div>
+<div class="insight">
+  <strong>肥尾陷阱：</strong>正态分布假设极端事件极其罕见，但 Mandelbrot 发现金融数据的尾部远厚于正态——极端事件比模型预测的多得多。
+</div>
+
+<div class="links">
+  <a href="../lessons/0011-suiji-guocheng.html">← 返回完整课程</a>
+</div>
+
+</body>
+</html>

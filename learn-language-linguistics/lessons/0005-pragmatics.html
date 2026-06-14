@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — 语用学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .theory-block {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .theory-block .maxim-title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .example-quote {
+    background: #f7f9fb;
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1rem;
+    margin: 0.75rem 0;
+    font-style: italic;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语用学</h1>
+<p class="lesson-meta">Lesson 5 &middot; ~10 minutes &middot; 语言学核心分支</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解语用学——"说话人想表达什么"——与语义学的根本区别，掌握格莱斯合作原则、言语行为理论和礼貌理论的三大框架，能识别日常对话中的隐含意义。
+</div>
+
+<h2>语义学 vs 语用学：一句话的两面</h2>
+<p>
+  语义学问"这句话什么意思"，语用学问"说话人想表达什么"。同一句话在不同的语境中可以有完全不同的含义，理解语用规则是跨文化沟通的核心障碍之一。
+</p>
+
+<p>
+  语用学（<em>Pragmatics</em>）研究语境中的语言使用——说话人如何借助语境传递超越字面意义的信息，听者如何推断说话人的真实意图。如果说语义学描述的是语言符号的"编码意义"（sentence meaning），语用学研究的是"使用意义"（speaker meaning）。
+</p>
+
+<div class="example-quote">
+  "你能把盐递给我吗？"<br>
+  字面上：关于能力的是非问句。在餐厅中：一个请求。
+</div>
+
+<p>
+  这个经典例子揭示了语用学的核心问题：为什么人们说"A"，实际上传达的是"B"？字面意义与实际意图之间的差距，正是语用学的研究范畴。
+</p>
+
+<h2>框架一：格莱斯会话含义理论</h2>
+<p>
+  1975年，语言学家 H.P. Grice 提出：日常对话遵循一个"合作原则"，参与者期望彼此的合作使交谈达到既定目的。这个原则包含四个准则：
+</p>
+
+<div class="theory-block">
+  <div class="maxim-title">数量准则</div>
+  <p>提供适量信息——既不不足也不多余。</p>
+</div>
+
+<div class="theory-block">
+  <div class="maxim-title">质量准则</div>
+  <p>只说真实的话和有证据支持的话。</p>
+</div>
+
+<div class="theory-block">
+  <div class="maxim-title">关系准则</div>
+  <p>所说的话应当相关。</p>
+</div>
+
+<div class="theory-block">
+  <div class="maxim-title">方式准则</div>
+  <p>表达应当清晰、有序、无歧义。</p>
+</div>
+
+<p>
+  当说话人<strong>看似违反</strong>这些准则时，听者并不会假定对方在无理取闹，而是推断其中蕴含了"会话含义"。例如一封推荐信用来评价学术能力，却只写"这个学生英语很好，出勤率也很高"——这违反了数量准则（信息不足），听者会推断出隐含含义：<em>"这个学生的学术表现不值一提"</em>。这种通过故意违反准则来传递隐含信息的方式，被称为<strong>"利用准则"</strong>（flouting the maxim）。
+</p>
+
+<div class="chinese-note">
+  <strong>中文场景：</strong>当领导说"你这个方案……嗯，想法挺多的"，他其实在违反质量准则（没有给出具体评价）——潜台词是"方案不行"。直接说"不行"反而违反关系准则（不直接相关）。理解这种"违反"就是语用能力。
+</div>
+
+<h2>框架二：言语行为理论</h2>
+<p>
+  J.L. Austin 提出、Searle 发展。其核心洞见是：<strong>说话不是描述世界，而是在做某事</strong>。说出词语 = 执行行为。
+</p>
+
+<div class="card">
+  <h3>Austin 的三个层次</h3>
+  <p><strong>言内行为（locutionary act）</strong>：说出有含义的话语本身。——"门开着"</p>
+  <p><strong>言外行为（illocutionary act）</strong>：话语的执行功能。——"门开着"可能是一个<strong>提醒</strong>（请关门）或<strong>警告</strong>（有贼进来了）。</p>
+  <p><strong>言后行为（perlocutionary act）</strong>：话语对听者产生的实际效果。——听者起身关上了门。</p>
+</div>
+
+<div class="card">
+  <h3>Searle 的六类言语行为</h3>
+  <ul class="examples">
+    <li><strong>断言类（assertives）</strong>：陈述事实——"今天下雨了"</li>
+    <li><strong>指令类（directives）</strong>：让对方做某事——"请把文件发我"</li>
+    <li><strong>承诺类（commissives）</strong>：说话人承诺做某事——"我明天一定交"</li>
+    <li><strong>表情类（expressives）</strong>：表达情感态度——"恭喜！"</li>
+    <li><strong>宣告类（declarations）</strong>：改变现实状态——"我宣布会议开始"</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>英语中"I promise"是典型的承诺类，"Please close the door"是指令类。理解言语行为的类型，能帮你识别别人话语中的真实功能——尤其当你被说"我没什么意见"（可能是断言，也可能是隐晦的拒绝类指令）时。
+</div>
+
+<h2>框架三：礼貌理论</h2>
+<p>
+  Brown 和 Levinson（1987）提出：大多数交际涉及对"面子"（face）的威胁——面子包括<strong>积极面子</strong>（希望被认可和喜欢）和<strong>消极面子</strong>（希望行动自由不受干涉）。请求、批评、建议等言语行为天生威胁听话人的消极面子，因此说话人需要通过各种策略来"减轻面子威胁"（face-threatening act mitigation）。
+</p>
+
+<div class="card">
+  <h3>同一个请求，三种礼貌等级</h3>
+  <ul class="examples">
+    <li><strong>直接</strong>："把盐递给我。" —— 威胁面子最大，适合亲密关系</li>
+    <li><strong>间接</strong>："你能把盐递给我吗？" —— 用疑问形式减轻强制性</li>
+    <li><strong>非常礼貌</strong>："Could you possibly pass the salt?" —— 情态动词 + possibly 增加语言距离，最大限度地减轻威胁</li>
+  </ul>
+</div>
+
+<p>
+  英语中"Could you possibly pass the salt?"比"Pass the salt"更礼貌，不是因为前者更清晰，而是因为情态动词"could"和副词"possibly"增加了语言距离，减轻了指令的强制性。这种跨语言普遍的礼貌策略在语言身份认同中扮演关键角色——语言选择本身就是身份信号。
+</p>
+
+<h2>为什么语用学重要</h2>
+
+<div class="card">
+  <h3>跨文化沟通的核心障碍</h3>
+  <p>
+    不理解语用规则是跨文化沟通失败的主要原因之一。在日语中，拒绝几乎从不以直接否定的形式出现——"ちょっと…"（那个……）通常意味着"不"。英语母语者如果仅按字面理解，会误以为对方在犹豫而非拒绝。这种语用能力差异被称为"<strong>语用迁移失败</strong>"（pragmatic transfer failure），比语法错误更难被宽容。
+  </p>
+</div>
+
+<div class="card">
+  <h3>AI 的分水岭</h3>
+  <p>
+    语用学是区分"聊天机器人"和"智能体"的分水岭。一个只训练过语料统计规律的模型可以生成流畅的句子，但如果缺乏对语境、说话人意图、会话历史的推理能力，就会在面对隐含请求时表现荒谬。例如用户说"我有点冷"时，一个语用学驱动的系统会推断这是一个请求（关窗/调高空调），而非单纯陈述一个事实。
+  </p>
+</div>
+
+<h2>跨学科连接</h2>
+<p>语用学的核心概念在多个学科中有对应物：</p>
+
+<div class="card">
+  <ul class="examples">
+    <li><strong>AI</strong>：语用推理被形式化为"共同背景"（common ground）和"心智理论"（Theory of Mind）</li>
+    <li><strong>认知科学</strong>：语用理解依赖大脑的"默认模式网络"；自闭症谱系患者通常语义正常但语用受损</li>
+    <li><strong>哲学</strong>：与维特根斯坦的"语言游戏"概念交汇——意义在于使用方式，不在于词语与对象的对应</li>
+    <li><strong>社会学</strong>：不同社会情境（法庭、教室、酒吧）有不同的语用规范，违反会导致社会后果</li>
+  </ul>
+</div>
+
+<h2>关键人物速查</h2>
+<div class="card">
+  <ul class="examples">
+    <li><strong>H.P. Grice（1975）</strong> — 会话含义理论 + 四个合作准则，现代语用学基石</li>
+    <li><strong>J.L. Austin（1962）</strong> — 《如何以言行事》，开创言语行为理论</li>
+    <li><strong>John Searle（1969）</strong> — 建立系统的言语行为分类体系</li>
+    <li><strong>Brown & Levinson（1987）</strong> — 面子理论，跨文化语用学核心框架</li>
+    <li><strong>Deborah Tannen（1990）</strong> — 跨性别沟通的语用差异研究</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别隐含意义</h2>
+  <p>以下每个场景都涉及语用推理。选择你认为最符合说话人意图的选项。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">一封推荐信，目的是评价申请者的学术能力。</div>
+    <div class="sentence">"这位学生英语很好，出勤率也很高。"</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">说话人在暗示：这个学生的学术表现一般</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">说话人只是在客观评价：这位学生确实英语好且出勤率高</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">在餐厅里，你对邻座的人说。</div>
+    <div class="sentence">"你能把盐递给我吗？"</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">这是一个关于对方能力的问题——对方只需要回答"能"或"不能"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">这是一个请求——对方应该把盐递过来</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你对同事说"请把这份报告在下班前发给我"。</div>
+    <div class="sentence">根据 Searle 的分类，这属于哪种言语行为？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">指令类（directive）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">断言类（assertive）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">老板对员工说"你现在的工资确实不高"。</div>
+    <div class="sentence">如果员工理解为"老板可能要给我加薪了"，这违反了格莱斯的哪个准则？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">数量准则——老板没有提供足够的信息</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">老板没有违反任何准则，是员工在过度推断</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在日本商务会议中。</div>
+    <div class="sentence">对方说"ちょっと検討します"（让我考虑一下）。根据语用学知识，这最可能意味着什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">对方真的需要时间考虑，后续会有明确的答复</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">这通常是一种委婉的拒绝</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你给朋友发消息："我今晚要加班……"对方回复："那你要不要吃宵夜？"</div>
+    <div class="sentence">朋友是在执行哪种言语行为？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">通过询问你的需求来执行"关心/建议"的言外行为</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">只是字面意义上的询问你是否想吃宵夜</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">比较两种表达方式。</div>
+    <div class="sentence">"Pass the salt." 和 "Could you possibly pass the salt?" 礼貌程度不同，核心原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">后者的词汇更正式，所以听起来更礼貌</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">后者通过情态动词增加了语言距离，减轻了面子威胁</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">一个 AI 系统接收到用户消息"我有点冷"。</div>
+    <div class="sentence">语用学驱动的系统会如何回应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">回复"根据我的传感器数据，当前室温为24摄氏度"——只处理语义</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">推断这是一个请求——建议关窗或调高空调温度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 随时问我——我是你的语言学导师。不确定为什么某个答案是对的、某个是错的？这正是值得讨论的地方。直接提问，我会解释清楚。
+  <br><br>
+  <strong>推荐延伸阅读：</strong><a href="../reference/pragmatics-quick-ref.html" class="resource-link">语用学速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-syntax.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-language-contact-borrowing.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '这违反了 Grice 的"数量准则"——在评价学术能力的推荐信中，只提英语和出勤，没有提及学术表现。听者会推断出隐含含义：学术表现不值一提。',
+      wrong: '字面上说话人确实在陈述一个事实。但在推荐信的语境中，违反"数量准则"（信息不足）本身就传递了隐含意义：不评价学术 = 学术表现一般。'
+    },
+    q2: {
+      correct: '在餐厅语境中，这是一个请求，不是真正在问对方的能力。语用学告诉我们：字面意义 ≠ 实际意图。' ,
+      wrong: '从语义学角度看，这确实是个关于能力的问题。但在语用学层面——实际使用场景——它就是一个请求。听懂"隐含意义"是语用能力的核心。'
+    },
+    q3: {
+      correct: '"请把报告发给我"是在让对方做某事，这正是 Searle 分类中的"指令类"（directive）言语行为。',
+      wrong: '"请把……"是在要求对方采取行动，不是陈述一个事实。断言类（assertive）是陈述事实的，如"今天的报告已经写完了"。'
+    },
+    q4: {
+      correct: '老板只陈述了一个事实"你工资不高"，这是断言类言语行为，没有违反任何准则。员工将其解读为暗示要加薪，是过度推断。语用推理需要依据语境中的线索，不能凭空创造含义。',
+      wrong: '老板确实没有违反任何准则。他在陈述一个事实（断言类），但员工可能把"承认工资低"解读为"为加薪做铺垫"。这是员工的推断，不是说话人传达的会话含义。'
+    },
+    q5: {
+      correct: '在日语商务文化中，"ちょっと検討します"是一种礼貌的间接拒绝方式。直接说"不行"会威胁对方的面子（消极面子）。理解这种"语用迁移"差异是跨文化沟通的关键——这种能力差距比语法错误更难被宽容。',
+      wrong: '字面上确实在说"考虑一下"。但在日语商务语用规则中，这几乎总是一种委婉拒绝。仅按字面理解会导致"语用迁移失败"——这是跨文化沟通中最常见的陷阱之一。'
+    },
+    q6: {
+      correct: '朋友不是在字面询问你是否"想吃"，而是在执行一种关心/建议的言外行为——通过询问你的需求来表达关心。这就是 Austin 所说的"言外行为"：话语的功能超越了字面意义。',
+      wrong: '字面上确实是询问是否想吃宵夜。但语用学告诉我们，在"加班"这个语境下，这句话的实际功能是表达关心，而不是获取信息。'
+    },
+    q7: {
+      correct: 'Brown & Levinson 的礼貌理论指出："Could"和"possibly"增加了语言距离，减轻了直接性，从而减轻了面子威胁。这不是词汇正式度的问题，而是面子管理的策略。',
+      wrong: '词汇正式度不是核心原因。核心是"Could you possibly…"通过情态动词和副词构建了语言距离，减轻了对方被迫执行请求的压力——这是面子威胁减轻策略。'
+    },
+    q8: {
+      correct: '语用学驱动的系统会推断"我有点冷"的实际意图：这是一个隐含请求——希望对方采取措施（关窗/调高空调）。这正是区分"聊天机器人"和"智能体"的关键：理解意图而不仅仅是语义。',
+      wrong: '如果系统只处理语义，它会陈述室温这个事实。但语用学关注的是"说话人想表达什么"——"我冷"在大多数语境中是一个请求（帮我取暖），而非事实陈述。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你已经掌握了语用学的核心思维。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题，解释会告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的理论部分，然后再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

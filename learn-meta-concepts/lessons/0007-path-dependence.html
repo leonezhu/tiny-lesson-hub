@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 — 路径依赖</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>路径依赖（Path Dependence）</h1>
+<p class="lesson-meta">Lesson 7 &middot; ~10 minutes &middot; Meta concept #7</p>
+
+<div class="goal-box">
+  <strong>通过本课</strong>，你将理解为什么历史上看似"不合理"的选择会长期锁定我们的制度、技术和文化——并且学会识别自己生活中的路径依赖，找到打破锁定的机会。
+</div>
+
+<h2>核心直觉</h2>
+<p>
+  <strong>路径依赖</strong>的意思是：一个系统当前的状态，主要由它过去的经历决定，而不是由当前最优的选择决定。换句话说，<strong>"起点很重要"</strong>——甚至在某些情况下，起点决定了你永远到不了别的地方。
+</p>
+<p>
+  这个概念告诉我们：世界不总是往"最优"方向发展。有时候，只是因为一个偶然的小选择，整个系统就被锁定在了一条路径上，即使后来出现了更好的替代方案，也很难切换。
+</p>
+
+<div class="tense-card">
+  <h3>路径依赖的数学直觉</h3>
+  <p class="form">收益递增 + 转换成本 = 锁定效应</p>
+  <ul class="examples">
+    <li>使用的人越多 → 越有价值 → 更多人使用（正反馈）</li>
+    <li>切换到新方案 = 重新学习 + 失去兼容性 + 承担风险</li>
+    <li>即使新方案更好，锁定的惯性也可能让旧方案继续主导</li>
+  </ul>
+</div>
+
+<h2>经典案例：QWERTY 键盘</h2>
+<p>
+  这是路径依赖最著名的例子。你可能不知道，<strong>QWERTY 键盘布局是一个"糟糕的设计"</strong>——它存在的初衷是为了降低打字速度，防止老式打字机的机械臂卡住。
+</p>
+<p>
+  然而，即使电动打字机出现后，QWERTY 已经被广泛使用：打字员习惯了它，培训机构教授它，键盘工厂生产它。到后来有人设计出更高效的键盘布局（如 Dvorak），<strong>转换成本已经高到无法克服</strong>——不是因为它更好，而是因为所有人都在用 QWERTY。
+</p>
+<p>
+  到 2024 年，QWERTY 依然占据全球超过 65% 的键盘市场份额。一个 19 世纪为机械打字机设计的布局，统治了 21 世纪的数字键盘。
+</p>
+
+<div class="chinese-note">
+  <strong>关键教训：</strong>路径依赖的核心公式是 — 初始的微小优势 + 正反馈（收益递增） + 高转换成本 = 锁定。一旦锁定，即使有更好的选择，切换也极其困难。
+</div>
+
+<h2>路径依赖的四个要素</h2>
+
+<div class="tense-card">
+  <h3>1. 设置（Settlement）— 初始状态</h3>
+  <p>系统如何开始，往往不是最优的，甚至是随机的。</p>
+  <ul class="examples">
+    <li>美国为什么用英制单位（英尺、磅）？因为殖民地时期从英国继承了这套体系</li>
+    <li>中国的繁体字→简化字改革，也是一个历史性的"设置点"</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>2. 正反馈（Positive Feedback）— 自我强化</h3>
+  <p>一旦开始，系统会自我强化。</p>
+  <ul class="examples">
+    <li>越多人用 QWERTY → 越多人被教 QWERTY → 越多人生产 QWERTY 键盘</li>
+    <li>越多人用 Windows → 越多软件为 Windows 开发 → 越多人买 Windows</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>3. 转换成本（Switching Cost）— 锁定</h3>
+  <p>切换到新路径需要付出的代价。</p>
+  <ul class="examples">
+    <li>换手机操作系统 = 重新学习 + 丢失应用 + 联系人迁移麻烦</li>
+    <li>中国公司从 Oracle 换到国产数据库 = 重新开发 + 测试 + 风险</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>4. 锁定（Lock-in）— 难以逆转</h3>
+  <p>系统进入"锁定"状态，即使有更好的选择也难以切换。</p>
+  <ul class="examples">
+    <li>即使 Mac 和 Linux 更好，Windows 依然占据约 70% 桌面市场</li>
+    <li>中国铁路使用 1435mm 标准轨距——跟美国一样，因为是 19 世纪从英国引进的</li>
+  </ul>
+</div>
+
+<h2>路径依赖不只是"坏"的</h2>
+<p>
+  路径依赖有双刃剑效应。它既可以是锁定的陷阱，也可以是<strong>积累的引擎</strong>：
+</p>
+<ul class="examples" style="padding-left: 1.5rem; margin: 1rem 0;">
+  <li style="padding: 0.25rem 0; padding-left: 1.2rem; position: relative;"><strong style="position: relative;">→ 文化积累</strong> 中文几千年的文化传承本身就是一种路径依赖——越多人学，越有价值，但你也继承了古代的思维方式。</li>
+  <li style="padding: 0.25rem 0; padding-left: 1.2rem; position: relative;"><strong style="position: relative;">→ 技术积累</strong> Python 的生态系统（NumPy、Pandas、PyTorch）之所以强大，不是因为它是"最好的"语言，而是因为 20 年的积累形成了强大的正反馈。</li>
+  <li style="padding: 0.25rem 0; padding-left: 1.2rem; position: relative;"><strong style="position: relative;">→ 制度积累</strong> 中国的科举制度延续了 1300 年，塑造了"知识改变命运"的文化路径依赖，直至今日的高考制度仍然体现这种逻辑。</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>现实洞察：</strong>当你觉得"某个东西明明不好但就是改不了"的时候，你可能遇到了路径依赖。解决路径依赖的关键不是"证明新方案更好"，而是<strong>降低转换成本</strong>或<strong>等待系统进入新的临界点</strong>。
+</div>
+
+<h2>如何在现实中应用</h2>
+
+<div class="tense-card">
+  <h3>个人层面：识别你自己的路径依赖</h3>
+  <ul class="examples">
+    <li>你的专业选择、职业方向，有多少是"因为已经学了/做了这么久"，而不是"因为现在做这个最优"？</li>
+    <li>你用的手机/电脑/工具，是真的最好，还是只是因为习惯了？</li>
+    <li>你的人际关系模式，有多少是童年经历的路径依赖？</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>决策层面：利用路径依赖创造优势</h3>
+  <ul class="examples">
+    <li>在早期阶段抢占先机，建立正反馈循环（先入者优势）</li>
+    <li>降低用户/学习者的转换成本，帮助用户从旧路径切换到你的新路径</li>
+    <li>在锁定发生前，设计开放的系统（如开源软件）</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：判断路径依赖</h2>
+  <p>以下场景中，哪些体现了路径依赖？哪些不是？点击选择。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">公司决定迁移到一个新的项目管理工具，因为团队发现旧工具效率低。</div>
+    <div class="sentence">这个决定体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是，路径依赖</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不是，这是优化决策</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一家公司坚持使用 SQL Server，因为 DBA 团队只学过 SQL Server，即使 PostgreSQL 在性价比上更优。</div>
+    <div class="sentence">这个情况体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，路径依赖</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是专业选择</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一个初创公司在早期选择了 TypeScript，因为团队发现它减少了 bug，现在 TypeScript 的生态系统越来越完善，新项目都优先用 TS。</div>
+    <div class="sentence">这体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，早期选择带来正反馈</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是技术偏好</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一个人拒绝学习 AI 工具，因为他觉得"我用传统方法也能完成任务，没必要改变"。</div>
+    <div class="sentence">这体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，转换成本过高导致锁定</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，这只是个人的学习节奏</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">某个国家的法律体系基于英国普通法，因为该国曾经是英国殖民地。</div>
+    <div class="sentence">这体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，殖民历史设置了法律路径</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是历史事实</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一个人换了新的操作系统后，发现新系统效率更高，用户体验更好。</div>
+    <div class="sentence">这体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是，因为换了系统本身就是路径依赖</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不是，这只是用户体验的比较</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">中国高铁采用了 350km/h 的运营标准，而日本新干线也是 320km/h 级别，因为它们都参考了欧洲的技术路线。</div>
+    <div class="sentence">这体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是技术标准统一</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，技术来源决定了后续发展路径</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">一个城市选择了地铁作为主要公共交通系统，因为早期投资已经建成。即使轻轨成本更低，但因为地铁已经运营多年，市民已经习惯了，再改轻轨需要巨大的转换成本。</div>
+    <div class="sentence">这体现了路径依赖吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，转换成本 + 正反馈 = 锁定</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是城市规划的现实约束</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的元概念导师。不理解路径依赖和因果性的区别？为什么 QWERTY 布局至今未变？为什么有些路径依赖可以被打破？这些正是值得深入的问题。
+  <br><br>
+  <strong>延伸阅读：</strong>布莱恩·阿瑟《正反馈的魔法》（<em>The Nature of Technology</em>）——论述技术路径依赖和收益递增如何塑造经济演化；道格拉斯·诺斯《制度、制度变迁与经济绩效》——制度经济学中路径依赖的经典分析。
+  <br><br>
+  <a href="../reference/path-dependence.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-scaling.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-critical-points-phase-transitions.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '这不是路径依赖——公司主动识别低效并选择更好的方案，说明转换成本被评估并克服了。路径依赖恰恰是"明明有更好的方案但就是换不了"。', wrong: '这是优化决策。路径依赖的关键词是"换不了"——即使有更好的选择，因为转换成本或正反馈而被锁定在旧路径。这里公司主动迁移，说明没有被锁定。' },
+    q2: { correct: '这是经典的路径依赖：团队因为已有的技能投资（只学过 SQL Server）而不愿切换到更好的 PostgreSQL。转换成本（学习新技能）锁定了技术路径。', wrong: '这不"只是"专业选择。当"因为已经学了所以不换"取代了"因为更好所以选"，就是路径依赖。DBA 团队的技术投资形成了转换成本，阻止了向更优方案的迁移。' },
+    q3: { correct: '早期选择（TypeScript 减少 bug）→ 正反馈（生态系统越来越完善）→ 锁定（新项目优先用 TS）。这是路径依赖的正向版本：一个合理的选择通过自我强化变成了标准。', wrong: '这不只是技术偏好。TypeScript 的成功有一个路径依赖的循环：早期选择 → 正反馈（生态系统） → 更多人选择 → 生态更强。如果没有早期正反馈，它可能只是一个"偏好"。' },
+    q4: { correct: '这是路径依赖——拒绝改变的原因是"我已经在旧路径上投入了太多"，而不是"旧方法现在更优"。转换成本（学习新工具的时间）超过了感知收益，导致锁定。', wrong: '这不只是学习节奏。关键区别在于动机：如果是因为"旧方法现在仍然够用"，那只是效率评估。但这里说的是"没必要改变"——因为已经投入了适应成本，这就是路径依赖的心理表现。' },
+    q5: { correct: '殖民历史在法律体系中设置了初始路径。经过 100+ 年的制度演进、人才培养、法律文献积累，转换到其他法律体系的成本极高，这就是典型的路径依赖。', wrong: '这不只是"历史事实"。如果法律体系是基于当前最优评估选择的，那只是历史事实。但实际情况是：殖民历史设置了初始路径，经过百年制度积累形成了锁定——这就是路径依赖的定义。' },
+    q6: { correct: '换系统本身就是"克服路径依赖"的行动。如果只是比较体验好与不好，没有涉及"过去的选择如何影响现在的状态"，就不构成路径依赖。', wrong: '换了系统恰恰是"打破路径依赖"的行为。路径依赖是指"因为过去的选择而被锁定"，换系统说明这个人克服了锁定，选择了新路径。比较体验好坏本身不涉及路径依赖。' },
+    q7: { correct: '这是路径依赖的典型案例：早期技术来源（欧洲）设定了标准，后续发展都在这条路径上累积和强化。中国和日本的高铁标准都源自对欧洲技术的采纳，形成了跨国界的路径依赖。', wrong: '这不只是"技术统一"。关键不在于结果相同（都是 320-350km/h），而在于原因：它们不是因为独立评估后选择了相同方案，而是因为都借鉴了同一条技术路径。这种"同源演化"就是路径依赖。' },
+    q8: { correct: '完美识别！早期投资（建成地铁）+ 市民适应（正反馈）+ 重新建设的成本（转换成本）= 即使轻轨更好也难以切换的锁定状态。这是城市规划和基础设施领域最典型的路径依赖。', wrong: '这不只是"现实约束"。规划约束是资源有限，但路径依赖特指"过去的选择锁定了当前选项"——地铁已经运营多年，市民习惯、配套建设、投资回收形成正反馈，使切换成本远超单纯的"建设成本"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '全对！你已经掌握了路径依赖的核心直觉。';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，路径依赖是个需要反复体会的概念。';
+      else label.textContent = '路径依赖的核心是"过去的选择锁定未来"，多读几遍上面的例子会更有感觉。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

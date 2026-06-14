@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>决策理论 — 速查参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .formula-box .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .formula-box .desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.15rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .note strong { color: #e65100; }
+
+  .links {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<h1>决策理论 — 速查参考卡</h1>
+<p class="card-meta">数学与逻辑 第 12 课 &middot; 快速参考</p>
+
+<h2>核心公式</h2>
+
+<div class="formula-box">
+  <div class="formula">EU(A) = &Sigma; P(s<sub>i</sub>) &times; U(o<sub>i</sub>)</div>
+  <div class="desc">期望效用 = 概率 &times; 效用 的加权求和。选 EU 最大的行动。</div>
+</div>
+
+<div class="formula-box">
+  <div class="formula">f* = (bp - q) / b</div>
+  <div class="desc">凯利公式：最优下注比例。b=赔率，p=胜率，q=1-p。f* &le; 0 时不投。</div>
+</div>
+
+<h2>决策三大构件</h2>
+<ul>
+  <li><strong>行动</strong> (Acts) — 你可以选择做什么</li>
+  <li><strong>状态</strong> (States) — 世界可能的样子（不在你控制之内）</li>
+  <li><strong>结果</strong> (Outcomes) — 每个行动+状态组合产生的后果</li>
+</ul>
+
+<h2>前景理论三大偏差</h2>
+<ul>
+  <li><strong>损失厌恶</strong>：损失 100 的痛苦 &asymp; 2 &times; 获得 100 的快乐</li>
+  <li><strong>参照点依赖</strong>：结果评估取决于参照点而非绝对水平</li>
+  <li><strong>概率权重</strong>：小概率高估、大概率低估</li>
+</ul>
+
+<h2>实用工具</h2>
+<ul>
+  <li><strong>期望值计算器</strong>：选项 &rarr; 概率 &rarr; 数值 &rarr; EV 比较</li>
+  <li><strong>预-mortem</strong>：决策前假设失败，反向推理原因</li>
+  <li><strong>后悔值分析</strong>：选了 B 会后悔多少？双向检查</li>
+</ul>
+
+<div class="note">
+  <strong>关键：</strong>决策论中最难的是诚实评估概率。你的主观信心通常比实际准确度高出 20-30%。预-mortem 和外部评审是最有效的校正手段。
+</div>
+
+<div class="links">
+  <a href="../lessons/0012-juecelilun.html">&larr; 返回完整课程</a>
+</div>
+
+</body>
+</html>

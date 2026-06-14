@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡片 — 贝叶斯推理</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .formula-box {
+    background: #f8f9fa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 2;
+  }
+
+  .formula-box .label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .formula-box .formula {
+    font-size: 1.1rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .ref-card {
+    background: #fafafa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .ref-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .ref-card table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+  }
+
+  .ref-card table td {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-card table tr:last-child td { border-bottom: none; }
+  .ref-card table td:first-child { font-weight: 600; width: 35%; color: var(--accent); }
+
+  .key-point {
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafbfc;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>贝叶斯推理 · 参考卡片</h1>
+<p class="lesson-meta">快速参考 &middot; 对应课程 <a href="../lessons/0002-bayesian-reasoning.html">Lesson 2 — 贝叶斯推理</a></p>
+
+<div class="ref-card">
+  <h4>核心公式</h4>
+  <div class="formula-box">
+    <span class="label">贝叶斯定理</span>
+    <span class="formula">P(H|E) = P(E|H) &times; P(H) / P(E)</span>
+  </div>
+  <p>
+    <strong>P(H)</strong> = 先验概率 &nbsp;|&nbsp;
+    <strong>P(E|H)</strong> = 似然 &nbsp;|&nbsp;
+    <strong>P(E)</strong> = 证据概率 &nbsp;|&nbsp;
+    <strong>P(H|E)</strong> = 后验概率
+  </p>
+</div>
+
+<div class="ref-card">
+  <h4>四要素速查</h4>
+  <table>
+    <tr><td>先验 P(H)</td><td>看到证据之前的信念强度（base rate）</td></tr>
+    <tr><td>似然 P(E|H)</td><td>如果假设成立，观察到该证据的可能性（诊断力）</td></tr>
+    <tr><td>证据 P(E)</td><td>任何情况下观察到该证据的总概率（标准化分母）</td></tr>
+    <tr><td>后验 P(H|E)</td><td>看到证据后的更新信念——最终答案</td></tr>
+  </table>
+</div>
+
+<h2>经典案例速算</h2>
+
+<div class="key-point">
+  <strong>医疗检测悖论：</strong>疾病 1%，检测灵敏度 95%，特异度 90%。阳性后真正患病概率 ≈ <strong>8.8%</strong>（不是 95%！）
+  <br>
+  <strong>关键原因：</strong>base rate（1%）太低 + 假阳性率（10%）太高 → 假阳性远多于真阳性。
+</div>
+
+<h2>三大常见陷阱</h2>
+
+<div class="ref-card">
+  <table>
+    <tr><td>Base Rate Neglect</td><td>只看证据强度，忽略先验概率</td></tr>
+    <tr><td>Overconfident Updating</td><td>一个证据就彻底改变信念（从 0 到 1）</td></tr>
+    <tr><td>Ignoring Alternatives</td><td>只算 H 成立时的似然，忘了 H 不成立时证据也会出现</td></tr>
+  </table>
+</div>
+
+<h2>迭代更新</h2>
+
+<div class="key-point">
+  <strong>后验 = 明天的先验</strong>。每次新证据到来，做一次更新。经过足够多的独立证据，先验的影响消失，收敛到真实值（贝叶斯一致性）。
+</div>
+
+<h2>跨学科连接</h2>
+
+<div class="ref-card">
+  <table>
+    <tr><td>AI/ML</td><td>朴素贝叶斯分类器、贝叶斯优化、概率编程（Stan/Pyro）</td></tr>
+    <tr><td>统计推断</td><td>贝叶斯 vs 频率学派的两大范式</td></tr>
+    <tr><td>决策论</td><td>先验 → 证据 → 后验 → 期望效用 → 决策</td></tr>
+    <tr><td>投资</td><td>先验假设 + 财报/新闻 = 更新后判断</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0002-bayesian-reasoning.html">完整课程</a> | <a href="../index.html">目录</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第六课：Transformer 与注意力机制</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Transformer 与注意力机制</h1>
+<p class="lesson-meta">第 6 课 &middot; ~12 minutes &middot; 现代 AI 的核心架构</p>
+
+<div class="goal-box">
+  <strong>本课学完后</strong>，你将能够解释 Transformer 架构的四个核心组件及其各自解决的问题，理解自注意力机制如何让 AI 像"扫视整页文字"一样理解语言，并能说清为什么 Transformer 取代了 RNN 成为大语言模型的底座。
+</div>
+
+<h2>从 RNN 到 Transformer：为什么要换？</h2>
+<p>
+  上节课我们学习了 RNN（循环神经网络）。RNN 处理句子像看磁带——必须从第一个词逐个读到最后一个。它有两个致命弱点：
+</p>
+<p>
+  <strong>第一，无法并行。</strong>必须先读完第1个词才能处理第2个，GPU 利用率极低。<br>
+  <strong>第二，长程记忆衰退。</strong>读到第100行的时候，往往已经忘了第1行写了什么。
+</p>
+<p>
+  2017年，Google 的论文《Attention Is All You Need》提出了一个大胆的想法：<strong>如果完全丢掉循环结构，只用注意力机制呢？</strong>答案就是 Transformer——它让 AI 能像看照片一样，一眼扫过整个句子。
+</p>
+
+<div class="chinese-note">
+  <strong>直觉类比：</strong>RNN 像逐个读单词的朗诵者，Transformer 像一眼扫完整本书的速读者。前者是"串行"，后者是"并行+全局关注"。
+</div>
+
+<h2>四大核心组件</h2>
+
+<h3>1. 自注意力机制（Self-Attention）——分清轻重缓急</h3>
+<div class="concept-card">
+  <h3>核心思想</h3>
+  <p>
+    自注意力是 Transformer 的"灵魂"。当模型处理一个词时，它会同时查看句子中<strong>所有其他词</strong>，然后决定每个词对当前词的"重要程度"。
+  </p>
+  <p>
+    <strong>例子：</strong>"<strong>张三</strong>拿着个<strong>苹果</strong>，<strong>他</strong>把它<strong>吃</strong>了。"
+  </p>
+  <ul class="examples">
+    <li>处理"他"时：注意力权重会强力指向"张三"（"他"指谁？张三。）</li>
+    <li>处理"吃"时：注意力权重会指向"苹果"（吃什么？苹果。）</li>
+    <li>处理"苹果"时：注意力会同时看向"张三"和"吃"（谁吃什么？张三吃。）</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>计算方式</h3>
+  <p>
+    自注意力的核心公式为：<strong>Attention(Q, K, V) = softmax(QK<sup>T</sup> / &radic;d<sub>k</sub>)V</strong>
+  </p>
+  <p>
+    别被公式吓到。用大白话说：
+  </p>
+  <ul class="examples">
+    <li><strong>Q（Query）</strong>：当前词在"查询"什么——就像你在人群中寻找熟人，你的目光是查询。</li>
+    <li><strong>K（Key）</strong>：每个词都在"提供特征"——就像每个人身上的衣服特征，决定你是否会多看一眼。</li>
+    <li><strong>V（Value）</strong>：实际携带的信息内容——就像那个人真正告诉你的话。</li>
+  </ul>
+  <p>
+    计算过程：用 Q 和 K 做相似度匹配，得到注意力权重（谁跟谁最相关），然后用这些权重去加权 V 的信息。
+  </p>
+</div>
+
+<h3>2. 多头注意力（Multi-Head Attention）——从多个角度观察</h3>
+<div class="concept-card">
+  <h3>核心思想</h3>
+  <p>
+    如果只让一个"业务员"去看句子，可能会看走眼。Transformer 的做法是：<strong>多个"头"并行观察</strong>，每个头专注于不同的关系维度。
+  </p>
+  <p>
+    <strong>例子：</strong>对于句子"苹果公司的首席执行官在库比蒂诺宣布了新产品的发布"
+  </p>
+  <ul class="examples">
+    <li><strong>头1</strong>（语法结构）：发现"苹果"修饰"公司"，"首席执行官"是主语核心</li>
+    <li><strong>头2</strong>（指代关系）：发现"它"（如果有）应该指向"公司"而非"苹果"</li>
+    <li><strong>头3</strong>（语义关联）：发现"库比蒂诺"与"苹果"有地理关联（都是科技公司相关）</li>
+    <li><strong>头4</strong>（事件结构）：发现"宣布"的发出者是"首席执行官"，内容是"新产品发布"</li>
+  </ul>
+  <p>
+    最后把所有头的输出拼接在一起。GPT-3 使用了 <strong>96 个头</strong>同时工作。
+  </p>
+</div>
+
+<h3>3. 位置编码（Positional Encoding）——给词贴上"座位号"</h3>
+<div class="concept-card">
+  <h3>问题</h3>
+  <p>
+    RNN 天然有顺序——它从左往右读，位置信息内嵌在处理过程中。但 Transformer 是一次性处理所有词（并行计算），它原本<strong>分不清词语顺序</strong>。
+  </p>
+  <p>
+    如果不加处理，"狗咬人"和"人咬狗"在 Transformer 眼里是一样的——因为它们包含的词完全相同。
+  </p>
+  <h3>解决方案</h3>
+  <p>
+    给每个位置分配一个独特的<strong>正弦/余弦波形编码</strong>。第1个词得到一个编码，第2个词得到另一个……就像给每本书贴上传真编号，即使书的内容一样，编号也不同。
+  </p>
+  <ul class="examples">
+    <li>既保留了并行处理的速度优势</li>
+    <li>又让模型知道"这个在第1位，那个在第5位"</li>
+  </ul>
+</div>
+
+<h3>4. 编码器与解码器（Encoder & Decoder）——理解与表达</h3>
+<div class="concept-card">
+  <h3>编码器（Encoder）——理解</h3>
+  <p>
+    编码器负责"读入"。它将输入文本层层压缩，从字面意思提炼到高维的隐藏向量——就像把一篇中文翻译文章"消化"成深层含义。每个 Encoder 层都由"多头注意力 + 前馈网络"堆叠而成。
+  </p>
+  <h3>解码器（Decoder）——生成</h3>
+  <p>
+    解码器负责"输出"。它根据编码器的理解，结合已经生成的上一个词，逐词预测"下一个词该写什么"。每个 Decoder 层包含：
+  </p>
+  <ul class="examples">
+    <li><strong>掩码自注意力</strong>：解码时只能看到已生成的词（不能"偷看"未来）</li>
+    <li><strong>交叉注意力</strong>：每一轮都去"问"编码器"这段输入是什么意思"</li>
+    <li><strong>前馈网络</strong>：把注意力结果进一步变换</li>
+  </ul>
+  <p>
+    <em>注意：现在的 GPT 系列主要只有"解码器"（Decoder-only），更擅长生成。而传统的机器翻译同时需要编码器和解码器。</em>
+  </p>
+</div>
+
+<h2>为什么 Transformer 改变了世界？</h2>
+
+<div class="concept-card">
+  <h3>并行计算 —— 速度飞跃</h3>
+  <p>
+    RNN 必须读完第一个词才能读第二个——慢。Transformer 可以同时处理整篇文章，充分利用 GPU 的并行计算能力。训练速度提升了数十倍。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>长程记忆 —— 看得远</h3>
+  <p>
+    RNN 读到第100行可能已经忘了第1行的内容。Transformer 的注意力机制让它即便在读长篇小说时，也能随时回到开头——因为它可以"注意力跳转"到任何位置。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>缩放定律 —— 越大越强</h3>
+  <p>
+    Transformer 架构具有极强的可扩展性。Chinchilla 定律表明：模型性能随参数量、数据量和计算量的增加呈幂律增长。参数量从百万级到万亿级的扩展中，Transformer 的表现始终优异——这是 GPT-3、GPT-4、Gemini 等系统诞生的技术基础。
+  </p>
+</div>
+
+<h2>从 Transformer 到大语言模型</h2>
+<p>
+  Transformer 本身只是一个<strong>架构</strong>。真正让它引爆 AI 革命的是在海量文本数据上的<strong>预训练</strong>：让模型在几十万亿个 token 上练习"预测下一个词"。
+</p>
+<p>
+  经过充分预训练的 Transformer 会涌现出令人惊讶的能力：
+</p>
+<ul class="examples">
+  <li><strong>语言理解</strong>：不是机械匹配，而是真正理解了语义</li>
+  <li><strong>推理能力</strong>：能处理多步逻辑推理</li>
+  <li><strong>少样本学习</strong>：只需几个例子就能学会新任务</li>
+  <li><strong>代码生成</strong>：从自然语言描述生成可运行代码</li>
+</ul>
+<p>
+  这些能力都不是预先编码的——它们是模型在海量数据上学习语言结构后<strong>自然涌现</strong>出来的。这就是"大语言模型"中"大"的含义。
+</p>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong>Transformer 不是一种"学习方法"，而是一种"网络架构"。它可以用监督学习、无监督学习、强化学习来训练。我们常说的 GPT、BERT 等模型使用的是<strong>不同的训练目标</strong>，但底层架构都是 Transformer 的变体。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>选出每个问题的正确答案。每题有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解 Transformer 的核心突破</div>
+    <div class="sentence">与 RNN 相比，Transformer 的主要优势是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">需要更少的训练数据</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">支持并行计算，训练更快</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解自注意力机制</div>
+    <div class="sentence">在句子"张三告诉李四他明天会迟到"中，处理代词"他"时，自注意力机制会主要关注：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">"张三"和"李四"</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">"迟到"和"明天"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解多头注意力的设计</div>
+    <div class="sentence">Transformer 使用"多头注意力"而不是"单头注意力"的主要原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">减少计算量</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">从多个维度同时捕捉不同类型的关系</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解位置编码的必要性</div>
+    <div class="sentence">Transformer 为什么要加入位置编码（Positional Encoding）？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">并行处理丢失了词的顺序信息</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加模型的参数量以提升性能</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解编码器与解码器</div>
+    <div class="sentence">GPT 系列模型只包含解码器（Decoder-only），这意味着它：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">无法理解输入，只能随机生成</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">通过自回归方式逐词生成文本</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解缩放定律</div>
+    <div class="sentence">Chinchilla 定律指出，训练大型 Transformer 模型时最优的策略是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">参数量和训练数据量以固定比例同步增长</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">尽可能增加参数，数据量不重要</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解 Transformer 的核心公式</div>
+    <div class="sentence">在 Attention(Q, K, V) 中，Q 代表查询（Query），它的作用是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">当前词在"查找"序列中哪些词最相关</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">存储序列中所有词的最终输出</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解 Transformer 的范式转换</div>
+    <div class="sentence">RNN 处理句子像看磁带（逐个读），Transformer 处理句子像：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">翻书页（逐段读）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">看照片（一眼扫过整句）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的 AI 导师。觉得某个概念还不清晰？这正是我们该深入讨论的地方。直接输入你的问题，我会详细解释。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://jalammar.github.io/illustrated-transformer/" target="_blank">The Illustrated Transformer</a>（Jay Alammar）—— 用可视化图解读 Transformer 架构，是理解这一主题的最佳入门资料之一。
+  <br><br>
+  <a href="../reference/transformer-attention.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-rnn-sequence-models.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-llm-overview.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'Transformer 的核心优势就是并行计算。RNN 必须串行处理，Transformer 可以同时处理整段文本，训练速度大幅提升。', wrong: 'Transformer 通常需要<strong>更多</strong>的训练数据才能发挥优势。它的核心优势不是省数据，而是并行计算带来的速度和长程建模能力。' },
+    q2: { correct: '自注意力会根据语义关联动态分配权重。"他"作为代词，其含义依赖于前文的名词——注意力机制会自动指向"张三"和"李四"来确定指代关系。', wrong: '"迟到"和"明天"是"他"的动作和时间，但不决定"他"指代谁。注意力机制在处理代词时优先关注的是前文的名词实体。' },
+    q3: { correct: '每个"头"可以专注不同的关系维度：语法、指代、语义、事件结构等。多个头并行观察，相当于从多个角度同时理解，让表征更丰富。多头实际上增加了计算量，但换来的是表达能力的提升。', wrong: '多头注意力的目的是增强表达能力，而不是减少计算量。事实上，多个头并行运行会略微增加计算量，但这个代价换来的是模型能同时捕捉多种不同类型的关系。' },
+    q4: { correct: 'RNN 的顺序处理天然编码了位置信息。Transformer 因为并行处理所有词，丢失了顺序信息，所以必须显式加入位置编码。没有位置编码，"狗咬人"和"人咬狗"就无法区分。', wrong: '位置编码不增加模型的"学习能力参数"。它只是一个附加的编码向量，帮助模型感知顺序。增加参数量是网络设计的目标，不是位置编码的目的。' },
+    q5: { correct: 'GPT 系列是"自回归"模型：每次只生成一个词，然后把这个词加入输入序列，再生成下一个词。这种逐词生成的方式让它成为强大的文本生成器。它完全可以理解输入——解码器通过自注意力机制理解输入上下文。', wrong: 'GPT 通过自回归方式逐词生成——先理解输入，然后生成第一个词，再拿"输入+第一个词"生成第二个词，如此循环。这不是随机生成，而是有明确的概率分布指导。' },
+    q6: { correct: 'Chinchilla 定律发现：在有限的计算预算下，模型性能最优时，参数量和 token 数量应按固定比例增长。一味堆参数而忽略数据量，或相反，都会导致性能次优。', wrong: 'Chinchilla 定律明确指出，参数量不是越大越好——它必须与数据量同步增长。只增加参数而数据不足，模型会过拟合；只增加数据而参数不足，模型无法充分学习。' },
+    q7: { correct: 'Q（Query）就像"查询条件"——当前词用它去和序列中每个词的 Key 做匹配，找出最相关的词。类比：你在图书馆查资料，Q 就是你的检索关键词。', wrong: 'Q 是查询向量，用于与 Key 做匹配。Value 才是存储/携带信息的部分。Q 的作用不是"存储输出"，而是"发起搜索"。' },
+    q8: { correct: 'Transformer 的关键词是"并行+全局"——它一次性处理所有 token，通过注意力机制在它们之间建立联系。就像看照片一样，整个画面（整句话）同时呈现在面前，而不是逐个阅读。', wrong: '"翻书页"仍然是逐段处理，本质上还是串行。Transformer 的突破在于完全抛弃了串行处理——整个句子同时被处理，这才是"看照片"的含义。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对 Transformer 的核心概念理解得很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的内容，然后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

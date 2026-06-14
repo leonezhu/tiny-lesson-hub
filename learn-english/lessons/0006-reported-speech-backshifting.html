@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 — Reported Speech — Backshifting Made Simple</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .speech-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .speech-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .speech-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .speech-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .speech-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .speech-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .direct-speech {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .backshift-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .backshift-table th, .backshift-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+  }
+
+  .backshift-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+  }
+
+  .backshift-table tr:nth-child(even) { background: #fafafa; }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Reported Speech — Backshifting Made Simple</h1>
+<p class="lesson-meta">Lesson 6 &middot; ~10 minutes &middot; Intermediate grammar</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to convert direct speech into reported speech correctly — including the backshifting of tenses, pronouns, and time expressions. You'll also know when NOT to backshift.
+</div>
+
+<h2>What is Reported Speech?</h2>
+<p>
+  Direct speech repeats someone's exact words: <em>"I work at Google."</em> Reported (indirect) speech tells someone what another person said, without quoting them directly: <em>She said she works at Google.</em>
+</p>
+<p>
+  The main challenge for Chinese speakers: Chinese doesn't require tense changes in reported speech. 她说她<strong>在</strong>谷歌工作 — the verb "在" doesn't change. But English demands <strong>backshifting</strong>: moving the tense one step into the past.
+</p>
+
+<h2>The Golden Rule: Backshift</h2>
+<p>
+  When the reporting verb is in the past (said, told me, explained), shift the original tense one step back:
+</p>
+
+<table class="backshift-table">
+  <thead>
+    <tr>
+      <th>Direct Speech</th>
+      <th>Reported Speech</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"I <strong>like</strong> this movie."</td>
+      <td>She said she <strong>liked</strong> that movie.</td>
+    </tr>
+    <tr>
+      <td>"I <strong>am working</strong> on it."</td>
+      <td>She said she <strong>was working</strong> on it.</td>
+    </tr>
+    <tr>
+      <td>"I <strong>finished</strong> the report."</td>
+      <td>She said she <strong>had finished</strong> the report.</td>
+    </tr>
+    <tr>
+      <td>"I <strong>have finished</strong>."</td>
+      <td>She said she <strong>had finished</strong>.</td>
+    </tr>
+    <tr>
+      <td>"I <strong>will call</strong> you."</td>
+      <td>She said she <strong>would call</strong> me.</td>
+    </tr>
+    <tr>
+      <td>"I <strong>can help</strong>."</td>
+      <td>She said she <strong>could help</strong>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="chinese-note">
+  <strong>Key insight:</strong> Present Simple → Past Simple, Present Continuous → Past Continuous, Past Simple → Past Perfect, will → would, can → could. Think of it as moving everything one step further back in time.
+</div>
+
+<h2>Other Changes: Pronouns and Time Words</h2>
+<p>
+  Backshifting isn't just about verbs. You also change pronouns and time expressions to match the new perspective:
+</p>
+
+<div class="speech-card">
+  <h3>Pronoun Shift</h3>
+  <ul class="examples">
+    <li>"<strong>I</strong> need <strong>my</strong> laptop." → She said <strong>she</strong> needed <strong>her</strong> laptop.</li>
+    <li>"<strong>We</strong> should ask <strong>our</strong> manager." → They said <strong>they</strong> should ask <strong>their</strong> manager.</li>
+    <li>"<strong>You</strong> should try <strong>your</strong> approach." → He told me I should try <strong>my</strong> approach.</li>
+  </ul>
+</div>
+
+<div class="speech-card">
+  <h3>Time &amp; Place Shift</h3>
+  <table class="backshift-table">
+    <thead>
+      <tr>
+        <th>Direct</th>
+        <th>Reported</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>now</td><td>then / at that time</td></tr>
+      <tr><td>today</td><td>that day</td></tr>
+      <tr><td>yesterday</td><td>the day before / the previous day</td></tr>
+      <tr><td>tomorrow</td><td>the next day / the following day</td></tr>
+      <tr><td>here</td><td>there</td></tr>
+      <tr><td>this</td><td>that</td></tr>
+      <tr><td>ago</td><td>before</td></tr>
+    </tbody>
+  </table>
+  <ul class="examples">
+    <li>"I'll see you <strong>tomorrow</strong>." → She said she'd see me <strong>the next day</strong>.</li>
+    <li>"This happened <strong>yesterday</strong>." → He said it had happened <strong>the day before</strong>.</li>
+  </ul>
+</div>
+
+<h2>When NOT to Backshift</h2>
+<p>
+  Not every reported speech sentence needs backshifting. There are two key exceptions:
+</p>
+
+<div class="speech-card">
+  <h3>1. General truths and facts</h3>
+  <p>If what was said is still true, backshifting is optional:</p>
+  <ul class="examples">
+    <li>"The earth <strong>is</strong> round." → He said the earth <strong>is</strong> round. <em>(still true — no backshift needed)</em></li>
+    <li>"Water <strong>boils</strong> at 100°C." → She explained that water <strong>boils</strong> at 100°C. <em>(scientific fact)</em></li>
+  </ul>
+</div>
+
+<div class="speech-card">
+  <h3>2. Reporting verb in the present</h3>
+  <p>If you use "says" instead of "said," no backshift:</p>
+  <ul class="examples">
+    <li>She <strong>says</strong> she <strong>works</strong> at Google. <em>(present reporting → no backshift)</em></li>
+    <li>He <strong>always says</strong> he <strong>will</strong> help. <em>(habitual present → no backshift)</em></li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>Common mistake for Chinese speakers:</strong> 中文不需要时态变化。你说"她说她在谷歌工作"，不管是什么时候说的，都是同一个句子。英文则要求根据上下文判断是否backshift。最安全的情况是：reporting verb是过去式（said）→ 默认backshift。
+</div>
+
+<h2>Reporting Questions and Commands</h2>
+<p>
+  Reported speech isn't just for statements. Here's how to handle questions and commands:
+</p>
+
+<div class="speech-card">
+  <h3>Yes/No Questions</h3>
+  <p>Use <strong>if</strong> or <strong>whether</strong>:</p>
+  <ul class="examples">
+    <li>"Do you like the project?" → She asked <strong>if</strong> I liked the project.</li>
+    <li>"Are you coming tomorrow?" → He asked <strong>whether</strong> I was coming the next day.</li>
+    <li>"Can we reschedule?" → They asked <strong>if</strong> they could reschedule.</li>
+  </ul>
+</div>
+
+<div class="speech-card">
+  <h3>Wh- Questions</h3>
+  <p>Keep the question word, but change word order (no "do/did" helper):</p>
+  <ul class="examples">
+    <li>"Where <strong>do</strong> you work?" → He asked where I <strong>worked</strong>.</li>
+    <li>"What time <strong>did</strong> the meeting start?" → She asked what time the meeting <strong>had started</strong>.</li>
+    <li>"Why are you leaving early?" → He wondered why I was leaving early.</li>
+  </ul>
+</div>
+
+<div class="speech-card">
+  <h3>Commands &amp; Requests</h3>
+  <p>Use <strong>to + infinitive</strong> (not backshifted verb):</p>
+  <ul class="examples">
+    <li>"<strong>Close</strong> the door." → She told me <strong>to close</strong> the door.</li>
+    <li>"<strong>Don't be</strong> late." → He told us <strong>not to be</strong> late.</li>
+    <li>"<strong>Please send</strong> me the file." → She asked me <strong>to send</strong> her the file.</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Convert to Reported Speech</h2>
+  <p>Each question gives you a direct speech sentence. Pick the correct reported version. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">Direct: "I am tired."</div>
+    <div class="sentence">She said that she ________.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">was tired</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">is tired</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">Direct: "I will call you tomorrow."</div>
+    <div class="sentence">He said he would call me ________. (time expression change)</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">tomorrow</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">the next day</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Direct: "The sun rises in the east."</div>
+    <div class="sentence">She explained that the sun ________ in the east. (general truth)</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">rose</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">rises</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">Direct: "Do you work here?"</div>
+    <div class="sentence">He asked me ________ work there.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">if I</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">did I</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Direct: "Please send me the report."</div>
+    <div class="sentence">She asked me ________ the report.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">to send her</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">send her</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Direct: "I have finished the project."</div>
+    <div class="sentence">She said she ________ the project.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">had finished</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">has finished</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Direct: "I can't come to the meeting."</div>
+    <div class="sentence">He said he ________ come to the meeting.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">couldn't</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">can't</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Direct: "When does the train leave?"</div>
+    <div class="sentence">She asked when ________. (wh-question word order)</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">does the train leave</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">the train left</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Want to practice converting a real conversation you had yesterday? Paste it here and I'll help you turn it into reported speech.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b1-b2-grammar/reporting-speech" target="_blank">British Council B1-B2 Grammar: Reporting Speech</a> — interactive exercises on reported speech.
+  <br><br>
+  <a href="../reference/reporting-speech.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0005-modal-verbs-politeness-hedging.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-relative-clauses.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'Present Simple "am" → Past Simple "was" (backshift). "She said she was tired."', wrong: 'Since the reporting verb is "said" (past tense), we backshift: "am" → "was". The reported version is "She said she was tired".' },
+    q2: { correct: '"Tomorrow" → "the next day" in reported speech. Time expressions shift when the reporting verb is in the past.', wrong: 'In reported speech, "tomorrow" changes to "the next day" or "the following day" because the perspective has shifted. The direct speech said "tomorrow" — from the reporter\'s vantage point, it\'s now "the next day".' },
+    q3: { correct: 'General truths don\'t need backshifting. "The sun rises in the east" is always true, so present tense is kept.', wrong: 'This is a general truth (scientific fact). We don\'t backshift for facts that remain true. "The sun rises" stays in the present tense even in reported speech.' },
+    q4: { correct: 'Yes/No questions use "if" or "whether" in reported speech, and word order becomes statement order (subject before verb).', wrong: 'Yes/No questions don\'t keep the question word order. Instead of "did I work," we say "if I work." The helper "do/did" disappears.' },
+    q5: { correct: 'Commands and requests use "to + infinitive": "She asked me to send her the report."', wrong: 'Requests use the infinitive structure: "ask + person + to + verb." The correct form is "to send," not just "send."' },
+    q6: { correct: 'Present Perfect "have finished" → Past Perfect "had finished" (backshift). "She said she had finished the project."', wrong: 'Present Perfect backshifts to Past Perfect: "I have finished" → "she had finished." The Past Perfect is the correct backshift of Present Perfect.' },
+    q7: { correct: '"Can\'t" → "couldn\'t" (backshift). "He said he couldn\'t come."', wrong: '"Can" backshifts to "could" in reported speech: "I can\'t" → "he couldn\'t." The modal changes one step back.' },
+    q8: { correct: 'Wh-questions keep the question word but switch to statement word order (no "does/did"). "When does the train leave?" → "When the train left."', wrong: 'In reported wh-questions, we remove the auxiliary "does" and change to statement word order. "When does the train leave?" becomes "She asked when the train left."' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Excellent! You\'ve got reported speech down.';
+      else if (score >= 6) label.textContent = 'Good work! Review the ones you missed — the explanations tell you why.';
+      else label.textContent = 'Keep practicing! Backshifting takes time to get right. Re-read the table above.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

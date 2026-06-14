@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 10 — Cleft Sentences &amp; Emphasis (It was… that…)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .comparison .before {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .comparison .after {
+    background: var(--accent-light);
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .comparison .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .rule-box {
+    background: white;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .rule-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Cleft Sentences &amp; Emphasis (It was… that…)</h1>
+<p class="lesson-meta">Lesson 10 &middot; ~12 minutes &middot; Advanced emphasis structures</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to use cleft sentences to redirect emphasis in English — the kind of move that makes your speech sound more natural, persuasive, and clearly B2-level. You'll also know when <em>not</em> to use them.
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  Most learners say: <em>"John stole the money."</em> That's fine. But what if you want to stress <strong>who</strong> did it — not the stealing, not the money, but <em>John</em>? Native speakers use <strong>cleft sentences</strong> to do this naturally: <em>"It was John who stole the money."</em> The sentence means the same thing, but the emphasis lands on a different word. This is a hallmark of fluent, nuanced English.
+</p>
+
+<div class="chinese-note">
+  <strong>中文思维差异：</strong>中文靠重读或加"是…的"来强调，但结构不变。比如"是小王偷的钱"。英语用 cleft sentence 把句子"劈开"（cleft = split），重组结构来突出某个成分。这是从 B1 跳到 B2 的关键技能之一。
+</div>
+
+<h2>The It-Cleft</h2>
+<p>
+  The <strong>it-cleft</strong> is the most common type. It splits a simple sentence into two parts: an <em>it</em> clause and a <em>that/who</em> clause. The emphasized element goes right after <em>it</em>.
+</p>
+
+<div class="rule-box">
+  <strong>Formula:</strong> It + be + <strong>[emphasized element]</strong> + that/who + [rest of sentence]
+</div>
+
+<div class="tense-card">
+  <h3>Emphasizing the subject</h3>
+  <p class="form">It + be + <strong>person/thing</strong> + who/that + verb + object</p>
+  <ul class="examples">
+    <li><strong>Normal:</strong> Sarah wrote this report.</li>
+    <li><strong>Cleft:</strong> <strong>It was Sarah</strong> who/that wrote this report. <em>(Not someone else.)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Emphasizing the object</h3>
+  <p class="form">It + be + <strong>object</strong> + that + subject + verb</p>
+  <ul class="examples">
+    <li><strong>Normal:</strong> They fixed the server last night.</li>
+    <li><strong>Cleft:</strong> <strong>It was the server</strong> that they fixed last night. <em>(Not something else.)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Emphasizing time or place</h3>
+  <p class="form">It + be + <strong>time/place</strong> + that + [rest of sentence]</p>
+  <ul class="examples">
+    <li><strong>Normal:</strong> We discovered the bug in production.</li>
+    <li><strong>Cleft:</strong> <strong>It was in production</strong> that we discovered the bug. <em>(Not in staging.)</em></li>
+    <li><strong>Normal:</strong> She resigned in January.</li>
+    <li><strong>Cleft:</strong> <strong>It was in January</strong> that she resigned.</li>
+  </ul>
+</div>
+
+<h2>Wh-Cleft (Pseudo-cleft)</h2>
+<p>
+  Instead of <em>it</em>, you start with a <em>what</em> clause. This is called a <strong>wh-cleft</strong> or <strong>pseudo-cleft</strong>. It's especially useful when you want to emphasize <em>what happened</em> or <em>what someone did</em>.
+</p>
+
+<div class="tense-card">
+  <h3>What-cleft (forward)</h3>
+  <p class="form">What + [subject] + [verb] + be + <strong>[emphasized element]</strong></p>
+  <ul class="examples">
+    <li><strong>What</strong> I need <strong>is</strong> a coffee. <em>(Not tea, not water — a coffee.)</em></li>
+    <li><strong>What</strong> happened <strong>was</strong> that the server crashed. <em>(Explaining a problem.)</em></li>
+    <li><strong>What</strong> she does best <strong>is</strong> handle difficult clients.</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Reverse what-cleft</h3>
+  <p class="form"><strong>[Emphasized element]</strong> + be + what + [subject] + [verb]</p>
+  <ul class="examples">
+    <li><strong>A coffee</strong> is <strong>what</strong> I need.</li>
+    <li><strong>The problem</strong> is <strong>what</strong> we need to address first.</li>
+  </ul>
+</div>
+
+<h2>Not-only-cleft (Inversion)</h2>
+<p>
+  Less common but very effective for formal writing. When you start with <em>Not only</em> or <em>Only after</em>, you invert the subject and auxiliary.
+</p>
+
+<div class="tense-card">
+  <h3>Not only… but also</h3>
+  <ul class="examples">
+    <li><strong>Normal:</strong> The system is reliable and it's fast.</li>
+    <li><strong>Cleft:</strong> <strong>Not only is the system reliable,</strong> but it's also fast. <em>(More emphatic.)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Only after / Only when</h3>
+  <ul class="examples">
+    <li><strong>Normal:</strong> I understood the problem after reading the logs.</li>
+    <li><strong>Cleft:</strong> <strong>Only after reading the logs</strong> did I understand the problem.</li>
+    <li><strong>Only when</strong> you test with real users <strong>do you</strong> find the real issues.</li>
+  </ul>
+</div>
+
+<h2>When to Use (and When Not to)</h2>
+<div class="comparison">
+  <div class="before">
+    <div class="label">Use cleft sentences when</div>
+    <ul class="examples">
+      <li>You want to correct a misunderstanding: <em>"It wasn't the budget — it was the timeline."</em></li>
+      <li>You're explaining a problem in detail: <em>"What happened was…"</em></li>
+      <li>You want to sound more formal or persuasive in writing.</li>
+      <li>You're contrasting two possibilities.</li>
+    </ul>
+  </div>
+  <div class="after">
+    <div class="label">Avoid cleft sentences when</div>
+    <ul class="examples">
+      <li>The emphasis is already clear from context.</li>
+      <li>you're speaking casually — they can sound stiff.</li>
+      <li>overusing them — they're a spice, not the main dish.</li>
+      <li>in very short messages — <em>"It was Tom who broke it"</em> feels heavy for a Slack chat.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>很多学习者会造出 <em>"It was the server that crashed yesterday it."</em — 多了一个结尾的 it。记住：cleft sentence 只有两个部分：<em>It + be + 被强调部分 + that/who + 其余部分</em>。没有第三个部分。
+</div>
+
+<div class="chinese-note">
+  <strong>Who vs. That：</strong>强调人时，<em>who</em> 更正式、更自然；<em>that</em> 也可以。强调事物/时间/地点时，只能用 <em>that</em>（不能用 which）。例：<em>"It was the budget that caused the delay."</em（不是 which）
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Correct Cleft Sentence</h2>
+  <p>Pick the option that correctly uses a cleft structure. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You want to emphasize WHO did something. Someone says: "Maybe Lisa wrote the report." You know it was actually David.</div>
+    <div class="sentence">Choose the correct emphasis:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">It was David wrote the report.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">It was David who wrote the report.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">Someone thinks the meeting was on Tuesday. You want to correct them — it was Wednesday.</div>
+    <div class="sentence">Which sentence emphasizes the correct day?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">It was Wednesday that the meeting was.</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">It was Wednesday when the meeting was.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">A colleague asks: "What's the problem with the deployment?" You want to give a clear explanation.</div>
+    <div class="sentence">Choose the most natural response:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">The problem was because of the database.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">What happened was that the database timed out.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You want to emphasize WHAT someone did, not who did it. Context: "Did Alice or Bob fix the bug?" Answer: Alice fixed the bug.</div>
+    <div class="sentence">Which cleft sentence is correct?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">It was Alice that fixed the bug that.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">It was Alice who fixed the bug.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">You're writing a formal email. Normal sentence: "Reading the documentation helped me understand the API."</div>
+    <div class="sentence">Which inversion (only-after cleft) is correct?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Only after reading the documentation I understood the API.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Only after reading the documentation did I understand the API.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Someone says: "The budget cut is the problem." You want to argue it's not the budget — it's the timeline.</div>
+    <div class="sentence">Choose the correct contrastive cleft:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">It's not the budget — it's the timeline that's the problem.</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">It's not the budget — it's the timeline which is the problem.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">You want to say: "The most important thing is to test with real users."</div>
+    <div class="sentence">Which what-cleft sounds most natural?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">What is important is testing with real users.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">What matters most is testing with real users.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Normal sentence: "We realized the issue after checking the logs."</div>
+    <div class="sentence">Choose the correct only-when cleft:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Only when we checked the logs we realized the issue.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Only when we checked the logs did we realize the issue.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Cleft sentences feel awkward at first because Chinese doesn't have an exact equivalent. That's normal. Practice by rewriting simple sentences you've written today into cleft form.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b2-level-grammar/emphasis" target="_blank">British Council B2 Grammar — Emphasis</a> — more exercises on cleft and inversion structures.
+  <br><br>
+  <a href="../reference/cleft-sentences-emphasis.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0009-passive-voice.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"It was David who wrote the report" — the it-cleft needs who/that to connect the two clauses. Without "who", it\'s ungrammatical.', wrong: 'Missing the connector. "It was David wrote" is wrong — you need "who" or "that": "It was David who wrote".' },
+    q2: { correct: '"It was Wednesday that the meeting was" — for time emphasis, use "that", not "when". The cleft structure is: It + be + time + that + clause.', wrong: '"When" is not used in it-cleft sentences. Even though Wednesday is a time, the cleft structure requires "that": "It was Wednesday that…"' },
+    q3: { correct: '"What happened was that…" — this is a what-cleft, perfect for explaining a situation. It naturally sets up the explanation.', wrong: '"The problem was because of" is not a cleft sentence — it\'s just a weak statement. A what-cleft ("What happened was that…") is much more natural for explanations.' },
+    q4: { correct: '"It was Alice who fixed the bug" — correct it-cleft. Who for people, that for things/time/place.', wrong: '"It was Alice that fixed the bug that" has an extra "that" at the end. The cleft ends after the emphasized clause — no third part.' },
+    q5: { correct: '"Only after reading the documentation did I understand" — only + fronted phrase triggers subject-auxiliary inversion. "did I understand" not "I understood".', wrong: 'No inversion. When "only after" starts the sentence, you MUST invert: "did I understand", not "I understood". Think: only after X did Y happen.' },
+    q6: { correct: '"It\'s not the budget — it\'s the timeline that\'s the problem" — "that" is the correct relative pronoun after a cleft, not "which".', wrong: '"Which" is not used in it-cleft sentences. After "It was/is [X]", always use "that" (or "who" for people), never "which".' },
+    q7: { correct: '"What matters most is testing with real users" — natural what-cleft. "Matters most" is a common collocation for emphasis.', wrong: '"What is important is testing" is grammatically okay but less idiomatic. "What matters most" is the natural, native-sounding collocation.' },
+    q8: { correct: '"Only when we checked the logs did we realize" — "only when" at the start triggers inversion: "did we realize".', wrong: 'No inversion after "only when". The rule is: only + fronted phrase → invert subject and auxiliary. "did we realize", not "we realized".' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Excellent! You\'ve mastered cleft sentences.';
+      else if (score >= 6) label.textContent = 'Good work! Review the explanations for the ones you missed.';
+      else label.textContent = 'Keep practicing! Cleft sentences take time — re-read the examples above.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

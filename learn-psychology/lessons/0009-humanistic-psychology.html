@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人本主义心理学 — 自我实现、存在价值与人的潜能</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .experiment-card {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+  }
+
+  .experiment-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .experiment-card .result {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .comparison .col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison .col ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .comparison .col ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .timeline {
+    border-left: 3px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .timeline-item {
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -1.45rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .timeline-item .year {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .timeline-item .desc {
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>人本主义心理学：自我实现、存在价值与人的潜能</h1>
+<p class="lesson-meta">第 9 课 · ~12 分钟 · 心理学流派</p>
+
+<div class="goal-box">
+  <strong>本节课结束时</strong>，你将能够解释人本主义心理学的核心主张、理解马斯洛需求层次理论与罗杰斯的无条件积极关注、识别自我实现的特征，并能将人本主义原理应用于教育和领导实践。
+</div>
+
+<h2>第三势力：心理学也需要"以人为本"</h2>
+<p>
+  20世纪中期，心理学被两大阵营主导：<strong>精神分析</strong>认为人是被潜意识驱动的、充满冲突的生物；<strong>行为主义</strong>认为人只是刺激-反应的机器，可以自由塑造。这两个视角都把人看作被动的——要么被本能驱使，要么被环境操控。
+</p>
+<p>
+  人本主义心理学作为<strong>"第三势力"</strong>应运而生，由亚伯拉罕·马斯洛（Abraham Maslow）和卡尔·罗杰斯（Carl Rogers）等人创立。它的核心主张很简单也很激进：<strong>人不是被动的受害者，而是有自由意志、有能力追求意义和自我实现的主动个体</strong>。
+</p>
+
+<div class="highlight-box">
+  <strong>关键转折：</strong>人本主义心理学不研究"病态"，而研究<strong>健康的人</strong>是如何成长的。马斯洛说："我研究那些真正活出了人类潜能的人，而不是只研究精神病院里的人。"
+</div>
+
+<h2>马斯洛需求层次：从生存到超越</h2>
+<p>
+  马斯洛在1943年提出了著名的<strong>需求层次理论</strong>。他认为人的动机像一座金字塔，从低到高分为五个层次。低级需求满足后，高级需求才会出现。
+</p>
+
+<div class="concept-card">
+  <h3>需求层次模型</h3>
+  <ul class="examples">
+    <li><strong>生理需求</strong> — 食物、水、睡眠、住所。最基础，不满足就无法关注其他。</li>
+    <li><strong>安全需求</strong> — 稳定、秩序、免受恐惧。包括经济安全和人身安全。</li>
+    <li><strong>归属与爱的需求</strong> — 友谊、亲密关系、家庭感、归属感。</li>
+    <li><strong>尊重需求</strong> — 自尊（自信、成就感）和他尊（被他人认可和尊重）。</li>
+    <li><strong>自我实现</strong> — 成为你能成为的最好的人。发挥全部潜能，追求个人使命。</li>
+  </ul>
+</div>
+
+<p>
+  后来马斯洛在晚年又增加了<strong>超越需求</strong>（transcendence）——帮助他人实现潜能、追求灵性体验、为超越个人的事业奉献。这构成了第六层。
+</p>
+
+<h3>自我实现者的特征</h3>
+<p>
+  马斯洛研究了包括爱因斯坦、玛格丽特·米德等在内的约50位他认为"自我实现"的人，总结出一系列共同特征：
+</p>
+
+<div class="concept-card">
+  <h3>自我实现者的八大特征</h3>
+  <ul class="examples">
+    <li><strong>准确感知现实</strong> — 不被偏见和欲望扭曲地看待世界</li>
+    <li><strong>接纳自己与他人</strong> — 接受人性的优点和缺陷，不自欺</li>
+    <li><strong>自发性</strong> — 行为自然、真诚，不受社会规范过度束缚</li>
+    <li><strong>以问题为中心</strong> — 专注於某个使命或事业，而非自我关注</li>
+    <li><strong>需要独处</strong> — 享受孤独，从内在获得力量</li>
+    <li><strong>自主性</strong> — 不受环境和文化的完全支配，内在驱动</li>
+    <li><strong>持续的新鲜感</strong> — 对熟悉的事物也能保持欣赏和敬畏</li>
+    <li><strong>高峰体验</strong> — 经常经历强烈的喜悦、完整感和与世界合一的感受</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>常见误解：</strong>需求层次不是严格的阶梯。马斯洛后来澄清，这些需求的满足不是"全有或全无"——大多数人同时体验多种需求，只是<strong>主导动机</strong>随层次变化。而且顺序也不是绝对的，有人可以为了信念牺牲一切（如甘地、曼德拉）。
+</div>
+
+<h2>罗杰斯：无条件积极关注与真实的人</h2>
+<p>
+  卡尔·罗杰斯是人本主义的另一位奠基人。他是临床心理学家出身，但他的理论从治疗室扩展到了教育、亲子关系、组织管理等几乎所有人际领域。
+</p>
+
+<h3>无条件积极关注</h3>
+<p>
+  罗杰斯发现，人在成长中最需要的不是指导或评价，而是<strong>无条件积极关注</strong>（unconditional positive regard）——即被另一个人全然接纳，不是因为"你表现好"或"你达到了我的期望"，而是因为<strong>你就是你</strong>。
+</p>
+
+<div class="comparison">
+  <div class="col">
+    <h4>有条件关注</h4>
+    <ul>
+      <li>"你考了满分，我真为你骄傲"</li>
+      <li>"如果你听话，我就爱你"</li>
+      <li>爱 = 表现 + 符合期望</li>
+      <li>结果：形成"条件性自我价值"，永远在追逐外部认可</li>
+    </ul>
+  </div>
+  <div class="col">
+    <h4>无条件积极关注</h4>
+    <ul>
+      <li>"无论你考多少分，我都爱你"</li>
+      <li>"你可以有自己的选择，我会支持你"</li>
+      <li>爱 = 你的存在本身就值得</li>
+      <li>结果：形成稳定的自我价值感，敢于真实</li>
+    </ul>
+  </div>
+</div>
+
+<h3>自我概念与理想自我的差距</h3>
+<p>
+  罗杰斯认为，心理健康的关键在于<strong>自我概念</strong>（你如何看待自己）与<strong>理想自我</strong>（你想成为什么样的人）之间的差距。差距越小，人就越接近<strong>"充分发挥功能的人"</strong>（fully functioning person）——这种人活在当下，信任自己的感受，对生活充满开放和热情。
+</p>
+
+<h3>来访者中心疗法</h3>
+<p>
+  罗杰斯提出的治疗方法彻底改变了心理咨询。他放弃了"专家坐在对面分析病人"的模式，转而采用<strong>来访者中心疗法</strong>，强调三个核心条件：
+</p>
+
+<div class="concept-card">
+  <h3>治疗关系的三大支柱</h3>
+  <ul class="examples">
+    <li><strong>真诚一致</strong>（Congruence） — 治疗师是真实的，不戴专业面具</li>
+    <li><strong>无条件积极关注</strong>（Unconditional Positive Regard） — 全然接纳，不评判</li>
+    <li><strong>共情理解</strong>（Empathic Understanding） — 设身处地理解来访者的内在世界</li>
+  </ul>
+</div>
+
+<p>
+  罗杰斯的关键洞见是：<strong>不需要治疗师"做"什么特定的技术，只需要创造一种关系氛围</strong>——在这种氛围中，来访者自然开始探索自己、疗愈自己。这就像植物不需要被"修理"，只需要合适的土壤、阳光和水就能生长。
+</p>
+
+<h2>人本主义的遗产与批评</h2>
+
+<h3>深远影响</h3>
+<p>
+  人本主义心理学的影响远远超出了学术心理学：
+</p>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="year">教育领域</div>
+    <div class="desc">学生中心教学法、情感教育、学校心理辅导体系——全部源自罗杰斯的理念</div>
+  </div>
+  <div class="timeline-item">
+    <div class="year">管理领域</div>
+    <div class="desc">"赋能型领导"、心理安全感、员工自我实现——德鲁克、麦格雷戈的Y理论都受其影响</div>
+  </div>
+  <div class="timeline-item">
+    <div class="year">积极心理学</div>
+    <div class="desc">马丁·塞利格曼发起的积极心理学运动直接继承了人本主义对"人之善"的关注</div>
+  </div>
+  <div class="timeline-item">
+    <div class="year">现代心理治疗</div>
+    <div class="desc">认知行为疗法、接纳承诺疗法（ACT）中都融入了人本主义的关系要素</div>
+  </div>
+</div>
+
+<h3>主要批评</h3>
+<p>
+  人本主义也面临严肃批评，理解这些批评有助于你更全面地看待它：
+</p>
+
+<div class="concept-card">
+  <h3>批评与回应</h3>
+  <ul class="examples">
+    <li><strong>过于乐观</strong> — 批评者说人本主义忽视了人性中阴暗、破坏性的一面。回应：人本主义不否认黑暗，但选择研究光——因为研究光是为了找到它。</li>
+    <li><strong>缺乏实证</strong> — "自我实现""充分发挥功能"等概念难以量化测量。这是真的，也是人本主义最大的弱点。</li>
+    <li><strong>文化偏见</strong> — 强调个人主义和自我实现，在集体主义文化中适用性有限。这也是合理的批评。</li>
+    <li><strong>过于简单</strong> — "只要给予爱和支持，人就会成长"忽略了结构性不公和社会限制。确实，人本主义不是万能的。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>实用洞察：</strong>人本主义最大的价值不在于它的理论有多精确，而在于它提供了一个<strong>态度</strong>——对待每个人（包括你自己）时，先假设他有潜能、有方向、值得被尊重。这个态度本身就有强大的治愈力量。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解人本主义的核心概念</h2>
+  <p>选择你认为正确的答案。每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你正在比较三大心理学流派。</div>
+    <div class="sentence">为什么人本主义被称为心理学的"第三势力"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为它是最晚出现的心理学流派</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为它挑战了精神分析和行为主义对人的被动描述</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：一个学生在课堂上表现不佳。</div>
+    <div class="sentence">老师说："你最近怎么了？没关系，我关心的是你这个人，不只是成绩。"这体现了罗杰斯的哪个概念？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">无条件积极关注</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">合理化防御</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：马斯洛的需求层次理论。</div>
+    <div class="sentence">根据马斯洛，一个人必须先满足哪个需求，才会开始追求"自我实现"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">只需要满足尊重需求</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">通常需要逐级满足生理、安全、归属、尊重等多个层次</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你看到朋友每天加班到深夜，赚了很多钱但很焦虑。</div>
+    <div class="sentence">用马斯洛的视角，他可能卡在哪个需求层次？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">可能在生理和安全需求上投入过多，忽略了归属与爱的需求</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">他已经满足了所有低层需求，正在自我实现中</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：罗杰斯的治疗理念。</div>
+    <div class="sentence">罗杰斯认为治疗师最重要的工具是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">专业的诊断技术和干预方案</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">治疗关系本身——真诚、接纳和共情</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：你对"高峰体验"感到好奇。</div>
+    <div class="sentence">马斯洛说的"高峰体验"（peak experience）最准确的描述是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">短暂的、强烈的喜悦和完整感，感到与世界合为一体</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">长期保持的快乐和满足状态</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：一位管理者想运用人本主义理念管理团队。</div>
+    <div class="sentence">以下哪种做法最符合人本主义的管理方式？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">制定详细的绩效考核制度，奖惩分明</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">倾听每位员工的想法，帮助他们找到工作的意义和个人成长方向</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：哲学家对存在主义和人本主义的讨论。</div>
+    <div class="sentence">维克多·弗兰克尔（Viktor Frankl）从集中营幸存后提出的"意义疗法"与人本主义的关系是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">意义疗法深受人本主义影响，强调人在任何境况下都能找到生命的意义</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">意义疗法与人本主义完全无关，是独立发展的理论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对马斯洛的需求层次、罗杰斯的无条件积极关注、自我实现的特征，或者人本主义在现代心理学中的地位有疑问，直接问我。你也可以试着想想：你最近一次感受到"高峰体验"是什么时候？那种感觉和日常快乐有什么不同？
+  <br><br>
+  <strong>推荐资源：</strong> 《动机与人格》—— 亚伯拉罕·马斯洛。这是需求层次理论的原始著作，深入探讨了自我实现、高峰体验和人的潜能。
+  <br><br>
+  <a href="../reference/humanistic-psychology.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-psychoanalysis.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-positive-psychology.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '人本主义被称为"第三势力"是因为它在20世纪中期对当时占主导地位的精神分析（第一势力）和行为主义（第二势力）提出了根本性质疑。精神分析把人看作被潜意识驱动的受害者，行为主义把人看作可以被环境任意塑造的机器。人本主义则强调人的主动性、自由意志和追求意义的内在动力。', wrong: '虽然人本主义确实是最晚出现的之一，但这不是它被称为"第三势力"的原因。关键在于它对前两股势力的理论立场提出了根本性的挑战——它反对把人看作被动的。' },
+    q2: { correct: '"无条件积极关注"意味着对人的接纳不依赖于任何条件或表现。老师表达的正是这种态度——"我关心的是你这个人，不只是成绩"。这不是在分析或防御，而是在传递一种无条件的接纳。', wrong: '"合理化"是精神分析中的防御机制，指为自己的行为找合理借口。这里老师不是在为自己辩解，而是在向学生传递接纳和关心——这是罗杰斯的无条件积极关注。' },
+    q3: { correct: '马斯洛的需求层次理论认为，人的需求像一个金字塔，从低到高依次是生理、安全、归属与爱、尊重、自我实现。虽然马斯洛后来澄清这不是严格的阶梯（需求可以同时存在），但通常情况下，低层需求得到基本满足后，高层需求才会成为主导动机。', wrong: '自我实现是最高层次的需求，要到达它通常需要先满足生理、安全、归属与尊重等多个层次。不是说只满足尊重就够了——这是一个逐层递进的过程，尽管不是绝对的。' },
+    q4: { correct: '从马斯洛的视角看，这个人可能过度投入于满足生理（赚钱）和安全（经济保障）需求，而忽略了更高层次的归属与爱（人际关系）和尊重需求（内在成就感）。焦虑往往来自于高层次需求的匮乏。', wrong: '如果一个人真的在自我实现中，他通常不会表现出持续的焦虑。自我实现者的特征是内心和谐、有方向感、对生命充满热情。这个朋友的焦虑表明他的高层需求没有得到充分满足。' },
+    q5: { correct: '罗杰斯的核心革命性观点是：治疗师最重要的工具不是某种特定技术，而是<strong>治疗关系本身</strong>。当他提出真诚一致、无条件积极关注和共情理解这三个条件时，他实际上在说——关系的质量比技术的复杂性更重要。', wrong: '罗杰斯恰恰反对过分依赖专业诊断技术和固定干预方案。他认为这些"专家姿态"会阻碍真正的治疗关系。他的来访者中心疗法强调的不是治疗师"做"什么，而是治疗师"成为"什么。' },
+    q6: { correct: '"高峰体验"是马斯洛用来描述那些短暂但极其强烈的时刻——在这些时刻，人感到与宇宙合一、充满喜悦、完整和意义。它不是长期的快乐状态，而是转瞬即逝的体验。许多艺术家、运动员和科学家都报告过类似的体验。', wrong: '高峰体验的特点是<strong>短暂</strong>和<strong>强烈</strong>。它不是每天都能维持的状态，而是一种特殊的、偶尔发生的体验。长期快乐和高峰体验是完全不同的东西。' },
+    q7: { correct: '人本主义管理的核心是相信人有内在的成长动力和潜能。倾听员工想法、帮助他们找到意义——这正是罗杰斯"无条件积极关注"和马斯洛"自我实现"理念在管理中的应用。重点是激发人的内在动力，而不是外在控制。', wrong: '详细的绩效考核和奖惩分明是行为主义的管理思路——通过外部强化来塑造行为。人本主义相信，当人感受到被尊重和被理解时，他们会自发地追求卓越，不需要靠奖惩来驱动。' },
+    q8: { correct: '维克多·弗兰克尔是奥地利精神病学家，大屠杀幸存者。他在集中营的经历让他发现：<strong>即使在最极端的环境中，人仍然有能力选择自己的态度和找到生命的意义</strong>。他的意义疗法（Logotherapy）深受人本主义影响，强调人对意义的追求是最核心的驱动力。', wrong: '弗兰克尔的经历和理论与人本主义密切相关。他在集中营中观察到，那些能找到意义的人更有生存意志。他的"意义意志"概念与人本主义对自我实现的关注一脉相承。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对人本主义的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

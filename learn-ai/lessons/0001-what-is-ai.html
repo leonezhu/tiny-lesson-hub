@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第一课：AI 是什么——从图灵测试到现代大语言模型</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>AI 是什么——从图灵测试到现代大语言模型</h1>
+<p class="lesson-meta">第一课 · ~10 分钟 · AI 基础概念</p>
+
+<div class="goal-box">
+  <strong>学完这节课后</strong>，你将能够：<br>
+  1. 用一句话解释「人工智能」到底在做什么<br>
+  2. 说出 AI 发展的四个阶段及其关键事件<br>
+  3. 区分「弱 AI」和「强 AI」的概念差异<br>
+  4. 理解为什么 2022-2026 年的 AI 革命与以往不同
+</div>
+
+<h2>AI 到底是什么？</h2>
+<p>
+  一个最朴素的定义是：<strong>AI 是让计算机完成通常需要人类智能才能完成的任务</strong>——理解语言、识别图像、做出决策、学习经验。但这句话太泛了，我们用一个更具体的框架来理解：
+</p>
+
+<div class="card">
+  <h3>AI 的三个核心能力层</h3>
+  <ul>
+    <li><strong>感知层</strong>——让机器"看见""听见""读懂"：语音识别、图像分类、自然语言理解。这是目前最成熟的能力层。我们每天使用的 Siri、微信语音输入、身份证OCR，都属于这一层。</li>
+    <li><strong>推理层</strong>——让机器"思考""规划""判断"：下围棋、路径规划、医学诊断。这层更难，因为推理需要大量计算和知识表示。AlphaGo 击败李世石是这一层的里程碑。</li>
+    <li><strong>创造层</strong>——让机器"生成""创新""表达"：写文章、画图、作曲、编程。这是大语言模型（LLM）时代最颠覆的能力。ChatGPT 的发布让"机器能创作"从理论变为日常现实。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键理解：</strong>这三个层次不是互相替代的关系，而是叠加的。现代 AI 系统可以同时具备三层能力——一个 LLM 既能"听懂"你的问题（感知层），又能"推理"答案的逻辑（推理层），还能"写"出一篇完整的文章（创造层）。这就是为什么今天的 AI 看起来"什么都能做"。
+</div>
+
+<h2>AI 简史：四个阶段</h2>
+<p>
+  AI 的发展不是线性的，而是经历了几次高峰和低谷。理解这段历史，能帮你识别哪些 AI 概念是真正有意义的，哪些只是营销。
+</p>
+
+<div class="card">
+  <h3>第一阶段：符号主义时代（1950s-1980s）</h3>
+  <ul>
+    <li><strong>核心思想：</strong>人类的智能 = 用规则和符号做逻辑推理。如果我把所有规则都告诉计算机，它就能像人一样思考。</li>
+    <li><strong>标志性事件：</strong>1956 年达特茅斯会议，"人工智能"一词正式诞生。1960s-70s，专家系统（Expert Systems）被广泛应用于医疗诊断、地质勘探等领域。</li>
+    <li><strong>局限：</strong>规则无法覆盖现实世界的复杂性。你不可能把"所有知识"写成规则。到了 1980s，规则系统的维护成本超过了收益，进入了第一次"AI 寒冬"。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>第二阶段：机器学习兴起（1990s-2000s）</h3>
+  <ul>
+    <li><strong>核心思想：</strong>不要告诉计算机规则——给它足够多的数据和例子，让它自己找到规律。这叫"从数据中学习"。</li>
+    <li><strong>标志性事件：</strong>1997 年 IBM 深蓝击败国际象棋冠军卡斯帕罗夫。2000s，垃圾邮件过滤、人脸识别、推荐系统开始大规模商用。</li>
+    <li><strong>转变：</strong>AI 从"模拟人脑的推理"转向"统计和概率"。计算机不再"理解"象棋，但它能"记住"什么走法赢了更多。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>第三阶段：深度学习革命（2012-2022）</h3>
+  <ul>
+    <li><strong>核心思想：</strong>用多层神经网络（深度学习）自动从数据中提取特征，无需人工设计规则。</li>
+    <li><strong>标志性事件：</strong>2012 年 AlexNet 在 ImageNet 图像识别竞赛中大幅超越人类；2016 年 AlphaGo 击败李世石；2017 年 Transformer 架构被提出，成为大语言模型的基础。</li>
+    <li><strong>改变：</strong>AI 在图像、语音、棋类等感知和推理任务上超越了人类，但 AI 仍然不会"说话"——直到下一个阶段。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>第四阶段：大语言模型时代（2022 至今）</h3>
+  <ul>
+    <li><strong>核心思想：</strong>当模型足够大（参数超过千亿）、数据足够多（互联网规模）、算力足够强（万卡 GPU 集群），AI 开始涌现出"常识推理""写作""编程"等全新能力。</li>
+    <li><strong>标志性事件：</strong>2022 年 ChatGPT 发布；2023 年 GPT-4 发布，展现多模态能力；2024-2025 年，AI Agent、多模态、AI 原生应用爆发式增长。</li>
+    <li><strong>改变：</strong>AI 不再只是"工具"，它开始具备"对话""理解""生成"的能力，直接改变了人机交互的方式。你正在阅读的这门课程，就是用 AI 技术生成的。</li>
+  </ul>
+</div>
+
+<h2>弱 AI 与强 AI</h2>
+<p>
+  这是两个经常被混淆的概念，但理解它们的区别很重要：
+</p>
+
+<div class="card">
+  <h3>弱 AI（Narrow AI）—— 现在的 AI</h3>
+  <ul>
+    <li><strong>定义：</strong>在特定任务上表现出色（如下棋、翻译、识别图像），但在其他领域毫无能力的 AI。</li>
+    <li><strong>现实：</strong>我们现在使用的<strong>所有 AI</strong> 都是弱 AI。ChatGPT 可以写诗但不会自己做饭，AlphaGo 可以下围棋但不会骑自行车。</li>
+    <li><strong>关键：</strong>弱 AI ≠ "低级 AI"。一个能下赢世界冠军的 AI 仍然是"弱 AI"——它只擅长一件事。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>强 AI（AGI）—— 尚未实现的 AI</h3>
+  <ul>
+    <li><strong>定义：</strong>具备与人类相当或超越人类的全面智能——能理解、学习、应用于任何领域的 AI。</li>
+    <li><strong>现状：</strong>尚未实现。关于 AGI 何时出现，学术界争议很大——从 5 年到 100 年不等。</li>
+    <li><strong>关键：</strong>目前没有任何证据表明，当前的语言模型已经接近 AGI。"AI 有意识""AI 会思考" 这类说法都是媒体的误读。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>为什么区分很重要？</strong>当有人告诉你"AI 已经接近 AGI 了"或"AI 已经有意识了"，你要问：他说的 AGI 是什么定义？有证据吗？目前的 AI 确实很强大，但它是"很强大的弱 AI"，不是"即将实现的强 AI"。区分这两者，能帮你避免过度恐慌和过度乐观。
+</div>
+
+<h2>图灵测试——AI 的"入门考试"</h2>
+<p>
+  1950 年，计算机科学家艾伦·图灵（Alan Turing）提出了一个简单的问题：<strong>机器能像人一样思考吗？</strong>他的答案是：不要问"思考"是什么——直接做一个测试。
+</p>
+
+<div class="card">
+  <h3>图灵测试的规则</h3>
+  <ul>
+    <li>一个人类评判者和一个 AI 通过文字对话（看不到对方）。</li>
+    <li>评判者的任务：判断哪个是 AI，哪个是人。</li>
+    <li>如果评判者无法可靠地区分——即超过 30% 的判断是错的——我们就说这个 AI "通过了图灵测试"。</li>
+  </ul>
+</div>
+
+<p>
+  图灵测试的核心洞见是：<strong>智能的外在表现比内在机制更重要</strong>。你不需要知道 AI "是不是真的在思考"——如果它能表现得像一个人在思考和交流，那它就在做"智能"这件事。
+</p>
+
+<p>
+  但图灵测试也有局限性：它只测试"像人一样交流"的能力，不测试逻辑推理、创造力或其他智能维度。今天的 AI 通过了图灵测试（在文字对话方面），但这不意味着 AI 有意识或有理解力。
+</p>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong>在中国，AI 讨论有一个独特的维度——文化适应性。一个在中国好用的 AI 助手，不仅要在技术上"聪明"，还要理解中国的人情世故、社交礼仪、幽默感、禁忌语。这就是为什么很多全球 AI 产品在中国需要本地化适配——技术上的"通过图灵测试"不等于文化上的"像一个中国人"。
+</div>
+
+<h2>这一课的核心要点</h2>
+<ul>
+  <li>AI 的核心是：让计算机完成通常需要人类智能的任务（感知、推理、创造）。</li>
+  <li>AI 经历了四个阶段：符号主义 → 机器学习 → 深度学习 → 大语言模型。</li>
+  <li>我们现在所有的 AI 都是"弱 AI"——在特定任务上强大，但缺乏全面的通用能力。</li>
+  <li>图灵测试是判断 AI 行为表现的经典方法，但它不测试"理解"或"意识"。</li>
+  <li>2022 年以来的 AI 革命之所以不同：语言成为 AI 的核心界面——对话本身就是智能的表现。</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：测试你对 AI 基础的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">场景：一个 AI 系统可以下围棋并击败世界冠军，但它不会下象棋，也不会画画。</div>
+    <div class="sentence">这个 AI 属于什么类型？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">强 AI——它已经比人类更聪明了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">弱 AI——它只擅长特定任务</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">场景：你正在使用一个 AI 写作工具，它可以根据你的提示生成一篇文章。</div>
+    <div class="sentence">这属于 AI 的哪个能力层？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">创造层——生成新的内容</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">感知层——理解已有的图像和声音</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">场景：1970 年代，研究者试图用手工规则编写一个"智能"的聊天机器人，但系统随着规则增多变得极其复杂且难以维护。</div>
+    <div class="sentence">这属于 AI 发展的哪个阶段？反映了什么局限？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">符号主义时代——规则无法覆盖现实世界的复杂性</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">深度学习时代——神经网络无法表达复杂的逻辑</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">场景：一个机器学习系统通过分析大量用户购物数据，自动发现"买了尿布的人经常也买啤酒"的规律。</div>
+    <div class="sentence">这个系统使用了什么方法？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">符号主义——它用预设的规则来分析数据</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">机器学习——它从数据中自动发现规律</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">场景：图灵测试中，评判者无法区分人类和 AI 的对话。</div>
+    <div class="sentence">图灵测试的核心观点是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">智能的外在表现比内在机制更重要</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">AI 已经拥有与人类相同意识</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">场景：2012 年，AlexNet 在图像识别竞赛中大幅超越了之前的方法。</div>
+    <div class="sentence">这一事件标志着哪个阶段的开始？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">符号主义时代</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">深度学习革命</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">场景：一个 AI 系统能帮你诊断疾病、推荐治疗方案、自动生成病历。</div>
+    <div class="sentence">这些能力分别对应 AI 的哪些层次？（多选理解）</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">都是感知层——AI 只是"读懂"了医疗信息</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">诊断涉及感知层（读病历），推荐涉及推理层（判断方案），生成涉及创造层（写病历）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">场景：你在新闻上看到"AI 已经通过图灵测试，即将成为人类"的报道。</div>
+    <div class="sentence">以下哪个理解最准确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">AI 已经拥有了人类的意识，下一步是成为公民</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">AI 在文字对话方面表现得像人，但这不等于它有意识或理解力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的 AI 导师。如果你对"AI 到底能不能思考"这个问题好奇、想深入了解神经网络的工作原理、或者想讨论 AI 对你职业的影响，直接问我。你也可以试试：想一想你每天使用的 AI 工具（哪怕只是微信语音输入），看看它们分别对应了 AI 的哪些能力层？
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDMU6B1QX4eN3fP_2MYayGc7" target="_blank">3Blue1Brown — 深度学习的本质</a> —— 用动画直观展示神经网络的数学原理。
+  <br><br>
+  <a href="../reference/what-is-ai.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-neural-networks.html">下一课</a>
+</div>
+
+
+<script>
+  const explanations = {
+    q1: { correct: '这个 AI 只擅长下围棋这一项任务，不能下象棋、不会画画——这正是"弱 AI"的定义。弱 AI 不是"低级 AI"，而是"窄领域 AI"。AlphaGo 在围棋上超越了人类，但它仍然是弱 AI。', wrong: '强 AI（AGI）意味着 AI 拥有与人类相当的全面智能，可以在任何领域学习和工作。一个只会下围棋的 AI，即使赢了世界冠军，也远未达到"强 AI"的标准。' },
+    q2: { correct: '写文章是"创造层"——AI 根据输入生成全新的、创造性的内容。感知层是关于理解已有的信息（如语音转文字、图片分类），创造层是让 AI"产出"新的东西。写作、绘画、作曲都属于创造层。', wrong: '感知层是"看见、听见、读懂"的能力，比如语音识别、OCR。写作不是"感知"，而是"创造"——它需要生成前所未有的新内容，而不是识别已有的图像或声音。' },
+    q3: { correct: '这是符号主义时代的典型困境。符号主义试图用手工编写的规则来表示知识，但当规则变得极其复杂时（比如"如果 A 且 B 但 C 不成立时…"），系统会变得不可维护。这就是为什么后来转向了"从数据中学习"的机器学习方法。', wrong: '深度学习使用的是神经网络，不是手工规则。深度学习在 2012 年之后才兴起，而 1970 年代的聊天机器人是基于手工编码的规则——那是符号主义时代的方法。' },
+    q4: { correct: '系统没有用预设规则来分析数据，而是从大量购物数据中自动发现了规律——这正是机器学习的核心思想。规则是由系统从数据中"学习"到的，不是人类"告诉"它的。', wrong: '符号主义是手工编写规则。在这个案例中，没有人类编写"买了尿布的人买啤酒"这条规则，系统是自己从数据中发现的。这就是符号主义和机器学习的根本区别：规则是谁写的？人类写的还是系统自己学的？' },
+    q5: { correct: '图灵测试的核心洞见是：不要纠结"AI 是不是真的在思考"——这是一个无法验证的问题。相反，我们只看"AI 能不能表现得像一个人在思考"。如果评判者分不出来，那从行为层面看，AI 就在做"智能交流"这件事。', wrong: '图灵测试通过只说明 AI 在"对话表现"上达到了人类水平，不证明 AI 有意识或有主观体验。一个 AI 可能完美地模拟人类对话，但仍然没有任何内在的"理解"或"感受"——这正是"中文房间"论证的核心观点。' },
+    q6: { correct: '2012 年的 AlexNet 是深度学习革命的第一个标志性事件。它证明了：使用多层神经网络（深度卷积神经网络）并在大规模数据集上训练，可以在图像识别任务上远超传统方法。此后，深度学习迅速成为 AI 研究的主流范式。', wrong: '符号主义时代（1950s-1980s）使用手工规则和逻辑推理。AlexNet 使用的是神经网络和梯度下降优化——这是完全不同的方法论。深度学习革命始于 2012 年左右，以 AlexNet 的突破为标志。' },
+    q7: { correct: '这个 AI 系统同时涉及三个层次：诊断需要"读懂"病历和医学文献（感知层），推荐治疗方案需要推理判断（推理层），自动写病历需要生成文字内容（创造层）。现代 AI 系统的强大之处就在于它能同时具备多层能力。', wrong: 'AI 不只是"感知层"。读病历是感知层，但"诊断"和"推荐治疗方案"涉及推理和判断——需要结合医学知识和逻辑分析。"生成病历"涉及文字创作——属于创造层。一个完整的 AI 诊断系统可能同时涉及三个层次。' },
+    q8: { correct: '通过图灵测试只说明 AI 在文字对话方面表现得像人——不等于它有意识、有理解力或有情感。这是公众对 AI 最常见的误解之一。AI 可以生成极其逼真的文字，但它可能完全"理解"这些文字的含义。区分"表现得像"和"实际上是"，是理解 AI 的关键。', wrong: '"成为公民"预设了 AI 有意识、有权利——这些都没有科学共识。图灵测试只是行为测试，证明 AI 可以像人一样对话，不涉及任何关于意识、权利或法律地位的判断。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对 AI 基础概念的理解很扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>速查卡片 — 语言与身份认同</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .key-term {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .key-term strong { color: var(--accent); }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语言与身份认同 — 速查卡片</h1>
+<p class="lesson-meta">参考卡片 &middot; 来自第 1 课</p>
+
+<h2>核心定义</h2>
+<p>语言不是中性的信息传输工具——它是身份的载体和边界标记。人们通过语言选择来建构、表达和维护自我身份。</p>
+
+<h2>三种机制</h2>
+
+<div class="card">
+  <h3>标记功能</h3>
+  <p>语言特征天然携带社会信息。口音、词汇、语域都在传递"我来自哪里""我属于哪个群体"的信号。</p>
+  <ul>
+    <li>匹配广度测试：同一人说不同口音被评价为不同人格</li>
+    <li>专业术语标记"圈内人"身份</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>建构功能</h3>
+  <p>人们主动选择语言策略来塑造身份。语码切换（code-switching）是精细的身份管理技术。</p>
+  <ul>
+    <li>方言 vs 普通话 vs 英语 = 不同身份场景</li>
+    <li>华裔选择母语 = "我有共同文化根基"</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>边界功能</h3>
+  <p>语言划定"我们"和"他们"的边界。标准语成为隐性准入机制。</p>
+  <ul>
+    <li>移民保持母语 = 抵抗同化</li>
+    <li>学校标准语政策 = 阶层筛选</li>
+  </ul>
+</div>
+
+<h2>关键研究</h2>
+
+<div class="key-term">
+  <strong>拉波夫（William Labov）</strong> — 纽约百货公司研究：不同楼层销售员发音频率不同，证明语言变体与阶级身份系统关联。
+</div>
+
+<div class="key-term">
+  <strong>布迪厄（Pierre Bourdieu）</strong> — "语言市场"理论：某些语言变体被赋予更高象征价值，标准语使用者获得隐性优势。
+</div>
+
+<div class="key-term">
+  <strong>单文智（Janet Holmes）</strong> — 新西兰英语研究：语用标记词（如"eh"）的使用频率直接关联群体认同程度。
+</div>
+
+<h2>常见误区</h2>
+<div class="card">
+  <ul>
+    <li>方言 = 不标准的普通话 → 错，方言是分化产物，不是退化</li>
+    <li>语言学习障碍 = 大脑可塑性下降 → 错，身份认同惯性才是核心障碍</li>
+    <li>"你"和"您"只是语法选择 → 错，它们是身份关系的声明</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0001-language-identity.html">返回课程</a>
+</div>
+
+</body>
+</html>

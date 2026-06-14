@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自我决定论 — 自主、胜任、关系驱动高质量动机</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .experiment-card {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+  }
+
+  .experiment-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .experiment-card .result {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>自我决定论：自主、胜任、关系驱动高质量动机</h1>
+<p class="lesson-meta">第 6 课 · ~15 分钟 · 心理学核心概念</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解自我决定论（SDT）的三个基本心理需求——自主性、胜任感、关系感，掌握动机连续体模型（从无动机到内在动机），理解"过度正当化效应"为什么奖励有时会适得其反，并学会在日常工作和生活中应用 SDT 原则来激发持久的内在动机。
+</div>
+
+<h2>SDT 的核心主张</h2>
+<p>
+  自我决定论（Self-Determination Theory, SDT）由 Edward Deci 和 Richard Ryan 在 1980 年代创立，是当代动机研究领域<strong>影响力最大、实证支持最多</strong>的理论框架之一。它的核心主张很简单：<strong>人类天生具有成长倾向和内在好奇心，但当三种基本心理需求得到满足时，个体才会展现出最高质量的动机和行为表现。</strong>
+</p>
+
+<div class="highlight-box">
+  <strong>三种基本心理需求：</strong> 这三种需求不是后天习得的——它们是人类发展的生物学基础。当环境支持这三种需求时，人的学习更深入、工作更持久、情绪更健康。当环境压制这三种需求时，人会产生焦虑、倦怠、疏离感。
+</div>
+
+<div class="concept-card">
+  <h3>1. 自主性（Autonomy）</h3>
+  <p class="term">感觉行为出于自我选择，而非外部压力</p>
+  <p>
+    自主性不是"想做什么就做什么"的自由——它是一种<strong>心理体验</strong>：感到自己的行为是自我认同、有意愿的。即使你在做一个必须完成的任务（比如填税务表格），如果你理解"为什么"要做这件事，并且感到"这是我自己的选择"，你体验到的自主性就高。
+  </p>
+  <ul class="examples">
+    <li><strong>高自主性：</strong> "我选择做这件事，因为我知道它的重要性。"</li>
+    <li><strong>低自主性：</strong> "我被逼着做这件事，我不想做。"</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>2. 胜任感（Competence）</h3>
+  <p class="term">感觉有能力应对挑战并获得成长</p>
+  <p>
+    胜任感不是"我已经什么都掌握了"——它是一种<strong>动态体验</strong>：感到自己正在进步、正在变得更好。关键在于"挑战与技能的平衡"——任务太简单（没有成长感）和太难（挫败感）都会降低胜任感。最佳状态是"跳一跳够得着"的挑战。
+  </p>
+  <ul class="examples">
+    <li><strong>高胜任感：</strong> "这个任务有点难，但我能学会。"</li>
+    <li><strong>低胜任感：</strong> "我怎么做都不对" 或 "这太简单了，没有意义"。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>3. 关系感（Relatedness）</h3>
+  <p class="term">感觉与他人建立真正的联系和归属感</p>
+  <p>
+    关系感不是"我有一个朋友圈"——它是一种<strong>深度连接</strong>的体验：感到自己被看见、被理解、被接纳。在职场中，这意味着"我的存在对团队有价值"；在学习环境中，这意味着"老师关心我，不只是关心分数"。
+  </p>
+  <ul class="examples">
+    <li><strong>高关系感：</strong> "我在这里 belongs，我的贡献有意义。"</li>
+    <li><strong>低关系感：</strong> "我只是流水线上的一个零件"。</li>
+  </ul>
+</div>
+
+<h2>动机连续体模型</h2>
+<p>
+  SDT 最精妙的贡献是提出了<strong>动机连续体</strong>（Motivational Continuum）——动机不是"有或没有"的二元状态，而是一个从完全外在到完全内在的连续谱。理解这个连续体，就能分析任何行为的动机来源。
+</p>
+
+<div class="card">
+  <h3>动机连续体：从低到高的自主性</h3>
+  <ul>
+    <li><strong>无动机（Amotivation）</strong>：不知道为什么要做某事，完全没有动机。"我做什么都无所谓。"</li>
+    <li><strong>外在调节（External Regulation）</strong>：最低自主性的外在动机。行为完全由外部奖惩驱动。"我做是因为给我钱 / 怕被罚。"</li>
+    <li><strong>内摄调节（Introjected Regulation）</strong>：外部规则还没有完全内化，但已经变成了内部压力。"我做是因为不做会内疚 / 丢脸。"</li>
+    <li><strong>认同调节（Identified Regulation）</strong>：你认同行为的价值，虽然它不是纯粹的享受，但你认为"这对我很重要"。"我做是因为我知道它重要。"</li>
+    <li><strong>整合调节（Integrated Regulation）</strong>：行为完全与你的价值观和自我认同一致。"我做是因为这就是我想成为的人。"</li>
+    <li><strong>内在动机（Intrinsic Motivation）</strong>：纯粹因为兴趣和享受而做。"我做是因为我喜欢。"</li>
+  </ul>
+</div>
+
+<p>
+  关键理解：<strong>认同调节和整合调节</strong>虽然属于"外在动机"，但它们的自主性非常高，行为质量几乎不亚于内在动机。这意味着：不是所有"外在动机"都是低质量的——有些外在动机（当行为与个人价值观一致时）可以产生非常持久的动力。
+</p>
+
+<h2>过度正当化效应</h2>
+<p>
+  这是 SDT 最著名的反直觉发现：<strong>外部奖励有时会削弱内在动机。</strong>
+</p>
+
+<div class="experiment-card">
+  <h3>Deci (1971) 的经典实验</h3>
+  <p>
+    Deci 邀请大学生到一个房间解谜题（智力拼图）。参与者被分成两组：
+  </p>
+  <div class="comparison">
+    <div class="col">
+      <h4>A 组：有金钱奖励</h4>
+      <p>"每解出一个谜题，我给你 1 美元。"</p>
+    </div>
+    <div class="col">
+      <h4>B 组：没有奖励</h4>
+      <p>"随便玩，想待多久都可以。"</p>
+    </div>
+  </div>
+  <p>
+    之后，研究者假装离开房间，通过单向镜观察——参与者可以自由决定是否继续玩那些谜题（这是"自由时间"阶段，没有奖励）。
+  </p>
+  <p class="result">结果：B 组（无奖励组）在自由时间里花更多时间继续解谜题。</p>
+  <p>
+    <strong>解释：</strong> A 组的人在解谜题时，开始将自己的行为归因为"为了钱"。当奖励消失后，他们失去了继续解谜题的理由。而 B 组的人本来就是出于兴趣在做——奖励的缺席没有改变他们的动机来源。这就是<strong>过度正当化效应</strong>（Overjustification Effect）：外部奖励提供了额外的"正当理由"，覆盖了原有的内在动机。
+  </p>
+</div>
+
+<h2>SDT 在教育中的应用</h2>
+<p>
+  SDT 对教育的影响是深远且实证的。全球多个大规模研究发现：支持自主性的教学环境，在学业成绩、学习兴趣和心理健康方面全面优于控制性环境。
+</p>
+
+<div class="card">
+  <h3>支持自主性的教学实践</h3>
+  <ul>
+    <li><strong>提供选择权：</strong> "你可以选 A 或 B" 比 "你必须做 A" 产生更高的投入度。选择权满足自主性需求，让学生感到"这是我选的"。</li>
+    <li><strong>解释意义：</strong> 不是简单地布置任务，而是解释"为什么学这个很重要"。这帮助学生从"外在调节"移动到"认同调节"——即使任务本身不有趣，但意义感提供了持续动力。</li>
+    <li><strong>接纳情绪：</strong> 当学生说"我不想做"时，控制型教师会说"必须做"，而支持自主性的教师会说"我理解你觉得这很无聊，但我们学这个是因为……"。接纳情绪不是纵容不完成——而是先建立关系连接，再引导行为。</li>
+    <li><strong>反馈聚焦过程：</strong> 表扬努力和策略（"你用的这个方法很好"）而非天赋（"你真聪明"）。后者培养表现目标导向（害怕失败），前者培养掌握目标导向（从错误中学习）。</li>
+    <li><strong>最小控制语言：</strong> 用"你可以"替代"你应该"，用"建议"替代"必须"。研究证实，即使是语言的微小变化也能显著影响自主性体验。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>芬兰教育：SDT 的大规模实证</h3>
+  <p>
+    芬兰教育体系是全球自主性支持的典范。其核心特征：
+  </p>
+  <ul>
+    <li>几乎没有标准化考试（直到高中毕业前）</li>
+    <li>教师有极大的课程自主权</li>
+    <li>学生可以选择部分学习内容和进度</li>
+    <li>教师培训要求极高的专业素养</li>
+    <li>学生动机水平和学业成绩长期位居全球前列</li>
+  </ul>
+  <p>
+    芬兰的经验表明：<strong>当信任取代控制，当自主取代服从，学生的学习表现反而更好。</strong>这不是"放羊"——而是在高度结构化的环境中嵌入自主性选择。
+  </p>
+</div>
+
+<h2>SDT 在组织管理中的应用</h2>
+<p>
+  在企业管理中，SDT 指导的管理方式与传统"胡萝卜加大棒"模式形成了鲜明对比。
+</p>
+
+<div class="comparison">
+  <div class="col">
+    <h4>控制型管理</h4>
+    <ul>
+      <li>微观管理每一个细节</li>
+      <li>KPI 驱动的奖惩制度</li>
+      <li>强调"必须服从"</li>
+      <li>短期服从，长期倦怠</li>
+      <li>创新力低，离职率高</li>
+    </ul>
+  </div>
+  <div class="col">
+    <h4>自主性支持型管理（SDT 指导）</h4>
+    <ul>
+      <li>说明任务的意义和背景</li>
+      <li>允许员工自主决定"怎么做"</li>
+      <li>提供成长反馈而非评判</li>
+      <li>长期内在动力，低倦怠</li>
+      <li>创新力强，团队凝聚力高</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Zappos 案例：自主管理的极端实验</h3>
+  <p>
+    在线鞋商 Zappos 采用了一种极端的自主管理方式：员工自定薪资、自主决定客户处理方式、甚至可以自行决定离开公司并获得一笔"离职奖金"。表面上看这很"松散"——但结果是：员工满意度和客户满意度长期双高，公司成为美国最具创新力的企业之一。
+  </p>
+  <p>
+    <strong>关键洞察：</strong> Zappos 的做法不是"没有管理"——而是用高度筛选的文化（招聘时严格匹配价值观）+ 透明的信息 + 自主决策权，替代了传统的层级控制。当员工真正认同公司价值观时，自主性不是混乱的源头，而是创新的引擎。
+  </p>
+</div>
+
+<h2>SDT 与日常生活的连接</h2>
+<p>
+  理解 SDT 最实用的方式是分析你日常行为背后的动机类型。
+</p>
+
+<div class="card">
+  <h3>自我诊断：你的动机在连续体的哪个位置？</h3>
+  <p>问自己三个问题：</p>
+  <ul>
+    <li><strong>"我为什么做这件事？"</strong> — 回答"为了钱"是外在调节；回答"因为重要"是认同调节；回答"因为我热爱"是内在动机。</li>
+    <li><strong>"如果没人监督，我还会做吗？"</strong> — 如果答案是"不会"，说明你的动机完全依赖外部压力。</li>
+    <li><strong>"做这件事的时候，我是感到被控制还是自我选择？"</strong> — 感受是最诚实的指标。</li>
+  </ul>
+  <p>
+    如果你的答案大多指向低自主性动机，不要自责——你的环境可能不支持内在动机。关键问题是：<strong>你能在多大程度上增加自主性、胜任感和关系感？</strong>
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong> 中国传统文化中"修身、齐家、治国、平天下"的理念暗合 SDT——修身是胜任感和自主性的培养，齐家涉及关系感，治国平天下则是将这些内在动力向外扩展。《大学》强调"自天子以至于庶人，壹是皆以修身为本"，这与 SDT 的核心观点一致：真正的改变来自内在需求的满足，而非外部强制。但在实际教育实践中，传统的"师道尊严"和"听话"文化往往压制自主性，需要有意地平衡。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：Deci (1971) 的实验中，无奖励组在自由时间里继续解谜题的时间更多。</div>
+    <div class="sentence">这个结果表明：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">金钱奖励提高了学习效率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">外部奖励可能削弱内在动机</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：一个学生说"我做作业是因为不做会被老师批评"。</div>
+    <div class="sentence">这属于动机连续体中的哪种类型？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">外在调节</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">内在动机</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：根据 SDT，以下哪项最能激发高质量的学习动机？</div>
+    <div class="sentence">选择最优答案：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">给考试成绩好的学生发奖金</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">给学生选择学习内容的权利，并解释为什么这些知识重要</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：SDT 提出的三种基本心理需求不包括：</div>
+    <div class="sentence">选择正确答案：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">胜任感</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">成就感</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：你说"我做这件事是因为我知道它对我的人生很重要，即使它不有趣"。</div>
+    <div class="sentence">这在 SDT 的动机连续体中属于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">外在调节</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">认同调节</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：芬兰教育体系以支持学生自主性著称，其结果是：</div>
+    <div class="sentence">以下哪个描述最准确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">学生自由散漫，学业成绩一般</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">学生动机水平和学业成绩长期位居全球前列</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：你的老师说"你真聪明"而不是"你用的方法很好"。根据 SDT，哪种反馈更有利？</div>
+    <div class="sentence">选择最优答案：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"你真聪明"——表扬天赋激励学生继续优秀</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"你用的方法很好"——表扬策略培养掌握目标导向</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：一个员工说"我做这件事是因为不做会觉得内疚"。</div>
+    <div class="sentence">这在 SDT 中属于哪种动机类型？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">无动机</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">内摄调节</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对 SDT 的某个概念有疑问，或者想了解如何在实际场景（教育、管理、产品设计和自��）中应用 SDT 原则，直接问我。
+  <br><br>
+  <strong>推荐资源：</strong> 《自我决定论》（Self-Determination Theory）—— Edward Deci 和 Richard Ryan 合著，由两位创始人亲自写的 SDT 权威读本，系统梳理了三个基本需求的理论和实证基础。
+  <br><br>
+  <a href="../reference/self-determination-theory.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-motivation-theories.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-behaviorism-conditioning.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '这是过度正当化效应的经典发现：当行为被赋予了外部理由（"为了钱"），原有的内在动机（"因为有趣"）被覆盖。当奖励消失，A 组继续解谜题的动力反而比 B 组低。', wrong: '如果金钱奖励提高了学习效率，A 组应该在自由时间里继续解谜题的时间更多。事实恰恰相反——奖励组的人失去了继续的动力，因为他们的动机被"外化"了。' },
+    q2: { correct: '外在调节是动机连续体上自主性最低的类型——行为完全由外部奖惩驱动。"怕被老师批评"是典型的惩罚规避，属于外在调节。', wrong: '内在动机是纯粹因为兴趣和享受而做。这里学生是因为"怕被批评"才做作业，是外部压力驱动的，不是兴趣驱动的。' },
+    q3: { correct: '选择权满足自主性需求，解释意义帮助学生从外在调节移动到认同调节——这两个因素结合起来，能产生最持久的学习动机。金钱奖励可能触发过度正当化效应。', wrong: '金钱奖励属于外在调节，可能削弱内在动机（过度正当化效应）。而自主性选择+意义解释同时满足了自主性和胜任感需求，产生更高质量的内在动机。' },
+    q4: { correct: 'SDT 的三种基本需求是：自主性（autonomy）、胜任感（competence）、关系感（relatedness）。"成就感"不是 SDT 的基本需求——胜任感是关于"感到有能力并看到进步"的体验，不同于一般意义上的成就感。', wrong: '胜任感是 SDT 三大需求之一，指的是感到有能力应对挑战并获得成长。成就感（achievement）是麦克利兰理论中的概念，不是 SDT 的基本需求。' },
+    q5: { correct: '认同调节的特征是"认为事情对自己重要"。虽然行为不是纯粹的享受（不是内在动机），但你认同其价值，这种动机的自主性很高，行为质量也较好。', wrong: '外在调节是最低自主性的外在动机（"为了钱或避免惩罚"）。这里你明确说"我知道它重要"——这是认同调节的特征，不是单纯的外在调节。' },
+    q6: { correct: '芬兰教育是全球自主性支持的典范：几乎没有标准化考试、学生有选择权、教师高度专业。结果是学生不仅学习动机强，学业成绩也长期位居 PISA 等国际测评前列。', wrong: '芬兰教育不是"自由散漫"——它是有高度结构的自主性支持环境。大量实证数据显示其学生学业成绩和心理健康水平都远高于国际平均水平。' },
+    q7: { correct: '表扬策略和努力（"你用的方法很好"）培养掌握目标导向——学生把困难视为学习机会。表扬天赋（"你真聪明"）培养表现目标导向——学生把困难视为"暴露自己不够聪明"的威胁。德韦克的数十年研究证实了这一点。', wrong: '表扬天赋表面上是鼓励，但长远来看让学生害怕失败（"如果我失败了，就不是'聪明'的了"）。表扬策略培养学生"通过努力和学习可以进步"的信念，这是掌握目标导向。' },
+    q8: { correct: '内摄调节的特征是外部规则还没有完全内化，但已经变成了内部压力。"内疚感"是典型的内摄调节——规则来自外部（"应该做"），但已经内化为一种自我施加的压力。', wrong: '无动机是"不知道为什么要做"，完全没有动机。这里员工有动机，只是动机来源是内疚这种内部压力，属于内摄调节。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对自我决定论的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

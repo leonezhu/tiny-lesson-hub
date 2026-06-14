@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡片 — 对称与破缺</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card-section table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+  }
+
+  .card-section table td {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-section table tr:last-child td { border-bottom: none; }
+  .card-section table td:first-child { font-weight: 600; width: 35%; color: var(--accent); }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin: 0.15rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>对称与破缺</h1>
+<p class="meta">元概念 · 参考卡片 · Lesson 5</p>
+
+<p style="margin-bottom:1rem;">
+  <span class="tag">对称性</span>
+  <span class="tag">诺特定理</span>
+  <span class="tag">自发对称破缺</span>
+  <span class="tag">希格斯机制</span>
+  <span class="tag">相变</span>
+  <span class="tag">涌现</span>
+</p>
+
+<div class="card-section">
+  <h3>核心定义</h3>
+  <p><strong>对称性：</strong>系统在某种变换下保持不变。不是"好看"，而是"不变"。</p>
+  <p style="margin-top:0.5rem;"><strong>对称破缺：</strong>系统的基态（最低能量态）比物理定律本身具有更少的对称性。</p>
+</div>
+
+<div class="card-section">
+  <h3>诺特定理：对称性 ↔ 守恒定律</h3>
+  <table>
+    <tr><td>时间平移对称</td><td>能量守恒</td></tr>
+    <tr><td>空间平移对称</td><td>动量守恒</td></tr>
+    <tr><td>旋转对称</td><td>角动量守恒</td></tr>
+    <tr><td>规范对称</td><td>电荷守恒</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>对称破缺的五大实例</h3>
+  <table>
+    <tr><td>希格斯机制</td><td>粒子通过希格斯场获得质量</td></tr>
+    <tr><td>生物学手性</td><td>生命使用左旋氨基酸/右旋糖</td></tr>
+    <tr><td>社会规范</td><td>微小偏差经网络效应放大</td></tr>
+    <tr><td>语言分化</td><td>统一语言被地理隔离打破</td></tr>
+    <tr><td>铁磁相变</td><td>居里温度以下磁矩自发对齐</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>类型</h3>
+  <table>
+    <tr><td>显式破缺</td><td>外力直接破坏对称性（如外力推倒铅笔）</td></tr>
+    <tr><td>自发破缺</td><td>系统内部动力选择特定状态（如铅笔自发倒下）</td></tr>
+  </table>
+</div>
+
+<div class="card-section">
+  <h3>关键洞察</h3>
+  <p>对称破缺不是"破坏"，而是"创造"。完美对称的宇宙是单调的，对称破缺创造了丰富多样性。</p>
+</div>
+
+<a href="../lessons/0005-symmetry-breaking.html" class="back-link">← 返回完整课程</a>
+
+<div class="footer">
+  <span>Meta Concepts · 参考卡片</span>
+  <a href="../index.html">课程目录 →</a>
+</div>
+
+</body>
+</html>

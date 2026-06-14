@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — 秦汉大一统制度</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card .period {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .timeline-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .insight-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .insight-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>秦汉大一统制度</h1>
+<p class="lesson-meta">第2课 &middot; ~12 minutes &middot; 制度与治理</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将理解秦朝和汉朝分别用什么制度设计实现了"大一统"——即把原本分裂的列国整合为一套统一的治理体系。这套体系奠定了中国两千多年的政治基础，也留下了一系列至今仍在回应的治理难题。
+</div>
+
+<h2>什么是"大一统"？</h2>
+<p>
+  "大一统"不是简单的"统一土地"，而是"统一制度"：统一文字、统一货币、统一度量衡、统一法律、统一治理框架。春秋战国时期，各国自说自话——齐国的"足"、楚国的"铢"、秦国的"半两"，彼此之间无法顺畅交易。大一统的核心逻辑是：<strong>让不同地方的人能够用同一套规则协作</strong>。
+</p>
+
+<div class="insight-box">
+  <strong>类比理解</strong>：互联网协议（TCP/IP）就是一个现代大一统的例子。不管你的电脑来自苹果还是Windows，不管你在北京还是纽约，只要遵守同一套协议，就能互相通信。秦朝做的是同样的事——只不过协议不是代码，而是文字、货币和度量衡。
+</div>
+
+<h2>秦朝：铁腕统一的十五年（前221—前207年）</h2>
+<p>
+  秦始皇嬴政用十年时间横扫六国后，面临一个根本问题：如何管理一个前所未有的庞大帝国？战国时期的治理单位是小型城邦（最大不过几十万人），而秦的帝国覆盖数百万平方公里、数千万人口。
+</p>
+
+<div class="timeline-card">
+  <h3>秦朝的统一制度设计</h3>
+  <ul>
+    <li><strong>郡县制</strong>：废分封，设郡守县令。地方官员由中央直接任命，不可世袭。这是"大一统"最核心的制度创新。</li>
+    <li><strong>统一文字（小篆）</strong>：六国文字各异，秦始皇命李斯统一为小篆。意义不在于美观，而在于政令能够无障碍传递。</li>
+    <li><strong>统一度量衡</strong>：全国使用同一标准，消除贸易壁垒。</li>
+    <li><strong>统一货币（半两钱）</strong>：废除各国铸币，建立全国通用货币体系。</li>
+    <li><strong>车同轨、书同文</strong>：道路宽度统一为六尺，确保军队和政令能高速到达全国各地。</li>
+    <li><strong>严刑峻法（法家）</strong>：商鞅变法的延续——轻罪重罚，以恐惧维持秩序。</li>
+  </ul>
+</div>
+
+<p>
+  秦朝的制度设计极其超前。郡县制取代分封制，意味着中央政府对地方的控制从"间接影响"变为"直接治理"。这在当时是世界领先的行政创新——比罗马的行省制度更早、更系统化。
+</p>
+
+<h3>秦朝为什么只存十五年？</h3>
+<p>
+  秦的失败不是制度设计的失败，而是<strong>制度执行过度的失败</strong>。它试图用一套刚性规则管理差异巨大的六国遗民：
+</p>
+
+<div class="timeline-card">
+  <h3>秦灭亡的多重原因</h3>
+  <ul>
+    <li><strong>过度征发</strong>：修长城、修驰道、修阿房宫、修秦始皇陵——同时征用200万劳力（占成年男性一半以上）。</li>
+    <li><strong>文化压迫</strong>：焚书坑儒，摧毁了六国的文化认同和政治精英的忠诚。</li>
+    <li><strong>法律刚性</strong>：严刑峻法在和平期可以维持秩序，但在灾荒年毫无弹性，导致民变。</li>
+    <li><strong>继承危机</strong>：秦始皇死后，胡亥被赵高篡位，中央权威迅速崩塌。</li>
+  </ul>
+</div>
+
+<div class="insight-box">
+  <strong>制度弹性</strong>：秦朝像一台精密但缺乏缓冲的机器。它在扩张期（对外征战）表现极佳——集中资源、快速执行。但在和平期（需要恢复和适应）就暴露了缺陷：刚性制度无法处理多样性，过度执行引发反噬。这是"集中力量办大事"模式的天然风险。
+</div>
+
+<h2>汉朝：柔化与制度化（前202—公元220年）</h2>
+<p>
+  汉朝接手了一个废墟。刘邦本人也怀疑郡县制是否可行，因此在初期采取了"郡国并行"——郡县制和分封制并存。但诸侯王很快叛乱（七国之乱），证明分封制无法在统一帝国中生存。汉朝的真正创新在于：<strong>在郡县制的框架上，加上了儒家意识形态和文化认同</strong>。
+</p>
+
+<div class="timeline-card">
+  <h3>汉朝的制度创新</h3>
+  <ul>
+    <li><strong>察举制</strong>：地方推荐人才入仕，打破了世袭贵族垄断。虽然不完美（容易形成地方豪强），但为后来的科举制铺路。</li>
+    <li><strong>独尊儒术</strong>：董仲舒建议"罢黜百家，独尊儒术"。儒家提供的不是法律条文，而是一整套伦理秩序——君臣、父子、夫妇，等级明确但彼此有义务。</li>
+    <li><strong>盐铁专营</strong>：国家控制关键经济命脉（盐、铁、酒），确保中央财政来源。</li>
+    <li><strong>刺史制度</strong>：中央派刺史巡视地方郡县，监督官员行为。这是早期的一种"垂直审计"。</li>
+    <li><strong>编户齐民</strong>：全国人口登记制度，每户都有固定身份和赋税义务，让中央能精确掌握人力资源。</li>
+  </ul>
+</div>
+
+<p>
+  汉朝的统治策略可以概括为：<strong>外在郡县制，内在儒家化</strong>。行政架构是秦朝的（郡县制），但合法性来源从法家的恐惧变成了儒家的道德共识。这是一种"软硬结合"的治理模式——法律维持底线秩序，儒家价值观构建文化认同。
+</p>
+
+<div class="insight-box">
+  <strong>比较视角</strong>：罗马帝国用的是同样的逻辑——外在法律+内在宗教/公民文化。罗马用万民法（jus gentium）统一法律体系，用罗马公民身份和帝国崇拜构建文化认同。秦汉和罗马的相似性说明：大规模帝国的治理逻辑可能存在某种普遍性。
+</div>
+
+<h2>秦汉制度的三个深层遗产</h2>
+
+<h3>1. 大一统的文化惯性</h3>
+<p>
+  秦汉之后，"分裂是异常状态，统一是正常状态"成为中国政治的深层预设。每次分裂时期（三国、魏晋南北朝、五代十国），最终都会走向重新统一。这与欧洲形成鲜明对比——罗马帝国崩溃后，欧洲再没有出现过如此持久的统一帝国。
+</p>
+
+<h3>2. 官僚制传统</h3>
+<p>
+  察举制→九品中正制→科举制，是一条清晰的职业官僚进化线。中国比欧洲早了一千多年就建立了非世袭的公务员体系。这个传统的深远影响是：中国政治精英的选拔标准不是血统或财富，而是文化素养（经典知识）和行政能力。
+</p>
+
+<h3>3. 中央与地方的永恒张力</h3>
+<p>
+  郡县制解决了"地方分裂"问题，但带来了新问题：如何防止中央集权过度？当地方没有自主权时，应对本地问题的能力就会下降。这个张力在中国历史上反复出现——唐朝的藩镇割据、宋朝的过度集权、元朝的行省制、明朝的省府制，都是对这个问题的不同回应。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验理解</h2>
+  <p>共8题，每题选择一个答案，点击后立即显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在研究春秋战国时期的经济困境。</div>
+    <div class="sentence">下列哪项最能解释秦朝"统一度量衡"的深层意义？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">让天平称重更加精确</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">消除贸易壁垒，降低跨地区交易成本</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在比较秦朝和罗马的治理模式。</div>
+    <div class="sentence">秦朝的郡县制与罗马的行省制最根本的相似之处是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">地方官员由中央任命，打破地方世袭</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">都实行了科举制度选拔官员</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在思考秦朝速亡的原因。</div>
+    <div class="sentence">秦朝灭亡的核心原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">六国遗民的武力反抗太强大</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">制度执行过度，缺乏弹性和文化认同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在研究汉朝的政治策略。</div>
+    <div class="sentence">"独尊儒术"对于汉朝统治的核心贡献是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">建立了严格的考试选拔制度</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为统治提供了道德合法性与文化认同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在分析汉朝的察举制。</div>
+    <div class="sentence">察举制相比分封世袭制的进步之处是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">打破了贵族对政治权力的血缘垄断</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">实现了完全平等的政治参与</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在研究中国古代经济制度。</div>
+    <div class="sentence">汉朝"盐铁专营"政策的主要目的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">保证百姓能买到便宜的盐和铁</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">控制关键经济资源，确保中央财政</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在做比较历史研究。</div>
+    <div class="sentence">与秦汉"大一统"文化惯性最形成对比的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">罗马帝国崩溃后欧洲的分裂格局再未统一</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">阿拉伯帝国在八世纪的迅速扩张</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在思考中央与地方的关系。</div>
+    <div class="sentence">郡县制留下的核心治理难题是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">如何减少官员的数量以节省开支</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">如何在防止地方分裂与保持地方治理弹性之间取得平衡</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>想深入了解？</strong>历史不是背诵年月日，而是理解"为什么"。如果你对某个具体问题有疑问——比如为什么秦始皇不实行分封制、或者汉朝儒家的"天人感应"理论到底如何运作——直接问我，我们一起拆解。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://en.wikipedia.org/wiki/Qin_dynasty" target="_blank">秦朝（维基百科）</a> ·
+  <a href="https://en.wikipedia.org/wiki/Han_dynasty" target="_blank">汉朝（维基百科）</a> ·
+  <a href="https://en.wikipedia.org/wiki/Emperors_of_China" target="_blank">中国皇帝制度</a>
+  <br><br>
+  <a href="../reference/qin-han-da-yi-tong.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0001-rome-republic-empire.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-dahanghai-era.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '统一度量衡的核心意义在于降低交易成本。当全国使用同一套标准时，商人可以在不同地区之间顺畅交易，不需要每到一个地方就重新换算。这本质上是一个"降低协作成本"的基础设施工程。', wrong: '天平原本身就足够精确。统一度量衡不是为了精确度，而是为了"通用性"——让不同地方的人使用同一套标准，消除贸易壁垒。' },
+    q2: { correct: '郡县制和行省制都是中央集权的工具：地方行政长官由中央政府任命、定期轮换、不可世袭。这与分封制形成根本对比——分封制下地方权力来自血统而非中央授权。', wrong: '科举制是汉朝察举制的后续发展，秦朝没有科举。罗马更没有科举制度。两者最核心的相似性是行政架构而非选拔机制。' },
+    q3: { correct: '秦朝的制度设计本身是超前的（郡县制是世界领先），但问题在于执行过度——同时搞多项巨型工程、法律刚性、焚书坑儒摧毁文化认同，导致民怨沸腾。制度本身不差，但缺乏弹性和缓冲。', wrong: '六国遗民确有反抗（如项羽、刘邦），但真正让秦朝崩溃的是内部系统性危机——过度征发和经济崩溃。即便没有六国遗民，秦朝也撑不了这么久。' },
+    q4: { correct: '儒家提供的不是法律条文，而是一套伦理秩序和道德共识。"天人感应"理论让皇帝有了神圣合法性，"君臣父子"的等级秩序让社会有了稳定的角色预期。这才是独尊儒术的真正政治功能。', wrong: '察举制是汉朝的人才选拔制度，但不是科举。科举是隋唐才正式建立的。"独尊儒术"的核心是意识形态，不是考试制度。' },
+    q5: { correct: '察举制的进步性在于：它把政治权力的来源从"血统"转向了"才能与品德"。虽然执行中有偏差（容易被地方豪强操控），但它确立了"选贤任能"的原则，为后来的科举制奠定了基础。', wrong: '察举制远非"完全平等"。它依赖于地方官员的推荐，而推荐往往偏向有声望的家庭。真正的平等参与是近代民主制度的概念，与古代察举制完全不同。' },
+    q6: { correct: '盐铁是古代社会最关键的经济资源——盐是生活必需品，铁是农业工具和武器制造原料。国家控制这些资源，既保证了民生基本供应，又确保了稳定的财政收入。', wrong: '盐铁专营恰恰导致了盐和铁的官营价格往往高于民间。它的首要目的是财政而非惠民——虽然客观上可能促进了质量标准化。' },
+    q7: { correct: '秦汉建立的大一统传统成为中国的"政治基因"——分裂总是暂时的，统一才是常态。而罗马帝国崩溃后，欧洲再未形成过如此持久的统一帝国。这个差异深刻影响了两者的文明走向。', wrong: '阿拉伯帝国的扩张速度确实惊人，但它与中国和欧洲的历史轨迹没有形成直接对比。与"大一统文化惯性"对比最强烈的是欧洲长期分裂的状态。' },
+    q8: { correct: '郡县制解决了"地方割据"问题，但过度集权会导致地方应对能力下降。当中央决策慢于本地需求时，治理就出现问题。这个张力在历史上反复出现——从唐朝藩镇到宋朝集权，都是对同一问题的不同回应。', wrong: '减少官员数量是结果而非问题核心。真正的治理难题是：如何在保证中央权威的同时，给予地方足够的自主权来应对本地事务。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对秦汉大一统制度有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题——解释里包含了关键洞察。';
+      else label.textContent = '继续加油！重读上面的内容，重点关注制度设计的逻辑。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 第一次世界大战</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第一次世界大战</h1>
+<p class="lesson-meta">第8课 · ~10分钟 · 近代史转折点</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够解释第一次世界大战爆发的深层原因与直接导火索，区分四条主要战线的战略态势，并理解这场战争如何彻底重塑了20世纪的世界秩序。
+</div>
+
+<h2>为什么这场战争被称为"大战争"？</h2>
+<p>
+  第一次世界大战（1914—1918）是人类历史上第一场工业化大规模战争。它卷入了超过30个国家、约15亿人口（当时世界人口的75%），造成约1700万人死亡、2300万人受伤。但数字本身并不足以说明它的特殊性——关键在于，这场战争终结了旧世界。
+</p>
+<p>
+  在1914年之前，欧洲维持着一种脆弱的和平体系：英国主导的全球贸易网络、德意志帝国的工业崛起、奥匈帝国和奥斯曼帝国的衰落，共同构成了一张复杂的利益之网。大多数人认为，大国之间的战争已经被经济相互依赖和外交体系所"理性化"。结果证明，这是一个致命的误判。
+</p>
+
+<h2>战争的深层原因：MAPS 框架</h2>
+<p>
+  历史学家常用一个缩写来记忆一战爆发的四大深层原因：<strong>MAPS</strong> ——  Militarism（军国主义）、Alliances（同盟体系）、Imperialism（帝国主义）、Sensational nationalism（极端民族主义）。
+</p>
+
+<div class="tense-card">
+  <h3>M —— 军国主义与军备竞赛</h3>
+  <p>
+    19世纪末到20世纪初，欧洲各国陷入了激烈的军备竞赛。德国在1898年通过《舰队法》，开始建造与英国竞争的大洋舰队。作为回应，英国放弃了"两强标准"（即英国海军必须等于第二第三强之和），开始建造更大更快的"无畏级"战列舰。
+  </p>
+  <ul class="examples">
+    <li>德国陆军从1871年的50万扩编到1914年的80万</li>
+    <li>英国和德国每年的海军开支翻了两番</li>
+    <li>各国总参谋部制定了详细的动员时间表——这些时间表一旦启动就极难停下来</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>A —— 同盟体系：一张致命的网</h3>
+  <p>
+    战前欧洲形成了两个对立的军事同盟集团。它们原本是为了"威慑"而建立，结果变成了"连锁触发器"。
+  </p>
+  <ul class="examples">
+    <li><strong>三国协约</strong>（1907）：英国 + 法国 + 俄国</li>
+    <li><strong>三国同盟</strong>（1882）：德国 + 奥匈帝国 + 意大利（意大利后来倒戈）</li>
+    <li>这两个集团几乎囊括了所有欧洲大国</li>
+    <li>同盟条约中的"自动参战"条款意味着局部冲突会迅速升级为全面战争</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>P —— 帝国主义与殖民地竞争</h3>
+  <p>
+    19世纪末的"瓜分世界"浪潮激化了列强之间的矛盾。德国作为后起的工业强国，对英法早已瓜分好的殖民地不满，要求"阳光下的地盘"。摩洛哥危机（1905、1911）就是这种竞争的典型体现。
+  </p>
+  <ul class="examples">
+    <li>英国掌控全球贸易路线和印度这一"王冠上的明珠"</li>
+    <li>法国控制了西非和北非大片领土</li>
+    <li>德国统一后工业化速度惊人，但殖民地最少</li>
+    <li>奥斯曼帝国被称为"欧洲病夫"，其领土成为各方觊觎的对象</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>S —— 极端民族主义</h3>
+  <p>
+    民族主义在19世纪被证明是一把双刃剑——它帮助意大利和德国实现了统一，但在多民族的奥匈帝国和巴尔干半岛，它变成了分裂的力量。
+  </p>
+  <ul class="examples">
+    <li>塞尔维亚民族主义者希望统一所有南斯拉夫人，建立"大塞尔维亚"</li>
+    <li>巴尔干被称为"欧洲的火药桶"——奥斯曼帝国衰落留下的权力真空引发了一系列民族独立战争</li>
+    <li>法国对1871年割让阿尔萨斯-洛林给德国的屈辱耿耿于怀，复仇情绪高涨</li>
+  </ul>
+</div>
+
+<h2>导火索：萨拉热窝事件</h2>
+<p>
+  1914年6月28日，奥匈帝国皇储斐迪南大公在萨拉热窝被塞尔维亚民族主义者普林西普刺杀。这一事件之所以能引发世界大战，正是因为前面所说的深层条件已经全部就位：
+</p>
+<ul class="examples">
+  <li>奥匈帝国在德国的"空白支票"支持下，向塞尔维亚发出最后通牒</li>
+  <li>俄国作为斯拉夫民族的"保护者"，开始动员军队</li>
+  <li>德国根据施里芬计划，要求法国先动员——法国拒绝后，德国于8月1日对俄宣战，8月3日对法宣战</li>
+  <li>德国入侵中立国比利时，英国以保护比利时中立为理由对德宣战（8月4日）</li>
+</ul>
+<p>
+  从刺杀到全面战争，不到一个月。每个决策者都认为自己是在做"理性"选择——但他们没有人真正想要一场世界大战。这就是"非意图后果"的经典案例：每个单独的行动都是可控的，但整个系统的联动却导致了灾难。
+</p>
+
+<h2>四条主要战线</h2>
+
+<div class="tense-card">
+  <h3>西线：堑壕战的噩梦</h3>
+  <p>
+    从比利时海岸延伸到瑞士边境的堑壕线，长达700公里。这是第一次世界大战最典型的战场形态。双方挖掘了多层堑壕体系，中间是危险的"无人区"。
+  </p>
+  <ul class="examples">
+    <li>1916年索姆河战役：第一天英军就伤亡约6万人，整场战役伤亡超过100万</li>
+    <li>1916年凡尔登战役：被称为"凡尔登绞肉机"，双方伤亡约70万人</li>
+    <li>坦克、毒气、机枪和铁丝网使进攻变得几乎不可能，防守方占据压倒性优势</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>东线：更广阔、更机动</h3>
+  <p>
+    东线战场从波罗的海延伸到黑海，战线绵延数千公里。由于俄国地广人稀、后勤落后，战争形态与西线截然不同。
+  </p>
+  <ul class="examples">
+    <li>1914年坦能堡战役：德军以少胜多，全歼俄军第二集团军</li>
+    <li>俄国虽战斗力不强，但庞大的国土纵深消耗了同盟国的精力</li>
+    <li>1917年俄国革命导致俄国退出战争，签署《布列斯特-立托夫斯克和约》</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>意大利战线与巴尔干战线</h3>
+  <p>
+    意大利于1915年加入协约国，与奥匈帝国在阿尔卑斯山脉展开惨烈的山地战。巴尔干战线则延续了塞尔维亚的抵抗——塞尔维亚在1914年成功击退了奥匈帝国的三次入侵，付出了伤亡37%的惨重代价。
+  </p>
+</div>
+
+<div class="tense-card">
+  <h3>海外战场与海战</h3>
+  <p>
+    战争不仅限于欧洲。德国在非洲和太平洋的殖民地迅速被协约国占领。1916年的日德兰海战是历史上最大的主力舰海战，英国保持了海上封锁的优势但自身也遭受了重大损失。
+  </p>
+</div>
+
+<h2>战争如何结束？</h2>
+<p>
+  1917年成为转折点。美国参战（4月）为协约国带来了无限的资源和新兵。同时，俄国在1917年十月革命后退出战争，让德国得以将东线兵力调往西线。但德国的"春季攻势"未能取得决定性胜利，而美军源源不断的到达最终压倒了同盟国的承受极限。
+</p>
+<p>
+  1918年11月11日，德国签署停战协定。德国国内爆发了革命，德意志帝国皇帝威廉二世退位。战争以同盟国的失败告终，但胜利的代价极为沉重。
+</p>
+
+<div class="chinese-note">
+  <strong>关键认识</strong>：一战不是"结束所有战争的战争"——正如劳合·乔治在1918年所说的，它只是为下一场战争埋下了种子。《凡尔赛和约》对德国的惩罚性条款、对民族自决原则的选择性应用、以及没有建立有效的国际安全机制，共同构成了下一场更大冲突的温床。
+</p>
+
+<h2>第一次世界大战的遗产</h2>
+<ul class="examples">
+  <li><strong>四大帝国灭亡</strong>：德意志帝国、奥匈帝国、俄罗斯帝国、奥斯曼帝国——地图被重新绘制</li>
+  <li><strong>国际联盟成立</strong>：第一个全球性的国际安全组织，但美国没有加入，削弱了其效力</li>
+  <li><strong>技术革命</strong>：坦克、飞机、潜艇、毒气、无线电通讯——战争形态彻底改变</li>
+  <li><strong>社会变革</strong>：女性在战时承担了大量生产工作，推动了各国妇女获得投票权的进程</li>
+  <li><strong>殖民体系松动</strong>：印度、中东、非洲的民族主义运动在战争中得到了加速</li>
+  <li><strong>心理创伤</strong>："失去的一代"——整整一代欧洲年轻人被摧毁，这种创伤深刻影响了20世纪的文化与艺术</li>
+</ul>
+
+<h2>延伸阅读</h2>
+<p>
+  如果你想更深入了解第一次世界大战，以下书籍提供了不同的视角：
+</p>
+<ul class="examples">
+  <li><strong>《深渊》</strong>—— 罗伯特·基斯伯姆：从普通士兵的视角理解堑壕战的恐怖</li>
+  <li><strong>《第一次世界大战的世界》</strong>—— 劳伦斯·斯特恩斯：全球视角的一战史</li>
+  <li><strong>《七月战争》</strong>—— 亨利·米歇尔：对1914年七月危机的精彩重构</li>
+  <li><strong>《凡尔赛和约》</strong>—— 约翰·梅纳德·凯恩斯：经济学家对和约的严厉批评</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>每道题有两个选项，点击你认为正确的答案。每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">思考战争的根源</div>
+    <div class="sentence">以下哪一项 <strong>不是</strong> MAPS 框架中描述的一战深层原因？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">经济大萧条</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">军国主义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解同盟体系</div>
+    <div class="sentence">奥匈帝国向塞尔维亚发出最后通牒后，首先动员军队的是哪个国家？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">德国</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">俄国</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">西线战场</div>
+    <div class="sentence">索姆河战役第一天英军伤亡约多少人？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约6000人</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约6万人</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">战争的转折点</div>
+    <div class="sentence">1917年改变战争走向的关键事件是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">美国参战和俄国革命</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">意大利加入协约国</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">一战后的世界</div>
+    <div class="sentence">以下哪个帝国在一战中没有灭亡？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">德意志帝国</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">大英帝国</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">东线战场</div>
+    <div class="sentence">哪场战役中德军以少胜多，全歼了俄军第二集团军？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">凡尔登战役</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">坦能堡战役</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">战争的遗产</div>
+    <div class="sentence">关于国际联盟，以下哪项描述是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">美国是创始成员国并发挥了核心作用</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">美国没有加入，削弱了其效力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解"非意图后果"</div>
+    <div class="sentence">一战爆发时，各国领导人的普遍心态是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有人都渴望一场大规模战争</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有人真正想要一场世界大战</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——我是你的历史导师。对某场战役、某个人物或某种历史解释有疑问？直接提出你的问题，我来解答。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://www.britannica.com/event/World-War-I" target="_blank">大英百科全书 · 第一次世界大战专题</a> — 详细的战役年表与人物介绍。
+  <br><br>
+  <a href="../reference/yidajianzheng.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-meiji-reshaping.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-egeme-jieguo-yu-soulian.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '经济大萧条发生在1929年，是一战结束十多年后的事件。MAPS 框架中的四个原因是：军国主义（Militarism）、同盟体系（Alliances）、帝国主义（Imperialism）和极端民族主义（Sensational nationalism）。', wrong: '经济大萧条确实是一战深层原因。错！经济大萧条发生在1929年，远在一战之后。军国主义才是 MAPS 中的 M。' },
+    q2: { correct: '根据时间线：6月28日刺杀 → 7月28日奥匈向塞尔维亚宣战 → 7月30日俄国开始动员 → 8月1日德国对俄宣战。俄国作为塞尔维亚的盟友首先动员。', wrong: '德国没有首先动员。俄国在7月30日首先开始动员（因为俄国幅员辽阔，动员需要更长时间），这触发了德国的施里芬计划。' },
+    q3: { correct: '1916年7月1日索姆河战役第一天，英军就损失了约57,470人（其中19,240人阵亡），这是英军历史上伤亡最惨重的一天。', wrong: '6000人对一场持续4个半月的战役来说太少了。索姆河战役第一天英军伤亡约6万人，这还只是开始。' },
+    q4: { correct: '1917年美国参战为协约国带来了充足的物资和新鲜兵力。同年俄国爆发十月革命，1918年退出战争。这两件事同时发生，彻底改变了力量对比。', wrong: '意大利1915年加入协约国确实改变了地中海力量平衡，但它没有1917年美国参战和俄国退出那样决定性的全局影响。' },
+    q5: { correct: '德意志帝国、奥匈帝国、俄罗斯帝国和奥斯曼帝国在一战期间灭亡。大英帝国虽然在一战后开始衰落，但并未瓦解——它甚至通过国际联盟的委任制度获得了更多领土。', wrong: '德意志帝国确实灭亡了。1918年11月，德皇威廉二世退位，魏玛共和国成立，德意志帝国就此终结。' },
+    q6: { correct: '1914年8月的坦能堡战役中，德军第八集团军（兴登堡和鲁登道夫指挥）包围并歼灭了俄国第二集团军，俘虏约9万人。凡尔登战役则是1916年西线的堑壕消耗战。', wrong: '凡尔登战役是西线1916年的消耗战，被称为"绞肉机"。坦能堡才是东线1914年那场以少胜多的经典围歼战。' },
+    q7: { correct: '国际联盟是威尔逊"十四点计划"的核心内容，但美国国会拒绝批准美国加入。这使得联盟缺乏最重要的军事和经济力量，最终未能阻止二战的爆发。', wrong: '美国不是国际联盟的创始成员国。伍德罗·威尔逊虽然大力推动了联盟的建立，但美国参议院拒绝批准加入，这是一个重大的战略失误。' },
+    q8: { correct: '这是理解一战最关键的认知：没有一个领导人计划或期望一场持续四年的世界大战。每个决策者都认为自己在控制局势——但复杂的同盟体系和军事动员时间表一旦启动，就超出了任何人的控制。', wrong: '虽然各国确实在进行军备竞赛并做好了战争准备，但大多数领导人并不"渴望"全面战争。德国的"空白支票"、奥匈的强硬姿态，都是在赌对方会退缩。误判导致了灾难。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对第一次世界大战的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！复习一下答错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 13 课 — 人格心理学：是什么让"你"成为"你"</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>人格心理学：是什么让"你"成为"你"</h1>
+<p class="lesson-meta">第 13 课 · ~10 分钟 · 人格理论的核心框架</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解人格（personality）不是性格好或坏的评价，而是一个人稳定的行为、思维和情感模式；识别五大主流人格理论的核心观点及其差异；用"大五人格"模型描述自己和他人的性格特征；理解人格的"先天 vs 后天"之争以及现代综合观点。
+</div>
+
+<h2>什么是"人格"？</h2>
+<p>
+  人格（personality）不是你"今天心情怎么样"，而是那些<strong>跨时间、跨情境相对稳定</strong>的倾向。你是一个容易焦虑的人，不是因为今天遇到了烦心事——而是你<strong>一般</strong>就比较容易焦虑。这就是人格。
+</p>
+<p>
+  人格心理学回答的问题不是"人为什么会做某件事"（那是认知偏差或动机的领域），而是<strong>"为什么这个人会这样做，而那个人不会"</strong>。它关注的是人与人之间差异的系统性模式。
+</p>
+
+<div class="highlight-box">
+  <strong>核心定义：</strong>人格是个体在思维、情感和行为方式上表现出来的稳定、独特的模式。关键特征：稳定性（跨时间一致）、独特性（人与人不同）、整体性（多种特质交织成一个"人格画像"）。
+</div>
+
+<h2>五大主流人格理论</h2>
+<p>
+  人格心理学领域存在多种理论框架。了解它们的关键不是"哪个是对的"，而是<strong>每种理论照亮了人格的哪个侧面</strong>——就像盲人摸象，每只手摸到的都是真实的一部分。
+</p>
+
+<div class="card">
+  <h3>1. 精神分析 / 心理动力学理论 — 潜意识的战场</h3>
+  <ul>
+    <li><strong>代表人物：</strong>西格蒙德·弗洛伊德（Sigmund Freud）、卡伦·霍妮（Karen Horney）、埃里克·埃里克森（Erik Erikson）。</li>
+    <li><strong>核心观点：</strong>人格是潜意识中各种力量的战场。弗洛伊德提出人格由三部分组成：<strong>本我</strong>（id，追求即时满足的原始冲动）、<strong>自我</strong>（ego，调解本我和现实的"理性经纪人"）、<strong>超我</strong>（superego，内化的道德和理想）。健康的人格 = 自我足够强大，能平衡本我和超我的需求。</li>
+    <li><strong>关键概念：</strong>防御机制（压抑、投射、合理化）—— 当意识感到痛苦时，自我会自动启动心理防御来保护你。例如，你把对自己的不满投射到别人身上（"他不是讨厌我，是他自己有问题"）。</li>
+    <li><strong>贡献：</strong>首次系统性提出潜意识对行为的强大影响、早期经验对人格的深远影响、防御机制的概念。这些洞察至今仍在临床心理学中被广泛应用。</li>
+    <li><strong>批评：</strong>弗洛伊德的很多理论难以用科学方法验证（如"俄狄浦斯情结"），过度强调性和攻击本能，缺乏实证基础。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. 特质理论 — 人格的"元素周期表"：大五人格模型（Big Five）</h3>
+  <ul>
+    <li><strong>代表人物：</strong>戈登·奥尔波特（Gordon Allport）、雷蒙德·卡特尔（Raymond Cattell）、保罗·科斯塔（Paul Costa）和罗伯特·麦克雷（Robert McCrae）。</li>
+    <li><strong>核心观点：</strong>人格可以用一组稳定的"特质"（traits）来描述——特质就是跨时间和情境一致的行为倾向。经过数十年词汇学研究，心理学家们达成共识：<strong>人格大致可以用五个维度来描述</strong>，这就是著名的"大五人格模型"（OCEAN / CANOE）：</li>
+  </ul>
+  <div class="comparison">
+    <div class="col">
+      <h4>O — 开放性（Openness）</h4>
+      <p><strong>高分者：</strong>好奇、富有想象力、喜欢新体验、对艺术和抽象思维敏感。<br>
+      <strong>低分者：</strong>务实、偏好常规、对抽象概念兴趣较少、喜欢具体的东西。</p>
+      <p><strong>例子：</strong>有人看到抽象画会说"我也能画"，有人会说"这到底是什么"。</p>
+    </div>
+    <div class="col">
+      <h4>C — 尽责性（Conscientiousness）</h4>
+      <p><strong>高分者：</strong>有条理、可靠、自律、目标导向、提前计划。<br>
+      <strong>低分者：</strong>灵活、随性、容易分心、不喜欢太严格的计划。</p>
+      <p><strong>例子：</strong>同样准备考试，尽责性高的人会列复习时间表，低分者可能临时抱佛脚。</p>
+    </div>
+  </div>
+  <div class="comparison">
+    <div class="col">
+      <h4>E — 外向性（Extraversion）</h4>
+      <p><strong>高分者：</strong>热情、健谈、喜欢社交、从人群中获取能量。<br>
+      <strong>低分者（内向）：</strong>安静、独立、社交消耗能量、喜欢深度一对一交流。</p>
+      <p><strong>关键：</strong>内向不是"社交恐惧"，而是社交带来的能量变化方向不同。</p>
+    </div>
+    <div class="col">
+      <h4>A — 宜人性（Agreeableness）</h4>
+      <p><strong>高分者：</strong>信任他人、利他、合作、温和、善于共情。<br>
+      <strong>低分者：</strong>怀疑、竞争性更强、善于辩论、更关注自己的利益。</p>
+      <p><strong>注意：</strong>低宜人性不等于"坏人"——很多成功的企业家和律师宜人性偏低，因为他们善于竞争和谈判。</p>
+    </div>
+  </div>
+  <div class="comparison">
+    <div class="col">
+      <h4>N — 神经质（Neuroticism）</h4>
+      <p><strong>高分者：</strong>容易焦虑、情绪波动大、对压力敏感、容易感到抑郁或愤怒。<br>
+      <strong>低分者：</strong>情绪稳定、冷静、抗压能力强、不容易被负面情绪影响。</p>
+      <p><strong>注意：</strong>高神经质不是"缺陷"——高神经质的人对威胁更敏感，这在某些环境中是优势。</p>
+    </div>
+    <div class="col">
+      <h4>补充：人格是连续的</h4>
+      <p>每个维度都是<strong>连续谱</strong>，不是"你是外向者还是内向者"的二分法。绝大多数人位于中间某个位置。大五人格模型的一个关键发现是：<strong>每个人在每个维度上都有一个分数</strong>，你不需要"属于"某一类。</p>
+    </div>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>大五人格的实证基础：</strong>大五是人格心理学中<strong>实证支持最充分</strong>的理论。它的五个维度在不同文化、不同语言中都被重复发现（尽管具体表述略有差异）。研究表明，大五人格的跨时间稳定性很高——你的人格分数在成年后变化不大。更重要的是，大五人格能预测很多重要的人生结果：尽责性高的人更长寿、收入更高、婚姻关系更稳定；神经质高的人更容易经历抑郁和焦虑。
+</div>
+
+<div class="card">
+  <h3>3. 人本主义理论 — 潜能和自我实现</h3>
+  <ul>
+    <li><strong>代表人物：</strong>卡尔·罗杰斯（Carl Rogers）、亚伯拉罕·马斯洛（Abraham Maslow）。</li>
+    <li><strong>核心观点：</strong>人天生具有成长和自我实现的倾向。人格不是"被过去决定"的，而是<strong>面向未来、追求意义</strong>的。罗杰斯提出<strong>"真实自我"</strong>（你实际上是谁）和<strong>"理想自我"</strong>（你想成为谁）的概念——两者的差距越大，心理困扰越严重。</li>
+    <li><strong>关键概念：</strong>"无条件积极关注"——罗杰斯认为，一个人要形成健康的人格，需要在成长中感受到被无条件地接纳和尊重。缺少这种条件的孩子，可能会为了获得他人的认可而压抑真实的自己。</li>
+    <li><strong>贡献：</strong>强调了人的主观体验和成长潜能，推动了心理咨询从"治疗疾病"转向"促进成长"。人本主义理念深刻影响了现代积极心理学。</li>
+    <li><strong>批评：</strong>概念过于模糊和主观，难以用科学方法验证。"自我实现"的定义在不同文化中的含义差异很大。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>4. 社会认知理论 — 人与环境的交互作用</h3>
+  <ul>
+    <li><strong>代表人物：</strong>阿尔伯特·班杜拉（Albert Bandura）、沃尔特·米歇尔（Walter Mischel）。</li>
+    <li><strong>核心观点：</strong>人格不是纯粹的"内在特质"，也不是纯粹的"环境影响"——而是<strong>人与环境的持续交互</strong>。班杜拉提出"三元交互决定论"：个人行为、环境、个人认知三者相互影响。米歇尔则挑战了特质理论的假设，发现人在不同情境下的行为差异可能比"同一特质在不同情境中的差异"更大。</li>
+    <li><strong>关键概念：</strong>"自我效能感"（self-efficacy）——你对自己能否完成某项任务的信念，比你实际的能力更能预测你是否会去尝试、能否坚持。自我效能感高的人面对挑战时会说"我可以学"，低的人会说"我不行"——即使他们的实际能力是一样的。</li>
+    <li><strong>经典实验：</strong>"波波 doll 实验"——儿童观看成人对充气玩偶施暴后，更可能在之后模仿攻击行为。说明人格不是完全天生的，观察学习是人格形成的重要途径。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>5. 生物学 / 遗传学理论 — 人格的生理基础</h3>
+  <ul>
+    <li><strong>代表人物：</strong>汉斯·艾森克（Hans Eysenck）、杰伊·普拉奇克（Jaak Panksepp）、现代行为遗传学家。</li>
+    <li><strong>核心观点：</strong>人格有显著的生物学基础。双生子研究（比较同卵双生子和异卵双生子的人格相似性）一致发现：<strong>人格的遗传率大约在 40%-60% 之间</strong>。这意味着人格大约有一半的差异可以用基因解释，另一半用环境解释。</li>
+    <li><strong>关键发现：</strong>外向性与大脑的多巴胺系统（奖励和驱动力）有关——外向者的大脑奖励系统对社交刺激反应更强。神经质与杏仁核（情绪处理中心）的激活水平有关——高神经质的人杏仁核对威胁刺激的反应更强烈。</li>
+    <li><strong>重要结论：</strong>"先天 vs 后天"不是一个"或"的问题——人格是基因和环境复杂的交互产物。基因可能给你一个"倾向"，但环境决定了这个倾向如何表达。同一个基因变异，在不同的成长环境中可能产生完全不同的人格表现。</li>
+  </ul>
+</div>
+
+<h2>人格可以改变吗？</h2>
+<p>
+  这是一个常见的误区：认为"人格是天生的，一辈子不会变"。但现代研究发现，<strong>人格在成年期是有系统性变化的</strong>：
+</p>
+<ul>
+  <li><strong>成熟原则（Maturity Principle）：</strong>随着年龄增长，大多数人会变得更有尽责性、更宜人性、更情绪稳定（神经质降低）。这种变化从青春期持续到 60 岁左右，是全球范围内一致发现的模式。</li>
+  <li><strong>重大生活事件：</strong>找到有意义的工作、稳定的亲密关系、成为父母、经历创伤——这些事件可以显著改变人格。研究表明，失业会导致尽责性和外向性下降。</li>
+  <li><strong>有意识的改变：</strong>虽然人格变化缓慢，但研究表明，通过持续的行为干预（如正念练习降低神经质、行为激活提高外向性），人格分数可以有可测量的变化。关键不是"改变人格"，而是"学会在你的特质范围内做出更有功能性的选择"。</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong>中国传统文化中关于人格的描述往往围绕道德维度（如"君子"vs"小人"），而非大五人格描述的特征维度。《论语》中"君子坦荡荡，小人长戚戚"——这种描述更像是在说：不同人格类型的人体验世界的状态不同。有趣的是，中国传统强调"修身"——通过自我修炼改变品格，这与现代社会认知理论的"人格可以改变"观点不谋而合。但要注意，传统的人格观念有时过于强调"好坏"二分，而忽略了人格维度上的连续性和情境依赖性。
+</div>
+
+<h2>跨学科视角</h2>
+<ul>
+  <li><strong>组织管理：</strong>人格测评（尤其是大五人格）在招聘和团队组建中广泛应用。但要注意：人格没有"好坏"之分——外向者不一定适合销售、尽责性高的人不一定适合创意工作。关键是<strong>人格-岗位匹配</strong>（person-job fit）。</li>
+  <li><strong>人工智能：</strong>大语言模型可以从文本中推断一个人的人格特质（基于 Big Five 模型）。这引发了隐私和伦理问题——你的社交媒体活动可能在不知不觉中暴露了你的人格画像。</li>
+  <li><strong>产品设计：</strong>不同人格的用户对同一产品可能有完全不同的体验。高开放性用户喜欢探索和自定义功能，高尽责性用户偏好清晰的操作流程。理解用户人格差异是个性化设计的关键。</li>
+</ul>
+
+<h2>常见误解</h2>
+
+<div class="card">
+  <h3>人格心理学的迷思 vs 事实</h3>
+  <ul>
+    <li><strong>迷思："MBTI 测试告诉我我是谁"</strong> — 事实：MBTI（迈尔斯-布里格斯类型指标）是一个流行的性格分类工具，但它在学术界<strong>几乎没有信度和效度</strong>。它将人分为 16 种"类型"，但大五人格研究表明人格是连续谱而非类别。如果你做了 MBTI 觉得"很准"，很大程度上是因为巴纳姆效应（人们倾向于认为模糊的人格描述很准确地描述了自己）。</li>
+    <li><strong>迷思："内向是不好的，应该变成外向"</strong> — 事实：内向和外向只是不同的能量获取方式。内向者深度思考能力强、专注力高、善于倾听——这些在大量职业中是巨大优势。人格没有"应该"变成什么——关键是在你的特质范围内做出最适合你的选择。</li>
+    <li><strong>迷思："我的童年决定了我一辈子"</strong> — 事实：早期经验确实对人格有重要影响，但人格是终身的动态过程。大脑的神经可塑性意味着你终身都能通过新的经验和学习改变自己的思维和行为模式。弗洛伊德的"童年决定论"已经被现代发展心理学修正。</li>
+    <li><strong>迷思："人格测验能准确预测你在某个具体情境中的行为"</strong> — 事实：人格预测的是<strong>长期趋势和平均行为</strong>，不是具体情境中的具体行为。一个"高神经质"的人可能今天心情很好，一个"高外向者"也可能今天不想社交。人格描述的是概率，不是必然。</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：测试你对人格理论的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你在一个社交聚会上，发现自己在角落里和一个深入聊天的对象而不是满场寒暄更自在。</div>
+    <div class="sentence">这最可能反映了你在哪个维度上的倾向？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">外向性偏低（内向）——你更喜欢深度而非广度的社交</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">宜人性偏低——你不太喜欢和人打交道</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：你觉得同事批评你的方案是"他对你有意见"，而不是"方案确实有改进空间"。</div>
+    <div class="sentence">你把别人的动机归因于对你个人的态度，而不是客观情境。这在精神分析理论中属于哪种机制？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">合理化——你给不合理的行为找合理理由</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">投射——你把自己的感受归因到别人身上</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：双生子研究显示，同卵双生子（基因 100% 相同）的人格相似度是异卵双生子（基因 50% 相同）的两倍左右。</div>
+    <div class="sentence">这个发现最直接支持哪种人格理论观点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人本主义理论——自我实现是人格的核心</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">生物学理论——人格有显著的遗传成分</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你对自己能否通过编程考试不太确定，虽然你实际上已经有了一定的基础。</div>
+    <div class="sentence">根据班杜拉的社会认知理论，最影响你是否去尝试和能否坚持的因素是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你的实际编程能力——能力决定了成败</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你的自我效能感——你对自己能否完成的信念</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：研究数据显示，一个人从 20 岁到 50 岁，尽责性和宜人性的分数平均会上升。</div>
+    <div class="sentence">这种现象被称为？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">成熟原则——人格随年龄向更稳定的方向系统变化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">巴纳姆效应——人们倾向于接受模糊的人格描述</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：你看到一个性格测评，说你"有时候喜欢社交，有时候喜欢安静"，你觉得"这说的就是我"。</div>
+    <div class="sentence">你觉得这个测评很准，实际上是因为什么心理现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应——测评给了你准确的参考信息</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">巴纳姆效应——模糊且普遍适用的描述让人觉得很准</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：罗杰斯认为，一个人要形成健康的人格，需要环境中提供什么？</div>
+    <div class="sentence">以下哪个是罗杰斯提出的关键条件？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">严格的纪律和规则——帮助塑造行为</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">无条件积极关注——被无条件地接纳和尊重</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="sentence">关于人格的"先天 vs 后天"之争，以下哪项是现代心理学的共识？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人格几乎完全由基因决定，后天环境影响很小</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人格大约一半由基因、一半由环境决定，且两者是复杂交互的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对大五人格的具体维度想更深入地了解、想讨论某个理论在不同文化中的适用性、或者想让我帮你分析一个具体的人格相关情境，直接问我。你也可以试试：想一想你认识的人中，有没有一个可以用某个理论框架来解释他们的人格特点？
+  <br><br>
+  <strong>推荐资源：</strong> 《人格心理学》（Personality Psychology: Your Double-Edged Sword）— 戴维·迈尔斯（David Myers）。这是一本通俗易懂的人格心理学入门书，系统介绍了各种人格理论，并通过具体例子帮助理解抽象概念。
+  <br><br>
+  <a href="../reference/personality-psychology.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0012-cognitive-biases.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '内向不是"不喜欢社交"或"不喜欢人"，而是社交带来的能量变化方向不同。内向者从独处中获取能量，从社交中消耗能量；外向者从社交中获取能量。你在聚会上更喜欢深度聊天而非满场寒暄，这正是外向性偏低（内向）的典型表现。', wrong: '宜人性是关于"信任他人、合作、温和"的倾向。你喜欢深度聊天不代表你"不喜欢和人打交道"或不"合作"。内向和外向的区别在于社交带来的能量变化——内向者从独处恢复能量，外向者从社交获得能量。' },
+    q2: { correct: '投射（projection）是一种防御机制：你把自己的感受、动机或特质归因到别人身上。你认为同事"对你有意见"——实际上更可能是在你自己的框架下解读这个批评。你没有看到"方案需要改进"这个客观事实，而是把它解读为"他对你有个人态度"。', wrong: '合理化（rationalization）是为不合理的行为或情绪找合理的解释。例如，考试没通过说"这个考试本来就不公平"。这里你不是在找一个"合理的解释"，而是在把自己的主观感受归因到别人身上——这是投射，不是合理化。' },
+    q3: { correct: '双生子研究是比较人格遗传率的核心方法。如果同卵双生子的相似度是异卵的约两倍，这强烈表明基因在人格形成中起了重要作用。研究一致发现，人格的遗传率大约在 40%-60% 之间——不是"完全由基因决定"，但确实有显著的遗传成分。', wrong: '人本主义理论强调"自我实现"和"无条件积极关注"，但这些都是主观概念，无法通过双生子研究来验证。双生子研究是行为遗传学的方法，支持的是生物学/遗传学理论的观点。' },
+    q4: { correct: '班杜拉的"自我效能感"理论认为：你对自己能否完成某项任务的信念，比你实际的能力更能预测你是否会去尝试和能否坚持。即使你已经有了一定的基础（实际能力），如果你不相信自己能通过考试（自我效能感低），你可能根本不会投入足够的努力。', wrong: '实际能力当然重要，但班杜拉的关键发现是：自我效能感（"我相信我能行"）比实际能力更能预测行为。很多有能力的人因为自我效能感低而没有尝试，而自我效能感高的人即使能力不足也会通过努力弥补。' },
+    q5: { correct: '成熟原则（Maturity Principle）是一个全球范围内被反复验证的发现：随着一个人年龄增长，他们平均会变得更尽责（更有条理、更可靠）、更宜人性（更合作、更温和）、更情绪稳定。这被称为"成熟"，因为随着年龄增长，人们变得更适应社会角色（如工作、婚姻、育儿）。', wrong: '巴纳姆效应（Barnum Effect）是指人们倾向于认为模糊且普遍适用的人格描述（如"你有时候外向，有时候内向"）很准确地描述了自己。它是解释为什么人们觉得 MBTI 等测试"很准"的心理现象，与人格随年龄变化无关。' },
+    q6: { correct: '巴纳姆效应（Barnum Effect，也称为福勒效应）是指：人们倾向于认为模糊、笼统、适用于大多数人的描述非常准确地描述了自己。"有时候喜欢社交，有时候喜欢安静"——几乎每个人都是这样的——但你觉得它"说的就是你"。这也是为什么 MBTI 等测试让人感觉"很准"的原因。', wrong: '锚定效应（Anchoring Effect）是指人们在做判断时过度依赖最先获得的信息。例如，先看到高价再看到折扣价，会觉得折扣"更便宜"。这里你并没有被"初始信息"影响——你被一个模糊但普遍适用的描述说服了，这是巴纳姆效应。' },
+    q7: { correct: '罗杰斯认为，人天生具有自我实现的倾向，但健康人格的形成需要环境中提供"无条件积极关注"——即被无条件地接纳和尊重，而不是"因为你做到了什么才值得被爱"。缺少无条件积极关注的孩子，会为了获得他人认可而压抑真实自我，形成"条件性价值感"，这是心理困扰的重要来源。', wrong: '罗杰斯强调的是"接纳"而非"纪律"。他认为严格的纪律和规则可能导致孩子形成"条件性价值感"（只有我做到了父母/社会要求的事，我才有价值），而不是健康的自我概念。无条件积极关注才是他提出的关键条件。' },
+    q8: { correct: '现代心理学已经超越了"先天 vs 后天"的二分法。双生子研究和行为遗传学研究一致发现：人格大约 40%-60% 的变异可以由基因解释，其余由环境解释。更重要的是，基因和环境不是独立作用的——它们通过复杂的交互方式影响人格。例如，相同的基因变异在不同的成长环境中可能产生完全不同的人格表现。这就是"基因 × 环境交互"（gene-environment interaction）。', wrong: '人格几乎不是完全由基因决定的。双生子研究显示遗传率在 40%-60% 之间，意味着另一半由环境决定。但要注意"环境"的定义——行为遗传学中的"非共享环境"（即同一家族中不同孩子的不同经历）才是导致兄弟姐妹人格差异的关键，而不是"共享环境"（如家庭背景）。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对人格心理学核心理论的理解很扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

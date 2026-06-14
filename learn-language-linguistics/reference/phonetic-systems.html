@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>速查卡片 — 语音系统对比</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-meta a { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    font-size: 0.85rem;
+  }
+
+  .ref-table th {
+    background: var(--accent-light);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .ref-table td {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--border);
+  }
+
+  .key-point {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 0.8rem;
+    margin: 0.75rem 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语音系统对比 · 速查卡片</h1>
+<p class="card-meta">
+  参考 <a href="../lessons/0003-phonetic-systems.html">完整课程</a> &middot; 约 5 分钟
+</p>
+
+<h2>辅音关键差异</h2>
+<table class="ref-table">
+  <tr><th>差异点</th><th>英语</th><th>普通话</th><th>粤语</th><th>四川话</th></tr>
+  <tr><td>/v/ 音</td><td>有</td><td>无（用 /f/ 或 /w/）</td><td>无（用 /w/）</td><td>无（用 /f/ 或 /w/）</td></tr>
+  <tr><td>/r/ 音</td><td>ɹ</td><td>[ɻ] 卷舌</td><td>[j] 硬腭</td><td>[ʐ] 或 [ɻ]</td></tr>
+  <tr><td>/ü/ [y]</td><td>无</td><td>有（女 nǚ）</td><td>无</td><td>无</td></tr>
+  <tr><td>入声韵尾</td><td>无</td><td>无</td><td>-m/-p/-t/-k</td><td>无</td></tr>
+  <tr><td>schwa 弱化</td><td>有</td><td>无</td><td>无</td><td>无</td></tr>
+</table>
+
+<h2>声调系统对比</h2>
+<table class="ref-table">
+  <tr><th>语言</th><th>声调数</th><th>调类</th><th>调值</th></tr>
+  <tr><td>英语</td><td>0（词汇）</td><td>语调</td><td>句子级</td></tr>
+  <tr><td>普通话</td><td>4</td><td>阴平/阳平/上/去</td><td>55/35/214/51</td></tr>
+  <tr><td>粤语</td><td>6+3</td><td>九声</td><td>53/33/22/21/23/35 + 5/3/1</td></tr>
+  <tr><td>四川话</td><td>3–4</td><td>阴平/阳平/上/去</td><td>55/21/53/213</td></tr>
+</table>
+
+<h2>三大核心结论</h2>
+<div class="key-point">
+  <strong>1. 英语→汉语的障碍在声调：</strong>英语母语者的大脑从未被训练在基频上编码词汇意义，所以声调是最难掌握的。
+</div>
+<div class="key-point">
+  <strong>2. 汉语→英语的障碍在辅音inventory和元音弱化：</strong>英语有约 5 倍于汉语的辅音数量，且非重读音节的 schwa 弱化让单词"骨架"消失。
+</div>
+<div class="key-point">
+  <strong>3. 口音是系统性的：</strong>"think" → "sink" 或 "四" → "十" 不是个人失误，而是母语语音系统的感知范畴迁移。
+</div>
+
+<h2>快速记忆口诀</h2>
+<p style="font-size:0.9rem; color:var(--muted);">
+  英中差距：辅音×5，元音×1.5，声调0 vs 4<br>
+  粤语独特：唯一保留入声，九声六调最丰富<br>
+  四川特点：入声归阳平，/r/ 发音多变，前后鼻音易混
+</p>
+
+<div class="footer">
+  <a href="../lessons/0003-phonetic-systems.html">← 返回完整课程</a>
+</div>
+
+</body>
+</html>

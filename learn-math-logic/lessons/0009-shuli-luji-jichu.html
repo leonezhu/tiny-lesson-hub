@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 9 — 数理逻辑基础：推理的骨架</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>数理逻辑基础：推理的骨架</h1>
+<p class="lesson-meta">Lesson 9 &middot; ~12 minutes &middot; 数学与逻辑 · 核心基础</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够区分命题逻辑和谓词逻辑，读懂基本推理规则（如假言推理），理解真值表的工作原理，并且知道哥德尔不完备定理到底在说什么——以及为什么它证明了数学有内在的极限。
+</div>
+
+<h2>什么是数理逻辑？</h2>
+<p>
+  数理逻辑（Mathematical Logic）不是"用数学方法学逻辑"，而是<strong>把逻辑本身变成一门数学</strong>。它用符号和公式代替自然语言，用严格的推导规则代替直觉判断。这样做的好处是：<strong>消除了歧义</strong>——在自然语言中，"如果明天下雨，我就不出门"可以有多种解读方式；但在命题逻辑中，"P → Q"只有一个确定的含义。
+</p>
+<p>
+  数理逻辑分为四大分支：命题逻辑（propositional logic）、谓词逻辑（predicate logic）、模型论（model theory）和证明论（proof theory）。我们这节课聚焦前两个——它们是理解一切高级逻辑的基础。
+</p>
+
+<h2>命题逻辑：最简单的推理单元</h2>
+<p>
+  命题逻辑处理的是<strong>命题</strong>（有真值的陈述句）之间的关系。一个命题要么是"真"（T），要么是"假"（F），没有中间状态。命题逻辑用五个基本运算符连接命题：
+</p>
+
+<div class="concept-card">
+  <h3>五大逻辑运算符</h3>
+  <ul class="examples">
+    <li><strong>否定（¬）</strong>：¬P = "P 不成立"。P 为真则 ¬P 为假，反之亦然。</li>
+    <li><strong>合取（∧）</strong>：P ∧ Q = "P 且 Q"。两者都为真时才为真。</li>
+    <li><strong>析取（∨）</strong>：P ∨ Q = "P 或 Q"。至少一个为真即为真。</li>
+    <li><strong>蕴含（→）</strong>：P → Q = "如果 P，那么 Q"。仅当 P 真 Q 假时为假。</li>
+    <li><strong>等价（↔）</strong>：P ↔ Q = "P 当且仅当 Q"。两者同真或同假时为真。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>真值表示例：P → Q（蕴含）</h3>
+  <table style="border-collapse:collapse;width:100%;font-size:0.95rem;margin-top:0.5rem;">
+    <tr style="border-bottom:1px solid var(--border);"><th style="padding:0.4rem;text-align:center;">P</th><th style="padding:0.4rem;text-align:center;">Q</th><th style="padding:0.4rem;text-align:center;">P → Q</th></tr>
+    <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.4rem;text-align:center;">T</td><td style="padding:0.4rem;text-align:center;">T</td><td style="padding:0.4rem;text-align:center;"><strong>T</strong></td></tr>
+    <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.4rem;text-align:center;">T</td><td style="padding:0.4rem;text-align:center;">F</td><td style="padding:0.4rem;text-align:center;color:var(--wrong);"><strong>F</strong></td></tr>
+    <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.4rem;text-align:center;">F</td><td style="padding:0.4rem;text-align:center;">T</td><td style="padding:0.4rem;text-align:center;"><strong>T</strong></td></tr>
+    <tr><td style="padding:0.4rem;text-align:center;">F</td><td style="padding:0.4rem;text-align:center;">F</td><td style="padding:0.4rem;text-align:center;"><strong>T</strong></td></tr>
+  </table>
+  <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--muted);">
+    <strong>最容易困惑的一行：</strong>P 为假时，P → Q 总是为真。这叫"空真"（vacuous truth）——"如果太阳从西边出来，我就是世界首富"这句话逻辑上是真的，因为前提永远不成立，你无法证伪它。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>中文母语者的陷阱：</strong>自然语言中的"如果……就……"往往带有因果关系（"如果你不努力，就会失败"），但逻辑蕴含 P → Q 只关心真假值，不关心因果。"如果 2+2=5，那么雪是黑的"在命题逻辑中是真的（因为前件为假），虽然在自然语言中听起来荒谬——这正是为什么要用形式化语言代替自然语言的原因。
+</div>
+
+<h2>推理规则：从前提到结论的桥梁</h2>
+<p>
+  命题逻辑不只是静态的真值表——它有一套<strong>推理规则</strong>，让你能从已知为真的前提，一步步推导出新的真结论。最核心的规则是<strong>假言推理（Modus Ponens）</strong>：
+</p>
+
+<div class="concept-card">
+  <h3>假言推理（Modus Ponens）</h3>
+  <p class="formula">P → Q &nbsp;&nbsp;（如果 P，则 Q）<br>P &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（P 成立）<br>———————<br>∴ Q &nbsp;&nbsp;&nbsp;（因此 Q 成立）</p>
+  <p>这是数学证明中最常用的推理规则。它的直观含义是："如果 P 足以推出 Q，而且 P 确实成立了，那么 Q 必然成立。"</p>
+</div>
+
+<div class="concept-card">
+  <h3>其他常用推理规则</h3>
+  <ul class="examples">
+    <li><strong>拒取式（Modus Tollens）</strong>：P → Q，¬Q → ¬P（如果 Q 不成立，则 P 也不成立）</li>
+    <li><strong>假言三段论</strong>：P → Q，Q → R → P → R（传递性）</li>
+    <li><strong>构造性二难</strong>：P ∨ Q，P → R，Q → R → R（无论哪种情况，R 都成立）</li>
+    <li><strong>反证法（Reductio ad Absurdum）</strong>：假设 ¬P，推出矛盾 → 因此 P 成立</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>经典案例：反证法的力量</h3>
+  <p>
+    古希腊数学家 Euclid 在公元前 300 年左右证明了"素数有无穷多个"，用的就是反证法：
+  </p>
+  <ul class="examples">
+    <li>假设素数只有有限个：p₁, p₂, …, pₙ</li>
+    <li>构造一个新数 N = p₁ × p₂ × … × pₙ + 1</li>
+    <li>N 除以任何一个 pᵢ 都余 1，所以 N 不被任何已知素数整除</li>
+    <li>N 要么本身是素数，要么有不在列表中的素因子</li>
+    <li>这与"素数只有有限个"矛盾 → 假设不成立 → 素数无穷多</li>
+  </ul>
+  <p style="margin-top:0.5rem;">
+    这个证明的精妙之处在于：<strong>它没有构造出所有素数</strong>，只是证明了"不可能列出所有素数"。这是一种"存在性证明"——你不需要知道答案是什么，只需要证明答案不可能不存在。
+  </p>
+</div>
+
+<h2>谓词逻辑：进入命题的内部</h2>
+<p>
+  命题逻辑有一个致命缺陷：它把每个陈述都当作一个不可分割的原子。在命题逻辑中，"苏格拉底是人"和"柏拉图是人"是两个完全无关的命题 P 和 Q。但显然，它们共享一个结构——"<strong>某人是人</strong>"。
+</p>
+<p>
+  谓词逻辑（Predicate Logic，又称一阶逻辑 First-Order Logic）引入了<strong>量词</strong>来解决这个问题：
+</p>
+
+<div class="concept-card">
+  <h3>两个核心量词</h3>
+  <ul class="examples">
+    <li><strong>全称量词 ∀</strong>：∀x P(x) = "对所有 x，P(x) 成立"。例如：∀x (人(x) → 会死(x)) = "所有人都注定会死"</li>
+    <li><strong>存在量词 ∃</strong>：∃x P(x) = "存在某个 x，使得 P(x) 成立"。例如：∃x (人(x) ∧ 哲学家(x)) = "存在既是人又是哲学家的人"</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>为什么谓词逻辑比命题逻辑强？</h3>
+  <p>
+    考虑这个经典三段论：
+  </p>
+  <ul class="examples">
+    <li>前提 1：所有人都会死（∀x (人(x) → 会死(x))）</li>
+    <li>前提 2：苏格拉底是人（人(苏格拉底)）</li>
+    <li>结论：苏格拉底会死（会死(苏格拉底)）</li>
+  </ul>
+  <p style="margin-top:0.5rem;">
+    在命题逻辑中，这三个句子是三个独立的原子 P、Q、R，无法推导。在谓词逻辑中，你可以用<strong>全称实例化</strong>（从 ∀x 得到具体 x）和<strong>假言推理</strong>两步就推出结论。这就是谓词逻辑的威力——它分析了命题的内部结构。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见混淆：∀ 和 ∃ 的否定：</strong>¬∀x P(x) ≠ ∀x ¬P(x)。正确的转换是：¬∀x P(x) ↔ ∃x ¬P(x)（"并非所有人都达标" = "存在有人不达标"）。同样，¬∃x P(x) ↔ ∀x ¬P(x)（"不存在完美的人" = "所有人都有缺点"）。这在编程和 SQL 查询中极为常见。
+</div>
+
+<h2>可靠性与完全性：形式系统的完美梦想</h2>
+<p>
+  一个形式逻辑系统有两个黄金标准：<strong>可靠性</strong>（soundness）和<strong>完全性</strong>（completeness）。
+</p>
+
+<div class="concept-card">
+  <h3>可靠性 vs 完全性</h3>
+  <ul class="examples">
+    <li><strong>可靠性</strong>：所有能证明的都是真的。如果系统证明了 P，那 P 在现实中一定为真。这是"不犯错"的保证。</li>
+    <li><strong>完全性</strong>：所有真的都能证明。如果 P 在现实中为真，那系统一定能找到一条证明路径。这是"无所不能"的承诺。</li>
+  </ul>
+  <p style="margin-top:0.75rem;">
+    一个完美的系统应该同时满足两者：能证明的 = 真的。1900 年代初，数学家 Hilbert 提出了"形式化全部数学"的计划，期望建立一个既可靠又完全的数学基础。
+  </p>
+</div>
+
+<h2>哥德尔不完备定理：梦想的破灭</h2>
+<p>
+  1931 年，25 岁的 Kurt Gödel 发表了一篇 46 页的论文，彻底粉碎了 Hilbert 的梦想。他的<strong>不完备定理</strong>说的是：
+</p>
+
+<div class="concept-card">
+  <h3>哥德尔第一不完备定理</h3>
+  <p>
+    <strong>任何足够强大的形式系统（能表达基本算术），都存在一个命题 P，使得 P 为真，但 P 在系统内无法被证明。</strong>
+  </p>
+  <p style="margin-top:0.75rem;">
+    换句话说：真理 > 可证明性。有些东西是真的，但你永远无法在系统内证明它。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>哥德尔的证明思路（简化版）</h3>
+  <p>
+    Gödel 做了一个天才的操作：他把逻辑命题"编码"成了数字（哥德尔编号），然后构造了一个特殊的数学命题 G，其含义是：
+  </p>
+  <ul class="examples">
+    <li><strong>"G 在这个系统中不可证明"</strong></li>
+  </ul>
+  <p style="margin-top:0.5rem;">
+    现在问：G 是真的还是假的？
+  </p>
+  <ul class="examples">
+    <li>如果 G 是假的 → "G 不可证明"是假的 → G 是可证明的 → 但系统如果是可靠的，可证明的就是真的 → G 应该是真的 → 矛盾！</li>
+    <li>如果 G 是真的 → "G 不可证明"是真的 → G 确实不可证明 → 一致，没有矛盾。</li>
+  </ul>
+  <p style="margin-top:0.5rem;">
+    所以 G 一定是真的——但 G 在系统内不可证明。这就是不完备定理的核心洞见。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>最重要的澄清：</strong>哥德尔不完备定理不是说"数学有错误"——它不是说系统会推导出矛盾的结论。它说的是：任何足够强的系统，都有一些"真命题"永远无法在系统内被证明。这不代表数学"不够好"——它代表数学的"真"和"可证明"是两个不同的概念。这也意味着，不存在一个通用算法能自动判断所有数学命题的真假。
+</div>
+
+<h2>总结：从命题到哥德尔</h2>
+<p>
+  我们今天走过了数理逻辑的核心脉络：
+</p>
+<ul class="examples">
+  <li><strong>命题逻辑</strong>——用符号表示简单的真值关系，用推理规则从前提推出结论</li>
+  <li><strong>谓词逻辑</strong>——进入命题内部，用量词表达"所有"和"存在"，让三段论等形式推理成为可能</li>
+  <li><strong>可靠性与完全性</strong>——形式系统追求的两大黄金标准</li>
+  <li><strong>哥德尔不完备定理</strong>——任何足够强的系统都有内在极限，真理永远超出可证明的范围</li>
+</ul>
+<p>
+  这不仅仅是数学知识。理解数理逻辑，让你在面对 AI 输出、科学论证、甚至日常争论时，能分辨"形式上有效的推理"和"实质上正确的结论"——这是批判性思维的最高级别。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选一个答案。点击选项后立即看到解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <p class="context">命题逻辑基础</p>
+    <p class="sentence">已知 P → Q 为真，且 P 为真。根据假言推理，你能得出什么结论？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Q 为假——因为 P 已经为真了，Q 不能再为真</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Q 为真——P → Q 且 P 成立，必然推出 Q</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <p class="context">蕴含的真值</p>
+    <p class="sentence">命题 P → Q 在什么情况下为假？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">仅当 P 为真且 Q 为假时</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">当 P 和 Q 都为假时</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <p class="context">拒取式推理</p>
+    <p class="sentence">已知"如果下雨，地就湿"（R → W），且"地没湿"（¬W）。你能推出什么？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">下雨了——因为地湿了所以一定下了雨</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没下雨——根据拒取式，R → W 且 ¬W 推出 ¬R</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <p class="context">谓词逻辑量词</p>
+    <p class="sentence">"并非所有人都通过了考试"用谓词逻辑怎么表达？（P(x) = x 通过考试）</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">∀x ¬P(x) — 没有人通过考试</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">∃x ¬P(x) — 存在有人没通过考试</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <p class="context">哥德尔不完备定理</p>
+    <p class="sentence">哥德尔不完备定理的核心结论是什么？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">数学系统有矛盾——有些命题既能证明又不可能同时为真</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">任何足够强的形式系统都存在真但不可证的命题——真理超出了可证明的范围</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <p class="context">可靠性 vs 完全性</p>
+    <p class="sentence">一个形式系统是"可靠的"意味着什么？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">所有能证明的命题都是真的——系统不会推导出错误的结论</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有真的命题都能被证明——系统没有遗漏</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <p class="context">反证法</p>
+    <p class="sentence">Euclid 证明"素数有无穷多个"时，构造的数 N = p₁ × p₂ × … × pₙ + 1 的关键作用是什么？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">N 本身就是一个更大的素数——直接证明了存在比已知素数更大的素数</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">N 不能被列表中任何一个素数整除——所以要么 N 是新素数，要么有新素因子，与"有限素数"矛盾</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <p class="context">命题逻辑 vs 谓词逻辑</p>
+    <p class="sentence">为什么谓词逻辑比命题逻辑更有表达能力？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">它能分析命题的内部结构（量词、谓词、个体），而命题逻辑只能处理不可分割的原子命题</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">谓词逻辑允许命题有超过两个真值（如"可能为真"），而命题逻辑只有真和假</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的数学与逻辑老师。不理解为什么 P → Q 在 P 为假时总是为真？觉得哥德尔的"自我引用"证明太绕？这正好是我们该聊的地方。直接提问，我会一步步拆解。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://en.wikipedia.org/wiki/First-order_logic" target="_blank">Wikipedia — First-order Logic</a> — 深入了解谓词逻辑的形式化定义和推理系统。
+  <br><br>
+  <a href="../reference/shuli-luoji-jichu.html" class="resource-link">查看参考速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-turing-ji-ke-ji-suan-xing.html">&larr; 上一课</a> | <a href="../index.html">目录</a> | <a href="0010-jihetuanyuwuxian.html">下一课 &rarr;</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '假言推理（Modus Ponens）是最基本的推理规则：P → Q（如果 P 则 Q），P（P 成立）→ Q（Q 必然成立）。这是数学证明的第一工具。',
+      wrong: 'P 为真和 Q 为真完全不冲突——恰恰相反，P → Q 的意思就是"P 为真时 Q 也必须为真"。既然 P 确实为真，Q 必然为真。'
+    },
+    q2: {
+      correct: '蕴含 P → Q 只在一种情况下为假：前提 P 为真，但结论 Q 为假。其他三种情况（T→T, F→T, F→F）都为真。记住口诀："承诺只在被违背时才假"——你承诺"如果下雨就带伞"，只有当下雨了却没带伞时，你才撒谎。',
+      wrong: 'P 和 Q 都为假时，P → Q 实际上是"真"的（空真）。想象一下："如果太阳从西边出来，我就是世界首富"——因为前提永远不会发生，所以这个蕴含永远无法被证伪。'
+    },
+    q3: {
+      correct: '这是拒取式（Modus Tollens）的经典应用：P → Q，¬Q → ¬R。如果"下雨→地湿"，而"地没湿"，那就一定"没下雨"——因为如果下了雨，地一定会湿。',
+      wrong: '"地湿了所以一定下了雨"是"肯定后件"的谬误！地湿可能是洒水车造成的、有人泼水造成的——从 Q 反推 P 在逻辑上不成立。但从 ¬Q 推出 ¬P 是合法的（拒取式）。'
+    },
+    q4: {
+      correct: '"并非所有人都通过" = "存在至少一个人没通过" = ∃x ¬P(x)。注意量词的否定转换：¬∀x P(x) ↔ ∃x ¬P(x)。"不是每个人都及格"不等于"每个人都不及格"，而是"有人不及格"。',
+      wrong: '∀x ¬P(x) 的意思是"所有人都没通过"，这是一个更强的断言。"并非所有人都通过"只是说"至少有一个人没通过"，不一定所有人都没过。'
+    },
+    q5: {
+      correct: '哥德尔不完备定理的核心是"真 ≠ 可证明"。Gödel 构造了一个自指命题 G = "G 在此系统中不可证明"，然后证明：如果系统可靠，G 为真但不可证。这意味着任何足够强的形式系统都有内在的"盲区"。',
+      wrong: '哥德尔定理不是说数学系统有矛盾——它不是说系统会"出错"。它说的是：即使系统完全正确（可靠），它也有"看不到的地方"（不完全）。真理永远比可证明的多。'
+    },
+    q6: {
+      correct: '可靠性（soundness）保证"能证明的都是真的"——系统不会推导出错误结论。完全性（completeness）保证"真的都能被证明"——系统没有遗漏。一个完美的系统应该两者兼备，但 Gödel 证明了这在足够强的系统中不可能同时实现。',
+      wrong: '"所有真的都能被证明"是完全性的定义，不是可靠性。可靠性是"所有能证明的都是真的"——方向正好相反：可靠性防止你犯错，完全性保证你不遗漏。'
+    },
+    q7: {
+      correct: 'N = p₁×p₂×…×pₙ + 1 的关键在于：它除以列表中任一素数都余 1，所以列表中的素数都不是 N 的因子。这意味着要么 N 本身是新的素数，要么 N 有不在列表中的素因子——无论哪种情况，都与"素数有限"矛盾。',
+      wrong: 'N 不一定是素数——比如 2×3×5+1=31 是素数，但 2×3×5×7×11×13+1=30031=59×509 就不是素数。关键是 N 不能被列表中任一素数整除，这就够了。'
+    },
+    q8: {
+      correct: '命题逻辑把每个陈述当作原子（不可分割的整体），无法表达"所有人"或"存在某个"这样的结构。谓词逻辑引入了量词（∀、∃）和谓词 P(x)，能分析命题内部结构，从而表达三段论等复杂推理。',
+      wrong: '谓词逻辑仍然是二值的——每个命题要么真要么假。它增加表达能力的方式不是引入第三个真值，而是通过量词和谓词来分析命题的内部结构，这是命题逻辑做不到的。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对数理逻辑基础的掌握非常扎实。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，你的理解会更深刻。';
+      else label.textContent = '继续加油！重新阅读上面的例子，再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+<div class="footer">
+  <a href="0008-turing-ji-ke-ji-suan-xing.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-jihetuanyuwuxian.html">下一课</a>
+</div>
+
+</body>
+</html>

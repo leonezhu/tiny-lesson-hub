@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考卡 — 路径依赖</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>路径依赖</h1>
+<p class="lesson-meta">Meta Concept #7 · 快速参考卡 · ~3 minutes</p>
+
+<h2>定义</h2>
+<p><strong>路径依赖</strong>：一个系统当前的状态，主要由它过去的经历决定，而非当前最优的选择。</p>
+
+<div class="card">
+  <h3>核心公式</h3>
+  <p class="formula">初始微小优势 + 正反馈（收益递增） + 高转换成本 = 锁定</p>
+</div>
+
+<h2>四个阶段</h2>
+
+<div class="card">
+  <h3>1. 设置（Settlement）</h3>
+  <p>系统如何开始，往往不是最优的，甚至是随机的。</p>
+</div>
+
+<div class="card">
+  <h3>2. 正反馈（Positive Feedback）</h3>
+  <p>越多人用 → 越有价值 → 更多人用。自我强化。</p>
+</div>
+
+<div class="card">
+  <h3>3. 转换成本（Switching Cost）</h3>
+  <p>切换到新路径需要付出的代价：重新学习、失去兼容性、承担风险。</p>
+</div>
+
+<div class="card">
+  <h3>4. 锁定（Lock-in）</h3>
+  <p>系统进入锁定状态，即使有更好的选择也难以切换。</p>
+</div>
+
+<h2>经典案例</h2>
+<ul class="card examples">
+  <li><strong>QWERTY 键盘</strong> — 为降低打字速度设计，却成为全球标准</li>
+  <li><strong>Windows 操作系统</strong> — 即使 Mac/Linux 更优，仍占 ~70% 桌面市场</li>
+  <li><strong>1435mm 标准轨距</strong> — 中国铁路跟美国一样，因为都从英国引进</li>
+  <li><strong>Python 生态</strong> — 不是因为"最好"，而是因为 20 年积累的正反馈</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>解决路径依赖不是"证明新方案更好"，而是<strong>降低转换成本</strong>或<strong>等待临界点</strong>。
+</div>
+
+<h2>应用方向</h2>
+<ul class="card examples">
+  <li><strong>个人</strong> — 识别"因为已经做了太久"而非"因为最优"的决定</li>
+  <li><strong>创业</strong> — 早期抢占先机建立正反馈，降低用户转换成本</li>
+  <li><strong>政策</strong> - 在锁定发生前设计开放系统（如开源标准）</li>
+</ul>
+
+<div class="footer">
+  <a href="../lessons/0007-path-dependence.html">← 完整课程</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：正态分布与肥尾效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 0.4rem 0.6rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin: 0.3rem 0;
+  }
+
+  .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .examples li {
+    padding: 0.2rem 0;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.6rem 0.8rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+
+  .note strong { color: #e65100; }
+
+  .link-section {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .link-section a { color: var(--accent); text-decoration: none; }
+  .link-section a:hover { text-decoration: underline; }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>正态分布与肥尾效应 — 快速参考卡</h1>
+<p class="meta">数学与逻辑 &middot; Lesson 4 的浓缩版</p>
+
+<h2>一句话区分</h2>
+<div class="card">
+  <h3>正态分布（中间世界）</h3>
+  <p>典型值有意义，极端事件极罕见，事件独立叠加。</p>
+</div>
+<div class="card">
+  <h3>肥尾分布（极端世界）</h3>
+  <p>没有典型值，极端事件比你想象的常见得多，事件高度相关。</p>
+</div>
+
+<h2>判断工具</h2>
+<div class="card">
+  <h3>1. 最大值 / 平均值 比</h3>
+  <p>正态：≤ 3-5 倍 &nbsp;|&nbsp; 肥尾：可达数千倍</p>
+</div>
+<div class="card">
+  <h3>2. 对数-对数图</h3>
+  <p>直线 → 幂律/肥尾 &nbsp;|&nbsp; 曲线 → 正态</p>
+</div>
+<div class="card">
+  <h3>3. \"极端事件会颠覆一切吗？\"</h3>
+  <p>如果答案是\"会\"，你就是肥尾世界的参与者。</p>
+</div>
+
+<h2>核心定理与概念</h2>
+<div class="card">
+  <h3>中心极限定理（CLT）</h3>
+  <div class="formula">大量<strong>独立的</strong>随机变量之和 → 正态分布</div>
+  <p>这是正态分布普及的原因——但前提是独立性。</p>
+</div>
+<div class="card">
+  <h3> Turkey 问题（火鸡问题）</h3>
+  <p>1000 天的正面数据拟合的正态模型，无法预测第 1001 天的致命事件。历史数据再长，也无法覆盖肥尾中的\"从未出现过\"的事件。</p>
+</div>
+
+<h2>杠铃策略</h2>
+<div class="card">
+  <ul class="examples">
+    <li><strong>90% 极度安全</strong>：国债等几乎不可能亏损的资产</li>
+    <li><strong>10% 高上行风险</strong>：初创、期权、个人品牌</li>
+    <li><strong>不碰中间</strong>：中等风险/回报在肥尾世界中最差</li>
+  </ul>
+</div>
+
+<div class="note">
+  <strong>常见错误：</strong>把不确定性等同于肥尾。不确定性 = 概率未知；肥尾 = 概率分布有肥尾（极端事件更常见）。应对方式不同。
+</div>
+
+<h2>关键人物</h2>
+<div class="card">
+  <ul class="examples">
+    <li><strong>高斯</strong> — 正态分布建模观测误差（正态分布最适用的场景）</li>
+    <li><strong>曼德博</strong> — 1963 年指出金融收益率具有肥尾特征，被嘲笑 45 年后被证实</li>
+    <li><strong>塔勒布</strong> — 黑天鹅理论、杠铃策略、反脆弱</li>
+  </ul>
+</div>
+
+<div class="link-section">
+  <strong>完整课程：</strong> <a href="../lessons/0004-zhengtai-yu-feiwei.html">Lesson 4 — 正态分布与肥尾效应</a>
+</div>
+
+<p style="margin-top:2rem;"><a class="back-link" href="../README.html">← 返回 TeachHub 主页</a></p>
+
+</body>
+</html>

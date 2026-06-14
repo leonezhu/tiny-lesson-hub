@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 12 — 杠杆</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f7f9fb;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .insight-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .insight-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>杠杆</h1>
+<p class="lesson-meta">Lesson 12 &middot; ~10 minutes &middot; 多元思维模型 · 终课</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能识别生活中的各种杠杆类型、区分"努力"和"有效杠杆"、并学会在职业、投资和创造力中选择正确的杠杆来放大你的产出。
+</div>
+
+<h2>什么是杠杆</h2>
+<p>
+  杠杆是最古老的物理工具之一。一根木棍、一块支点石，就能让你用 30 公斤的力量举起 300 公斤的重物。阿基米德说："给我一个支点，我就能撬动地球。"他的意思不是字面上的——而是：<strong>找到正确的系统位置，小力量可以产生大结果</strong>。
+</p>
+<p>
+  杠杆思维的核心直觉是：<strong>产出不是投入的线性函数，而是投入 × 杠杆率的函数</strong>。大多数人一生都在追求"投入更多"——更长时间工作、更努力学习、更强硬谈判。但真正改变人生轨迹的决策，几乎总是关于"用哪种杠杆"，而不是"投入多少"。
+</p>
+
+<div class="concept-card">
+  <h3>杠杆的基本公式</h3>
+  <p>杠杆的数学直觉可以用以下公式表示：</p>
+  <p class="formula">产出 = 努力 × 杠杆率</p>
+  <ul class="examples">
+    <li><strong>杠杆率为 1</strong>：每单位努力产出 1 单位结果（如：按小时计酬的体力劳动）</li>
+    <li><strong>杠杆率为 10</strong>：每单位努力产出 10 单位结果（如：一个软件同时服务 1000 个用户）</li>
+    <li><strong>杠杆率为 10000+</strong>：边际成本为零（如：一本书被一百万人阅读）</li>
+  </ul>
+</div>
+
+<h2>纳瓦尔的四种杠杆</h2>
+<p>
+  硅谷投资人 Naval Ravikant 将杠杆分类为四种类型。理解这些类型的区别，是运用杠杆思维的第一步。
+</p>
+
+<div class="concept-card">
+  <h3>1. 劳动力杠杆（Labor Leverage）— 让别人为你工作</h3>
+  <p>
+    这是最原始的杠杆形式。管理者通过指挥他人来获取产出。但在所有杠杆中，劳动力杠杆是最难管理的——每个人都有独立的意志、动机和判断力。管理 100 个人比管理 1 个人的难度远超过 10 倍。这就是为什么大多数依靠劳动力杠杆的企业规模有限。
+  </p>
+  <ul class="examples">
+    <li>工厂主指挥工人生产产品</li>
+    <li>项目经理协调团队交付</li>
+    <li>传统企业的层级组织结构</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>2. 资本杠杆（Capital Leverage）— 用钱生钱</h3>
+  <p>
+    资本是最通用的杠杆——它可以购买劳动力、购买技术、购买资源。现代经济中，绝大多数大规模创新都依赖资本杠杆。风险投资、银行贷款、股票融资都是资本杠杆的形式。
+  </p>
+  <p>
+    资本杠杆的代价是：它通常需要别人借给你（投资者、银行），而他们要求的回报率就是你的成本。当杠杆率过高时（如过度借贷），一次失败的判断就可能导致全盘崩溃——这就是 2008 年金融危机的核心逻辑。
+  </p>
+  <ul class="examples">
+    <li>VC 投资 1000 万美元帮助一家初创公司快速扩张</li>
+    <li>用房贷杠杆买房，房产增值 20% 意味着首付部分的收益翻倍</li>
+    <li>企业发行债券扩大生产线</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>3. 代码杠杆（Code Leverage）— 写一次，运行无限次</h3>
+  <p>
+    这是 21 世纪最伟大的杠杆。代码的特点是：<strong>边际复制成本为零</strong>。你花 3 个月写一个工具，它可以被 1 个人用，也可以被 100 万人用，额外成本几乎为零。代码还具备<strong>睡眠能力</strong>——它可以在你睡觉时工作。
+  </p>
+  <p>
+    这就是为什么程序员被称为"数字工匠"——他们生产的是纯粹的杠杆。一个优秀的工程师写出的系统架构，可以在无人干预的情况下服务数百万用户、创造数亿收入。这是劳动力和资本都无法比拟的杠杆率。
+  </p>
+  <ul class="examples">
+    <li>一个开发者写了开源库，被 10 万项目使用</li>
+    <li>SaaS 产品月费 $99，边际服务成本几乎为零</li>
+    <li>自动化脚本把 8 小时工作缩减为 5 分钟</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>4. 媒体杠杆（Media Leverage）— 内容一次创作，影响无限人</h3>
+  <p>
+    媒体是另一个边际成本为零的杠杆。一本书、一个播客、一个 YouTube 频道、一篇博客文章——它们在被创作的那一刻就具备了无限传播的潜力。与劳动力不同，内容不会质疑你的指令、不会要求加薪、不会在凌晨三点发邮件。
+  </p>
+  <p>
+    但媒体杠杆的缺点是：<strong>分发竞争极其激烈</strong>。每个人都可以写书、做播客，但只有少数人的内容能跨越注意力经济的临界质量。与代码不同，媒体需要"观众"这个外部变量才能产生价值。
+  </p>
+  <ul class="examples">
+    <li>Naval 的《Almanack》网站持续多年带来影响力</li>
+    <li>一篇技术博客文章帮你获得工作机会</li>
+    <li>一本畅销书建立了作者整个职业生涯的基础</li>
+  </ul>
+</div>
+
+<div class="insight-box">
+  <strong>关键洞察：</strong> 代码和媒体是"新杠杆"——它们不需要别人的同意就能放大你的努力。你可以自学编程、可以写文章、可以做播客，不需要任何人批准。这就是为什么 21 世纪是"个人杠杆"的时代：一个聪明的人 + 代码 + 媒体，可以产生超过 100 人的传统企业的产出。
+</div>
+
+<h2>杠杆的常见陷阱</h2>
+
+<div class="concept-card">
+  <h3>陷阱 1：在低杠杆率的事上高杠杆</h3>
+  <p>
+    如果你做的事本身产出很低（比如重复性高、价值低），那么无论加什么杠杆，结果都很有限。用资本杠杆投资一个注定失败的项目，比不投资更糟。用代码杠杆自动化一个错误的流程，只是更快地做错事。<strong>先用零杠杆把事做对，再用杠杆放大。</strong>
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>陷阱 2：过早使用高杠杆</h3>
+  <p>
+    在还没有掌握核心技能之前就管理很多人、融资大量资金，是灾难性的。杠杆放大一切——包括你的错误。最好的策略是：先用低杠杆验证你的能力（自己写代码、自己写文章、自己做销售），建立正确的直觉后，再切换到高杠杆。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>陷阱 3：混淆杠杆与债务</h3>
+  <p>
+    资本杠杆需要还——而且带着利息。当你用债务（借贷、融资）放大投入时，你的风险不对称：上行空间可能很大，但下行风险是无限的。杠杆最安全的用法是：<strong>使用那些不需要你"还"的杠杆</strong>——代码和媒体不会回来找你，它们创造的价值是净的正收益。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong> 人们普遍认为"成功=拼命工作"。但杠杆思维告诉你：<strong>拼命工作只是基础，杠杆才是放大器</strong>。一个每天工作 12 小时但没有杠杆的人，产出可能远低于每天工作 4 小时但有代码杠杆的人。这不是"偷懒的借口"——而是提醒你：在选择杠杆之前，先确保你杠杆化的东西是值得的。
+</div>
+
+<h2>杠杆与其他思维模型的连接</h2>
+
+<div class="concept-card">
+  <h3>杠杆 × 复利效应</h3>
+  <ul class="examples">
+    <li><strong>复利</strong>是杠杆在金融领域的具体应用——你积累的资本成为新的杠杆。</li>
+    <li>代码和媒体杠杆也遵循复利逻辑：你之前的代码/内容会成为新工作的基础。</li>
+    <li>理解复利帮你判断"哪些杠杆适合长期持有"——只有那些可以累积的杠杆才是真正的复利杠杆。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>杠杆 × 临界质量</h3>
+  <ul class="examples">
+    <li>媒体杠杆需要跨越注意力经济的临界质量才能开始产生指数级影响。</li>
+    <li>资本杠杆需要积累到足够规模（临界质量）才能产生质变——从"够花"到"可以投资"。</li>
+    <li>理解临界质量帮你避免在杠杆刚启动时就放弃。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>杠杆 × 第一性原理</h3>
+  <ul class="examples">
+    <li>第一性原理帮你理解"什么才是真正的价值创造"——这是选择杠杆的前提。</li>
+    <li>如果你不知道自己在杠杆化什么（第一性原理），杠杆只会更快地把你带到错误的地方。</li>
+    <li>Elon Musk 用第一性原理重新思考电池成本，然后用资本和劳动力杠杆大规模制造——两个思维模型配合使用。</li>
+  </ul>
+</div>
+
+<h2>如何在自己的生活中寻找杠杆</h2>
+
+<p>
+  下面是你可以根据当前阶段选择的杠杆策略：
+</p>
+
+<div class="concept-card">
+  <h3>如果你是学生或初入职场</h3>
+  <p>
+    你现在最大的杠杆是<strong>学习速度</strong>——在最好的导师（书、课程、优秀的人）指导下学习。这相当于借用了别人一生的经验杠杆。同时开始积累"可复用资产"：写技术博客、参与开源项目、做一个小产品。这些是零成本、零风险的代码和媒体杠杆的起步。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>如果你已经有了一定的专业能力</h3>
+  <p>
+    开始把"一次性工作"转化为"可复用资产"。写一次的技术文档可以被重复使用；一个自动化的数据管道可以省下每周 5 小时；一份产品说明可以被无限分发。问自己："我做的哪些事情只能做一次？哪些可以一次做、重复用？"把时间投入到后者。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>如果你已经有了一定的资本</h3>
+  <p>
+    用第一性原理筛选投资项目——杠杆只有在底层逻辑正确时才有效。用媒体杠杆建立个人品牌，降低融资和获客成本。考虑用部分收入购买"别人的时间"（雇佣），但只在你的时间确实比对方的时间价值高得多时才这么做。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>实践检验：</strong> 花 10 分钟列出你当前工作中最有杠杆潜力的三件事。每件事问自己：（1）这件事做一次可以被重复使用吗？（2）它可以被自动化或模板化吗？（3）它可以被分享给他人吗？这三个问题的答案指向了你可以构建的杠杆。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别杠杆</h2>
+  <p>判断以下场景中的杠杆类型和策略。每道题有两个选项，点击后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你是一个独立开发者。</div>
+    <div class="sentence">以下哪种行为最具杠杆效应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">写一个通用工具库，被多个项目复用</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">为每个客户单独开发功能，收取更高的单价</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在考虑是否要创业。</div>
+    <div class="sentence">在还没有验证市场需求的情况下，融资 500 万美元招聘 20 个人。这符合杠杆思维吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">符合——越早用资本杠杆越快扩张</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不符合——在低杠杆率的事上高杠杆，放大了错误</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在比较两种收入模式。</div>
+    <div class="sentence">按小时收费的咨询 vs 出售一套在线课程。哪种的杠杆率更高？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">按小时咨询——因为你可以同时接多个客户</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在线课程——一次创作、无限分发，边际成本为零</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在评估一个投资项目。</div>
+    <div class="sentence">一家公司用 3 倍杠杆（大量借贷）扩张，市场需求突然萎缩。最可能发生什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">收入下降 + 债务不变 = 现金流断裂，杠杆放大亏损</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">影响不大，因为收入下降的同时成本也下降了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你是一个内容创作者。</div>
+    <div class="sentence">你的第一篇播客只有 50 个听众。根据杠杆思维，你应该怎么做？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">50 个听众太少，放弃这个方向改做别的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">继续制作——媒体杠杆有累积效应，前 50 集可能几乎没人听，但从第 51 集开始爆发</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在比较两种学习方式。</div>
+    <div class="sentence">方式 A：每天花 2 小时自己试错写代码。方式 B：花 2 周上完一门好课，然后开始做项目。哪个杠杆率更高？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">方式 A——自己试错学得更深</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">方式 B——借用了教师（劳动力杠杆）的 10 年经验，学习效率更高</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在管理一个 50 人的团队。</div>
+    <div class="sentence">以下哪种方式更符合杠杆思维？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">建立清晰的流程和文档，让每个人可以自主决策</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">亲自审批每个重要决定，确保质量</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在职业规划。</div>
+    <div class="sentence">哪种能力组合的长期杠杆率最高？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">最强的谈判技巧 + 最勤奋的工作态度</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">编程能力（代码杠杆）+ 写作能力（媒体杠杆）+ 判断力（选择正确的杠杆）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——我是你的思维模型教练。不确定为什么某个答案对、某个错？这正是我们该讨论的。输入你的问题，我来解释。<br><br>
+  <strong>最后一条建议：</strong> 杠杆不是"走捷径"。杠杆是让你用智慧和选择替代蛮力。在按下"开始"键之前，先问自己：<strong>我撬动的方向对吗？</strong> 如果方向错了，杠杆只会让你更快地偏离轨道。
+  <br><br>
+  <strong>延伸阅读：</strong> <a href="https://nav.al/" target="_blank">The Almanack of Naval Ravikant</a> — "Building Wealth" 章节专门讨论杠杆 | <a href="https://en.wikipedia.org/wiki/Leverage_(finance)" target="_blank">财务杠杆 — Wikipedia</a>
+  <br><br>
+  <a href="../reference/leverage.html" class="resource-link">查看参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0011-critical-mass.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '通用工具库的代码杠杆率极高：一次开发，多次复用。每个复用的项目都产生净正收益。而每个客户单独开发是劳动力杠杆——每单位产出都需要新的时间投入。', wrong: '单独开发客户项目虽然单价更高，但这是"一锤子买卖"——每次都需要新的时间和精力。代码杠杆的核心优势是边际复制成本为零。' },
+    q2: { correct: '这是"在低杠杆率的事上高杠杆"的典型陷阱。没有验证市场需求就大规模投入资本和人力，放大的不是优势而是错误的判断。正确策略是先用最小成本验证需求，再逐步加杠杆。', wrong: '过早使用资本杠杆是创业失败的最常见原因之一。资本杠杆是放大器——它放大好判断，也放大坏判断。在没有验证之前就融资扩张，等于用别人的钱为自己的不确定性买单。' },
+    q3: { correct: '在线课程是典型的媒体杠杆：一次创作、无限分发、边际成本接近零。按小时咨询是劳动力杠杆：每单位收入都需要等量的时间投入。当你的时间到了上限（每天 24 小时），收入也到了上限。', wrong: '按小时咨询看似可以同时接多个客户，但人的时间是刚性限制。即使你每周工作 80 小时，收入上限也是 40 倍于每周 20 小时的收入。在线课程的潜在用户是无限的。' },
+    q4: { correct: '3 倍杠杆意味着公司只有约 25% 的资产是自有资本。当收入下降 30% 时，亏损可能达到 100% 以上——这就是"杠杆放大亏损"的机制。债务的刚性（还款额不变）在收入下降时致命。', wrong: '成本不一定能立刻下降——许多成本（如员工工资、租金、利息）是刚性的，无法随收入同步下降。杠杆的可怕之处在于：收入下降时，固定支出不变，亏损加速扩大。' },
+    q5: { correct: '媒体杠杆有极强的累积效应。前 50 集的听众可能很少，但每一集都是资产——它们会被搜索、被推荐、被转发。很多成功的播客在第 40-60 集之间才开始出现"爆发式增长"。这就是临界质量 + 媒体杠杆的组合。', wrong: '50 个听众在媒体杠杆的语境下是完全正常的起步阶段。媒体杠杆不是"一炮而红"，而是"每一次创作都成为长期资产"。放弃等于浪费了之前 50 集的积累。' },
+    q6: { correct: '好课程的价值在于：它把一位优秀教师 10 年积累的经验，压缩为两周的学习。这就是借用了别人的杠杆。但这不是"不劳而获"——你需要把学到的东西付诸实践。关键是：前期借用高杠杆（好课程）加速学习，后期用自己的杠杆（写代码、写文章）放大产出。', wrong: '自己试错当然有价值，但效率远不如借用已有知识。杠杆思维不是"不努力"，而是"努力在杠杆最高的地方"——前期用课程加速、后期用代码和媒体放大。' },
+    q7: { correct: '建立流程和文档是代码/媒体杠杆在组织管理中的应用：一次编写、多次使用。这让 50 人的团队可以自主运转，而不是依赖每个人的"即时决策"。真正的杠杆是在你睡觉时系统仍然运转。', wrong: '亲自审批每个决定是典型的"没有杠杆"——你的时间成了瓶颈。你每天最多做 20 个重要决定，但有 50 人 × 每天 2-3 个决策需求 = 100-150 个。你是瓶颈，不是杠杆。' },
+    q8: { correct: '编程 + 写作是最强的个人杠杆组合：代码让你可以构建和自动化，媒体让你可以影响和传播。两者结合，你可以一个人创建和分发产品给全球用户。判断力确保你选择正确的杠杆来杠杆化。', wrong: '谈判技巧和工作态度虽然重要，但它们都是"线性能力"——不放大你的产出。它们决定了你谈判的效率和工作的质量，但不改变"单位时间产出"的乘数。杠杆需要乘法因子，不是加法。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经掌握了多元思维模型的全貌。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题目，解释中会告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的概念和解释，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

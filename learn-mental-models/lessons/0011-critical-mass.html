@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 11 — 临界质量</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f7f9fb;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .insight-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .insight-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>临界质量</h1>
+<p class="lesson-meta">Lesson 11 &middot; ~10 minutes &middot; 多元思维模型</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能识别系统中\"量变到质变\"的临界点、理解为什么某些项目前期进展缓慢而后突然爆发，并学会在个人决策、商业策略和社会变革中运用临界质量的思维模型。
+</div>
+
+<h2>什么是临界质量</h2>
+<p>
+  临界质量（Critical Mass）指的是：一个系统需要积累到某个最小规模，才能从一种状态跃迁到另一种状态。在此之前，投入看似石沉大海；一旦越过那个阈值，系统就会自发地加速、自我维持，甚至自我强化。
+</p>
+<p>
+  这个概念来自核物理学——铀-235 需要达到一定质量（约 52 公斤球形），中子碰撞引发链式反应的速率才会超过逃逸速率。少于这个质量，反应熄灭；超过它，反应指数级增长。但这个词现在已经被广泛用于描述各种领域的\"阈值效应\"。
+</p>
+
+<div class="concept-card">
+  <h3>核心公式直觉</h3>
+  <p>临界质量不是一个精确的数字，而是一种<strong>非线性关系</strong>：</p>
+  <p>
+    当 x &lt; x<sub>c</sub> 时，输出 ≈ 0（或缓慢增长）<br>
+    当 x &ge; x<sub>c</sub> 时，输出突然跃升，且自我加速
+  </p>
+  <ul class="examples">
+    <li><strong>投入产出曲线是 S 形的</strong>：前期缓慢，中期加速，后期趋缓</li>
+    <li><strong>阈值前后有质的差异</strong>：不是\"多一点\"和\"少一点\"，而是完全不同的状态</li>
+    <li><strong>跨过阈值后系统可以自维持</strong>：不再需要外部持续注入能量</li>
+  </ul>
+</div>
+
+<h2>临界质量在不同领域的面孔</h2>
+
+<div class="concept-card">
+  <h3>生物学：群体感应（Quorum Sensing）</h3>
+  <p>细菌是单个极其简单的生物，但当种群密度超过某个临界值时，它们会\"感知\"到彼此的存在，集体切换行为模式——分泌生物膜、产生毒素、发光。单个细菌不会做这些事，但临界质量以上，整个群体协调一致。这是简单规则产生复杂行为的经典例子。</p>
+</div>
+
+<div class="concept-card">
+  <h3>社会学：社会运动与流行文化</h3>
+  <p>社会学家 Mark Granovetter 的研究发现，一个人是否参与一场抗议，取决于他周围有多少人已经参与了。存在一个\"临界参与率\"——低于它，运动消亡；超过它，运动自我加速。2011 年\"阿拉伯之春\"中，每个国家的参与阈值不同，但都符合这个模式：沉默的大多数在某个临界点突然\"翻过身来\"。</p>
+</div>
+
+<div class="concept-card">
+  <h3>商业：网络效应与平台经济</h3>
+  <p>一个社交网络在用户很少时几乎没有价值（你认识的人都不在上面）。但越过临界质量后，每新增一个用户都会让网络对所有人更有价值——这就是正反馈循环。WhatsApp 在大部分地区达到约 30% 的渗透率后，整个社会通信习惯发生了不可逆的切换。</p>
+</div>
+
+<div class="concept-card">
+  <h3>物理学：核链式反应与超导</h3>
+  <p>核裂变达到临界质量后，反应不再需要外部中子源就能持续。超导现象中，材料冷却到临界温度以下时，电子突然配对形成\"库珀对\"，电阻瞬间归零。这两个例子展示了同一个数学本质：相变——系统在临界点处从一种状态突变到另一种完全不同的状态。</p>
+</div>
+
+<div class="insight-box">
+  <strong>关键洞察：</strong> 临界质量的存在意味着<strong>过早放弃是极其昂贵的错误</strong>。在到达阈值之前，你的努力看起来像在推一块纹丝不动的石头。但石头不是不动——它在积累势能。大多数人在到达临界点前的 \"死谷\" 中放弃，恰好是如果再多坚持一点就能跨越的地方。
+</div>
+
+<h2>临界质量 vs 相关概念辨析</h2>
+
+<div class="concept-card">
+  <h3>临界质量 vs 复利效应</h3>
+  <ul class="examples">
+    <li><strong>复利</strong>：线性积累 → 指数增长。增长从第一天就开始，只是前期看不见。</li>
+    <li><strong>临界质量</strong>：前期几乎为零 → 突然跃迁。增长在某个点\"开关\"一样被激活。</li>
+    <li>复利是平滑加速，临界质量是阶跃式突变。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>临界质量 vs 正和博弈</h3>
+  <ul class="examples">
+    <li><strong>正和博弈</strong>：所有人的收益都增加，蛋糕变大。</li>
+    <li><strong>临界质量</strong>：系统的<strong>行为模式</strong>发生质的改变，而不仅仅是量变。</li>
+    <li>一个社交网络在临界质量以下，单个用户加入可能减少其他人的匿名性（负和）。越过临界质量后，加入变成正和。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong> 人们常常把\"还没看到效果\"等同于\"没有效果\"。但临界质量模型告诉你：在到达阈值之前，系统状态本质上没有变化——不是\"效果很小\"，而是\"还没有质变\"。判断的关键不是看投入的量，而是看系统是否接近了那个能自我维持的阈值。
+</div>
+
+<h2>如何在决策中运用临界质量思维</h2>
+
+<p>理解临界质量后，你可以在以下场景中做更好的决策：</p>
+
+<div class="concept-card">
+  <h3>个人学习</h3>
+  <p>学一门新语言时，前 500 个单词只覆盖约 65% 的日常词汇。但跨过这个门槛后，每次新增单词的边际效益急剧上升——因为你能开始阅读简易内容，在真实语境中积累。许多人放弃在 \"学了一堆单词还是看不懂\" 的阶段，恰好没看到即将到来的边际效益飞跃。</p>
+</div>
+
+<div class="concept-card">
+  <h3>创业与产品</h3>
+  <p>Dropbox 在早期用了最低成本的方式来验证临界质量：他们只做了一个 3 分钟的视频演示，放到 Hacker News 上。结果从 5,000 个等待用户涨到 75,000 个——一个清晰的临界点信号。他们的策略不是平均分配资源，而是集中火力到达临界质量，然后让网络效应接管增长。</p>
+</div>
+
+<div class="concept-card">
+  <h3>组织变革</h3>
+  <p>Kurt Lewin 的\"解冻-变革-再冻结\"变革模型本质上就是临界质量问题。变革不能只靠\"说服\"——你需要创造足够的压力让系统跨过阈值。一个小规模的先锋团队（约 10-25% 的组织成员）达到共识后，往往能触发整个组织的相变。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>实践检验：</strong> 当你面对一个长期看不到结果的投入时，问自己三个问题：（1）这个系统是否存在已知的临界点？（2）我们现在处于临界点之前还是之后？（3）如果临界点还存在，我愿意且能够投入多少到达它？这三个问题帮你区分\"坚持\"和\"沉没成本谬误\"。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别临界质量</h2>
+  <p>判断以下场景中的临界质量特征。每道题有两个选项，点击后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在运营一个新产品。</div>
+    <div class="sentence">产品上线两个月，注册用户只有 300 人。以下哪种分析更符合临界质量思维？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">300 人可能还不够达到网络效应阈值，需要集中资源继续积累</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">数据不好，说明产品不受欢迎，应该重新定位方向</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在考虑是否加入一个社交应用。</div>
+    <div class="sentence">一个社交平台目前只有 200 个活跃用户，其中 50 个是朋友。你的加入最可能造成什么影响？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我会极大推动平台到达临界质量，因为 200 人已经很接近阈值</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在临界质量之前，单个用户的加入对平台价值影响极小</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在学习编程。</div>
+    <div class="sentence">你学了三个月 Python，能写简单脚本但还看不懂框架代码。继续学的预期回报如何？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">继续学意义不大，因为三个月看不到明显进展</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">可能正处于临界质量前的积累期，看懂框架代码后能力会跃升</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在比较两种增长模式。</div>
+    <div class="sentence">复利效应和临界质量的根本区别是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">复利从第一天就开始增长，临界质量在阈值前有\"沉默期\"</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">两者没有本质区别，都是前期慢后期快</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在阅读生物学。</div>
+    <div class="sentence">单个细菌和一群细菌（达到群体感应阈值）的行为差异说明了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">细菌变聪明了，因为数量多了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">简单个体在临界质量以上可以涌现出复杂的集体行为</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在管理一个团队项目。</div>
+    <div class="sentence">项目进行了 6 个月，客户还没签约。你的团队士气低落，你认为最理性的做法是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">立即放弃，6 个月没有成果证明这个方向不行</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">评估是否接近临界点——客户签约后是否会带来持续复购和转介绍</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在分析社交媒体趋势。</div>
+    <div class="sentence">一条视频在发布 2 小时后只有 200 次播放，第 3 小时突然涨到 50 万次。这种现象最合理的解释是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">运气好，算法随机推荐</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">平台算法检测到临界互动率后自动放大，典型的阈值效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在评估一项社会政策。</div>
+    <div class="sentence">某城市推行垃圾分类，前 3 个月 compliance rate 只有 20%。第 4 个月突然飙升至 85%。这最符合哪种模型？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">政策刚实施时大家不适应，后来习惯了所以 compliance 上升</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">社会规范存在临界参与率——当足够多人参与时，不参与的社会成本剧增</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——我是你的思维模型教练。不确定为什么某个答案对、某个错？这正是我们该讨论的。输入你的问题，我来解释。
+  <br><br>
+  <strong>延伸阅读：</strong> <a href="https://en.wikipedia.org/wiki/Critical_mass_(sociology)" target="_blank">临界质量（社会学）— Wikipedia</a> | <a href="https://en.wikipedia.org/wiki/Quorum_sensing" target="_blank">群体感应 — Wikipedia</a>
+  <br><br>
+  <a href="../reference/critical-mass.html" class="resource-link">查看参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0010-random-walk.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-leverage.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '临界质量思维要求你区分\"没有效果\"和\"还没到临界点\"。300 用户对一个网络效应产品来说很可能远低于阈值。正确的策略是集中资源继续积累，而非草率转向。', wrong: '数据不好不等于方向错误。在临界质量模型中，前期低数字是预期的——在阈值之前，系统的行为模式还没有切换。过早下结论是\"线性思维\"的陷阱。' },
+    q2: { correct: '在临界质量之前，系统的输出接近零。单个用户的加入不会改变平台的整体价值，因为网络效应还没被激活。你的加入是好的，但它不是杠杆点。', wrong: '200 人的规模在社交网络中远低于临界点。此时平台还没有网络效应，单个用户的边际贡献极小。不是\"接近阈值\"——社交网络的阈值通常是整个目标市场的 20-30%。' },
+    q3: { correct: '编程学习有明显的临界质量：当你掌握了基础语法后，下一步是跨过一个\"看懂别人代码\"的门槛。跨过之后，你能从真实项目中飞速学习。三个月的积累很可能正处于这个门槛之前。', wrong: '\"看不到进展\"不等于\"没有进展\"。编程学习的 S 形曲线意味着在跨过基础门槛之前，你积累的是看不见的底层能力——就像水在到达沸点之前温度一直在升高。' },
+    q4: { correct: '复利从第一天就有回报，只是前期极小，累积到后期才显现。临界质量在阈值之前几乎没有可见回报，到达阈值后才突然跃迁。这是平滑连续与阶跃突变的区别。', wrong: '两者虽然看起来都是\"前期慢后期快\"，但数学本质完全不同。复利是连续指数函数，临界质量是阶跃函数。理解这个区别能帮你决定什么时候该坚持、什么时候该放弃。' },
+    q5: { correct: '这就是\"涌现\"（emergence）的核心——简单个体通过局部交互在临界质量以上产生出个体不具备的集体智能。单个细菌没有\"决策能力\"，但群体可以协调分泌毒素、形成生物膜。', wrong: '细菌不会\"变聪明\"。它们只是简单的化学响应器。涌现出的复杂行为来自大量简单个体按照固定规则交互的结果，不是个体的智力变化。' },
+    q6: { correct: '临界质量思维要求你评估：客户签约后，这个业务是否进入自我维持模式？如果是（比如复购、转介绍），那么前 6 个月的缓慢积累就是必要的投资。如果不是，那确实是方向问题。', wrong: '\"6 个月没有成果\"不一定证明方向错误。关键区别在于：你是否在积累能跨过临界点的资产？签约一个关键客户可能一次性把业务推到自我维持的增长模式。' },
+    q7: { correct: '大多数推荐平台的算法都有一个\"临界互动率\"检测。当一条内容的互动率（点赞/评论/完播率）超过某个阈值，算法会将其推入更大的流量池——这就是为什么内容常常看起来\"突然爆了\"。', wrong: '虽然运气有成分，但平台算法的设计本质上就是临界质量模型：检测到足够强的信号后自动放大。这不是纯随机，而是算法放大了正反馈循环。' },
+    q8: { correct: '社会行为的改变存在临界参与率。当 20% 的人垃圾分类时，不参与的人几乎不受影响。但当 50-60% 的人参与后，不参与的社交成本（邻居的眼光、被议论）急剧上升，触发大规模的行为切换。', wrong: '\"习惯了\"是一个模糊解释。关键机制是社会规范本身存在阈值效应——当足够多人遵守时，规范就从\"少数人的选择\"变成了\"社会的默认\"，不参与的成本突然剧增。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对临界质量的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题目，解释中会告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的概念和解释，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

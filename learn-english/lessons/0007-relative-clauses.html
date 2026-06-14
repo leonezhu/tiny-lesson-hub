@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 — Relative Clauses (Which, That, Who, Whose)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .clause-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .clause-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .clause-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .clause-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .clause-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .clause-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .merge-demo {
+    background: #f7f8fa;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .merge-demo .original {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .merge-demo .result {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .merge-demo .arrow {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin: 0.3rem 0;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .rule-box {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: var(--accent-light);
+  }
+
+  .rule-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Relative Clauses — Which, That, Who, Whose</h1>
+<p class="lesson-meta">Lesson 7 &middot; ~12 minutes &middot; Grammar intermediate</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll know when to use who, which, that, and whose — and more importantly, when you can <em>skip the relative word entirely</em>. This is the grammar pattern that turns choppy, simple English into fluent, natural English.
+</div>
+
+<h2>What is a relative clause?</h2>
+<p>
+  A relative clause is a <strong>mini-sentence embedded inside a bigger sentence</strong> that describes a noun. Think of it as a grammatical "glue" that lets you combine two short sentences into one smooth sentence. This is the single biggest difference between Chinese and English writing: Chinese strings clauses together by word order (意合), while English uses connector words like <strong>who, which, that, whose</strong> to mark the boundary (形合).
+</p>
+
+<div class="merge-demo">
+  <div class="original">Two short sentences:</div>
+  <div class="original">The woman is my manager. She lives next door.</div>
+  <div class="arrow">↓ combine ↓</div>
+  <div class="result">The woman <strong>who</strong> lives next door is my manager.</div>
+</div>
+
+<h2>The four words you actually need</h2>
+
+<div class="clause-card">
+  <h3>Who — for people</h3>
+  <p class="form">The person [who + verb] → "The person who called me is on her way."</p>
+  <ul class="examples">
+    <li>The engineer <strong>who</strong> fixed the server works remotely.</li>
+    <li>Anyone <strong>who</strong> wants to join the project can sign up.</li>
+    <li>She's the colleague <strong>who</strong> always brings coffee.</li>
+  </ul>
+</div>
+
+<div class="clause-card">
+  <h3>Which — for things and ideas</h3>
+  <p class="form">The thing [which + verb] → "The system which we deployed last week is running."</p>
+  <ul class="examples">
+    <li>The report <strong>which</strong> I sent you has three corrections.</li>
+    <li>We need a process <strong>which</strong> catches errors early.</li>
+    <li>The software <strong>which</strong> runs the website crashed at 3am.</li>
+  </ul>
+  <p class="chinese-note" style="margin:0.5rem 0 0 0;"><strong>Important:</strong> In American English, <em>that</em> is often preferred over <em>which</em> for restrictive clauses (see below). In British English, <em>which</em> is fine everywhere.</p>
+</div>
+
+<div class="clause-card">
+  <h3>That — for people OR things (in restrictive clauses)</h3>
+  <p class="form">The person/thing [that + verb] → "The book that I read was great." / "The person that I met was helpful."</p>
+  <ul class="examples">
+    <li>The best solution <strong>that</strong> we came up with was to delegate.</li>
+    <li>He's not the kind of person <strong>that</strong> gives up easily.</li>
+    <li>The email <strong>that</strong> came through this morning was confusing.</li>
+  </ul>
+</div>
+
+<div class="clause-card">
+  <h3>Whose — for possession (people, animals, things)</h3>
+  <p class="form">The person/thing [whose + noun] → "The company whose CEO resigned is being audited."</p>
+  <ul class="examples">
+    <li>The developer <strong>whose</strong> code caused the bug was very apologetic.</li>
+    <li>That's the client <strong>whose</strong> account was hacked.</li>
+    <li>A building <strong>whose</strong> foundation was weak collapsed in the storm.</li>
+  </ul>
+  <div class="chinese-note">
+    <strong>Hardest point for Chinese speakers:</strong> Chinese uses 的 for possession in relative clauses ("住隔壁的那个女人"), but English requires <em>whose</em>. Chinese has no word equivalent to "whose" — you just put 的 before the noun. So when you see possession + noun, think <em>whose</em>.
+  </div>
+</div>
+
+<h2>Restrictive vs. Non-restrictive (the comma rule)</h2>
+<p>
+  This is the trickiest part, and here's the rule in plain English:
+</p>
+
+<div class="rule-box">
+  <strong>Restrictive (no commas):</strong> The clause <em>defines</em> which person/thing you mean. You <strong>cannot omit</strong> the relative word. Use <em>that</em> for things, <em>who/that</em> for people.<br><br>
+  "The engineer <strong>who/that</strong> fixed the server is on leave." → There are multiple engineers; I'm specifying which one.<br><br>
+  <strong>Non-restrictive (with commas):</strong> The clause just adds extra info. You <strong>must use which</strong> for things (not that), and you <strong>can omit</strong> the relative word if it's the object.<br><br>
+  "The server, <strong>which</strong> was installed in 2019, crashed again." → There's only one server; the clause just adds a detail.<br><br>
+  <em>You CANNOT use "that" in a non-restrictive clause. "The server, that was installed..." is always wrong.</em>
+</div>
+
+<div class="chinese-note">
+  <strong>Commas are the marker:</strong> In Chinese, there are no commas to signal "extra info vs. essential info." This distinction doesn't exist in Chinese grammar. If you hear "the sentence has commas around the clause," think: non-restrictive → use <em>which</em>, not <em>that</em>.
+</div>
+
+<h2>When can you skip the relative word?</h2>
+<p>You can omit the relative word (who/which/that) <strong>only when it's the object</strong> of the relative clause — not the subject:</p>
+
+<div class="merge-demo">
+  <div class="arrow">Subject position → CANNOT omit</div>
+  <div class="original">The book [that/which I bought yesterday] is on my desk.</div>
+  <div class="result">The book (that) I bought yesterday is on my desk. ← OK (object, can omit)</div>
+</div>
+
+<div class="merge-demo">
+  <div class="arrow">Subject position → CANNOT omit</div>
+  <div class="original">The woman [who lives next door] is a doctor.</div>
+  <div class="result">The woman (*who) lives next door is a doctor. ← WRONG to omit</div>
+</div>
+
+<p><strong>Simple test:</strong> Is the relative word doing the action in the mini-sentence, or receiving the action?</p>
+<ul class="examples">
+  <li>The woman who lives next door → who <em>does</em> the living → subject → CANNOT omit</li>
+  <li>The book that I read → that is what I read → object → CAN omit</li>
+  <li>The report which we discussed → which is what we discussed → object → CAN omit</li>
+</ul>
+
+<h2>Relative word quick reference</h2>
+<p>When in doubt, use this decision tree:</p>
+<p>
+  <strong>Describing a person?</strong> → who (subject) / that (subject or object) / whom (formal object)<br>
+  <strong>Describing a thing?</strong> → that (restrictive) / which (restrictive or non-restrictive)<br>
+  <strong>Showing possession?</strong> → whose (person or thing)<br>
+  <strong>Non-restrictive (has commas)?</strong> → which for things, who for people, NEVER that
+</p>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Relative Word</h2>
+  <p>Fill in each blank with the best relative word. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">Describing a person (subject of the clause).</div>
+    <div class="sentence">The engineer ________ designed the system left the company last month.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">who</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">which</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">Describing a thing (object of the clause, can omit).</div>
+    <div class="sentence">The report ________ I sent you has three errors.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">who</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">that</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Showing possession of a person.</div>
+    <div class="sentence">That's the client ________ account was hacked.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">whose</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">whom</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">Non-restrictive clause — extra info about a thing, with commas.</div>
+    <div class="sentence">The server, ________ was installed in 2019, crashed again.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">which</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">that</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Describing a thing (restrictive clause, no commas).</div>
+    <div class="sentence">The best solution ________ we came up with was to delegate.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">that</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">who</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Can you omit the relative word?</div>
+    <div class="sentence">The woman ________ lives next door is a doctor. (Can "who" be omitted?)</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Yes — always can omit</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">No — it's the subject of the clause</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Showing possession of a thing (company, building, etc.).</div>
+    <div class="sentence">The company ________ CEO resigned is being acquired.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">whose</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">which</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Which is NOT correct?</div>
+    <div class="sentence">Which of these is <em>wrong</em>?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"The book that I read was great."</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"The book, that I read, was great."</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Struggling with the comma rule? That's the hardest part for Chinese speakers. Let's work through it together.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b1-b2-grammar/relative-clauses" target="_blank">British Council — Relative Clauses</a> — interactive exercises to practice this topic further.
+  <br><br>
+  <a href="../reference/relative-clauses-quick-ref.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0006-reported-speech-backshifting.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-phrasal-verbs-work.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"The engineer" is a person, and who is the subject of "designed the system" → who is correct. Which is for things, not people.', wrong: 'Which is used for things and animals, not people. For people, use who (when it\'s the subject of the clause): "The engineer who designed…"' },
+    q2: { correct: '"The report" is a thing, and "that" is the object of "I sent you" → that is correct. You could also say "The report I sent you" and skip the word entirely.', wrong: 'Who is for people only. The report is a thing, so you need "that" or "which": "The report that/which I sent you."' },
+    q3: { correct: 'Whose shows possession — "the client\'s account." Whose is the only relative word that shows ownership. It works for people: "the client whose account."', wrong: 'Whom is a formal object form of "who" (e.g., "the client whom I met"). It doesn\'t show possession. For possession, always use "whose": "the client whose account."' },
+    q4: { correct: 'The commas signal a non-restrictive clause (extra info, not essential). In non-restrictive clauses, you MUST use "which" for things — never "that." "That" is ONLY for restrictive clauses without commas.', wrong: 'You cannot use "that" after a comma. The comma around the clause means it\'s non-restrictive (just extra info), and non-restrictive clauses for things require "which": "The server, which was installed…"' },
+    q5: { correct: '"Solution" is a thing in a restrictive clause (no commas — we\'re specifying which solution). "That" is the standard choice for restrictive clauses about things. "Who" is only for people.', wrong: 'Who is exclusively for people. The subject here is "solution," which is a thing, so you need "that" (restrictive, for things): "The best solution that we came up with."' },
+    q6: { correct: 'The relative word "who" is the SUBJECT of the mini-sentence "who lives next door." You can only omit the relative word when it\'s the OBJECT. Since it\'s the subject, it cannot be omitted.', wrong: 'You can only omit the relative word when it\'s the object of the clause. Here, "who" is the subject of "lives next door" — the woman does the living. Subject relative words cannot be omitted: "The woman who lives next door."' },
+    q7: { correct: 'The company\'s CEO — this is possession, even though a company is a thing. Whose works for both people and things to show ownership: "the company whose CEO resigned."', wrong: 'Which cannot show possession. To express "the company\'s CEO," you need "whose": "The company whose CEO resigned." Whose is the only relative word that shows possession.' },
+    q8: { correct: '"The book, that I read, was great" is wrong because "that" cannot be used in non-restrictive (comma) clauses. If you want a non-restrictive clause, you must use "which": "The book, which I read, was great."', wrong: '"The book, that I read, was great" uses "that" with commas, which is never correct. In non-restrictive clauses, you must use "which" or "who," never "that". The correct version is "The book, which I read, was great."' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You\'ve got relative clauses down.';
+      else if (score >= 6) label.textContent = 'Good work! Review the ones you missed — the explanations tell you why.';
+      else label.textContent = 'Keep going! Re-read the rules above and try again.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第五课：循环神经网络 RNN 与序列模型</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .visual-block {
+    background: #f7f9fb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-family: 'Source Sans 3', monospace;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .visual-block .arrow { color: var(--accent); font-weight: 700; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>循环神经网络 RNN 与序列模型</h1>
+<p class="lesson-meta">第五课 &middot; ~12 分钟 &middot; 序列数据处理</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：理解为什么普通神经网络无法处理序列数据，掌握 RNN 的"记忆"机制，知道 LSTM 如何解决长期依赖问题，并能说出 RNN/LSTM 在现实中的典型应用场景。
+</div>
+
+<h2>为什么需要 RNN？</h2>
+<p>
+  前面我们学过的神经网络（感知机、CNN）都有一个共同特点：<strong>输入是独立的、固定的</strong>。一张图片是一张图片，另一张图片是另一张，它们之间没有关系。
+</p>
+<p>
+  但现实世界中很多数据是<strong>序列</strong>——前后顺序很重要：
+</p>
+
+<div class="concept-card">
+  <h3>序列数据的特征</h3>
+  <ul class="examples">
+    <li><strong>文本</strong>："我吃饭" ≠ "饭吃我"。词序决定含义。</li>
+    <li><strong>语音</strong>：音素按顺序排列才构成有意义的音节。</li>
+    <li><strong>时间序列</strong>：股票价格今天受昨天的影响，昨天受前天的影响。</li>
+    <li><strong>视频</strong>：每一帧与前一帧、后一帧紧密相关。</li>
+    <li><strong>DNA</strong>：碱基对的排列顺序决定了遗传信息。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>普通神经网络（如 CNN）处理每张输入时都是"从头开始"，它没有"记住"之前看到的东西的能力。但处理序列时，<strong>过去的信息会影响对现在的理解</strong>。比如你读到"虽然……"，你必须记住这个词才能理解后面跟着的"但是……"。
+</div>
+
+<h2>RNN 的核心思想：带记忆的神经网络</h2>
+<p>
+  RNN（Recurrent Neural Network，循环神经网络）解决这个问题的方法很简单而优雅：<strong>让网络有一个"隐藏状态"（hidden state），这个状态会随时间传递</strong>。
+</p>
+
+<div class="visual-block">
+  时刻 t=1: 输入"我" → 输出"喜欢" → 隐藏状态 h₁（记住了"我"）<br>
+  <span class="arrow">↓</span><br>
+  时刻 t=2: 输入"吃" + h₁ → 输出"饭" → 隐藏状态 h₂（记住了"我吃"）<br>
+  <span class="arrow">↓</span><br>
+  时刻 t=3: 输入"饭" + h₂ → 输出"了" → 隐藏状态 h₃（记住了"我爱吃饭"）
+</div>
+
+<p>
+  换句话说，RNN 在每个时刻做两件事：
+</p>
+
+<div class="concept-card">
+  <h3>RNN 的两个操作</h3>
+  <ul class="examples">
+    <li><strong>更新记忆</strong>：把当前输入和之前的隐藏状态结合起来，产生新的隐藏状态</li>
+    <li><strong>产生输出</strong>：基于当前输入和当前记忆，做出预测或分类</li>
+  </ul>
+</div>
+
+<p>
+  数学上可以写成两个公式：
+</p>
+
+<div class="concept-card">
+  <h3>RNN 的数学表达</h3>
+  <p class="form">
+    h<sub>t</sub> = tanh(W<sub>hh</sub> &middot; h<sub>t-1</sub> + W<sub>xh</sub> &middot; x<sub>t</sub>)<br>
+    y<sub>t</sub> = W<sub>hy</sub> &middot; h<sub>t</sub>
+  </p>
+  <ul class="examples">
+    <li>x<sub>t</sub> = 时刻 t 的输入（比如第 t 个词的词向量）</li>
+    <li>h<sub>t</sub> = 时刻 t 的隐藏状态（"记忆"）</li>
+    <li>y<sub>t</sub> = 时刻 t 的输出</li>
+    <li>W<sub>hh</sub> = 隐藏到隐藏的权重（记忆如何传递）</li>
+    <li>W<sub>xh</sub> = 输入到隐藏的权重（输入如何影响记忆）</li>
+    <li>W<sub>hy</sub> = 隐藏到输出的权重（记忆如何产生结果）</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>直觉理解：</strong>想象你在读一句话。每读一个字，你的大脑就更新一次对整句话的理解。这个"不断更新的阅读理解"就是隐藏状态 h<sub>t</sub>。RNN 的公式只是在模仿这个过程。
+</div>
+
+<h2>RNN 的三种典型架构</h2>
+
+<h3>1. 双向 RNN（Bi-directional RNN）</h3>
+<p>
+  有时候你需要"上下文"——不仅要看前面，还要看后面。比如情感分析：
+</p>
+<div class="visual-block">
+  "这部电影真的<strong>不</strong>好看"<br>
+  只看前面的词 → 可能判断为正面（"真的"）<br>
+  同时看后面的词 → 正确判断为负面（"不好看"）
+</div>
+<p>
+  双向 RNN 同时从前向后和从后向前处理序列，最后把两边的信息合并。
+</p>
+
+<h3>2. Encoder-Decoder（编码器-解码器）</h3>
+<p>
+  这是机器翻译的基础架构：
+</p>
+<div class="visual-block">
+  编码器（Encoder）：输入"我喜欢猫" → 压缩成一个向量<br>
+  解码器（Decoder）：从这个向量 → 输出"I love cats"
+</div>
+<p>
+  编码器把整个输入序列压缩成一个"意义向量"，解码器再从这个向量逐步生成输出序列。这就是早期机器翻译系统的核心思路。
+</p>
+
+<h3>3. 序列到序列（Seq2Seq）</h3>
+<p>
+  Encoder-Decoder 的泛化形式，不仅用于翻译，还用于：
+</p>
+<ul class="examples">
+  <li>文本摘要：长文章 → 简短总结</li>
+  <li>对话系统：用户的问题 → 机器人的回答</li>
+  <li>语音识别：音频序列 → 文字序列</li>
+</ul>
+
+<h2>RNN 的问题：长期依赖困境</h2>
+<p>
+  RNN 理论上可以记住任意长的序列，但实际中遇到了一个严重问题：<strong>梯度消失（Gradient Vanishing）</strong>。
+</p>
+
+<div class="concept-card">
+  <h3>什么是梯度消失？</h3>
+  <p>
+    训练神经网络时，误差从输出层往回传（反向传播）。在 RNN 中，误差要穿过每一个时间步。如果每一步的权重矩阵相乘后数值越来越小，传到最前面的误差就会接近于零——网络"忘记"了早期的输入。
+  </p>
+  <p>
+    <strong>比喻：</strong>就像玩"传话游戏"。第一个人说"我今天早上吃了三个苹果然后去公园跑步最后看了场电影"，传到第十个人时可能只剩"吃苹果"了。中间的细节全部丢失。
+  </p>
+</div>
+
+<div class="visual-block">
+  句子："我从小在巴黎长大，<strong>___</strong>说一口流利的法语"<br>
+  RNN 在填空白时：可能已经忘了"巴黎"这个词，因为中间隔了太多字<br>
+  理想情况：应该记得"巴黎"，填入"他"
+</div>
+
+<h2>LSTM：长短期记忆网络</h2>
+<p>
+  LSTM（Long Short-Term Memory）是 RNN 的一种改进版本，由 Hochreiter 和 Schmidhuber 在 1997 年提出。它引入了<strong>门控机制（gating mechanism）</strong>，让网络可以主动选择"记住什么、遗忘什么"。
+</p>
+
+<h3>LSTM 的三个门</h3>
+
+<div class="concept-card">
+  <h3>1. 遗忘门（Forget Gate）— "我该忘掉什么？"</h3>
+  <p>
+    决定隐藏状态中哪些信息应该被丢弃。比如你读到新句子了，旧句子的记忆就该清除。
+  </p>
+  <p class="form">
+    f<sub>t</sub> = sigmoid(W<sub>f</sub> &middot; [h<sub>t-1</sub>, x<sub>t</sub>] + b<sub>f</sub>)<br>
+    <em>输出 0~1 之间的值：0 = 完全遗忘，1 = 完全保留</em>
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 输入门（Input Gate）— "我该记住什么新信息？"</h3>
+  <p>
+    决定哪些新信息应该加入细胞状态。包含两部分：
+  </p>
+  <ul class="examples">
+    <li><strong>门控部分</strong>：sigmoid 层决定哪些值需要更新</li>
+    <li><strong>候选部分</strong>：tanh 层创建新的候选值</li>
+  </ul>
+  <p class="form">
+    i<sub>t</sub> = sigmoid(...) &nbsp;&nbsp;|&nbsp;&nbsp; C̃<sub>t</sub> = tanh(...)<br>
+    <em>两者相乘 → 只加入被"选中"的新信息</em>
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 输出门（Output Gate）— "我该输出什么？"</h3>
+  <p>
+    基于当前的细胞状态，决定输出什么。
+  </p>
+  <p class="form">
+    o<sub>t</sub> = sigmoid(...) &nbsp;&nbsp;|&nbsp;&nbsp; h<sub>t</sub> = o<sub>t</sub> &middot; tanh(C<sub>t</sub>)<br>
+    <em>细胞状态经过 tanh 压缩到 -1~1，再乘以输出门的值</em>
+  </p>
+</div>
+
+<div class="visual-block">
+  LSTM 细胞状态（Cell State）：一条"高速公路"贯穿所有时间步<br>
+  x<sub>1</sub> ────[细胞状态]────&gt; x<sub>2</sub> ────[细胞状态]────&gt; x<sub>3</sub> ────&gt; ...<br>
+  每个时间步只有少量的线性交互（加减），信息可以几乎无损地传递很远的距离<br>
+  这就是 LSTM 解决梯度消失的关键！
+</div>
+
+<div class="chinese-note">
+  <strong>核心区别：</strong>普通 RNN 的记忆是"模糊的"——每个新输入都会修改记忆。LSTM 的记忆是"结构化的"——有专门的通道（细胞状态）存储长期信息，有专门的门控制何时写入和读取。这让它能记住几个月前的上下文。
+</div>
+
+<h2>GRU：门控循环单元</h2>
+<p>
+  GRU（Gated Recurrent Unit）是 LSTM 的简化版，由 Cho 等人在 2014 年提出。它将遗忘门和输入门合并为一个<strong>更新门（Update Gate）</strong>，计算更快，效果相近。
+</p>
+
+<div class="concept-card">
+  <h3>LSTM vs GRU 对比</h3>
+  <ul class="examples">
+    <li><strong>LSTM</strong>：3 个门（遗忘、输入、输出），2 个状态（隐藏状态 + 细胞状态）</li>
+    <li><strong>GRU</strong>：2 个门（更新门、重置门），1 个状态（隐藏状态）</li>
+    <li><strong>实际选择</strong>：数据量大时用 LSTM（表达能力更强），数据量小时用 GRU（不易过拟合，训练更快）</li>
+  </ul>
+</div>
+
+<h2>RNN/LSTM 的实际应用</h2>
+
+<div class="concept-card">
+  <h3>自然语言处理</h3>
+  <ul class="examples">
+    <li><strong>机器翻译</strong>：Google Translate 早期版本使用 Encoder-Decoder LSTM</li>
+    <li><strong>文本生成</strong>：自动补全、写作助手（ChatGPT 的前身 GPT 系列也使用了 RNN 思想）</li>
+    <li><strong>命名实体识别</strong>：从文本中提取人名、地名、机构名</li>
+    <li><strong>情感分析</strong>：判断评论是正面还是负面</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>其他领域</h3>
+  <ul class="examples">
+    <li><strong>语音识别</strong>：将音频波形转换为文字（DeepSpeech 等系统）</li>
+    <li><strong>音乐生成</strong>：生成旋律、和弦进行</li>
+    <li><strong>股票预测</strong>：分析时间序列的价格模式</li>
+    <li><strong>视频分析</strong>：理解视频中动作的时序变化</li>
+    <li><strong>蛋白质结构预测</strong>：分析氨基酸序列</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>重要认知：</strong>虽然 Transformer 已经在 NLP 领域取代了 RNN/LSTM 成为主流（见第六课），但 RNN 的思想仍然深刻影响着 AI 的发展。而且在某些场景（如实时流数据处理、内存受限的边缘设备）中，RNN/GRU 仍然有其优势。
+</div>
+
+<h2>与前几课的关联</h2>
+<p>
+  RNN 是整个 AI 课程的重要转折点：
+</p>
+<ul class="examples">
+  <li><strong>从 CNN 到 RNN</strong>：CNN 处理空间数据（图像），RNN 处理时间数据（序列）。它们是互补的。</li>
+  <li><strong>从反向传播到序列反向传播</strong>：RNN 使用 BPTT（Backpropagation Through Time），是反向传播在时间维度上的扩展。</li>
+  <li><strong>通向 Transformer</strong>：RNN 的长期依赖问题直接催生了注意力机制（Attention），而 Attention 是 Transformer 的核心——这就是第六课的内容。</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下 8 道题涵盖本课核心概念。每题选择一个答案，点击后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">考察 RNN 的基本特性</div>
+    <div class="sentence">与普通神经网络相比，RNN 的最大区别是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">RNN 有更多的神经元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">RNN 有"记忆"，能处理序列数据</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">考察隐藏状态的概念</div>
+    <div class="sentence">在 RNN 中，隐藏状态 h<sub>t</sub> 的作用是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">保存之前输入的信息，作为当前处理的上下文</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">存储模型的最终输出结果</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">考察梯度消失问题</div>
+    <div class="sentence">RNN 在处理长序列时遇到的主要问题是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">过拟合（Overfitting）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">梯度消失，导致无法学习长期依赖</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">考察 LSTM 的遗忘门</div>
+    <div class="sentence">LSTM 的遗忘门（Forget Gate）的作用是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">决定输入多少新信息</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">决定哪些旧信息应该被丢弃</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">考察 Encoder-Decoder 架构</div>
+    <div class="sentence">机器翻译系统中，Encoder 和 Decoder 分别做什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Encoder 将输入序列编码为向量，Decoder 从向量生成输出序列</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Encoder 翻译句子，Decoder 校对语法</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">考察 LSTM vs GRU</div>
+    <div class="sentence">GRU 相比 LSTM 的主要特点是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">GRU 比 LSTM 更复杂，效果更好</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">GRU 简化了 LSTM 的结构，计算更快</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">考察应用场景</div>
+    <div class="sentence">以下哪个任务最适合用 RNN 处理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">识别一张图片中是否有猫</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">根据用户输入的开头自动生成后续文字</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">考察 RNN 与 Transformer 的关系</div>
+    <div class="sentence">为什么说 RNN 的问题直接催生了 Transformer？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为 RNN 太慢了，Transformer 只是为了加速</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为 RNN 难以捕捉长距离依赖，注意力机制完美解决了这个问题</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的 AI 导师。不理解某个概念？觉得解释太抽象？直接打字问，我会用你觉得舒服的方式解释。<br><br>
+  <strong>推荐阅读：</strong><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank">Chris Olah's Understanding LSTM Networks</a> — 可视化理解 LSTM 的门控机制（英文，但有中文注释版）<br><br>
+  <a href="../reference/rnn-sequence-models.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-cnn.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-transformer-attention.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"RNN 有记忆"是核心。RNN 的隐藏状态 h_t 让它能记住之前的输入，因此可以处理长度不定的序列。普通神经网络每次都是独立处理输入。',
+      wrong: '神经元数量不是关键区别。关键区别在于 RNN 有"循环连接"——它会把自己的输出反馈回来，形成"记忆"。这使得 RNN 能处理序列数据。'
+    },
+    q2: {
+      correct: '"隐藏状态就是记忆"。h_t 综合了当前输入 x_t 和之前所有的历史信息，是当前时刻的"上下文表示"。',
+      wrong: '隐藏状态不是最终输出。它是网络的内部表示，包含了到目前为止看到的所有信息。最终输出 y_t 是基于隐藏状态产生的。'
+    },
+    q3: {
+      correct: '"梯度消失是 RNN 的致命伤"。当序列很长时，误差信号穿过多个时间步后会变得极小，导致网络无法学习早期输入和输出之间的关系。LSTM 通过细胞状态的高速公路机制缓解了这个问题。',
+      wrong: '过拟合是几乎所有 ML 模型都可能遇到的问题，不是 RNN 特有的。RNN 特有的问题是梯度消失——长序列中早期信息丢失。'
+    },
+    q4: {
+      correct: '"遗忘门控制记忆的保留与丢弃"。它的输出是一个 0~1 之间的值，1 表示完全保留，0 表示完全遗忘。这让 LSTM 可以智能地管理长期记忆。',
+      wrong: '"决定输入多少新信息"是输入门（Input Gate）的职责。遗忘门只管一件事：哪些旧记忆应该被清除。'
+    },
+    q5: {
+      correct: '"Encoder 压缩，Decoder 展开"。Encoder 把整个输入序列（如中文句子）编码成一个固定维度的向量，Decoder 从这个向量逐步解码出生成输出序列（如英文句子）。',
+      wrong: '"翻译和校对"是同一个任务的两个步骤，不是 Encoder 和 Decoder 的分工。Encoder 负责编码输入，Decoder 负责生成输出。'
+    },
+    q6: {
+      correct: '"GRU = LSTM 的简化版"。GRU 把 LSTM 的三个门合并为两个（更新门和重置门），把两个状态合并为一个。参数更少、训练更快，在很多任务上效果与 LSTM 相当。',
+      wrong: '"GRU 更复杂"正好说反了。GRU 的设计哲学是"够用就好"——用更少的门和状态达到类似的效果，从而减少计算量和过拟合风险。'
+    },
+    q7: {
+      correct: '"文本生成是序列到序列的任务"。用户输入的开头是一个序列，AI 需要基于这个序列生成后续的文本序列。RNN 天然适合这种任务。识别图片中的猫是 CNN 的强项（空间数据）。',
+      wrong: '"图片分类是空间任务，不是序列任务"。CNN 处理的是像素的空间关系，不需要考虑时间顺序。自动生成文字则需要理解前面的词来决定后面的词，这正是 RNN 的专长。'
+    },
+    q8: {
+      correct: '"注意力机制是 RNN 问题的优雅解法"。RNN 必须按顺序处理，且长距离信息会衰减。注意力机制允许模型在处理每个词时"直接看到"序列中的所有其他词，无论距离多远。这就是 Transformer 的核心创新。',
+      wrong: '"加速只是副作用"。Transformer 确实更快（可以并行计算），但它的核心突破是用注意力机制解决了 RNN 无法捕捉长距离依赖的根本问题。没有这个突破，光有速度提升是不够的。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对 RNN/LSTM 的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的内容，然后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

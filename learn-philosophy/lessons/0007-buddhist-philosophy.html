@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 佛教哲学：缘起、空性与无我的智慧</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    margin-top: 0;
+  }
+
+  .content-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-card ul li {
+    padding: 0.2rem 0;
+    position: relative;
+  }
+
+  .content-card ul li::marker {
+    color: var(--accent);
+  }
+
+  .quote-block {
+    background: #f7f9fb;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  .quote-block .attribution {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .practical-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .practical-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>佛教哲学：缘起、空性与无我的智慧</h1>
+<p class="lesson-meta">第7课 &middot; ~12 分钟 &middot; 一种将本体论、认识论与修行实践融为一体的思想体系</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解佛教哲学的核心框架——四圣谛、缘起性空与无我理论。你将掌握佛教如何将本体论（世界是什么）、认识论（我们如何认识）和伦理学（我们应该怎么做）整合为一个完整的实践体系。学完后你将能够区分"空性"与"虚无"的根本差异，理解"无我"对现代认知科学的启示，并识别正念实践背后的哲学根基。
+</div>
+
+<h2>佛教哲学不是宗教，是一种认知操作系统</h2>
+
+<p>提到佛教，大多数人的第一反应是寺庙、佛像和烧香——但这和佛教哲学的核心无关。佛教哲学的起点是一个极其务实的问题：<b>人为什么会痛苦？有没有可能从痛苦中彻底解脱？</b></p>
+
+<p>大约公元前5世纪，悉达多&middot;乔达摩（后世尊称为"佛陀"，意为"觉醒的人"）通过自身的观察和思辨，得出了一个与当时印度所有思想传统都不同的答案。他既不承认有一个永恒的"灵魂"，也不承认世界有一个"第一因"。他提出的是一个完全基于观察和逻辑的体系——以<b>四圣谛</b>为框架，以<b>缘起性空</b>为理论基础，以<b>八正道</b>为实践方法。</p>
+
+<div class="quote-block">
+  "此有故彼有，此生故彼生；此无故彼无，此灭故彼灭。"<br>
+  这句话被称为"缘起法则"——一切现象的产生和消失都依赖于条件，没有独立自存的事物。<br>
+  <span class="attribution">——《杂阿含经》</span>
+</div>
+
+<p>这不是宗教教条，而是一种因果模型。佛陀在教导中反复强调：<b>不要因为我说了就相信，要去验证</b>。这种实验主义精神在公元前5世纪的世界上是极其罕见的。</p>
+
+<div class="practical-box">
+  <strong>关键洞察：</strong> 佛教哲学最大的独特之处是它把"关于世界的理论"和"改变生命的方法"绑在一起。它不只描述世界是什么——它还诊断"苦的根源"是什么，并提供可操作的路径来改变你与世界的关系。这是一种<b>理论与实践不可分割</b>的思想传统。
+</div>
+
+<h2>四圣谛：佛教哲学的诊断框架</h2>
+
+<p>四圣谛（苦、集、灭、道）是佛教哲学的核心框架，可以看作一个完整的"问题解决流程"：</p>
+
+<div class="content-card">
+  <h3>苦谛——诊断问题</h3>
+  <p>"苦"（dukkha）不是"人生就是痛苦的"这种悲观论调。佛陀说的"苦"更准确的意思是<b>"不满足"、"不圆满"、"总差一点"</b>。即便你拥有了一切，内心深处仍然有一种微妙的不满足感——这就是dukkha。它不是情绪上的痛苦，而是存在论层面的不圆满。</p>
+  <p><b>核心逻辑</b>：承认不满足是普遍存在的，是解决它的第一步。就像医生必须先承认"你生病了"，才能开始治疗。</p>
+</div>
+
+<div class="content-card">
+  <h3>集谛——找到原因</h3>
+  <p>"集"（samudaya）是苦的根源。佛陀认为，苦的根源在于<b>贪爱</b>（ta&scaron;h&acirc;）——对事物有固定不变性的执著，对"我希望事物是这样的"的强烈愿望。当我们执著于一个不存在的"永恒自我"，当我们认为快乐的事物应该永远持续、痛苦的事物应该立刻消失——这种与现实的不匹配就是苦的来源。</p>
+  <p><b>核心逻辑</b>：苦不是外部世界造成的，而是我们的认知方式和世界运作方式之间的错位。世界是变化的、条件性的、没有固定实体的——但我们的认知默认一切都是稳定的、独立的、有实体的。</p>
+</div>
+
+<div class="content-card">
+  <h3>灭谛——可能的解决</h3>
+  <p>"灭"（nirodha）意味着苦的止息是可能的。佛陀不是给出一个"乐观的承诺"——他给出的是一个<b>可验证的预测</b>：如果你按照正确的方法消除贪爱，苦就会止息。这个状态被称为"涅槃"（nirv&acirc;&tilde;&sup3;a）——不是天堂，不是永生，而是<b>"熄灭"——贪、嗔、痴三毒的熄灭</b>。</p>
+</div>
+
+<div class="content-card">
+  <h3>道谛——具体的方法</h3>
+  <p>"道"（m&agrave;rga）是八正道：正见、正思维、正语、正业、正命、正精进、正念、正定。这八项可以归为三类：<b>智慧</b>（正见、正思维）、<b>伦理</b>（正语、正业、正命）、<b>禅定</b>（正精进、正念、正定）。不是先有智慧再修行——三者是相互支撑的循环。</p>
+</div>
+
+<h2>缘起性空：佛教的本体论</h2>
+
+<p>佛教哲学最深刻、也最容易被误解的理论是"缘起性空"。要理解它，必须分两步走：先理解"缘起"，再理解"性空"。</p>
+
+<div class="content-card">
+  <h3>缘起——万物互相关联</h3>
+  <p>"缘起"（pratītyasamutp&acirc;da）是佛教的因果模型：一切现象的产生都依赖于条件，没有独立存在的"第一因"或"自因"。一张桌子不是"自己存在"的——它依赖木材、工匠、钉子、漆、设计图、市场需求……如果把所有这些条件逐一抽走，"桌子"就不存在了。</p>
+  <p><b>关键点</b>：缘起是一种非线性的、网络化的因果观。它不是"A导致B"的简单链条，而是"所有条件的集合体共同导致了现象的出现"。这与现代复杂系统中的"相互依存"概念高度一致。</p>
+</div>
+
+<div class="content-card">
+  <h3>性空——没有固定不变的自性</h3>
+  <p>因为一切现象都依赖条件而存在，所以它们<b>没有独立、永恒、不变的自性</b>。这就是"空"（s&ucirc;nyat&acirc;）的真正含义。"空"不是"什么都没有"——"空"是指<b>"没有固定的、独立的实体"</b>。一张桌子虽然是"空"的，但它作为"桌子"的功能和形态是真实存在的——只是它存在的性质是<b>条件性的、相对的、暂时的</b>。</p>
+  <p><b>常见的误解</b>："空"被很多人误读为"虚无主义"或"什么都是假的"。恰恰相反——佛教说"色即是空，空即是色"，意思是：事物的存在正是因为它"空"（没有固定自性），所以它才能变化、才能存在、才能与你发生关系。如果事物有固定不变的自性，它就永远是它自己，无法变化，无法与你互动。</p>
+</div>
+
+<div class="practical-box">
+  <strong>类比理解：</strong> 把缘起性空想象成一朵云。云的"存在"依赖于水汽、温度、气压、风力等无数条件。如果你问"云是什么"——它没有一个固定的、可以单独提取的"云的实体"。但云确实是存在的，只是它的存在方式是"条件性的存在"。缘起性空说的就是：一切事物都像一个条件性的存在——看起来有实体，实际上是一组关系的集合。
+</div>
+
+<h2>无我：佛教对"自我"的解构</h2>
+
+<p>佛教哲学的第三个核心概念是"无我"（anātman），这是它对西方哲学传统最根本的挑战。在西方哲学中，"自我"或"灵魂"是一个预设——笛卡尔说"我思故我在"，把思考的"我"作为不可怀疑的根基。佛陀的做法完全不同——他对"自我"做了精密的解剖，然后发现<b>"自我"不是一个实体，而是一个过程</b>。</p>
+
+<div class="content-card">
+  <h3>五蕴分析</h3>
+  <p>佛陀逐一检视了人可能认为"我"的五个方面：</p>
+  <ul>
+    <li><b>色</b>（身体）——你的身体在变化，它不是你。</li>
+    <li><b>受</b>（感受）——苦乐感受来来去去，它们不是你。</li>
+    <li><b>想</b>（感知）——你对事物的识别和分类，它们是条件性的产物。</li>
+    <li><b>行</b>（心理活动）——意志、欲望、念头，它们在不断流动。</li>
+    <li><b>识</b>（意识）——即使是"知道"这个能力本身，也是依赖感官和对象才能产生。</li>
+  </ul>
+  <p>结论：在五个方面中，找不到一个独立、永恒、不变的"我"。所谓的"自我"，其实是这五个过程的流动和交织——就像河流，看似是"同一条河"，但每一刻的水都不同。</p>
+</div>
+
+<div class="content-card">
+  <h3>与现代科学的共鸣</h3>
+  <p>佛教的"无我"理论在两千五百年后，正被神经科学和认知科学以不同的方式重新发现。</p>
+  <p><b>神经科学</b>：大脑没有发现一个"中心位置"负责"自我意识"。意识是大脑各区域协同活动的产物，没有一个单一的"我住在那里"。这与佛教的"识"是条件性产物的观点一致。</p>
+  <p><b>心理学</b>：哲学家丹尼特提出的"叙事自我"（narrative self）理论认为，自我不是一个实体，而是一个由大脑实时构建的故事。这与佛教的"五蕴聚合而生我"惊人地相似。</p>
+</div>
+
+<h2>中观学派：龙树的逻辑革命</h2>
+
+<p>公元2世纪，龙树（Nāgārjuna）将佛教哲学的逻辑推向极致。他是中观学派（Madhyamaka）的创始人，其核心著作《中论》通过严密的论证展示了所有概念立场的内在矛盾。</p>
+
+<div class="content-card">
+  <h3>四句否定</h3>
+  <p>龙树的标志性方法是"四句否定"——对任何命题，他都会依次否定四种可能性：<b>非有、非无、非亦有亦无、非非有非非无</b>。这不是诡辩——它的目的是揭示概念思维的内在局限。当你试图用语言描述终极实在时，无论你说"它是"还是"它不是"，都已经在做不恰当的分类了。</p>
+</div>
+
+<div class="content-card">
+  <h3>二谛：世俗谛与胜义谛</h3>
+  <p>龙区区分了两种"真理"：<b>世俗谛</b>（日常经验层面的真理，桌子存在、你很快乐）和<b>胜义谛</b>（终极层面的真理，桌子是空性的、快乐是条件性的）。两者不是对立的——它们是对同一现实的不同描述层次。忽略世俗谛，理论会变得空洞；执着世俗谛，认知会变得僵化。</p>
+  <p><b>现代对应</b>：这有点像量子力学中的"波粒二象性"——在不同的实验条件下，同一个实体可以呈现完全不同的性质。龙树说：语言和概念也是实验条件——在什么"框架"下使用概念，决定了它能揭示什么、遮蔽什么。</p>
+</div>
+
+<h2>佛教哲学的现代影响</h2>
+
+<p>佛教哲学在当代最广泛的影响出现在心理健康领域。正念冥想（mindfulness meditation）已从一个佛教禅修概念，发展为全球临床心理学的标准工具。</p>
+
+<div class="content-card">
+  <h3>正念的哲学根基</h3>
+  <p>正念的核心技术——<b>觉察思维而非认同思维</b>——直接源于佛教的"观照"实践。其哲学基础是"无我"理论：如果你的"自我"不是固定的实体，那么你的"想法"也不是你的"本质"。你可以观察想法的升起和消散，而不必认同它们。CBT（认知行为疗法）和MBSR（正念减压）都吸收了这一洞察。</p>
+</div>
+
+<div class="content-card">
+  <h3>与AI的意外共鸣</h3>
+  <p>在AI安全研究中，佛教对"执念"的解构为理解模型"过拟合"（overfitting）提供了一种哲学类比——模型对训练数据的过度执著导致了泛化能力的丧失。一个能"放下"的训练策略，也许能让AI更接近"无我"的状态：处理信息但不被信息束缚。</p>
+</div>
+
+<div class="content-card">
+  <h3>管理学的正念领导</h3>
+  <p>正念领导力（mindful leadership）被证明能减少决策偏差、提高情绪智力。管理者如果能觉察自己的思维过程而不被其驱使，就能做出更清晰、更少反应性的决策。这在本质上就是八正道中"正念"和"正定"的现代应用。</p>
+</div>
+
+<div class="practical-box">
+  <strong>今天的练习：</strong> 找一个让你焦虑或烦恼的事情。问自己三个问题：（1）这个烦恼依赖于什么条件？如果条件变化了，它还会存在吗？（2）"烦恼中的我"——这个感到痛苦的我——真的是一个固定不变的实体吗？还是它只是一组想法、感受、身体感觉的聚合？（3）如果"烦恼"没有固定自性，你还能用什么样的方式与它相处？
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解佛教哲学</h2>
+  <p>根据佛教哲学的核心概念，判断以下情境。每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">四圣谛中的"苦谛"。</div>
+    <div class="sentence">"苦"（dukkha）的真正含义最接近——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人生本质上就是痛苦的，没有任何快乐</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不满足、不圆满——即使拥有一切，内心仍有微妙的不满足感</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">佛教的"缘起"理论。</div>
+    <div class="sentence">"此有故彼有，此生故彼生"表达的核心思想是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有事情都是由一个"第一因"因果链推动的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">一切现象的产生都依赖于条件，没有独立自存的事物</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">佛教"空性"的概念。</div>
+    <div class="sentence">"空性"（sūnyatā）的正确理解是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">一切都是虚无的，什么都不重要</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">事物没有固定不变的独立实体，但它们在条件性的意义上仍然存在</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">佛陀的"五蕴"分析。</div>
+    <div class="sentence">五蕴（色、受、想、行、识）分析的最终结论是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人由五个部分组成，其中有一个部分是真正的"我"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在五蕴中找不到一个独立永恒的"我"，自我是五蕴聚合产生的过程</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">龙树的"四句否定"。</div>
+    <div class="sentence">龙树用四句否定（非有、非无、非亦有亦无、非非有非非无）的目的是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">证明所有命题都是无意义的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">揭示概念思维在表达终极实在时的内在矛盾和根本局限</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">佛教"集谛"（苦的根源）。</div>
+    <div class="sentence">佛教认为苦的根本原因是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">外部世界的残酷和不公</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">对事物有固定不变性的执著——贪爱和认知的错位</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">龙树的"二谛"理论。</div>
+    <div class="sentence">"世俗谛"和"胜义谛"的关系是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">世俗谛是假的，只有胜义谛是真的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">两者是对同一现实的不同描述层次，缺一不可</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">佛教"无我"理论与现代认知科学的联系。</div>
+    <div class="sentence">丹尼特的"叙事自我"理论与佛教"无我"的相似之处在于——</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">都认为自我是一个固定的神经实体</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">都认为自我是一个由大脑实时构建的过程，而非固定实体</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——佛教哲学最让人困惑的地方在于，"空"听起来像"什么都没有"，但它的含义远更深。不理解"五蕴"如何推导出"无我"？不确定龙树的"四句否定"是诡辩还是深刻的逻辑工具？这就是我该出场的时候。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://www.buddhanet.net/e-learning buddhistory/index.htm" target="_blank">BuddhaNet — 佛教历史与哲学在线学习</a> — 从原始经文到哲学分析，提供了系统而可靠的入门资源。
+  <br><br>
+  <a href="../reference/buddhist-philosophy-overview.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-fa-jia-fa-jia.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-utilitarianism.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"苦"（dukkha）不是悲观主义——它不是说"人生就是痛苦的"。它的准确含义是"不满足、不圆满"。即便你拥有了一切，内心深处仍然有一种微妙的不满足感。这是存在论层面的不圆满，不是情绪上的痛苦。', wrong: '"人生本质上就是痛苦的，没有任何快乐"是对dukkha的误读。佛陀并没有说没有快乐——他说的是，即使快乐也存在根本的不圆满，因为一切都在变化，我们无法永远抓住它。' },
+    q2: { correct: '"此有故彼有"是一种非线性的、网络化的因果模型——一切现象的产生都依赖于条件集合，没有独立自存的事物。这不是"A导致B"的简单链条，而是所有条件的集合体共同导致现象的出现。', wrong: '"第一因"是西方哲学的概念（如亚里士多德的"不动的动者"）。佛教明确反对第一因——每一个现象都依赖更多条件，追溯到尽头也没有一个"开始"。缘起是无限的相互依存网络。' },
+    q3: { correct: '"空性"的核心意思是：事物没有固定不变的独立实体，但这不意味着它们"不存在"。它们在条件性的意义上确实存在——桌子、感受、思想都是真实的，只是它们的"存在方式"是条件性的、相对的、暂时的。', wrong: '"一切都是虚无的"是把"空"误解为"虚无主义"。佛教明确说"色即是空，空即是色"——正因为"空"（没有固定自性），事物才能变化、才能存在。如果万物都是虚无的，因果、修行、解脱也就没有意义了。' },
+    q4: { correct: '佛陀逐一检视了五个方面（色、受、想、行、识），发现没有一个蕴可以独立构成"我"。所谓"自我"其实是这五个过程的流动和交织——就像河流，看似是"同一条河"，但每一刻的水都不同。', wrong: '"其中有一个部分是真正的我"恰恰是佛陀所否定的。五蕴分析的目的正是要证明：在五个方面中，找不到任何一个是永恒的、独立的"我"。如果五蕴中的任何一个都是"我"，那它就不应该变化——但事实是，它们都在不断变化。' },
+    q5: { correct: '四句否定不是诡辩——它是为了揭示概念思维的内在局限。当你试图用"有"或"无"来描述终极实在时，你已经在做不恰当的分类了。龙树的目的是让思维"停下来"，直接体验那个超越概念的现实。', wrong: '"证明所有命题都是无意义的"是一种过度解读。四句否定不是虚无主义——它揭示的是"概念框架"在描述"终极实在"时的局限，而不是说日常经验和逻辑推理本身是无意义的。龙树自己就用了极其严密的逻辑来展示逻辑的边界。' },
+    q6: { correct: '佛教认为苦的根源是"贪爱"（ta&scaron;h&acirc;）——对事物有固定不变性的执著。世界是变化的、条件性的，但我们的认知默认一切都是稳定的、独立的。这种认知方式与现实之间的错位，就是苦的根源。', wrong: '佛教不认为苦来自外部世界——虽然外部环境确实会造成困难，但佛教认为"苦"（dukkha）的根本在于你的认知方式与现实的错位。同样的环境，不同的人会有不同的"苦"——因为苦的根源在于内在的认知模式。' },
+    q7: { correct: '"世俗谛"是日常经验层面的真理（桌子存在、你很快乐），"胜义谛"是终极层面的真理（桌子是空性的、快乐是条件性的）。两者不是对立的，而是对同一现实的不同描述层次。忽略任何一个都会导致认知偏差。', wrong: '"世俗谛是假的"是错误的——佛教说"二谛不一不异"。世俗谛虽然不是终极真理，但它在日常经验中有其真实性和有效性。完全否定世俗谛会导致虚无主义，完全执着世俗谛会导致认知僵化。' },
+    q8: { correct: '丹尼特的"叙事自我"认为，自我不是大脑中的某个固定实体，而是大脑实时构建的一个故事。这与佛教"五蕴聚合而生我"的观点高度一致——两者都认为"自我"是一个过程而非实体。', wrong: '两者都反对"自我是固定实体"的观点。丹尼特的理论明确指出没有"笛卡尔剧场"中那个观看一切的中心自我——这与佛教"无我"理论在方向上是完全一致的，只是使用的语言和证据来源不同。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你已经掌握了佛教哲学的四大核心：四圣谛、缘起性空、无我和中观智慧。';
+      else if (score >= 5) label.textContent = '不错！佛教哲学最反直觉——重新阅读错题的解释，特别注意"空性"与"虚无"的区别。';
+      else label.textContent = '继续加油！佛教的核心是理解"缘起性空"——回到上面的内容，重点看五蕴分析和龙树的二谛理论。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

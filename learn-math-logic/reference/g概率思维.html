@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 概率思维</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+  }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>概率思维 — 快速参考卡</h1>
+<p class="lesson-meta">数学与逻辑 · 核心概念速查</p>
+
+<div class="card">
+  <h3>核心定义</h3>
+  <p>概率思维是用<span class="formula">概率分布</span>而非确定性判断来理解世界运行方式的认知框架。承认世界本质上是不确定的，决策目标是最大化期望效用而非追求绝对确定性。</p>
+</div>
+
+<div class="card">
+  <h3>贝叶斯更新公式</h3>
+  <div class="formula">P(假设|证据) = P(证据|假设) × P(假设) / P(证据)</div>
+  <p>先验概率 × 似然 = 后验概率（归一化后）</p>
+</div>
+
+<div class="card">
+  <h3>经典悖论：医学检测</h3>
+  <ul>
+    <li>检测准确率 99%，疾病发病率 0.1% → 阳性后真实患病概率仅约 9%</li>
+    <li>原因：基础比率极低，假阳性人数远超真阳性</li>
+    <li>教训：永远把基础概率（base rate）纳入考量</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>概率思维 vs 确定性思维</h3>
+  <ul>
+    <li><strong>确定性</strong>："一定能成" → 给出二元判断</li>
+    <li><strong>概率性</strong>："有 60% 成功率，条件变化时会调整" → 给出概率区间 + 条件</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>常见错误</h3>
+  <ul>
+    <li><strong>赌徒谬误</strong>：认为连续结果后"该出相反的了"（每次独立事件概率不变）</li>
+    <li><strong>基础比率忽视</strong>：忽略背景概率，只看具体证据</li>
+    <li><strong>过度拟合直觉</strong>：用单个案例否定统计规律</li>
+    <li><strong>混淆相关与因果</strong>：同时变化 ≠ 因果关系</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>关键人物</h3>
+  <ul>
+    <li><strong>Bayes (1763)</strong> — 贝叶斯定理</li>
+    <li><strong>Pascal & Fermat (1654)</strong> — 概率论的诞生</li>
+    <li><strong>Kahneman & Tversky (1974)</strong> — 启发式与偏见</li>
+    <li><strong>Tetlock (2015)</strong> — 超级预测：概率思维可训练</li>
+    <li><strong>Nate Silver (2012)</strong> — 贝叶斯方法应用于选举预测</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>中文思维陷阱：</strong>中文表达时间靠词汇（昨天、已经），不靠动词变形。这强化了"确定性表达"的惯性——我们习惯直接下结论，而不是用概率框定不确定性。刻意练习概率表达是打破这个陷阱的关键。
+</div>
+
+<p style="margin-top:2rem;">
+  <strong>对应课程：</strong><a href="../lessons/0001-gailv-swei.html" class="resource-link">Lesson 1 — 概率思维：用概率分布理解世界</a>
+</p>
+
+<div class="footer">
+  <a href="../index.html">返回目录</a>
+</div>
+
+</body>
+</html>

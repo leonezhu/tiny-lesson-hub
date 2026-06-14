@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 信息论基础速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .formula-box .formula-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    font-style: italic;
+  }
+
+  .table-block {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .table-block th, .table-block td {
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+
+  .table-block th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>信息论基础 — 速查卡</h1>
+<p class="lesson-meta">来自 Lesson 6 &middot; 快速参考</p>
+
+<div class="card">
+  <h3>核心直觉</h3>
+  <p><strong>信息的多少 = 意外的程度</strong></p>
+  <ul style="padding-left:1.2rem; margin-top:0.5rem;">
+    <li>高概率事件 → 低信息量</li>
+    <li>低概率事件 → 高信息量</li>
+    <li>确定性事件（概率=1）→ 零信息</li>
+  </ul>
+</div>
+
+<div class="formula-box">
+  <div class="formula-label">香农熵</div>
+  H(X) = &minus;&sum; P(x<sub>i</sub>) &middot; log<sub>2</sub>(P(x<sub>i</sub>))
+</div>
+
+<div class="card">
+  <h3>熵的直觉</h3>
+  <ul style="padding-left:1.2rem;">
+    <li>熵 = 不确定性的度量</li>
+    <li>熵 = 消除不确定性所需的信息量</li>
+    <li>熵 = 无损压缩的理论极限</li>
+    <li>熵越高，越不可预测；熵越低，越有规律</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>常见熵值</h3>
+  <table class="table-block">
+    <tr>
+      <th>事件</th>
+      <th>概率</th>
+      <th>信息量(bits)</th>
+    </tr>
+    <tr>
+      <td>公平硬币正面</td>
+      <td>0.5</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <td>掷骰子是6</td>
+      <td>1/6</td>
+      <td>2.58</td>
+    </tr>
+    <tr>
+      <td>从100选1</td>
+      <td>0.01</td>
+      <td>6.64</td>
+    </tr>
+    <tr>
+      <td>确定性事件</td>
+      <td>1.0</td>
+      <td>0</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>霍夫曼编码原理</h3>
+  <ul style="padding-left:1.2rem;">
+    <li>高频字符 → 短码（少用bits）</li>
+    <li>低频字符 → 长码（多用bits）</li>
+    <li>平均编码长度逼近熵值</li>
+    <li>不能压缩的数据 = 最大熵的随机数据</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>四大应用</h3>
+  <ul style="padding-left:1.2rem;">
+    <li><strong>通信：</strong>信道容量定理 → 5G/Wi-Fi/光纤</li>
+    <li><strong>加密：</strong>高熵密文 = 不可预测</li>
+    <li><strong>AI：</strong>信息增益 → 决策树；交叉熵 → 损失函数</li>
+    <li><strong>数据科学：</strong>模式（低熵）vs 噪声（高熵）</li>
+  </ul>
+</div>
+
+<p><a class="back-link" href="../lessons/0006-xinxi-lun-xinxi-eng.html">← 回到完整课程</a></p>
+
+</body>
+</html>

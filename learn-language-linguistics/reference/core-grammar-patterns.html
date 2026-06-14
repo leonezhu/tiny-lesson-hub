@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 英语核心语法模式</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .ref-meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .pattern-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .pattern-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    color: var(--accent);
+  }
+
+  .pattern-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    background: var(--accent-light);
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+  }
+
+  .pattern-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .pattern-card ul li {
+    padding: 0.15rem 0;
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.9rem;
+  }
+
+  .pattern-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.3rem 0.7rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover { opacity: 0.9; }
+
+  .error-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .error-list li {
+    border-left: 3px solid #c62828;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    background: #ffebee;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .error-list li strong { color: #c62828; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>英语核心语法模式</h1>
+<p class="ref-meta">快速参考卡 · 语言与语言学 · 第8课</p>
+
+<h2>五大核心模式</h2>
+
+<div class="pattern-card">
+  <h3>SV — 主语 + 谓语</h3>
+  <p class="formula">S + V (不及物)</p>
+  <ul>
+    <li>The system failed.</li>
+    <li>Time flies.</li>
+  </ul>
+</div>
+
+<div class="pattern-card">
+  <h3>SVO — 主语 + 谓语 + 宾语</h3>
+  <p class="formula">S + V + O</p>
+  <ul>
+    <li>I wrote a report.</li>
+    <li>She understands the problem.</li>
+  </ul>
+</div>
+
+<div class="pattern-card">
+  <h3>SVOO — 主语 + 动词 + 间接宾语 + 直接宾语</h3>
+  <p class="formula">S + V + IO + DO</p>
+  <ul>
+    <li>She gave me a gift.</li>
+    <li>He told us a story.</li>
+  </ul>
+</div>
+
+<div class="pattern-card">
+  <h3>SVOC — 主语 + 动词 + 宾语 + 补足语</h3>
+  <p class="formula">S + V + O + OC</p>
+  <ul>
+    <li>They elected her president.</li>
+    <li>I found the movie boring.</li>
+  </ul>
+</div>
+
+<div class="pattern-card">
+  <h3>SVC — 主语 + 系动词 + 表语</h3>
+  <p class="formula">S + V(link) + C</p>
+  <ul>
+    <li>She is a doctor.</li>
+    <li>The soup smells delicious.</li>
+  </ul>
+</div>
+
+<h2>关键规则速查</h2>
+<ul class="error-list">
+  <li><strong>英语主语不能省略</strong>（祈使句除外），中文可以省略。</li>
+  <li><strong>系动词后用形容词</strong>，不是副词：tastes good ✅ / tastes well ❌</li>
+  <li><strong>Explain/describe/introduce</strong> 只能用 SVO + to/for，不能用 SVOO。</li>
+  <li><strong>Buy/save/make/cook</strong> 用 SVO + for，不能用 SVOO。</li>
+  <li><strong>Give/tell/show</strong> 两种结构都可以：give me a book / give a book to me。</li>
+  <li><strong>Go + 形容词</strong> 通常有负面含义：go bad, go mad, go blind。</li>
+  <li><strong>Make + O + bare infinitive</strong>：She made me laugh.（不是made me to laugh）</li>
+</ul>
+
+<h2>感官系动词清单</h2>
+<p class="formula" style="margin-top:0.5rem;">look, sound, smell, taste, feel, become, get, grow, turn, seem, remain, appear</p>
+<p>全部后接<strong>形容词</strong>作表语，描述主语状态。</p>
+
+<a href="../lessons/0008-english-core-grammar-patterns.html" class="back-link">→ 返回完整课程</a>
+
+</body>
+</html>

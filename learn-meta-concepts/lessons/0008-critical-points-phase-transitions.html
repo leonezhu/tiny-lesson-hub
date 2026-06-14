@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8 — 临界点与相变</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>临界点与相变（Critical Points &amp; Phase Transitions）</h1>
+<p class="lesson-meta">Lesson 8 &middot; ~10 minutes &middot; 元概念 #8</p>
+
+<div class="goal-box">
+  <strong>通过本课</strong>，你将理解为什么系统往往表现出"量变到质变"的行为——微小的改变在多数时候看不到效果，但一旦越过某个临界点，整个世界会突然翻面。学会识别系统中的临界点，意味着你能预判那些"突然发生"的事情，而不是被它们吓到。
+</div>
+
+<h2>核心直觉</h2>
+<p>
+  在物理学中，水在 100°C 沸腾是一瞬间的事。但在那之前，每增加一度你都看不到任何变化——99°C 的水和 90°C 的水看起来完全一样。直到温度跨过 100°C 的那个点，液态突然变成气态。<strong>这就是相变：系统在临界点处发生质的跳跃。</strong>
+</p>
+<p>
+  相变不只是物理现象。社会运动、经济危机、技术爆发、甚至你的个人习惯改变，都遵循相同的结构：<strong>大部分时间看起来没有变化，直到某个临界点到来，一切都变了。</strong>
+</p>
+
+<h2>相变的三种类型</h2>
+
+<div class="tense-card">
+  <h3>第一类相变：突变</h3>
+  <p>在临界点处，系统的性质突然跳跃。最经典的是水沸腾——液态到气态是一瞬间完成的，中间没有过渡状态。</p>
+  <ul class="examples">
+    <li>社会运动：一个社会可能平静了几十年，直到某个事件（如巴士事件）触发革命，政权迅速崩溃</li>
+    <li>技术采纳：一种新技术可能多年无人问津，直到用户数达到"网络效应临界点"，然后呈指数增长</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>第二类相变：连续性但有奇异性</h3>
+  <p>性质不是突然跳跃，但在临界点处，系统的行为方式发生根本改变。最著名的是磁体的居里点——温度升高时磁性逐渐减弱，在居里点处完全消失。</p>
+  <ul class="examples">
+    <li>团队规模：5 个人的团队可以高效协作，15 个人开始需要流程管理，50 个人需要组织结构——这不是突然的，但管理复杂度在几个阶段会指数上升</li>
+    <li>经济泡沫：资产价格可能缓慢上涨，但市场信心的"相变"发生在临界点处，之后从"理性增长"变为"恐慌崩盘"</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>社会临界点：少数人的力量</h3>
+  <p>社会学家马克·格兰诺维特发现，每个决定是否参与社会运动的"门槛"不同。当足够多的人的门槛被达到，社会运动就会爆发。</p>
+  <ul class="examples">
+    <li>一个谣言：如果只有 1 个人转发，没人理。但如果 1000 个人同时转发，它会变成新闻</li>
+    <li>流行趋势：一个品牌可能默默无闻，直到几个 KOL 同时使用它，然后一夜爆红</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>临界点的本质是<strong>非线性</strong>。输入（努力/时间/投入）和输出（变化/结果/影响）之间不是 1:1 的关系。在临界点之前，大量投入可能看不到可见结果；一旦跨过临界点，同样的投入会引发巨大变化。这就是为什么很多人"在黎明前放弃"。
+</div>
+
+<h2>临界点的四个信号</h2>
+
+<div class="tense-card">
+  <h3>1. 临界慢化（Critical Slowing Down）</h3>
+  <p>系统在临界点附近恢复平衡的速度变慢——就像一个弹簧越拉越无力。这是临界点即将到来的信号。</p>
+  <ul class="examples">
+    <li>一个组织在崩溃前，往往会出现效率下降、沟通变慢、决策变难——这是系统失衡的信号</li>
+    <li>生态系统退化前，物种恢复平衡的速度会越来越慢</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>2. 涨落放大（Fluctuation Amplification）</h3>
+  <p>在临界点附近，小的波动会被系统放大。平时微不足道的小事，突然能引发大影响。</p>
+  <ul class="examples">
+    <li>股市崩盘前，小的利空消息会引发异常的跌幅</li>
+    <li>革命前夕，一个偶然的街头冲突就能点燃全国范围</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>3. 关联长度增长</h3>
+  <p>系统中的各个部分开始相互影响，不再独立。一个地方的变化会影响到其他所有地方。</p>
+  <ul class="examples">
+    <li>供应链危机：一个工厂停产，影响的不只是它自己的产品，而是整个供应链</li>
+    <li>全球疫情：一个城市的病例变化，几天后会影响全球</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>4. 普适性（Universality）</h3>
+  <p>不同类型的系统在临界点附近表现出相同的行为模式——这意味着临界点背后的数学结构是普适的，不受具体细节影响。</p>
+  <ul class="examples">
+    <li>沙堆模型：无论怎么堆沙子，崩塌的频率分布都遵循幂律</li>
+    <li>地震：无论大小，地震的频次分布（古登堡-里希特定律）遵循幂律</li>
+  </ul>
+</div>
+
+<h2>临界点不只是"大事件"</h2>
+<p>
+  人们往往把临界点和戏剧性的大事件联系在一起——革命、战争、金融危机。但临界点也发生在日常的微观层面：
+</p>
+
+<ul class="examples" style="padding-left: 1.5rem; margin: 1rem 0;">
+  <li style="padding: 0.25rem 0; padding-left: 1.2rem; position: relative;"><strong>习惯养成：</strong>运动两周看不到效果，但坚持到第六周，身体开始适应，你会觉得"突然变强了"。这不是错觉——神经系统在某个临界点完成了重组。</li>
+  <li style="padding: 0.25rem 0; padding-left: 1.2rem; position: relative;"><strong>语言学习：</strong>背了一千个单词还不会说英语，但到两千词左右，你会突然发现自己能看懂大部分简单文章了。这就是语言习得的临界点。</li>
+  <li style="padding: 0.25rem 0; padding-left: 1.2rem; position: relative;"><strong>AI 能力涌现：</strong>大语言模型在规模达到某个阈值后，突然展现出了之前没有的能力（如推理、代码生成）。这不是线性增长——能力在临界点处涌现。</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>实践意义：</strong>当你觉得"努力了但看不到结果"时，你可能处在临界点之前。关键不是停止，而是<strong>判断你接近临界点的程度</strong>。如果系统有正反馈（网络效应、复利、学习曲线），临界点很可能就在前方。
+</div>
+
+<h2>如何预判临界点</h2>
+
+<div class="tense-card">
+  <h3>寻找"正反馈环"</h3>
+  <p>只要有正反馈（收益递增），系统最终会到达临界点。关键是识别正反馈是否存在以及它正在积累。</p>
+  <ul class="examples">
+    <li>用户增长 → 内容更多 → 更多用户：社交平台的增长正反馈环</li>
+    <li>知识积累 → 理解更快 → 学得更多：学习的正反馈环</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>观察临界信号</h3>
+  <p>前面提到的四种信号——临界慢化、涨落放大、关联增长、普适性——都是在告诉你"系统正在接近相变"。</p>
+  <ul class="examples">
+    <li>如果你在一家公司看到决策越来越慢、小问题引发大冲突，可能是在接近某个组织变革的临界点</li>
+    <li>如果一个社交平台的用户活跃度突然剧烈波动，可能是在接近网络效应的临界点</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别临界点</h2>
+  <p>以下场景中，哪些体现了临界点与相变？点击选择。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">社交媒体上的一个帖子，最初只有 2 个赞，但当赞数超过 1000 后，算法开始把它推送给更多人，赞数突然跳到 10 万。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，1000 赞是算法推荐机制的临界点</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，这只是算法的随机分配</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一个人每天跑步，前三周没有明显变化，第六周后突然觉得身体轻松了很多，跑步不再费力。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，这只是身体适应的线性过程</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，身体机能改善存在非线性临界点</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一家公司每个月销售额都稳定增长 5%，连续两年都没有波动。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有，这是线性增长，没有相变</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">有，每个月的增长都是一个小相变</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一种新技术在发明 10 年后仍无人使用，但在第 11 年，几家大公司同时投资，随后该技术迅速成为行业标准。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是几家大公司的投资推动了技术</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，第 11 年达到了技术采纳的临界点</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">一杯水从 20°C 加热到 99°C，水温持续稳定上升，没有突然变化。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有，这还没有到达 100°C 的相变临界点</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">有，温度升高本身就是一种相变</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一个谣言在某个微信群里传播，当转发人数达到某个数量后，它突然从一个群扩散到几十个群，变成了全网热点。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，这只是信息扩散的自然过程</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，传播人数达到临界点后发生了社会传播的相变</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一个人每天存 100 元到银行账户，利率是 3%。一年后他有 3600 多块。五年后有将近两万块。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是，复利本身就是一个临界点现象</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有，这是连续增长，虽然有正反馈但没有质的跳跃</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">一个团队在规模从 5 人扩展到 20 人的过程中，沟通方式需要彻底改变：从直接交流到需要流程管理、角色分工和层级结构。</div>
+    <div class="sentence">这体现了临界点吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是，团队规模跨越临界点后，管理复杂度发生质的变化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是，只是团队变大了所以需要更多管理</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的元概念导师。不理解为什么 99°C 的水和 100°C 的水看起来一样但本质不同？为什么临界点难以预判？为什么有些临界点可以被加速、有些被延迟？这些正是值得深入的问题。
+  <br><br>
+  <strong>延伸阅读：</strong>汉斯·哈根《相变与临界现象》（<em>Phase Transitions and Critical Phenomena</em>）——物理学中临界现象的经典教材；邓肯·瓦茨《六度分隔》（<em>Six Degrees</em>）——社会网络中临界点与传播的数学分析。
+  <br><br>
+  <a href="../reference/critical-points-phase-transitions.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-path-dependence.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-positive-sum-zero-sum.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '这正是临界点的经典表现：算法推荐机制设定了 1000 赞作为触发阈值。在达到这个临界点之前，帖子几乎不获得额外曝光；一旦越过，正反馈（更多人看到 → 更多赞 → 更多曝光）启动，导致传播的"相变"。', wrong: '这不是随机分配。算法的设计本质上就是设置阈值（临界点）——1000 赞触发推荐，这是一个人为定义的临界点。越过它后，增长不再是线性的，而是正反馈驱动的指数增长。' },
+    q2: { correct: '身体机能的改善是非线性的。前几周，身体在适应但没有可见变化（临界点之前）；第六周左右，身体完成了神经和肌肉的重组，出现了质的跳跃（相变）。这就是为什么"感觉突然变强了"。', wrong: '这不是线性过程。线性增长意味着每天都进步相同幅度，但身体的适应有门槛——神经系统需要时间建立新的运动模式，这个过程在临界点前看不到结果，临界点后效果明显。' },
+    q3: { correct: '每个月增长 5% 是线性（甚至指数）增长，但每个月的增幅都是可预测的、连续的。没有质的跳跃，没有突然的行为改变——这就是没有相变。', wrong: '每个月的 5% 增长不是相变。相变指的是系统"质的跳跃"——从一种状态切换到另一种状态。稳定增长是量变，不是质变。' },
+    q4: { correct: '技术在 10 年无人问津，是因为没有达到"采纳临界点"。第 11 年大公司的同时投资，意味着系统积累了足够的势能（正反馈环建立），跨越了临界点，技术迅速成为标准——这是一个典型的社会-技术相变。', wrong: '这不只是投资推动。关键结构是：长时间沉寂 → 突然爆发。这正是一个系统积累到临界点后发生相变的特点。大公司的投资是触发相变的条件，不是简单的"资金推动技术"。' },
+    q5: { correct: '水从 20°C 加热到 99°C 是量变——温度持续上升，但水的状态（液态）没有改变。只有到了 100°C，相变才会发生：液态突然变成气态。', wrong: '温度升高是量变，不是相变。相变指的是"质的跳跃"——从一种相（液态）切换到另一种相（气态）。99°C 的水依然是液态，没有发生相变。' },
+    q6: { correct: '这是社会传播中的临界点现象：转发人数达到某个临界值后，传播机制从"人际传播"切换到"网络级联传播"——扩散速度突然加速几个数量级。这就是社会相变。', wrong: '这不是"自然过程"。信息传播的临界点是真实存在的——当转发人数超过临界阈值，系统从局部传播进入全局级联传播，扩散速度发生质的跳跃，这正是相变。' },
+    q7: { correct: '复利虽然有正反馈（利息产生更多利息），但它是连续增长——每天/每年的收益是确定的、可预测的。临界点的特征是"质的跳跃"，而复利没有质的跳跃，只是量的持续积累。', wrong: '复利不是临界点现象。虽然它有正反馈，但增长是连续的、渐进的，没有质的跳跃。临界点要求系统在某个阈值后行为模式发生根本改变，而复利只是加速的量变。' },
+    q8: { correct: '完美识别！团队规模扩大到一定程度后，管理复杂度不是线性增长而是指数增长。从 5 人到 20 人的过程中，"直接沟通"这个旧的管理方式不再适用，系统需要切换到新的管理相（流程化、层级化）。这是组织结构中的相变。', wrong: '这不只是"团队变大"。关键区别在于管理方式的质的变化——从直接沟通到流程管理，这是管理复杂度的相变。团队规模跨越临界点（通常被认为是 10-15 人）后，管理方式必须根本改变。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '全对！你已经掌握了临界点与相变的核心直觉。';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，临界点是个需要反复体会的概念。';
+      else label.textContent = '临界点的核心是"量变到质变的跳跃"，多读几遍上面的例子会更有感觉。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>适应度景观 · 快速参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+  ul { padding-left: 1.2rem; margin-bottom: 0.6rem; }
+  li { margin-bottom: 0.2rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  .insight {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.7rem 0.9rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>适应度景观 <span class="tag">Meta Concepts</span></h1>
+<p class="meta">Lesson 10 · 快速参考卡 · 适应度作为搜索空间的隐喻</p>
+
+<div class="card">
+  <h3>定义</h3>
+  <p>适应度景观（Fitness Landscape）由遗传学家 Sewall Wright 于 1932 年提出，将生物的基因型空间映射为一个多维地形：每个基因组合对应地形上的一个点，海拔高度代表适应度（生存与繁殖成功率）。进化过程被比喻为登山者在浓雾中试图找到最高峰。</p>
+</div>
+
+<div class="card">
+  <h3>三个关键特征</h3>
+  <ul>
+    <li><strong>局部信息约束</strong> → 登山者只能看到相邻突变带来的适应度变化，导致<strong>局部最优陷阱</strong></li>
+    <li><strong>地形流动</strong> → 环境与物种共同进化，形成<strong>共适应景观</strong></li>
+    <li><strong>山谷穿越</strong> → 从一座山峰到另一座更高的山峰需要穿越适应度更低的山谷</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Google 70-20-10 框架</h3>
+  <p>将适应度景观理论化为企业战略资源分配：70% 深耕当前山峰、20% 探索邻近山峰、10% 搜索全新山峰。多样性是<strong>探索策略</strong>而非道德选择。</p>
+</div>
+
+<div class="insight">
+  <strong>关键洞察：</strong>最优解往往是"够用"而非"完美"——因为景观持续变化，进化不追求最优，只追求"比竞争对手好一点"（红皇后假说）。
+</div>
+
+<div class="card">
+  <h3>跨学科应用</h3>
+  <ul>
+    <li><strong>生物学</strong>：自然选择的数学化——遗传算法的灵感来源</li>
+    <li><strong>AI</strong>：损失景观 = 神经网络的适应度景观，梯度下降 = 朝最陡下坡走一步</li>
+    <li><strong>经济学</strong>：创造性破坏 = 摧毁旧山峰、攀登新山峰；路径依赖 = 锁定在局部最优</li>
+    <li><strong>心理学</strong>：习惯改变 = 穿越山谷（短期不适换取长期提升）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>实际应用</h3>
+  <ul>
+    <li><strong>战略决策</strong>：定期审视"当前山峰是否真的是最高峰"</li>
+    <li><strong>职业发展</strong>：职业转型 = 山谷穿越；区分"战略性下降"与"无目的下滑"</li>
+    <li><strong>投资组合</strong>：跨资产类别配置 = 部署多个探索者在不同区域搜索</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0010-fitness-landscape.html">完整课程 →</a>
+</div>
+
+</body>
+</html>

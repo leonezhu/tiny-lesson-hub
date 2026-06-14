@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡片 — 因果性</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', sans-serif; font-size: 15px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.4rem; color: var(--accent); margin-bottom: 0.25rem; }
+  .meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+  .card { border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin: 1rem 0; }
+  .card h3 { font-family: 'Merriweather', serif; font-size: 0.95rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .card table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .card table td { padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--border); }
+  .card table tr:last-child td { border-bottom: none; }
+  .card table td:first-child { font-weight: 600; width: 40%; color: var(--accent); }
+  .tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 3px; margin: 0.1rem; font-weight: 600; }
+  .back-link { display: inline-block; margin-top: 1rem; color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<h1>因果性 — 参考卡片</h1>
+<p class="meta">Lesson 1 · Meta Concepts</p>
+
+<div class="card">
+  <h3>定义</h3>
+  <p>因果性：事件 A <strong>导致</strong> 事件 B 的必然关系。不是同时发生，而是 A 的发生使得 B 必然发生。</p>
+</div>
+
+<div class="card">
+  <h3>核心原则</h3>
+  <p><strong>相关 ≠ 因果</strong> — 两个事物一起变化不代表一个导致另一个。</p>
+</div>
+
+<div class="card">
+  <h3>三种常见因果谬误</h3>
+  <table>
+    <tr><td>后此谬误</td><td>A 在 B 前 → A 导致 B（忽略其他原因）</td></tr>
+    <tr><td>忽略共同原因</td><td>A 和 B 都受 C 影响，误以为 A→B</td></tr>
+    <tr><td>反向因果</td><td>以为 A→B，实际是 B→A</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>因果证据等级</h3>
+  <table>
+    <tr><td>随机对照试验 (RCT)</td><td>金标准：随机分组，唯一变量不同</td></tr>
+    <tr><td>自然实验</td><td>现实中的"准实验"</td></tr>
+    <tr><td>格兰杰因果检验</td><td>统计预测能力（参考用）</td></tr>
+    <tr><td>时间顺序 + 机制</td><td>最低等级，需其他证据补充</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>验证三问</h3>
+  <p>1. 有没有<strong>对照组</strong>？2. 有没有<strong>第三变量</strong>？3. 因果<strong>机制</strong>是什么？</p>
+</div>
+
+<div class="card">
+  <h3>关键词</h3>
+  <p>
+    <span class="tag">Confounding variable</span>
+    <span class="tag">Post hoc fallacy</span>
+    <span class="tag">RCT</span>
+    <span class="tag">Granger causality</span>
+    <span class="tag">Third variable</span>
+    <span class="tag">Selection bias</span>
+  </p>
+</div>
+
+<a class="back-link" href="../lessons/0001-causality.html">← 返回完整课程</a>
+
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行为主义 — 经典条件反射与操作性条件反射</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .experiment-card {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+  }
+
+  .experiment-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .experiment-card .result {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .comparison .col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison .col ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .comparison .col ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .timeline {
+    border-left: 3px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .timeline-item {
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -1.45rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .timeline-item .year {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .timeline-item .desc {
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>行为主义：经典条件反射与操作性条件反射</h1>
+<p class="lesson-meta">第 7 课 · ~12 分钟 · 心理学流派</p>
+
+<div class="goal-box">
+  <strong>本节课结束时</strong>，你将能够区分经典条件反射和操作性条件反射，理解强化时间表的原理，并能解释行为主义如何影响教育、产品设计和人工智能。
+</div>
+
+<h2>什么是行为主义？</h2>
+<p>
+  行为主义是20世纪初兴起的一个心理学流派，它的核心主张非常激进：<strong>心理学应该只研究可观察的行为</strong>，而非不可直接测量的内心状态（如思想、情感、意图）。行为主义者认为，所有行为都是环境刺激与反应之间联结的结果，通过控制刺激就可以预测和控制行为。
+</p>
+
+<p>
+  这个观点在当时极具革命性。在此之前，心理学的主流是内省法——让被试报告自己的内心体验。行为主义者说：<em>那不可靠。我们研究可测量的东西。</em>
+</p>
+
+<div class="highlight-box">
+  <strong>关键人物：</strong> 约翰·华生（John B. Watson）在1913年发表《行为主义者眼中的心理学》，宣告行为主义诞生。他有一句名言："给我一打健康的婴儿，我可以把他们训练成任何类型的人——医生、律师、艺术家，甚至是乞丐或小偷。"
+</div>
+
+<h2>两种学习机制</h2>
+<p>
+  行为主义的核心贡献是发现了两种基本的学习机制：<strong>经典条件反射</strong>和<strong>操作性条件反射</strong>。它们解释了不同类型的行为是如何形成的。
+</p>
+
+<div class="concept-card">
+  <h3>一、经典条件反射（巴甫洛夫）</h3>
+  <p class="term">Classical Conditioning — 通过关联两个刺激形成自动反应</p>
+  <p>
+    19世纪末，俄国生理学家伊万·巴甫洛夫在研究狗的消化系统时偶然发现了一个惊人的现象。他原本只是在测量狗在看到食物时分泌多少唾液——这是一个纯粹的生理实验。
+  </p>
+  <p>
+    但他注意到：<strong>狗甚至在食物出现之前就开始流口水了</strong>。只要狗看到了穿白大褂的实验员（或者听到了实验室的门铃声），它就会流口水。狗把原本中性的刺激（白大褂、门铃）与食物（天然会引起流口水的刺激）建立了关联。
+  </p>
+  <div class="concept-card">
+    <h3>巴甫洛夫实验的关键步骤</h3>
+    <ul class="examples">
+      <li><strong>实验前：</strong> 食物（无条件刺激）→ 流口水（无条件反应）。铃声（中性刺激）→ 无反应。</li>
+      <li><strong>配对阶段：</strong> 每次给食物前先摇铃。重复多次。</li>
+      <li><strong>实验后：</strong> 铃声（条件刺激）→ 流口水（条件反应）。即使不给食物，狗也会流口水。</li>
+    </ul>
+  </div>
+  <p>
+    这个机制解释了生活中很多现象：为什么闻到某种食物的味道就会流口水？为什么听到救护车声会紧张？为什么有些气味会让你突然想起多年前的某个人？这些都是经典条件反射在工作。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>二、操作性条件反射（斯金纳）</h3>
+  <p class="term">Operant Conditioning — 行为的结果决定该行为未来是否重复</p>
+  <p>
+    B.F. 斯金纳比巴甫洛夫前进了一步。巴甫洛夫关注的是"被动反应"——狗被铃声刺激后流口水。斯金纳问：<strong>如果行为是主动发出的呢？行为的结果如何影响它未来的出现频率？</strong>
+  </p>
+  <p>
+    斯金纳设计了著名的"斯金纳箱"：一只老鼠在一个箱子里，箱子里有一个杠杆。偶尔按下杠杆会掉落食物。很快，老鼠学会了主动按压杠杆来获取食物。这不是因为什么铃声触发了它——而是因为它<strong>主动做了某个行为</strong>，得到了好的结果。
+  </p>
+  <div class="concept-card">
+    <h3>四种行为后果</h3>
+    <ul class="examples">
+      <li><strong>正强化：</strong> 给予奖励 → 行为增加。例：老鼠按杠杆得到食物 → 按杠杆次数增加。</li>
+      <li><strong>负强化：</strong> 移除厌恶刺激 → 行为增加。例：系安全带消除警报声 → 系安全带的行为增加。</li>
+      <li><strong>惩罚：</strong> 给予厌恶刺激 → 行为减少。例：碰热炉子被烫到 → 碰炉子的行为减少。</li>
+      <li><strong>消退：</strong> 不再给予强化 → 行为减少。例：按杠杆不再掉落食物 → 按杠杆行为逐渐消失。</li>
+    </ul>
+  </div>
+</div>
+
+<h2>强化时间表：为什么"随机推送"让你停不下来</h2>
+<p>
+  斯金纳最重要的发现之一是：<strong>强化时间表（什么时候给奖励）决定了行为能持续多久</strong>。
+</p>
+
+<div class="comparison">
+  <div class="col">
+    <h4>连续强化</h4>
+    <ul>
+      <li>每次正确行为都给奖励</li>
+      <li>学习速度最快</li>
+      <li>一旦停止奖励，行为迅速消退</li>
+      <li>例：新玩具上每一关都有星星</li>
+    </ul>
+  </div>
+  <div class="col">
+    <h4>间歇强化（可变比率）</h4>
+    <ul>
+      <li>有时给奖励，有时不给</li>
+      <li>学习速度慢一些</li>
+      <li>一旦停止奖励，行为极其持久</li>
+      <li>例：老虎机、抽卡游戏、朋友圈点赞</li>
+    </ul>
+  </div>
+</div>
+
+<div class="experiment-card">
+  <h3>斯金纳的关键发现：间歇强化产生最持久的行为</h3>
+  <p>
+    斯金纳让一组老鼠按杠杆<strong>每次都</strong>掉食物，另一组老鼠按杠杆<strong>随机</strong>掉食物（有时两次才一次，有时十次才一次）。当食物供应全部停止后：
+  </p>
+  <p class="result">
+    连续强化组的鼠���几乎立刻放弃了按杠杆。<br>
+    间歇强化组的老鼠按杠杆的行为持续了数倍的时间——即使再也没有食物掉落。
+  </p>
+  <p>
+    <strong>这意味着什么？</strong> 赌博成瘾之所以难以戒除，不是因为赌徒"意志力差"，而是因为老虎机使用的正是间歇强化机制——你不知道下一次按压会不会中奖，这种不确定性本身就是最强的行为维持器。
+  </p>
+</div>
+
+<h2>行为主义的现实影响</h2>
+<p>
+  行为主义的原理在今天无处不在。理解它，你能看透许多设计背后的心理学逻辑。
+</p>
+
+<div class="concept-card">
+  <h3>社交媒体 = 间歇强化机</h3>
+  <p>
+    你打开微信或抖音，<strong>不知道</strong>下一条消息是不是你期待的人发的，<strong>不知道</strong>下一条视频是不是好笑的。这种不确定性正是可变比率强化——和老虎机一样的机制。
+  </p>
+  <p>
+    "无限滚动"的设计更是精妙：你永远不需要"停下来做决定"（比如翻页），行为被持续不断、无需中断地强化。这就是为什么很多人发现自己"本来只想看五分钟"，结果刷了一个小时。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>教育中的应用</h3>
+  <p>
+    行为主义对教育的最大贡献是<strong>形成性评价</strong>——及时反馈（正强化）能显著促进学习效果。老师批改作业后的红笔标注、课堂上的即时肯定，都在利用操作性条件反射的原理。
+  </p>
+  <p>
+    但行为主义在教育中也有局限：过度依赖外部奖励（如积分、奖品）可能削弱学生的内在动机——这与下一课要讲的自我决定论直接相关。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>行为主义与人工智能</h3>
+  <p>
+    行为主义是<strong>强化学习</strong>（Reinforcement Learning）的直接前身。深度强化学习——AlphaGo、Dota 2 AI、自动驾驶——本质上就是操作性条件反射的数学化：智能体通过试错和奖励信号学习最优策略。
+  </p>
+  <p>
+    从神经科学角度看，大脑中的多巴胺系统与"奖励预测误差"的关联，为强化学习的 TD 学习算法提供了生物学基础。换句话说：<strong>AI 的"学习"概念，直接源自一百年前巴甫洛夫和斯金纳对狗和老鼠的实验。</strong>
+  </p>
+</div>
+
+<h2>行为主义的局限</h2>
+<p>
+  行为主义虽然贡献巨大，但它有明显的盲点。20世纪50年代后，认知心理学兴起，指出了行为主义的几个关键问题：
+</p>
+
+<div class="concept-card">
+  <h3>主要批评</h3>
+  <ul class="examples">
+    <li><strong>忽略认知过程：</strong> 行为主义把人当成"黑箱"，不关心人是怎么想的。但人的信念、预期、解释都会影响行为——同样的刺激，不同的人会有完全不同的反应。</li>
+    <li><strong>忽视内在动机：</strong> 行为主义强调外部强化，但 Deci 和 Ryan 的自我决定论证明，内在动机（兴趣、好奇心、意义感）比外部奖励更能产生高质量的学习和创造力。</li>
+    <li><strong>过度简化的实验：</strong> 老鼠按杠杆和人在复杂社会情境中的行为有天壤之别。实验室里的发现不一定能推广到真实世界。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong> 中国传统教育中"严师出高徒"、"棍棒底下出孝子"的理念暗含了行为主义的逻辑——通过惩罚和奖励来塑造行为。但中国儒家传统中也有"因材施教"、"启发式教学"（孔子曰"不愤不启，不悱不发"）的思想，这与行为主义的机械刺激-反应模式形成了有趣的对照。现代中国教育正在从单纯的奖惩驱动转向更注重内在动机和自主性的方向。
+</div>
+
+<h2>关键人物速览</h2>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <span class="year">1890s — 巴甫洛夫</span>
+    <span class="desc">经典条件反射发现者，狗唾液实验。开创了行为主义的实验传统，证明学习可以是"被动关联"的过程。</span>
+  </div>
+  <div class="timeline-item">
+    <span class="year">1913 — 华生</span>
+    <span class="desc">发表《行为主义者眼中的心理学》，宣称"给我一打健康的婴儿"可以训练成任何类型的人。宣告行为主义正式诞生。</span>
+  </div>
+  <div class="timeline-item">
+    <span class="year">1930s — 斯金纳</span>
+    <span class="desc">操作性条件反射和斯金纳箱。提出强化时间表的概念，设计了"教育机器"，著有《瓦尔登湖第二》描绘行为主义乌托邦。</span>
+  </div>
+  <div class="timeline-item">
+    <span class="year">1960s — 米尔格兰姆</span>
+    <span class="desc">服从实验。证明了普通人在权威命令下可能做出违背道德的行为，揭示了情境力量对行为的强大影响。</span>
+  </div>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：巴甫洛夫的狗实验。</div>
+    <div class="sentence">狗在实验前对铃声的反应是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">流口水</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">无反应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：你在游戏中完成一个任务就获得金币。</div>
+    <div class="sentence">这属于哪种行为后果？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正强化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">惩罚</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：斯金纳的实验中，两组老鼠的对比结果。</div>
+    <div class="sentence">哪组老鼠在食物停止供应后仍更长时间地按杠杆？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">连续强化组（每次都给食物）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">间歇强化组（随机给食物）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你系上安全带后，汽车的警报声停止了。</div>
+    <div class="sentence">这属于哪种行为后果？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">负强化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">正强化</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：抖音或短视频的"无限滚动"设计。</div>
+    <div class="sentence">这种设计利用了哪种心理学原理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">经典条件反射</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">间歇强化（可变比率）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：认知心理学批评行为主义的主要理由是。</div>
+    <div class="sentence">选择最准确的批评：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">行为主义把人当成"黑箱"，忽略了认知过程</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">行为主义过于强调内在动机</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：一个孩子在课堂上举手发言，老师表扬了他。之后他举手的次数增加了。</div>
+    <div class="sentence">这是哪种学习机制的例子？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">经典条件反射</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">操作性条件反射（正强化）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：老虎机的中奖机制。</div>
+    <div class="sentence">为什么老虎机最容易让人上瘾？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为它每次都能中奖</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它使用可变比率强化——你不知道下一次会不会中，这种不确定性维持了行为</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对行为主义的某个概念有疑问，或者想了解它如何影响产品设计、教育方法甚至 AI 训练，直接问我。
+  <br><br>
+  <strong>推荐资源：</strong> 《思考，快与慢》—— 丹尼尔·卡尼曼。虽然主要讲认知偏差，但卡尼曼的工作深受行为主义影响，他在书中讨论了行为主义对经济学和心理学的深远影响。
+  <br><br>
+  <a href="../reference/behaviorism-conditioning.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0006-self-determination-theory.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0008-psychoanalysis.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '实验前，铃声是中性刺激，狗对它没有任何特定反应。只有食物（无条件刺激）才会自然引起流口水（无条件反应）。实验后的流口水是"学会"的条件反应。', wrong: '实验前，铃声是中性刺激，狗对铃声没有反应。流口水是在铃声与食物反复配对后才出现的条件反应。' },
+    q2: { correct: '正强化是指"给予奖励以增加行为频率"。完成���务获得金币，金币是奖励，所以玩游戏的行为会增加。这是典型的正强化。', wrong: '惩罚是"给予厌恶刺激以减少行为"。金币是奖励而非厌恶刺激，所以这是正强化——给予好东西来增加行为频率。' },
+    q3: { correct: '间歇强化组的行为极其持久——即使没有食物了，它们仍然持续按杠杆很久。这是因为间歇强化产生的行为抵抗消退的能力远强于连续强化。', wrong: '连续强化组的学习速度快，但一旦食物停止，行为立刻消退。间歇强化组虽然学习慢一点，但行为极其持久——这正是为什么赌博和游戏设计使用间歇强化。' },
+    q4: { correct: '负强化是指"移除厌恶刺激以增加行为频率"。警报声是厌恶刺激，系安全带移除了它，所以你更可能在未来系安全带。注意：负强化≠惩罚——负强化是"增加"行为，惩罚是"减少"行为。', wrong: '正强化是"给予奖励"。这里你没有得到什么东西，而是"移除"了警报声。负强化是通过移除厌恶刺激来增加行为。' },
+    q5: { correct: '无限滚动利用的是间歇强化中的可变比率强化——你不知道下一条内容是不是你喜欢的，这种不确定性让你持续滚动。这和老虎机的机制一样。', wrong: '经典条件反射是通过关联两个刺激形成反应（如铃声-流口水）。无限滚动的机制是"随机奖励维持行为"，属于操作性条件反射中的间歇强化。' },
+    q6: { correct: '认知心理学的核心批评是：行为主义把人当成"刺激-反应"的黑箱，完全不关心人的信念、预期、解释等认知过程。但现实中，同样的刺激，不同的人会因为不同的认知而产生完全不同的行为。', wrong: '行为主义恰恰忽视了内在动机——它过度强调外部奖励和惩罚。认知心理学的批评是行为主义太"外"了，没有关注内在的心理过程。' },
+    q7: { correct: '这是操作性条件反射：孩子的主动行为（举手发言）导致了积极的结果（表扬），从而增加了该行为未来出现的频率。表扬是正强化物。', wrong: '经典条件反射是被动的关联学习（如铃声-流口水）。这里孩子主动举手，老师的表扬作为奖励增加了举手的频率——这是操作性条件反射。' },
+    q8: { correct: '老虎机使用的是可变比率强化——中奖的概率是随机的，你不知道第几次按压会中奖。这种不确定性正是维持行为的最强力量。斯金纳的实验证明：间歇强化产生的行为比连续强化持久得多。', wrong: '老虎机并不是"每次都能中奖"——如果每次都中，玩家很快就会失去兴趣。恰恰相反，大部分时候是不中的，偶尔的中奖才是维持行为的关键。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对行为主义的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

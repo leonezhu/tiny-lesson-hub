@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8 — 图灵机与可计算性：计算的边界在哪里</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .turing-machine {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+  }
+
+  .turing-machine h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .tape-visual {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    letter-spacing: 0.15em;
+  }
+
+  .tape-visual .head-marker {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison-box .box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .comparison-box .box h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .comparison-box .box.left {
+    border-top: 3px solid var(--accent);
+  }
+
+  .comparison-box .box.right {
+    border-top: 3px solid #e65100;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .proof-box {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: white;
+  }
+
+  .proof-box h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .proof-box ol {
+    padding-left: 1.5rem;
+  }
+
+  .proof-box ol li {
+    margin-bottom: 0.5rem;
+  }
+
+  .cross-discipline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .cross-discipline .cd-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    background: var(--accent-light);
+  }
+
+  .cross-discipline .cd-item strong {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .cross-discipline .cd-item strong::before {
+    content: "";
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>图灵机与可计算性</h1>
+<p class="lesson-meta">Lesson 8 &middot; ~12 minutes &middot; 理解"什么能算"和"什么永远算不了"</p>
+
+<div class="goal-box">
+  <strong>学完这一课后</strong>，你将能够：描述图灵机的五要素模型、解释停机问题为什么"逻辑上不可能"有通用解法、理解 Church-Turing 论题的含义、区分"不能算"和"算得太慢"的本质差异，以及理解可计算性理论如何影响 AI、密码学和数学基础。
+</div>
+
+<h2>计算机的"原子模型"</h2>
+
+<p>
+  1936 年，24 岁的英国数学家 Alan Turing 发表了一篇仅有 36 页的论文。它没有发明任何机器，甚至没有造出实物——但它定义了"计算"本身。这就是<strong>图灵机</strong>（Turing Machine）。
+</p>
+
+<p>
+  理解图灵机之前，先想象一台极其简陋的机器：
+</p>
+
+<div class="turing-machine">
+  <h3>图灵机的五要素</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>无限长的纸带</strong>（tape）—— 被分成一格一格的方格，每格写着一个符号</li>
+    <li><strong>读写头</strong>（head）—— 一次只能读/写一格，并且能向左或向右移动</li>
+    <li><strong>有限状态集合</strong>（Q）—— 机器当前所处的"状态"（包括起始状态、接受状态、拒绝状态）</li>
+    <li><strong>字母表</strong>（Σ）—— 允许写在纸带上的所有符号（通常只有 0 和 1）</li>
+    <li><strong>转移函数</strong>（δ）—— 规则表：当前状态 + 读取的符号 → 下一步写入什么符号、往哪走、变成什么状态</li>
+  </ol>
+
+  <div class="tape-visual">
+    <span class="head-marker">↑</span> &nbsp; _ 1 0 1 1 0 _ 0 1 _ 1 1 1 _ 0 _ 1 _ ...
+  </div>
+  <p style="font-size: 0.85rem; color: var(--muted); text-align: center;">
+    读写头停在第一格空白处，纸带无限向右延伸
+  </p>
+</div>
+
+<p>
+  核心洞见：<strong>一个通用的图灵机（Universal Turing Machine, UTM）可以模拟任何其他图灵机。</strong> 只要把目标图灵机的编码（转移规则）写在 UT M 的输入带上，UTM 就能模拟该机器的所有行为。这直接预言了现代通用计算机的设计原理——<strong>程序和数据存在同一块存储中</strong>。
+</p>
+
+<div class="chinese-note">
+  <strong>为什么"无限长的纸带"很重要：</strong> 这不是工程限制，而是数学理想化。它意味着"假设你有足够的内存"——即使实际计算机内存有限，图灵机回答的是"在理论上，这个问题是否可解"，而非"在这台电脑上能不能跑完"。
+</div>
+
+<h2>停机问题：第一个被证明"不可解"的问题</h2>
+
+<p>
+  图灵机提出不久后，Turing 证明了一个令人震惊的结果：<strong>不存在一个通用算法，能判断任意程序在任意输入上是否会停止。</strong> 这就是著名的<strong>停机问题</strong>（Halting Problem）。
+</p>
+
+<div class="proof-box">
+  <h3>停机问题的证明（对角线法）</h3>
+  <p>假设存在判定器 H(P, I) 能判断程序 P 在输入 I 上是否停止。构造程序 D(P)：</p>
+  <ol>
+    <li>D(P) 调用 H(P, P)——问"程序 P 在自己的输入上会不会停止？"</li>
+    <li>如果 H 说"会停止"，D(P) 就<strong>进入死循环</strong></li>
+    <li>如果 H 说"不会停止"，D(P) 就<strong>立即停止</strong></li>
+  </ol>
+  <p style="margin-top: 0.75rem;">现在问：<strong>D(D) 会停止吗？</strong></p>
+  <ol start="4">
+    <li>如果会停止 → 根据步骤 2，D(D) 进入死循环 → 不会停止 → 矛盾</li>
+    <li>如果不会停止 → 根据步骤 3，D(D) 会停止 → 矛盾</li>
+  </ol>
+  <p style="margin-top: 0.75rem; font-weight: 600; color: var(--accent);">因此：H 不存在。停机问题不可判定。</p>
+</div>
+
+<p>
+  这个证明用了对角线法——与康托尔（Cantor, 1891）证明"实数不可数"、哥德尔（Gödel, 1931）证明"不完备定理"用的是同一个逻辑武器。它的意义不在于某个具体程序会不会停，而在于：<strong>有些问题不是"我们的技术还不够好"，而是"逻辑上就不存在解法"</strong>。无论计算机多么强大，无论算法多么聪明，停机问题永远不可判定。
+</p>
+
+<h2>Church-Turing 论题：计算的"自然上限"</h2>
+
+<p>
+  Turing 之后，Alonzo Church 独立地用 <strong>&lambda;-演算</strong>（lambda calculus）证明了同样的结果——判定问题（Entscheidungsproblem）不可解。随后人们发现：<strong>&lambda;-演算、图灵机、递归函数、马尔可夫算法</strong>——所有已知的"计算模型"，在计算能力上完全等价。
+</p>
+
+<div class="comparison-box">
+  <div class="box left">
+    <h4>Church-Turing 论题</h4>
+    <p>
+      任何"有效可计算"的函数都可以被图灵机计算。
+    </p>
+    <p style="font-size: 0.9rem; color: var(--muted);">
+      注意：这不是一个定理，无法严格证明——"有效可计算"本身是非形式概念。但所有已知模型都与图灵机等价，因此几乎被当作真理接受。
+    </p>
+  </div>
+  <div class="box right">
+    <h4>计算等价原理</h4>
+    <p>
+      Wolfram（2002）提出：任何计算能力不低于图灵机的系统，在产生信息的速度上等价。不存在"比图灵机更强的自然计算"。
+    </p>
+    <p style="font-size: 0.9rem; color: var(--muted);">
+      这意味着：如果一个系统能模拟图灵机，它就能产生"所有可计算的信息"——包括整个宇宙可能的所有计算结果。
+    </p>
+  </div>
+</div>
+
+<h2>可计算性 vs 复杂度：两类"做不到"</h2>
+
+<p>
+  这是理解计算理论最关键的区别——它直接衔接了上一课的内容：
+</p>
+
+<div class="comparison-box">
+  <div class="box left">
+    <h4>可计算性（本课）</h4>
+    <p>
+      <strong>能不能算？</strong> 是否存在一个算法，能在有限步骤内给出答案？<br><br>
+      <strong>例子：</strong>停机问题——不是"慢"，而是<strong>逻辑上不存在</strong>通用算法。无论给你多少时间，都"永远做不到"。
+    </p>
+  </div>
+  <div class="box right">
+    <h4>复杂度（上一课）</h4>
+    <p>
+      <strong>能<strong>高效</strong>算吗？</strong> 如果算法存在，它需要的时间/空间是否可行？<br><br>
+      <strong>例子：</strong>旅行商问题——<strong>算法存在</strong>，但暴力法需要 2<sup>n</sup> 步，n=200 时远超宇宙寿命。"理论上能做，实际等不起。"
+    </p>
+  </div>
+</div>
+
+<p>
+  这就是为什么图灵机理论是计算机科学最基础的一课——它划定了"可计算"和"不可计算"的分界线。而算法复杂度则是"可计算"范围内，再划出"高效可计算"和"低效可计算"的分界线。
+</p>
+
+<h2>跨学科连接</h2>
+
+<div class="cross-discipline">
+  <div class="cd-item">
+    <strong>数学</strong>
+    图灵机与 Gödel 不完备定理（1931）和 Church &lambda;-演算（1936）共同构成 1930 年代"数学基础危机"的解答——"不可解"的本质是相同的。
+  </div>
+  <div class="cd-item">
+    <strong>物理学</strong>
+    Landauer 原理（1961）：擦除 1 bit 信息至少产生 kT ln 2 的热量。"计算 = 物理过程"，计算有能量成本。
+  </div>
+  <div class="cd-item">
+    <strong>生物学</strong>
+    DNA 复制可建模为计算过程——DNA 是"分子级图灵机"，读取碱基序列（输入），合成互补链（输出）。
+  </div>
+  <div class="cd-item">
+    <strong>哲学</strong>
+    图灵测试挑战笛卡尔"我思故我在"——不是"我思故我有意识"，而是"它表现得像有意识，所以我们认为它有意识"。
+  </div>
+</div>
+
+<h2>关键人物</h2>
+
+<div class="concept-card">
+  <h3>Alan Turing（1912–1954）</h3>
+  <p>英国数学家。1936 年论文"On Computable Numbers"开创计算理论。1950 年发表"Computing Machinery and Intelligence"，提出图灵测试。二战期间破解恩尼格玛密码，缩短战争约 2 年。1954 年因氰化物中毒去世，享年 41 岁。</p>
+</div>
+
+<div class="concept-card">
+  <h3>Kurt Gödel（1906–1978）</h3>
+  <p>数理逻辑学家。1931 年不完备定理的提出者——任何足够强的形式系统都存在不可证明的真命题。他的工作直接启发了 Turing 和 Church。</p>
+</div>
+
+<div class="concept-card">
+  <h3>Alonzo Church（1903–1995）</h3>
+  <p>Princeton 逻辑学家，&lambda;-演算的发明者。与 Turing 各自独立证明了判定问题的不可解性。Church-Turing 论题以两人名字命名。</p>
+</div>
+
+<div class="concept-card">
+  <h3>Stephen Wolfram（1959–）</h3>
+  <p>物理学家。2002 年《A New Kind of Science》提出"计算等价原理"，主张宇宙本身可能是一个计算系统。</p>
+</div>
+
+<h2>现实世界中的可计算性</h2>
+
+<p>
+  <strong>编译器设计</strong>：编译器的核心问题是"什么可以被自动优化？"答案是：所有图灵可计算的问题。但停机问题的不可判定性意味着，编译器不能自动判断某些优化是否会改变程序行为——这解释了为什么编译器优化选项需要用户手动控制（-O1/-O2/-O3）。
+</p>
+
+<p>
+  <strong>密码学</strong>：RSA 加密的安全性基于"大整数分解在经典计算机上是难的但非不可解的"。如果存在量子计算机（超越经典图灵机模型），RSA 将被破解——这推动了后量子密码学的发展。
+</p>
+
+<p>
+  <strong>AI 的理论边界</strong>：如果图灵机理论正确，AI 的"智能"受限于计算可计算性——它只能处理图灵可计算的函数。某些问题（如真正的随机数生成、不可判定问题）超出了这一范围。
+</p>
+
+<div class="chinese-note">
+  <strong>核心洞见：</strong>理解可计算性，就是理解"计算的极限"。不是所有问题都有答案，不是所有答案都能被找到。图灵机的伟大之处不在于它"能算什么"，而在于它首次严格定义了"什么不能算"。有了这条边界线，我们才能知道该在哪里寻找算法、在哪里寻找近似、在哪里承认极限。
+</div>
+
+<div class="quiz-section">
+  <h2>互动练习</h2>
+  <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">点击选项查看答案和解释。每题只有一个正确答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">1</span>
+    <p class="context">关于停机问题</p>
+    <p class="sentence">Turing 证明停机问题"不可判定"，这意味着：</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">不存在一个通用算法能判断所有程序是否停止</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">计算机的内存不够大，所以有些程序算不完</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">2</span>
+    <p class="context">关于 Church-Turing 论题</p>
+    <p class="sentence">Church-Turing 论题的性质是：</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">无法严格证明的假说，因为"有效可计算"是非形式概念</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">已被严格数学证明的定理</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">3</span>
+    <p class="context">可计算性 vs 复杂度</p>
+    <p class="sentence">旅行商问题（TSP）属于哪一类问题？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不可计算——不存在任何算法能解决</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">可计算但高效求解不可能——算法存在但暴力法需要指数时间</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">4</span>
+    <p class="context">通用图灵机</p>
+    <p class="sentence">通用图灵机（UTM）的核心思想是：</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">程序即数据——同一台机器可以通过加载不同程序模拟任意计算</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">UTM 是比普通图灵机更快、更强大的计算设备</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">5</span>
+    <p class="context">数学基础危机</p>
+    <p class="sentence">Gödel 不完备定理、Church 判定问题、Turing 停机问题三者之间的关系是：</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">它们揭示了同一本质——形式系统存在内在的不可判定极限</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">它们是三个完全无关的结果，恰好发生在同一时期</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">6</span>
+    <p class="context">计算的热力学</p>
+    <p class="sentence">Landauer 原理（1961）指出：</p>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">擦除 1 bit 信息至少产生 kT ln 2 的热量——计算有热力学下限</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">计算机速度越快，产生的热量越少——计算是免费的</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">7</span>
+    <p class="context">UTM 的"通用"</p>
+    <p class="sentence">UTM 的"通用"意味着：</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它能做任何事情——包括停机问题和真正的随机数生成</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它能模拟任何图灵可计算的过程——但停机问题等不可计算的问题仍然超出其能力</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">8</span>
+    <p class="context">现实世界应用</p>
+    <p class="sentence">为什么编译器不能自动判断"这段优化是否改变程序行为"？</p>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为程序员写的代码太复杂了——换一种写法编译器就能判断</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为这等价于停机问题——数学上证明不存在通用算法能自动判断</button>
+    </div>
+    <div class="feedback" role="region"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的数学与逻辑老师。不理解为什么停机问题"逻辑上不可能"有解？觉得 Church-Turing 论题太抽象？这正好是我们该聊的地方。直接提问，我会解释。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://en.wikipedia.org/wiki/Turing_machine" target="_blank">Wikipedia — Turing Machine</a> — 深入阅读图灵机的形式化定义和通用图灵机的构造。
+  <br><br>
+  <a href="../reference/turing-ji-ke-ji-suan-xing.html" class="resource-link">查看参考速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-suanfa-fu-za-du.html">&larr; 上一课</a> | <a href="../index.html">目录</a> | <a href="0009-shuli-luji-jichu.html">下一课 &rarr;</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '停机问题的证明用了"自我引用"的策略——构造一个专门"跟判定器对着干"的程序 D。如果 H 能判断一切程序，那 D(H) 也应该能被判断。但 D 的规则是"如果 H 说我会停，我就不停；如果 H 说我不停，我就停"——无论 H 说什么，D 都会给出相反的结果。这就是矛盾。',
+      wrong: '停机问题的关键不在于"H 太复杂所以算不过来"——即使 H 是理论上完美的判定器，矛盾依然存在。这是纯逻辑的矛盾，不是计算量的问题。'
+    },
+    q2: {
+      correct: 'Church-Turing 论题无法被严格证明，因为"有效可计算"本身是一个直觉概念，不是数学定义。但 90 年来所有试图定义"计算"的模型（图灵机、&lambda;-演算、递归函数、现代编程语言）都被证明与图灵机等价——这种跨模型的统一，让几乎所有计算机科学家相信它为真。',
+      wrong: 'Church-Turing 论题不是"图灵机能算所有事情"——它明确只处理"可计算的"函数。停机问题本身就是"不可计算的"。论题划定的是"可计算"的边界，不是声称"所有事情都可计算"。'
+    },
+    q3: {
+      correct: '可计算性回答"能不能算"——停机问题回答"不能"，因为它逻辑上不存在判定算法。复杂度回答"能不能高效算"——比如旅行商问题回答"能"，只是暴力法太慢。一个是"永不到达"，一个是"到达但等太久"。',
+      wrong: '"不能算"不等于"现在算不出来"。停机问题是"任何算法都不可能正确判断所有程序"，这比"我们还没找到好算法"要强得多——它是数学证明的"永远不可能"。'
+    },
+    q4: {
+      correct: '通用图灵机（UTM）的核心是"程序即数据"的思想——把转移规则（程序）写在纸带上，作为 UTM 的输入。UTM 读取这些规则后，模拟目标图灵机的行为。这就是现代计算机"操作系统 + 应用程序"架构的理论先驱。',
+      wrong: 'UTM 不是"更快的图灵机"——它是"能模拟任何图灵机的图灵机"。一台 UTM 可以模拟一台排序机器、一台加密机器、一台游戏机，只要把对应的转移规则写在输入带上。硬件通用，软件可变。'
+    },
+    q5: {
+      correct: '哥德尔的不完备定理（1931）说：任何足够强的形式系统，存在真但不可证的命题。Church（1936）证明判定问题不可解。Turing（1936）用图灵机统一了这两个结果——"不可证"和"不可判定"本质上是同一件事：形式系统有内在的极限。',
+      wrong: '哥德尔、Church、Turing 三人的结果不是孤立的——它们共同构成了"1930 年代数学基础危机"的结局。Gödel 展示了"证明"的极限，Church 和 Turing 展示了"判定/计算"的极限，三者是同一幅图景的不同侧面。'
+    },
+    q6: {
+      correct: 'Landauer 原理（1961）证明：擦除 1 bit 信息至少产生 kT ln 2 的热量。这意味着计算不是纯抽象的数学操作——它是一个物理过程，有能量成本。如果你永远不停止地计算，机器会烧毁。这为"物理上的计算极限"提供了基础。',
+      wrong: 'Landauer 原理不是说"计算需要电能"（那是常识）——它给出的是计算的"热力学下限"。无论你的芯片多先进，擦除信息产生的热量不可能低于 kT ln 2。这是物理定律，不是工程限制。'
+    },
+    q7: {
+      correct: '"程序即数据"意味着同一个物理机器可以做不同事情，取决于加载了什么程序。这直接颠覆了"专用机器"的时代观——不需要为排序、加密、聊天各造一台机器，一台通用机器就够了。这就是"通用计算机"概念的起点。',
+      wrong: 'UTM 的"通用"不是指它能做"任何事情"——它只能做"图灵可计算的事情"。停机问题本身、哥德尔不可证的命题、真正的随机数生成——这些都超出 UTM 的能力范围。'
+    },
+    q8: {
+      correct: '编译器不能自动判断"这段优化会不会改变程序行为"，因为这等价于停机问题。如果编译器自动优化了本该死循环的程序，程序的行为就改变了。所以编译器把优化权交给用户——-O1 是安全但保守的优化，-O3 是激进但可能改变行为的优化。',
+      wrong: '编译器不优化某些代码不是因为"程序员没写注释"——是因为停机问题从数学上证明，编译器不可能自动判断所有优化是否安全。这是计算的内在极限，不是人为的保守。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对可计算性的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，你的理解会更深刻。';
+      else label.textContent = '继续加油！重新阅读上面的例子，再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+<div class="footer">
+  <a href="0007-suanfa-fu-za-du.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-shuli-luji-jichu.html">下一课</a>
+</div>
+
+</body>
+</html>

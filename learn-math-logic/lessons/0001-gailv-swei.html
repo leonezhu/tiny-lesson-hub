@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 — 概率思维：用概率分布理解世界</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>概率思维：用概率分布理解世界</h1>
+<p class="lesson-meta">Lesson 1 &middot; ~10 minutes &middot; 数学与逻辑 · 基础概念</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够用概率而非确定性来判断世界——知道为什么"80% 可能"不等于"一定会"，理解基础比率（base rate）如何影响你的判断，并能用贝叶斯思维更新信念。
+</div>
+
+<h2>为什么确定性思维是陷阱</h2>
+<p>
+  中文母语者的思维习惯往往是确定性的：我们会说"这个方案可行"或者"这个人不可信"。但真实世界几乎从不遵循二元逻辑。股票市场明天涨跌、一个创业项目的成功率、一项政策的长期影响——这些都需要用概率语言来表达。
+</p>
+<p>
+  1654 年，法国贵族 De Mere 向数学家 Pascal 提出一个赌注问题：抛三颗骰子至少出现一个六的概率，与抛四颗骰子至少出现一个双六的概率，哪个更高？按照直觉，两者似乎差不多。但 Pascal 用枚举法算出前者约 54.3%，后者约 61.9%。这个对话直接催生了概率论的诞生。
+</p>
+
+<h2>概率思维的核心操作：贝叶斯更新</h2>
+<p>
+  概率思维的核心操作是贝叶斯更新：<strong>初始信念（先验）+ 新证据（似然）→ 更新后的信念（后验）</strong>。这是数学家 Thomas Bayes 在 1763 年提出的定理的直观含义。
+</p>
+
+<div class="concept-card">
+  <h3>经典案例：医学检测的悖论</h3>
+  <p>
+    一个医学检测的准确率为 99%，某疾病的发病率只有 0.1%。如果一个人在检测中呈阳性，他实际患病的概率是多少？
+  </p>
+  <p>
+    直觉上大多数人会回答 <strong>99%</strong>。但贝叶斯定理计算出的真实概率约为 <strong>9%</strong>——因为分母中假阳性的人数远多于真阳性的人数。
+  </p>
+  <ul class="examples">
+    <li>假设 10,000 人中，只有 10 人真正患病（0.1%）</li>
+    <li>10 个病人中，99% 准确率 → 约 10 人检出阳性（真阳性）</li>
+    <li>9,990 个健康人中，1% 假阳性 → 约 100 人检出阳性</li>
+    <li>总共 110 个阳性，其中只有 10 人真的患病 → 10/110 ≈ 9%</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>这个悖论揭示了一个根本原则——永远把基础概率（base rate）纳入考量。即使检测非常准确，如果疾病本身极其罕见，阳性结果仍然很可能是假的。这就是"基础比率忽视"（base rate neglect）——中文母语者尤其容易犯的错误，因为我们习惯关注具体的"证据"而忽略背景的"基准"。
+</div>
+
+<h2>概率思维 vs 确定性思维</h2>
+
+<div class="concept-card">
+  <h3>确定性思维</h3>
+  <ul class="examples">
+    <li>"这个方案一定能成功"</li>
+    <li>"他肯定是在骗我"</li>
+    <li>"这个政策效果不好"</li>
+    <li>给出"行"或"不行"的二元判断</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>概率思维</h3>
+  <ul class="examples">
+    <li>"这个方案有 70% 的成功率，但如果市场变化超过 X，概率会降到 30%"</li>
+    <li>"根据他的行为模式，说谎的概率大约 60%，但还需要更多证据"</li>
+    <li>"短期数据显示负面效果，但长期影响的不确定性很大"</li>
+    <li>用概率区间表达判断，并随新信息动态调整</li>
+  </ul>
+</div>
+
+<h2>谁在用概率思维改变世界</h2>
+
+<div class="concept-card">
+  <h3>Philip Tetlock 的"超级预测"研究</h3>
+  <p>
+    Tetlock 在《超级预测》一书中研究了数千名业余预测者的表现，发现最准确的人并非专家，而是那些持续用概率表达预测、并根据新信息实时更新概率的人。他们将复杂问题分解为子因素，用概率乘法法则组合每个子预测。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>Nate Silver 的选举预测</h3>
+  <p>
+    2012 年美国总统选举中，Nate Silver 的 FiveThirtyEight 模型准确预测了全部 50 个州的投票结果。他不是水晶球先知——他只是系统地用贝叶斯方法整合所有可用数据，并不断修正预测。
+  </p>
+</div>
+
+<h2>日常应用：从直觉到量化</h2>
+<p>
+  概率思维不是只在实验室里才有用。它在投资决策、风险评估和日常选择中同样重要：
+</p>
+<ul class="examples">
+  <li><strong>投资决策</strong>：不判断"这只股票会不会涨"，而是计算不同情景下的期望收益率</li>
+  <li><strong>风险管理</strong>：用蒙特卡洛模拟评估极端情况下的尾部风险</li>
+  <li><strong>日常选择</strong>：将重大选择分解为若干概率事件，计算加权期望值，避免被情绪化叙事误导</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>把 80% 的概率当作"一定会发生"，忽略那 20% 的可能性和可能的尾部风险。概率不是确定性——它是对你当前知识的诚实描述，而不是对未来的保证。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：测试你的概率直觉</h2>
+  <p>以下 8 道题检验你是否能跳出确定性思维的陷阱。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你刚做完一项癌症筛查，检测准确率为 99%。结果显示阳性。</div>
+    <div class="sentence">这种癌症的发病率是 0.1%。你实际患癌的概率大约是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">99%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 9%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在投资一个创业项目。</div>
+    <div class="sentence">以下哪种表达方式体现了概率思维？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"这个项目一定能成"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"这个项目有 60% 成功率，但如果竞争加剧会降到 30%"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">连续抛硬币 5 次都是正面。</div>
+    <div class="sentence">第 6 次抛硬币出现正面的概率是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">低于 50%，因为"该出反面了"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正好 50%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你听说一个朋友的公司倒闭了。</div>
+    <div class="sentence">你能从这件事推断出什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">创业注定失败</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">一个案例不足以推断概率，需要更多数据</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你正在评估一个 AI 产品的市场前景。</div>
+    <div class="sentence">以下哪个做法符合 Tetlock 的"超级预测"方法？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">凭直觉给出一个百分比</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">把问题拆成子因素，分别估计概率再组合</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">某药物临床试验中，服用药物的组别康复率比安慰剂组高 5%。</div>
+    <div class="sentence">这意味着什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">药物肯定有效</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">需要进一步统计分析，5% 的提升可能是随机波动</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Pascal 和 Fermat 在 1654 年的通信讨论了什么？</div>
+    <div class="sentence">这个对话直接促成了哪个学科的诞生？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">微积分</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">概率论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在做购买决策。</div>
+    <div class="sentence">以下哪种思维方式最能体现概率思维的应用？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"这个产品口碑很好，所以值得买"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"口碑好意味着满意度约 85%，但还要考虑价格、替代品的期望效用"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我是你的数学思维导师。不确定为什么某个答案是正确的？这正是我们需要讨论的地方。直接输入你的问题，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.goodreads.com/book/show/13518878-the-signal-and-the-noise" target="_blank">《信号与噪声》— Nate Silver</a>，了解贝叶斯方法如何在政治预测和数据分析中大显身手。
+  <br><br>
+  <a href="../reference/g概率思维.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-beiyes-souli.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"检测准确率 99%"不等于"阳性即患病"。基础比率 0.1% 极低，假阳性人数（约 100 人）远超真阳性（约 10 人），所以真实概率 ≈ 10/(10+100) ≈ 9%。这就是贝叶斯定理的力量。', wrong: '直觉告诉你 99%，但忽略了基础比率。发病率只有 0.1% 意味着绝大多数人是健康的，1% 的假阳性会产生大量假阳性结果，稀释了真阳性的比例。真实概率约 9%。' },
+    q2: { correct: '概率思维的核心是给出概率区间，同时承认条件变化时概率也会变化。"60% 成功率，但如果竞争加剧会降到 30%"正是概率思维的表达。', wrong: '"一定能成"是确定性判断。真实世界充满不确定性，任何承诺"一定"的判断都值得怀疑。' },
+    q3: { correct: '硬币没有记忆。每次抛掷是独立事件，之前 5 次正面的结果不影响第 6 次的概率。正反面各 50%。', wrong: '"该出反面了"是经典的赌徒谬误——认为随机序列会自动"平衡"。实际上每次抛掷都是独立的，之前的结果不影响未来。' },
+    q4: { correct: '一个案例（n=1）不足以推断任何概率。这是"过度拟合直觉"的典型错误——用单个故事否定统计规律。', wrong: '"创业注定失败"是从一个案例得出的过度概括。概率思维要求我们看大数据集，而非单个故事。' },
+    q5: { correct: 'Tetlock 的研究发现，超级预测者的共同点是把复杂问题分解为子因素，分别估计概率再用乘法法则组合。这比直觉判断准确得多。', wrong: '凭直觉给出百分比看似自信，但研究表明直觉概率估计的准确性远低于结构化分解方法。' },
+    q6: { correct: '5% 的提升看起来不错，但在统计学中需要检验是否显著。小样本下 5% 的差距完全可能是随机波动。需要 p 值、置信区间等统计检验。', wrong: '"肯定有效"是确定性结论。即使药物有效，也需要统计检验确认。5% 的提升可能是巧合，尤其是在样本量小的情况下。' },
+    q7: { correct: 'Pascal 和 Fermat 在 1654 年的通信讨论的是赌注问题（掷骰子的概率计算），这直接促成了概率论的诞生。', wrong: '微积分是由 Newton 和 Leibniz 在 17 世纪后期独立发展的。Pascal-Fermat 通信讨论的是概率问题，催生的是概率论。' },
+    q8: { correct: '概率思维不仅看单一指标（口碑），还要综合多个因素的期望效用——价格、替代品、自身需求等。这才是完整的决策框架。', wrong: '"口碑好所以值得买"是单一因果推理，忽略了其他重要变量。概率思维要求多维度评估，而不是简单归因。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对概率思维有扎实的理解。';
+      else if (score >= 6) label.textContent = '做得不错！回顾一下错题的解释，加深理解。';
+      else label.textContent = '继续加油！重新阅读上面的例子，然后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

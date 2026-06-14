@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer 与注意力机制 — 速查参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .ref-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    margin-top: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .ref-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .ref-card strong { color: var(--accent); }
+
+  .formula-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 4px 4px 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+  }
+
+  .key-point {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.6rem 0.8rem;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+  }
+
+  ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .nav-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .nav-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Transformer 与注意力机制 — 速查卡</h1>
+<p class="ref-meta">AI 第 6 课 &middot; Quick Reference</p>
+
+<h2>核心公式</h2>
+<div class="formula-box">
+  Attention(Q, K, V) = softmax(QK<sup>T</sup> / &radic;d<sub>k</sub>)V
+</div>
+
+<h2>四大组件速览</h2>
+
+<div class="ref-card">
+  <h3>1. 自注意力（Self-Attention）</h3>
+  <p>每个 token 与序列中所有其他 token 做相似度匹配，动态分配权重。</p>
+  <p><strong>Q（Query）</strong>：当前词"查询"相关信息<br>
+  <strong>K（Key）</strong>：每个词"提供"特征<br>
+  <strong>V（Value）</strong>：实际携带的信息内容</p>
+</div>
+
+<div class="ref-card">
+  <h3>2. 多头注意力（Multi-Head Attention）</h3>
+  <p>多个头并行工作，每个头关注不同类型的关系（语法、指代、语义、事件结构等），最后拼接输出。</p>
+  <p>GPT-3：96 个头 &middot; BERT base：8 个头</p>
+</div>
+
+<div class="ref-card">
+  <h3>3. 位置编码（Positional Encoding）</h3>
+  <p>用正弦/余弦波形给每个位置分配唯一编码，弥补并行处理丢失的顺序信息。</p>
+  <p>没有它："狗咬人" = "人咬狗"</p>
+</div>
+
+<div class="ref-card">
+  <h3>4. 编码器 &amp; 解码器</h3>
+  <p><strong>Encoder</strong>：理解输入，压缩为隐藏向量<br>
+  <strong>Decoder</strong>：逐词生成输出</p>
+  <p>Decoder 包含：掩码自注意力 → 交叉注意力 → 前馈网络</p>
+</div>
+
+<h2>为什么取代 RNN？</h2>
+<div class="key-point">
+  <strong>并行计算：</strong>RNN 串行，Transformer 并行 → 训练快数十倍<br>
+  <strong>长程记忆：</strong>RNN 读远处忘近处，Transformer 注意力可跳转到任意位置<br>
+  <strong>可扩展性：</strong>Chinchilla 定律 — 参数量与数据量按比例缩放
+</div>
+
+<h2>关键事实</h2>
+<ul>
+  <li>2017 年，Vaswani et al.，《Attention Is All You Need》</li>
+  <li>Transformer 是<strong>架构</strong>，不是学习方法</li>
+  <li>GPT = Decoder-only Transformer，BERT = Encoder-only Transformer</li>
+  <li>所有现代 LLM（GPT-4、Claude、Gemini、Llama）的底层都是 Transformer 变体</li>
+  <li>预训练目标：预测下一个 token（自回归）</li>
+</ul>
+
+<a href="../lessons/0006-transformer-attention.html" class="nav-link">&larr; 完整课程</a>
+
+<div class="footer">
+  <a href="../MISSION.md">Mission</a> &middot; <a href="../RESOURCES.md">Resources</a> &middot; <a href="../NOTES.md">Notes</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第四课：卷积神经网络 CNN</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>卷积神经网络 CNN</h1>
+<p class="lesson-meta">Lesson 4 &middot; ~10 minutes &middot; 计算机视觉基础</p>
+
+<div class="goal-box">
+  <strong>本节课目标</strong>，你将理解卷积神经网络（CNN）为什么是处理图像的王者，以及它的三个核心组件——卷积层、池化层、全连接层——各自在做什么。
+</div>
+
+<h2>为什么要用 CNN？</h2>
+<p>
+  上一课我们学了神经网络的基本结构：输入层 → 隐藏层 → 输出层。但如果输入是一张图片呢？一张 1000×1000 像素的彩色图片有 100 万个像素点（1000×1000×3）。如果用普通的全连接网络，第一层就需要上亿个参数，这在计算上几乎不可行，而且——<strong>它忽略了图像最重要的特性：空间局部性</strong>。
+</p>
+<p>
+  你不需要知道整张图片才能判断"这是一只猫"。你只需要看到耳朵、胡须、眼睛这几个局部特征就够了。CNN 的设计灵感正来自此：<strong>先找局部特征，再组合成全局理解</strong>。
+</p>
+
+<h2>核心概念一：卷积层（Convolution）—— 用滤镜扫描图片</h2>
+<p>
+  卷积是 CNN 的灵魂。想象你拿着一张小小的"放大镜"（也叫<strong>滤波器</strong>或<strong>核 kernel</strong>），在整张图片上从左到右、从上到下慢慢滑动，每到一个位置就做一次乘法求和。
+</p>
+
+<div class="card">
+  <h3>滤镜的工作原理</h3>
+  <ul>
+    <li>一个 3×3 的滤波器包含 9 个数字（权重）</li>
+    <li>把它放在图片的某个 3×3 区域上</li>
+    <li>对应位置的像素值 × 滤波器权重，然后全部加起来</li>
+    <li>得到一个输出值，放到"特征图"（feature map）的对应位置</li>
+    <li>继续滑动，直到覆盖整张图片</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>不同滤镜发现不同特征</h3>
+  <ul>
+    <li><strong>边缘检测滤镜：</strong>找出图片中哪里有线条和轮廓</li>
+    <li><strong>纹理滤镜：</strong>找出哪里有斑点、条纹</li>
+    <li><strong>颜色对比滤镜：</strong>找出哪里有明显的颜色变化</li>
+  </ul>
+  <p style="margin-top:0.5rem;">关键点：<strong>CNN 会自动学习这些滤镜的权重</strong>，不需要人工设计。训练过程中，网络自己发现哪些特征对分类最有用。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>类比理解：</strong>卷积就像用不同形状的印章在纸上盖章。每个印章（滤波器）只盖住一小块区域，但它能印出特定的图案。整张图片盖完所有印章后，你就得到了一张"特征地图"，告诉你这张图的各个部位有什么特征。
+</div>
+
+<h2>核心概念二：池化层（Pooling）—— 缩小尺寸，保留关键信息</h2>
+<p>
+  卷积之后的特征图仍然很大。池化层的作用是<strong>降采样</strong>：缩小特征图的尺寸，减少计算量，同时保留最重要的信息。
+</p>
+
+<div class="card">
+  <h3>最大池化（Max Pooling）</h3>
+  <ul>
+    <li>用一个 2×2 的窗口在特征图上滑动</li>
+    <li>每个窗口只取 4 个值中最大的那个</li>
+    <li>输出图的大小变为原来的约 1/4</li>
+  </ul>
+</div>
+
+<p>
+  为什么取最大值？因为对于特征检测来说，<strong>"某个位置有没有这个特征"比"特征精确在哪个像素"更重要</strong>。最大池化让模型具有了一定的"位置不变性"——即使猫在图片的左上角还是右下角，池化后提取到的特征是一致的。
+</p>
+
+<h2>核心概念三：全连接层（Fully Connected）—— 做出最终判断</h2>
+<p>
+  经过多次卷积和池化之后，CNN 的最后几层通常是全连接层。这时图片已经被浓缩成了一组高层特征向量，全连接层的作用就是<strong>把这些特征组合起来，做出最终分类</strong>。
+</p>
+
+<div class="card">
+  <h3>典型 CNN 架构流程</h3>
+  <ul>
+    <li><strong>输入：</strong>原始图片（例如 224×224×3）</li>
+    <li><strong>卷积层 1：</strong>检测边缘、颜色等低级特征</li>
+    <li><strong>池化层 1：</strong>降采样</li>
+    <li><strong>卷积层 2：</strong>检测更复杂的模式（眼睛、轮子等）</li>
+    <li><strong>池化层 2：</strong>进一步降采样</li>
+    <li><strong>卷积层 3…N：</strong>检测高级语义特征（猫脸、车轮等）</li>
+    <li><strong>全连接层：</strong>综合所有特征 → 输出类别概率（猫 92%，狗 5%，车 3%）</li>
+  </ul>
+</div>
+
+<h2>为什么 CNN 如此成功？</h2>
+
+<div class="card">
+  <h3>三大优势</h3>
+  <ul>
+    <li><strong>参数共享：</strong>同一个滤波器在整个图片上滑动，不需要为每个像素学习独立权重。相比全连接网络，参数量减少了几个数量级。</li>
+    <li><strong>局部连接：</strong>每个神经元只关心输入的一小块区域，符合图像的空间结构。</li>
+    <li><strong>平移不变性：</strong>通过池化和深层卷积，CNN 能识别出现在图片任意位置的对象。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>常见误解：</strong>CNN 不只是用来"识别图片"的。虽然它在计算机视觉领域最出名，但卷积的思想也广泛应用于语音识别、自然语言处理（文本分类）、医疗影像甚至音乐分析。任何具有<strong>空间或时序局部结构</strong>的数据，都可以尝试用卷积来处理。
+</div>
+
+<h2>CNN 在现实中的应用</h2>
+<ul>
+  <li><strong>人脸识别：</strong>手机解锁、机场安检</li>
+  <li><strong>自动驾驶：</strong>实时检测行人、车辆、交通标志</li>
+  <li><strong>医疗影像：</strong>CT/MRI 图像中的肿瘤检测</li>
+  <li><strong>工业质检：</strong>生产线上的缺陷检测</li>
+  <li><strong>图像生成：</strong>DALL·E、Stable Diffusion 的底层也是基于 CNN 的思想</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下是 8 道题目，每题有两个选项。点击你认为正确的答案查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解卷积的本质</div>
+    <div class="sentence">CNN 中滤波器的主要作用是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">检测图片中的特定模式（如边缘、纹理）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">压缩图片的文件大小</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解参数共享</div>
+    <div class="sentence">为什么 CNN 比全连接网络参数少得多？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为 CNN 使用的图片分辨率更低</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为同一个滤波器在整个图片上共享权重</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解池化的目的</div>
+    <div class="sentence">最大池化（Max Pooling）取窗口内的最大值，这样做的主要好处是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">保留最显著的特征并实现一定的平移不变性</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加网络的训练数据量</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解 CNN 层级结构</div>
+    <div class="sentence">在一个典型的 CNN 中，靠近输入层的卷积层更可能学习到：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"这是一只猫"的高级语义</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">边缘、颜色、简单纹理等低级特征</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解全连接层</div>
+    <div class="sentence">CNN 末尾的全连接层的主要作用是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">综合前面提取的所有特征，输出最终的分类结果</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">对原始图片进行再次卷积处理</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解 CNN 的应用范围</div>
+    <div class="sentence">以下哪个场景最适合使用 CNN？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">根据用户的年龄和收入预测是否会购买某产品</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">从监控视频中实时检测是否有行人闯入禁区</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解卷积的计算</div>
+    <div class="sentence">一个 3×3 的滤波器在 5×5 的图片上滑动（步长为 1，不填充），输出的特征图大小是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">5×5</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">3×3</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解 CNN 的优势</div>
+    <div class="sentence">CNN 的"局部连接"意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">每个神经元只与输入的一个小区域相连，而不是整张图</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">CNN 只能处理局部的小图片，不能处理大图</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的 AI 导师。不理解卷积是怎么算的？不知道池化为什么能降采样？这些正是我们需要讨论的话题。直接输入你的问题，我会为你解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://distill.pub/2019/computing-receptive-fields/" target="_blank">Distill.pub — Convolutional Networks</a> — 用交互式可视化理解 CNN 的内部工作机制。
+  <br><br>
+  <a href="../reference/cnn-quick-reference.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-deep-learning-backprop.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-rnn-sequence-models.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '滤波器的作用就是检测特定模式。边缘检测滤镜找线条，纹理滤镜找斑点，颜色滤镜找对比。CNN 在训练中自动学会哪些滤波器最有用的。', wrong: '滤波器和文件压缩无关。它的核心作用是检测图片中的特定模式——边缘、纹理、颜色变化等。每个滤波器就像一个专门找某种特征的探测器。' },
+    q2: { correct: '参数共享是 CNN 的核心优势之一。一个 3×3 的滤波器只有 9 个参数，无论图片多大都只用这 9 个参数。全连接网络则需要每个像素都有独立的权重。', wrong: 'CNN 处理的图片分辨率和全连接网络没有必然关系。参数少的关键是"共享"——同一个滤波器在整个图片上滑动，而不是为每个像素学一套新权重。' },
+    q3: { correct: '最大池化取窗口内最大值，保留了最活跃（最显著）的特征信号，同时把尺寸缩小。因为只关心"有没有"而不关心"精确在哪"，所以有了平移不变性。', wrong: '池化不会增加数据量，它是在减少数据量。它的好处是降采样 + 保留关键特征 + 平移不变性——让模型对物体在图中的位置不那么敏感。' },
+    q4: { correct: 'CNN 的层次结构是逐层抽象的：浅层（靠近输入）学低级特征（边缘、颜色），中间层学中等复杂度（形状、局部结构），深层学高级语义（猫脸、车轮）。', wrong: '"这是一只猫"是高级语义，需要很多层卷积之后才能学到。靠近输入的第一层卷积只能看到最简单的东西——线条、色块、纹理。' },
+    q5: { correct: '全连接层位于 CNN 的末端。前面的卷积和池化已经把图片转化成了特征向量，全连接层的作用就是把这些特征"投票汇总"，给出最终的分类概率。', wrong: '全连接层不再做卷积。它是 CNN 的最后一环，负责把前面提取到的所有特征综合起来，输出"这张图是猫的概率是 92%"这样的结果。' },
+    q6: { correct: 'CNN 擅长处理具有空间结构的数据（图像、视频帧）。实时视频检测行人正是 CNN 的经典应用场景。而年龄/收入预测属于表格数据，更适合传统机器学习方法。', wrong: '年龄和收入是结构化表格数据，没有空间结构，CNN 并不适合。CNN 的强项在于图像、视频等有空间/时序局部结构的数据。' },
+    q7: { correct: '公式：输出尺寸 = (输入尺寸 − 滤波器尺寸) / 步长 + 1 = (5 − 3) / 1 + 1 = 3。所以 5×5 的图片经过 3×3 滤波器（步长 1，无填充）后变成 3×3。', wrong: '输出会比输入小。公式是 (5−3)/1+1=3，不是 5。滤波器滑过的次数比原图少，因为滤波器本身有宽度，边缘处放不下完整的 3×3 窗口。' },
+    q8: { correct: '局部连接是 CNN 的关键设计：每个神经元只"看"输入的一小块区域（比如 3×3 的像素块），而不是整张图。这让 CNN 天然适合处理具有局部相关性的数据。', wrong: '局部连接是指神经元的连接方式，不是说 CNN 只能处理小图片。通过多层卷积叠加，深层神经元可以"看到"很大的感受野，从而理解整张图的内容。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对 CNN 的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾一下你做错的题目，解释里告诉你原因。';
+      else label.textContent = '继续加油！重新阅读上面的内容后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

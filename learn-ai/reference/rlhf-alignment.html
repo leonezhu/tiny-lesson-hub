@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考卡：RLHF 与人类对齐</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card .highlight {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  ul { padding-left: 1.2rem; margin-bottom: 0.6rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>RLHF 与人类对齐 — 快速参考卡</h1>
+<p class="meta">AI 第十课 · 核心概念速查</p>
+
+<h2>三阶段训练路径</h2>
+<div class="card">
+  <p><span class="highlight">预训练</span> → 读万卷书（吸收知识）</p>
+  <p><span class="highlight">SFT</span> → 学会格式（懂规矩、听指令）</p>
+  <p><span class="highlight">RLHF</span> → 学会好坏（有情商、有价值观）</p>
+</div>
+
+<h2>RLHF 三步机制</h2>
+<div class="card">
+  <p><strong>1. 奖励模型：</strong>同一 prompt 生成 4–16 个回答 → 人类排序 → 训练打分模型</p>
+  <p><strong>2. PPO 微调：</strong>R(θ) − β·KL(π_θ || π_ref)，KL 约束防止模型走捷径</p>
+  <p><strong>3. 迭代循环：</strong>部署 → 收集反馈 → 更新奖励模型 → 重新训练</p>
+</div>
+
+<h2>关键数据</h2>
+<div class="card">
+  <ul>
+    <li>InstructGPT：~500 名标注者、~1 万条示范样本</li>
+    <li>RLHF 后：有害性减少 ~40%，有用性提高 ~30%</li>
+    <li>人类标注一致性：60–80%</li>
+    <li>β (KL 权重) ≈ 0.03</li>
+    <li>越狱成功率：10–30%</li>
+  </ul>
+</div>
+
+<h2>DPO vs RLHF</h2>
+<div class="card">
+  <p><strong>RLHF：</strong>训练 SFT + 奖励模型 + PPO 微调。灵活但复杂。</p>
+  <p><strong>DPO：</strong>直接对比好/坏答案，无需奖励模型和 PPO。简单高效，开源主流。</p>
+</div>
+
+<h2>核心局限</h2>
+<div class="card">
+  <ul>
+    <li>人类共识上限：奖励模型无法超越标注者群体的一致性</li>
+    <li>奖励黑客：模型学会表面服从而非真正对齐</li>
+    <li>文化偏差：标注者群体的价值观 ≠ 普世价值观</li>
+    <li>目标设定：奖励模型捕捉偏好模式 ≠ 完整人类意图</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0010-rlhf-alignment.html">← 返回完整课程</a>
+</div>
+
+</body>
+</html>

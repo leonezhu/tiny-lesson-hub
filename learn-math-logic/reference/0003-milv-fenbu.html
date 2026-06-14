@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 幂律分布</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .formula-box h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .formula-box .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .comparison-table th, .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>幂律分布 — 快速参考卡</h1>
+<p class="lesson-meta">数学与逻辑 &middot; 概率分布 &middot; Lesson 3</p>
+
+<div class="formula-box">
+  <h3>核心公式</h3>
+  <div class="formula">
+    P(X = x) = k &middot; x<sup>−&alpha;</sup><br>
+    &alpha;：幂指数（通常 1 &lt; &alpha; &lt; 3）<br>
+    k：归一化常数<br>
+    log-log 图中斜率 = −&alpha;
+  </div>
+</div>
+
+<div class="concept-card">
+  <h3>核心特征</h3>
+  <ul class="examples">
+    <li><strong>没有典型值</strong>——大多数观测值很小，极少数极大</li>
+    <li><strong>肥尾</strong>——极端事件比正态分布预测的常见得多</li>
+    <li><strong>无标度</strong>——不随测量尺度改变分布形状</li>
+    <li><strong>平均值无意义</strong>——极端值严重扭曲统计量</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>幂律 vs 正态</h3>
+  <table class="comparison-table">
+    <tr><th></th><th>正态分布</th><th>幂律分布</th></tr>
+    <tr><td>形状</td><td>钟形曲线</td><td>快速衰减的长尾</td></tr>
+    <tr><td>典型值</td><td>有（均值）</td><td>无</td></tr>
+    <tr><td>极端事件</td><td>极罕见</td><td>较常见</td></tr>
+    <tr><td>标准差</td><td>有限</td><td>可能无限大</td></tr>
+    <tr><td>生成机制</td><td>大量独立小因素</td><td>正反馈/累积优势</td></tr>
+    <tr><td>log-log 图</td><td>不是直线</td><td>直线（斜率 −&alpha;）</td></tr>
+  </table>
+</div>
+
+<div class="concept-card">
+  <h3>幂律生成机制</h3>
+  <ul class="examples">
+    <li><strong>偏好连接：</strong>越多人连接的越多人连接（网络枢纽）</li>
+    <li><strong>累积优势：</strong>早期优势自我强化（马太效应）</li>
+    <li><strong>选择过程：</strong>大量尝试 + 筛选（进化、风投）</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>常见幂律领域</h3>
+  <ul class="examples">
+    <li>财富分配（帕累托 80/20 法则）</li>
+    <li>城市规模（齐普夫定律）</li>
+    <li>互联网流量、社交网络活跃度</li>
+    <li>地震能量（古登堡-里克特定律）</li>
+    <li>学术论文引用、单词频率</li>
+    <li>公司规模、电影票房</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>决策启示</h3>
+  <ul class="examples">
+    <li>幂律领域：集中投资头部，而非过度分散</li>
+    <li>追求峰值而非平均——在少数维度做到顶尖</li>
+    <li>警惕平均数陷阱——它掩盖了真实的不平等</li>
+    <li>用对数-对数图验证：别把正态当幂律</li>
+  </ul>
+</div>
+
+<p class="back-link"><a href="0003-milv-fenbu.html">← 返回完整课程</a></p>
+
+</body>
+</html>

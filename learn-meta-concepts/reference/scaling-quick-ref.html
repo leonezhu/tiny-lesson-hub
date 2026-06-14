@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 标度</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    background: #f5f5f5;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+  }
+
+  th {
+    text-align: left;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 700;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--border);
+  }
+
+  tr:nth-child(even) { background: #fafafa; }
+
+  .key-points {
+    list-style: none;
+    padding: 0;
+  }
+
+  .key-points li {
+    padding: 0.3rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .key-points li::before {
+    content: "\2022";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover { opacity: 0.9; }
+
+  @media print {
+    body { padding: 1cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>标度（Scaling）</h1>
+<span class="tag">元概念 &middot; Lesson 6</span>
+
+<h2>一句话定义</h2>
+<p>系统行为随尺度变化的方式——世界不是均匀缩放的，跨越尺度时规律和比例都会改变。</p>
+
+<h2>核心公式</h2>
+<div class="formula">Y = a &middot; X<sup>b</sup> （幂律关系）</div>
+
+<h2>三种标度</h2>
+<table>
+  <tr><th>类型</th><th>指数</th><th>含义</th><th>例子</th></tr>
+  <tr><td>线性</td><td>b = 1</td><td>等比例</td><td>开两辆车耗两倍油</td></tr>
+  <tr><td>亚线性</td><td>b &lt; 1</td><td>规模经济</td><td>城市基础设施 b≈0.85</td></tr>
+  <tr><td>超线性</td><td>b &gt; 1</td><td>增长加速</td><td>城市创新 b≈1.15</td></tr>
+</table>
+
+<h2>经典案例</h2>
+<ul class="key-points">
+  <li><strong>克莱伯定律：</strong>代谢率 &asymp; 体重<sup>3/4</sup>，所有哺乳动物一生心跳总数约 10 亿次</li>
+  <li><strong>平方-立方定律：</strong>表面积 &asymp; L<sup>2</sup>，体积 &asymp; L<sup>3</sup>，解释了为什么蚂蚁能抗坠落而大象不能</li>
+  <li><strong>城市标度：</strong>基础设施 b≈0.85（亚线性），创新产出 b≈1.15（超线性）</li>
+  <li><strong>AI 标度律：</strong>损失 L &asymp; N<sup>-&alpha;</sup>，模型越大性能越好（有数据前提）</li>
+  <li><strong>梅特卡夫定律：</strong>网络价值 &asymp; n<sup>2</sup>，超线性标度的极致体现</li>
+</ul>
+
+<h2>常见陷阱</h2>
+<p>
+  <strong>线性思维幻觉：</strong>"如果小尺度上成立，大尺度上也成立"——这是错的。跨越尺度时，比例和规律都会改变。
+</p>
+
+<h2>跨学科连接</h2>
+<ul class="key-points">
+  <li><strong>熵：</strong>广延量 vs 强度量——总熵随大小线性增长，单位质量熵可能不变</li>
+  <li><strong>涌现：</strong>标度变化到临界点触发涌现——"湿"是宏观涌现性质</li>
+  <li><strong>临界点：</strong>在相变点附近，所有尺度同时起作用</li>
+  <li><strong>网络效应：</strong>超线性标度在社交网络中的体现</li>
+</ul>
+
+<a href="../lessons/0006-scaling.html" class="back-link">&larr; 返回完整课程</a>
+
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 — 大航海时代</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card .period {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .timeline-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .insight-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .insight-box strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-family: 'Merriweather', Georgia, serif;
+    border: 1px solid var(--border);
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>大航海时代</h1>
+<p class="lesson-meta">第3课 · ~12分钟 · 全球史转折</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：描述大航海时代开启的技术与经济动因，识别葡萄牙和西班牙两种不同的海外扩张模式，理解哥伦布大交换对全球人口与生态的深远影响，并分析为何是伊比利亚半岛而非中国或印度率先开启全球航海时代。
+</div>
+
+<h2>为什么是15世纪末</h2>
+<p>
+  大航海时代通常以1492年哥伦布抵达美洲为起点，但它不是突然发生的。它是一系列技术突破、经济需求和政治变革叠加的结果。理解"为什么是这个时候"，比记住"什么时候发生了什么"更重要。
+</p>
+
+<div class="timeline-card">
+  <h3>四大驱动因素</h3>
+  <div class="period">1. 奥斯曼征服君士坦丁堡（1453年）</div>
+  <ul>
+    <li>拜占庭帝国灭亡，传统的东西方陆路商路被奥斯曼帝国控制</li>
+    <li>威尼斯和热那亚的东方商品垄断加剧，欧洲商人急需替代路线</li>
+    <li>香料（胡椒、肉桂、丁香）在欧洲的价值等同于黄金</li>
+  </ul>
+  <div class="period" style="margin-top:1rem;">2. 航海技术的突破</div>
+  <ul>
+    <li>阿拉伯星盘和中国的指南针经地中海传入北欧</li>
+    <li>卡拉维尔帆船（caravel）：既能顺风航行，又能逆风"之"字形航行</li>
+    <li>波特兰海图（portolan charts）使远洋航线规划成为可能</li>
+  </ul>
+  <div class="period" style="margin-top:1rem;">3. 伊比利亚的政治统一</div>
+  <ul>
+    <li>1492年，卡斯蒂利亚和阿拉贡合并，西班牙王国形成</li>
+    <li>同年收复格拉纳达，结束摩尔人在伊比利亚八百年的统治</li>
+    <li>葡萄牙早在1385年阿维斯王朝就已实现稳定，亨利王子建立航海学校</li>
+  </ul>
+  <div class="period" style="margin-top:1rem;">4. 黄金与信仰的双重渴望</div>
+  <ul>
+    <li>欧洲贵金属严重短缺，金银比价失衡</li>
+    <li>十字军东征后的"寻找基督徒国王"幻想（祭司王约翰传说）</li>
+    <li>天主教会在收复失地运动后需要新的传教使命</li>
+  </ul>
+</div>
+
+<div class="insight-box">
+  <strong>关键理解</strong>：大航海不是"勇敢的水手发现了新世界"的浪漫故事，而是一个资源匮乏、地缘劣势的小半岛国家，在竞争压力下做出的系统性战略投资。葡萄牙用了一百年探索非洲西海岸，每一步都在建堡垒、设贸易站——这是商业帝国，不是探险队。
+</div>
+
+<h2>两种扩张模式：葡萄牙 vs 西班牙</h2>
+<p>
+  虽然葡萄牙和西班牙几乎同时开启航海时代，但它们的扩张模式截然不同。理解这两种模式，能帮你理解后来英国、荷兰、法国殖民方式的区别。
+</p>
+
+<table class="comparison-table">
+  <tr>
+    <th>维度</th>
+    <th>葡萄牙模式</th>
+    <th>西班牙模式</th>
+  </tr>
+  <tr>
+    <td><strong>地理方向</strong></td>
+    <td>沿非洲西海岸南下，绕过好望角进入印度洋</td>
+    <td>横渡大西洋，征服美洲内陆</td>
+  </tr>
+  <tr>
+    <td><strong>核心目标</strong></td>
+    <td>控制香料贸易节点（商业帝国）</td>
+    <td>获取贵金属和征服土地（领土帝国）</td>
+  </tr>
+  <tr>
+    <td><strong>组织方式</strong></td>
+    <td>贸易站堡垒网络（feitorias），不大量移民</td>
+    <td>征服内陆，建立总督辖区，大量移民</td>
+  </tr>
+  <tr>
+    <td><strong>代表人物</strong></td>
+    <td>瓦斯科·达·伽马（1498年到印度）、麦哲伦（葡萄牙人，为西班牙环球航行）</td>
+    <td>哥伦布、科尔特斯（征服阿兹特克）、皮萨罗（征服印加）</td>
+  </tr>
+  <tr>
+    <td><strong>结果</strong></td>
+    <td>建立了从里斯本到澳门的贸易链条，但人口少、控制力弱</td>
+    <td>征服了庞大的美洲帝国，但治理成本极高，后期被英国超越</td>
+  </tr>
+</table>
+
+<h2>哥伦布大交换：被忽视的全球事件</h2>
+<p>
+  历史学家阿尔弗雷德·克罗斯比（Alfred W. Crosby）提出了"哥伦布大交换"（Columbian Exchange）的概念——1492年后，新旧大陆之间发生了人类历史上规模最大的生物、作物、动物、病原体和人口的跨洋迁移。其影响远超任何一场战争或条约。
+</p>
+
+<div class="timeline-card">
+  <h3>从旧大陆到新大陆</h3>
+  <ul>
+    <li><strong>作物</strong>：小麦、水稻、甘蔗、咖啡、葡萄</li>
+    <li><strong>动物</strong>：马、牛、羊、猪、鸡</li>
+    <li><strong>疾病</strong>：天花、麻疹、流感、斑疹伤寒</li>
+  </ul>
+  <div class="period" style="margin-top:1rem;">从新大陆到旧大陆</div>
+  <ul>
+    <li><strong>作物</strong>：玉米、马铃薯、番茄、红薯、木薯、可可、烟草</li>
+    <li><strong>疾病</strong>：梅毒（争议中）</li>
+  </ul>
+</div>
+
+<p>
+  <strong>人口灾难</strong>：美洲原住民对欧亚大陆的病原体完全没有免疫力。估计在哥伦布到达后的一百年内，美洲人口减少了90%——从约5000万降至500万。这不是征服者"故意"造成的，但结果是相同的：原住民社会的崩溃为欧洲殖民扫清了障碍。
+</p>
+
+<p>
+  <strong>饮食革命</strong>：马铃薯传入欧洲后，成为爱尔兰、德国、波兰北部的主食。人口学家估计，马铃薯的热量产出是小麦的三到四倍，直接导致了18世纪欧洲人口的大幅增长。没有马铃薯，工业革命时期的劳动力增长可能不会发生。今天中国最普遍的蔬菜——番茄——也是大交换的产物。
+</p>
+
+<div class="insight-box">
+  <strong>系统思维视角</strong>：哥伦布大交换是一个典型的"二级效应"（second-order effects）案例。哥伦布的原始目的是找到通往亚洲的新航路获取香料，但他无意中打开的系统——物种和病原体的全球流动——彻底改变了整个人类文明的结构。好的战略家不仅看直接结果，更要预判系统的连锁反应。
+</div>
+
+<h2>为什么是伊比利亚，不是中国或印度？</h2>
+<p>
+  这是一个常被提出的反事实问题。15世纪初，郑和的宝船舰队（1405—1433年）在规模和技术上远超任何欧洲舰队。明朝拥有当时世界上最先进的造船技术和航海能力。但最终是葡萄牙开启了全球航海时代。原因值得深思：
+</p>
+
+<h3>1. 地缘激励的差异</h3>
+<p>
+  葡萄牙是一个面积仅相当于中国浙江省的小国，三面被西班牙包围，面向大西洋。它没有陆上扩张的空间，也没有丰富的农产品。唯一的出路是海洋。而明朝是一个自给自足的农业帝国，朝贡体系已经覆盖了已知的世界——航海对中央政权而言是奢侈而非必需。
+</p>
+
+<h3>2. 竞争 vs 垄断</h3>
+<p>
+  欧洲是多个竞争性国家组成的体系。葡萄牙领先一步，西班牙就不得不跟进；西班牙领先一步，英国和荷兰就加入竞争。这种"囚徒困境"式的竞争推动了持续的航海投资。而明朝作为一个统一的帝国，一旦皇帝决定停止航海（1433年后），整个事业就戛然而止——没有竞争者会填补空白。
+</p>
+
+<h3>3. 制度与激励</h3>
+<p>
+  葡萄牙王室与商人形成了紧密的利益共同体。达·伽马的第二次印度航行（1502年）不仅是外交使团，更是武装商队——它携带火炮轰炸阿拉伯商船，强制征收关税。这种"炮舰贸易"模式在竞争激烈的欧洲很合理，但在等级森严的朝贡体系中是不可想象的。
+</p>
+
+<div class="insight-box">
+  <strong>制度经济学启示</strong>：这并非"西方优越论"的证据，而是说明了竞争性和垄断性制度结构在面对新技术时的不同反应。分散的竞争体系鼓励创新和冒险，集中的垄断体系倾向于维护现状。这个规律在科技革命、金融创新等领域反复出现。
+</div>
+
+<h2>大航海时代的后续影响</h2>
+
+<h3>价格革命与资本主义兴起</h3>
+<p>
+  西班牙从美洲掠夺的大量白银流入欧洲，引发了持续一个世纪的"价格革命"——物价上涨了四到五倍。固定收入的贵族和工人阶级实际购买力大幅下降，而从事贸易和生产的商人阶层财富激增。这一财富转移加速了封建制度的瓦解和资本主义的兴起。
+</p>
+
+<h3>三角贸易与全球不平等</h3>
+<p>
+  大航海时代催生了跨大西洋三角贸易：欧洲制成品运往非洲，非洲奴隶运往美洲，美洲糖、棉花、烟草运往欧洲。这不仅造成了人类历史上最残酷的人口贩卖，也奠定了"中心—边缘"的全球分工格局——欧洲成为工业中心，美洲和非洲沦为原材料供应地和劳动力来源。
+</p>
+
+<h3>知识体系的全球重组</h3>
+<p>
+  新大陆的发现和太平洋的跨越，彻底颠覆了古希腊以来的地理知识体系。托勒密的《地理学》被证明既不完整也不准确。地图从象征性的宗教图示变成了精确的科学工具。人类的自我认知从"地球中心"扩展到了"无数世界中的一个"。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验理解</h2>
+  <p>共8题，每题选择一个答案，点击后立即显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在分析大航海时代的历史背景。</div>
+    <div class="sentence">1453年奥斯曼帝国征服君士坦丁堡，对欧洲航海扩张的最直接影响是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">欧洲失去了基督教圣地</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">传统东西方陆路商路被切断，迫使欧洲寻找海上路线</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在比较葡萄牙和西班牙的海外扩张模式。</div>
+    <div class="sentence">以下哪项最能概括葡萄牙模式的特点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">建立贸易站堡垒网络，控制关键商路节点</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">大规模征服内陆，建立殖民地总督辖区</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在研究哥伦布大交换的生态影响。</div>
+    <div class="sentence">马铃薯传入欧洲后，最主要的历史影响是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">取代了小麦成为欧洲唯一的主食</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">大幅提高了土地热量产出，促进了18世纪欧洲人口增长</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在思考美洲原住民人口锐减的原因。</div>
+    <div class="sentence">哥伦布到达后一百年内，美洲原住民人口减少约90%，主要原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">欧洲殖民者的屠杀和奴役</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">对欧亚病原体缺乏免疫力导致的瘟疫</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在做反事实历史分析：为什么是中国而不是欧洲开启航海时代？</div>
+    <div class="sentence">郑和的舰队比欧洲早近半个世纪到达非洲东海岸，但明朝没有继续航海扩张，核心原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">中国没有制造远洋帆船的技术</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">统一帝国缺乏外部竞争压力，航海被视为奢侈而非必需</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在研究大航海时代对欧洲经济的影响。</div>
+    <div class="sentence">"价格革命"指的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">美洲白银大量流入导致欧洲物价持续上涨</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">欧洲各国竞相降低货币含金量的货币战争</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在分析卡拉维尔帆船的技术优势。</div>
+    <div class="sentence">卡拉维尔帆船（caravel）相比当时的欧洲传统船只，最关键的技术特点是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">首次配备了火炮甲板</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">既能顺风航行，又能逆风"之"字形航行</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在比较欧洲多国竞争体系与明朝统一帝国面对新技术时的不同反应。</div>
+    <div class="sentence">从制度经济学角度看，欧洲能持续推动航海扩张的根本原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">欧洲人的文化比中国人更冒险</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">分散的竞争体系形成了"不跟进就落后"的囚徒困境</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>想深入了解？</strong>大航海时代不只是"发现新大陆"的故事，它是全球化第一波的起点。如果你对某个具体问题有疑问——比如为什么阿兹特克帝国在西班牙几百人面前迅速崩溃，或者三角贸易如何影响了美国南部的经济结构——直接问我，我们一起拆解。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://en.wikipedia.org/wiki/Age_of_Discovery" target="_blank">大航海时代（维基百科）</a> ·
+  <a href="https://en.wikipedia.org/wiki/Columbian_Exchange" target="_blank">哥伦布大交换（维基百科）</a> ·
+  <a href="https://en.wikipedia.org/wiki/Captain_Voyage" target="_blank">郑和下西洋（维基百科）</a>
+  <br><br>
+  <a href="../reference/dahanghai-era.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0002-qin-han-da-yi-tong.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-kexue-geming.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '1453年君士坦丁堡陷落后，奥斯曼帝国控制了传统的东西方商路。威尼斯商人垄断了东方商品的欧洲分销，价格和供应都由奥斯曼和威尼斯控制。这直接刺激了葡萄牙向西航行、西班牙向西航行的动机。', wrong: '失去基督教圣地当然是心理打击，但不是经济动因。欧洲航海扩张的核心驱动力是香料贸易利润——一船胡椒的利润可以翻几倍。宗教动机存在，但经济动机才是持续的。' },
+    q2: { correct: '葡萄牙模式是"贸易帝国"——在关键港口建堡垒（feitorias），控制贸易节点但不大规模占领内陆。代表站点包括霍尔木兹、果阿、马六甲、澳门。这种方式成本低、效率高，但也容易受到当地势力的挑战。', wrong: '这是西班牙模式的特点。西班牙征服了阿兹特克和印加帝国，建立了新西班牙、秘鲁等总督辖区，大量移民定居。葡萄牙几乎没有这样做——它在巴西的殖民是后来才大规模发展的。' },
+    q3: { correct: '马铃薯每英亩的热量产出是小麦的三到四倍，而且可以在贫瘠土壤上生长。这使得欧洲（尤其爱尔兰、德国、波兰）能够在不增加耕地的情况下养活更多人。人口学家估计，1700—1800年欧洲人口增长约30%，马铃薯是关键因素之一。', wrong: '马铃薯从未取代小麦成为"唯一"主食。在欧洲不同地区，小麦、黑麦、大麦、燕麦和马铃薯并存。但在北部和西部边缘地带（如爱尔兰），马铃薯确实成为了底层民众的主要热量来源。' },
+    q4: { correct: '历史学家共识认为，天花、麻疹、流感等旧大陆病原体是美洲人口崩溃的首要原因。原住民完全没有免疫经验，一次天花疫情可以杀死一个部落70—90%的人口。这发生在欧洲人直接接触之前——病毒往往比征服者跑得更快。', wrong: '屠杀和奴役当然造成了大量死亡，但它们是在原住民社会已经因瘟疫而崩溃后才大规模发生的。人口学家的估算显示，瘟疫是第一波杀手，征服是第二波。' },
+    q5: { correct: '明朝作为一个自给自足的大型农业帝国，朝贡体系已经覆盖了已知世界。航海远征耗费巨大（郑和七次下西洋花费了国库大量白银），却没有带来持续的经济回报。一旦皇帝改变主意，整个事业就终止了。相比之下，欧洲的小国在竞争中不得不持续投入。', wrong: '中国15世纪初的造船技术实际上远超欧洲。郑和宝船的长度据说超过100米，而哥伦布的圣玛丽亚号不到30米。问题不在技术，而在制度和激励结构。' },
+    q6: { correct: '16世纪，从美洲流入欧洲的白银数量剧增（尤其是波托西银矿），导致欧洲物价普遍上涨四到五倍。这对依靠固定地租收入的贵族打击最大，而从事贸易和生产的新兴资产阶级受益。这一财富转移加速了封建制度的瓦解。', wrong: '虽然当时确实有货币贬值的尝试，但"价格革命"特指美洲贵金属流入引起的长期通胀，不是各国主动的货币战。核心机制是：货币供应量大幅增加，而商品供应跟不上。' },
+    q7: { correct: '卡拉维尔帆船结合了欧洲方形帆（动力强）和阿拉伯三角帆（lantern sail，能逆风航行）的优点。这使得它可以在各种风向条件下航行，对于探索未知海岸线和逆风返航至关重要。它体积小、吃水浅，还能在浅水区航行。', wrong: '卡拉维尔帆船不是以火炮著称的——那是后来的盖伦船（galleon）。卡拉维尔的核心优势在于机动性和适应性，而不是火力。达·伽马和哥伦布的船都是卡拉维尔或基于其设计的。' },
+    q8: { correct: '欧洲的多国竞争体系创造了一种"囚徒困境"：如果一个国家投入航海，其他国家不得不跟进，否则就会在贸易和财富上落后。这种结构性竞争推动了持续的冒险投资。而明朝的统一帝国没有这种外部竞争压力——皇帝说停，就停了。', wrong: '用"文化"来解释历史差异是危险的简化。中国也有冒险传统（郑和本身就是穆斯林宦官，来自内陆云南），问题不在文化偏好，而在制度结构——竞争体系鼓励冒险，垄断体系抑制冒险。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对大航海时代的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题——解释里包含了关键洞察。';
+      else label.textContent = '继续加油！重读上面的内容，重点关注制度分析和哥伦布大交换的逻辑。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

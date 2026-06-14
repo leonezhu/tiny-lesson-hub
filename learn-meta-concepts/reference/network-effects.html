@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考：网络效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>网络效应：快速参考卡</h1>
+<p class="lesson-meta">元概念与基本法则 · 参考卡</p>
+
+<div class="concept-card">
+  <h3>定义</h3>
+  <p class="formula">一个产品或服务的价值随参与者数量增加而增长。</p>
+  <p>网络效应描述的是连接本身创造价值——用户越多，每个用户获得的效用越高。这是数字经济最核心的竞争机制。</p>
+</div>
+
+<div class="concept-card">
+  <h3>梅特卡夫定律</h3>
+  <p class="formula">网络价值 ∝ n²（用户数的平方）</p>
+  <p>n=2 时 1 个连接；n=4 时 6 个连接；n=100 时 4,950 个连接。非线性增长是网络效应的数学核心。</p>
+</div>
+
+<div class="concept-card">
+  <h3>四种类型</h3>
+  <ul class="examples">
+    <li><strong>直接：</strong>用户越多对每个用户越有价值（微信、电话）</li>
+    <li><strong>间接：</strong>用户多吸引互补品，互补品吸引更多用户（操作系统/App Store）</li>
+    <li><strong>数据：</strong>用户多→数据多→服务好→更多用户（搜索引擎、推荐系统、LLM）</li>
+    <li><strong>双边市场：</strong>两类用户群体相互吸引（打车平台、电商平台）</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>关键特征</h3>
+  <ul class="examples">
+    <li><strong>临界点：</strong>到达前增长慢，越过之后加速爆发</li>
+    <li><strong>赢家通吃：</strong>网络效应导致市场高度集中</li>
+    <li><strong>转换成本：</strong>社会关系锁定形成结构性壁垒</li>
+    <li><strong>正反馈：</strong>自我强化的增长循环</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>局限性与风险</h3>
+  <ul class="examples">
+    <li><strong>负网络效应：</strong>拥堵、信息过载降低体验</li>
+    <li><strong>迪廷格定律：</strong>150人社交上限，需要分层结构</li>
+    <li><strong>反垄断：</strong>赢家通吃可能损害竞争</li>
+    <li><strong>启动难题：</strong>"鸡生蛋"问题——如何跨越初始临界点</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>与之前课程的连接：</strong> 网络效应 = 正反馈回路（课程 4）+ 非线性增长（课程 8 临界点）+ 路径依赖（课程 7）。它解释了为什么"先发优势"在数字时代如此强大。
+</div>
+
+<div class="footer">
+  <a href="../lessons/0012-network-effects.html">← 完整课程</a> | <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

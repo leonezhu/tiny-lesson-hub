@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 12 课 — 认知偏差：大脑的系统性捷径</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>认知偏差：大脑的系统性捷径</h1>
+<p class="lesson-meta">第 12 课 · ~10 分钟 · 认知心理学的核心发现</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解认知偏差不是"偶尔犯错"，而是大脑信息处理系统的固有特性；识别至少 6 种最常见的认知偏差及其在日常决策中的作用；区分系统 1（直觉）和系统 2（分析）的思维模式；能用偏差分析框架审视自己的判断过程。
+</div>
+
+<h2>为什么我们会"非理性"？</h2>
+<p>
+  我们大多数人相信自己是理性的决策者——我们收集信息、权衡利弊、做出最优选择。但丹尼尔·卡尼曼（Daniel Kahneman）和阿莫斯·特沃斯基（Amos Tversky）在 1970 年代以来的研究彻底颠覆了这个信念：<strong>人类的大脑并不是为"理性"设计的，它是为"生存"设计的</strong>。
+</p>
+<p>
+  认知偏差（cognitive bias）不是偶尔的错误，而是大脑在信息不足、时间紧迫或情绪激动时使用的<strong>系统性捷径</strong>。这些捷径在大多数情况下帮了我们——让我们能快速做出判断——但它们也有规律性地把我们引入歧途。
+</p>
+
+<div class="highlight-box">
+  <strong>核心定义：</strong>认知偏差是指在信息处理过程中出现的系统性、可预测的判断偏离。关键在于"系统性"——它不是随机错误，而是在特定条件下一定会出现的模式。
+</div>
+
+<h2>双系统理论：大脑的两套操作系统</h2>
+<p>
+  要理解认知偏差，首先要理解大脑是如何做判断的。卡尼曼提出的双系统理论是理解几乎所有偏差的基础框架：
+</p>
+
+<div class="card">
+  <h3>系统 1：直觉系统</h3>
+  <ul>
+    <li><strong>速度：</strong>极快，几乎自动运行。你看到一张愤怒的脸，0.1 秒内就知道"这人很生气"——不需要思考。</li>
+    <li><strong>特征：</strong>无意识、自动化、联想性强、受情绪驱动、善于模式识别。</li>
+    <li><strong>擅长：</strong>识别熟悉的面孔、理解母语句子、开车在空旷道路上行驶、直觉判断。</li>
+    <li><strong>弱点：</strong>容易被表面信息误导、忽视统计概率、过度依赖第一印象。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>系统 2：分析系统</h3>
+  <ul>
+    <li><strong>速度：</strong>缓慢，需要刻意调用。计算 17 × 24——你必须停下来认真算。</li>
+    <li><strong>特征：</strong>有意识、费力、逻辑性强、能抑制冲动、善于规则应用。</li>
+    <li><strong>擅长：</strong>复杂计算、逻辑推理、自我控制、规划未来。</li>
+    <li><strong>弱点：</strong>耗能大（大脑只占体重 2%，却消耗 20% 的能量）、容量有限、懒惰（倾向于让系统 1 代劳）。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>系统 2 不是"关掉"系统 1 然后接管——更像是一个监督者。系统 1 不断提出建议（"这个人不可信"、"这个价格很便宜"），系统 2 大部分时候只是点头同意。只有当系统 1 的建议明显有问题时，系统 2 才会介入。而问题是：<strong>系统 2 经常懒得介入</strong>。
+</div>
+
+<h2>六大核心认知偏差</h2>
+
+<div class="card">
+  <h3>1. 确认偏误（Confirmation Bias）— 只看你想看的</h3>
+  <ul>
+    <li><strong>是什么：</strong>人们倾向于寻找、解释和记忆那些支持自己已有信念的信息，同时忽略或贬低与之矛盾的信息。</li>
+    <li><strong>经典实验：</strong>沃尔特·沃茨（Walter Ward）让参与者看一段视频，一组被告知视频中的女孩是"热情"的，另一组被告知她是"冷漠"的。之后两组人对同一段视频中女孩的行为给出了完全不同的解读——同样的微笑，"热情组"认为是友善，"冷漠组"认为是虚伪。</li>
+    <li><strong>日常场景：</strong>政治立场不同的人看同一份新闻报道，会得出截然相反的结论。不是因为他们看到了不同的信息，而是因为他们用不同的滤镜解释了相同的信息。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. 锚定效应（Anchoring Effect）— 第一印象太重要</h3>
+  <ul>
+    <li><strong>是什么：</strong>我们在做判断时过度依赖最先获得的信息（"锚点"），即使这个信息与判断无关。</li>
+    <li><strong>经典实验：</strong>特沃斯基和卡尼曼让参与者转动一个"幸运轮盘"（实际是预先设定好的），轮盘停在 10 或 65。然后问他们：非洲联合国的成员国占比是多少？转轮盘停在 10 的人平均猜 25%，停在 65 的人平均猜 45%——尽管轮盘结果与问题完全无关。</li>
+    <li><strong>日常场景：</strong>购物时先看到原价 $999 再看到打折价 $499，你会觉得"好便宜"——但如果一开始就标价 $499，你不会觉得这么划算。$999 就是你的锚。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>3. 损失厌恶（Loss Aversion）— 失去比得到更痛</h3>
+  <ul>
+    <li><strong>是什么：</strong>同样数量的损失带来的痛苦，大约是同等收益带来快乐的 2 倍。</li>
+    <li><strong>经典实验：</strong>卡尼曼和特沃斯基让参与者选择：A) 确定损失 $500；B) 50% 概率损失 $1000，50% 概率什么都不损失。大多数人选了 A——确定性损失。但当问题反过来：A) 确定获得 $500；B) 50% 概率获得 $1000，50% 概率什么都没有——大多数人选了 B。同样的数学期望（±$500），但方向变了，选择就变了。</li>
+    <li><strong>日常场景：</strong>你舍不得卖掉亏损的股票（"等它涨回来"），却急着卖掉盈利的小股票（"先锁定利润"）。这就是损失厌恶在驱动你的投资行为。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>4. 可得性启发（Availability Heuristic）— 越容易想到的越重要？</h3>
+  <ul>
+    <li><strong>是什么：</strong>人们根据信息在记忆中提取的容易程度来判断事件发生的概率或重要性——"我记得起来的，所以它一定很重要"。</li>
+    <li><strong>经典发现：</strong>美国人普遍认为飞机失事的概率高于糖尿病——因为空难的新闻更震撼、更容易被记住。实际上，糖尿病导致的死亡人数是空难的数百倍。</li>
+    <li><strong>日常场景：</strong>刚听说一个朋友中了彩票，你觉得"中奖率其实没那么低"。刚看完一部恐怖电影，你觉得"晚上出门好危险"。这些都是可得性启发在起作用——你的判断被最近最容易提取的记忆主导了。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>5. 沉没成本谬误（Sunk Cost Fallacy）— 已经花的不能白花</h3>
+  <ul>
+    <li><strong>是什么：</strong>人们在做决策时考虑已经投入且无法收回的成本（时间、金钱、精力），而不是只看未来的收益和成本。</li>
+    <li><strong>经典发现：</strong>布热伊（Brealy）和迈尔斯（Myers）研究发现，当人们已经在一件事上投入了大量资源后，即使有明确的信号表明继续投入是浪费，他们仍然会继续投入——因为他们不想承认之前的投入是"浪费"。</li>
+    <li><strong>日常场景：</strong>看完一部烂片看到一半，你觉得"都看了半小时了，不看完太亏了"——结果又浪费了 90 分钟。正确的决策应该是：不管看了多久，只看"接下来的 90 分钟，看这部电影值不值"。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>6. 基本归因错误（Fundamental Attribution Error）— 别人的错，自己的理</h3>
+  <ul>
+    <li><strong>是什么：</strong>解释别人的行为时，我们倾向于归因于他们的性格或内在特质；解释自己的行为时，我们倾向于归因于外部环境。</li>
+    <li><strong>经典实验：</strong>在经典的"问答比赛"实验中，参与者被分为"提问者"和"回答者"。提问者设计很难的问题，回答者尽力回答。旁观者评价后发现：回答者的知识水平被显著低估——因为旁观者把回答者的困难归因于他"知识少"，而忽略了"问题太难"这个关键情境因素。</li>
+    <li><strong>日常场景：</strong>同事迟到了——"他就是不靠谱"。你迟到了——"路上太堵了"。老板批评了你的方案——"他针对我"。你批评了老板的方案——"这个方案本身有问题"。</li>
+  </ul>
+</div>
+
+<h2>为什么认知偏差不是"缺陷"</h2>
+<p>
+  理解认知偏差的一个常见误区是：把它们当作"大脑的 bug"，认为我们应该消除它们。但事实上，<strong>认知偏差是进化赋予我们的适应性工具</strong>——只是在现代环境中，它们有时会派不上用场。
+</p>
+
+<div class="comparison">
+  <div class="col">
+    <h4>进化视角</h4>
+    <p>在远古环境中，"看到草丛动了就跑"（可得性启发）比"先分析一下是不是风"（系统 2 分析）更有利于生存。跑错了最多浪费几秒——不跑可能被吃掉。确认偏误让你坚持已有的生存策略——频繁切换策略比坚持一个次优策略更危险。损失厌恶让你远离危险——失去一条命的代价远大于错过一次捕猎机会。</p>
+  </div>
+  <div class="col">
+    <h4>现代环境</h4>
+    <p>但在金融投资、政策制定、医疗诊断等场景中，这些捷径会导致系统性错误。不是因为你的大脑"坏了"，而是因为你的大脑是为另一个环境优化的。理解偏差的意义不是消除它——而是知道它何时会误导你，在关键时刻调用系统 2。</p>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong>中国传统文化中有很多对认知偏差的朴素洞察。《道德经》"知人者智，自知者明"——本质上是在说基本归因错误的两边：容易看清别人（知人），难看清自己（自知）。"兼听则明，偏信则暗"——就是在对抗确认偏误。但也要注意，传统智慧有时会把偏差当作"人性"来接受，而非可管理的认知工具——我们需要从"人都有偏差"走向"我知道我的偏差是什么，所以我可以提前防范"。
+</div>
+
+<h2>如何应对认知偏差</h2>
+
+<div class="card">
+  <h3>实用的偏差管理策略</h3>
+  <ul>
+    <li><strong>预-mortem 分析：</strong>在做重要决策之前，假设它已经失败了，然后倒推"它为什么会失败？"——这能有效对抗乐观偏差和确认偏误。</li>
+    <li><strong>外部视角：</strong>不要只看眼前这个具体情况（内部视角），想想"类似的情况一般结果如何？"——这能有效对抗锚定效应和过度自信。</li>
+    <li><strong>决策清单：</strong>对于重复性决策（如投资、招聘），建立检查清单，强制自己在每个关键步骤检查是否受到了某种偏差的影响。</li>
+    <li><strong>寻找反面证据：</strong>主动问自己："如果我现在的判断是错的，会是什么原因？"——这能有效对抗确认偏误。</li>
+    <li><strong>延迟判断：</strong>在情绪激动或时间压力下，给自己至少 30 分钟的冷静期再做决定——让系统 2 有时间介入。</li>
+  </ul>
+</div>
+
+<h2>跨学科视角</h2>
+<p>
+  认知偏差的研究跨越了多个学科，形成了一个强大的综合分析框架：
+</p>
+<ul>
+  <li><strong>经济学：</strong>行为经济学（Behavioral Economics）直接建立在认知偏差的研究基础上，挑战了传统经济学的"理性人假设"。卡尼曼因此获得 2002 年诺贝尔经济学奖。</li>
+  <li><strong>AI 与机器学习：</strong>理解人类的认知偏差有助于设计更好的人机交互界面——系统应该帮助用户克服偏差，而不是利用偏差操纵用户。同时，AI 系统也有自己的"偏见"（训练数据偏差），理解人类的偏差有助于理解 AI 的偏差。</li>
+  <li><strong>组织管理：</strong>团队决策如果能系统地对抗个体偏差（如设立"魔鬼代言人"角色），决策质量会显著提升。但前提是团队成员知道自己有偏差——否则他们只会把别人的偏差当问题，把自己的偏差合理化。</li>
+</ul>
+
+<h2>常见误解</h2>
+
+<div class="card">
+  <h3>认知偏差的迷思 vs 事实</h3>
+  <ul>
+    <li><strong>迷思："认知偏差是智商低的表现"</strong> — 事实：高智商的人同样有认知偏差，甚至在某些情况下更严重——因为他们更擅长为自己的偏差找理由。偏差是关于思维模式的，不是关于智力水平的。</li>
+    <li><strong>迷思："知道了偏差的存在就能避免它"</strong> — 事实：知道偏差的存在有帮助，但远远不够。就像你知道自己在黑暗中会高估前方的距离，但走在夜路上你还是会高估。偏差的自动化特性意味着即使你知道它存在，它仍然会发生。</li>
+    <li><strong>迷思："系统 1 总是错的，系统 2 总是对的"</strong> — 事实：系统 1 在大多数日常场景中是准确的——它基于几十年进化形成的模式识别能力。系统 2 也不总是对的——它会疲劳、会犯错、会过度自信。最好的决策是两者协作的结果。</li>
+    <li><strong>迷思："所有偏差都可以用同一个方法消除"</strong> — 事实：每种偏差有不同的触发条件和机制，需要不同的应对策略。确认偏误需要主动寻找反面证据，锚定效应需要主动调整参照点，沉没成本谬误需要学会接受"已经花了就是花了"。</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别你身边的认知偏差</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你去买手机，看到一款原价 $999 现在 $799 的促销款。</div>
+    <div class="sentence">你觉得"好划算"——但如果这款手机一开始就标价 $799，你可能并不会觉得这么划算。这是哪种偏差在起作用？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">确认偏误</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">锚定效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：你看了一篇支持你政治观点的文章，觉得"果然如此"。</div>
+    <div class="sentence">但你没有去看任何反对你观点的文章。这最可能是哪种偏差？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">确认偏误</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">损失厌恶</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：你持有一只亏损的股票，不想卖掉，因为"等它涨回来再说"。</div>
+    <div class="sentence">你已经决定继续持有这只股票，主要是因为什么心理因素？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">可得性启发——你记得这只股票曾经涨过</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">损失厌恶——你不想承认亏损</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你看到一个新闻说某地发生了车祸，然后你觉得"这条路太危险了"。</div>
+    <div class="sentence">虽然这条路的事故率实际上很低，但你仍然觉得危险。这是因为什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">可得性启发——最近的新闻让你的判断被容易提取的记忆主导</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">沉没成本谬误——你以前在这条路上花了很多时间</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：你的朋友开会迟到了，你说"他就是没有时间观念"。</div>
+    <div class="sentence">但你自己迟到时，你会说"路上太堵了"。这反映了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应——你朋友的迟到让你有了一个不好的第一印象</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基本归因错误——你把别人的行为归因于性格，把自己的行为归因于环境</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：你花 $20 买了一部电影票，看了 30 分钟后发现是部烂片。</div>
+    <div class="sentence">你觉得"票都买了，不看完太亏了"，于是又硬坐了 90 分钟。这是哪种偏差？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">确认偏误——你想证明自己买票的决定是对的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">沉没成本谬误——你已经花的钱影响了你的决策</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：你在做重要决策时，系统 1 给你一个直觉判断。</div>
+    <div class="sentence">以下哪种情况最应该调用系统 2 来审查系统 1 的判断？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">当你心情很好的时候——好心情会让系统 1 更准确</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">当你处于时间压力或情绪激动的时候——这些条件会让系统 1 更容易出错</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：你在比较两种治疗方案的效果。</div>
+    <div class="sentence">关于认知偏差，以下哪项是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">只要知道了偏差的名字，就能避免它们</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">知道偏差的存在有帮助，但还需要具体的策略和机制才能真正减少偏差的影响</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对某个偏差的神经机制感兴趣、想了解它在投资/管理/产品中的具体应用，或者想让我帮你分析一个具体的判断场景，直接问我。你也可以试着想一想：今天有没有哪个决定，事后回想起来可能受到了某种偏差的影响？
+  <br><br>
+  <strong>推荐资源：</strong> 《思考，快与慢》（Thinking, Fast and Slow）—— 丹尼尔·卡尼曼。这是认知偏差领域的奠基之作，系统梳理了双系统理论和数十种认知偏差，是理解这个主题的必读经典。
+  <br><br>
+  <a href="../reference/cognitive-biases.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0011-neuroplasticity.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '锚定效应的核心是：最先获得的信息（锚点）会不成比例地影响后续判断。$999 就是你的锚——它让你把 $799 判断为"便宜"。如果没有 $999 这个锚，$799 只是一个价格而已。', wrong: '确认偏误是关于"寻找支持已有信念的信息"。这里你没有已有的信念在驱动判断，而是价格锚点（$999）影响了你对 $799 的评价。' },
+    q2: { correct: '确认偏误的核心是：人们倾向于寻找和关注支持自己已有观点的信息，忽略或贬斥相反的信息。你看支持自己观点的文章觉得"果然如此"，却不看反对文章——这正是确认偏误的典型表现。', wrong: '损失厌恶是关于"失去的痛苦大于获得的快乐"。这里你不去看反对文章不是因为怕"失去"什么，而是因为你只想看支持自己观点的内容。' },
+    q3: { correct: '损失厌恶让你不想面对已经发生的损失。卖掉股票意味着"承认亏损"——这种心理痛苦大约相当于同等收益带来快乐的 2 倍。所以你宁愿继续持有，希望"涨回来"，即使理性分析表明应该止损。', wrong: '可得性启发是关于"容易想到的信息影响判断"。虽然你可能记得这只股票曾经涨过，但核心驱动力是你不想承认亏损——这是损失厌恶。' },
+    q4: { correct: '可得性启发是指：人们在判断事件概率时，依赖信息在记忆中提取的容易程度。车祸新闻因为震撼、容易记住，让你高估了这条路的危险性。实际上，这条路的事故率可能很低，但最近的事件"可得性"太高了。', wrong: '沉没成本谬误是关于"已经投入的成本影响决策"。你还没有在这条路上投入任何成本——你只是看到了一条新闻。你的判断被容易提取的记忆（车祸新闻）主导了。' },
+    q5: { correct: '基本归因错误是指：解释别人行为时倾向归因于内在特质（"他不守时"），解释自己行为时倾向归因于外部环境（"路堵"）。这是最常见的认知偏差之一，因为它几乎每天都在发生。', wrong: '锚定效应是关于"第一印象/初始信息影响后续判断"。这里你是在解释行为的原因——把别人的行为归因于性格、把自己的行为归因于环境——这是基本归因错误，不是锚定效应。' },
+    q6: { correct: '沉没成本谬误是指：在做决策时考虑了已经投入且无法收回的成本。$20 的电影票已经花了，看不看都不会退钱。正确的决策应该是只看"接下来的 90 分钟，这部电影值不值"，而不是"我已经花了 $20"。', wrong: '确认偏误是关于"寻找支持已有信念的信息"。你不是在寻找证据证明"买票是对的"——你是在因为已经花了钱而继续投入时间。这是沉没成本谬误。' },
+    q7: { correct: '时间压力和情绪激动是系统 1 最容易出错的场景——在这些条件下，系统 2 更难介入。所以当你在这些状态下得到一个直觉判断时，更应该停下来调用系统 2 进行审查。好心情不一定让系统 1 更准确——事实上，好心情有时会让系统 1 更加依赖启发式。', wrong: '好心情并不保证系统 1 更准确。事实上，研究表明好心情可能让人更加依赖直觉和启发式（因为心情好时不太愿意费力思考）。真正需要调用系统 2 的是时间压力、情绪激动、高 stakes 决策这些场景。' },
+    q8: { correct: '知道偏差的存在只是第一步。偏差的自动化特性意味着即使你知道它存在，它仍然会发生。要真正减少偏差的影响，需要具体的策略和机制——比如预-mortem 分析、外部视角、决策清单、寻找反面证据等。', wrong: '"知道了就能避免"是一个常见迷思。偏差是自动运行的，就像你知道自己在黑暗中会高估距离，但走在夜路上你还是会高估。知道偏差的存在有帮助，但要真正减少影响需要具体的策略和机制。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对认知偏差的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

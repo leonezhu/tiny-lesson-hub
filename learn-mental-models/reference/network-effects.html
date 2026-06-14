@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 网络效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.15rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>网络效应 — 快速参考卡</h1>
+<p class="meta">Learn Mental Models &middot; Lesson 6 &middot; 约 3 分钟读完</p>
+
+<div class="formula">
+  产品价值 ∝ 网络中节点的数量
+</div>
+
+<h2>四种类型</h2>
+
+<div class="card">
+  <h3>1. 直接网络效应</h3>
+  <p>使用者越多，对每个人越有用。</p>
+  <ul>
+    <li>微信 / WhatsApp / Facebook</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. 间接网络效应（双边市场）</h3>
+  <p>一边用户吸引另一边，互相促进。</p>
+  <ul>
+    <li>iOS（用户⇄开发者）、淘宝（买家⇄卖家）、信用卡（商户⇄消费者）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>3. 数据网络效应</h3>
+  <p>用户越多 → 数据越多 → 产品越聪明 → 更多用户。</p>
+  <ul>
+    <li>Google搜索、地图路况、推荐算法</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>4. 品牌/标准网络效应</h3>
+  <p>成为"默认选择"后，用户因兼容性而留下。</p>
+  <ul>
+    <li>PDF格式、QWERTY键盘、USB接口</li>
+  </ul>
+</div>
+
+<h2>关键概念</h2>
+<p>
+  <strong>临界点：</strong>产品达到足够用户数后，网络效应开始自我强化。<br>
+  <strong>赢家通吃：</strong>网络效应往往导致单一产品主导市场。<br>
+  <strong>冷启动问题：</strong>新用户不愿加入没有用户的平台。<br>
+  <strong>转换成本：</strong>用户留在网络中的"锁定"力量。
+</p>
+
+<h2>网络效应 vs 规模效应</h2>
+<div class="card">
+  <ul>
+    <li><strong>网络效应：</strong>用户越多 → 产品越有价值（价值驱动）</li>
+    <li><strong>规模效应：</strong>产量越大 → 单位成本越低（成本驱动）</li>
+  </ul>
+</div>
+
+<h2>个人应用</h2>
+<p>
+  <span class="tag">知识</span> 学得越多，学得越快（知识网络效应）<br>
+  <span class="tag">人脉</span> 连接越多，机会越多（人脉网络效应）<br>
+  <span class="tag">声誉</span> 口碑越好，推荐越多（声誉网络效应）
+</p>
+
+<p class="back-link">
+  ← <a href="0006-network-effects.html">返回完整课程</a> | <a href="../index.html">课程目录</a>
+</p>
+
+<div class="footer">
+  <a href="../lessons/0006-network-effects.html">上一课</a> | <a href="../index.html">目录</a> | <a href="../lessons/0007-first-principles.html">下一课</a>
+</div>
+
+</body>
+</html>

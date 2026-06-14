@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 — 句法学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+  }
+
+  .tree-diagram {
+    background: #f5f7fa;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .tree-diagram .node {
+    display: inline-block;
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 0.15rem 0.5rem;
+    margin: 0.1rem;
+    font-size: 0.85rem;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .example-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box .label {
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .example-box .sentence {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin: 0.3rem 0;
+  }
+
+  .example-box .gloss {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>句法学</h1>
+<p class="lesson-meta">第 4 课 &middot; ~12 分钟 &middot; 语言学的核心模块</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够：识别句子的基本结构成分（主语、谓语、宾语等），理解不同语言的语序差异（如 SVO、SOV、VSO），掌握生成语法的基本思想，并能分析简单和复杂句子的结构层次。
+</div>
+
+<h2>什么是句法学？</h2>
+<p>
+  句法学（Syntax）研究的是<strong>词语如何组合成合格句子</strong>的规则系统。如果说语音学研究声音，形态学研究单词内部结构，那么句法学研究的就是<strong>单词之间的关系</strong>——谁修饰谁，谁是主干，什么排列顺序是可接受的。
+</p>
+<p>
+  一个核心直觉：<strong>人类语言有无限多的句子，但规则是有限的。</strong>你从未听过"张三昨天在图书馆因为要准备考试所以读了那本关于量子力学的书"这句话，但你完全能理解它——因为你脑子里有一套隐性的句法规则。
+</p>
+
+<div class="concept-card">
+  <h3>句法的核心问题</h3>
+  <p>句法学试图回答三个基本问题：</p>
+  <ol style="padding-left: 1.5rem; margin: 0.75rem 0;">
+    <li><strong>合格性</strong>：什么样的句子是合格的？什么是不合格的？</li>
+    <li><strong>结构</strong>：句子的内部结构是什么？哪些词组成短语，哪些短语组成更大的单位？</li>
+    <li><strong>普遍性</strong>：所有人类语言共享哪些句法规则？哪些是可以变化的？</li>
+  </ol>
+</div>
+
+<h2>核心概念一：句法成分与短语结构</h2>
+
+<p>
+  每个句子都由更小的单位层层嵌套构成。最基本的短语类型包括：
+</p>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>短语类型</th>
+      <th>缩写</th>
+      <th>构成方式</th>
+      <th>例子</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>名词短语</td>
+      <td>NP</td>
+      <td>限定词 + 形容词 + 名词</td>
+      <td>那个穿红衣服的学生</td>
+    </tr>
+    <tr>
+      <td>动词短语</td>
+      <td>VP</td>
+      <td>动词 + 宾语/补语</td>
+      <td>读了那本书</td>
+    </tr>
+    <tr>
+      <td>形容词短语</td>
+      <td>AP</td>
+      <td>程度副词 + 形容词</td>
+      <td>非常漂亮</td>
+    </tr>
+    <tr>
+      <td>介词短语</td>
+      <td>PP</td>
+      <td>介词 + 名词短语</td>
+      <td>在桌子上</td>
+    </tr>
+    <tr>
+      <td>句子</td>
+      <td>S / IP / TP</td>
+      <td>主语 + 谓语</td>
+      <td>他来了</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="example-box">
+  <div class="label">📌 结构拆解示例</div>
+  <div class="sentence">"那个学生认真地读了一本书"</div>
+  <div class="gloss">NP（那个学生）+ AP（认真地）+ VP（读了一本书）</div>
+  <div class="gloss">VP 内部：V（读）+ NP（一本书）</div>
+</div>
+
+<h2>核心概念二：语序类型</h2>
+
+<p>
+  世界上的语言在<strong>基本语序</strong>上差异巨大。句法学的一个重大发现是：虽然表面看起来千差万别，但所有语言的语序都可以归入有限的几种类型。
+</p>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>语序类型</th>
+      <th>代表语言</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>SVO</strong>（主-动-宾）</td>
+      <td>汉语、英语、法语、西班牙语</td>
+      <td>我（S）吃（V）苹果（O）</td>
+    </tr>
+    <tr>
+      <td><strong>SOV</strong>（主-宾-动）</td>
+      <td>日语、韩语、土耳其语、藏语</td>
+      <td>我（S）苹果（O）吃（V）</td>
+    </tr>
+    <tr>
+      <td><strong>VSO</strong>（动-主-宾）</td>
+      <td>古典阿拉伯语、爱尔兰盖尔语</td>
+      <td>吃（V）我（S）苹果（O）</td>
+    </tr>
+    <tr>
+      <td><strong>VOS</strong>（动-宾-主）</td>
+      <td>马达加斯加语、斐济语</td>
+      <td>吃（V）苹果（O）我（S）</td>
+    </tr>
+    <tr>
+      <td><strong>OSV</strong>（宾-主-动）</td>
+      <td>少数南美原住民语言</td>
+      <td>苹果（O）我（S）吃（V）</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="chinese-note">
+  <strong>重要发现：</strong>汉语和英语都是 SVO 语序，但汉语比英语灵活得多。汉语可以说"苹果我吃了"（话题化），而英语不能说 *"Apples I ate"（除非在特定语境）。这说明<strong>同一语序类型内部，各语言的句法规则仍有显著差异</strong>。
+</div>
+
+<h2>核心概念三：生成语法与乔姆斯基</h2>
+
+<p>
+  1957 年，诺姆·乔姆斯基出版了《句法结构》，彻底改变了语言学。他的核心观点是：<strong>人类天生拥有一套"普遍语法"（Universal Grammar, UG）</strong>——一种内在于大脑的语言机制，使得儿童能够在有限输入的情况下快速学会任何人类语言。
+</p>
+
+<div class="concept-card">
+  <h3>生成语法的核心思想</h3>
+  <p><strong>深层结构 vs 表层结构：</strong>同一个意思可以通过不同的句子表达。例如：</p>
+  <div class="example-box">
+    <div class="sentence">"张三打了李四" ↔ "李四被张三打了"</div>
+    <div class="gloss">深层结构相同（某人打某人），表层结构不同（主动 vs 被动）</div>
+  </div>
+  <p><strong>转换规则：</strong>从深层结构到表层结构需要经过一系列转换操作，如移位、删除、合并等。</p>
+  <p><strong>管约论（GB）→ 最简方案（MP）：</strong>乔姆斯基的理论经历了多次迭代，核心始终不变——寻找最少的规则解释最多的现象。</p>
+</div>
+
+<h2>核心概念四：依存关系与题元角色</h2>
+
+<p>
+  除了短语结构，句法学还关注<strong>词语之间的语义-句法关系</strong>。动词决定了它的论元（arguments）需要什么类型的参与者。
+</p>
+
+<div class="example-box">
+  <div class="label">题元角色（Thematic Roles）</div>
+  <div class="sentence">"妈妈给了孩子一个苹果"</div>
+  <div class="gloss">妈妈 = 施事（Agent，动作发出者）</div>
+  <div class="gloss">孩子 = 与事（Recipient，接受者）</div>
+  <div class="gloss">苹果 = 受事（Theme，被移动的对象）</div>
+</div>
+
+<p>
+  不同的动词要求不同的题元角色组合。比如"睡"只需要一个参与者（"我睡了"），而"给"需要三个参与者（"我给某人某物"）。如果一个句子缺少必需的论元，它就不合格：
+</p>
+
+<div class="example-box">
+  <div class="label">合格 vs 不合格</div>
+  <div class="sentence">✓ 我睡了。（"睡"只需要一个论元）</div>
+  <div class="sentence">✗ 我给。（"给"需要至少两个论元，不合格）</div>
+  <div class="sentence">✗ 我给了。（同上）</div>
+  <div class="sentence">✓ 我给了他钱。（完整，合格）</div>
+</div>
+
+<h2>核心概念五：从句与嵌套</h2>
+
+<p>
+  句法学最迷人的地方在于<strong>递归性（recursion）</strong>——你可以把一个句子嵌入另一个句子，理论上可以无限嵌套下去：
+</p>
+
+<div class="example-box">
+  <div class="label">递归嵌套示例</div>
+  <div class="sentence">我知道你知道他知道我喜欢这个。</div>
+  <div class="gloss">我知道 [ 你知道 [ 他知道 [ 我喜欢这个 ] ] ]</div>
+  <div class="sentence" style="margin-top: 0.5rem;">那个 [ 昨天 [ 在 [ 图书馆 ] 里 ] 读 [ 那本 [ 关于 [ 量子力学 ] 的书 ] ] ] 的人来了。</div>
+  <div class="gloss">多层定语从句/修饰语的嵌套</div>
+</div>
+
+<div class="chinese-note">
+  <strong>为什么这很重要？</strong>递归性是语言区别于大多数动物通信系统的核心特征之一。蜜蜂的舞蹈、猴子的警报叫声都无法像人类语言一样无限嵌套。乔姆斯基认为这是人类语言独有的认知能力。
+</div>
+
+<h2>常见错误与注意事项</h2>
+
+<div class="concept-card">
+  <h3>中国学习者常见的句法误区</h3>
+  
+  <p><strong>1. 英语中的"主题突出" vs "主语突出"</strong></p>
+  <div class="example-box">
+    <div class="sentence">汉语：那本书，我看完了。（话题优先）</div>
+    <div class="gloss">英语不能说 *"That book, I finished."（口语中偶见，但不合标准语法）</div>
+    <div class="sentence" style="margin-top: 0.3rem;">英语必须说：I finished that book. 或 That book has been finished by me.（被动）</div>
+  </div>
+
+  <p><strong>2. 英语的从句必须有引导词</strong></p>
+  <div class="example-box">
+    <div class="sentence">✗ 我不知道他去不去。（直译 I don't know he go or not）</div>
+    <div class="sentence">✓ I don't know <strong>whether</strong> he is coming or not.</div>
+    <div class="gloss">英语的间接疑问句必须用 whether/if 引导，不能省略</div>
+  </div>
+
+  <p><strong>3. 英语的关系从句位置</strong></p>
+  <div class="example-box">
+    <div class="sentence">汉语：我昨天遇见的那个学生</div>
+    <div class="sentence">英语：the student <strong>whom I met yesterday</strong></div>
+    <div class="gloss">汉语的定语在名词前，英语的关系从句在名词后</div>
+  </div>
+</div>
+
+<h2>句法学在现实中的应用</h2>
+
+<p>
+  理解句法不只是学术训练，它在多个领域都有直接价值：
+</p>
+
+<div class="concept-card">
+  <h3>应用场景</h3>
+  <ol style="padding-left: 1.5rem; margin: 0.75rem 0;">
+    <li><strong>NLP / AI</strong>：解析器（parser）依赖句法规则将文本转化为结构化表示，是机器翻译、问答系统的基础。</li>
+    <li><strong>二语教学</strong>：知道目标语的句法类型（如英语是 SVO、关系从句后置），可以预测中国学习者的难点。</li>
+    <li><strong>法律与合同</strong>：长难句的句法分析帮助精确理解条款含义，避免歧义。</li>
+    <li><strong>语言学调查</strong>：描述一种无文字语言的句法结构，是记录和保存语言多样性的关键。</li>
+    <li><strong>认知科学</strong>：失语症患者的句法损伤模式（如 Broca 区损伤影响句法加工但不影响语义），揭示了大脑中语言处理的模块化组织。</li>
+  </ol>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下 8 道题涵盖本课核心概念。每题选择一个答案，点击后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">考察语序类型识别</div>
+    <div class="sentence">日语"私はりんごを食べる"（watashi wa ringo o taberu）属于哪种基本语序？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">SOV（主-宾-动）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">SVO（主-动-宾）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">考察短语结构识别</div>
+    <div class="sentence">在短语"非常漂亮的红色雨伞"中，"非常"修饰的是哪个成分？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接修饰"雨伞"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">修饰"漂亮的红色雨伞"这个形容词短语</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">考察合格性判断</div>
+    <div class="sentence">下列哪个句子在标准汉语中是合格的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我给了。</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我给了他一本书。</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">考察深层结构与表层结构</div>
+    <div class="sentence">"猫追老鼠"和"老鼠被猫追"在生成语法中有什么关系？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全不同的深层结构</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">相同的深层结构，不同的表层结构（通过被动转换）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">考察语言普遍性</div>
+    <div class="sentence">关于人类语言语序，以下哪项是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有人类语言都是 SVO 语序</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">SOV 是最常见的语序类型，但 SVO 也很常见</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">考察递归性理解</div>
+    <div class="sentence">"我知道你知道他知道我喜欢这个"这句话体现了句法的什么特性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">递归性——句子可以嵌套在句子内部</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">话题化——把重要信息提前</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">考察题元角色</div>
+    <div class="sentence">在句子"老师寄给学生一封信"中，"学生"的题元角色是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">受事（Theme）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">与事（Recipient）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">考察中英句法差异</div>
+    <div class="sentence">英语说 "the man who I saw"，而汉语说 "我看见的那个男人"。这反映了什么差异？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">英语用介词，汉语不用</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">英语的关系从句后置（名词后），汉语的定语前置（名词前）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——句法是最适合动手分析的部分。拿一句你觉得复杂的句子来，我们一起拆解它的结构。不理解某个概念？那也是最好的起点。<br><br>
+  <strong>推荐资源：</strong><a href="https:// linguistics.stanford.edu/~ling10/" target="_blank">Stanford Linguistics 101</a> — 入门级句法课程，配有大量练习题。<br><br>
+  <a href="../reference/syntax.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-phonetic-systems.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-pragmatics.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"私はりんごを食べる"中，私（我）是主语，りんご（苹果）是宾语，食べる（吃）是动词。语序是 S-O-V，即 SOV 型。日语、韩语、土耳其语都是典型的 SOV 语言。',
+      wrong: '"私（S）りんご（O）食べる（V）"——宾语在动词之前，这是 SOV 语序，不是 SVO。英语和汉语才是 SVO。'
+    },
+    q2: {
+      correct: '"非常"修饰的是"漂亮的红色雨伞"这个整体。结构是：[非常 [漂亮的 [红色的 雨伞]]]。副词修饰形容词短语，而不是直接跳到名词。',
+      wrong: '"非常"不直接修饰"雨伞"。它是程度副词，修饰的是形容词"漂亮"，然后整个"漂亮的红色雨伞"再被看作一个单元。结构是层层嵌套的。'
+    },
+    q3: {
+      correct: '"给"是一个三价动词（ditransitive），需要施事、与事和受事三个论元。"我给了他一本书"完整满足了这些要求，是合格的句子。',
+      wrong: '"给"是三价动词，必须带至少两个论元（给谁、给什么）。"我给了"缺少这两个论元，不符合汉语的句法规则。'
+    },
+    q4: {
+      correct: '在生成语法中，这两句话共享同一个深层结构（某人追某物），通过被动转换规则得到了不同的表层结构。深层结构反映语义关系，表层结构反映实际表达形式。',
+      wrong: '它们表达的是同一个事件，只是角度不同（主动 vs 被动）。深层结构相同，区别仅在于是否应用了被动转换。'
+    },
+    q5: {
+      correct: '跨语言研究表明，SOV 是世界上最常见的语序类型（约 45% 的语言），SVO 次之（约 37%）。但没有任何一种语序占绝对多数，说明人类语言在这方面的多样性很大。',
+      wrong: '如果所有语言都是 SVO，那世界语言会简单得多。实际上 SOV 最常见，其次是 SVO，然后是 VSO、VOS、OSV 等。多样性远超我们的直觉。'
+    },
+    q6: {
+      correct: '这句话展示了句法的递归性（recursion）——一个句子可以作为另一个句子的论元嵌入其中。"我知道"后面跟了一个完整的句子"你知道..."，而这个句子又包含另一个句子，以此类推。',
+      wrong: '这不是话题化。话题化是把某个成分移到句首作为话题（如"那本书我看完了"）。这里的关键特征是句子层层嵌套，即递归性。'
+    },
+    q7: {
+      correct: '"学生"是动作的接受者——信是从老师那里"流向"学生的。在题元角色体系中，接收动作所及对象的角色叫"与事"（Recipient）。",
+      wrong: '"受事"是被动作直接作用的对象（在这句话中是"一封信"）。"学生"不是被移动的东西，而是移动的目的地/接收者，所以是与事。'
+    },
+    q8: {
+      correct: '这是汉英句法的一个根本差异：英语的关系从句（who I saw）放在名词（the man）之后，而汉语的定语从句（我看见的）放在名词（那个男人）之前。这种差异会影响翻译和二语习得。',
+      wrong: '两者都用到了关系词（who / 的），但关键差异不在介词，而在位置——英语关系从句后置，汉语定语前置。这是两种语言结构方向的根本不同。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对句法有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的内容，然后重新尝试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

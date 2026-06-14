@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社会心理学 — 情境如何塑造你的行为</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .experiment-card {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+  }
+
+  .experiment-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .experiment-card .result {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>社会心理学：情境如何塑造你的行为</h1>
+<p class="lesson-meta">第 3 课 · ~15 分钟 · 心理学核心概念</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解社会心理学的核心命题——情境力量对行为的巨大影响。掌握从众效应、服从权威、基本归因错误三大经典概念，并能用它们分析日常中的社交行为。
+</div>
+
+<h2>社会心理学研究什么？</h2>
+<p>
+  社会心理学研究的是：<strong>个体在社会情境中的思想、情感和行为，如何被他人的实际存在、想象存在或隐含存在所影响。</strong>
+</p>
+<p>
+  听起来很学术？用一个更直接的说法：<strong>我们常常以为自己是独立思考和决策的，但大量证据表明，我们在绝大多数时候是被看不见的社会力量推着走的。</strong>
+</p>
+
+<div class="highlight-box">
+  <strong>社会心理学的核心发现：</strong> 情境力量对行为的影响远大于个体人格特质。同一个人在不同社会压力下，可能表现出截然不同的行为模式。这意味着——你做出某个行为，不一定是因为"你就是这样的人"，而可能是因为你处在了那样的情境中。
+</div>
+
+<h2>三大支柱实验</h2>
+<p>
+  社会心理学靠三个经典实验奠定了基础。每个实验都用极其简单的方式揭示了一个令人不安的事实。
+</p>
+
+<!-- 米尔格兰姆服从实验 -->
+<div class="experiment-card">
+  <h3>米尔格兰姆服从实验（Stanley Milgram, 1963）</h3>
+  <p>
+    参与者被告知这是一项关于"体罚对学习影响"的研究。他被要求扮演"老师"，每当"学生"（其实是演员）答错题时，就给他施加电击。电击从 15 伏特开始，每错一次增加 15 伏，最高到 450 伏。
+  </p>
+  <p>
+    "学生"在隔壁房间，会随着电击强度加大而尖叫、撞墙、最后沉默。但这些都是演的。当电击达到 300 伏时，"学生"不再回答任何问题。
+  </p>
+  <div class="result">65% 的参与者继续施加了最高 450 伏的"电击"。</div>
+  <p>
+    在实验前，心理学家预测只有不到 1% 的人会打到 450 伏。结果差了 65 倍。
+  </p>
+  <p><strong>这意味着什么？</strong> 在权威命令和制度性压力面前，普通人可以在短时间内做出严重违背道德的事情。不是因为他们是"坏人"，而是因为情境的力量远超过你想象。</p>
+</div>
+
+<!-- 阿希从众实验 -->
+<div class="experiment-card">
+  <h3>阿希从众实验（Solomon Asch, 1951）</h3>
+  <p>
+    参与者被带入一个房间，和其他 5-7 个人一起参加"视觉判断实验"。任务极其简单：判断三条线段中哪条和标准线段等长。答案显而易见。
+  </p>
+  <p>
+    但前几轮中，其他人都给出了明显错误的答案——因为他们全是演员。当所有人一致给出错误答案时，真实参与者面临一个选择：<strong>相信自己的眼睛，还是跟随群体？</strong>
+  </p>
+  <div class="result">约 37% 的参与者跟随了群体的错误答案。</div>
+  <p>
+    <strong>从众的两种动机：</strong>
+  </p>
+  <ul class="examples">
+    <li><strong>信息性社会影响</strong>：你认为"大家可能比我更懂"，别人看到的东西你可能没看到</li>
+    <li><strong>规范性社会影响</strong>：你希望被群体接纳，不想因为"与众不同"而被排斥</li>
+  </ul>
+</div>
+
+<!-- 基本归因错误 -->
+<div class="experiment-card">
+  <h3>基本归因错误（Edward Jones & Lee Ross, 1991）</h3>
+  <p>
+    这是归因理论的核心发现：我们在解释行为时，存在一种系统性的偏差。
+  </p>
+  <div class="comparison">
+    <div class="col">
+      <h4>解释他人行为时</h4>
+      <p>你倾向于归因于<strong>人格特质</strong>：</p>
+      <p><em>"他迟到 → 他不负责任"</em></p>
+      <p><em>"她语气不好 → 她脾气差"</em></p>
+      <p><em>"他拒绝了 → 他不感兴趣"</em></p>
+    </div>
+    <div class="col">
+      <h4>解释自己行为时</h4>
+      <p>你倾向于归因于<strong>情境因素</strong>：</p>
+      <p><em>"我迟到 → 交通太堵了"</em></p>
+      <p><em>"我语气不好 → 我太累了"</em></p>
+      <p><em>"我拒绝了 → 我确实很忙"</em></p>
+    </div>
+  </div>
+  <p>
+    这种偏差叫做<strong>基本归因错误</strong>（Fundamental Attribution Error）。我们看自己时看到的是情境，看别人时看到的是人格。
+  </p>
+</div>
+
+<h2>情境的力量到底有多大？</h2>
+<p>
+  心理学家曾进行过一场著名的辩论：<strong>"人格 vs 情境"——到底是谁决定了你会怎么做？</strong>
+</p>
+
+<div class="card">
+  <h3>人格论者的观点</h3>
+  <ul>
+    <li>不同人在同样情境下表现不同 → 说明人格更重要</li>
+    <li>一个人的行为在不同情境中有一定一致性</li>
+    <li>有人天生就更有顺从性，有人更独立</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>情境论者的观点</h3>
+  <ul>
+    <li>同一人在不同情境下行为差异巨大 → 说明情境更重要</li>
+    <li>米尔格兰姆实验中，绝大多数"普通人"都服从了</li>
+    <li>情境的力量经常被我们严重低估</li>
+  </ul>
+</div>
+
+<div class="highlight-box">
+  <strong>科学界的共识：</strong> 人格和情境都会影响行为，但情境的影响比我们直觉想象的要大得多。一个著名的元分析发现：情境对行为的解释力（R²）约为 10-15%，而人格只有 4-9%。更重要的是——大多数人高估人格因素 2-3 倍。
+</div>
+
+<h2>现实中的社会心理学</h2>
+<p>
+  社会心理学的发现不只是实验室里的有趣结果——它们每天都在你身上发生。
+</p>
+
+<div class="card">
+  <h3>场景 1：社交媒体与从众</h3>
+  <p>
+    你在网上看到一条观点，90% 的评论都在支持它。即使你有不同看法，你也更可能保持沉默或者附和。这就是阿希从众实验在数字时代的翻版——只不过"群体"变成了"点赞数"和"热搜"。
+  </p>
+</div>
+
+<div class="card">
+  <h3>场景 2：广告中的社会证明</h3>
+  <p>
+    "85% 的用户推荐""销量第一""大家都在买"——这些都不是巧合。广告商精准地利用了社会心理学中的<strong>社会证明原理</strong>：当我们不确定该怎么做时，我们会观察别人的行为。
+  </p>
+</div>
+
+<div class="card">
+  <h3>场景 3：团队决策与群体思维</h3>
+  <p>
+    当团队中所有人都倾向于同意最高领导或多数人的意见时，批判性思考就消失了。这就是<strong>群体思维</strong>（Groupthink）——它是导致重大决策失败的常见原因。一个经典的反制方法是设置"魔鬼代言人"角色，强制有人负责唱反调。
+  </p>
+</div>
+
+<h2>为什么这个理论重要？</h2>
+<p>
+  社会心理学揭示了那些<strong>看不见的操纵机制</strong>。一旦你理解了从众、服从、归因偏差，你就拥有了"透视"社交互动的能力。
+</p>
+<p>
+  你开始意识到：广告为什么那样设计、政治宣传为什么那样运作、传销为什么能成功。你也开始更宽容地看待自己和他人的行为——因为很多时候，不是"人有问题"，而是"情境有问题"。
+</p>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong> "和为贵""枪打出头鸟""人多力量大"——这些中国文化的深层信念，在某种程度上是社会化从众心理的产物。理解这一点不是要否定传统文化，而是要让你在做决策时多一份自觉：你的选择真的是你独立做出的，还是被情境悄悄推动的？
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你正在参加一个会议，老板提出了一个你觉得不太对的方案。但其他所有人都表示同意。</div>
+    <div class="sentence">你最终也点头同意，这最符合哪个心理学概念？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">从众效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">基本归因错误</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：同事今天对你态度冷淡。</div>
+    <div class="sentence">你心里想"他今天心情不好"而不是"他就是个冷漠的人"。你在使用哪种归因方式？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人格归因</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">情境归因</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：米尔格兰姆实验中，65% 的参与者施加了最高 450 伏的"电击"。</div>
+    <div class="sentence">这个结果让研究者最震惊的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">电击确实对人有物理伤害</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">普通人在权威面前会做出违背道德的事</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你在电商平台下单前看了一眼评价，"95% 的买家推荐"。</div>
+    <div class="sentence">这个设计利用了哪种社会心理机制？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">社会证明</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：你的好朋友在面试中迟到了。</div>
+    <div class="sentence">你为他辩护说"路上堵死了"，但如果是陌生人迟到，你会觉得"他不守时"。这说明了你身上的：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">从众效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基本归因错误</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：阿希实验中，参与者面对的情况是：</div>
+    <div class="sentence">判断三条线段中哪条和标准线段等长，其他所有人都给出明显错误的答案。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">任务本身很简单，答案显而易见</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">任务本身非常困难，需要专业训练</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：一个产品团队开会讨论新功能方案。大家都觉得产品总监的方案"挺好的"，但没人提出异议。</div>
+    <div class="sentence">这个场景最可能涉及哪种社会心理学现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">确认偏误</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">群体思维</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：关于人格特质和情境力量谁对行为的影响更大，研究结果发现：</div>
+    <div class="sentence">以下哪个描述最准确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人格特质的影响大约比情境大 2 倍</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">情境的影响实际上比人格大，但人们普遍高估了人格的作用</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对某个实验的细节有疑问，或者想深入探讨社会心理学在日常生活中的应用，直接问我。好的问题比好的答案更重要。
+  <br><br>
+  <strong>推荐资源：</strong> 《影响力》——罗伯特·西奥迪尼，社会心理学原理在营销和说服中的经典应用。
+  <br><br>
+  <a href="../reference/social-psychology-situation.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0002-evolutionary-psychology.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-memory-mechanisms.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '从众效应：当群体一致给出某个答案时，即使你有不同看法，也倾向于跟随群体。这是规范性社会影响——不想因为"与众不同"而被排斥。', wrong: '基本归因错误是关于"解释行为时归因于人格还是情境"。这里讨论的是"跟随群体意见"，不是归因偏差。' },
+    q2: { correct: '你把同事的行为归因于外部情境（"今天心情不好"），而不是他的人格特质。这是情境归因。', wrong: '人格归因是说"他就是个冷漠的人"——把行为归因于稳定的人格特质。你这里是在为同事找外部原因，是情境归因。' },
+    q3: { correct: '最惊人的不是电击本身，而是实验前预测只有不到 1% 的人会继续，实际却有 65%——差了近 65 倍。这说明普通人在权威面前远比我们想象的更服从。', wrong: '电击是假的，没有物理伤害。真正令人震惊的是：普通人服从权威的深度和广度远超预期。' },
+    q4: { correct: '社会证明原理：当我们不确定怎么做时，会参考别人的行为。"95% 的买家推荐"在暗示你——"大多数人选择了这个，那应该是好的"。', wrong: '锚定效应是关于初始数字影响后续判断（比如先看原价再看折扣价）。这里没有数字锚定的过程，利用的是从众心理。' },
+    q5: { correct: '基本归因错误：解释别人的行为时归因于人格（"他不守时"），解释自己的朋友时归因于情境（"路上堵死了"）。同样的行为，不同归因。', wrong: '从众效应是关于跟随群体压力。这里没有群体压力，只有"解释行为时归因方式的不同"。' },
+    q6: { correct: '阿希实验的精妙之处正在于此——任务本身极其简单，答案一目了然。正因如此，参与者跟随错误答案的比例（约 37%）才更令人震惊：连显而易见的真理都会被群体压力扭曲。', wrong: '任务设计就是故意简单的。如果任务很难，人们跟随错误答案就可以解释为"可能我真的看不出来"。简单任务中从众，说明纯粹是群体压力导致的。' },
+    q7: { correct: '群体思维：团队成员倾向于附和多数人的意见，抑制批判性思考。即使有人有不同想法，也因为不想"唱反调"而保持沉默。反制方法是设置"魔鬼代言人"角色。', wrong: '确认偏误是"只寻找支持已有观点的信息"。这里是"在群体压力下不敢提出异议"，不是信息选择性，而是群体规范压力。' },
+    q8: { correct: '元分析研究表明：情境对行为的解释力约 10-15%，人格约 4-9%。但更重要的是，人们普遍高估了人格因素 2-3 倍——这正是社会心理学要纠正的直觉偏差。', wrong: '研究恰恰相反：人格的影响实际上小于情境的影响。人们的直觉（认为"性格决定一切"）是错误的。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对社会心理学的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

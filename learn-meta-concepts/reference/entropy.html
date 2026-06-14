@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熵 — 快速参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: white;
+  }
+
+  .card h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card ul { list-style: none; padding: 0; }
+  .card ul li { padding: 0.2rem 0; padding-left: 1.2rem; position: relative; }
+  .card ul li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  .equation {
+    background: #f5f7fa;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.8rem;
+    text-align: center;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1cm; }
+  }
+</style>
+</head>
+<body>
+
+<h1>熵（Entropy）— 快速参考卡</h1>
+<p style="color:var(--muted);font-size:0.85rem;">元概念 · 课程 2 · 参考速查</p>
+
+<div class="card">
+  <h2>一句话定义</h2>
+  <p>熵是描述系统<strong>无序程度</strong>或<strong>不确定性</strong>的量化指标。孤立系统总是自发趋向高熵（更混乱）状态。</p>
+</div>
+
+<div class="card">
+  <h2>三个公式</h2>
+  <div class="equation">S = k<sub>B</sub> · ln(Ω)</div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">玻尔兹曼熵：Ω = 微观状态数，k<sub>B</sub> = 1.38×10⁻²³ J/K</p>
+  <div class="equation">H = −Σ p(x) · log₂ p(x)</div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">香农信息熵：p(x) = 事件 x 的概率，H = 比特</p>
+  <div class="equation">ΔS ≥ ∫ dQ/T</div>
+  <p style="font-size:0.85rem;color:var(--muted);">克劳修斯不等式：dQ = 热交换，T = 绝对温度</p>
+</div>
+
+<div class="card">
+  <h2>三种视角</h2>
+  <ul>
+    <li><strong>热力学熵</strong>：能量分散程度。热量从高温→低温，不可逆。</li>
+    <li><strong>统计熵</strong>：微观排列数量。有序态少，无序态多，系统自然走向多的那一边。</li>
+    <li><strong>信息熵</strong>：预测难度。越不可预测 → 信息熵越高。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>关键规则</h2>
+  <ul>
+    <li>孤立系统：熵永不减少（热力学第二定律）</li>
+    <li>局部熵减是允许的，但总熵一定增加</li>
+    <li>有序结构的维持需要持续的能量输入</li>
+    <li>信息熵定义了无损压缩的理论下限</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>跨领域应用</h2>
+  <ul>
+    <li><strong>物理</strong>：热力学、统计力学、宇宙学（热寂）</li>
+    <li><strong>信息</strong>：数据压缩、密码学、通信理论</li>
+    <li><strong>生物</strong>：生命以负熵为食（薛定谔）</li>
+    <li><strong>管理</strong>：组织熵增 → 流程退化、文档过时</li>
+    <li><strong>经济</strong>：市场均衡 = 信息熵最大化</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>常见误解</h2>
+  <ul>
+    <li>❌ "熵增 = 一切变坏" → ✅ 熵是物理描述，不是价值判断</li>
+    <li>❌ "生命违反熵增" → ✅ 生命是局部低熵，整体熵仍在增加</li>
+    <li>❌ "熵就是混乱" → ✅ 更准确地说，熵是"微观状态的多寡"</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <span>TeachHub · 元概念与基本法则</span>
+  <a href="../lessons/0002-entropy.html">← 返回课程</a>
+</div>
+
+</body>
+</html>

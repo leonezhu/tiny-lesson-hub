@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 10 — 集合论与无限：从康托尔到不同大小的无穷</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .math-block {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>集合论与无限：从康托尔到不同大小的无穷</h1>
+<p class="lesson-meta">Lesson 10 &middot; ~12 minutes &middot; 数学与逻辑 · 第10课</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>，你将理解为什么"无穷"不只有一个——自然数的无穷和有理数的无穷一样大，但实数的无穷"更大"。你会掌握集合、一一对应、可数与不可数的核心概念，并亲眼看到康托尔对角线论证的威力。
+</div>
+
+<h2>为什么集合论是数学的地基</h2>
+<p>
+  19世纪末，数学家们发现了一个令人不安的问题：微积分的基本概念（极限、连续、实数）其实都是模糊的。比如，"无限趋近"到底是什么意思？"无穷小"存在吗？
+</p>
+<p>
+  德国数学家<strong>格奥尔格·康托尔</strong>（Georg Cantor，1845–1918）给出了革命性的回答：<strong>不要试图直接处理"无限"，先把它变成一个集合，用集合之间的关系来描述它。</strong>这个想法如此基础——以至于今天几乎所有数学都可以建立在集合论之上。
+</p>
+
+<h2>集合：最简单的概念，最深的含义</h2>
+<p>
+  集合就是一个"东西的容器"。你可以说"自然数集合"、"所有英语单词集合"、"你书架上的书集合"。集合论研究的就是这些容器之间的关系——谁包含谁、两个集合大小是否相同、能不能把它们拼起来。
+</p>
+
+<div class="concept-card">
+  <h3>集合的基本运算</h3>
+  <ul class="examples">
+    <li><strong>并集</strong>（A ∪ B）：在 A 中 <strong>或</strong> 在 B 中的元素</li>
+    <li><strong>交集</strong>（A ∩ B）：既在 A 中 <strong>又</strong> 在 B 中的元素</li>
+    <li><strong>补集</strong>（Aᶜ）：不在 A 中的元素</li>
+    <li><strong>差集</strong>（A \ B）：在 A 中但不在 B 中的元素</li>
+    <li><strong>笛卡尔积</strong>（A × B）：所有有序对 (a, b) 的集合，其中 a ∈ A, b ∈ B</li>
+  </ul>
+</div>
+
+<p>
+  但这些操作本身并不惊人——真正让康托尔名垂青史的，是他对<strong>"集合的大小"</strong>（即<strong>基数</strong>，cardinality）的重新定义。
+</p>
+
+<h2>如何比较两个集合的大小？</h2>
+<p>
+  如果你有两个有限集合，比如"班上的学生"和"教室里的椅子"，你怎么判断它们的数量是否相等？最直观的方法是<strong>一一配对</strong>——让每个学生坐一把椅子。如果每个学生对一把椅子，不多不少，那两边数量相等。
+</p>
+
+<p>
+  康托尔的天才之处在于说：<strong>这个方法不仅对有限集合有效，对无限集合也有效。</strong>这就是<strong>一一对应</strong>（bijection）的思想——如果两个集合的元素可以一一配对，没有遗漏，那它们的"大小"就相等。
+</p>
+
+<div class="concept-card">
+  <h3>一一对应的例子：自然数 vs 偶数</h3>
+  <p>
+    直觉告诉你：自然数 {1, 2, 3, 4, 5, …} 比偶数 {2, 4, 6, 8, 10, …} "多"，因为偶数只有一半。但让我们试着一一对应：
+  </p>
+  <div class="math-block">
+    1 ↔ 2<br>
+    2 ↔ 4<br>
+    3 ↔ 6<br>
+    4 ↔ 8<br>
+    … ↔ …<br>
+    <strong>n ↔ 2n</strong>
+  </div>
+  <p>
+    每个自然数 n 都对应唯一一个偶数 2n，每个偶数也都对应唯一一个自然数 n = 偶数/2。<strong>一一对应完成了！</strong>自然数和偶数一样"大"。
+  </p>
+  <p style="margin-top:0.5rem;">
+    这违反直觉，因为<strong>无限集合不等于它的真子集</strong>——有限集合不可能和它的子集一样大。这是无限最诡异的特性。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>直觉警告：</strong>我们从小接受的教育是"整体大于部分"。但无限世界中这句话不成立。无限集合可以和它的"一半"一样大。这不是数学技巧，而是无限本身的性质。
+</div>
+
+<h2>可数无穷 vs 不可数无穷</h2>
+
+<div class="concept-card">
+  <h3>可数无穷（Countably Infinite）</h3>
+  <p>
+    如果一个无限集合可以和自然数 N = {1, 2, 3, …} 一一对应，它就是<strong>可数无穷</strong>。基数记为 <strong>ℵ₀</strong>（aleph-null，阿列夫零）。
+  </p>
+  <ul class="examples">
+    <li><strong>自然数 N</strong>：当然可数（自己和自己对应）</li>
+    <li><strong>整数 Z</strong>：{… -2, -1, 0, 1, 2, …} 可数——可以排成 0, 1, -1, 2, -2, 3, -3, …</li>
+    <li><strong>有理数 Q</strong>：所有分数 p/q 可数——可以按"分子+分母之和"从小到大枚举</li>
+  </ul>
+</div>
+
+<p>
+  有理数可数这一点非常反直觉。有理数在数轴上密密麻麻——任意两个有理数之间都有无穷多有理数——但康托尔证明了它们仍然可以排成一列，一个接一个地列出来。
+</p>
+
+<div class="concept-card">
+  <h3>不可数无穷（Uncountably Infinite）</h3>
+  <p>
+    但<strong>实数 R</strong>（数轴上所有点，包括有理数和无理数）——它<strong>不能</strong>和自然数一一对应。康托尔用了一个绝妙的方法证明这一点：<strong>对角线论证</strong>。
+  </p>
+</div>
+
+<h2>康托尔对角线论证：证明实数不可数</h2>
+<p>
+  这是数学史上最优雅的证明之一。我们<strong>反证</strong>——假设实数区间 (0, 1) 是可数的，也就是说我们可以把 0 到 1 之间的所有实数列成一个表：
+</p>
+
+<div class="math-block">
+  r₁ = 0.<strong>1</strong>4 7 3 8 …<br>
+  r₂ = 0.2<strong>5</strong>9 1 4 …<br>
+  r₃ = 0.37<strong>2</strong>6 9 …<br>
+  r₄ = 0.481<strong>7</strong>5 …<br>
+  r₅ = 0.5935<strong>0</strong> …<br>
+  … = …
+</div>
+
+<p>
+  现在，我们来构造一个新实数 x，它的第 n 位小数和第 n 个实数 rₙ 的第 n 位不同：
+</p>
+
+<div class="math-block">
+  x 的第 1 位 ≠ r₁ 的第 1 位（1 → 改为 2）<br>
+  x 的第 2 位 ≠ r₂ 的第 2 位（5 → 改为 6）<br>
+  x 的第 3 位 ≠ r₃ 的第 3 位（2 → 改为 3）<br>
+  x 的第 4 位 ≠ r₄ 的第 4 位（7 → 改为 8）<br>
+  …<br>
+  <strong>x = 0.2638…</strong>
+</div>
+
+<p>
+  <strong>x 不在列表中！</strong>因为它和 r₁ 在第 1 位不同，和 r₂ 在第 2 位不同，和 r₃ 在第 3 位不同……和列表中任何一个数都至少有一位不同。
+</p>
+<p>
+  但我们假设列表包含了 (0,1) 之间的<strong>所有</strong>实数——矛盾！所以 (0,1) 区间<strong>不可能</strong>是可数的。实数的无穷"大于"自然数的无穷。
+</p>
+
+<div class="chinese-note">
+  <strong>关键点：</strong>这个证明不依赖于你用什么方式排列实数。无论你怎么排，总能构造出一个你漏掉的数。对角线论证的核心思路是：<strong>不管你给出什么枚举方案，我都能构造一个反例。</strong>
+</div>
+
+<h2>不同大小的无穷：基数阶梯</h2>
+
+<div class="concept-card">
+  <h3>基数的层级</h3>
+  <ul class="examples">
+    <li><strong>ℵ₀</strong>（阿列夫零）= 自然数、整数、有理数的基数——最小的无穷</li>
+    <li><strong>2^ℵ₀</strong> = 实数的基数 = 连续统的势（记为 c 或 ℵ₁，假设连续统假设）</li>
+    <li><strong>2^c</strong> = 实数所有子集的基数——比实数还大</li>
+    <li>还有更大的：2^(2^c)，2^(2^(2^c))……无穷无尽，越来越大的无穷</li>
+  </ul>
+</div>
+
+<p>
+  对任何集合 S，它的<strong>幂集</strong>（所有子集的集合，记作 P(S)）的基数总是严格大于 S 的基数。这个结论叫<strong>Cantor 定理</strong>：|P(S)| &gt; |S|。
+</p>
+<p>
+  这意味着<strong>没有最大的无穷</strong>——你永远可以找到一个更大的无穷。无穷不是一堵墙，而是一座没有顶的阶梯。
+</p>
+
+<h2>为什么这很重要</h2>
+<p>
+  康托尔的理论不是纯数学游戏——它深刻影响了我们对数学本质的理解：
+</p>
+<ul class="examples">
+  <li><strong>数学基础</strong>：现代数学几乎全部可以用集合论来公理化。所有数学对象都可以定义为集合。</li>
+  <li><strong>计算机科学的极限</strong>：可计算性理论（下一章）告诉你，有些问题连算法都解决不了。这和"可数"的概念密切相关——程序的数量是可数的，但输入的数量是不可数的，所以"大多数输入"的程序都无法运行正确。</li>
+  <li><strong>现实世界的理解</strong>：你的图书馆有有限本书，但书架上的位置是连续的。无限不是"非常大"，而是一种完全不同的结构类型。</li>
+</ul>
+
+<div class="followup">
+  <strong>有问题？</strong>问我任何疑问——为什么康托尔的理论被当时同行激烈反对？"没有最大的无穷"到底意味着什么？为什么有理数可以枚举但实数不行？随时问我。
+  <br><br>
+  <strong>延伸阅读：</strong><a href="https://www.youtube.com/watch?v=JUTYIu8YgQk" target="_blank">Numberphile: Cantor's Diagonal Argument</a> — 可视化理解对角线论证
+  <br><br>
+  <a href="../reference/jihetuanyuwuxian.html" class="resource-link">查看速查卡片</a>
+</div>
+
+<div class="footer">
+  <a href="0009-shuli-luji-jichu.html">← 上一课</a> | <a href="../index.html">目录</a> | <a href="0011-suiji-guocheng.html">下一课 →</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '整数可以排列为 0, 1, -1, 2, -2, 3, -3, … 这样一一配对到自然数。虽然整数"向两边"无限延伸，但仍然可以枚举。',
+      wrong: '整数虽然有正有负，看起来"两边都无限"，但实际上可以按 0, 1, -1, 2, -2, 3, -3 的顺序一一列出。可数不要求"方向"一致，只要能列出来就行。'
+    },
+    q2: {
+      correct: '有理数可数的核心方法是"按分子分母之和分组枚举"。虽然两个有理数之间有无穷多有理数，但它们仍然可以排成一列。',
+      wrong: '有理数在数轴上确实很密集，但"密集"不等于"不可枚举"。只要能把它们一个接一个地列出来，就是可数的。康托尔证明了这是可以做到的。'
+    },
+    q3: {
+      correct: '对角线论证的核心是：假设你列出了所有实数，我总能构造出一个不在你列表中的新实数（通过让第n位和第n个实数的第n位不同）。这证明了不存在这样的完整列表。',
+      wrong: '对角线论证不是只针对"十进制表示"这个方法——它证明的是任何枚举方案都会失败。不管你用十进制、二进制还是其他任何方式排列实数，对角线论证都能构造出反例。'
+    },
+    q4: {
+      correct: '康托尔定理说：对任何集合 S，它的所有子集构成的幂集 P(S) 的基数总是严格大于 S 的基数。这意味着没有最大的无穷，无穷可以无限增大。',
+      wrong: '康托尔定理不是说"集合的子集一定比原集合小"——那是有限集合的性质。定理说的是"所有子集构成的集合"的基数比原集合大。自然数的所有子集构成的集合，就比自然数本身"更大"。'
+    },
+    q5: {
+      correct: '自然数和偶数可以一一配对：n ↔ 2n。虽然偶数只是自然数的"一半"，但它们都是可数无穷（ℵ₀），基数相等。这是无限集合的独特性质。',
+      wrong: '对于有限集合，子集确实比原集合小。但无限集合没有这个限制。自然数的子集（偶数）可以和自然数本身一样大——这不是矛盾，而是无限定义的自然结果。'
+    },
+    q6: {
+      correct: '整数可以枚举为 0, 1, -1, 2, -2, 3, -3… 这样每个整数都对应一个自然数位置。所以整数的基数是 ℵ₀，和自然数一样。',
+      wrong: '从0到1之间的实数不能枚举。对角线论证证明：无论你如何排列，总可以构造出一个不在列表中的实数。这就是为什么实数是不可数无穷。'
+    },
+    q7: {
+      correct: '康托尔理论的意义深远：它奠定了现代数学的基础（所有数学对象都可定义为集合），解释了为什么"大多数"输入的程序无法运行（程序可数但输入不可数），让我们理解无限不是"非常大"而是不同的结构类型。',
+      wrong: '康托尔理论不是纯数学游戏——它改变了我们对整个数学的理解。数学基础、计算理论、甚至对现实世界的认知都受到了深刻影响。'
+    },
+    q8: {
+      correct: '康托尔定理：对任何集合 S，它的幂集 P(S)（所有子集的集合）的基数严格大于 S 的基数。这意味着没有最大的无穷——你永远可以构造更大的无穷。',
+      wrong: '康托尔定理说的是幂集比原集合大，不是说原集合本身"不存在最大的元素"。定理的结论是：从 ℵ₀ 开始，你可以永远往上构造更大的无穷，没有尽头。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你对集合论与无限的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，你的理解会更深刻。';
+      else label.textContent = '继续加油！重新阅读上面的例子，再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+<div class="footer">
+  <a href="0009-shuli-luji-jichu.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-suiji-guocheng.html">下一课</a>
+</div>
+
+</body>
+</html>

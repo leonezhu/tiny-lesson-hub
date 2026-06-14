@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 9 — Passive Voice: When &amp; Why</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .error-box {
+    background: var(--wrong-bg);
+    border-left: 3px solid var(--wrong);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .error-box strong { color: var(--wrong); }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Passive Voice: When &amp; Why</h1>
+<p class="lesson-meta">Lesson 9 &middot; ~10 minutes &middot; Grammar foundation</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll know when to use passive voice in English, how to form it in any tense, and — most importantly — when to AVOID it so your writing sounds natural and professional.
+</div>
+
+<h2>What is Passive Voice?</h2>
+<p>
+  In <strong>active voice</strong>, the subject does the action: <em>"The manager approved the budget."</em><br>
+  In <strong>passive voice</strong>, the subject receives the action: <em>"The budget was approved by the manager."</em>
+</p>
+<p>
+  The formula is always: <strong>be + past participle (V3)</strong>. The "be" verb changes to match the tense.
+</p>
+
+<div class="card">
+  <h3>Passive in Common Tenses</h3>
+  <ul class="examples">
+    <li><strong>Present Simple:</strong> The report <em>is written</em> by the analyst. (not <em>writes</em>)</li>
+    <li><strong>Past Simple:</strong> The decision <em>was made</em> last Friday.</li>
+    <li><strong>Present Perfect:</strong> The contract <em>has been signed</em>.</li>
+    <li><strong>Future (will):</strong> The results <em>will be published</em> next week.</li>
+    <li><strong>Modal:</strong> The invoice <em>should be paid</em> within 30 days.</li>
+    <li><strong>Present Continuous:</strong> The website <em>is being redesigned</em>.</li>
+  </ul>
+</div>
+
+<h2>When to Use Passive Voice</h2>
+<p>
+  This is where most learners go wrong. They use passive all the time because in Chinese, the passive marker 被 is common — but in English, <strong>active voice is preferred 80-90% of the time</strong>. Use passive ONLY when it serves a purpose:
+</p>
+
+<div class="card">
+  <h3>Use passive when...</h3>
+  <ul class="examples">
+    <li><strong>You don't know who did it.</strong> "My laptop <em>was stolen</em> yesterday."</li>
+    <li><strong>It doesn't matter who did it.</strong> "The new policy <em>has been implemented</em> across all offices."</li>
+    <li><strong>You want to focus on the recipient, not the doer.</strong> "The CEO <em>was interviewed</em> by the BBC." (the CEO is the important person, not the BBC)</li>
+    <li><strong>In scientific or formal writing, where objectivity matters.</strong> "The solution <em>was heated</em> to 80°C."</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>Chinese vs English:</strong> In Chinese, 被 is often used for negative events ("我被他骂了"). But in English, passive voice is NEUTRAL — it's not inherently negative. "The window was broken" doesn't mean anything bad happened; it's a factual statement. Don't over-avoid it. The key is: only use it when you have a reason.
+</div>
+
+<h2>Common Mistake: Active or Passive?</h2>
+<p>
+  Here are two examples showing why using passive in the wrong situation makes your writing feel clunky and indirect:
+</p>
+
+<div class="card">
+  <h3>Active (clear, direct, preferred)</h3>
+  <ul class="examples">
+    <li>"I completed the analysis and <strong>sent</strong> it to the client."</li>
+    <li>"The team <strong>discussed</strong> the issue in yesterday's meeting."</li>
+    <li>"We <strong>need</strong> to fix this bug before Friday."</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Passive (awkward, indirect — unless you have a reason)</h3>
+  <ul class="examples">
+    <li>"The analysis <strong>was completed</strong> and <strong>was sent</strong> to the client." (who did it? Why not just say "I"?)</li>
+    <li>"The issue <strong>was discussed</strong> in yesterday's meeting." (okay — we don't care who discussed it)</li>
+    <li>"This bug <strong>needs to be fixed</strong> before Friday." (okay — focus is on the bug, not the fixer)</li>
+  </ul>
+</div>
+
+<div class="error-box">
+  <strong>Watch out:</strong> In Chinese email writing, it's common to say "问题被解决了" (the problem was solved). In English business writing, just say "We've resolved the issue." Active voice sounds more confident and accountable.
+</div>
+
+<h2>By + Agent</h2>
+<p>
+  When you DO use passive and need to mention who did it, use <strong>by</strong> — but only if it adds useful information:
+</p>
+
+<div class="card">
+  <ul class="examples">
+    <li>"The meeting was rescheduled <strong>by the PM</strong>." (useful — tells you who decided)</li>
+    <li>"The report was written <strong>by a team of five analysts</strong>." (adds context)</li>
+    <li>"The email was sent." (no need to say "by me" — obviously)</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Active or Passive?</h2>
+  <p>For each situation, choose the better option — or decide if passive is the right call.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You're writing an email to your team. You finished the report and sent it.</div>
+    <div class="sentence">Which sounds more natural?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">I finished the report and sent it.</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">The report was finished and sent.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">You're writing a technical report. You don't care who heated the solution.</div>
+    <div class="sentence">Which is appropriate?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">We heated the solution to 80°C.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">The solution was heated to 80°C.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">Someone stole your bike outside the office. You don't know who.</div>
+    <div class="sentence">Which sentence is correct?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">My bike was stolen yesterday.</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Someone was stealing my bike yesterday.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You want to say the contract was signed last week. Focus on the contract, not the signers.</div>
+    <div class="sentence">Choose the right form of the verb:</div>
+    <div class="sentence">The contract ________ last week.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">signed</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">was signed</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">You're updating your manager on project status.</div>
+    <div class="sentence">Which is better?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">The timeline was moved by the client.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">The client moved the timeline.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Formal notice: the office will close for renovations.</div>
+    <div class="sentence">Which is most natural?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">We will close the office for renovations.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">The office will be closed for renovations.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">You need to convert active to passive: "The developers are updating the API documentation."</div>
+    <div class="sentence">Which is the correct passive form?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">The API documentation is being updated.</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">The API documentation has been updated.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">A job posting: "You will be responsible for..." → passive "Tasks will be ________ by the successful candidate."</div>
+    <div class="sentence">Fill in the blank:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">done</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">handled</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Want me to check a sentence you're unsure about? Just type it and I'll tell you whether active or passive is better.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b1-b2-grammar/passive-voice" target="_blank">British Council: Passive Voice (B1-B2)</a> — extra practice exercises.
+  <br><br>
+  <a href="../reference/passive-voice.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0008-phrasal-verbs-work.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-cleft-sentences-emphasis.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"I" did both actions — active voice is clear and direct. "I finished the report and sent it" takes 7 words vs. the passive version\'s 7 words, but is much more natural.', wrong: 'Passive sounds awkward here. Who sent the report? You! Say "I finished the report and sent it." Active voice is almost always better for personal communication.' },
+    q2: { correct: 'In scientific writing, the action matters more than the person doing it. "The solution was heated to 80°C" is standard lab-report style.', wrong: 'In technical writing, you often DON\'T care who did it. The method matters: "The solution was heated to 80°C" — not "We heated..." unless your audience cares about the scientist.' },
+    q3: { correct: 'You don\'t know who stole it — so you MUST use passive. "My bike was stolen" is the only natural choice.', wrong: '"Someone was stealing" is active and incomplete — it doesn\'t tell us what happened to your bike. If you don\'t know the thief, passive is required: "My bike was stolen."' },
+    q4: { correct: 'Past simple passive: was/were + past participle. "The contract was signed last week."', wrong: '"Signed" alone is past simple active — it would mean "The contract signed..." which doesn\'t make sense (a contract can\'t sign itself). You need "was signed" to show the contract received the action.' },
+    q5: { correct: 'You know who did it (the client) — so use active! "The client moved the timeline" is direct and takes responsibility.', wrong: 'Even though passive is grammatically correct here, active is better because you KNOW the doer (the client) and mentioning them adds useful information. Passive works best when the doer is unknown, irrelevant, or too obvious to mention.' },
+    q6: { correct: 'This is an official notice. The office is the focus, not the people closing it. Passive is the standard format for formal announcements.', wrong: '"We will close the office" puts "we" (the company) as the subject. In formal notices, passive is preferred because it focuses on the situation, not the decision-makers.' },
+    q7: { correct: 'Present continuous active → present continuous passive: am/is/are + being + V3. "The API documentation is being updated."', wrong: '"Has been updated" is present perfect passive — it means the action is already COMPLETE. The original sentence says "are updating" (still happening), so the passive must also be ongoing: "is being updated."' },
+    q8: { correct: '"Tasks will be handled by..." — "handled" is natural in job postings and formal English. Both are grammatically possible, but "handled" is more professional.', wrong: '"Done" is not wrong, but "handled" is preferred in formal/job-posting contexts. "Done" sounds too casual. In professional writing, small word choices matter: "handled", "managed", "completed" all sound better than "done".' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You now know when to use — and avoid — passive voice.';
+      else if (score >= 6) label.textContent = 'Good work! Review the explanations for the ones you missed.';
+      else label.textContent = 'Keep going! Re-read the examples above and try again.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

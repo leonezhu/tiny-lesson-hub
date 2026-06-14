@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 — Conditionals: Real, Unreal &amp; Mixed</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .conditional-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .conditional-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .conditional-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .conditional-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .conditional-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .conditional-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Conditionals: Real, Unreal &amp; Mixed</h1>
+<p class="lesson-meta">Lesson 4 &middot; ~12 minutes &middot; Grammar intermediate</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to use all three conditionals correctly in conversation and writing — and know when Chinese speakers tend to get them wrong.
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  Chinese doesn't have conditional verb forms. You express "if" with 如果 + statement, and the verb stays the same. In English, <strong>the verb changes depending on whether the situation is real, hypothetical, or impossible</strong>. This is one of the biggest gaps between B1 and B2.
+</p>
+
+<h2>The Three Conditionals</h2>
+
+<div class="conditional-card">
+  <h3>Zero Conditional — general truths &amp; facts</h3>
+  <p class="form"><strong>If</strong> + present simple, <strong>present simple</strong></p>
+  <ul class="examples">
+    <li>If you <strong>heat</strong> water to 100°C, it <strong>boils</strong>.</li>
+    <li>If I <strong>skip</strong> sleep, I <strong>get</strong> headaches.</li>
+    <li>If the server <strong>goes</strong> down, the app <strong>crashes</strong>.</li>
+  </ul>
+  <p style="margin-top:0.75rem;font-size:0.9rem;color:var(--muted);">Use for things that are <strong>always true</strong> — scientific facts, habits, rules.</p>
+</div>
+
+<div class="conditional-card">
+  <h3>First Conditional — real future possibilities</h3>
+  <p class="form"><strong>If</strong> + present simple, <strong>will</strong> + base verb</p>
+  <ul class="examples">
+    <li>If it <strong>rains</strong> tomorrow, I <strong>will bring</strong> an umbrella.</li>
+    <li>If you <strong>submit</strong> the report today, the client <strong>will review</strong> it.</li>
+    <li>She <strong>will be</strong> upset if you <strong>don't call</strong> her.</li>
+  </ul>
+  <p style="margin-top:0.75rem;font-size:0.9rem;color:var(--muted);">Use for <strong>specific future situations</strong> that could actually happen. Not "would" — use "will".</p>
+</div>
+
+<div class="conditional-card">
+  <h3>Second Conditional — unreal / unlikely present or future</h3>
+  <p class="form"><strong>If</strong> + past simple, <strong>would</strong> + base verb</p>
+  <ul class="examples">
+    <li>If I <strong>had</strong> more time, I <strong>would learn</strong> guitar. <em>(but I don't have time)</em></li>
+    <li>If she <strong>were</strong> the boss, she <strong>would change</strong> the policy. <em>(she's not the boss)</em></li>
+    <li>If we <strong>lived</strong> closer, we <strong>would meet</strong> more often. <em>(but we don't)</em></li>
+  </ul>
+  <p style="margin-top:0.75rem;font-size:0.9rem;color:var(--muted);">Use for <strong>imaginary or unlikely</strong> situations. Note: "If I were" (not "was") is preferred in formal English, though "was" is common in speech.</p>
+</div>
+
+<div class="chinese-note">
+  <strong>Common mistake for Chinese speakers:</strong> In Chinese, 如果下雨，我会带伞 uses the same verb form regardless of reality. In English: <strong>real possibility → "will"</strong>, <strong>unreal/impossible → "would"</strong>. Think: "will" = it might happen. "Would" = it's just a dream.
+</div>
+
+<h2>Mixed Conditionals (B2 bonus)</h2>
+<p>
+  Sometimes the "if" clause refers to a <strong>past event</strong> and the result refers to <strong>now</strong> (or vice versa). Here's the most useful one:
+</p>
+
+<div class="conditional-card">
+  <h3>Past cause → present result</h3>
+  <p class="form"><strong>If</strong> + past perfect, <strong>would have</strong> + past participle → <strong>result in present</strong></p>
+  <p class="form"><strong>If</strong> + past perfect, <strong>would</strong> + base verb</p>
+  <ul class="examples">
+    <li>If I <strong>had studied</strong> engineering, I <strong>would be</strong> at Google now. <em>(I didn't study engineering, so I'm not at Google now)</em></li>
+    <li>If she <strong>hadn't missed</strong> the flight, she <strong>would be</strong> here with us. <em>(she missed it, she's not here)</em></li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>Don't overthink mixed conditionals.</strong> The key question: "Is the 'if' part about the past or the present?" If past cause → present result: <em>If I had done X (then), I would be Y (now).</em> That's the one you'll use most.
+</div>
+
+<h2>Other things to know</h2>
+<p>
+  <strong>"Unless" = "if ... not":</strong> "Unless you apologize, I won't forgive you" = "If you don't apologize..."<br>
+  <strong>"Provided that" / "as long as" = "only if":</strong> "I'll lend you the car provided that you drive carefully."<br>
+  <strong>Inversion (formal):</strong> "Were I you, I'd accept the offer." = "If I were you..."<br>
+  <strong>No "if" needed in context:</strong> "I would help, but I'm busy." (implied: "if I weren't busy")
+</p>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Conditional</h2>
+  <p>There are 8 questions. Pick the answer that fits the context.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You're talking about a scientific fact.</div>
+    <div class="sentence">If you mix red and blue, you ________ purple.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">would get</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">get</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">You're planning a meeting tomorrow. It might rain.</div>
+    <div class="sentence">If it ________ tomorrow, we'll hold the meeting indoors.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">rains</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">would rain</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">You're daydreaming. You don't have a million dollars.</div>
+    <div class="sentence">If I ________ a million dollars, I ________ around the world.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">have ... will travel</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">had ... would travel</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You regret not studying harder in university. You're thinking about your career now.</div>
+    <div class="sentence">If I ________ harder at university, I ________ a better job now.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">had studied ... would have</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">studied ... would have</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Giving advice informally.</div>
+    <div class="sentence">If I ________ you, I'd accept the offer.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">was</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">were</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Talking about a rule at work.</div>
+    <div class="sentence">If you ________ the wrong button, the system ________.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">press ... crashes</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">pressed ... would crash</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">An unlikely future event — your company might go bankrupt.</div>
+    <div class="sentence">If our company ________ bankrupt, we ________ looking for new jobs.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">went ... would start</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">goes ... will start</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">You're talking about something that didn't happen in the past, and its result in the past.</div>
+    <div class="sentence">If she ________ the email, she ________ the deadline.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">read ... would meet</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">had read ... would have met</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Not sure why one answer is right and another is wrong? That's exactly what we should talk about. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/grammar/b1-b2-grammar/conditionals" target="_blank">British Council B1–B2 Conditionals</a> — extra practice exercises.
+  <br><br>
+  <a href="../reference/conditionals-real-unreal-mixed.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0003-prepositions-of-time-and-place.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-modal-verbs-politeness-hedging.html">下一课</a>
+</div>
+
+<style>
+  .footer a { color: var(--accent); text-decoration: none; }
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+</style>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Mix red and blue" is a scientific fact — always true → Zero Conditional. Present + present: "you get purple."', wrong: 'This is a general truth (science fact), not a hypothetical. Zero Conditional uses present + present: "If you mix red and blue, you get purple."' },
+    q2: { correct: 'A real future possibility ("might rain") → First Conditional. "If it rains" (present) + "we\'ll hold" (will).', wrong: 'The meeting tomorrow is a real possibility, not imaginary. First Conditional: present in the "if" clause, "will" in the result: "If it rains, we\'ll hold the meeting."' },
+    q3: { correct: 'Daydreaming = unreal/hypothetical → Second Conditional. Past simple + "would": "If I had ... I would travel."', wrong: 'You don\'t actually have a million dollars. Imaginary/unreal situation = Second Conditional: "If I had ... I would travel around the world."' },
+    q4: { correct: 'Past cause (didn\'t study) → present result (no good job now). Mixed conditional: "If I had studied ... I would have a better job now."', wrong: 'The studying happened in the past (past perfect: "had studied"), but the result is NOW (present: "would have"). This is a mixed conditional: past cause → present result.' },
+    q5: { correct: '"If I were you" is the fixed form for giving advice. "Were" is used for all subjects in unreal conditionals (formal English).', wrong: 'In the Second Conditional (unreal), "were" is the standard form for all subjects: "If I were you", "If he were here". "Was" is common in casual speech, but "were" is correct.' },
+    q6: { correct: 'A workplace rule = general truth → Zero Conditional. Present + present: "If you press ... the system crashes."', wrong: 'This describes a system behavior (always true when the button is pressed). Zero Conditional: "If you press the wrong button, the system crashes."' },
+    q7: { correct: 'A real possibility (the company might go bankrupt) → First Conditional. Present + will: "If it goes ... we will start."', wrong: 'The bankruptcy is a real possibility, not imaginary. First Conditional: "If our company goes bankrupt, we will start looking for new jobs."' },
+    q8: { correct: 'Both the cause and result are in the past → Third Conditional. "If she had read ... she would have met."', wrong: 'The email reading (or not) happened in the past, and the deadline was also in the past. Both are completed past events → Third Conditional: "had read ... would have met."' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = '\u2713 ' + explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = '\u2717 ' + explanations[qid].wrong;
+    }
+
+    // Check if all answered
+    if (Object.keys(answered).length === total) {
+      const scoreBox = document.getElementById('score-box');
+      const scoreNum = document.getElementById('score-num');
+      const scoreLabel = document.getElementById('score-label');
+      scoreNum.textContent = score + '/' + total;
+      scoreLabel.textContent = score === total ? 'Perfect! \uD83C\uDF89' : score >= 6 ? 'Good job! \uD83D\uDCAA' : 'Review the explanations above and try again later.';
+      scoreBox.className = 'score-box show';
+    }
+  }
+</script>
+
+</body>
+</html>

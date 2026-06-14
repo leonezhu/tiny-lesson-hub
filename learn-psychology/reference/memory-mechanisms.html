@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考 — 记忆机制核心概念</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>记忆机制 · 快速参考卡</h1>
+<p class="subtitle">核心概念速查表 · 从课程 <a href="../lessons/0004-memory-mechanisms.html">记忆机制：大脑如何存储和提取信息</a> 来</p>
+
+<div class="card">
+  <h3>核心命题</h3>
+  <ul>
+    <li>记忆不是录像机，而是重建的叙事</li>
+    <li>记忆由多个子系统组成，每个子系统有不同的容量、持续时间和脑机制</li>
+    <li>每次回忆都在重写记忆——记忆既是优势也是盲区</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>三级模型</h3>
+  <ul>
+    <li><strong>感觉记忆</strong>：0.5-3 秒，几乎无限容量，注意力是筛选器</li>
+    <li><strong>短时/工作记忆</strong>：15-30 秒，7±2 个组块，含语音环路、视觉空间草稿板</li>
+    <li><strong>长时记忆</strong>：几乎无限，分陈述性（语义+情景）和非陈述性（程序性+启动+条件反射）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>三个阶段</h3>
+  <ul>
+    <li><strong>编码</strong>：浅层编码（形式）vs 深层编码（含义+关联）— 深层编码效果远好</li>
+    <li><strong>存储</strong>：遗忘曲线——前 1 小时遗忘 56%，学习后越快复习越有效</li>
+    <li><strong>提取</strong>：线索依赖性、状态依赖性、提取练习效应（主动回忆 > 被动阅读）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>关键实验</h3>
+  <ul>
+    <li><strong>Sperling（1960）</strong>：感觉记忆可存储约 12 个字母，但注意力是唯一通道</li>
+    <li><strong>Milner-HM 案例</strong>：海马体受损 = 无情景记忆，但程序性记忆保留 → 不同记忆系统独立</li>
+    <li><strong>Ebbinghaus（1885）</strong>：遗忘曲线——先快后慢，间隔重复有效</li>
+    <li><strong>Loftus（1990s）</strong>：记忆可被植入虚假细节，25% 接受者"回忆"不存在的事件</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>学习应用速查</h3>
+  <ul>
+    <li><strong>间隔重复</strong>：4 天 × 1 小时 > 1 天 × 4 小时</li>
+    <li><strong>主动回忆</strong>：合书回想 > 反复阅读，效果高 2-3 倍</li>
+    <li><strong>交叉练习</strong>：A→B→C 交替 > A→A→A→B→B 集中</li>
+    <li><strong>深层编码</strong>：联系已有知识、赋予情感、视觉意象</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0004-memory-mechanisms.html">返回课程</a> · <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

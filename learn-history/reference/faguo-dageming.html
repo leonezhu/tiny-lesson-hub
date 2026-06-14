@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 法国大革命</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .content-card .sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .content-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .content-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .timeline-item {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-item .year {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>法国大革命 · 速查卡</h1>
+<p class="lesson-meta">参考卡 · 3分钟速览</p>
+
+<div class="goal-box">
+  <strong>一句话：</strong>法国大革命（1789-1799）是从财政危机爆发、经三年激进革命、恐怖统治、最终由拿破仑收拾残局——它定义了现代政治的几乎所有核心概念，也留下了"激进变革代价"的核心教训。
+</div>
+
+<h2>关键时间线</h2>
+
+<div class="timeline-item">
+  <div class="year">1789年5月</div>
+  <p>三级会议召开。第三等级要求按人头投票被拒，宣布成立国民议会。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1789年6月20日</div>
+  <p>网球场宣言——国民议会发誓不制定宪法不解散。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1789年7月14日</div>
+  <p>攻占巴士底狱——王权专制的象征被摧毁。巴黎民众起义。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1789年8月26日</div>
+  <p>《人权和公民权宣言》通过——"人生来且始终自由平等"。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1791年6月</div>
+  <p>瓦雷纳事件——路易十六试图出逃被抓，信任破产。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1792年8月10日</div>
+  <p>民众起义攻入杜伊勒里宫，君主制被推翻。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1793年1月21日</div>
+  <p>路易十六被送上断头台——欧洲首个被公开处决的国王。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1793-1794年</div>
+  <p>雅各宾派恐怖统治——约17,000人正式处决，25,000人未经审判被杀。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1794年7月</div>
+  <p>热月政变——罗伯斯庇尔被推翻并处决，恐怖统治结束。</p>
+</div>
+
+<div class="timeline-item">
+  <div class="year">1799年11月</div>
+  <p>雾月政变——拿破仑夺取权力，革命实质结束。</p>
+</div>
+
+<h2>核心概念</h2>
+
+<div class="content-card">
+  <h3>旧制度（Ancien Régime）</h3>
+  <p>大革命前的法国社会结构：三级制（教士、贵族、第三等级），特权阶层免税，财政枯竭，合法性危机。</p>
+</div>
+
+<div class="content-card">
+  <h3>三重危机</h3>
+  <p>财政破产（50%收入还利息）+ 粮食危机（面包价格80%工资）+ 合法性危机（启蒙思想动摇了旧制度基础）。</p>
+</div>
+
+<div class="content-card">
+  <h3>恐怖统治的逻辑</h3>
+  <p>"没有美德，恐怖就是有害的；没有恐怖，美德就是无力的"——当一套理念声称拥有绝对正确性，它就获得了消灭一切反对者的正当性。</p>
+</div>
+
+<h2>对比：法国 vs 美国革命</h2>
+
+<div class="content-card">
+  <h3>美国独立战争（1775-1783）</h3>
+  <ul>
+    <li>精英领导、目标"保卫已有自由"、保留奴隶制、相对平稳过渡</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>法国大革命（1789-1799）</h3>
+  <ul>
+    <li>民众参与、目标"重建新世界"、彻底摧毁社会等级、8次政权更迭后才稳定</li>
+  </ul>
+</div>
+
+<h2>核心教训</h2>
+<div class="chinese-note">
+  <strong>推翻旧制度容易，建立新制度极难。</strong>法国用了80年（1789-1870）经历了8次政权更迭才稳定下来。理想主义需要被现实约束，否则往往会走向它的反面。
+</div>
+
+<div class="footer">
+  <a href="../lessons/0005-faguo-dageming.html">← 返回完整课程</a> | <a href="../index.html">目录</a>
+</div>
+
+</body>
+</html>

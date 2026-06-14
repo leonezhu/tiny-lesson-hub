@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 英语习语与搭配</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.15rem 0;
+    padding-left: 1rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .idiom-item {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin: 0.5rem 0;
+  }
+
+  .idiom-item .idiom {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .idiom-item .meaning {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .wrong-example {
+    color: var(--wrong);
+    text-decoration: line-through;
+  }
+
+  .correct-example {
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>英语习语与搭配 — 快速参考卡</h1>
+<p class="lesson-meta">来自 <a href="../lessons/0009-english-idioms-collocations.html">第9课</a> · 快速查阅</p>
+
+<h2>习语 vs 搭配</h2>
+<div class="card">
+  <h3>习语（Idiom）— 含义不可从字面推断</h3>
+  <ul class="examples">
+    <li><strong>get the ball rolling</strong> — 开始做某事</li>
+    <li><strong>on the same page</strong> — 意见一致</li>
+    <li><strong>touch base</strong> — 简短联系</li>
+    <li><strong>circle back</strong> — 回头再讨论</li>
+    <li><strong>the bottom line</strong> — 关键要点</li>
+    <li><strong>break the ice</strong> — 打破沉默/消除尴尬</li>
+    <li><strong>raining cats and dogs</strong> — 倾盆大雨</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>搭配（Collocation）— 字面可理解，但必须这样组合</h3>
+  <ul class="examples">
+    <li><strong>make</strong> a decision / a mistake / progress / money / a plan / an effort</li>
+    <li><strong>do</strong> homework / research / business / a favor / exercise</li>
+    <li><strong>ask</strong> a question (× say/tell a question)</li>
+    <li><strong>take</strong> a look / a break / a seat / a photo (× make a look)</li>
+    <li><strong>give</strong> advice / feedback / permission (× take feedback = 接受)</li>
+    <li><strong>have</strong> a meeting / a discussion (× make/did a meeting)</li>
+  </ul>
+</div>
+
+<h2>高频错误速查</h2>
+<div class="card">
+  <ul class="examples">
+    <li><span class="wrong-example">opened the computer</span> → <span class="correct-example">turned on the computer</span></li>
+    <li><span class="wrong-example">did research</span> → <span class="correct-example">did research ✓</span> （注意：research 用 do！）</li>
+    <li><span class="wrong-example">made research</span> → <span class="correct-example">did research ✓</span></li>
+    <li><span class="wrong-example">said me the news</span> → <span class="correct-example">told me the news ✓</span></li>
+    <li><span class="wrong-example">make a meeting</span> → <span class="correct-example">have a meeting ✓</span></li>
+    <li><span class="wrong-example">did the meeting</span> → <span class="correct-example">had the meeting ✓</span></li>
+    <li><span class="wrong-example">I learned the knowledge</span> → <span class="correct-example">I acquired the knowledge ✓</span></li>
+  </ul>
+</div>
+
+<h2>Make vs Do — 速记口诀</h2>
+<div class="card">
+  <p><strong>MAKE = 创造性、抽象结果</strong>（做出来一个新的东西）</p>
+  <p><strong>DO = 执行性、体力性</strong>（执行一个已有的任务）</p>
+  <ul class="examples">
+    <li>make a plan（创造） vs do the plan（执行？不，英语不用这个搭配）</li>
+    <li>make a speech（创造） vs do exercise（执行）</li>
+    <li>make a mistake（产生一个错误） vs do nothing（执行"什么也不做"）</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0009-english-idioms-collocations.html">← 返回完整课程</a> | <a href="../index.html">学科目录</a>
+</div>
+
+</body>
+</html>

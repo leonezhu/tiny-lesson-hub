@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 — 贝叶斯推理：用证据更新信念</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>贝叶斯推理：用证据更新信念</h1>
+<p class="lesson-meta">Lesson 2 &middot; ~10 minutes &middot; 数学与逻辑 &middot; 概率推断</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够写出贝叶斯公式、在医学检测和投资决策等场景中正确运用它进行信念更新，并理解为什么先验概率（base rate）会决定你的判断方向。
+</div>
+
+<h2>贝叶斯定理：公式背后的直觉</h2>
+<p>
+  上节课我们讨论了概率思维的世界观——世界不是非黑即白的。贝叶斯推理就是在这种世界观下，教你<strong>如何正确地更新信念</strong>。
+</p>
+<p>
+  贝叶斯定理的公式看起来很简洁：
+</p>
+
+<div class="concept-card">
+  <h3>贝叶斯公式</h3>
+  <div class="formula">
+    P(H|E) = P(E|H) &times; P(H) / P(E)<br>
+    用中文翻译：<br>
+    后验概率 = 似然 &times; 先验概率 / 证据概率
+  </div>
+  <p>每个部分的含义：</p>
+  <ul class="examples">
+    <li><strong>P(H)</strong> 先验概率——在看到证据之前，你相信假设 H 有多大概率的初始判断</li>
+    <li><strong>P(E|H)</strong> 似然——如果 H 是真的，观察到证据 E 的可能性有多大</li>
+    <li><strong>P(E)</strong> 证据概率——在任何情况下，观察到证据 E 的总概率（无论 H 是真还是假）</li>
+    <li><strong>P(H|E)</strong> 后验概率——看到证据 E 之后，H 为真的更新概率</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>一个记忆窍门：</strong>「后验 = 似然 &times; 先验 / 证据」——证据在分母，意味着它作为"标准化因子"存在，确保后验概率始终在 0 到 1 之间。记住：<em>新证据的作用不是直接告诉你答案，而是修正你原有的信念。</em>
+</div>
+
+<h2>经典案例：重新理解医学检测</h2>
+<p>
+  我们上节课接触过这个例子，现在用贝叶斯公式来精确计算。假设某种疾病在人群中的发病率是 1%，一项检测的敏感性（有病检测出阳性）为 90%，假阳性率（无病检测出阳性）为 5%。某人检测阳性，他真正患病的概率是多少？
+</p>
+
+<div class="concept-card">
+  <h3>一步步计算</h3>
+  <ul class="examples">
+    <li>先验概率 P(患病) = 0.01（1% 的人有病）</li>
+    <li>似然 P(阳性|患病) = 0.90（有病的人中 90% 会被检出）</li>
+    <li>证据 P(阳性) = P(阳性|患病)&times;P(患病) + P(阳性|健康)&times;P(健康)</li>
+    <li>= 0.90 &times; 0.01 + 0.05 &times; 0.99 = 0.009 + 0.0495 = 0.0585</li>
+    <li>后验 P(患病|阳性) = 0.90 &times; 0.01 / 0.0585 = 0.009 / 0.0585 &asymp; <strong>15.4%</strong></li>
+  </ul>
+  <p>检测结果是阳性，但真正患病的概率只有约 15.4%——远低于直觉上的 90%。</p>
+</div>
+
+<p>
+  这就是贝叶斯推理的核心力量：它强迫你同时考虑<strong>疾病的罕见程度</strong>（先验）和<strong>检测的准确性</strong>（似然），而不是只看检测结果本身。假阳性率 5% 看起来不高，但在 99% 的健康人群中，这意味着每 100 个健康人就有 5 个被误诊——在 1% 的发病率下，误诊人数是真实患者的 5 倍以上。
+</p>
+
+<h2>贝叶斯更新是迭代过程</h2>
+<p>
+  贝叶斯推理最迷人的地方在于它的<strong>迭代性</strong>。你今天算出的后验概率，可以成为下一次更新的先验概率。每一次新证据到来，都做一次贝叶斯更新。
+</p>
+
+<div class="concept-card">
+  <h3>连续更新示例</h3>
+  <p>还是上面的检测例子。假设这位患者的第一个检测结果是阳性（后验概率约 15.4%）。如果他又做了第二次独立检测，结果<strong>也是阳性</strong>呢？</p>
+  <ul class="examples">
+    <li>新的先验 P(患病) = 15.4%（上一次的后验）</li>
+    <li>新的 P(阳性) = 0.90 &times; 0.154 + 0.05 &times; 0.846 = 0.1386 + 0.0423 = 0.1809</li>
+    <li>新的后验 P(患病|两次阳性) = 0.90 &times; 0.154 / 0.1809 &asymp; <strong>76.6%</strong></li>
+  </ul>
+  <p>两次阳性之后，患病的概率从 1% 跳到了 15.4%，再到 76.6%——证据叠加产生了戏剧性的变化。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>中文母语者常把贝叶斯推理等同于"感觉对就往上调，感觉错就往下调"。实际上贝叶斯更新是<span class="blank">精确的数学运算</span>——你必须量化每个概率值。直觉更新（"我觉得更可疑了"）和贝叶斯更新（"概率从 15% 升到 77%"）的区别，就是模糊和精确的区别。
+</div>
+
+<h2>先验的力量：为什么初始信念决定方向</h2>
+<p>
+  贝叶斯推理有一个反直觉的性质：<strong>如果你的先验概率非常极端（接近 0 或 1），需要极其强大的证据才能改变它。</strong>
+</p>
+
+<div class="concept-card">
+  <h3>两个极端的先验</h3>
+  <ul class="examples">
+    <li><strong>极端乐观先验：</strong>如果你坚信"这个创业一定成功"（P=99%），一次失败只能把概率降到 50%——你仍然高度确信。这就是"过度自信"的贝叶斯解释</li>
+    <li><strong>极端悲观先验：</strong>如果你认为"所有投资都是骗局"（P=1%），即使看到一个盈利案例，后验概率可能也只有 5%——你仍然不信。这就是"确认偏误"的贝叶斯解释</li>
+  </ul>
+</div>
+
+<p>
+  这意味着：<strong>好的贝叶斯思维者不仅要会更新信念，还要会反思自己的先验是否合理。</strong>Richard Feynman 说过一句名言："首先，你绝不能欺骗自己——而你是最容易被人骗的人。"在贝叶斯的框架下，这句话意味着：你的先验概率可能是你最深的盲点。
+</p>
+
+<h2>贝叶斯 vs 频率学派：两大统计范式</h2>
+<p>
+  贝叶斯推理不是统计学的唯一方法。与贝叶斯学派并存的是<strong>频率学派</strong>（Frequentist Statistics），两者的核心分歧在于"概率到底是什么意思"：
+</p>
+
+<div class="concept-card">
+  <h3>贝叶斯学派 vs 频率学派</h3>
+  <ul class="examples">
+    <li><strong>贝叶斯学派：</strong>概率是对信念的不确定程度的量化。"这个假设成立的概率是 80%"是一个有意义的命题</li>
+    <li><strong>频率学派：</strong>概率是长期重复实验中的相对频率。"这个假设成立的概率是 80%"——这个问题本身没有意义，假设要么成立要么不成立</li>
+    <li><strong>贝叶斯学派</strong>给出的是具体的概率值（后验概率），频率学派给出的是置信区间和 p 值</li>
+    <li><strong>贝叶斯学派</strong>可以纳入先验知识，频率学派只使用当前数据</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>实际建议：</strong>在日常决策中，贝叶斯思维比频率学派更实用。频率学派设计用于受控实验（如药物临床试验），贝叶斯思维适用于信息逐步到来、需要动态调整判断的场景（如投资、求职、医疗诊断）。
+</div>
+
+<h2>谁在用贝叶斯推理改变世界</h2>
+
+<div class="concept-card">
+  <h3>E. T. Jaynes — 最大熵原理</h3>
+  <p>
+    物理学家 Jaynes 在 1957 年提出，贝叶斯推理的本质是"在给定约束条件下，取最无偏见的先验分布"。他将贝叶斯方法从"主观信念的表达"提升为"逻辑的延伸"——无论你信不信，只要你想在信息不全的情况下做出合理判断，贝叶斯定理就是唯一一致的推理方式。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>David Spiegelhalter — 让概率被公众理解</h3>
+  <p>
+    英国统计学家 Spiegelhalter 致力于将贝叶斯概率思想推广到公共讨论中。他指出，英国公众在面对新冠风险评估时的混乱，很大程度上是因为决策者没有用贝叶斯框架来呈现风险——"增加了 50%"听起来吓人，但如果基础概率是 0.001%，那增加到 0.0015% 几乎不意味着什么。
+  </p>
+</div>
+
+<h2>日常应用：从医疗到投资</h2>
+
+<div class="concept-card">
+  <h3>投资决策中的贝叶斯更新</h3>
+  <ul class="examples">
+    <li><strong>初始先验：</strong>你认为某支股票有 40% 的可能在一年内翻倍</li>
+    <li><strong>新证据 1：</strong>公司发布超预期财报（如果股票真的被低估，财报超预期的概率约 70%；如果被高估，超预期的概率约 20%）</li>
+    <li><strong>更新：</strong>用贝叶斯公式计算，股票翻倍概率从 40% 上升到约 66%</li>
+    <li><strong>新证据 2：</strong>宏观经济数据显示通胀上升（这对你"翻倍"假设的似然比很小，因为高通胀对大多数股票不利）</li>
+    <li><strong>再更新：</strong>概率可能回落到 50% 左右</li>
+  </ul>
+  <p>整个过程避免了"财报好就全仓买入"的情绪化决策。</p>
+</div>
+
+<div class="concept-card">
+  <h3>AI 工程中的贝叶斯优化</h3>
+  <p>
+    在训练机器学习模型时，需要调节几十个超参数（学习率、批量大小、层数等）。贝叶斯优化用高斯过程建模"参数-性能"关系的后验分布，每次试验都选择最有可能改进当前位置的参数组合——比网格搜索或随机搜索效率高出数十倍。这就是为什么 Google Cloud 的 AutoML、AWS 的 SageMaker 调参服务底层全部使用贝叶斯优化。
+  </p>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong>随时问我——我是你的数学思维导师。不确定为什么某个答案是正确的？这正是我们需要讨论的地方。直接输入你的问题，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.goodreads.com/book/show/27161138-superforecasting" target="_blank">《超级预测》— Tetlock & Gardner</a>，了解贝叶斯式思维如何在真实世界的预测中发挥作用。
+  <br><br>
+  <a href="../reference/0002-beiyes-souli.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0001-gailv-swei.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-milv-fenbu.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '贝叶斯公式是 P(H|E) = P(E|H) × P(H) / P(E)，即"后验 = 似然 × 先验 / 证据"。这是贝叶斯定理的标准表达。', wrong: 'P(E|H) 是"给定假设成立时证据出现的概率"（似然），不是"假设成立的概率"（后验）。这两个概念完全不同，贝叶斯公式把它们正确组合起来。' },
+    q2: { correct: '发病率 1% 极低，而假阳性率 5% 相对较高，这意味着假阳性人数（约 5% × 9900 ≈ 495）远超真阳性（约 90）。后验概率 ≈ 90/(90+495) ≈ 15.4%。', wrong: '直觉告诉你"检测准确"就接近 90%，但忽略了基础比率。1% 的发病率意味着绝大多数人健康，而假阳性会产生大量误诊，稀释了阳性结果的含金量。' },
+    q3: { correct: '贝叶斯更新是迭代的。第一次检测后的后验概率（15.4%）成为第二次更新时的先验。两次独立阳性后，概率大幅上升到约 76.6%。', wrong: '先验不会被"重置"。贝叶斯更新的核心就是连续性——今天的后验就是明天的先验。忽略这种连续性会导致对新证据的过度反应或反应不足。' },
+    q4: { correct: '先验概率越极端，改变它所需的证据就越强。99% 的先验需要极其罕见的证据才能显著降低——这就是"过度自信"的贝叶斯本质。', wrong: '贝叶斯定理对先验不敏感是错误的。极端先验会极大地"抵抗"更新，因为先验在公式的分子上——它和似然同等重要。' },
+    q5: { correct: 'P(E) = P(E|H)×P(H) + P(E|~H)×P(~H)，即证据的总概率 = 真阳性概率 + 假阳性概率。在这个例子中：0.90×0.01 + 0.05×0.99 = 0.0585。', wrong: 'P(E) 不是 P(E|H)，而是所有可能情况下 E 出现的总概率。它包括了"有病且检出阳性"和"没病但检出阳性"两种情况。' },
+    q6: { correct: '频率学派认为概率是长期频率，不承认"假设成立的概率"是有意义的命题。它用 p 值和置信区间来推断，而不是直接给出概率。', wrong: '频率学派和贝叶斯学派最大的分歧就是"概率的本质"。频率学派拒绝给具体假设赋值概率，只谈论重复实验的统计性质。' },
+    q7: { correct: '两次独立阳性将概率从 1% → 15.4% → 76.6%。贝叶斯更新的累积效应非常强大——连续的证据可以快速推翻初始的低先验。', wrong: '概率不会停留在 15.4%。贝叶斯更新是迭代的，第二次检测会基于第一次的后验继续更新，76.6% 是第二次更新后的后验概率。' },
+    q8: { correct: '贝叶斯优化用高斯过程建模参数-性能关系的后验分布，每次选择最有希望的参数组合，效率远高于穷举。这正是超参数调优的核心思想。', wrong: '贝叶斯优化不是"随机搜索 + 贝叶斯修正"——它是一个完整的决策框架，利用高斯过程的置信上界来平衡"探索"和"利用"，有严格的数学理论基础。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对贝叶斯推理有扎实的理解。';
+      else if (score >= 6) label.textContent = '做得不错！回顾一下错题的解释，加深理解。';
+      else label.textContent = '继续加油！重新阅读上面的例子，然后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

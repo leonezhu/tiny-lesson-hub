@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — AI 社会影响速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card-section ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card-section ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>AI 社会影响 — 快速参考卡</h1>
+<p class="lesson-meta">参考卡 &middot; 对应课程：<a href="../lessons/0012-ai-social-impact.html">Lesson 12</a></p>
+
+<div class="card-section">
+  <h2>🔧 被替代的岗位（重复性、规则明确）</h2>
+  <ul>
+    <li>翻译 — 机器翻译日常场景可达 90%+</li>
+    <li>数据录入与基础分析 — 全自动分类、报表</li>
+    <li>初级客服 — Chatbot 处理 70%+ 常见问题</li>
+    <li>内容生产 — SEO 文章、产品描述、社媒文案</li>
+    <li>初级编程 — Boilerplate、简单 Bug 修复、单元测试</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h2>📈 被增强的岗位（专业判断 + 人际连接）</h2>
+  <ul>
+    <li>医生 — AI 辅助诊断 + 人类治疗决策</li>
+    <li>律师 — AI 合同审查 + 人类法律策略</li>
+    <li>设计师 — AI 原型生成 + 人类审美选择</li>
+    <li>教师 — AI 个性化路径 + 人类情感引导</li>
+    <li>程序员 — AI 生成代码 + 人类架构设计</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h2>⚖️ 核心伦理争议</h2>
+  <ul>
+    <li><strong>偏见与公平</strong> — 训练数据放大历史不平等</li>
+    <li><strong>隐私与监控</strong> — 面部识别、行为追踪、情感计算</li>
+    <li><strong>深度伪造</strong> — 信任体系崩溃、真假难辨</li>
+    <li><strong>核心问题</strong> — 谁决策？谁负责？谁能使用？</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h2>🌐 全球治理框架</h2>
+  <ul>
+    <li><strong>欧盟 AI Act</strong> — 全球首部综合 AI 法，风险分级管理</li>
+    <li><strong>中国</strong> — 深度合成规定、生成式 AI 管理办法、算法备案</li>
+    <li><strong>美国</strong> — 行政命令 + 行业自律，立法缓慢</li>
+  </ul>
+</div>
+
+<div class="card-section">
+  <h2>🎯 五层蛋糕 — 个人定位</h2>
+  <ul>
+    <li>能源 → 芯片 → 基建 → 模型 → <strong>应用（个人最有竞争力）</strong></li>
+    <li>模型层被巨头垄断，应用层门槛最低</li>
+    <li>用 AI 解决真实问题 > 追逐模型训练</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>最后一句话：</strong>AI 不会取代你——但会用 AI 的人会。关键不是与技术竞争，而是学会与技术协作。
+</div>
+
+<div class="footer">
+  <a href="../index.html">课程目录</a>
+</div>
+
+</body>
+</html>

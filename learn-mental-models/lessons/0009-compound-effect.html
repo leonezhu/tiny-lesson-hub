@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 9 — 复利效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    background: #f5f5f5;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .warn-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .warn-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>复利效应</h1>
+<p class="lesson-meta">Lesson 9 &middot; ~12 minutes &middot; 多元思维模型</p>
+
+<div class="goal-box">
+  <strong>学完本课</strong>，你将能够：用复利公式解释任何指数增长现象，识别生活中的复利陷阱与机遇，并设计你的学习、投资和习惯系统以利用复利而非被其反噬。
+</div>
+
+<h2>为什么复利是"世界第八大奇迹"</h2>
+<p>
+  复利（Compound Effect）描述的是指数增长的本质：每一次增长的基数，都在上一次增长的基础上扩大。数学结构极为简单——
+</p>
+
+<div class="card">
+  <h3>复利的核心公式</h3>
+  <div class="formula">FV = PV × (1 + r)<sup>n</sup></div>
+  <ul class="examples">
+    <li><strong>FV</strong> = 终值（Future Value）</li>
+    <li><strong>PV</strong> = 现值（初始投入）</li>
+    <li><strong>r</strong> = 每期增长率</li>
+    <li><strong>n</strong> = 期数——关键在这里：<em>n 在指数位置</em>，不在乘数位置</li>
+  </ul>
+</div>
+
+<p>
+  关键点在于 <strong>n 出现在指数位置</strong>——增长的速度本身也在增长。在 7% 利率下，用 72 法则估算，约 10 年翻倍；70 年后同一笔投资翻 7 次，增长 128 倍。
+</p>
+
+<p>
+  这个公式的核心不是"积累"，而是<strong>"加速"</strong>：前 50% 的时间内，积累的量只占总量的约 6%。绝大多数回报集中在后半段——这就是复利曲线"J 形"特征的真正含义。
+</p>
+
+<div class="warn-box">
+  <strong>反直觉的事实：</strong>复利的前 10 年看起来非常平庸。100 万本金年化 10%，10 年后变成 2.59 万——看似只多了 1.59 万。但后 10 年（第 11-20 年），它从 2.59 万变成了 6.73 万——单是这 10 年增加的量（4.14 万），就比前 10 年的总增量（1.59 万）多了 2.5 倍。<strong>耐心本身就是复利的一部分。</strong>
+</div>
+
+<h2>复利的三个必要条件</h2>
+<p>
+  很多人知道公式，但忽略了复利生效的三个必要条件——缺一不可：
+</p>
+
+<div class="card">
+  <h3>条件 1：本金不能被毁灭</h3>
+  <ul class="examples">
+    <li>亏损 50%，需要盈利 100% 才能回本</li>
+    <li>亏损 90%，需要盈利 900% 才能回本</li>
+    <li><strong>"避免重大亏损"比"追求高收益"重要得多</strong></li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>条件 2：增长率必须为正且持续</h3>
+  <ul class="examples">
+    <li>年化 10% 持续 30 年 > 年化 50% 但中间有巨额亏损</li>
+    <li>高波动不等于高复利——<strong>波动本身就是复利的敌人</strong></li>
+    <li>一旦中断，复利曲线被重置，需要重新积累</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>条件 3：时间必须足够长</h3>
+  <ul class="examples">
+    <li>复利的前半段效果不明显，后半段爆发式增长</li>
+    <li>这就是为什么<strong>投资要趁早</strong>——不是早几年赚更多，而是多享受几轮指数增长</li>
+    <li>25 岁开始每月投 500 美元，年化 8%，到 65 岁约 170 万美元；35 岁才开始，每月投 1000 美元（双倍），也只有约 95 万</li>
+  </ul>
+</div>
+
+<div class="warn-box">
+  <strong>复利的负面版本同样强大：</strong>复利也适用于亏损和债务。每月刷信用卡不还，利息的复利效应在几年内就能让你欠下数倍于本金的债。持续亏损的投资组合，名义跌幅不大，但实际购买力的缩水是指数级的（如果计入通胀）。<strong>理解了复利的正面，就必须同时理解它的反面。</strong>
+</div>
+
+<h2>复利在金融之外的应用</h2>
+<p>
+  复利不只是金融概念——它是所有存在<strong>正反馈回路</strong>系统中普遍存在的数学现象。理解这一点，你就掌握了多元思维模型中的"底层操作系统"：
+</p>
+
+<div class="card">
+  <h3>知识复利</h3>
+  <p>每掌握一个概念，就建立了理解新概念的锚点。学语言时，掌握 1000 个常用词后新词学习速度显著加快——因为上下文推理能力增强了。已掌握的领域让新学习的边际成本更低，你不需要从零搭建理解框架。</p>
+</div>
+
+<div class="card">
+  <h3>技能复利</h3>
+  <p>编程、写作、演讲等技能在达到"临界知识量"后会出现加速：已有技能模块可以重新组合解决新问题。例如，编程能力增强后，阅读他人代码的速度加快，阅读代码又提高了架构理解力，架构理解力反过来提升编码效率——这就是技能间的<strong>自催化反应</strong>。</p>
+</div>
+
+<div class="card">
+  <h3>关系复利</h3>
+  <p>每次社交互动增加信任资本，信任资本降低了下次互动的交易成本。关系网络越大，产生新弱关系的概率越高——这是一个正向螺旋。Mark Granovetter 的研究表明，职业机会中约 56% 来自弱关系。</p>
+</div>
+
+<div class="card">
+  <h3>习惯复利</h3>
+  <p>James Clear 在《原子习惯》中提出：每次习惯执行带来 1% 改进，365 天后总改进为 37.8 倍（1.01<sup>365</sup>）。关键在于习惯必须足够小以至于无法失败——这确保了复利过程的连续性。</p>
+</div>
+
+<h2>关键人物案例</h2>
+
+<div class="card">
+  <h3>Warren Buffett — 复利的终极演示</h3>
+  <p>Buffett 的 99% 净资产是在他 50 岁之后积累的——这正是复利效应的"后半段"。他从 100 美元起步，到 93 岁时净资产超过 1000 亿美元，年化回报约 20%。关键在于他<strong>从不中断复利</strong>——即使在 1973-1974 年市场暴跌 48% 时也没有恐慌性抛售。</p>
+</div>
+
+<div class="card">
+  <h3>Charlie Munger — 认知复利</h3>
+  <p>Munger 将复利思维从财务扩展到了认知领域。他提出"每天睡觉时比醒来时聪明 1%"——不是指学到一个新事实，而是指改善了一个思维模型。如果每天改进 1%，一年后的认知能力是原来的 37 倍。<strong>"反向思考"</strong>是他的复利工具：不是问"我如何变得更聪明"，而是问"什么会让我变得更愚蠢"，然后避免这些行为。</p>
+</div>
+
+<h2>常见误区</h2>
+
+<p>
+  <strong>误区 1：复利是"快速致富"的捷径。</strong>错。复利的前半段非常缓慢——如果你期待早期就有显著回报，你会在黎明前放弃。真正的回报集中在后半段，但大多数人看不到那半段。
+</p>
+
+<p>
+  <strong>误区 2：只要开始就有用，不关心中断。</strong>错。复利需要连续性。中断一次（比如亏损 50% 后需要 100% 回报才能回本）会让之前所有的积累化为乌有。保护本金、保持稳定、持续投入，比追求最高增长率更重要。
+</p>
+
+<p>
+  <strong>误区 3：复利只适用于金钱。</strong>错。知识、技能、关系、声誉、组织文化——几乎所有有价值的事物都遵循复利曲线。不理解这一点的人会在两个方向上犯错：<strong>低估长期积累的价值，高估短期爆发的意义</strong>。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验你对复利的理解</h2>
+  <p>共有 8 道题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">假设你有两个投资机会，期限都是 30 年：</div>
+    <div class="sentence">A：年化 12%；B：年化 15%。30 年后哪个收益更高？差距大约是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">差距很小，约 10%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">差距巨大，约 4 倍</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">复利生效的必要条件。</div>
+    <div class="sentence">以下哪项是复利失效的最常见原因？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">中途大幅亏损，导致本金毁灭</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增长率略低于预期</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">学习 Python 编程。你每天花 30 分钟学习。</div>
+    <div class="sentence">为什么"每天 30 分钟"比"周末一次性学 4 小时"对复利更有利？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为总学习时间更多</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为复利需要连续性，中断会重置增长曲线</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你的投资组合今年亏损了 40%。</div>
+    <div class="sentence">要让账户回到原来的价值，明年需要盈利多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">40%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">67%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Munger 说"每天睡觉时比醒来时聪明 1%"。</div>
+    <div class="sentence">按这个速度，一年（365 天）后你的认知能力大约提高了多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 3.7 倍（1 + 0.01 × 365）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 37.8 倍（1.01 的 365 次方）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">两个投资者，每年各投相同金额。A 的年化回报 8%，B 的年化回报 11%。</div>
+    <div class="sentence">30 年后 B 的总财富大约比 A 多多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">大约多 30%（11% 比 8% 多 3 个百分点）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">多约 35%（微小差异经复利放大后产生巨大差距）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你正在设计一个习惯系统。</div>
+    <div class="sentence">以下哪种习惯设计最符合复利原则？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">每天读 5 页书，永远不中断</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">每天读 100 页书，偶尔可以跳过</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">信用卡欠款 1 万元，年利率 18%，只还最低还款额。</div>
+    <div class="sentence">这体现了复利的哪一个特性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">复利只能带来收益，不会带来损失</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">复利既是双刃剑——债务的复利效应会让你在几年内欠下数倍于本金的债务</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的思维模型导师。不确定某个答案为什么对？这正是我们该深入讨论的地方。直接问，我会解释给你听。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://jamesclear.com/atomic-habits" target="_blank">《原子习惯》</a>（James Clear）—— 把复利思维应用到日常行为的经典之作。
+  <br><br>
+  <a href="../reference/compound-effect.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0008-mean-reversion.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0010-random-walk.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确。12% × 30 年的复利因子约 31.3 倍，15% × 30 年约 67.4 倍——差距约 2.15 倍。如果加上每月追加投入，最终差距可达 4 倍以上。小差异在长时间尺度上被指数级放大。',
+      wrong: '看似只差了 3 个百分点，但 30 年的复利放大了这个差异。1.15^30 / 1.12^30 ≈ 2.15，加上定投效应差距会更大。记住：在复利面前，微小的差距不是差距，而是天堑。'
+    },
+    q2: {
+      correct: '正确。亏损 50% 需要 100% 回报才能回本，亏损 90% 需要 900%——"本金毁灭"对复利的破坏远大于"增长率偏低"。保持本金安全比追求高回报重要得多。',
+      wrong: '增长率偏低确实影响最终结果，但不会"杀死"复利。复利仍然在运作——只是慢一些。而本金毁灭会直接中断复利过程，之后需要天文数字的回报才能恢复。'
+    },
+    q3: {
+      correct: '正确。复利的核心条件是连续性——每天进步 1%，需要 365 天不间断。中断一天，那一天的复利就丢失了。30 分钟每天 = 365 × 30 分钟 ≈ 182 小时；4 小时周末 = 8 × 4 = 32 小时。连续性的价值远大于单次投入的时长。',
+      wrong: '总学习时间其实周末突击更多（4 小时 × 8 = 32 小时 vs 30 分钟 × 365 = 182 小时——但如果算连续性，后者才是复利式的）。关键是：每天 30 分钟保持了复利的连续性，中断会重置增长曲线。'
+    },
+    q4: {
+      correct: '正确。亏损 40% 后，你的本金变成了 60%。要回到 100%，需要 100/60 = 1.667 倍，即需要盈利约 67%。这就是为什么"避免重大亏损"是复利的第一原则。',
+      wrong: '不是 40%。亏损 40% 后本金剩下 60%，需要盈利 100/60 - 1 = 66.7% 才能回本。不对称亏损效应是复利思维的核心：亏钱比赚钱容易得多。'
+    },
+    q5: {
+      correct: '正确。1.01^365 = 37.8。这是复利——每天改进 1%，一年后你的"认知资产"是原来的 37.8 倍。线性思维会给出 1 + 0.01 × 365 = 4.65 倍，差了 8 倍。这就是线性思维与指数思维的差距。',
+      wrong: '1.01 × 365 = 3.65，加上初始 1 = 4.65 倍——这是线性思维（单利）。复利是 (1 + 0.01)^365 = 37.8 倍，因为每一天的改进都作为下一天的基数继续增长。'
+    },
+    q6: {
+      correct: '正确。8% 和 11% 只差 3 个百分点，但 30 年后 1.11^30 / 1.08^30 ≈ 2.69——也就是说 B 的财富是 A 的 2.7 倍，多约 170%（如果考虑定投则差距更大，约 35% 以上）。微小差异经复利放大后产生极端不平等。',
+      wrong: '3 个百分点不是"只多 30%"。1.11^30 和 1.08^30 的差异远大于线性比例。这就是复利最反直觉的地方：在短期看起来差不多的两个增长率，长期可能产生完全不同的结果。'
+    },
+    q7: {
+      correct: '正确。复利的核心条件是"增长率持续且本金不被毁灭"。每天读 5 页（小到一个不可能失败的程度）保证了连续性——这正是 James Clear 的核心观点。偶尔跳过则中断了复利链条。',
+      wrong: '每天 100 页看似效率高，但"偶尔跳过"会中断复利。一旦中断，那一天的积累就消失了——而且大目标更容易导致完全放弃。复利需要的是不可中断的持续性，不是偶尔的爆发。'
+    },
+    q8: {
+      correct: '正确。复利是一把双刃剑——它既可以让财富指数增长，也可以让债务指数增长。18% 的年利率意味着每月约 1.5% 的复利利滚利，只还最低还款额意味着大部分还款只够付利息，本金几乎不动。这就是复利的"负面版本"——理解它，你就不会轻易陷入这种陷阱。',
+      wrong: '复利当然会"带来损失"。债务的复利效应是复利最危险的一面：利息在利息上继续产生利息，导致债务以指数速度增长。理解复利的双面性是正确使用它的前提。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经深刻理解了复利效应的核心。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的例子再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

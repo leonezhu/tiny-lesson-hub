@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — 分析哲学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .content-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .content-card h3 {
+    margin-top: 0;
+  }
+
+  .content-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-card ul li {
+    padding: 0.2rem 0;
+    position: relative;
+  }
+
+  .content-card ul li::marker {
+    color: var(--accent);
+  }
+
+  .quote-block {
+    background: #f7f9fb;
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  .quote-block .attribution {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .practical-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .practical-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>分析哲学：用逻辑和语言澄清一切</h1>
+<p class="lesson-meta">第4课 · ~12 分钟 · 西方哲学主流传统</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解分析哲学的核心方法论——用逻辑分析和语言分析来解决哲学问题。你将掌握分析哲学的三大支柱：逻辑原子主义、语言哲学和日常语言哲学，并学会用分析工具来拆解日常争论中的概念混淆。学完后你能识别论证中的概念模糊，并运用分析哲学的方法让思维更清晰。
+</div>
+
+<h2>什么是分析哲学？</h2>
+
+<p>分析哲学（Analytic Philosophy）是二十世纪以来英语世界占主导地位的哲学传统。它和大陆哲学（包括现象学、存在主义等）构成了现代哲学的两大阵营。分析哲学的核心信念可以用一句话概括：</p>
+
+<div class="quote-block">
+  "哲学的问题大多源于对语言的误用——解决方法是用逻辑和语言分析来澄清概念。"
+  <span class="attribution">—— 分析哲学的基本信条</span>
+</div>
+
+<p>与现象学从意识经验出发、存在主义从人的生存处境出发不同，分析哲学从<b>语言</b>出发。它认为很多看似深奥的哲学问题，实际上是因为我们用语言的方式出了问题——我们被语言的表面结构欺骗了，提出了实际上没有意义的问题。</p>
+
+<p><b>一个经典例子</b>：有人说\"时间存在\"，又有人说\"时间不存在，只是我们感觉的变化\"。分析哲学家会问：你说的\"存在\"是什么意思？如果一个东西不能被观察、不能被测量、不能对任何经验有所影响，\"它存在\"这句话到底在说什么？维特根斯坦会说：这个问题本身是语言的误用——\"存在\"不是一个可以用于抽象概念的谓词。</p>
+
+<h2>三大支柱</h2>
+
+<div class="content-card">
+  <h3>1. 逻辑原子主义（弗雷格、罗素、早期维特根斯坦）</h3>
+  <p>分析哲学的起点是弗雷格（Gottlob Frege）发明的现代逻辑。弗雷格发现亚里士多德的三段论不足以分析复杂的推理，于是创造了一套形式化的逻辑语言——这后来被称为\"一千年以来最重要的哲学发明\"。</p>
+  <p><b>罗素</b>把这个方法用到了更广泛的哲学问题中。他著名的\"描述理论\"解决了一个古老的逻辑难题：\"当今法国国王是秃头\"这句话——法国现在没有国王，那这句话是真的、假的，还是毫无意义？罗素的回答是：这句话在逻辑上\"分解\"后其实是\"存在一个且仅一个人，他是当今法国国王，并且他是秃头\"——因为\"存在一个法国国王\"为假，整个命题为假，而非无意义。</p>
+  <p><b>早期维特根斯坦</b>在《逻辑哲学论》中走得更远：他认为整个世界的结构就是逻辑结构，哲学问题的全部解决方案就是把命题分析为基本事实的逻辑组合。他最有名的结论是：<b>\"对于不可说的东西，必须保持沉默。\"</b>——意思是：伦理学、美学、宗教等主题不能用命题式的语言来\"说\"，它们只能\"显示\"自身。</p>
+  <p><b>常见错误</b>：把分析哲学当成纯数学或纯逻辑。它虽然用逻辑工具，但目的是解决哲学问题——关于我们如何知道世界、语言如何运作、意义从何而来的问题。</p>
+</div>
+
+<div class="content-card">
+  <h3>2. 语言哲学（意义理论、指称理论）</h3>
+  <p>分析哲学从\"逻辑原子主义\"转向了\"语言哲学\"。核心问题变为：<b>语言如何与世界关联？</b>一个词如何\"指称\"一个对象？一个句子如何\"表达\"一个命题？</p>
+  <p><b>弗雷格的区分</b>是理解这个问题的起点：\"晨星\"和\"暮星\"指称的是同一个天体（金星），但\"晨星是暮星\"这个命题和\"金星是金星\"不同——后者是分析性的（同义反复），前者带来了新知识。弗雷格说：两个表达有相同的\"指称\"（Bedeutung），但有不同\"含义\"（Sinn）。</p>
+  <p>后来的哲学家——比如戴维森、塞尔、普特南——进一步发展了意义理论。普特南著名的\"缸中之脑\"思想实验和\"语义外部主义\"指出：意义不仅仅在大脑中——它与外部世界和说话者的社会环境相关。\"水\"指的是H₂O，不是因为你大脑中有\"水\"的概念，而是因为你生活在一个水确实存在的环境中。</p>
+  <p><b>关键洞察</b>：意义不是纯粹的内心状态。你说的话的意义，部分取决于外部世界和你所处的语言共同体——这打破了传统哲学中\"意义 = 大脑中的心理内容\"的假设。</p>
+</div>
+
+<div class="content-card">
+  <h3>3. 日常语言哲学（晚期维特根斯坦、奥斯汀）</h3>
+  <p>晚期维特根斯坦推翻了自己早期的观点。在《哲学研究》中，他提出：<b>语言的意义不在于逻辑结构，而在于用法。</b>他引入了\"语言游戏\"（Sprachspiel）的概念：语言像游戏一样，有各自的规则，但这些规则不是一次性制定的，而是在使用中形成的。</p>
+  <p><b>经典例子</b>：你说\"我疼\"。早期维特根斯坦会问：\"疼\"这个词指称的是什么内在状态？晚期维特根斯坦说：你不需要问这个——\"我疼\"是一种\"痛的行为表达\"，就像哭泣一样。它在你的生活中起什么作用，比它\"指称什么\"更重要。</p>
+  <p>奥斯汀（J.L. Austin）进一步把语言分析应用到行动理论。他区分了\"述事语\"（constative，描述事实）和\"施事语\"（performative，执行行动）——\"我承诺\"不是在描述一个事实，而是在\"做\"一件事。这彻底改变了我们对语言的理解：说话不只是描述世界，说话本身就是行动。</p>
+  <p><b>跨学科回响</b>：日常语言哲学深刻影响了语言学（语用学）、计算机科学（编程语言语义学）和 AI 研究。现代大语言模型的核心挑战——让机器理解语言的\"用法\"而非只是\"模式匹配\"——本质上就是维特根斯坦提出的问题。</p>
+</div>
+
+<h2>分析哲学的工具箱</h2>
+
+<p>分析哲学之所以在学术界有如此大的影响力，部分原因在于它提供了一套可操作的工具。以下是最常用的几种：</p>
+
+<div class="content-card">
+  <h3>概念分析</h3>
+  <p>把一个概念拆解到它最基本的组成部分。比如分析\"知识\"——传统的定义是\"被证实的真信念\"（JTB）。但盖梯尔（Edmund Gettier）在 1963 年提出反例：一个人有某个信念，这个信念是真的，也有好的理由相信它——但这个\"好理由\"只是巧合，实际上信念为真是因为运气。这说明\"被证实的真信念\"不够——知识还需要某种东西。这个分析过程持续了半个多世纪，至今仍在继续。</p>
+</div>
+
+<div class="content-card">
+  <h3>思想实验</h3>
+  <p>分析哲学家大量使用思想实验来测试概念的边界。\"电车难题\"测试我们对道德直觉的假设；\"中文房间\"测试\"智能\"是否可以被简化为符号操作；\"缸中之脑\"测试\"知识\"和\"实在\"的概念。每个思想实验都是在问：\"在极端情况下，你的概念还站得住吗？\"</p>
+</div>
+
+<div class="content-card">
+  <h3>归谬法（Reductio ad absurdum）</h3>
+  <p>假设对方的观点为真，然后推导出荒谬的结论，从而证明原观点有问题。这是分析哲学最常用也最有效的论证方法之一。苏格拉底就擅长这个——但他用的是对话，分析哲学家用的是严格的逻辑推导。</p>
+</div>
+
+<h2>分析哲学 vs 大陆哲学</h2>
+
+<p>理解分析哲学最好的方式之一，是和它的\"对手\"——大陆哲学——做对比：</p>
+
+<div class="content-card">
+  <h3>方法论差异</h3>
+  <ul>
+    <li><b>分析哲学</b>：通过逻辑和语言分析来澄清问题。一个论证必须是精确的、可检验的。维特根斯坦说\"哲学病源于语言休息\"，治疗方法是分析语言的用法。</li>
+    <li><b>大陆哲学</b>：通过历史反思和现象学描述来揭示问题。海德格尔、福柯等人关注权力、历史、存在等宏大主题，使用文学性和历史性的论述。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>主题差异</h3>
+  <ul>
+    <li><b>分析哲学</b>：关注知识、语言、心智、逻辑。核心问题是\"我们如何知道\"、\"语言如何有意义\"、\"意识是什么\"。</li>
+    <li><b>大陆哲学</b>：关注存在、历史、权力、解放。核心问题是\"人如何存在\"、\"权力如何塑造真理\"、\"社会如何异化人\"。</li>
+  </ul>
+</div>
+
+<div class="content-card">
+  <h3>它们可以共存吗？</h3>
+  <p>完全可以。一个优秀的思想者应该同时掌握两种思维工具：分析哲学提供精确性——避免概念混淆；大陆哲学提供深度——看到理论背后的历史和社会条件。二者不是对立的，而是互补的。就像一把手术刀和一幅地图：手术刀帮你精确地切开问题，地图帮你理解问题的整体地形。</p>
+</div>
+
+<h2>分析哲学的当代影响</h2>
+
+<div class="content-card">
+  <h3>人工智能与语言</h3>
+  <p>当代 AI 研究中的核心问题——语言理解、常识推理、意图识别——都可以追溯到分析哲学的语言哲学传统。\"语义外部主义\"（普特南）直接挑战了\"心智在大脑中\"的传统观点：如果一个人在\"地球2\"上，那里的\"水\"是XYZ而不是H₂O，他说的\"水是湿的\"和我们说的\"水是湿的\"意义相同吗？如果意义依赖外部世界，那 AI 要真正理解语言，需要的不只是内部表征——它需要与世界互动。</p>
+  <p>这正是大语言模型面临的困境：它们有强大的\"内部语言模型\"，但缺乏\"外部锚定\"——没有身体、没有历史、没有真实世界的使用经验。从维特根斯坦的角度看，没有\"语言游戏\"的语境，语言就是空的符号。</p>
+</div>
+
+<div class="content-card">
+  <h3>认知科学</h3>
+  <p>分析哲学中的心灵哲学（philosophy of mind）是认知科学的重要理论基础。\"心身问题\"——意识如何从物质中产生——在分析哲学中被转化为精确的概念问题：\"感受质\"（qualia）是什么？\"意向性\"（关于某物的能力）如何可能？\"他心问题\"（我们如何知道他人有意识）如何解决？这些不是抽象的哲学游戏——它们直接塑造了 AI 研究者和认知科学家的问题意识。</p>
+</div>
+
+<div class="content-card">
+  <h3>日常应用：澄清争论</h3>
+  <p>分析哲学的最大实用价值，在于它在日常中的应用——让争论变得有建设性。当两个人在争论\"自由意志是否存在\"时，分析哲学的方法会问：你说的\"自由\"是什么意思？你说的\"决定\"是什么意思？这两个概念在你使用的定义下兼容吗？大多数情况下，争论会消解——因为人们发现自己用的不是同一个概念。</p>
+  <p>这不是\"和稀泥\"——这是真正的智慧：在争论之前，先搞清楚自己在争论什么。</p>
+</div>
+
+<div class="practical-box">
+  <strong>今天的练习：</strong> 想一个你最近和别人有分歧的话题。然后用分析哲学的方法做三步：（1）写下对方使用的核心概念（比如\"公平\"、\"正义\"、\"自由\"）；（2）问自己\"这个概念在我的使用中是什么意思？在对方的使用中是什么意思？\"；（3）重写你们的争论——用精确的语言，避免概念混淆。你会发现，很多争论之所以激烈，不是因为双方真诚但立场不同，而是因为他们其实在说不同的事。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解分析哲学</h2>
+  <p>根据分析哲学的核心思想，判断以下情境。每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">罗素的描述理论。</div>
+    <div class="sentence">\"当今法国国王是秃头\"——根据罗素的分析，这句话——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">没有意义，因为法国没有国王</button>
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">有明确真假值——它为假，因为不存在法国国王</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">弗雷格的\"含义\"和\"指称\"的区分。</div>
+    <div class="sentence\">\"晨星\"和\"暮星\"——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">指称相同，但含义不同</button>
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">含义相同，指称也不同</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">早期维特根斯坦的《逻辑哲学论》。</div>
+    <div class="sentence\">\"对于不可说的东西，必须保持沉默\"的含义是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">伦理学和美学毫无价值，应该被排除在思考之外</button>
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">伦理学和美学不能用命题性语言表达，它们显示自身而非被说</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">晚期维特根斯坦的\"语言游戏\"概念。</div>
+    <div class="sentence\">语言的意义主要取决于——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">词语与事物之间的对应关系</button>
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">语言在生活中的用法</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">奥斯汀的\"施事语\"（performative）。</div>
+    <div class="sentence\">当法官说\"我宣判你有罪\"时——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">这不是在描述事实，而是在执行一个行动</button>
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">这是在描述一个已经存在的法律状态</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context\">普特南的\"语义外部主义\"。</div>
+    <div class="sentence\">\"意义不在头脑中\"的含义是——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">大脑对意义没有任何贡献</button>
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">词语的意义部分取决于外部世界和语言共同体的环境</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context\">盖梯尔反例对\"知识\"定义的挑战。</div>
+    <div class="sentence\">盖梯尔反例表明\"被证实的真信念\"作为知识的定义——</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">不够充分，因为可能存在巧合为真的情况</button>
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">完全正确，知识就是被证实的真信念</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你参加一个会议，两个人在争论\"什么是真正的自由\"。</div>
+    <div class="sentence">分析哲学家会首先做什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct=\"false\" onclick=\"check(this)\">直接给出自己对自由的定义</button>
+      <button class="option-btn" data-correct=\"true\" onclick=\"check(this)\">分析双方使用的\"自由\"一词的具体含义和预设</button>
+    </div>
+    <div class="feedback\"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——分析哲学的核心训练就是提问。不理解某个论证的哪一步？不确定某个概念在分析哲学语境下的含义？这就是我该出场的时候。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://plato.stanford.edu/entries/analytic-philosophy/" target="_blank">斯坦福哲学百科全书 — 分析哲学</a> — 学术深度但可读性很好，系统理解分析哲学的历史脉络和核心争论。
+  <br><br>
+  <a href="../reference/analytic-philosophy-overview.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-phenomenology.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-daoism-taoism.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '罗素的描述理论将\"当今法国国王是秃头\"分解为：(1)存在至少一个当今法国国王；(2)存在至多一个；(3)他是秃头。因为(1)为假，整个合取命题为假——它有明确真假值，只是为假。', wrong: '\"没有意义\"是逻辑实证主义或早期维特根斯坦可能的回答，但罗素的描述理论恰恰是要证明这句话\"有意义\"——它只是为假，而非无意义。' },
+    q2: { correct: '\"晨星\"和\"暮星\"都指称金星（指称相同），但\"晨星\"的含义是\"清晨出现的星\"，\"暮星\"是\"傍晚出现的星\"——它们的含义不同，所以\"晨星是暮星\"提供了新信息。', wrong: '如果含义相同，\"晨星是暮星\"就是同义反复（像\"金星是金星\"），但历史上发现晨星=暮星是天文学的重要发现，说明它确实提供了新信息——含义不同。' },
+    q3: { correct: '维特根斯坦不是说伦理学不重要——恰恰相反，他认为伦理学\"至关重要\"，只是不能用命题式的科学语言来\"说\"。它只能\"显示\"在人的生活之中。就像一幅画的意义不在它的像素描述中，而在它的整体呈现中。', wrong: '\"毫无价值\"完全误解了维特根斯坦。他说伦理学\"不可说\"恰恰是因为它太重要——重要的事物不能用命题语言来把握。不是贬低，而是划定语言的界限。' },
+    q4: { correct: '晚期维特根斯坦的核心转变：从\"意义是对应\"到\"意义是用法\"。语言像工具，工具的意义不在于它对应什么，而在于它在生活实践中发挥什么作用。\"语言游戏\"就是这个思想的比喻。', wrong: '\"词语与事物之间的对应\"是早期维特根斯坦和传统语义学的观点。晚期维特根斯坦明确反对——他说\"一个词的意义就是它在语言中的用法\"，而不是它指向的物体。' },
+    q5: { correct: '奥斯汀的\"施事语\"概念：\"我宣判你有罪\"不是在描述一个事实，而是在执行\"判刑\"这个行动。说法官\"宣判\"的同时就是在\"执行判决\"。语言不只是描述世界——语言本身就是行动。', wrong: '\"描述一个已经存在的法律状态\"是述事语（constative）的特征，不是施事语（performative）。法官的\"宣判\"不是在描述一个已有的状态——正是这句话创造了这个法律状态。' },
+    q6: { correct: '普特南的\"语义外部主义\"：词的意义不完全由说话者大脑中的心理内容决定，还取决于外部世界（比如H₂O的分子结构）和说话者所处的社会环境。这就是\"意义不在头脑中\"的含义。', wrong: '\"大脑对意义没有任何贡献\"走得太远。普特南不否认大脑参与意义的构建，但他的核心观点是：意义不能仅仅在大脑中理解——外部世界和共同体是意义的一部分。' },
+    q7: { correct: '盖梯尔反例：一个人有信念B，B是真的，也有好的证据E支持B——但B为真是因为巧合（不是E真正支持B）。这说明\"被证实的真信念\"还不够，知识需要排除运气因素。这个争论至今未平息。', wrong: '盖梯尔论文《被证实的真信念是知识吗？》正是要反驳这个定义。他指出即使满足JTB三条件，仍可能是运气让信念为真——而知识不应依赖运气。' },
+    q8: { correct: '分析哲学的标准做法：在解决争论之前，先澄清概念。\"自由\"在自由主义者、马克思主义者、存在主义者那里的含义可能完全不同。不先澄清定义，争论就是鸡同鸭讲。', wrong: '直接给出定义是独断的——它假设自己的定义是唯一正确的。分析哲学的方法是\"分析\"而非\"断言\"：先搞清楚各方到底在说什么，再来判断谁的论证更有力。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你对分析哲学的方法论有扎实的理解。';
+      else if (score >= 5) label.textContent = '不错！回顾一下错题的解释，分析哲学的核心就是理解概念背后的逻辑结构。';
+      else label.textContent = '继续加油！分析哲学的精髓在于精确——重新阅读上面的内容，特别注意每个哲学家的核心区分。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

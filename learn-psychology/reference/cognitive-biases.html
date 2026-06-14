@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 认知偏差速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card p { margin-bottom: 0.5rem; }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.15rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>认知偏差速查</h1>
+<p class="lesson-meta">参考卡 · 第 12 课配套 · 快速回顾</p>
+
+<div class="highlight-box">
+  <strong>双系统：</strong>系统 1 = 直觉、快、自动化、省力、易出错 | 系统 2 = 分析、慢、费力、准确但懒惰
+</div>
+
+<div class="card">
+  <h3>1. 确认偏误（Confirmation Bias）</h3>
+  <p><strong>核心：</strong>只看支持已有信念的信息</p>
+  <p><strong>例子：</strong>只看支持自己立场的新闻</p>
+  <p><strong>对策：</strong>主动寻找反面证据；问"如果我错了会怎样？"</p>
+</div>
+
+<div class="card">
+  <h3>2. 锚定效应（Anchoring Effect）</h3>
+  <p><strong>核心：</strong>第一印象/初始信息过度影响判断</p>
+  <p><strong>例子：</strong>$999 原价让 $799 显得便宜</p>
+  <p><strong>对策：</strong>主动调整参照点；先独立思考再参考他人数字</p>
+</div>
+
+<div class="card">
+  <h3>3. 损失厌恶（Loss Aversion）</h3>
+  <p><strong>核心：</strong>失去的痛苦 ≈ 获得快乐的 2 倍</p>
+  <p><strong>例子：</strong>舍不得卖亏损股票</p>
+  <p><strong>对策：</strong>问"如果我现在没有持仓，我会买吗？"</p>
+</div>
+
+<div class="card">
+  <h3>4. 可得性启发（Availability Heuristic）</h3>
+  <p><strong>核心：</strong>容易想到的 = 更频繁/更严重</p>
+  <p><strong>例子：</strong>空难新闻让你高估飞行风险</p>
+  <p><strong>对策：</strong>查统计数字而非依赖直觉记忆</p>
+</div>
+
+<div class="card">
+  <h3>5. 沉没成本谬误（Sunk Cost Fallacy）</h3>
+  <p><strong>核心：</strong>已投入成本影响未来决策</p>
+  <p><strong>例子：</strong>看完烂片不想走</p>
+  <p><strong>对策：</strong>只看"从现在起值不值"，不看"已经花了多少"</p>
+</div>
+
+<div class="card">
+  <h3>6. 基本归因错误（FAE）</h3>
+  <p><strong>核心：</strong>别人的错是性格，自己的错是环境</p>
+  <p><strong>例子：</strong>同事迟到 = 他不靠谱；我迟到 = 路堵</p>
+  <p><strong>对策：</strong>换位思考——如果我是对方，同样的环境我会怎样？</p>
+</div>
+
+<div class="card">
+  <h3>通用策略</h3>
+  <ul>
+    <li>预-mortem 分析：假设决策失败，倒推原因</li>
+    <li>外部视角：类似情况一般结果如何？</li>
+    <li>延迟判断：情绪激动时至少等 30 分钟</li>
+    <li>决策清单：为重复性决策建立偏差检查步骤</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0012-cognitive-biases.html">← 返回完整课程</a>
+</div>
+
+</body>
+</html>

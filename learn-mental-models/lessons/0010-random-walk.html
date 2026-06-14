@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 10 — 随机游走</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #f7f9fb;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .insight-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .insight-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>随机游走</h1>
+<p class="lesson-meta">Lesson 10 &middot; ~10 minutes &middot; 多元思维模型</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能识别何时世界遵循随机游走模式、何时不是，理解赌徒谬误的数学根源，并掌握在不确定性中做出更理性决策的方法。
+</div>
+
+<h2>什么是随机游走</h2>
+<p>
+  随机游走是最简单的数学模型之一，却也是最深刻的模型之一。想象一个醉汉从路灯下出发，每一步以 50% 的概率向左或向右走一步。你不知道他下一步去哪——但你能精确计算他经过 n 步后的大致范围。
+</p>
+<p>
+  1900 年，法国数学家 Louis Bachelier 在做博士论文时发现了一件惊世骇俗的事：<strong>股票价格的变动，几乎就是这样一个醉汉走路</strong>。他比 Einstein 早半年用随机过程描述价格变动，但他的论文被导师评价为"毫无用处"。直到 50 年后，金融学界才重新发现 Bachelier 的工作。
+</p>
+
+<div class="concept-card">
+  <h3>数学结构</h3>
+  <div class="formula">S<sub>t</sub> = S<sub>0</sub> + X<sub>1</sub> + X<sub>2</sub> + ... + X<sub>t</sub></div>
+  <p>每一步 X<sub>i</sub> 是独立的随机变量。下一步的位置<strong>只取决于当前位置</strong>，与之前的路径完全无关——这就是"无记忆性"。</p>
+  <ul class="examples">
+    <li><strong>期望值等于起点</strong>：走了 100 步后，最可能的位置还是在起点</li>
+    <li><strong>但典型距离是 &radic;n</strong>：100 步后，典型距离约 10 步远</li>
+    <li><strong>一维游走在正负半轴的累计时间中位数是 0</strong>：50% 的概率它从头到尾都不曾回到起点</li>
+  </ul>
+</div>
+
+<h2>随机游走 vs 均值回归</h2>
+<p>
+  这两个概念完全相反——但在直觉上极其容易被混淆。
+</p>
+
+<div class="concept-card">
+  <h3>均值回归</h3>
+  <ul class="examples">
+    <li>系统有一个"中心引力"，偏离后会自然回来</li>
+    <li>比如身高、体温、考试成绩</li>
+    <li>过去的好运气意味着未来的坏运气</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>随机游走</h3>
+  <ul class="examples">
+    <li>系统<strong>没有</strong>中心引力，也没有"应该回到"的地方</li>
+    <li>比如股票价格、汇率、天气模式</li>
+    <li>过去的涨跌对未来<strong>毫无预示</strong>——每一步都是全新的随机事件</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>最常见的认知错误：</strong>赌徒谬误。连续 5 次正面后，你觉得"下次必然是反面"。但在独立投掷中，第 6 次正面概率仍是 50%。随机游走的每一步都不"记得"之前的结果——这是理解随机世界的核心前提。
+</div>
+
+<h2>随机游走的跨学科面孔</h2>
+
+<div class="concept-card">
+  <h3>物理学：布朗运动</h3>
+  <p>花粉颗粒在水中的无规则运动，本质上是水分子对花粉的随机碰撞。Einstein 1905 年的论文用随机游走解释了这一现象，为原子论提供了第一个无可辩驳的实验证据。</p>
+</div>
+
+<div class="concept-card">
+  <h3>生物学：基因漂变</h3>
+  <p>Kimura 的中性进化理论认为，分子层面的进化主要由随机遗传漂变驱动——而非自然选择。一个小群体的基因频率变化，本质上就是一个随机游走过程。</p>
+</div>
+
+<div class="concept-card">
+  <h3>计算机科学：PageRank</h3>
+  <p>Google 的 PageRank 算法将一个"随机冲浪者"在互联网上随机点击链接的轨迹建模为随机游走。页面的重要性等于它在这个游走过程中被访问的频率。</p>
+</div>
+
+<div class="concept-card">
+  <h3>金融：有效市场假说</h3>
+  <p>Eugene Fama 论证：如果市场是有效的，股票价格变动就近似随机游走——因为所有已知信息已经被当前价格吸收了。这意味着技术分析（看历史图表预测未来）在理论上就是无效的。</p>
+</div>
+
+<div class="insight-box">
+  <strong>反直觉的关键洞察：</strong> James Simons 的 Renaissance Technologies 利用了这个"矛盾"——虽然单个资产价格接近随机游走，但资产对之间存在短暂的统计偏离（均值回归）。他发现了比随机游走更可预测的模式，这成了史上回报最高的对冲基金的秘密。
+</div>
+
+<h2>不理解随机游走的代价</h2>
+<p>
+  当你在随机游走中误认"模式"时，会产生系统性错误：
+</p>
+<ul class="examples">
+  <li><strong>投资中追逐趋势</strong>：把随机波动当信号，追涨杀跌，扣除费用后长期跑输指数</li>
+  <li><strong>赌博中的"翻本"心理</strong>：连续输后加大赌注，认为"该赢了"——但每一步都是独立的，输的概率不会因为你输得多就变小</li>
+  <li><strong>实验中误认模式</strong>：A/B 测试中把随机噪声当"趋势"，做出错误的产品决策</li>
+  <li><strong>把好运当能力</strong>：一次成功的投资决策可能只是随机游走中的一个向上波动</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>现实世界的复杂之处：</strong> 真正的金融市场不是纯粹的随机游走。Mandelbrot 指出金融价格有"肥尾"——极端事件比随机游走预测的更频繁。Taleb 进一步指出，许多社会系统具有"反脆弱性"，在随机冲击中反而获益。理解"什么时候是随机游走、什么时候不是"本身就是一个需要判断力的技能。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别随机游走</h2>
+  <p>判断以下场景是否符合随机游走的特征。每道题有两个选项，点击后查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你正在分析一项投资决策。</div>
+    <div class="sentence">某股票连续三天上涨。以下哪个说法更符合随机游走理论？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">第四天涨跌的概率各约 50%，与前三天无关</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">连续三天涨，第四天更可能回调</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在学习概率。</div>
+    <div class="sentence">一枚硬币连续 5 次抛出正面。第 6 次抛出正面的概率是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">低于 50%，因为反面"该"来了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正好 50%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在研究投资策略。</div>
+    <div class="sentence">长期来看，被动指数基金 vs 主动选股基金的回报对比是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">主动选股长期更优，因为优秀经理能战胜市场</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">扣除费用后，指数基金长期更优</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在分析一个随机游走模型。</div>
+    <div class="sentence">一个一维随机游走走了 10,000 步后，距离起点的典型距离大约是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 10,000 步</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 100 步</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在学习生物学。</div>
+    <div class="sentence">Kimura 的中性进化理论认为分子层面的进化主要由什么驱动？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">自然选择</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">随机遗传漂变</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在玩轮盘赌。</div>
+    <div class="sentence">连续 8 次红色后，你最应该做什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">理解这是随机过程，下注决策不应受之前结果影响</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">加大赌注押黑色，因为黑色"该"来了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在评估一个业务预测。</div>
+    <div class="sentence">一个初创公司的月收入数据呈现"随机游走近似"。以下哪种策略最理性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">根据最近三个月的趋势线性外推预测明年收入</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">设定多种情景假设，并为最坏情况预留安全边际</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在阅读 Google 的技术博客。</div>
+    <div class="sentence">PageRank 算法中的"随机冲浪者"模型与随机游走的关联是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它模拟用户随机浏览网页的行为，与排名无关</button>
+      <button class="option-btn" data-correct="true" onclick="check(it)">页面的重要性等于它在随机游走中被访问的频率</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——我是你的思维模型教练。不确定为什么某个答案对、某个错？这正是我们该讨论的。输入你的问题，我来解释。
+  <br><br>
+  <strong>延伸阅读：</strong> <a href="https://en.wikipedia.org/wiki/Random_walk_hypothesis" target="_blank">随机游走假说 — Wikipedia</a> | <a href="https://en.wikipedia.org/wiki/Gambler%27s_fallacy" target="_blank">赌徒谬误 — Wikipedia</a>
+  <br><br>
+  <a href="../reference/random-walk.html" class="resource-link">查看参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-compound-effect.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-critical-mass.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '随机游走的每一步都是独立的。"今天涨"对未来没有预测能力——这是有效市场假说的核心含义。', wrong: '连续上涨后的"回调预期"是赌徒谬误。在随机游走中，每一步的概率与历史无关，没有"该"回调这回事。' },
+    q2: { correct: '独立事件不受历史影响。每次投掷正面概率固定为 50%。硬币没有"记忆"。', wrong: '"该来了"是赌徒谬误的经典表现。独立性意味着即使连续 100 次正面，第 101 次的概率仍是 50%。' },
+    q3: { correct: 'SPIVA 数据持续显示，扣除管理费和交易成本后，约 80-90% 的主动基金长期跑输基准指数。这是随机游走近似在市场中的实际表现。', wrong: '少数明星经理的成功很可能是随机游走中的向上波动——他们被"选中"了，而非被"证明"了。长期来看，费用是指数级消耗。' },
+    q4: { correct: '随机游走的典型距离是 √n。√10000 = 100。这意味着即使走了 10,000 步，平均位置离起点只有约 100 步。', wrong: '如果距离等于步数（10,000），那就是直线行走而非随机游走。随机游走的曲折路径使得位移增长远慢于步数——它是 √n 而非 n。' },
+    q5: { correct: 'Kimura 的中性理论指出，大多数分子层面的突变是中性的（不影响适应性），它们的频率变化主要由随机漂变驱动，而非自然选择。', wrong: '自然选择在表型层面确实起重要作用，但 Kimura 的贡献正在于指出：在分子层面，随机因素才是主力。这是一个反直觉但被 DNA 序列数据反复验证的事实。' },
+    q6: { correct: '每次轮盘旋转都是独立事件。红色和黑色的概率每次都不变（轮盘没有记忆）。最理性的做法是理解这一点并基于期望值做决策。', wrong: '加大赌注押黑色是赌徒谬误 + 赌徒破产策略的组合。每一步的概率不变，但你的资金是有限的——这个策略在数学上几乎必然导致你输光。' },
+    q7: { correct: '随机游走近似意味着过去数据对未来几乎没有预测能力。设定情景假设和预留安全边际是在承认不确定性的同时做出稳健决策的方法。', wrong: '线性外推假设系统有确定性的趋势。但在随机游走中，过去的趋势不预示未来——外推可能将你引向完全错误的方向。' },
+    q8: { correct: 'PageRank 将互联网建模为一个有向图，随机冲浪者从一个页面点击链接到另一个页面。稳态下被访问频率最高的页面就是最重要的页面。', wrong: '随机冲浪者模型不是为了模拟真实用户行为——它是一个数学构造，用于计算图的稳态分布。真正的用户行为与随机游走大相径庭，但数学结果意外地好用。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对随机游走的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题目，解释中会告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的概念和解释，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

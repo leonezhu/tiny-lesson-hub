@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 正态分布与肥尾效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  .highlight {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .highlight strong { color: var(--accent); }
+
+  .warn {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .warn strong { color: #e65100; }
+
+  ul {
+    margin: 0.5rem 0 0.75rem 1.5rem;
+  }
+
+  li {
+    margin-bottom: 0.3rem;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>正态分布 vs 肥尾效应</h1>
+<p class="lesson-meta">参考卡 &middot; 多元思维模型 &middot; ~5 分钟阅读</p>
+
+<div class="highlight">
+  <strong>核心命题：</strong>世界分为两种分布——"田径场式"（正态分布）和"赌场式"（肥尾分布）。用错分布类型，必然做出错误决策。
+</div>
+
+<h2>正态分布（Bell Curve）</h2>
+<div class="card">
+  <h3>特征</h3>
+  <ul>
+    <li>对称钟形，均值=中位数=众数</li>
+    <li>68% 数据在 ±1σ 内，95% 在 ±2σ，99.7% 在 ±3σ</li>
+    <li>极端值几乎不可能出现</li>
+    <li>各事件<strong>独立</strong>，不存在传染性</li>
+  </ul>
+  <h3>典型领域</h3>
+  <ul>
+    <li>人类生理数据（身高、血压、测量误差）</li>
+    <li>标准化考试成绩</li>
+    <li>温度、物理测量</li>
+  </ul>
+  <h3>关键定理</h3>
+  <p><strong>中心极限定理：</strong>大量独立随机变量之和趋向正态分布。这解释了为什么正态分布在自然界如此常见。</p>
+</div>
+
+<h2>肥尾分布（Fat Tails）</h2>
+<div class="card">
+  <h3>特征</h3>
+  <ul>
+    <li>尾部概率远高于正态分布预测</li>
+    <li>极端事件是"常态"而非"异常"</li>
+    <li>各事件<strong>相关</strong>，存在传染性和级联效应</li>
+    <li>均值和中位数可能无意义（发散）</li>
+  </ul>
+  <h3>典型领域</h3>
+  <ul>
+    <li>金融市场（收益率、波动率）</li>
+    <li>战争规模、自然灾害</li>
+    <li>城市规模、互联网流量、财富分配</li>
+    <li>创业成功、社交网络影响力</li>
+  </ul>
+</div>
+
+<h2>决策差异速查</h2>
+<div class="card">
+  <table style="width:100%;border-collapse:collapse;">
+    <tr style="background:var(--accent-light);">
+      <th style="padding:0.5rem;text-align:left;">决策维度</th>
+      <th style="padding:0.5rem;text-align:left;">正态世界策略</th>
+      <th style="padding:0.5rem;text-align:left;">肥尾世界策略</th>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">风险管理</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">VaR、标准差</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">压力测试、情景分析</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">投资组合</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">均值-方差优化</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">杠铃策略</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">预测</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">回归到均值</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">关注尾部、拥抱不确定性</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">冗余</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">效率优先</td>
+      <td style="padding:0.5rem;border-top:1px solid var(--border);">适度冗余是美德</td>
+    </tr>
+  </table>
+</div>
+
+<h2>关键数字</h2>
+<div class="card">
+  <ul>
+    <li>2008 年金融危机中，VaR 模型将崩盘标记为 <strong>"百万分之一概率"</strong>——实际几年内就发生了</li>
+    <li>1987 年黑色星期一：道琼斯单日暴跌 22.6%——正态分布下平均 <strong>30 亿年</strong> 出现一次</li>
+    <li>曼德博 1963 年就指出棉花价格不服从正态分布——被主流嘲笑 <strong>45 年后</strong> 才被证实</li>
+    <li>里士满冲突数据：大规模战争的频率符合幂律，小冲突数量远大于大冲突，但总死亡量中 <strong>一半来自最大战争</strong></li>
+  </ul>
+</div>
+
+<div class="warn">
+  <strong>常见陷阱：</strong>在肥尾领域使用正态思维是最危险的认知错误之一。它给你一个虚假的安全感——"统计显示几乎不可能发生"。在肥尾世界中，"几乎不可能"等于"迟早会发生"。
+</div>
+
+<h2>关键人物</h2>
+<ul>
+  <li><strong>高斯：</strong>正态分布的理论奠基</li>
+  <li><strong>曼德博：</strong>金融肥尾的发现者，分形几何创始人</li>
+  <li><strong>塔勒布：</strong>黑天鹅理论，反脆弱哲学</li>
+  <li><strong>George Box：</strong>"所有模型都是错的，但有些是有用的"</li>
+</ul>
+
+<div class="footer">
+  <a href="../lessons/0003-power-law.html">上一课：幂律分布</a> | <a href="../index.html">目录</a> | <a href="../lessons/0004-normal-fat-tails.html">下一课：正态分布与肥尾效应</a>
+</div>
+
+</body>
+</html>

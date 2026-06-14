@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考卡：深度学习与反向传播</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .math-block {
+    background: #f7f9fb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  .math-block .label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+
+  .footer-link {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+
+  .footer-link a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .footer-link a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<h1>深度学习与反向传播</h1>
+<p class="subtitle">快速参考卡 &middot; 第三课概要</p>
+
+<div class="card">
+  <h3>核心公式</h3>
+  <div class="math-block">
+    <div class="label">权重更新</div>
+    w_new = w_old - learning_rate · ∂L/∂w
+  </div>
+  <div class="math-block">
+    <div class="label">链式法则（反向传播核心）</div>
+    ∂L/∂w₁ = ∂L/∂ŷ · ∂ŷ/∂h · ∂h/∂w₁
+  </div>
+  <div class="math-block">
+    <div class="label">常见损失函数</div>
+    MSE: L = (1/n) Σ(ŷᵢ - yᵢ)² &nbsp;&nbsp;（回归）<br>
+    Cross-Entropy: L = -Σ yᵢ log(ŷᵢ) &nbsp;&nbsp;（分类）
+  </div>
+</div>
+
+<h2>反向传播三步走</h2>
+<div class="card">
+  <ul>
+    <li>前向传播：输入 → 网络 → 输出 → 计算损失</li>
+    <li>反向传播梯度：从输出层往回，链式法则计算 ∂L/∂w 对每个参数</li>
+    <li>更新权重：w = w - lr · ∂L/∂w</li>
+  </ul>
+</div>
+
+<h2>超参数速查</h2>
+<div class="card">
+  <h3>学习率</h3>
+  <ul>
+    <li>太大 → 跳过最低点、发散</li>
+    <li>太小 → 训练极慢</li>
+    <li>典型范围：0.001 ~ 0.01（Adam）</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>批量大小</h3>
+  <ul>
+    <li>小（16-32）：噪音大但泛化好</li>
+    <li>中（128-256）：平衡之选</li>
+    <li>大（1024+）：效率高但可能泛化差</li>
+  </ul>
+</div>
+
+<h2>优化器对比</h2>
+<div class="card">
+  <ul>
+    <li><strong>SGD</strong>：简单，统一学习率，对超参数敏感</li>
+    <li><strong>SGD + Momentum</strong>：加入速度，穿过平坦区域更快</li>
+    <li><strong>Adam</strong>：自适应学习率，默认选择，lr=0.001</li>
+    <li><strong>AdamW</strong>：Adam + 独立权重衰减，通常更好</li>
+  </ul>
+</div>
+
+<h2>过拟合防治清单</h2>
+<div class="card">
+  <ul>
+    <li>数据增强：翻转、裁剪、加噪声</li>
+    <li>Dropout：训练时随机关神经元</li>
+    <li>早停：验证集性能不升即停</li>
+    <li>权重衰减（L2）：惩罚大权重</li>
+  </ul>
+</div>
+
+<h2>激活函数速查</h2>
+<div class="card">
+  <ul>
+    <li>ReLU: f(x) = max(0, x) — 隐藏层首选</li>
+    <li>Sigmoid: (0, 1) — 二分类输出层</li>
+    <li>Tanh: (-1, 1) — 有时用于 RNN</li>
+    <li>Softmax: 概率分布 — 多分类输出层</li>
+  </ul>
+</div>
+
+<div class="footer-link">
+  详细课程：<a href="../lessons/0003-deep-learning-backprop.html">深度学习与反向传播 — 第三课</a>
+</div>
+
+</body>
+</html>

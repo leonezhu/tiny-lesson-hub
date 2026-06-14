@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Reference — Passive Voice</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .ref-meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+  }
+
+  th {
+    background: var(--accent-light);
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+
+  tr:nth-child(even) td { background: #fafafa; }
+
+  .rule-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .do {
+    border-left: 3px solid var(--correct);
+    padding-left: 0.75rem;
+    margin: 0.5rem 0;
+  }
+
+  .dont {
+    border-left: 3px solid var(--wrong);
+    padding-left: 0.75rem;
+    margin: 0.5rem 0;
+    color: var(--wrong);
+  }
+
+  .link-back {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .link-back a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>Passive Voice — Quick Reference</h1>
+<p class="ref-meta">From Lesson 9: Passive Voice — When &amp; Why</p>
+
+<h2>Formula</h2>
+<div class="rule-box">
+  <strong>be + past participle (V3)</strong> — the "be" verb changes to match the tense.
+</div>
+
+<h2>Passive Across Tenses</h2>
+<table>
+  <tr><th>Tense</th><th>Active</th><th>Passive</th></tr>
+  <tr><td>Present Simple</td><td>She writes the report.</td><td>The report <strong>is written</strong>.</td></tr>
+  <tr><td>Past Simple</td><td>She wrote the report.</td><td>The report <strong>was written</strong>.</td></tr>
+  <tr><td>Present Perfect</td><td>She has written the report.</td><td>The report <strong>has been written</strong>.</td></tr>
+  <tr><td>Future (will)</td><td>She will write the report.</td><td>The report <strong>will be written</strong>.</td></tr>
+  <tr><td>Modal (should)</td><td>She should write the report.</td><td>The report <strong>should be written</strong>.</td></tr>
+  <tr><td>Present Cont.</td><td>She is writing the report.</td><td>The report <strong>is being written</strong>.</td></tr>
+</table>
+
+<h2>When to Use</h2>
+<div class="rule-box">
+  <div class="do"><strong>✓ Unknown doer:</strong> "My wallet was stolen."</div>
+  <div class="do"><strong>✓ Irrelevant doer:</strong> "The policy was changed."</div>
+  <div class="do"><strong>✓ Focus on recipient:</strong> "The CEO was interviewed."</div>
+  <div class="do"><strong>✓ Scientific/formal:</strong> "The sample was heated to 100°C."</div>
+</div>
+
+<h2>When to Avoid</h2>
+<div class="rule-box">
+  <div class="dont"><strong>✗ You know the doer and want to credit/blame:</strong> Use active — "We fixed the bug."</div>
+  <div class="dont"><strong>✗ Personal communication:</strong> Emails, updates, Slack — use active.</div>
+  <div class="dont"><strong>✗ When clarity matters:</strong> Passive can obscure who is responsible.</div>
+</div>
+
+<div class="link-back">
+  <a href="../lessons/0009-passive-voice.html">← Back to full lesson</a>
+</div>
+
+</body>
+</html>

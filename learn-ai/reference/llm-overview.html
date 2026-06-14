@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大语言模型 LLM — 速查参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .ref-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    margin-top: 1.2rem;
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.6rem; }
+
+  .ref-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .ref-card strong { color: var(--accent); }
+
+  .key-point {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.6rem 0.8rem;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+  }
+
+  ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .nav-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .nav-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>大语言模型 LLM — 速查卡</h1>
+<p class="ref-meta">AI 第 7 课 &middot; Quick Reference</p>
+
+<h2>三个训练阶段</h2>
+
+<div class="ref-card">
+  <h3>1. 预训练（Pre-training）</h3>
+  <p><strong>目标：</strong>预测下一个 token<br>
+  <strong>数据：</strong>数千亿到十万亿 token<br>
+  <strong>学到：</strong>语法、知识、推理模式、世界模型</p>
+</div>
+
+<div class="ref-card">
+  <h3>2. 监督微调（SFT）</h3>
+  <p><strong>目标：</strong>学会遵循指令<br>
+  <strong>数据：</strong>人工编写的高质量指令-回答对<br>
+  <strong>效果：</strong>从"续写文本"变为"回答问题"</p>
+</div>
+
+<div class="ref-card">
+  <h3>3. 人类反馈对齐（Alignment）</h3>
+  <p><strong>RLHF：</strong>奖励模型 + PPO 强化学习（ChatGPT 用）<br>
+  <strong>DPO：</strong>直接偏好优化，绕奖励模型（Claude 用）<br>
+  <strong>目标：</strong>让输出符合人类偏好</p>
+</div>
+
+<h2>关键概念</h2>
+
+<div class="ref-card">
+  <h3>涌现能力（Emergent Abilities）</h3>
+  <p>模型规模跨越阈值后突然出现的能力：<br>
+  算术、指令跟随、少样本学习、代码生成</p>
+  <p>→ 不是魔法，是大规模统计学习的自然结果</p>
+</div>
+
+<div class="ref-card">
+  <h3>缩放定律（Scaling Laws）</h3>
+  <p><strong>Kaplan (2020)：</strong>L ∝ C<sup>-0.07</sup>，计算量越大越好<br>
+  <strong>Chinchilla (2022)：</strong>参数量与数据量应同步增长</p>
+</div>
+
+<h2>关键事实</h2>
+<ul>
+  <li>LLM 不是知识库，是<strong>概率生成模型</strong></li>
+  <li>回答"地球到月球距离" = 统计匹配 + 概率生成，不是查表</li>
+  <li>GPT = Decoder-only，BERT = Encoder-only</li>
+  <li>LLM 会"幻觉"——生成看似合理但错误的事实</li>
+  <li>能力边界：擅长生成/理解，不擅长保证准确</li>
+</ul>
+
+<h2>模型规模对比</h2>
+<ul>
+  <li>GPT-3：1750 亿参数，5700 亿 token</li>
+  <li>PaLM：5400 亿参数，7800 亿 token</li>
+  <li>GPT-4：估计数万亿参数，10 万亿+ token</li>
+</ul>
+
+<a href="../lessons/0007-llm-overview.html" class="nav-link">&larr; 完整课程</a>
+
+<div class="footer">
+  <a href="../MISSION.md">Mission</a> &middot; <a href="../RESOURCES.md">Resources</a> &middot; <a href="../NOTES.md">Notes</a>
+</div>
+
+</body>
+</html>

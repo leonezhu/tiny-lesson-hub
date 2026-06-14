@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 10 — 粤语声调系统</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .tone-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .tone-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .tone-table td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.8rem;
+  }
+
+  .tone-table tr:nth-child(even) {
+    background: #f8f9fa;
+  }
+
+  .tone-table .jyutping {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .tone-table .tone-value {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+  }
+
+  .wrong-example {
+    color: var(--wrong);
+    text-decoration: line-through;
+    font-weight: 600;
+  }
+
+  .correct-example {
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>粤语声调系统</h1>
+<p class="lesson-meta">第 10 课 &middot; ~12 分钟 &middot; 语音学核心</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解粤语"九声六调"的系统结构，掌握六个基本声调的调值与代表字，理解入声的独特性，以及声调如何在信息编码中发挥远超普通话的作用。
+</div>
+
+<h2>为什么这课重要</h2>
+<p>
+  普通话只有 4 个声调，所以你很容易低估声调系统的复杂性。但粤语完全不同——它拥有 <strong>6 个基本声调</strong>和 3 个入声调，共 9 个调类。这意味着在相同的音节数量下，粤语能区分的词汇量几乎是普通话的两倍。大量在普通话中同音的词（如"诗、史、试、时、市、事"），在粤语中通过声调差异完全可区分。
+</p>
+<p>
+  不理解声调，就无法真正理解声调语言。粤语声调系统是研究汉语历史音韵的"活化石"——它保留了中古汉语的入声和完整的韵尾系统，而普通话在元明之后丢失了入声。
+</p>
+
+<h2>六个基本声调</h2>
+<p>
+  粤语的六个基本声调可以用 Jyutping 方案中的调号标注。每个声调用 <strong>调值</strong>（1-5 度，代表音高位置）来描述。
+</p>
+
+<div class="card">
+  <table class="tone-table">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>Jyutping</th>
+        <th>调值</th>
+        <th>代表字</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>高平调（阴平）</td>
+        <td class="jyutping">A, 第 1 声</td>
+        <td class="tone-value">55</td>
+        <td>诗 si1</td>
+        <td>高而平，像唱歌时一直保持高音</td>
+      </tr>
+      <tr>
+        <td>高升调（阴上）</td>
+        <td class="jyutping">B, 第 2 声</td>
+        <td class="tone-value">35</td>
+        <td>史 si2</td>
+        <td>从中高升到最高，像疑问句的上扬</td>
+      </tr>
+      <tr>
+        <td>高去声（阴去）</td>
+        <td class="jyutping">C, 第 3 声</td>
+        <td class="tone-value">33</td>
+        <td>试 si3</td>
+        <td>中高而平，比第 1 声低一度</td>
+      </tr>
+      <tr>
+        <td>低平调（阳平）</td>
+        <td class="jyutping">D, 第 4 声</td>
+        <td class="tone-value">23</td>
+        <td>时 si4</td>
+        <td>从低微升，低沉而温和</td>
+      </tr>
+      <tr>
+        <td>低升调（阳上）</td>
+        <td class="jyutping">E, 第 5 声</td>
+        <td class="tone-value">22</td>
+        <td>市 si5</td>
+        <td>低而平，是所有声调中最低的</td>
+      </tr>
+      <tr>
+        <td>低去声（阳去）</td>
+        <td class="jyutping">F, 第 6 声</td>
+        <td class="tone-value">21</td>
+        <td>事 si6</td>
+        <td>从低降到低，像是叹息的语气</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>记忆窍门：</strong>用同一个音节"si"来记忆 6 个声调：诗(si1)→史(si2)→试(si3)→时(si4)→市(si5)→事(si6)。这六个字在普通话中是完全同音的，但在粤语中声调完全不同，各自指向不同的汉字。这是理解声调语言信息容量的最佳例证。
+</div>
+
+<h2>入声：短促的第三维度</h2>
+<p>
+  入声是粤语声调系统最独特的部分。它不是额外的音高变化，而是 <strong>在相同调值上叠加了音长维度</strong>——入声字发音只有非入声字的一半长度，并以 -p、-t、-k 三个塞音韵尾结束。
+</p>
+
+<div class="card">
+  <h3>三个入声调</h3>
+  <table class="tone-table">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>对应基本调</th>
+        <th>调值</th>
+        <th>代表字</th>
+        <th>韵尾</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>高入（G）</td>
+        <td>第 1 声</td>
+        <td class="tone-value">5</td>
+        <td>拾 sap1</td>
+        <td>-p</td>
+      </tr>
+      <tr>
+        <td>中入（H）</td>
+        <td>第 3 声</td>
+        <td class="tone-value">3</td>
+        <td>杀 sat3</td>
+        <td>-t</td>
+      </tr>
+      <tr>
+        <td>低入（J）</td>
+        <td>第 6 声</td>
+        <td class="tone-value">1</td>
+        <td>质 zat6</td>
+        <td>-k</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>实验声学发现：</strong>同样调值下，入声字的发音时长约为非入声字的 <strong>一半</strong>。这意味着入声不仅是音高的变化，还涉及音长这一独立声学维度。声调与音长在粤语中形成"二维编码"——相同音高、不同时长的两个音节承载不同意义，这在声调语言中极为特殊。
+</div>
+
+<h2>声调的运作机制</h2>
+<p>
+  从物理学角度看，声调的本质是 <strong>基频（F0）的时变模式</strong>。每个声调可以用三个参数描述：起点（1-5 度）、终点（1-5 度）、路径（平/升/降/曲）。
+</p>
+
+<div class="card">
+  <h3>声调三要素</h3>
+  <ul class="examples">
+    <li><strong>高平调（55）</strong>：起点 5 度、终点 5 度、路径平直——像一条水平线</li>
+    <li><strong>高升调（35）</strong>：起点 3 度、终点 5 度、路径上扬——像爬楼梯</li>
+    <li><strong>低去声（21）</strong>：起点 2 度、终点 1 度、路径下降——像叹息</li>
+  </ul>
+</div>
+
+<p>
+  声调在连续语流中会受到<strong>语调叠加</strong>的影响——句子的整体疑问、陈述、强调等语调会叠加在每个字的固有声调之上，产生微调。粤语的语调覆盖范围大约 ±1.5 个半音，这意味着声调感知必须从语调中精确分离出来。
+</p>
+
+<h2>声调的信息容量</h2>
+<p>
+  用信息论的视角来看，粤语的 9 个声调类别在音节层面的信息量约为 <strong>log₂(9) ≈ 3.17 比特</strong>，显著高于普通话的约 2 比特。这意味着粤语的声调系统是一个更密集的信息编码系统。
+</p>
+<p>
+  这也解释了为什么大量在普通话中同音的词（如"诗、史、试、时、市、事"），在粤语中通过声调差异完全可区分——不是靠辅音或元音，而是靠纯粹的音高变化。
+</p>
+
+<h2>声调语言的认知重塑</h2>
+<p>
+  从认知科学角度看，粤语母语者发展出了对音高变化的超常敏感度。fMRI 研究显示，声调语言使用者的<strong>右半球</strong>（传统上负责音乐和音高处理）在语言任务中更加活跃——语言处理在大脑中的拓扑结构，因声调系统的复杂度而发生了物理重塑。
+</p>
+
+<div class="chinese-note">
+  <strong>跨学科连接：</strong>
+  <br>• <strong>物理学</strong> — 声调的本质是声波频率（F0）的时变模式
+  <br>• <strong>信息论</strong> — 9 个声调类别 = log₂(9) ≈ 3.17 比特/音节
+  <br>• <strong>生物学</strong> — 声调语言重塑大脑右半球的语言处理能力
+  <br>• <strong>历史</strong> — 粤语保留中古汉语入声，普通话已丢失
+</div>
+
+<h2>常见错误：粤语学习者的声调陷阱</h2>
+<table class="comparison-table">
+  <tr>
+    <th>错误</th>
+    <th>正确做法</th>
+    <th>为什么错</th>
+  </tr>
+  <tr>
+    <td>把第 1 声（55）和第 3 声（33）混为一谈</td>
+    <td>第 1 声更高更亮，第 3 声中段偏平</td>
+    <td>两个都是平调，但音高差了一度。55 和 33 在听觉上差距明显——就像钢琴上相差一个全音的两个键。</td>
+  </tr>
+  <tr>
+    <td>入声字不短促</td>
+    <td>-p/-t/-k 结尾的字必须快速截断</td>
+    <td>入声的核心特征不是调值而是音长。不发短，就失去了入声的本质。练习时想象"突然刹车"的感觉。</td>
+  </tr>
+  <tr>
+    <td>把粤语声调映射到普通话四声</td>
+    <td>把每个粤语声调当作独立系统来记忆</td>
+    <td>虽然粤语有 9 调、普通话有 4 调，但它们的对应关系不规则。比如"诗"在粤语是高平调（55），在普通话是第一声（55），恰好一样；但"事"在粤语是低去声（21），在普通话是第四声（51），起点完全不同。</td>
+  </tr>
+</table>
+
+<div class="quiz-section">
+  <h2>练习：测试你的声调理解</h2>
+  <p>共 8 题。每题选择最正确的答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解调值的含义。</div>
+    <div class="sentence">粤语"诗"（si1）的调值是 55，这意味着什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">从最高音（5）开始，保持最高音结束，路径平直</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">从中音（3）升到最高音（5）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">六个基本声调用同一个音节记忆。</div>
+    <div class="sentence">"诗 史 试 时 市 事" 这六个字在粤语中：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">音节相同，声调也相同，靠声母区分</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">音节相同，但六个声调各不相同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">入声的独特性。</div>
+    <div class="sentence">入声字与非入声字的核心区别是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">入声字的调值更高</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">入声字时长约为非入声字的一半，并以 -p/-t/-k 结尾</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">信息论视角。</div>
+    <div class="sentence">粤语 9 个声调类别在音节层面的信息量约为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">3.17 比特（log₂(9)）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">6 比特（log₂(64)）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">入声的调值对应。</div>
+    <div class="sentence">"杀"（sat3）是中入调，对应的调值是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">5（对应第 1 声）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">3（对应第 3 声）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">声调语言的认知特征。</div>
+    <div class="sentence">fMRI 研究显示，粤语母语者的哪个脑区在语言任务中更活跃？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">左半球（传统语言区）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">右半球（传统音高/音乐处理区）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">声调与语调的区别。</div>
+    <div class="sentence">句子的疑问语调叠加在粤语声调之上时，产生的效果是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">声调完全消失，只保留语调</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">每个字的固有声调产生约 ±1.5 个半音的微调</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">历史音韵对比。</div>
+    <div class="sentence">粤语与普通话在入声上的核心区别是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">普通话入声更多，粤语丢失了大部分入声</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">粤语保留完整入声系统，普通话在元明之后丢失入声</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问吗？</strong>我是你的语言导师，随时可以提问。声调系统看似复杂，但其实只要掌握六个基本调值的"起点-终点-路径"模式，理解就水到渠成了。有什么不理解的地方，直接问我。
+  <br><br>
+  <strong>推荐阅读：</strong>《广州话正音字典》— 系统性地了解粤语每个字的正确声调和读音，是粤语学习者的必备参考。
+  <br><br>
+  <a href="../reference/cantonese-tone-system.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-english-idioms-collocations.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-cantonese-middle-chinese.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '调值 55 = 起点 5、终点 5、路径平直。"诗"是高平调，从头到尾保持最高音。就像唱歌时持续一个高音符不升降。', wrong: '35 是高升调（第 2 声，"史"），不是 55。55 是"起点 5、终点 5"——一直保持在最高音，中间没有升降。' },
+    q2: { correct: '这六个字的粤语发音都是 si，但声调分别是 si1(si2)(si3)(si4)(si5)(si6)——六个完全不同的声调。在普通话中它们全部同音（shī），粤语通过声调来区分语义，这是声调语言的核心特征。', wrong: '粤语不靠声母区分这些字——它们的声母和韵母完全相同（都是 si），唯一区别就是声调。声调承载了完整的词汇区分功能。' },
+    q3: { correct: '入声的核心特征是"短促+塞音韵尾"。实验声学显示入声字时长约为非入声字的约一半，并以 -p/-t/-k 三个塞音结尾。调值不是入声的本质——长度和韵尾才是。', wrong: '入声字的调值不一定更高。事实上，入声的调值对应各自的基本调（如中入对应第 3 声的 33），入声的独特之处在于"同样的调值+一半的时长"。' },
+    q4: { correct: 'log₂(9) ≈ 3.17 比特。这是信息论的标准计算——9 个等概率类别的信息量。作为对比，普通话的 4 个声调只有 log₂(4) = 2 比特，粤语的声调信息密度显著更高。', wrong: '64 = 2⁶，log₂(64) = 6 比特。这个计算把声调和音节的其他要素混在一起了。仅声调类别（9 个）的信息量就是 log₂(9) ≈ 3.17 比特。' },
+    q5: { correct: '"杀"（sat3）是中入调，对应第 3 声（阴去）的调值 3，以 -t 结尾。入声的调值与对应基本调相同，但发音短促。', wrong: '5 是高入调（对应第 1 声）的调值，代表字是"拾"（sap1）。"杀"对应第 3 声，调值为 3。' },
+    q6: { correct: 'fMRI 研究显示，声调语言使用者的右半球（传统上负责音乐和音高处理）在语言任务中更加活跃。这是因为处理声调需要音高辨别能力，而右半球正是音高处理的核心区域。', wrong: '左半球确实是语言的核心处理区，但声调语言的独特之处在于它激活了右半球——这正是声调语言和非声调语言在神经处理上的关键差异。' },
+    q7: { correct: '语调叠加不是替换声调，而是在声调基础上叠加微调。粤语的语调覆盖范围大约 ±1.5 个半音——你可以理解为"戴着声调的眼镜"来看语调变化。声调本身不会被语调覆盖。', wrong: '声调不会被语调完全覆盖。语调是在声调之上叠加的微妙变化（约 ±1.5 个半音），声调的基本轮廓仍然保留。这是声调语言听觉处理的核心挑战。' },
+    q8: { correct: '粤语完整保留了中古汉语的入声系统和 -p/-t/-k 韵尾，被称为"活化石"。而普通话在元明之后丢失了入声，入声字被分散到平上去三声中。这是粤语与普通话最大的音韵差异之一。', wrong: '事实正好相反。普通话丢失了入声，而粤语保留了它。如果你在粤语中听到以 -p/-t/-k 结尾的短促音节，那就是入声的遗存。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对粤语声调系统的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下答错题目的解释，理解为什么。';
+      else label.textContent = '继续加油！重读上面的内容，重新尝试理解这些声调模式。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

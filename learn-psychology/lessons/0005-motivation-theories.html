@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动机理论 — 是什么驱动人类的行为</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .experiment-card {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+  }
+
+  .experiment-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .experiment-card .result {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>动机理论：是什么驱动人类的行为</h1>
+<p class="lesson-meta">第 5 课 · ~15 分钟 · 心理学核心概念</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解动机的本质——它不是单一的"意志力"，而是一个复杂的系统。掌握驱力理论、自我决定论、目标设置理论等核心理论，学会分析自己和他人的行为动机，并运用这些原理设计更有效的个人和管理策略。
+</div>
+
+<h2>动机不是"意志力"</h2>
+<p>
+  我们习惯用"有动力"或"没动力"来解释行为，好像动机是一种简单的开关。但动机心理学发现：<strong>动机不是单一的心理实体，而是由多种内在和外在因素组成的复杂系统。</strong>不同的人、不同的情境下，驱动行为的机制完全不同。
+</p>
+
+<div class="highlight-box">
+  <strong>核心问题：</strong> 是什么让人开始做一件事？是什么让人坚持做下去？是什么让人从中获得满足感？理解这些问题，你就能设计自己的动机系统，而不是被动等待"有动力"。
+</div>
+
+<h2>驱力理论（Drive Theory）</h2>
+<div class="concept-card">
+  <h3>生理需求如何驱动行为</h3>
+  <p class="term">起源：Walter Cannon (1920s) · 霍尔 (Kathleen Hall, 1930s)</p>
+  <p>
+    驱力理论是最早的动机理论之一。它的核心假设很简单：<strong>行为源于内部不平衡产生的驱力。</strong>当你饥饿时，血糖下降产生生理不平衡，这种不平衡产生"饥饿的驱力"，驱力促使你寻找食物，食物消除了不平衡，驱力降低。
+  </p>
+  <p>
+    <strong>关键概念——稳态（Homeostasis）：</strong> 身体总是倾向于维持一个"平衡状态"。体温偏离、血糖下降、缺水——这些都打破了稳态，产生驱力。行为的目的就是恢复稳态。
+  </p>
+  <ul class="examples">
+    <li>口渴 → 喝水 → 渴感消失</li>
+    <li>孤独 → 联系朋友 → 孤独感减轻</li>
+    <li>寒冷 → 穿衣 → 暖和了</li>
+  </ul>
+  <p>
+    <strong>局限：</strong> 驱力理论能很好地解释生理需求（吃、喝、睡），但对复杂行为的解释力不足。为什么有人节食？为什么有人追求艺术成就？这些行为不会降低任何生理驱力——它们甚至在<strong>增加</strong>紧张感。
+  </p>
+</div>
+
+<h2>自我决定论（Self-Determination Theory, SDT）</h2>
+<p>
+  这是目前动机研究领域<strong>影响力最大</strong>的理论框架。由 Edward Deci 和 Richard Ryan 在 1980 年代提出，经过四十年的实证研究，SDT 揭示了人类动机的深层结构。
+</p>
+
+<div class="concept-card">
+  <h3>SDT 的核心：三种基本心理需求</h3>
+  <p class="term">Deci &amp; Ryan (1985-present)</p>
+  <p>
+    SDT 认为，人类有三种天生的、普遍的基本心理需求。当这些需求得到满足时，人会表现出最高质量的内在动机——不是为了奖励或避免惩罚，而是出于<strong>兴趣</strong>和<strong>意义感</strong>。
+  </p>
+  <div class="comparison">
+    <div class="col">
+      <h4>自主性（Autonomy）</h4>
+      <p>感到行为是自我选择和有意愿的。</p>
+      <p><strong>例子：</strong> 你可以选择何时做、怎么做、甚至做不做。而不是被命令"必须现在做、这样做"。</p>
+      <p><strong>满足时的感受：</strong> "这是我自己选的。"</p>
+    </div>
+    <div class="col">
+      <h4>胜任感（Competence）</h4>
+      <p>感到有能力完成任务，能看到自己的进步。</p>
+      <p><strong>例子：</strong> 学编程时，第一个"Hello World"让你觉得"我能做到"。</p>
+      <p><strong>满足时的感受：</strong> "我在变得更好。"</p>
+    </div>
+  </div>
+  <div class="comparison">
+    <div class="col">
+      <h4>归属感（Relatedness）</h4>
+      <p>感到与他人有关联和被接纳。</p>
+      <p><strong>例子：</strong> 团队中你的意见被倾听，你的存在对别人有价值。</p>
+      <p><strong>满足时的感受：</strong> "我在这里属于这里。"</p>
+    </div>
+    <div class="col">
+      <h4>SDT 的动机光谱</h4>
+      <p>SDT 认为动机不是"有或没有"，而是一个连续体：</p>
+      <ul>
+        <li><strong>无动机</strong>：既没有内在动机，也没有外在动机</li>
+        <li><strong>外在动机</strong>（从外到内）：外部调节 → 内摄调节 → 认同调节 → 整合调节</li>
+        <li><strong>内在动机</strong>：纯粹出于兴趣和享受</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="concept-card">
+  <h3>过度合理化效应（Overjustification Effect）</h3>
+  <p class="term">Deci (1971) 的经典实验</p>
+  <p>
+    Deci 做了一个开创性实验：将大学生分成两组，让他们在一个房间里解谜题（拼图）。A 组被告知"做对了有报酬"，B 组没有报酬。之后研究者"离开"房间，偷偷观察——参与者可以自由决定是否继续玩那些谜题。
+  </p>
+  <p>
+    <strong>结果：</strong> 有过报酬经历的参与者，在"自由时间"继续解谜题的时间显著少于没有报酬组的参与者。换句话说：<strong>外部奖励反而削弱了内在动机。</strong>人们开始把行为归因于"为了钱"，而不是"因为有趣"。
+  </p>
+  <p>
+    这就是<strong>过度合理化效应</strong>：当你给一个本来有趣的活动加上外部奖励，人们会重新解释自己的动机——"我做这个是因为有钱拿"，而不是"我做这个是因为我喜欢"。一旦奖励停止，行为也就消失了。
+  </p>
+</div>
+
+<h2>马斯洛的需求层次理论</h2>
+<p>
+  虽然马斯洛（Abraham Maslow, 1943）的理论在现代心理学中被认为过于简化，但它提供了一个直观的理解框架——人类需求像一个金字塔，从底层到高层逐步满足。
+</p>
+
+<div class="concept-card">
+  <h3>五层需求模型</h3>
+  <div class="comparison">
+    <div class="col">
+      <h4>金字塔结构</h4>
+      <ul>
+        <li><strong>生理需求</strong>：食物、水、睡眠</li>
+        <li><strong>安全需求</strong>：人身安全、经济稳定</li>
+        <li><strong>社交需求</strong>：爱、友谊、归属感</li>
+        <li><strong>尊重需求</strong>：自尊、他人的尊重</li>
+        <li><strong>自我实现</strong>：发挥潜能、追求意义</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>关键洞见</h4>
+      <p>马斯洛的核心观点是：低层需求未满足时，高层需求很难产生。</p>
+      <p><strong>例子：</strong> 一个面临失业的人（安全需求未满足），很难关心"如何实现自我价值"。</p>
+      <p>但马斯洛也指出，这不一定是严格顺序——有些人能在逆境中追求意义（如曼德拉、特蕾莎修女）。</p>
+    </div>
+  </div>
+  <p>
+    <strong>现代批评：</strong> 马斯洛的理论缺乏严格的实证基础，需求层次并非普遍适用（不同文化中社交需求可能比安全需求更重要）。但它的实用价值在于提醒我们：<strong>在要求一个人"追求梦想"之前，先确认他的基本需求是否被满足。</strong>
+  </p>
+</div>
+
+<h2>目标设置理论（Goal-Setting Theory）</h2>
+<div class="concept-card">
+  <h3>具体且困难的目标 → 更高的绩效</h3>
+  <p class="term">Locke &amp; Latham (1990)</p>
+  <p>
+    目标设置理论是管理学和动机研究中被实证支持最多的理论之一。Locke 和 Latham 分析了上千个研究，发现<strong>具体且有挑战性的目标</strong>总是比"尽力去做"（do your best）模糊指令产生更高的绩效。
+  </p>
+  <p>目标通过四个机制影响动机：</p>
+  <ul>
+    <li><strong>引导注意力和努力</strong>：目标告诉你"关注什么"——目标越具体，注意力越集中</li>
+    <li><strong>增加坚持性</strong>：明确的目标让人更愿意坚持，不会因为短期挫折就放弃</li>
+    <li><strong>激励策略开发</strong>：困难目标逼你找到新方法——"常规方法不够用了，我该怎么办？"</li>
+    <li><strong>激励任务重要性</strong>：当你有一个有意义的目标，你会觉得这件事本身更重要</li>
+  </ul>
+  <p>
+    <strong>关键原则——SMART 目标的科学基础：</strong> Specific（具体的）、Measurable（可衡量的）、Achievable（可达到的）、Relevant（相关的）、Time-bound（有时限的）。注意"可达成"不等于"容易"——目标应该难到需要你努力，但难到不至于不可能。
+  </p>
+</div>
+
+<h2>德韦克：掌握目标 vs 表现目标</h2>
+<div class="concept-card">
+  <h3>你的目标导向决定了你的动机质量</h3>
+  <p class="term">Carol Dweck (1980s-2000s)</p>
+  <p>
+    德韦克发现，人们面对挑战时有两种不同的目标导向，这深刻影响他们的动机和韧性：
+  </p>
+  <div class="comparison">
+    <div class="col">
+      <h4>掌握目标（Mastery Goal）</h4>
+      <p>目的是<strong>学习和成长</strong>。</p>
+      <ul>
+        <li>困难 = 学习机会</li>
+        <li>失败 = 需要调整策略</li>
+        <li>努力 = 通往精通的路径</li>
+        <li>结果：更强的韧性、更高的长期成就</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>表现目标（Performance Goal）</h4>
+      <p>目的是<strong>证明自己</strong>。</p>
+      <ul>
+        <li>困难 = 暴露自己不够聪明</li>
+        <li>失败 = "我不行"</li>
+        <li>努力 = 只有"不会的人"才需要努力</li>
+        <li>结果：回避挑战、害怕失败、短期表现可能好但长期退化</li>
+      </ul>
+    </div>
+  </div>
+  <p>
+    <strong>关键发现：</strong> 表扬努力和策略（"你用了很好的方法"）比表扬天赋（"你真聪明"）更能培养掌握目标。Dweck 的"成长型思维"（Growth Mindset）研究延伸了这一发现：相信能力可以发展的人，比相信能力固定的人表现更好、更持久。
+  </p>
+</div>
+
+<h2>麦克利兰：成就动机理论</h2>
+<div class="concept-card">
+  <h3>有些人天生就更"渴望成功"</h3>
+  <p class="term">David McClelland (1961)</p>
+  <p>
+    麦克利兰发现，并非所有人被同样的动机驱动。他识别出三种核心的后天需求动机：
+  </p>
+  <div class="comparison">
+    <div class="col">
+      <h4>成就需求（Need for Achievement, nAch）</h4>
+      <p>渴望解决问题、达成挑战、看到自己的贡献。</p>
+      <p><strong>高 nAch 者的特点：</strong> 选择中等难度的任务（太简单没意思，太难可能失败）、喜欢及时反馈、喜欢个人承担责任。</p>
+      <p><strong>经典案例：</strong> McClelland 测量了几个国家国民杂志中"成就主题"（故事里关于解决问题、个人努力的内容）的频率，发现频率高的国家在随后的 10-20 年中经济发展更快。</p>
+    </div>
+    <div class="col">
+      <h4>权力需求（Need for Power, nPow）</h4>
+      <p>渴望影响和控制他人。</p>
+      <p><strong>制度化权力：</strong> 用权力推动团队目标（好领导）。</p>
+      <p><strong>个人化权力：</strong> 用权力满足个人欲望（坏领导）。</p>
+    </div>
+  </div>
+  <div class="comparison">
+    <div class="col" style="grid-column: 1 / -1;">
+      <h4>亲和需求（Need for Affiliation, nAff）</h4>
+      <p>渴望被喜欢、被接纳、与他人保持和谐关系。</p>
+      <p><strong>高 nAff 者的特点：</strong> 重视人际关系、害怕冲突、可能因"让人开心"而牺牲效率。</p>
+      <p><strong>管理启示：</strong> 一个团队中如果所有人都高亲和需求，可能"一团和气"但决策效率低——需要有人承担不讨好的角色。</p>
+    </div>
+  </div>
+</div>
+
+<h2>动机在现实中的应用</h2>
+<p>
+  理解动机理论不是为了写论文——它能直接改变你如何处理自己和他人的行为。
+</p>
+
+<div class="card">
+  <h3>对个人成长的启示</h3>
+  <ul>
+    <li><strong>给自己选择权：</strong> "我选择做"比"我必须做"能维持更持久的动机。即使面对约束任务，找到可以自主决策的部分——"我选择在什么时候做、做到什么程度"。</li>
+    <li><strong>设计胜任感反馈：</strong> 把大目标拆成小而具体的里程碑。每个里程碑的完成都会释放多巴胺（"我做到了！"），这不仅是奖励，更是动机燃料。</li>
+    <li><strong>关联意义：</strong> "这不仅仅是工作，它在帮助..."——将任务与更大的意义关联可以维持持久动力。研究发现，即使是枯燥的工作，当参与者理解它如何帮助他人时，投入度和满意度显著提高。</li>
+    <li><strong>警惕过度奖励：</strong> 如果你想让孩子继续热爱阅读，不要用"每读一本书给 5 元"的方式——这会将内在动机转化为外在动机，最终"给钱才读，不给就不读"。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>对团队管理的启示</h3>
+  <ul>
+    <li><strong>给予自主权 > 控制型管理：</strong> 在创造性任务中，允许团队成员选择方法和节奏，比设定每一步流程产生更高的创新和质量。</li>
+    <li><strong>外在奖励要谨慎：</strong> 对于重复性任务（数据录入），金钱奖励有效。但对于创造性任务（设计、编程、写作），金钱奖励可能适得其反。</li>
+    <li><strong>具体目标 + 定期反馈：</strong> "尽力做好"不是目标。"在本周五前完成用户调研的初稿"才是。配合定期反馈，效果最佳。</li>
+    <li><strong>培养掌握导向的文化：</strong> 表扬策略和努力，不表扬"聪明"。失败时讨论"学到了什么"，而不是"谁的责任"。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>对教育的启示</h3>
+  <ul>
+    <li><strong>内在动机 > 外在奖励：</strong> 重视好奇心、掌握感和任务意义感的培养，比单纯依赖分数、排名、奖品产生更持久的学习动力。</li>
+    <li><strong>选择感 = 动力：</strong> 让学生在一定范围内自选研究主题或展示方式，显著提升投入度。</li>
+    <li><strong>错误是学习的一部分：</strong> 当学生不怕犯错时，他们的探索意愿和深度思考能力会显著增强。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong> 中国传统教育强调"勤奋"和"坚持"，但往往忽视动机质量——"苦学"不等于"乐学"。《学记》（中国古代教育文献）中说"道而弗牵，强而弗抑，开而弗达"——引导学生而非强迫，勉励而非压制，启发而非直接给答案。这与 SDT 的自主性需求理念高度一致：最好的动力来自内在，而非外在压力。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你非常口渴时，会主动去找水喝，喝完之后渴感消失。</div>
+    <div class="sentence">这种"内部不平衡驱动行为"的动机理论是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">驱力理论</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">自我决定论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：Deci 的实验中，有过"解谜题有报酬"经历的参与者在自由时间继续解谜题的时间更少。</div>
+    <div class="sentence">这个现象被称为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">动机衰减效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">过度合理化效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：一个学生觉得"困难让我成长"，而另一个学生觉得"困难说明我不够聪明"。</div>
+    <div class="sentence">这两种不同的目标导向分别是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">表现目标 vs 外在动机</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">掌握目标 vs 表现目标</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：根据 SDT，以下哪种情境最能激发高质量的内在动机？</div>
+    <div class="sentence">选择最优答案：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">任务简单但有高额奖金</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">任务有挑战性，可以自主选择方法，能看到自己的进步</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：根据 Locke 的目标设置理论，以下哪种目标最有效？</div>
+    <div class="sentence">选择最优答案：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"尽力做好"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"在本周五前完成用户调研初稿，包含至少 20 份有效问卷"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：一个员工总是选择"太简单"的任务——因为他知道肯定能完成，不会丢脸。</div>
+    <div class="sentence">这个员工的目标导向最可能是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">掌握目标</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">表现目标</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：麦克利兰发现，高成就需求（nAch）的人倾向于：</div>
+    <div class="sentence">选择最符合的描述：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">选择最简单的任务以确保成功</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">选择中等难度的任务，喜欢及时反馈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：你想让孩子保持对阅读的热爱。以下哪种方式最有效？</div>
+    <div class="sentence">根据动机理论：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">"每读完一本书给你 5 元"</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">"我们一起讨论你读到的有趣内容，分享你的想法"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对某个理论的实验细节有疑问，或者想了解如何在实际工作/生活中应用这些动机原理，直接问我。好的问题比好的答案更重要。
+  <br><br>
+  <strong>推荐资源：</strong> 《内在动机》（Intrinsic Motivation）—— Edward Deci 和 Richard Ryan 合著，自我决定论的开创者亲自写的入门书，深入浅出地解释了"为什么奖励有时会适得其反"。
+  <br><br>
+  <a href="../reference/motivation-theories.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-memory-mechanisms.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-self-determination-theory.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '驱力理论（Drive Theory）的核心观点就是：行为源于内部不平衡产生的驱力。口渴是不平衡状态，喝水恢复稳态，渴感消除。它最适合解释生理驱动的行为。', wrong: '自我决定论关注的是自主性、胜任感和归属感这三种心理需求的满足。驱力理论强调的是生理不平衡→驱力→行为→平衡恢复的机制，这正是"口渴→喝水"的例子。' },
+    q2: { correct: '过度合理化效应：当你给一个本来有趣的活动加上外部奖励，人们会重新解释动机为"做这个是因为有奖励"，而非"做这个是因为我喜欢"。一旦奖励停止，内在兴趣也随之下降。', wrong: '"动机衰减效应"不是正式术语。这个现象的标准名称是"过度合理化效应"——外部奖励提供了额外的"合理化理由"，覆盖了原有的内在动机。' },
+    q3: { correct: '掌握目标（Mastery Goal）的人把挑战视为学习机会，失败意味着需要调整策略。表现目标（Performance Goal）的人把挑战视为证明自己能力的机会，失败意味着"我不够好"。这两种导向深刻影响韧性和长期成就。', wrong: '外在动机是指行为由外部因素（奖励、惩罚）驱动，不是目标导向的分类。掌握目标 vs 表现目标是德韦克理论中面对挑战时的两种不同心态。' },
+    q4: { correct: 'SDT 的三种基本需求——自主性（可以自主选择）、胜任感（能看到进步）、归属感（与他人有关联）——同时得到满足时，产生最高质量的内在动机。自主性+挑战性+进步反馈，完美对应了三要素。', wrong: '高额奖金是外在奖励，根据过度合理化效应，它可能削弱内在动机。而且"任务简单"无法提供胜任感（进步感是胜任感的核心）。高质量内在动机需要自主性、胜任感和归属感的满足。' },
+    q5: { correct: 'Locke 的目标设置理论发现：具体且有挑战性的目标总是优于"尽力去做"。"本周五前、20 份有效问卷"既具体（什么、多少、何时），又有挑战性但可达，这正是有效目标的标准。', wrong: '"尽力做好"是模糊指令——没有具体标准、没有时间限、没有数量要求。Locke 的研究表明，这种模糊目标几乎总是产生比具体目标更低的结果。' },
+    q6: { correct: '表现目标的人回避挑战，因为他们把困难视为"暴露自己不够聪明"的机会。选择简单任务可以确保"看起来行"，但长期来看限制了成长。掌握目标的人恰恰相反——他们主动寻求挑战。', wrong: '掌握目标的人倾向于选择"有挑战性但能学习"的任务。回避困难、选择简单任务是表现目标的典型特征——重点不是学习，而是证明自己不差。' },
+    q7: { correct: '高成就需求（nAch）的人偏好中等难度的任务——太简单没有成就感，太高风险太大。他们还强烈需要即时反馈，以便调整策略、持续接近目标。这是 McClelland 成就动机理论的核心发现。', wrong: '选择最简单任务是低 nAch 或高恐惧失败者的行为模式。高成就需求的人恰恰相反——他们需要适度挑战来体验成就感和进步感。' },
+    q8: { correct: '讨论和分享是满足 SDT 三种需求的最佳方式：讨论给你自主感（你想说什么）、分享让你感到胜任（你的观点有价值）、共读让你感到归属（你们共享这个体验）。这些都是内在动机的来源，不会像金钱奖励那样"覆盖"掉原有的兴趣。', wrong: '"每读完一本书给 5 元"会触发过度合理化效应——孩子开始把阅读归因为"为了钱"而非"因为有趣"。一旦奖励停止，阅读行为就会显著减少。外在奖励在创造性、兴趣驱动的任务中可能适得其反。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对动机理论的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

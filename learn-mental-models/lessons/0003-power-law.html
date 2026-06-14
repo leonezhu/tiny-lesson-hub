@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 — 幂律分布</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .model-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .model-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .model-card .subtitle {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .model-card .steps {
+    list-style: none;
+    padding: 0;
+  }
+
+  .model-card .steps li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .model-card .steps li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>幂律分布</h1>
+<p class="lesson-meta">Lesson 3 &middot; ~10 minutes &middot; 分布形态认知</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够识别幂律分布与正态分布的根本区别，理解"长尾"世界的运行规则，并在投资、产品和决策中避免用平均思维处理幂律现实。
+</div>
+
+<h2>两个世界的对比</h2>
+<p>
+  想象两杯水的温度。在大多数情况下，一杯水的温度是均匀的——这是正态分布的世界：大部分数据集中在平均值附近，极端值几乎不存在。
+</p>
+<p>
+  但财富分布不是这样。在一个有 100 人的社区中，99 人每人有 10 万美元，1 人有 1 亿美元。平均值是 101 万美元——但这个数字不代表任何人。这就是幂律分布的世界：<strong>少数极端事件决定了绝大部分结果</strong>。
+</p>
+<p>
+  幂律分布的数学形式为 P(x) ∝ x<sup>-α</sup>，其中 α 是幂指数。最关键的区别在于：<strong>在正态分布中，平均值有强大的代表性；在幂律分布中，平均值几乎没有意义</strong>。
+</p>
+
+<h2>幂律的四大经典案例</h2>
+
+<div class="model-card">
+  <h3>1. 财富分布 — 帕累托法则</h3>
+  <p>
+    19 世纪，意大利经济学家维尔弗雷多·帕累托发现：意大利约 80% 的土地由约 20% 的人拥有。这个"80/20 法则"后来在全球各国被反复验证。如今全球约 45% 的财富掌握在约 1% 的人手中。
+  </p>
+</div>
+
+<div class="model-card">
+  <h3>2. 城市规模 — 齐普夫定律</h3>
+  <p>
+    在美国，第二大城市洛杉矶的人口约为最大的城市纽约的一半，第三大城市芝加哥约为 1/3，第四位约为 1/4。这种排名与规模的 1/n 关系被称为齐普夫定律。世界上任何国家的城市规模分布都遵循这一规律。
+  </p>
+</div>
+
+<div class="model-card">
+  <h3>3. 语言 — 词频分布</h3>
+  <p>
+    在任何自然语言中，第 n 个最常使用的单词的出现频率大约与 1/n 成正比。英语中最常用的单词"the"出现的频率是排名第 2 位的"of"的两倍，是排名第 100 位单词的两百倍。这个规律在所有语言中都成立。
+  </p>
+</div>
+
+<div class="model-card">
+  <h3>4. 互联网 — 注意力集中</h3>
+  <p>
+    维基百科上约 5% 的页面获得了 50% 以上的访问量；YouTube 上约 1% 的视频获得了超过一半的观看次数；Twitter 上 1% 的用户产生了 80% 的内容。互联网不是平等分布的——它天然地趋向幂律。
+  </p>
+</div>
+
+<h2>为什么会产生幂律：偏好依附</h2>
+<p>
+  幂律分布不是随机产生的。它的根本机制是<strong>偏好依附</strong>（preferential attachment）——"富者愈富"的正反馈循环。新加入的节点更倾向于连接到已经拥有大量连接的节点。
+</p>
+<p>
+  具体例子：一个新网站更可能被链接到已有的热门网站（如 Google、Wikipedia），而不是另一个新网站。一个创业者更可能获得成功创始人的投资，因为投资者相信"赢者通吃"的逻辑。这种机制下，早期的小优势会通过正反馈被不断放大，最终形成幂律分布。
+</p>
+
+<div class="chinese-note">
+  <strong>最常见的决策错误：</strong>在幂律世界中使用正态分布的思维模型。如果你期望一个"典型"的创业公司表现，你会错过真正重要的事——风险投资的回报来自极少数项目，不是平均水平。在幂律世界中，不要问"平均值是多少"，而要问"最大值的量级是多少"。
+</div>
+
+<h2>幂律思维的实际应用</h2>
+
+<div class="model-card">
+  <h3>投资：追求肥尾，接受多数失败</h3>
+  <p>
+    顶级风投基金的回报严格遵循幂律分布。Sequoia Capital 历史上约 80% 的项目归零或只收回很少的钱，但早期投资 Facebook 的项目回报了基金的全部。这不是管理失误——这是幂律分布的结构性特征。
+  </p>
+  <p>
+    理解这一点，你的投资策略会从"避免亏损"转向"找到那个能覆盖所有亏损的超级项目"。
+  </p>
+</div>
+
+<div class="model-card">
+  <h3>产品设计：做好关键少数，放弃完美平均</h3>
+  <p>
+    80% 的用户只使用 20% 的功能。理解幂律分布的产品经理不会试图让所有功能都"够用"，而是把最好的资源投入到那 20% 的核心功能上。Spotify 的"发现每周"功能只占开发资源的很小比例，但它是用户留存的关键驱动力——这就是幂律思维。
+  </p>
+</div>
+
+<div class="model-card">
+  <h3>个人学习：掌握核心 20%，理解 80% 的内容</h3>
+  <p>
+    任何一个领域都有约 20% 的核心概念支撑了约 80% 的应用。在学编程时，循环、条件判断、函数和数据结构这四个概念覆盖了 80% 的日常编程任务。不要平均用力——找到那个 20%，深入掌握它。
+  </p>
+</div>
+
+<h2>幂律 vs 正态：什么时候用哪个？</h2>
+<p>
+  区分"哪个世界"是概率思维的核心能力。以下表格帮助你快速判断：
+</p>
+
+<div class="model-card">
+  <table style="width:100%; border-collapse: collapse;">
+    <tr style="border-bottom: 1px solid var(--border);">
+      <th style="text-align:left; padding: 0.5rem; color: var(--accent);">特征</th>
+      <th style="text-align:left; padding: 0.5rem; color: var(--accent);">正态分布世界</th>
+      <th style="text-align:left; padding: 0.5rem; color: var(--accent);">幂律分布世界</th>
+    </tr>
+    <tr style="border-bottom: 1px solid var(--border);">
+      <td style="padding: 0.5rem;">典型值</td>
+      <td style="padding: 0.5rem;">平均值高度代表性</td>
+      <td style="padding: 0.5rem;">平均值无意义</td>
+    </tr>
+    <tr style="border-bottom: 1px solid var(--border);">
+      <td style="padding: 0.5rem;">极端事件</td>
+      <td style="padding: 0.5rem;">几乎不存在</td>
+      <td style="padding: 0.5rem;">决定全部结果</td>
+    </tr>
+    <tr style="border-bottom: 1px solid var(--border);">
+      <td style="padding: 0.5rem;">例子</td>
+      <td style="padding: 0.5rem;">身高、体重、测量误差</td>
+      <td style="padding: 0.5rem;">财富、城市规模、互联网流量</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem;">决策策略</td>
+      <td style="padding: 0.5rem;">追求稳定、减少波动</td>
+      <td style="padding: 0.5rem;">暴露于正向肥尾、接受多数失败</td>
+    </tr>
+  </table>
+</div>
+
+<h2>跨学科连接</h2>
+<p>
+  幂律分布是跨学科连接最密集的概念之一：
+</p>
+<ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
+  <li><strong>复杂系统</strong>：无标度网络的度分布是幂律形式——互联网、社交网络、生物网络都如此</li>
+  <li><strong>生物学</strong>：克莱伯定律指出代谢率与体重的 3/4 次幂成正比</li>
+  <li><strong>物理学</strong>：地震震级分布、森林火灾面积分布都是幂律</li>
+  <li><strong>AI</strong>：神经网络中激活值的分布、注意力权重的分布都呈现幂律特征</li>
+  <li><strong>经济学</strong>：市场规模、公司大小、贸易量的分布均呈幂律</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：测试你的幂律直觉</h2>
+  <p>以下 8 道题检验你是否能跳出"平均思维"的陷阱。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">判断分布类型</div>
+    <div class="sentence">一个班级 30 个人的身高分布，最可能属于哪种分布？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正态分布</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">幂律分布</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">平均值在幂律中的陷阱</div>
+    <div class="sentence">一个酒吧有 10 个人，每人净资产 10 万美元。比尔·盖茨走了进来。此时"平均净资产"最接近：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">10 万美元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">超过 1 亿美元</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">幂律产生的机制</div>
+    <div class="sentence">幂律分布产生的根本机制是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">随机事件的大数定律</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">偏好依附（正反馈循环）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">风险投资判断</div>
+    <div class="sentence">你评估一个风投基金时，发现它 80% 的项目归零了，但有一个项目回报了 100 倍。这个基金</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">管理不善，应该避免投资</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">表现完全符合幂律分布的正常模式</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">齐普夫定律</div>
+    <div class="sentence">根据齐普夫定律，第 5 个最常使用的英文单词的出现频率大约是第 1 位的：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 1/5</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 1/25</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">产品策略</div>
+    <div class="sentence">一个 APP 有 50 个功能。80% 的用户只使用其中 10 个。幂律思维要求你：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">给所有 50 个功能分配均衡的开发资源</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">重点投入那 10 个核心功能，确保极致体验</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">个人学习策略</div>
+    <div class="sentence">学习一个全新领域时，幂律思维建议你把时间集中在：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">从头到尾系统学习，不遗漏任何细节</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">找到支撑 80% 应用的 20% 核心概念</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">判断分布类型</div>
+    <div class="sentence">以下哪种现象最可能服从幂律分布？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人的身高</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">城市人口规模</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的思维模型教练。觉得某个概念不理解？这正是我们该聊的时候。直接输入你的问题，我会解释清楚。<br><br>
+  <strong>下一步：</strong>学完幂律分布后，建议继续学习 <a href="0004-normal-distribution-fat-tails.html">正态分布与肥尾效应</a>，深入了解两种分布的边界在哪里。<br><br>
+  <a href="../reference/power-law.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0002-bayesian-reasoning.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-normal-fat-tails.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '身高是典型的正态分布特征——大部分人在平均身高附近，极高和极矮的人都很少。正态分布的"钟形曲线"就是这种分布的视觉表现。', wrong: '身高在人群中呈钟形分布，这是正态分布的经典特征。幂律分布下极端值会频繁出现，而身高极端值（超过 2.5 米或低于 1.2 米）极其罕见。' },
+    q2: { correct: '10 人 × 10 万美元 = 100 万美元 + 比尔·盖茨约 1100 亿美元 ≈ 1100 亿美元 / 11 ≈ 超过 1 亿美元。平均值从 10 万被一个人拉到了 1 亿以上——这就是幂律分布中平均值的无意义性。', wrong: '10 万美元是 10 个普通人的净资产。比尔·盖茨进入后，平均值被极端值严重拉高。这正是幂律世界中"平均值不代表任何人"的生动例证。' },
+    q3: { correct: '偏好依附（preferential attachment）是幂律分布的核心产生机制——"富者愈富"的正反馈循环让早期优势不断放大，最终形成幂律。', wrong: '大数定律描述的是随机变量的均值收敛到期望值，它产生的是正态分布附近的收敛结果，不是幂律。幂律产生的机制是偏好依附和正反馈。' },
+    q4: { correct: '完全正常。幂律分布下，绝大多数项目归零，极少数项目带来全部回报。顶级风投基金的回报来自 1-2 个"独角兽"，这是结构性特征，不是管理问题。', wrong: '用正态分布思维看风投——期望大多数项目都能成功——是系统性错误。幂律分布下，归零是常态，"赢家通吃"才是规律。' },
+    q5: { correct: '齐普夫定律：第 n 个最常使用的单词的频率 ≈ 1/n。所以第 5 位的频率 ≈ 1/5，即第 1 位的约 1/5。', wrong: '1/n 的指数是 -1（不是 -2）。第 5 位的频率是 1/5，不是 1/25。1/n² 是另一种幂律形式，但不是齐普夫定律的标准形式。' },
+    q6: { correct: '幂律思维要求你在"关键少数"上投入超额资源。那 10 个核心功能驱动了 80% 的用户行为，把它们做到极致比让 50 个功能都"过得去"更有价值。', wrong: '平均分配资源是正态分布思维——期望每个功能都有相似的价值。但在幂律世界中，功能的价值分布极不均衡，平均主义反而浪费资源。' },
+    q7: { correct: '幂律思维指导学习：20% 的核心概念支撑了 80% 的应用。先找到这个 20%，深入掌握，再逐步扩展。这是高效学习的核心策略。', wrong: '系统学习听起来合理，但效率低下。幂律分布告诉我们，学习资源也应该集中在高回报的核心概念上，而非平均分配。' },
+    q8: { correct: '城市人口规模服从幂律分布（齐普夫定律）。人的身高是典型的正态分布——大部分人在平均值附近，极端值极其罕见。', wrong: '身高是正态分布的经典例子。城市规模（第一大城市、第二大城市、第三大……）服从 1/n 规律，是幂律分布的典型特征。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经掌握了幂律思维的核心。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，然后再次尝试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

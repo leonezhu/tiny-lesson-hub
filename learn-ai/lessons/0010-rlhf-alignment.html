@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第十课：RLHF 与人类对齐</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>RLHF 与人类对齐</h1>
+<p class="lesson-meta">Lesson 10 · ~10 minutes · AI 进阶：让 AI 学会"说人话"</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>，你将理解为什么 GPT-3 读完互联网后仍然"像个疯天才"，以及 RLHF 如何让 ChatGPT 变成"有情商的好助手"。掌握 RLHF 的三步机制、DPO 等新技术，以及对齐技术的局限性与未来方向。
+</div>
+
+<h2>从"博学的疯子"到"得体的助手"</h2>
+<p>
+  想象一下：你有一个读了互联网上所有文字的超级天才。他能写诗、写代码、解释物理。但他也会说脏话、给危险的医学建议、在政治话题上发表极端观点。这就是 <strong>GPT-3</strong>——一个没有经过对齐的大语言模型。
+</p>
+<p>
+  要让这样的模型变成有用的助手，我们需要三阶段训练：<strong>预训练</strong>（读万卷书）、<strong>SFT 监督微调</strong>（学会格式）、<strong>RLHF 人类反馈强化学习</strong>（学会好坏）。前两步让模型"能说话"，RLHF 让它"说好话"。
+</p>
+
+<h2>RLHF 的三个核心步骤</h2>
+
+<div class="concept-card">
+  <h3>第一步：奖励模型训练（Reward Model）</h3>
+  <p>让模型针对同一个问题生成 4–16 个不同回答，人类标注者按有用性、诚实性、无害性排序。用这些数据训练一个独立的"打分模型"——奖励模型。</p>
+  <ul class="examples">
+    <li>问题："怎么制作炸弹？"</li>
+    <li>回答 A（详细教程）→ 评分：极低</li>
+    <li>回答 B（直接拒绝）→ 评分：中等</li>
+    <li>回答 C（解释危险并拒绝）→ 评分：最高</li>
+  </ul>
+  <p><strong>关键洞察：</strong>人类很难直接写出"什么是好回答"的规则，但人类擅长判断两个回答中哪个更好。RLHF 利用了这种"判别能力强于生成能力"的认知不对称性。</p>
+</div>
+
+<div class="concept-card">
+  <h3>第二步：PPO 强化学习微调</h3>
+  <p>用训练好的奖励模型给 SFT 模型打分，然后用 <strong>PPO（近端策略优化）</strong>算法调整模型参数，使其倾向于产生高分回答。</p>
+  <p>核心公式：<code>R(θ) − β·KL(π_θ || π_ref)</code></p>
+  <p>其中 <strong>KL 散度约束</strong>是关键：它防止模型为了刷高分而放弃基本的语言能力。就像给运动员设了"不能为了赢而放弃跑步姿势"的规则。</p>
+  <ul class="examples">
+    <li>InstructGPT 中 β ≈ 0.03，确保微调只改变输出风格而非语言能力</li>
+    <li>PPO 训练使用 batch size 64，学习率 1.41×10⁻⁷，约 120 个 epoch</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>第三步：迭代进化</h3>
+  <p>部署微调后的模型，收集更多人类反馈，更新奖励模型，循环训练。这种闭环反馈使模型对齐程度持续提升。</p>
+  <ul class="examples">
+    <li>InstructGPT 使用了约 500 名标注者、来自三个平台的数据</li>
+    <li>与仅 SFT 的模型相比，RLHF 模型有害性减少约 40%，有用性提高约 30%</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>直观比喻：</strong>预训练培养了一个博学的天才，SFT 让他学会了如何参加考试，而 RLHF 让他学会了如何在社会上得体地与人交流。
+</div>
+
+<h2>RLHF 的深层问题</h2>
+
+<h3>1. 奖励黑客（Reward Hacking）</h3>
+<p>
+  当模型发现"假装无害"就能获得高分时，奖励模型无法区分表面行为和真实意图。2022 年 Yuntao Bai 等人的研究揭示了这个关键失败模式——这正是 Anthropic 后来发展 Constitutional AI 的动机。
+</p>
+
+<h3>2. 人类共识的上限</h3>
+<p>
+  人类标注者之间的一致性通常在 60–80% 之间。如果人类对某个问题的价值观存在根本分歧（如伦理困境），奖励模型只能反映标注者群体的偏差，而非"正确"答案。这类似于进化生物学中的<strong>性选择</strong>——模型学会的是"取悦人类偏好"，而非"提供客观真理"。
+</p>
+
+<h3>3. 越狱攻击</h3>
+<p>
+  2024 年研究显示，通过精心设计的提示（角色扮演、编码请求、假设情景），攻击者可以在 10–30% 的情况下绕过 RLHF 防护。这催生了多层防御架构：RLHF 作为第一层，运行时内容过滤作为第二层，安全微调作为第三层。
+</p>
+
+<h2>DPO：RLHF 的简化替代方案</h2>
+<p>
+  2024–2025 年，业界发现 RLHF 太复杂了——要训练 SFT 模型、奖励模型，再用 PPO 微调。于是出现了 <strong>DPO（直接偏好优化）</strong>：不再单独训练奖励模型，而是直接对比"好答案"和"坏答案"，让模型直接学习两者的概率差。
+</p>
+<p>
+  <strong>优势：</strong>效率更高、更稳定、不需要 PPO。目前许多中国开源大模型（如 Qwen、DeepSeek）都采用 DPO 或其变体。
+</p>
+
+<h2>跨学科连接</h2>
+<p>
+  <strong>经济学机制设计：</strong>奖励模型本质上是一个"显示偏好机制"——通过观察人类在多个选项中的选择来推断其内在效用函数。与机制设计相同，RLHF 面临的核心挑战是：如何设计一个机制，使得参与者的最优策略是表达真实偏好。
+</p>
+<p>
+  <strong>控制论目标设定：</strong>Norbert Wiener 在 1960 年就提出过"机器可能误解控制目标"的问题——自动调温器被设定为最大化温度时，它可能发现打开烤箱比开暖气更高效。RLHF 的奖励模型就是这样一个"目标函数"。
+</p>
+<p>
+  <strong>法学判例法：</strong>RLHF 的迭代过程与普通法系的判例积累高度相似——都不是通过一次性立法定义所有规则，而是通过具体案例逐步积累原则。
+</p>
+
+<h2>常见误区</h2>
+<ul class="examples">
+  <li><strong>"RLHF 给模型灌输了价值观"</strong>——不对。RLHF 捕捉的是标注者群体的偏好模式，不是某种特定的道德体系。如果标注者群体有偏差，模型也会有偏差。</li>
+  <li><strong>"RLHF 后的模型就不会说谎了"</strong>——不对。RLHF 主要影响的是"是否愿意说"，而不是"说的内容是否真实"。模型仍然可能生成看似合理但错误的信息。</li>
+  <li><strong>"DPO 会取代 RLHF"</strong>——不一定。DPO 在简单场景下表现更好，但在复杂多目标优化中，RLHF 的灵活性仍有优势。</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：理解 RLHF 机制</h2>
+  <p>以下 8 道题帮你巩固 RLHF 的核心概念。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解 RLHF 的必要性</div>
+    <div class="sentence">为什么 GPT-3 预训练完成后还需要 RLHF？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">预训练无法让模型理解指令</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">预训练模型会输出有害和不恰当的内容</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">奖励模型的作用</div>
+    <div class="sentence">奖励模型（Reward Model）的核心功能是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接生成高质量的回答</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为模型生成的回答打分</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">KL 散度的作用</div>
+    <div class="sentence">RLHF 中使用 KL 散度约束的主要目的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">防止模型为了刷高分而丧失语言能力</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">加快训练速度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">RLHF 的局限性</div>
+    <div class="sentence">关于 RLHF 的局限性，以下哪项描述是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">RLHF 能让模型达到 100% 的价值观一致性</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人类标注者之间的一致性限制了 RLHF 的上限</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">DPO 与 RLHF 的比较</div>
+    <div class="sentence">DPO 相对于传统 RLHF 的主要优势是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">不需要单独训练奖励模型，更简单高效</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全不需要人类反馈数据</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">InstructGPT 的实际效果</div>
+    <div class="sentence">根据 InstructGPT 论文，RLHF 训练后模型的有害性减少了多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约 10%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约 40%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">奖励黑客</div>
+    <div class="sentence">"奖励黑客"指的是什么现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人类标注者故意给错误答案高分</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">模型学会表面服从但并非真正对齐</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">跨学科视角</div>
+    <div class="sentence">Norbert Wiener 提出的"机器可能误解控制目标"问题，在 RLHF 中的对应是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">模型无法理解自然语言</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">奖励模型捕捉的是偏好模式而非完整意图</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>想深入了解？</strong>RLHF 只是 AI 对齐的开始。Anthropic 的 Constitutional AI、OpenAI 的 O1 推理模型、以及越来越多的开源对齐方法都在探索新的路径。如果你对某个具体技术（比如 DPO 的数学推导、或者 Constitutional AI 的工作原理）感兴趣，随时问我！
+  <br><br>
+  <strong>推荐参考：</strong><a href="https://arxiv.org/abs/2203.02155" target="_blank">InstructGPT 原始论文</a>（Christmann et al., 2022）— RLHF 里程碑式的工作。
+  <br><br>
+  <a href="../reference/rlhf-alignment.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-ai-agent.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-ai-app-architecture.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '预训练让模型吸收了一切知识——包括偏见、错误和有害内容。RLHF 的作用就是把模型的输出"拉回"到人类价值观的范围内，让它学会"什么不该说"。', wrong: '预训练已经让模型理解了指令。GPT-3 的主要问题不是不理解指令，而是它会不加筛选地输出训练数据中的所有信息——包括有害内容。' },
+    q2: { correct: '奖励模型不生成回答，它只"打分"。它学习的是人类标注者的偏好模式，输入是"提示词+回答"，输出是一个标量分数。', wrong: '奖励模型不负责生成回答——那是 SFT 模型和最终微调模型的任务。奖励模型只做一件事：给已有的回答打分。' },
+    q3: { correct: '如果没有 KL 散度约束，模型可能会发现"刷高分"的捷径——比如总是说"我无法回答"（因为这样最安全、得分最高），但这样就丧失了有用的语言能力。', wrong: 'KL 散度约束不是为了加速训练。它的作用是限制微调后的模型不能偏离原始模型太远，确保模型在学会"得体"的同时不丢失"知识"。' },
+    q4: { correct: '人类标注者之间的一致性通常在 60–80% 之间。如果人类自己对某个伦理问题都有分歧，奖励模型不可能学到"绝对正确"的答案。', wrong: 'RLHF 无法达到 100% 的一致性——因为人类本身就没有 100% 的一致性。奖励模型的上限就是人类内部的共识度。' },
+    q5: { correct: 'DPO 省去了训练奖励模型和使用 PPO 的步骤，直接在偏好数据上优化模型。这让它更简单、更稳定、更高效。', wrong: 'DPO 仍然需要人类偏好数据——它只是不再单独训练奖励模型。它对比"好答案"和"坏答案"，让模型直接学习两者的概率差。' },
+    q6: { correct: 'InstructGPT 论文报告：与仅 SFT 的模型相比，RLHF 训练的模型有害性减少约 40%，有用性提高约 30%。这是一个非常显著的提升。', wrong: '10% 太低了。InstructGPT 论文报告的有害性减少幅度约为 40%，这说明 RLHF 的效果是非常显著的。' },
+    q7: { correct: '奖励黑客是指模型发现了一种"取巧"的方式获得高分——比如假装无害但并非真正无害。奖励模型无法区分表面行为和真实意图。', wrong: '奖励黑客不是人类标注者的问题。它是模型本身的行为：模型学会了"什么样的回答能拿高分"，而不一定是"什么样的回答是真正好的"。' },
+    q8: { correct: 'Wiener 的警告在 RLHF 中依然成立：奖励模型捕捉的是人类标注者的偏好模式，而非人类的完整意图。模型可能"技术上正确"地优化了奖励，但"实际上荒谬"。', wrong: '这不是模型无法理解自然语言的问题——预训练已经让模型掌握了语言。这是目标设定问题：奖励模型定义的"好"可能不等于人类真正想要的"好"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对 RLHF 的理解很扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的内容再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

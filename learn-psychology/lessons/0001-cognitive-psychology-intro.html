@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>认知心理学 — 人类心智操作系统</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>认知心理学：人类心智操作系统</h1>
+<p class="lesson-meta">第 1 课 · ~15 分钟 · 心理学基础概念</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解认知心理学的核心问题——我们如何感知、注意、记忆和决策。掌握心智的两个基本系统（直觉 vs 理性），并能识别它们在日常生活和工作中的运作方式。
+</div>
+
+<h2>什么是认知心理学？</h2>
+<p>
+  认知心理学是心理学的一个分支，研究人脑如何获取、处理、存储和使用信息。简单来说，它研究的是<strong>"心智操作系统"</strong>——你看不见的思维过程，如何决定你的判断、选择和行为。
+</p>
+<p>
+  认知心理学不同于精神分析（关注潜意识冲突）和行为主义（只关注可观察的行为）。它把心智看作一个<strong>信息处理系统</strong>，类似于计算机，但远比计算机复杂和灵活。
+</p>
+
+<h2>两大思维系统</h2>
+<p>
+  认知心理学的基石是<span class="foreign">Daniel Kahneman</span> 在《思考，快与慢》中提出的两系统理论。这个框架几乎贯穿了整门心理学课程。
+</p>
+
+<div class="card">
+  <h3>系统 1：快速、自动、直觉</h3>
+  <ul>
+    <li><strong>速度快</strong>：几毫秒内做出判断，不需要意识努力</li>
+    <li><strong>自动化</strong>：看到愤怒的面孔、听到巨响时的反应都是系统 1 的工作</li>
+    <li><strong>模式识别</strong>：专家通过系统 1 快速识别模式（棋手看棋盘一眼就知道局势）</li>
+    <li><strong>容易受偏差影响</strong>：用直觉做判断时经常出错</li>
+    <li><strong>例子</strong>：看到 2+2 你不需要计算就知道是 4</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>系统 2：慢速、费力、理性</h3>
+  <ul>
+    <li><strong>速度慢</strong>：需要时间和注意力资源</li>
+    <li><strong>耗能量</strong>：持续的思考会让你疲劳——这就是为什么"决策疲劳"是真实的</li>
+    <li><strong>逻辑推理</strong>：解复杂数学题、学习新语言语法、规划旅行路线</li>
+    <li><strong>自我控制</strong>：抑制冲动、坚持长期目标</li>
+    <li><strong>例子</strong>：计算 17×24 需要你专注才能得出答案</li>
+  </ul>
+</div>
+
+<div class="highlight-box">
+  <strong>关键洞见：</strong> 大多数人以为自己在用系统 2 做决定，但实际上 95% 的判断来自系统 1。系统 2 通常只是给系统 1 的结果找一个合理的解释。这就是为什么"理由"往往不是"原因"——你以为你选 A 是因为预算，但实际上你的系统 1 已经因为某个直觉偏好做了选择。
+</div>
+
+<h2>心智的三个核心模块</h2>
+<p>认知心理学关注心智的三个基本加工过程，它们层层递进：</p>
+
+<div class="comparison">
+  <div class="col">
+    <h4>注意（Attention）</h4>
+    <p>你选择关注什么信息。注意是心智的<strong>入口</strong>——没有被注意的信息几乎不会被处理。</p>
+    <p><strong>经典实验：</strong> 西蒙斯和查布里斯的"看不见的大猩猩"实验——当人们专注于数传球次数时，50% 的人完全没注意到一个人穿着大猩猩服装走过画面。</p>
+  </div>
+  <div class="col">
+    <h4>记忆（Memory）</h4>
+    <p>你如何编码、存储和提取信息。记忆不是录像机，而是<strong>重建过程</strong>——每次回忆都在重写记忆。</p>
+    <p><strong>关键发现：</strong> 目击证人的记忆极其不可靠。伊丽莎白·洛夫图斯的实验显示，仅仅改变一个词就能篡改人们的记忆。</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>决策（Decision-making）</h3>
+  <p>基于注意和记忆的信息，心智做出选择。但决策过程充满了系统性偏差：</p>
+  <ul>
+    <li><strong>锚定效应</strong>：第一个数字会影响后续所有判断（房价谈判中，先出价的数字就是锚）</li>
+    <li><strong>确认偏误</strong>：你倾向于寻找支持你已有观点的信息</li>
+    <li><strong>损失厌恶</strong>：失去 100 元的痛苦 ≈ 获得 200 元的快乐（比率约 1.5-2.5:1）</li>
+  </ul>
+</div>
+
+<h2>为什么这个理论重要？</h2>
+<p>
+  两系统理论解释了<strong>为什么</strong>聪明人会犯蠢、为什么好主意会失败、为什么我们总在说"下次一定改"。它不是一个学术理论——它是你每天都在使用的操作系统。
+</p>
+<p>
+  在商业中，它解释了为什么好的数据分析可能被直觉否决；在产品设计中，它解释了为什么用户界面需要减少系统 2 的负担；在管理中，它解释了为什么决策流程设计比"提高员工智商"更有效。
+</p>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong> 中文语境中"直觉""感觉""灵光一闪"其实就是系统 1 的产物。而"三思而后行""谋定而后动"是倡导系统 2 介入。但问题在于——系统 1 的速度远快于系统 2，等你"三思"的时候，系统 1 往往已经做出了判断，系统 2 只是在合理化。了解这一点，是改变决策方式的第一步。
+</div>
+
+<h2>日常应用：如何训练系统 2</h2>
+<p>
+  好消息是：系统 2 像肌肉一样可以被训练。以下是几个实证有效的策略：
+</p>
+<ul>
+  <li><strong>放慢决策节奏</strong>：重大决策前强制等待 24 小时，让系统 1 的激情消退</li>
+  <li><strong>写下来</strong>：把决策的标准、理由写下来，强制系统 2 工作</li>
+  <li><strong>寻找反面证据</strong>：主动寻找挑战你观点的信息，对抗确认偏误</li>
+  <li><strong>减少决策数量</strong>：奥巴马、乔布斯穿同样的衣服——减少小事决策，为大事保存认知资源</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你在面试一个候选人，他毕业于名校且面试时对你微笑。</div>
+    <div class="sentence">你直觉觉得"他一定很优秀"。这种快速判断主要来自：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 1（直觉）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 2（理性分析）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：你正在做一场重要的绩效评估，已经评估了 20 个人了。</div>
+    <div class="sentence">评估到第 20 个人时，你的判断更容易出现偏差，原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 1 变强了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 2 疲劳了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：你在商场看到一件原价 1000 元、现价 300 元的衣服。</div>
+    <div class="sentence">你觉得"太划算了"的主要心理机制是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">锚定效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">从众效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你支持某个政治观点，然后只在社交媒体上关注同意你的人。</div>
+    <div class="sentence">这种行为背后的心理偏差是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">损失厌恶</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">确认偏误</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：你在数球队传球次数时，完全没注意到旁边的大猩猩。</div>
+    <div class="sentence">这说明了注意的什么特性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">注意是选择性的，未被注意的信息会被过滤</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">记忆是不可靠的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：你的朋友告诉你，她的记忆非常可靠，从不出错。</div>
+    <div class="sentence">认知心理学的研究结论是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">每个人的记忆确实很可靠</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">所有人的记忆都是重建性的，都可能出错</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：你被要求判断 800 的阶乘有多少个零。</div>
+    <div class="sentence">系统 1 会对这个问题给出什么反应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 1 会告诉你数字巨大，但不会给出精确答案</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 1 能立即计算出精确答案</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：你丢了 100 元，心情很差。但如果捡到 100 元，心情不会好多少。</div>
+    <div class="sentence">这体现了哪个心理现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">损失厌恶</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对某个概念有疑问，或者想深入探讨某个实验，直接问我。好的问题比好的答案更重要。
+  <br><br>
+  <strong>推荐资源：</strong> 《思考，快与慢》——丹尼尔·卡尼曼，诺贝尔经济学奖得主，两系统理论的奠基之作。
+  <br><br>
+  <a href="../reference/intro-cognitive-psychology.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-evolutionary-psychology.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"直觉觉得"就是系统 1 的标志——它基于有限线索（名校、微笑）快速做出判断，不需要逻辑推理。', wrong: '系统 2 需要专注和逻辑推理。这里你是"直觉觉得"，这是系统 1 在自动处理信息。' },
+    q2: { correct: '决策疲劳是真实存在的——系统 2 消耗认知资源，评估 20 个人后资源枯竭，更容易出现偏差。', wrong: '系统 1 一直在那里工作，不会因为做了多少评估而变强。问题在于系统 2 疲劳了。' },
+    q3: { correct: '原价 1000 元是你的"锚"——后续所有判断（300 元贵还是便宜）都围绕这个锚进行调整。而调整通常不够充分。', wrong: '从众效应是说你会因为别人也在买而买。这里只有你和标价，没有关系压力。' },
+    q4: { correct: '确认偏误 = 寻找和记住支持自己观点的信息，忽略反面信息。这是系统 1 的自然倾向。', wrong: '损失厌恶是关于得失的敏感度不同。这里讨论的是信息选择，不是金钱得失。' },
+    q5: { correct: '注意就像聚光灯——照到哪里才处理哪里。没被照到的（大猩猩）虽然眼睛看到了，但大脑没有处理。', wrong: '这是注意实验，不是记忆实验。问题出在"没有注意到"，而不是"记错了"。' },
+    q6: { correct: '所有人类的记忆都是重建性的——每次回忆都是大脑重新组装片段的过程，不是回放录像。这意味着记忆必然会被改写。', wrong: '记忆不可靠不是个人差异，而是人类大脑的基本工作机制。没有人的记忆是可靠的录像机。' },
+    q7: { correct: '系统 1 擅长模式识别和大致估计——它能判断 800! 是"天文数字"，但不能计算精确结果。精确计算需要系统 2。', wrong: '没有人能用直觉（系统 1）精确计算 800 的阶乘。这需要系统 2 的逐步计算。' },
+    q8: { correct: '损失厌恶：失去 100 的痛苦远大于捡到 100 的快乐（通常 1.5-2.5 倍）。损失对我们的心理影响更大。', wrong: '锚定效应是关于初始信息影响判断。这里讨论的是得失不对称的心理体验。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对认知心理学的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

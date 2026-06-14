@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 — 语言接触与借用</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语言接触与借用</h1>
+<p class="lesson-meta">Lesson 6 · ~10 分钟 · 语言演变与跨语言交流</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够：解释语言接触的四种层次，识别英语中法语、拉丁语借词的分层规律，理解为什么"语言的纯净性"是一个神话，并将这些概念应用到你的英语学习与 AI 语言模型理解中。
+</div>
+
+<h2>为什么语言不会"纯净"</h2>
+<p>
+  语言从来不是封闭的系统。当不同语言的使用者相遇——因为贸易、战争、移民、科技交流——借用、混用、融合就是必然结果。英语历史上约 60% 的词汇来自法语和拉丁语，这不是例外，而是语言接触的正常规律。
+</p>
+<p>
+  从认知科学的角度看，语言借用的本质是大脑对更高效表达方式的自然选择：当本地词汇不足以精确描述新事物或新概念时，借用外来词是最低成本的解决方案。
+</p>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong>认为英语是"纯正的日耳曼语"是错的。莎士比亚时代的英语确实更接近古英语，但现代英语的词汇库是一个跨越千年的"混血池"。
+</div>
+
+<h2>语言接触的四种层次</h2>
+
+<div class="card">
+  <h3>第一层：借词（Lexical Borrowing）</h3>
+  <p>直接借用词汇，这是最常见也最表层的接触。</p>
+  <ul class="examples">
+    <li><strong>pizza</strong> ← 意大利语</li>
+    <li><strong>tsunami</strong>、<strong>karate</strong>、<strong>emoji</strong> ← 日语</li>
+    <li><strong>schadenfreude</strong> ← 德语（幸灾乐祸）</li>
+    <li><strong>hygge</strong> ← 丹麦语（舒适惬意）</li>
+    <li><strong>般若</strong>、<strong>刹那</strong>、<strong>世界</strong> ← 梵语（通过佛经翻译进入汉语）</li>
+  </ul>
+  <p>借词往往经历"语音本土化"：外来词会被调整到母语的音系规则范围内。例如日语将外来语全部音译为片假名（coffee → コーヒー kōhī），本质上是用日语的音节结构重写了英语词。</p>
+</div>
+
+<div class="card">
+  <h3>第二层：语音借用（Phonological Borrowing）</h3>
+  <p>借用另一种语言的发音方式，改变母语的音位系统。</p>
+  <ul class="examples">
+    <li>韩语和日语原本没有送气清音 /pʰ/（汉语拼音 p 的发音），近代借入大量汉语词汇后才进入音位系统。</li>
+    <li>英语的 /θ/ 和 /ð/（think, this 中的咬舌音）在借入其他语言时，经常被替换为最接近的本地音——日语用 t 或 s，法语用 s 或 t。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>第三层：结构借用（Structural Borrowing）</h3>
+  <p>借用语法或句法结构，这是更深层次的接触。</p>
+  <ul class="examples">
+    <li>爱尔兰语在英语长达 800 年的统治下，发展出了英语式的 SVO 语序（主语-动词-宾语），而传统的凯尔特语是 VSO 语序（动词-主语-宾语）。</li>
+    <li>汉语的"把"字句"在某种程度上受梵语宾动结构影响，出现在佛经翻译中。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>第四层：深度接触的结果</h3>
+  <p>当不同语言的群体需要长期沟通但无人掌握对方母语时，产生：</p>
+  <ul class="examples">
+    <li><strong>皮钦语（Pidgin）</strong>——语法极简的临时交流工具</li>
+    <li><strong>克里奥尔语（Creole）</strong>——如果皮钦语成为下一代人的母语，就获得完整的语法系统。海地克里奥尔语以法语词汇为基础，但语法结构深受西非语言影响，如今是 1,000 万人的母语。</li>
+    <li><strong>代码切换（Code-switching）</strong>——同一对话中灵活切换多种语言。在成都的外企工程师可能在会议中说"这个 sprint 的 velocity 不够"，回家跟父母说普通话，这就是最日常的接触现场。</li>
+  </ul>
+</div>
+
+<h2>英语的三层词汇系统</h2>
+<p>
+  英语的词汇可以按来源分为三层，每层对应不同的历史接触事件：
+</p>
+
+<div class="card">
+  <h3>底层：日耳曼语（古英语）</h3>
+  <p>这是英语的"骨架"——日常、基础、生活化的词汇。</p>
+  <ul class="examples">
+    <li>day, house, eat, drink, work, love, strong, water, fire</li>
+  </ul>
+  <p>这些词简短、直接，是英语最核心的部分。</p>
+</div>
+
+<div class="card">
+  <h3>中层：法语（诺曼征服，1066 年）</h3>
+  <p>法语词汇进入英语后，主要集中在权力、法律、军事和饮食领域。</p>
+  <ul class="examples">
+    <li><strong>法律/政治：</strong>justice, court, jury, government, parliament, law</li>
+    <li><strong>军事：</strong>army, war, soldier, battle, peace</li>
+    <li><strong>烹饪：</strong>beef, pork, sauce, dinner, supper</li>
+    <li><strong>艺术：</strong>music, painting, poetry, beauty, color</li>
+  </ul>
+  <p>有趣的是：动物的活体用日耳曼词（pig, cow, sheep），上了餐桌用法语词（pork, beef, mutton）——这是阶级统治的语言化石。</p>
+</div>
+
+<div class="card">
+  <h3>高层：拉丁语/希腊语（文艺复兴）</h3>
+  <p>学术、科学、医学的高级词汇。</p>
+  <ul class="examples">
+    <li>chemistry, hypothesis, entropy, analysis, system, data</li>
+  </ul>
+  <p>这些词让英语能够精确描述抽象概念和科学研究——这也是为什么 AI 领域的术语几乎全是拉丁/希腊词根。</p>
+</div>
+
+<h2>汉语也经历了三次大借词潮</h2>
+<p>
+  语言的"纯净性"是一个神话。汉语在历史上经历了三次大规模借词潮：
+</p>
+
+<div class="card">
+  <h3>第一次：佛经翻译（1-6 世纪，梵语借词）</h3>
+  <p>菩萨、世界、刹那、因果、觉悟、修行、烦恼</p>
+  <p>没有这些词，汉语的哲学和宗教表达会倒退数百年。</p>
+</div>
+
+<div class="card">
+  <h3>第二次：明清之际（欧洲语言，主要是葡萄牙语、拉丁语、英语）</h3>
+  <p>几何、代数、逻辑、化学、物理、引擎</p>
+  <p>利玛窦等传教士将西方科学概念引入汉语，创造了大量新词。</p>
+</div>
+
+<div class="card">
+  <h3>第三次：近代日语借词回流（明治维新后）</h3>
+  <p>社会、经济、科学、哲学、政治、革命、干部、经济</p>
+  <p>这些词是日本人用汉字翻译西方概念后，又回流到汉语的。今天你觉得"native"的词，其实走了一条"西方 → 日语 → 汉语"的奇妙路径。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>语言接触的方向与权力结构高度相关。经济和文化强势的语言输出词汇，弱势语言输入词汇。但方向并非完全单向——英语在计算机领域向全球输出技术词汇，而阿拉伯语向伊斯兰文化圈输出宗教词汇。
+</div>
+
+<h2>为什么这对我们很重要</h2>
+<p>
+  <strong>对语言学习者：</strong>理解借词规律可以加速词汇习得。英语中 30% 的词汇有法语来源，掌握法语能帮你快速扩充英语词汇量。同样，理解拉丁词根可以解析数万英语单词。
+</p>
+<p>
+  <strong>对 AI 和 NLP：</strong>大语言模型的训练数据中充斥着混合语言内容——中英混合的技术博客、含法语借词的英文论文。理解语言借用的模式，能帮助识别借词与本土词的界限，构建更精准的多语言模型。
+</p>
+
+<div class="followup">
+  <strong>想深入了解？</strong>阅读参考卡片 <a href="../reference/language-contact-borrowing.html">语言接触与借用速查卡</a>，获取精炼笔记。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.britishcouncil.cn" target="_blank">British Council 多语言学习资源</a>——探索语言接触在全球化英语中的体现。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别语言接触现象</h2>
+  <p>选出最符合每种情况的选项。共 8 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">背景：英语中 "beef"（牛肉）一词的来源。</div>
+    <div class="question-text">"Beef" 来自哪种语言？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">古英语（日耳曼语）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">法语</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">背景：日语将 "coffee" 音译为 コーヒー（kōhī）。</div>
+    <div class="question-text">这属于语言接触的哪种层次？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">借词（语音本土化）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">结构借用</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">背景：汉语词汇 "社会""经济""科学" 的词源。</div>
+    <div class="question-text">这些词最初是从哪里回到汉语的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接从英语翻译</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">日语借词回流</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">背景：爱尔兰语在英语统治下发展出了 SVO 语序。</div>
+    <div class="question-text">这属于哪种语言接触现象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">结构借用</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">借词</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">背景：一个成都工程师在会议中说 "这个 sprint 的 velocity 需要提升"。</div>
+    <div class="question-text">这种现象被称为？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">语言退化</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">代码切换</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">背景：海地克里奥尔语以法语词汇为基础，但语法结构深受西非语言影响。</div>
+    <div class="question-text">如果一个皮钦语成为了下一代人的母语，它会变成什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">克里奥尔语</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">皮钦语</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">背景：英语中 "justice""government""parliament" 等词。</div>
+    <div class="question-text">这些词反映了英语历史上的哪次重大接触事件？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">罗马统治（拉丁语影响）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">诺曼征服（法语影响）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">背景：日语用片假名标记所有外来语。</div>
+    <div class="question-text">片假名的主要功能是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">标记外来语</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">书写古典日语</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="0005-pragmatics.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-english-preposition-metaphors.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Beef" 来自法语。这是诺曼征服（1066年）后法语进入英语的典型例子——动物的活体用日耳曼词（pig），上了餐桌用法语词（pork/beef）。', wrong: '"Beef" 不是日耳曼语源。它是诺曼征服后从法语进入英语的词汇，反映了法语对英国饮食文化的深远影响。' },
+    q2: { correct: '日语将英语 "coffee" 音译为 コーヒー（kōhī），这是借词层次的语音本土化——用日语的音节结构重写外来词。', wrong: '这不是结构借用。结构借用涉及语法或句法层面的改变，而片假名音译只是词汇层面的借用。' },
+    q3: { correct: '"社会""经济""科学" 这些词走了一条奇妙的路径：西方概念 → 日本人用汉字翻译 → 回流到汉语。这是第三次大借词潮。', wrong: '它们不是直接从英语翻译过来的。是日本人先创造了这些汉字译词，然后再被汉语吸收的。' },
+    q4: { correct: '爱尔兰语从 VSO 语序变为 SVO 语序，这是语法结构的借用，属于语言接触的第二深层次。', wrong: '这不是简单的借词。借词只是词汇层面的变化，而爱尔兰语改变的是整个句子的基本结构。' },
+    q5: { correct: '"代码切换"指在同一对话中灵活切换多种语言变体。这是全球化时代最普遍的接触现象。', wrong: '这不是语言退化，而是语言接触的自然表现。双语或多语者在不同语境中切换，是语言能力的体现。' },
+    q6: { correct: '皮钦语（Pidgin）是临时交流工具，当它成为下一代人的母语时，就获得了完整的语法系统，变成克里奥尔语（Creole）。', wrong: '皮钦语本身没有完整的语法系统。只有当它被下一代人作为母语习得时，才扩展为克里奥尔语。' },
+    q7: { correct: '"Justice""government""parliament" 都是法语借词，来自 1066 年诺曼征服后法语对英语的深刻影响。', wrong: '拉丁语影响主要在学术和科学词汇（chemistry, hypothesis）。法律和政治词汇主要来自法语。' },
+    q8: { correct: '片假名是日本专门为处理语言接触而发明的书写工具——专门用于标记外来语。汉字用于固有词汇和部分汉语词，平假名用于语法结构。', wrong: '书写古典日语主要用汉字和平假名。片假名是近代才广泛用于标记外来语的。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对语言接触与借用理解得很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下答错的题目的解释，理解为什么。';
+      else label.textContent = '继续加油！重读上面的内容，重新尝试理解这些概念。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

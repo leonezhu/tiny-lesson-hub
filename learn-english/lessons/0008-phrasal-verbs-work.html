@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8 — Phrasal Verbs You Actually Need at Work</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .verb-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .verb-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .verb-card .meaning {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .verb-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .verb-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .verb-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .verb-card .grammar-note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Phrasal Verbs You Actually Need at Work</h1>
+<p class="lesson-meta">Lesson 8 &middot; ~12 minutes &middot; Workplace communication</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll recognize and correctly use 12 phrasal verbs that appear constantly in meetings, emails, and stand-ups — and know when they are separable (carry the report out vs. carry out the report).
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  In Chinese, you use a single verb: <em>提交</em>, <em>提出</em>, <em>推迟</em>. In English, the same ideas are almost always phrasal verbs: <em>submit</em> vs. <em>put in</em>, <em>提出</em> vs. <em>bring up</em>. Phrasal verbs dominate <strong>spoken English at work</strong> — they are the difference between sounding natural and sounding like a textbook. Formal writing often prefers the single verb (investigate), but in conversation (meetings, chats, stand-ups) phrasal verbs are the default.
+</p>
+
+<h2>The Core 12</h2>
+
+<div class="verb-card">
+  <h3>1. <strong>bring up</strong> — 提出（话题）</h3>
+  <p class="meaning">to mention a topic for discussion</p>
+  <ul class="examples">
+    <li>Don't <strong>bring up</strong> the budget issue in the all-hands meeting.</li>
+    <li>How did she <strong>bring up</strong> the problem of delays?</li>
+    <li>I need to <strong>bring</strong> an important issue <strong>up</strong> with you.</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable:</strong> You can say "bring up the topic" or "bring the topic up." With a pronoun: "bring it up" (NOT "bring up it").</p>
+</div>
+
+<div class="verb-card">
+  <h3>2. <strong>follow up</strong> — 跟进</h3>
+  <p class="meaning">to check on something after it was first done</p>
+  <ul class="examples">
+    <li>I'll <strong>follow up</strong> with the client tomorrow.</li>
+    <li>Can you <strong>follow up</strong> on that email from Tuesday?</li>
+    <li>We need to <strong>follow</strong> this lead <strong>up</strong>.</li>
+  </ul>
+  <p class="grammar-note"><strong>Follow up on</strong> = investigate/check. <strong>Follow up with</strong> = contact someone.</p>
+</div>
+
+<div class="verb-card">
+  <h3>3. <strong>wrap up</strong> — 完成、总结</h3>
+  <p class="meaning">to finish or conclude something</p>
+  <ul class="examples">
+    <li>Let's <strong>wrap up</strong> this call — we have 5 minutes.</li>
+    <li>We <strong>wrapped up</strong> the project ahead of schedule.</li>
+    <li>Can we <strong>wrap</strong> this <strong>up</strong> by EOD?</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable:</strong> "wrap up the project" / "wrap it up." Very common in stand-up meetings: "I'll wrap up my tasks."</p>
+</div>
+
+<div class="verb-card">
+  <h3>4. <strong>put off</strong> — 推迟</h3>
+  <p class="meaning">to delay something to a later time</p>
+  <ul class="examples">
+    <li>We had to <strong>put off</strong> the launch because of the bug.</li>
+    <li>Don't <strong>put off</strong> until tomorrow what you can fix today.</li>
+    <li>The team <strong>put</strong> the decision <strong>off</strong> until next week.</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable:</strong> "put off the meeting" / "put it off." Formal synonym: postpone.</p>
+</div>
+
+<div class="verb-card">
+  <h3>5. <strong>run into</strong> — 遇到（问题/人）</h3>
+  <p class="meaning">to encounter a problem or person unexpectedly</p>
+  <ul class="examples">
+    <li>We <strong>ran into</strong> some issues with the deployment.</li>
+    <li>I <strong>ran into</strong> Sarah from marketing at the elevator.</li>
+    <li>Watch out — you might <strong>run into</strong> resistance from the QA team.</li>
+  </ul>
+  <p class="grammar-note"><strong>Not separable.</strong> You say "run into a problem," never "run a problem into."</p>
+</div>
+
+<div class="verb-card">
+  <h3>6. <strong>look into</strong> — 调查、研究</h3>
+  <p class="meaning">to investigate or examine something</p>
+  <ul class="examples">
+    <li>I'll <strong>look into</strong> the error logs and get back to you.</li>
+    <li>The team is <strong>looking into</strong> alternative solutions.</li>
+    <li>Can you <strong>look into</strong> why the dashboard is loading slowly?</li>
+  </ul>
+  <p class="grammar-note"><strong>Not separable.</strong> "Look into the issue" — never "look the issue into."</p>
+</div>
+
+<div class="verb-card">
+  <h3>7. <strong>set up</strong> — 设置、建立</h3>
+  <p class="meaning">to arrange or prepare something</p>
+  <ul class="examples">
+    <li>Can you <strong>set up</strong> a meeting for Thursday?</li>
+    <li>I've <strong>set up</strong> the testing environment.</li>
+    <li>Let me <strong>set</strong> the conference call <strong>up</strong> in the calendar.</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable:</strong> "set up a meeting" / "set it up." Very frequent in tech work.</p>
+</div>
+
+<div class="verb-card">
+  <h3>8. <strong>figure out</strong> — 搞清楚、解决</h3>
+  <p class="meaning">to understand or solve something through thinking</p>
+  <ul class="examples">
+    <li>We need to <strong>figure out</strong> who owns this ticket.</li>
+    <li>She <strong>figured out</strong> the root cause in ten minutes.</li>
+    <li>Let me <strong>figure</strong> this <strong>out</strong> before the stand-up.</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable:</strong> "figure out the answer" / "figure it out." One of the most versatile phrasal verbs in English.</p>
+</div>
+
+<div class="verb-card">
+  <h3>9. <strong>point out</strong> — 指出</h3>
+  <p class="meaning">to draw attention to something</p>
+  <ul class="examples">
+    <li>As John <strong>pointed out</strong> in the review, the API is not backward-compatible.</li>
+    <li>Could you <strong>point out</strong> which test cases are failing?</li>
+    <li>I want to <strong>point</strong> this bug <strong>out</strong> to the team.</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable:</strong> "point out the issue" / "point it out." Essential for code reviews and feedback.</p>
+</div>
+
+<div class="verb-card">
+  <h3>10. <strong>cut down on</strong> — 减少</h3>
+  <p class="meaning">to reduce the amount of something</p>
+  <ul class="examples">
+    <li>We need to <strong>cut down on</strong> meetings — we're spending 20 hours a week in calls.</li>
+    <li>I'm trying to <strong>cut down on</strong> context-switching.</li>
+    <li>We must <strong>cut</strong> the overhead <strong>down on</strong> this service.</li>
+  </ul>
+  <p class="grammar-note"><strong>Separable (with "down"):</strong> "cut down on meetings" / "cut the overhead down on..." Often used with "on."</p>
+</div>
+
+<div class="verb-card">
+  <h3>11. <strong>keep up with</strong> — 跟上（进度/变化）</h3>
+  <p class="meaning">to stay at the same level as something changing</p>
+  <ul class="examples">
+    <li>It's hard to <strong>keep up with</strong> the new framework updates.</li>
+    <li>Good — you're <strong>keeping up with</strong> the sprint.</li>
+    <li>Don't worry about <strong>keeping</strong> the docs <strong>up with</strong> every change.</li>
+  </ul>
+  <p class="grammar-note"><strong>Keep up</strong> = continue at same pace (not separable with "with"). The "with" introduces what you're following.</p>
+</div>
+
+<div class="verb-card">
+  <h3>12. <strong>touch base</strong> — 联系、碰头</h3>
+  <p class="meaning">to briefly reconnect or update someone</p>
+  <ul class="examples">
+    <li>Let's <strong>touch base</strong> after the client demo.</li>
+    <li>I'll <strong>touch base</strong> with design on the new mockups.</li>
+    <li>We should <strong>touch base</strong> every Monday morning.</li>
+  </ul>
+  <p class="grammar-note"><strong>NOT separable.</strong> Always "touch base (with someone) / touch base (on something)." Never "touch the base."</p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键差异：</strong> 中文用一个动词搞定（"跟进"、"推迟"、"提出"），英语用"动词 + particle"组合。particle 不是介词——它是"状态转换操作符"。理解这一点，短语动词就不再是死记硬背的词表，而是有规律的系统。<br><br>
+  <strong>Separable（可分离）</strong>：代词必须夹中间（carry it out, NOT carry out it）。<br>
+  <strong>Not separable（不可分离）</strong>：宾语只能放在后面（run into a problem, NOT run a problem into）。
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Phrasal Verb</h2>
+  <p>Pick the phrasal verb that fits the context. There are 10 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You're in a meeting and want to raise an issue.</div>
+    <div class="sentence">I'd like to ________ a concern about the timeline.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">bring up</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">run into</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">A colleague asked you to check on something.</div>
+    <div class="sentence">Sure, I'll ________ the error logs and report back.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">wrap up</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">look into</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">The team finished the sprint two days early.</div>
+    <div class="sentence">We ________ the sprint successfully.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">put off</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">wrapped up</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">A client called and wanted to change the deadline.</div>
+    <div class="sentence">We had to ________ the delivery date by one week.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">put off</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">touch base</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">You encountered a bug during testing.</div>
+    <div class="sentence">We ________ a critical bug in production.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">set up</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">ran into</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">You need to ask a colleague to check something in the future.</div>
+    <div class="sentence">Could you ________ with the marketing team after the meeting?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">follow up</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">figure out</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">The pronoun rule: which sentence is CORRECT?</div>
+    <div class="sentence">Which of these is grammatically correct?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Please figure out it.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Please figure it out.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">You want to schedule a brief check-in.</div>
+    <div class="sentence">Let's ________ after the demo to see how it went.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">touch base</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">cut down on</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q9">
+    <span class="q-num">Q9</span>
+    <div class="context">The pronoun rule #2: which is CORRECT?</div>
+    <div class="sentence">Which of these is grammatically correct?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Please run into it.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Please look into it.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q10">
+    <span class="q-num">Q10</span>
+    <div class="context">You want to reduce something at work.</div>
+    <div class="sentence">We need to ________ unnecessary meetings.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">keep up with</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">cut down on</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Not sure whether "look into" or "look up" is the right one here? That's exactly what we should talk about. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/free-resources/listening/b2" target="_blank">British Council B2 Listening</a> — practice hearing phrasal verbs in natural workplace conversation.
+  <br><br>
+  <a href="../reference/phrasal-verbs-work.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0007-relative-clauses.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-passive-voice.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"I\'d like to bring up" = I want to mention. "Bring up" is used for raising topics in discussion. "Run into" means to encounter unexpectedly — wrong context.', wrong: '"Run into" means to encounter (a problem or person) by surprise. You don\'t "run into" a concern you intentionally want to discuss — use "bring up".' },
+    q2: { correct: '"Look into" = investigate. When someone needs you to check on something, you "look into" it. "Wrap up" means to finish — that\'s what you\'d say at the end, not to start investigating.', wrong: '"Wrap up" means to finish/conclude. You don\'t "wrap up" error logs — you investigate them. "Look into" is the right verb for checking and investigating.' },
+    q3: { correct: '"Wrapped up the sprint" = finished/completed it. "Wrap up" is the most common phrasal verb for finishing work in a team setting.', wrong: '"Put off" means to delay/postpone. That would mean the sprint was delayed — but the sentence says they finished successfully. "Wrapped up" = completed.' },
+    q4: { correct: '"Put off" = postpone/delay. When the client requested a later deadline, you "put off" the delivery date. This is the most common phrasal verb for rescheduling.', wrong: '"Touch base" means to briefly reconnect. You don\'t "touch base" a deadline — you delay it. "Put off the delivery date" = moved it to a later time.' },
+    q5: { correct: '"Ran into" = encountered (unexpectedly). Bugs in production are typically problems you encounter, not problems you set up or finish.', wrong: '"Set up" means to arrange/prepare — you don\'t "set up" a bug (unless you deliberately created it!). "Ran into a critical bug" = encountered it unexpectedly.' },
+    q6: { correct: '"Follow up with" = contact someone after an initial interaction. After a meeting, you "follow up with" colleagues to continue the conversation.', wrong: '"Figure out" means to solve/understand. You don\'t "figure out with a team" — you "follow up with" someone to continue communication after the meeting.' },
+    q7: { correct: '"Figure out" is a separable phrasal verb. When the object is a pronoun (it), it MUST go in the middle: "figure it out." You CANNOT say "figure out it."', wrong: '"Figure out" is separable. When the object is a pronoun (it/them), English requires it between the verb and particle: "figure it out," never "figure out it." This is a hard rule.' },
+    q8: { correct: '"Touch base" = briefly reconnect. This is one of the most common workplace phrasal verbs. "Let\'s touch base after X" = let\'s briefly check in after X.', wrong: '"Cut down on" means to reduce. You don\'t "cut down on" a conversation — you reduce something like meetings or spending. "Touch base" is the right phrase for a brief check-in.' },
+    q9: { correct: '"Look into" is NOT separable — the object goes after the whole phrase: "look into it." "Run into" is also not separable but means "encounter," not "investigate." So "look into it" (investigate it) is correct.', wrong: '"Run into" means to encounter unexpectedly — not to investigate. "Please run into it" is both semantically wrong (you don\'t "encounter" a task) and structurally odd. "Look into it" = investigate it.' },
+    q10: { correct: '"Cut down on" = reduce. "Unnecessary meetings" is something you want to reduce. This phrasal verb is extremely common in productivity discussions.', wrong: '"Keep up with" means to stay at the same level as something changing. You don\'t "keep up with meetings" — you try to reduce them. "Cut down on" = reduce the amount.' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 10;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You\'ve got a solid handle on workplace phrasal verbs.';
+      else if (score >= 7) label.textContent = 'Good work! Review the ones you missed — the explanations tell you why.';
+      else label.textContent = 'Keep going! Re-read the verb cards above and try again.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

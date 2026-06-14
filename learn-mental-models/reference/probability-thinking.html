@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 概率思维</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card-section {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card-section h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card-section p { margin-bottom: 0.5rem; }
+
+  .card-section ul { padding-left: 1.5rem; margin-bottom: 0.5rem; }
+  .card-section li { margin-bottom: 0.25rem; }
+
+  .formula-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    text-align: center;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+  }
+
+  .warning-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .warning-box strong { color: #e65100; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>概率思维</h1>
+<p class="card-meta">Quick Reference Card &middot; Lesson 1 &middot; Mental Models</p>
+
+<div class="card-section">
+  <h2>核心定义</h2>
+  <p>用概率而非确定性来思考世界。在任何判断中同时考虑多种可能的结果及其发生的可能性，而不是给出"是"或"否"的二元答案。</p>
+  <p>核心表达：<em>"我认为这件事有 70% 的可能性会发生"</em>，而不是"这件事一定会发生"。</p>
+</div>
+
+<div class="card-section">
+  <h2>三步骤操作流程</h2>
+  <p><strong>① 建立先验</strong> — 基于历史数据给出初始概率（锚点）</p>
+  <p><strong>② 收集证据并更新</strong> — 用贝叶斯定理修正概率，证据权重取决于诊断性</p>
+  <p><strong>③ 期望值决策</strong> — 概率 × 价值 = 决策依据，同时考虑分布形状和承受能力</p>
+</div>
+
+<div class="formula-box">
+  期望值 = Σ(每种结果的概率 × 该结果的数值)
+</div>
+
+<div class="formula-box">
+  贝叶斯更新：后验 ∝ 先验 × 似然
+</div>
+
+<div class="card-section">
+  <h2>经典案例：医学检测悖论</h2>
+  <p>检测准确率 99%，发病率 0.1% → 阳性后实际患病概率约 9%</p>
+  <p>原因：假阳性人数（约 10 人）远多于真阳性人数（约 1 人）</p>
+</div>
+
+<div class="card-section">
+  <h2>常见认知偏差</h2>
+  <ul>
+    <li><strong>基础概率忽视</strong> — 忽略先验概率，过度依赖具体信息</li>
+    <li><strong>结果导向判断</strong> — 用结果反推决策质量</li>
+    <li><strong>合取谬误</strong> — 认为两个事件同时发生的概率高于单个事件</li>
+    <li><strong>叙事谬误</strong> — 用连贯故事解释随机事件</li>
+    <li><strong>确认偏误</strong> — 只关注支持已有信念的证据</li>
+  </ul>
+</div>
+
+<div class="warning-box">
+  <strong>关键提醒：</strong>好决策 ≠ 好结果。正期望值的决策也可能亏损，负期望值的决策也可能赚钱。评价决策要看过程，而非只看结果。
+</div>
+
+<div class="card-section">
+  <h2>关键人物</h2>
+  <ul>
+    <li><strong>Thomas Bayes</strong> — 贝叶斯定理（1763）</li>
+    <li><strong>Daniel Kahneman & Amos Tversky</strong> — 启发式与偏见研究（1974）</li>
+    <li><strong>Philip Tetlock</strong> — 《超级预测》，概率思维可训练</li>
+    <li><strong>Nate Silver</strong> — 《信号与噪声》，贝叶斯预测实践</li>
+    <li><strong>Nassim Taleb</strong> — 《黑天鹅》，肥尾分布与不确定性</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0001-probability-thinking.html">完整课程</a> | <a href="../index.html">目录</a>
+</div>
+
+</body>
+</html>

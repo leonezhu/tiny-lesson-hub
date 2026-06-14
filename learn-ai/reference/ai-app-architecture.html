@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考：AI 应用架构</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>AI 应用架构 — 快速参考</h1>
+<p class="lesson-meta">参考卡 · 对应第十一课</p>
+
+<h2>多模态架构</h2>
+<div class="card">
+  <h3>四层结构</h3>
+  <ul>
+    <li><strong>输入编码器</strong>：文本/图像/音频 → 向量表示（CLIP 等）</li>
+    <li><strong>融合层</strong>：跨模态对齐，共享语义空间</li>
+    <li><strong>统一模型</strong>：融合后进行推理（GPT-4V 等）</li>
+    <li><strong>输出解码器</strong>：向量 → 人类可读形式</li>
+  </ul>
+</div>
+
+<h2>Agent 系统架构</h2>
+<div class="card">
+  <h3>核心组件</h3>
+  <ul>
+    <li><strong>规划器</strong>：大任务 → 子步骤</li>
+    <li><strong>记忆系统</strong>：短期上下文 + 长期知识库</li>
+    <li><strong>工具调度器</strong>：决定调用哪个外部工具</li>
+    <li><strong>反思模块</strong>：检查结果，重新规划</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Agent vs 聊天机器人</h3>
+  <p style="font-size:0.95rem;"><strong>聊天机器人</strong>：接收问题 → 生成回答（单向）<br>
+  <strong>Agent</strong>：感知 → 规划 → 行动 → 观察 → 调整（闭环决策）</p>
+</div>
+
+<h2>企业部署架构</h2>
+<div class="card">
+  <h3>部署模式对比</h3>
+  <ul>
+    <li><strong>MaaS</strong>：API 调用，最快上线，数据出域</li>
+    <li><strong>私有化部署</strong>：本地运行，数据不出域，需要 GPU</li>
+    <li><strong>混合架构</strong>：简单用云端，敏感用本地（主流）</li>
+    <li><strong>模型路由</strong>：按复杂度选模型，成本最优</li>
+  </ul>
+</div>
+
+<h2>关键指标</h2>
+<div class="card">
+  <ul>
+    <li><strong>延迟</strong>：实时 &lt;200ms，批量 &lt;5s</li>
+    <li><strong>吞吐量</strong>：数千至数万 QPS</li>
+    <li><strong>可靠性</strong>：降级策略、熔断、自动重试</li>
+    <li><strong>安全</strong>：加密、访问控制、审计日志</li>
+  </ul>
+</div>
+
+<a href="../lessons/0011-ai-app-architecture.html" class="back-link">← 返回课程</a>
+
+<div class="footer">
+  <a href="../lessons/0011-ai-app-architecture.html">返回课程</a>
+</div>
+
+</body>
+</html>

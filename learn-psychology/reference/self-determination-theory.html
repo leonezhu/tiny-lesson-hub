@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快速参考 — 自我决定论核心概念</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>自我决定论 SDT — 快速参考</h1>
+<p class="subtitle">核心概念速查 · 来自第 6 课</p>
+
+<div class="card">
+  <h3>三大基本心理需求</h3>
+  <div class="comparison">
+    <div class="col">
+      <h4>自主性（Autonomy）</h4>
+      <p>感到行为出于自我选择</p>
+    </div>
+    <div class="col">
+      <h4>胜任感（Competence）</h4>
+      <p>感到有能力并看到进步</p>
+    </div>
+    <div class="col" style="grid-column: 1 / -1;">
+      <h4>关系感（Relatedness）</h4>
+      <p>感到与他人有真正的连接和归属感</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>动机连续体（从低到高自主性）</h3>
+  <ul>
+    <li><strong>无动机</strong> — 不知道为什么要做</li>
+    <li><strong>外在调节</strong> — 为钱或避免惩罚</li>
+    <li><strong>内摄调节</strong> — 为内疚感或自尊</li>
+    <li><strong>认同调节</strong> — 认为事情重要</li>
+    <li><strong>整合调节</strong> — 与自我完全一致</li>
+    <li><strong>内在动机</strong> — 纯粹因为兴趣</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>过度正当化效应</h3>
+  <p>外部奖励可能削弱内在动机——人们将行为归因为"为了奖励"而非兴趣。Deci (1971) 实验证明：有金钱奖励组在自由时间继续解谜题的时间更少。</p>
+</div>
+
+<div class="card">
+  <h3>关键应用</h3>
+  <ul>
+    <li><strong>教育：</strong> 提供选择权 + 解释意义 > 奖惩制度</li>
+    <li><strong>管理：</strong> 自主性支持 > 微观管理</li>
+    <li><strong>个人：</strong> 识别行为的动机类型，向认同/整合调节移动</li>
+    <li><strong>产品设计：</strong> Slack/Duolingo 通过自主性+胜任感+关系感设计嵌入 SDT</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0006-self-determination-theory.html">查看完整课程</a>
+</div>
+
+</body>
+</html>

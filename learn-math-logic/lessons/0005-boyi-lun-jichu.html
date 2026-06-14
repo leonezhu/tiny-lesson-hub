@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — 博弈论基础：聪明人如何斗智斗勇</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .payoff-table {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .payoff-table th, .payoff-table td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+  }
+
+  .payoff-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .payoff-table td {
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .highlight-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .highlight-box strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>博弈论基础：聪明人如何斗智斗勇</h1>
+<p class="lesson-meta">Lesson 5 · ~10 minutes · 策略思维入门</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够识别日常决策中的博弈结构——区分合作与背叛的激励，理解为什么"理性"的选择会导致集体非理性，并用"占优策略"和"纳什均衡"来分析简单的策略互动。
+</div>
+
+<h2>为什么需要博弈论？</h2>
+<p>
+  大多数决策课程教你"怎么做决定"——但那些决策的背景是：你的选择只影响你自己。比如你想吃什么，只看你自己的偏好就够了。
+</p>
+<p>
+  <strong>博弈论解决的是另一类问题：</strong>你的选择会影响别人，别人的选择也会影响你。你想涨价，竞争对手也会调价；你想合作，对方可能背叛。这种"决策互锁"的局面无处不在——商业竞争、谈判、政策制定，甚至团队合作。
+</p>
+
+<div class="highlight-box">
+  <strong>核心区别：</strong>传统决策 = 我做我的，结果由自然决定。博弈决策 = 我做我的，结果由我和对手共同决定。
+</div>
+
+<h2>博弈的三个灵魂要素</h2>
+<p>
+  分析任何博弈，先问三个问题：
+</p>
+
+<div class="card">
+  <h3>1. 参与者（Players）— 谁在局里？</h3>
+  <ul>
+    <li>识别所有有影响力的决策者</li>
+    <li>他们各自的目标是什么？（利润？安全？声誉？）</li>
+    <li>他们知道彼此的目标吗？</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. 策略（Strategies）— 每个人能做什么？</h3>
+  <ul>
+    <li>每个参与者有哪些可选的行动？</li>
+    <li>是同时出牌（如投标），还是轮流出牌（如谈判）？</li>
+    <li>有没有"不出牌"的选项？</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>3. 支付（Payoffs）— 各种结果值多少？</h3>
+  <ul>
+    <li>每种策略组合下，每个人得到什么？</li>
+    <li>支付可以用金钱、效用、满意度来衡量</li>
+    <li>关键是：每个人的支付<strong>取决于所有人的选择</strong></li>
+  </ul>
+</div>
+
+<h2>囚徒困境：博弈论的第一个经典</h2>
+<p>
+  这是博弈论最核心的模型。理解它，就理解了为什么"集体理性"会被"个人理性"击碎。
+</p>
+
+<p><strong>情境：</strong>两个嫌疑人被警方隔离审讯，互不能沟通。检察官给他们同样的条件：</p>
+
+<table class="payoff-table">
+  <tr>
+    <th></th>
+    <th>对方：沉默（合作）</th>
+    <th>对方：告发（背叛）</th>
+  </tr>
+  <tr>
+    <td><strong>你：沉默（合作）</strong></td>
+    <td>各判1年 ✅</td>
+    <td>你判10年，对方释放</td>
+  </tr>
+  <tr>
+    <td><strong>你：告发（背叛）</strong></td>
+    <td>你释放，对方判10年</td>
+    <td>各判5年 ❌</td>
+  </tr>
+</table>
+
+<p>
+  <strong>直觉分析：</strong>两个人都沉默，总共只坐6年牢。但每个人都从自身出发做理性计算——
+</p>
+<p>
+  如果对方沉默，我告发 = 我自由，对方坐10年 → 我占便宜<br>
+  如果对方告发，我告发 = 坐5年，我沉默 = 坐10年 → 我告发更好
+</p>
+<p>
+  不管对方怎么选，<strong>"告发"对你都更有利</strong>。这就是"占优策略"。但问题是：两个人都选占优策略，结果各判5年——比都沉默的1年多了一倍。
+</p>
+
+<div class="highlight-box">
+  <strong>现实中的囚徒困境：</strong>价格战（两家公司降价都亏，但不降怕丢市场）、军备竞赛（两国都花钱造武器都不安全）、公地悲剧（每个人多养一只羊直到草场荒废）。
+</div>
+
+<h2>纳什均衡：为什么"糟糕"的状态会持续？</h2>
+<p>
+  <strong>定义：</strong>在纳什均衡中，给定其他人的选择，没有人可以通过单方面改变策略来获得更好的结果。换句话说，这是"没有人想独自偏离"的稳态。
+</p>
+<p>
+  <strong>关键理解：</strong>纳什均衡 ≠ 最优结果。囚徒困境中，双方都背叛（各判5年）是纳什均衡，但双方都沉默（各判1年）才是最优的。均衡说的是"稳定"，不是"好"。
+</p>
+
+<div class="card">
+  <h3>为什么纳什均衡经常产生次优结果？</h3>
+  <ul>
+    <li>它只考虑<strong>单方面的偏离</strong>——"如果只有我改变，我会更好吗？"</li>
+    <li>但好的结果需要<strong>所有人都改变</strong>——而这在没有信任或强制力的情况下做不到</li>
+    <li>所以大多数社会困境的本质就是：<strong>糟糕的纳什均衡在锁死系统</strong></li>
+  </ul>
+</div>
+
+<h2>占优策略 vs 均衡策略</h2>
+<p>
+  这是两种不同的思考博弈的方法：
+</p>
+
+<div class="card">
+  <h3>占优策略（Dominant Strategy）— 不管别人怎么动，我的最佳选择不变</h3>
+  <ul>
+    <li>如果你找到一个占优策略，直接用就行，不用猜对方会怎么做</li>
+    <li>囚徒困境中，"告发"是双方的占优策略</li>
+    <li>但大多数真实博弈<strong>不存在</strong>占优策略</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>均衡策略（Equilibrium Strategy）— 我猜你会怎么动，然后选最佳回应</h3>
+  <ul>
+    <li>如果我知道你会降价，我最好的回应是什么？</li>
+    <li>如果我知道你会合作，我的最佳回应是什么？</li>
+    <li>纳什均衡就是所有人的"最佳回应"恰好相互匹配</li>
+    <li>这要求你具备"换位思考的数学化"能力</li>
+  </ul>
+</div>
+
+<h2>现实案例拆解</h2>
+
+<div class="card">
+  <h3>案例：两家公司打价格战</h3>
+  <p>两家公司都卖同类产品，定价高都能赚100万。但如果一家降价抢市场，降价方赚150万，高价方亏50万。如果都降价，各赚50万。</p>
+  <table class="payoff-table">
+    <tr>
+      <th></th>
+      <th>B：高价</th>
+      <th>B：低价</th>
+    </tr>
+    <tr>
+      <td><strong>A：高价</strong></td>
+      <td>A: 100, B: 100 ✅</td>
+      <td>A: -50, B: 150</td>
+    </tr>
+    <tr>
+      <td><strong>A：低价</strong></td>
+      <td>A: 150, B: -50</td>
+      <td>A: 50, B: 50 ❌</td>
+    </tr>
+  </table>
+  <p><strong>分析：</strong>"低价"是占优策略（不管B选什么，A选低价都赚更多）。纳什均衡是（低价，低价），各赚50万。但（高价，高价）各赚100万，明显更好。这就是囚徒困境的商业版本。</p>
+</div>
+
+<div class="card">
+  <h3>案例：团队项目中的"摸鱼"</h3>
+  <p>四个小组成员一起做项目。大家都认真 = 全组A（每人生效值8）。一人摸鱼其他人认真 = 摸鱼者效值10（少干活），其他人效值6。都摸鱼 = 全组D（每人生效值2）。</p>
+  <p><strong>分析：</strong>"摸鱼"是个人占优策略——不管别人怎么干，自己偷懒的收益更高。但结果是大家都摸鱼，效率最差。破解方法：</p>
+  <ul>
+    <li><strong>改变支付结构：</strong>按个人贡献评分，摸鱼的收益降低</li>
+    <li><strong>增加重复互动：</strong>以后还有很多共同项目，背叛会触发报复</li>
+    <li><strong>引入第三方监管：</strong>导师检查、同伴互评</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>博弈论的价值不在于"算出最优解"，而在于让你看清"为什么好的选择做不出来"。大多数时候不是人们不懂道理，而是制度设计没有把合作变成占优策略。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别博弈结构</h2>
+  <p>以下是 8 道情景题。选择你认为正确的选项，点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">两家公司在同一个市场竞争</div>
+    <div class="sentence">两家公司都想维持高价。但每家公司都忍不住降价抢市场份额。这属于哪种博弈结构？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">囚徒困境</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">零和博弈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">纳什均衡的核心含义</div>
+    <div class="sentence">在纳什均衡状态下，以下哪项正确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有人的收益都达到最大</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有人想单方面改变自己的策略</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">占优策略的定义</div>
+    <div class="sentence">一个策略是"占优策略"意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它是所有可能结果中收益最高的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不管对手选什么，这个策略对你都是最好的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">公地悲剧与囚徒困境的关系</div>
+    <div class="sentence">多个渔民共享一个鱼塘。每个人多放一条鱼都有短期收益，但鱼群会枯竭。这本质上是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">囚徒困境的多方版本</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">零和博弈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">破解囚徒困境的方法</div>
+    <div class="sentence">两个竞争对手陷入价格战，双方利润都很低。以下哪种方法最能帮助它们摆脱困境？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">说服对方提高道德水平</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">建立重复互动机制，让背叛会触发报复</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">判断纳什均衡</div>
+    <div class="sentence">在以下博弈中：A选左得到(3,1)，A选右得到(0,0)；B选上时A收益更高，B选下时A收益也更高。A总是选左。此时B选上还是选下是纳什均衡？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">B必须改选才能得到均衡</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">如果B选上、A选左，且B单方面改变不会更好，就是纳什均衡</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">博弈论的三个要素</div>
+    <div class="sentence">分析一个博弈时，以下哪组要素是完整的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">参与者、时间、地点</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">参与者、策略、支付</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">囚徒困境的核心悖论</div>
+    <div class="sentence">囚徒困境的核心悖论是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">两个人都无法沟通</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">个人理性导致集体非理性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有想法？</strong>博弈论最有趣的部分是你用它分析身边的一切——从会议室里的沉默到社交媒体上的热搜。任何"明知不该发生却持续发生"的现象，背后几乎都有博弈结构的影子。
+  <br><br>
+  <strong>推荐阅读：</strong>Thomas Schelling《冲突的策略》（The Strategy of Conflict）——博弈论在现实世界中的经典应用。
+  <br><br>
+  <a href="../reference/boyi-lun-jichu.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-zhengtai-yu-feiwei.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-xinxi-lun-xinxi-eng.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '两家公司的选择完全符合囚徒困境结构——双方都降价是占优策略，但双方都维持高价才是集体最优。', wrong: '这不是零和博弈（零和博弈意味着一方的收益就是另一方的损失）。价格战中双方都可能受损，是非零和博弈。核心结构是囚徒困境。' },
+    q2: { correct: '纳什均衡的定义就是"给定其他人不动，没有人想单独改变"。它不保证最优——囚徒困境就是典型。', wrong: '纳什均衡 ≠ 最优结果。在囚徒困境中均衡是双方都背叛（各判5年），但最优是双方都沉默（各判1年）。均衡说的是"稳定"，不是"好"。' },
+    q3: { correct: '占优策略的关键是"不管别人怎么选，我的最佳选择不变"。这是最强大的策略——不需要猜测对手。', wrong: '占优策略不是"收益最高"的策略，而是"最稳健"的策略——在所有可能情况下都最优，所以不需要预测对手。' },
+    q4: { correct: '公地悲剧就是多方版本的囚徒困境：每个人的短期个人理性导致长期集体灾难。每个渔民多放一条鱼都占优，但结果是鱼群枯竭。', wrong: '零和博弈是一方赢一方输，总和为零。公地悲剧中所有人的损失是一致的（鱼群枯竭大家都不好），不是零和。' },
+    q5: { correct: '重复博弈是破解囚徒困境的关键——"今天你背叛我，明天我就不跟你合作"。以牙还牙策略在长期互动中能维持合作。', wrong: '道德劝说几乎从不奏效——博弈论的核心就是：在错误的激励结构下，好人也会做坏事。改变payoff结构才有效。' },
+    q6: { correct: '纳什均衡的判断标准：给定A选左，B选上如果比选下更好，且给定B选上，A选左如果比选右更好，那就是均衡。', wrong: '不一定需要改变策略。如果B选上已经是对A选左的最佳回应，且A选左也是对B选上的最佳回应，这就是纳什均衡了。' },
+    q7: { correct: '参与者、策略、支付——这是博弈论分析最基础的三要素。缺任何一项都无法完整描述一个博弈。', wrong: '参与者、时间、地点是事件的基本要素，但不足以分析策略互动。博弈论需要的是"策略"和"支付"这两个核心概念。' },
+    q8: { correct: '囚徒困境的精髓就是：每个人都理性地追求自身利益最大化，结果却比合作更差。个人理性推导出集体非理性。', wrong: '无法沟通只是加剧困境的一个因素。核心悖论不在于沟通问题——即使能沟通，在一次性博弈中背叛仍然是占优策略。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你已经掌握了博弈论的核心逻辑。';
+      else if (score >= 6) label.textContent = '做得不错！看看做错的题，解释会告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的案例，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

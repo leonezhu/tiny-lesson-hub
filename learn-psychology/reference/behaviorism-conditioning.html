@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行为主义 — 快速参考卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .card .term {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>行为主义 — 快速参考卡</h1>
+<p class="subtitle">经典条件反射 × 操作性条件反射 · 第 7 课</p>
+
+<div class="card">
+  <h3>核心定义</h3>
+  <p>行为主义主张心理学只研究可观察的行为，认为行为是环境刺激与反应之间的联结。通过控制刺激可以预测和控制行为。</p>
+</div>
+
+<div class="card">
+  <h3>经典条件反射（巴甫洛夫）</h3>
+  <p class="term">Classical Conditioning — 通过关联两个刺激形成自动反应</p>
+  <ul>
+    <li>食物 → 流口水（天然）</li>
+    <li>铃声 + 食物反复配对 → 铃声 → 流口水（学会）</li>
+    <li>解释：恐惧症、味觉偏好、广告中的情绪关联</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>操作性条件反射（斯金纳）</h3>
+  <p class="term">Operant Conditioning — 行为的结果决定该行为未来是否重复</p>
+  <ul>
+    <li><strong>正强化：</strong> 给奖励 → 行为增加</li>
+    <li><strong>负强化：</strong> 移除厌恶刺激 → 行为增加</li>
+    <li><strong>惩罚：</strong> 给厌恶刺激 → 行为减少</li>
+    <li><strong>消退：</strong> 不再强化 → 行为减少</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>强化时间表</h3>
+  <ul>
+    <li><strong>连续强化：</strong> 每次都给 → 学习快，消退也快</li>
+    <li><strong>间歇强化（可变比率）：</strong> 随机给 → 学习慢，行为极其持久</li>
+    <li>应用：老虎机、抽卡游戏、社交媒体推送、无限滚动</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>关键人物</h3>
+  <ul>
+    <li><strong>巴甫洛夫：</strong> 经典条件反射，狗唾液实验</li>
+    <li><strong>华生：</strong> 行为主义宣言，"给我一打婴儿"</li>
+    <li><strong>斯金纳：</strong> 操作性条件反射，斯金纳箱，强化时间表</li>
+    <li><strong>米尔格兰姆：</strong> 服从实验，权威与道德</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>现实应用</h3>
+  <ul>
+    <li>教育：形成性评价、及时反馈</li>
+    <li>AI：强化学习（AlphaGo、自动驾驶）</li>
+    <li>产品设计：间歇强化维持用户粘性</li>
+    <li>行为矫正：治疗恐惧症和成瘾</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>局限性</h3>
+  <ul>
+    <li>忽略认知过程（思想、信念、预期）</li>
+    <li>忽视内在动机（自我决定论的批评）</li>
+    <li>实验室结论不一定适用于复杂社会情境</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0007-behaviorism-conditioning.html">回到课程</a> · <a href="../MISSION.md">Mission</a> · <a href="../NOTES.md">Notes</a>
+</div>
+
+</body>
+</html>

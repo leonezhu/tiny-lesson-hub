@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：AI 是什么——核心概念速查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>AI 是什么——核心概念速查</h1>
+<p class="subtitle">参考卡 · 来自第一课</p>
+
+<h2>AI 的三个能力层</h2>
+<div class="card">
+  <ul>
+    <li><strong>感知层</strong>：让机器"看见""听见""读懂"——语音识别、图像分类、OCR</li>
+    <li><strong>推理层</strong>：让机器"思考""规划""判断"——下棋、诊断、路径规划</li>
+    <li><strong>创造层</strong>：让机器"生成""创新""表达"——写作、绘画、编程</li>
+  </ul>
+</div>
+
+<h2>AI 四阶段简史</h2>
+<div class="card">
+  <ul>
+    <li><span class="tag">1950s-80s</span> <strong>符号主义</strong>：用规则做逻辑推理 → 规则无法覆盖复杂性 → AI 寒冬</li>
+    <li><span class="tag">1990s-00s</span> <strong>机器学习</strong>：从数据中学习规律 → 垃圾邮件过滤、推荐系统</li>
+    <li><span class="tag">2012-22</span> <strong>深度学习</strong>：多层神经网络自动提取特征 → AlexNet、AlphaGo、Transformer</li>
+    <li><span class="tag">2022-</span> <strong>大语言模型</strong>：规模涌现新能力 → ChatGPT、多模态、AI Agent</li>
+  </ul>
+</div>
+
+<h2>弱 AI vs 强 AI</h2>
+<div class="card">
+  <ul>
+    <li><span class="tag">弱 AI</span> 当前所有 AI 都是弱 AI——在特定任务上强大（下棋、翻译、识别），但不具备通用能力</li>
+    <li><span class="tag">强 AI</span> 尚未实现——具备与人类相当的全面智能，能在任何领域学习和工作</li>
+  </ul>
+</div>
+
+<h2>图灵测试</h2>
+<div class="card">
+  <ul>
+    <li><strong>规则</strong>：人类评判者与 AI 文字对话，若无法可靠区分（错判率 > 30%），则 AI 通过测试</li>
+    <li><strong>核心洞见</strong>：智能的外在表现比内在机制更重要</li>
+    <li><strong>局限</strong>：只测试对话表现，不测试逻辑推理、创造力或意识</li>
+  </ul>
+</div>
+
+<h2>关键提醒</h2>
+<div class="card">
+  <ul>
+    <li>AI 不是魔法——是统计学 + 工程学的结合</li>
+    <li>"通过图灵测试"≠"有意识"≠"理解含义"</li>
+    <li>2022 年革命的不同之处：语言成为 AI 的核心界面</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="0001-what-is-ai.html">← 回到课程</a>
+</div>
+
+</body>
+</html>

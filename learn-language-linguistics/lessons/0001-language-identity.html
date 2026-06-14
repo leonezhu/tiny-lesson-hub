@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 — 语言与身份认同</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语言与身份认同</h1>
+<p class="lesson-meta">第 1 课 &middot; ~10 分钟 &middot; 语言与社会</p>
+
+<div class="goal-box">
+  <strong>本课结束的时候</strong>，你将能够解释语言如何不只是"传递信息的工具"，而是"建构和表达身份的载体"——并且能在日常场景中识别出三种身份语言机制：标记功能、建构功能和边界功能。
+</div>
+
+<h2>核心观点</h2>
+<p>
+  人们通过选择使用哪种语言、怎样说话来定义"我是谁"。语言不是中性的信息传输工具——它本身就是身份的载体和边界标记。当你开口说话的那一刻，你已经在向全世界宣告你的出身、阶层、教育背景和所属群体。
+</p>
+
+<p>
+  想象以下场景：一个在成都长大的年轻人，在同事面前用标准普通话汇报项目，午餐时用四川话和朋友聊"巴适"，晚上用英语参加全球线上会议。这三种语言切换不是混乱，而是一种精细的身份管理技术。
+</p>
+
+<h2>三种身份语言机制</h2>
+
+<div class="concept-card">
+  <h3>一、标记功能 — 语言特征天然携带社会信息</h3>
+  <p>
+    一个说"儿化音"很重的人在北京会被自动归入"本地人"范畴；一个使用大量学术英语词汇的人在跨国会议中被自动归入"高教育程度"范畴。社会语言学中的"匹配广度测试"（matched-guise test）反复证明：<strong>同一个人用不同口音说话，会被评价为完全不同的人格特质</strong>——英式口音在英国测试中被评价为更聪明、更有社会地位，即使听众知道是同一个人。
+  </p>
+  <ul class="examples">
+    <li>四川人说"咋个" vs "怎么样"——前者标记亲切/本土身份，后者标记正式/外部身份</li>
+    <li>职场中使用"赋能""抓手"等互联网黑话——标记"我在圈内"</li>
+    <li>粤语使用者在广州用粤语 vs 普通话——前者标记"老广"身份</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>二、建构功能 — 主动选择语言策略来塑造身份</h3>
+  <p>
+    人们不是被动地被语言标签定义，而是主动选择语言策略来塑造身份。一个在中国长大的华裔选择用流利中文聊天而非英语，是一种身份声明："我和你有共同的文化根基。" 在多元语言环境中，语码切换（code-switching）不是混乱，而是一种精细的身份管理技术——用方言建立亲切感，切换到外语讨论技术问题来建立专业距离。
+  </p>
+  <ul class="examples">
+    <li>华裔留学生刻意练习母语口音——"我不想忘记自己是谁"</li>
+    <li>海归人士在中文语境中夹杂英文——标记国际化身份</li>
+    <li>年轻人在社交媒体使用网络用语——标记"我是 Z 世代"</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>三、边界功能 — 语言划定"我们"和"他们"</h3>
+  <p>
+    语言最深刻的身份功能是划定"我们"和"他们"的边界。社会学家 Gumperz 发现，移民社区通过保持母语的某些特征来抵抗同化压力——语言成为一种文化抵抗的武器。反过来，强势群体通过标准化语言（如标准普通话、标准英音）来维持社会阶层的边界——"说不好标准语"成为隐性准入机制。
+  </p>
+  <ul class="examples">
+    <li>学校使用标准语考试——"说不好标准语"的学生处于系统性劣势</li>
+    <li>方言保护运动——"我们的方言不应该消失"</li>
+    <li>行业术语（jargon）——"外人听不懂的就是专业的"</li>
+  </ul>
+</div>
+
+<h2>经典研究：拉波夫的纽约百货公司</h2>
+<p>
+  1960 年代，语言学家威廉·拉波夫（William Labov）在纽约市三家百货公司进行了一项开创性研究。他假装询问"第四层的鞋子在哪里"，然后观察不同楼层销售员回答中 "r" 音的发音频率。结果发现：
+</p>
+<ul class="examples">
+  <li>高层销售员（接触顾客多）比底层仓库员工更接近标准发音</li>
+  <li>所有群体的实际发音都低于他们自以为应该达到的水平</li>
+  <li>高档百货公司（萨克斯第五大道）的整体发音水平高于平价商店</li>
+</ul>
+<p>
+  这个研究证明：<strong>语言变体不是偶然的</strong>，而是与阶级身份系统性地关联。人们不仅"说"出自己的身份，还会为了"看起来像"某个阶层而调整自己的语言。
+</p>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong>很多人认为方言只是"不标准的普通话"。但从语言学角度看，方言是特定社会环境中的最优表达策略——就像动物的保护色。一个成都人用四川话说"巴适"所传递的情感精确度和社交信号，是普通话无法替代的。方言不是"退化"，而是"分化"。
+</div>
+
+<h2>为什么这很重要</h2>
+<p>
+  不理解语言与身份的关联，就无法理解大多数社会冲突和文化摩擦的本质。
+</p>
+<p>
+  在跨国协作中，"沟通不畅"往往不是因为词汇量不够，而是因为身份冲突——一个用"我们"称呼团队的人和一个用"我"称呼的人，在身份建构上存在根本差异。前者在说"我们在推进这个项目"时强调的是集体身份，后者说"我来负责这部分"时强调的是个体身份。这两种语言习惯本身就在传递不同的组织定位。
+</p>
+<p>
+  在语言学习中，身份焦虑是最高效的阻碍之一。一个已经以"北京人"身份自居的中年人，刻意练习广东口音会产生认知失调——因为广东口音不属于他的身份叙事。这就是为什么语言学习在青春期之后最大的障碍不是大脑的可塑性，而是身份认同的惯性。<strong>改变说话方式意味着重新定义"我是谁"</strong>，这比学习新技能困难得多。
+</p>
+
+<h2>实际应用</h2>
+
+<div class="concept-card">
+  <h3>跨文化团队管理</h3>
+  <p>在多元文化团队中，理解语言身份差异可以减少"沟通冲突"。一个日本团队成员的沉默可能不是因为"没有意见"，而是因为日语文化中身份表达依赖于语境和集体共识——在日语中，直接说"我不同意"会破坏群体和谐，因此沉默本身就是一种语言策略。</p>
+</div>
+
+<div class="concept-card">
+  <h3>语言教学策略</h3>
+  <p>成功的语言教学不只是教语法和词汇，还帮助学生建立"双语身份"——让他们能在目标语言的社交网络中找到归属感。研究表明，当学习者认为目标语言群体"接纳"他们时，语言习得速度显著提高。</p>
+</div>
+
+<div class="concept-card">
+  <h3>产品设计中的本地化</h3>
+  <p>跨国产品在翻译时不能只做字面对应，必须考虑目标用户的身份需求。"你"和"您"在中文中不只是代词选择，而是身份关系的声明——错误的使用会被解读为不尊重或过度亲昵。</p>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别身份语言机制</h2>
+  <p>以下场景分别体现了哪种身份语言功能？选择最合适的选项。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">一位在上海工作的程序员，在技术会议上用大量英文术语讨论架构设计。</div>
+    <div class="sentence">这种行为主要体现了语言的哪种功能？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">标记功能——用专业术语标记"我是技术人员"</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">边界功能——拒绝非技术人员参与讨论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一位移民美国的华人老人坚持在家中说家乡话，即使孙辈已经不太会说了。</div>
+    <div class="sentence">这主要体现了语言的哪种功能？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">建构功能——主动选择新的语言身份</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">边界功能——保持母语特征来抵抗文化同化</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一个成都女孩在成都用四川话跟朋友聊天，到北京后用略带四川口音的普通话跟同事说话。</div>
+    <div class="sentence">这种语码切换主要体现了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">建构功能——在不同情境中主动塑造不同的身份</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">标记功能——暴露自己的地域出身</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">拉波夫的纽约百货公司研究发现，所有销售员的实际发音都低于他们自以为应该达到的水平。</div>
+    <div class="sentence">这说明语言与身份的关系是怎样的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们对自己的语言能力有准确的自我认知</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人们会根据身份期望调整语言，试图"看起来像"更高阶层</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">一位已经以"北京人"身份自居的中年人，觉得练习广东口音非常别扭。</div>
+    <div class="sentence">这反映了语言学习中的什么障碍？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">年龄导致的大脑可塑性下降</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">身份认同惯性——改变说话方式意味着重新定义"我是谁"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一所学校规定所有课堂必须使用标准普通话，方言在校内禁止使用。</div>
+    <div class="sentence">这体现了语言的哪种功能？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">边界功能——通过标准语维持社会阶层的准入机制</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">建构功能——帮助学生建立新的身份</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">社会语言学中的"匹配广度测试"（matched-guise test）让同一人说两种不同口音。</div>
+    <div class="sentence">这项研究发现了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不同口音的人实际能力不同</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">同一个人用不同口音说话，会被评价为完全不同的人格特质</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">一个跨国产品把英文的 "you" 翻译成中文的"您"而不是"你"。</div>
+    <div class="sentence">从语言与身份的角度看，这样做的重要性在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">"你"和"您"不只是代词选择，而是身份关系的声明</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">"您"在语法上比"你"更正式</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>问我任何关于语言与身份的问题——不确定为什么某个答案是对的？这正是我们应该讨论的地方。直接输入你的问题，我会解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.amazon.cn/dp/750047580X" target="_blank">《语言本能》</a>（Steven Pinker）——从认知科学视角理解语言的本质。
+  <br><br>
+  <a href="../reference/language-identity.html" class="resource-link">查看速查卡片</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-linguistics-overview.html">下一课</a>
+</div>
+
+
+<script>
+  const explanations = {
+    q1: { correct: '"技术会议 + 英文术语" = 标记"我是技术人员"的身份。这是标记功能——用专业语言特征来表明自己属于某个群体。', wrong: '这不是拒绝别人参与，而是主动标记自己的专业身份。边界功能是关于"我们vs他们"的隔离，而这里是在说"我属于这个圈子"。' },
+    q2: { correct: '坚持说家乡话是在保持母语特征来抵抗文化同化——这正是边界功能的核心：划定"我们"和"他们"的界限。', wrong: '建构功能是指主动选择新的身份。但这位老人不是在建立新身份，而是在坚守旧身份。边界功能才是正确答案——用语言抵抗同化。' },
+    q3: { correct: '语码切换（code-switching）是典型的建构功能——在不同情境中主动塑造不同的身份。四川话标记"本地/亲切"，普通话标记"外地/正式"。', wrong: '虽然确实暴露了地域出身（标记功能），但核心是她在不同情境中有意识地选择不同的身份表达方式——这是建构功能。' },
+    q4: { correct: '拉波夫的关键发现是：人们会根据身份期望调整语言。实际发音低于自认水平，说明他们在试图"看起来像"更高阶层的人。', wrong: '恰恰相反——人们对自己的语言能力并没有准确认知。他们以为自己说得比实际更好，这是因为身份期望影响了自我评估。' },
+    q5: { correct: '身份认同惯性是关键障碍。改变说话方式不仅仅是学习新技能，而是重新定义"我是谁"——这比学语法难得多。', wrong: '年龄确实会影响大脑可塑性，但题干强调的是"别扭"这种感觉——这是身份层面的不适，不是生理上的能力下降。' },
+    q6: { correct: '通过标准语政策维持社会阶层的准入机制——这正是边界功能的体现。"说不好标准语"的学生处于系统性劣势，这就是隐性的阶层边界。', wrong: '虽然学校确实在帮助学生建立身份，但核心机制是通过标准语排除不符合标准的人。这是边界功能，不是建构功能。' },
+    q7: { correct: '匹配广度测试的核心发现：同一个人用不同口音说话，会被评价为完全不同的人格特质。这证明了语言标记功能的强大力量。', wrong: '测试恰恰证明不同口音的人"实际能力相同"（因为是同一个人），但"被评价的能力不同"。差异在于社会评价，不在于实际能力。' },
+    q8: { correct: '"你"和"您"在中文中不只是语法选择，而是身份关系的声明。选错了会被解读为不尊重或过度亲昵——这就是语言与身份的关联。', wrong: '"您"确实更正式，但这不是重点。重点是"你"和"您"传达了不同的身份关系信号，这才是本地化时要考虑的。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对语言与身份的关系有扎实的理解。';
+      else if (score >= 6) label.textContent = '做得不错！回顾你做错的题目——解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的例子再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

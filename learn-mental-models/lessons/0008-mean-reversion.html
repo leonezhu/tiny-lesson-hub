@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8 — 均值回归</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .model-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .model-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .model-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .model-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .model-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>均值回归</h1>
+<p class="lesson-meta">Lesson 8 · ~10 分钟 · 概率思维工具箱</p>
+
+<div class="goal-box">
+  <strong>本节课目标</strong>：理解均值回归的统计本质，识别其在投资、管理、运动等领域的误判陷阱，并学会在决策中将其纳入考量。
+</div>
+
+<h2>什么是均值回归</h2>
+<p>
+  均值回归（Mean Reversion）是一个统计现象：<strong>极端表现之后，结果倾向于向长期平均值靠拢</strong>。这个概念由弗朗西斯·高尔顿（Francis Galton）在 1889 年研究遗传数据时发现——极高或极矮的父母，其后代的身高会向人群平均值靠拢，而不是继续极端化。
+</p>
+
+<p>
+  很多人直觉认为"强者恒强、弱者恒弱"，但统计数据揭示了一个反直觉的规律：极端值在多次观测中几乎必然被拉回。这不是因为能力发生变化，而是因为极端表现本身包含了运气成分，而运气是不可持续的成分。
+</p>
+
+<h2>工作机制：能力 + 运气 = 观察到的表现</h2>
+
+<div class="model-card">
+  <h3>核心公式：表现 = 真实能力 × 运气系数</h3>
+  <ul class="examples">
+    <li><strong>运气系数 = 1.3</strong>：能力正常但时运极佳 → 超常表现</li>
+    <li><strong>运气系数 = 1.0</strong>：纯粹真实能力的体现 → 稳定表现</li>
+    <li><strong>运气系数 = 0.7</strong>：能力正常但运气不佳 → 低于预期表现</li>
+  </ul>
+</div>
+
+<p>
+  均值回归的关键洞察是：<strong>运气成分不可持续</strong>。当你的运气系数从 1.3 回到 1.0 时，表现看起来"退步"了，但实际能力可能完全没有变。
+</p>
+
+<h3>经典案例：NBA 新秀赛季</h3>
+<p>
+  一名新秀第一年场均 25 分（远超联盟平均 15 分）。第二年他的场均得分通常会下降到 18-20 分。外界会讨论"他退步了"还是"他遇到了防守升级"——但更可能的解释是，第一年的超常表现包含了大量运气因素（投篮超准、对手防守策略失误、赛程有利等），第二年运气回归正常，得分自然回落。
+</p>
+
+<h3>经典案例："冠军基金魔咒"</h3>
+<p>
+  统计数据显示，<strong>前一年表现最好的共同基金，第二年大概率跌出前十</strong>。这不是因为这些基金经理突然变笨了，而是因为：
+</p>
+<p>
+  第一年的超额收益 = 部分真实能力 + 大量运气。当运气成分在第二年正常化时，即使能力不变，排名也会大幅下降。投资者常常误将运气当作能力而追加投资，随后陷入均值回归的陷阱。
+</p>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>Kahneman 发现管理者经常犯一个系统性错误——在员工表现极佳时批评其后续下滑，在员工表现极差时表扬其后续改善。实际上，这两组人的表现差异很可能只是均值回归的自然结果，而非管理措施的效果。你"惩罚"了好的表现，"奖励"了差的表现，但改变的是运气，不是管理。
+</div>
+
+<h2>均值回归的跨学科表现</h2>
+
+<div class="model-card">
+  <h3>📊 统计学：回归分析的核心假设</h3>
+  <p>线性回归模型的残差围绕均值零波动，极端残差会被模型修正。你看到"回归"到均值，正是模型在告诉你：之前的偏差大概率包含了噪声。</p>
+</div>
+
+<div class="model-card">
+  <h3>💰 金融学：统计套利的基石</h3>
+  <p>量化基金利用价格偏离均值的短暂时机进行反向交易——当价格"过度反应"时做空，当价格"过度悲观"时做多。均值回归策略是量化投资中最经典的方法之一。</p>
+</div>
+
+<div class="model-card">
+  <h3>🏥 医学：安慰剂效应的来源</h3>
+  <p>患者的极端症状在自然病程中会趋向正常范围。这意味着临床试验中，治疗组和对照组的差异可能部分源于均值回归而非药物本身的作用。</p>
+</div>
+
+<div class="model-card">
+  <h3>🤖 AI：正则化的本质就是均值回归</h3>
+  <p>正则化技术（L1/L2）防止模型对训练数据中的噪声（极端值）过度拟合——这本质上是在算法层面应用均值回归：不让模型记住训练集中的异常点，而是学习整体趋势。</p>
+</div>
+
+<h2>为什么理解均值回归很重要</h2>
+<p>
+  不理解均值回归会导致一系列决策错误：
+</p>
+<p>
+  <strong>投资方面：</strong>追逐过去表现最好的基金或股票，本质上是在购买已经包含了极端运气成分的组合。S&P 500 的年度回报显示，历史上没有任何一年连续两年获得超过 30% 回报，也没有任何一年连续两年亏损超过 20%——极端年份之后必然回归到年均约 10% 的水平。
+</p>
+<p>
+  <strong>个人发展方面：</strong>认识到表现的波动性，有助于在低谷期保持信心（这可能是运气回归而非能力下降）、在高峰期保持警惕（这不完全归功于你的努力）。
+</p>
+<p>
+  <strong>企业管理方面：</strong>建立基于长期平均而非短期极值的绩效考核体系，可以避免因均值回归而产生的误判。用一年的成绩决定奖金或晋升，本质上是在奖励运气。
+</p>
+
+<div class="chinese-note">
+  <strong>与幸存者偏差的组合：</strong>均值回归告诉我们极端表现会回落，幸存者偏差告诉我们只看到了成功的幸存者而忽略了失败的沉默多数。两者结合提醒我们：看到的极端成功既可能是运气的产物，也可能只是众多失败者中极少数幸存者的故事。
+</div>
+
+<h2>关键人物与案例</h2>
+
+<div class="model-card">
+  <h3>Francis Galton（1822-1911）</h3>
+  <p>发现身高遗传中的均值回归现象，创立了回归分析这一统计方法。他观察到父代身高每高 1 英寸，子代身高仅高出约 0.67 英寸——"向均值妥协"。</p>
+</div>
+
+<div class="model-card">
+  <h3>Hot Hand Fallacy（hot hand 谬误）</h3>
+  <p>篮球中"手感火热"的直觉被研究者证伪——球员连续命中后的下一投命中率实际上略低于平均水平，这正是均值回归的反向体现。"热手"并非真实存在的状态，而是我们对随机序列的模式误读。</p>
+</div>
+
+<div class="model-card">
+  <h3>Francis Ysidro Edgeworth（1845-1926）</h3>
+  <p>将均值回归概念扩展到经济和社会科学领域，为后续行为经济学和统计套利奠定了基础。</p>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别均值回归</h2>
+  <p>判断以下情境中是否涉及均值回归效应，并选择正确的解释。共 8 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你是一名基金经理。</div>
+    <div class="sentence">去年业绩排名前十的基金，今年大概率会：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">继续排名前十</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">跌出前十</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在管理团队。</div>
+    <div class="sentence">员工小王上个月业绩第一，本月你给他加派了额外任务以提升表现。本月他的业绩反而下滑了。最合理的解释是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">上个月第一包含运气成分，本月回归正常水平</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">加派任务导致他过度疲劳，所以表现下滑</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在分析股市。</div>
+    <div class="sentence">某股票昨天暴涨 15%。根据均值回归原理，明天最可能的情况是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">继续上涨 15%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">涨幅收窄或回落</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在做医疗研究设计。</div>
+    <div class="sentence">你选择一组"症状最严重的患者"接受治疗，三个月后发现他们的症状平均下降了 40%。你认为这是药物的效果。这个结论的问题在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">极端症状的患者本身就会趋向正常范围，不一定需要药物</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">40% 的下降幅度太大了，不可能发生</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在评价考试成绩。</div>
+    <div class="sentence">一个班级期末考试中，最高分是 98 分（满分 100）。你认为下次考试他会考 100 分。这个推理的漏洞在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">满分已经是极限了，不可能更高</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">98 分已经接近极端值，即使能力不变，下次也很难维持同等极端表现</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在训练深度学习模型。</div>
+    <div class="sentence">你在模型中加入 L2 正则化以防止过拟合。这本质上是在应用哪种思维模型？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">均值回归——不让模型记住训练数据中的极端噪声</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">第一性原理——回归到问题本质</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在看体育比赛。</div>
+    <div class="sentence">一名球员连续三场命中率超过 60%。解说员说"他手感火热，下一场肯定还能保持"。这是犯了什么错误？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">这是 Hot Hand Fallacy，但球员确实有能力保持</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">这是 Hot Hand Fallacy——连续好表现之后，下一场命中率通常会接近（低于）平均水平</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在设计绩效制度。</div>
+    <div class="sentence">公司以年度业绩作为晋升唯一标准。均值回归思维提醒我们：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">年度极值包含了大量运气成分，长期平均才更能反映真实能力</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">年度业绩最能反映能力，均值回归不适用商业场景</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的思维模型导师。不确定某个例子是否属于均值回归？那正好是我们该讨论的时候。直接提问，我会帮你分析。
+  <br><br>
+  <strong>推荐阅读：</strong>《噪声》（Noise）by Kahneman, Sibony & Sunstein —— 深入理解人类判断中均值回归的误判来源。
+  <br><br>
+  <a href="../reference/mean-reversion.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0007-first-principles.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-compound-effect.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"冠军基金魔咒"是均值回归的经典案例。前一年的超额收益包含大量运气成分，第二年运气回归正常，排名自然回落。', wrong: '去年的好业绩大概率包含了运气，而运气不可持续。第二年回归正常水平是统计规律。' },
+    q2: { correct: '上个月的第一名是极端表现，包含运气成分。本月回归正常水平是均值回归的自然结果，不一定是加派任务导致的。', wrong: '虽然加派任务可能有影响，但均值回归是最核心的解释——极端表现之后必然回落，无论有没有加派任务。' },
+    q3: { correct: '大涨 15% 是极端表现，均值回归原理预示后续涨幅会收窄或回落，而不是继续极端化。', wrong: '暴涨之后继续暴涨意味着"强者恒强"，但这违背了均值回归规律——极端值需要被拉回。' },
+    q4: { correct: '极端症状患者本身就会趋向正常范围（回归到健康均值），不一定需要药物干预。这就是为什么需要对照组的缘故。', wrong: '40% 的下降完全可能发生，问题不在于幅度大小，而在于没有排除均值回归的干扰。' },
+    q5: { correct: '98 分已经接近极端值，即使能力不变，下次也很难维持同等极端表现。这是均值回归在考试场景的直接体现。', wrong: '满分只是上限，但问题不在于能不能考满分，而在于极端表现是否可持续——答案通常是否定的。' },
+    q6: { correct: 'L2 正则化通过惩罚极端权重值来防止模型记住训练数据中的噪声。这本质上是算法层面的均值回归：不让模型过度拟合异常点。', wrong: '第一性原理是拆解到最基本的事实再重新构建，与正则化的技术实现无关。正则化的目标是抑制极端值。' },
+    q7: { correct: '这就是 Hot Hand Fallacy——球员连续命中后，下一投命中率实际上通常低于平均水平，而非"继续火热"。', wrong: 'Hot Hand Fallacy 的核心正是"连续好表现之后会回落"，解说员的预测恰好与统计规律相反。' },
+    q8: { correct: '年度极值 = 能力 + 运气。运气成分不可持续，所以单年极值不是能力的可靠指标。长期平均更稳定。', wrong: '均值回归广泛适用于任何包含运气的场景，商业决策尤其需要警惕——追逐年度冠军基金就是最经典的反例。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经掌握了均值回归的核心逻辑。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题目，解释中会告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的案例和解释，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

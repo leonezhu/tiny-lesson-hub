@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 — 语音系统对比</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>语音系统对比</h1>
+<p class="lesson-meta">第 3 课 · ~15 分钟 · 语音学与类型学</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>，你将理解四种语言（英语、普通话、粤语、四川话）在辅音库存、元音系统和声调功能上的系统性差异，并能用这些知识解释为什么中国学习者学英语时某些错误是"系统性的"而非"个人失误"。
+</div>
+
+<h2>为什么语音系统对比很重要</h2>
+<p>
+  很多人以为"学英语难"是因为语法复杂，但实际障碍在语音层面。一个四川人说英语 "think" 发成 "sink"（送气清塞音 /tʰ/ → 清擦音 /s/），这不是"发音不准"，而是四川话音系中 /tʰ/ 和 /s/ 的感知范畴不同。同样的，一个英语母语者说中文"四"和"十"不分，是因为英语中 s 后的 t 不送气，而普通话中送气与否区别词义——这是<strong>感知范畴的母语迁移</strong>。
+</p>
+<p>
+  理解这一点的关键在于：语音系统不是随机差异的集合，而是遵循可预测的类型学规律。辅音数量从 11 个（夏威夷语）到 84 个（!Xóõ语）不等；元音从 3 个（阿拉伯语）到 14 个以上（英语）；是否使用声调更是将世界语言大致分为调语和非调语两大类。
+</p>
+
+<h2>一、辅音库存对比</h2>
+
+<div class="concept-card">
+  <h3>四种语言辅音系统概览</h3>
+  <table class="comparison-table">
+    <tr>
+      <th>调音部位</th>
+      <th>英语</th>
+      <th>普通话</th>
+      <th>粤语</th>
+      <th>四川话</th>
+    </tr>
+    <tr>
+      <td>双唇塞音</td>
+      <td>p b</td>
+      <td>b(→p)</td>
+      <td>p b</td>
+      <td>p b</td>
+    </tr>
+    <tr>
+      <td>唇齿擦音</td>
+      <td>f v</td>
+      <td>f</td>
+      <td>f</td>
+      <td>f</td>
+    </tr>
+    <tr>
+      <td>齿龈塞音</td>
+      <td>t d</td>
+      <td>d(→t)</td>
+      <td>t d</td>
+      <td>t d</td>
+    </tr>
+    <tr>
+      <td>齿龈擦音</td>
+      <td>s z</td>
+      <td>s(→ʂ)</td>
+      <td>s</td>
+      <td>s</td>
+    </tr>
+    <tr>
+      <td>龈后/卷舌</td>
+      <td>—</td>
+      <td>zh ch sh</td>
+      <td>z c s(→ʣ ʦ ʃ)</td>
+      <td>z c s(→ʣ ʦ ʃ)</td>
+    </tr>
+    <tr>
+      <td>硬腭塞擦</td>
+      <td>—</td>
+      <td>j q x</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>软腭塞音</td>
+      <td>k g</td>
+      <td>g(→k)</td>
+      <td>k g</td>
+      <td>k g</td>
+    </tr>
+    <tr>
+      <td>鼻音</td>
+      <td>m n</td>
+      <td>m n ng</td>
+      <td>m n ng</td>
+      <td>m n ng</td>
+    </tr>
+    <tr>
+      <td>清喉擦音</td>
+      <td>h</td>
+      <td>h</td>
+      <td>h</td>
+      <td>h</td>
+    </tr>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>经典难点 #1：</strong>普通话和粤语都没有 /v/ 音，粤语用 /w/ 替代（如"飞"读 fai1），普通话也用 /f/ 或 /w/ 替代。这是英中跨语言学习者的经典难点——"very" 被发成 "weri"。
+</div>
+
+<div class="concept-card">
+  <h3>/r/ 的三种发音</h3>
+  <p>
+    普通话的 /r/ 是<strong>卷舌近音 [ɻ]</strong>，而粤语的对应位置是<strong>硬腭近音 [j]</strong>（类似英语 "yes" 的起音）。四川话的 /r/ 则因地区而异——成都多读 [ʐ] 或 [ɻ]，介于普通话和粤语之间。这个差异看似微小，但在实际听感中非常明显，是粤语母语者说普通话时最突出的口音标志之一。
+  </p>
+</div>
+
+<h2>二、元音系统对比</h2>
+
+<div class="concept-card">
+  <h3>英语：12–20 个元音</h3>
+  <p>
+    英语是四者中元音最复杂的语言。核心参数：<strong>元音长度不区别词义</strong>（"beat" 和 "bete" 不是最小对立对），有<strong>央元音 /ə/</strong>（schwa）——英语非重读音节几乎必然弱化为 /ə/，这是英语"吞音"的声学来源，有<strong>双元音</strong>（/aɪ/、/oʊ/ 等），发音过程中舌位明显移动。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>普通话：约 10 个元音</h3>
+  <p>
+    普通话有 6 个单元音（a、o、e、i、u、ü）和 3–4 个复元音（ai、ei、ao、ou 等）。核心特点：<strong>/ü/ [y]</strong> 是英语和粤语都没有的前圆唇元音；<strong>/e/ [ɤ]</strong> 和 <strong>/ɛ/ [ɛ]</strong> 的区别；<strong>无 schwa 弱化</strong>，每个音节元音清晰饱满。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>粤语：14–20 个元音</h3>
+  <p>
+    粤语有 6–10 个单元音和 8–10 个复元音，元音库存规模与普通话相当但具体音值不同。<strong>保留了入声韵尾 -m、-p、-t、-k</strong>（如 "十" sap6、"心" sam1），普通话和四川话都已消失。<strong>有 /ɛː/、/œː/、/ɔː/ 等长元音</strong>，普通话无此区分。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>四川话：与普通话接近但有差异</h3>
+  <p>
+    前后鼻音合并：en/eng、in/ing 不分，"人" 和 "容" 同音。部分入声字保留鼻化元音特征。
+  </p>
+</div>
+
+<h2>三、声调系统——最核心的差异</h2>
+
+<div class="chinese-note">
+  <strong>根本区别：</strong>英语是无声调语言（声调只在句子层面表达情感和疑问），普通话是四声语言，粤语是九声六调语言，四川话是入声归派后的三到四声语言。这是四者之间最本质的差异。
+</div>
+
+<div class="concept-card">
+  <h3>四种语言声调系统对比</h3>
+  <table class="comparison-table">
+    <tr>
+      <th>语言</th>
+      <th>声调数量</th>
+      <th>调类名</th>
+      <th>调值(五度制)</th>
+    </tr>
+    <tr>
+      <td>英语</td>
+      <td>0（词汇层面）</td>
+      <td>语调</td>
+      <td>句子级</td>
+    </tr>
+    <tr>
+      <td>普通话</td>
+      <td>4</td>
+      <td>阴平/阳平/上声/去声</td>
+      <td>55/35/214/51</td>
+    </tr>
+    <tr>
+      <td>粤语</td>
+      <td>6（舒声）+ 3（入声）</td>
+      <td>九声</td>
+      <td>53/33/22/21/23/35 + 5/3/1</td>
+    </tr>
+    <tr>
+      <td>四川话</td>
+      <td>3–4</td>
+      <td>阴平/阳平/上声/去声</td>
+      <td>55/21/53/213</td>
+    </tr>
+  </table>
+</div>
+
+<div class="concept-card">
+  <h3>粤语九声六调的运作机制</h3>
+  <p>
+    粤语保留了中古汉语的完整声调系统，被称为"九声六调"——三个入声调（-p/-t/-k 韵尾）虽然不承载独立声调，但在听感上是短的、阻塞的音节结尾，与舒声调在韵律上形成对比。
+  </p>
+  <ul class="examples" style="list-style: none; padding: 0.5rem 0 0 0;">
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阴平（高降）</strong>：haa5（虾）53</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阴平（高平）</strong>：haa1（哈）33</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阴上（高升）</strong>：haa2（夏）22</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阴去（中降）</strong>：haa3（下）21</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阳上（中升）</strong>：ng4（五）21→214</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阳去（中平）</strong>：ng5（误）23</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>阳平（低升）</strong>：ng6（吾）35</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>上声入（高入）</strong>：hap7（急）5</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>中去入（中入）</strong>：sat8（集）3</li>
+    <li style="padding: 0.2rem 0; padding-left: 1.2rem; position: relative;"><span style="position:absolute;left:0;color:var(--accent);font-weight:700;">→</span><strong>下声入（低入）</strong>：zak9（舌）1</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>入声的消失：</strong>入声（-p/-t/-k 韵尾）的 3 个调类在听感上是短的、阻塞的音节结尾。普通话的入声在 14 世纪已经"入派三声"（归入平、上、去），粤语是唯一在主要汉语方言中完整保留入声的。四川话则把入声字归入阳平（第二声），这使四川话的词汇辨义模式与普通话完全不同。
+</div>
+
+<div class="concept-card">
+  <h3>四川话的独特之处：入声归阳平</h3>
+  <p>
+    四川话的入声字归入阳平（第二声），但调值是低的（21），不同于普通话阳平的 35。例如"国"在普通话是阳平（guó，35），在四川话也是阳平但调值低（guó，21）；"白"在普通话是阳平（bái，35），在四川话也是阳平（bái，21）。这意味着四川话母语者学英语时，对声调的敏感度模式既不同于普通话母语者，也不同于粤语母语者。
+  </p>
+</div>
+
+<h2>理解"系统性错误"</h2>
+<p>
+  语音系统差异决定了<strong>二语习得的路径和难度</strong>。英语母语者学汉语最大的障碍是声调——他们的大脑从未被训练在基频上编码词汇意义。反过来，汉语母语者学英语最大的障碍是辅音 inventory 和元音弱化——英语有 5 倍于汉语的辅音，且非重读音节的 schwa 弱化了所有单词的"骨架"，让习惯于每个音节都清晰辨别的汉语学习者感到"听不清"。
+</p>
+<p>
+  理解语音系统对比还能解释<strong>为什么某些口音是"系统性的"而非"个人失误"</strong>。同样的，一个英语母语者说中文"四"和"十"不分，是因为英语中 s 后的 t 不送气，而普通话中送气与否区别词义——这是<strong>感知范畴的母语迁移</strong>。
+</p>
+
+<h2>快速对照：关键差异速查</h2>
+<p>
+  <strong>/v/ 音：</strong>英语有 /v/，普通话和粤语都没有 → "very" → "weri"<br>
+  <strong>/r/ 音：</strong>普通话 [ɻ]（卷舌）vs 粤语 [j]（硬腭）vs 四川话 [ʐ/ɻ]（可变）<br>
+  <strong>/ü/ 音：</strong>普通话独有（如"女" nǚ），英语和粤语都没有前圆唇元音<br>
+  <strong>schwa 弱化：</strong>英语特有（非重读音节 → /ə/），普通话每个音节元音清晰<br>
+  <strong>入声韵尾：</strong>粤语保留 -m/-p/-t/-k，普通话和四川话已全部消失<br>
+  <strong>声调功能：</strong>英语声调用于句子情感，汉语方言声调用于区别词汇意义
+</p>
+
+<div class="quiz-section">
+  <h2>练习：语音系统对比测试</h2>
+  <p>根据所学知识回答问题。共 8 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你发现一个四川人把英语 "very" 读成 "weri"。这是因为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">四川话和普通话都没有 /v/ 音</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">四川人不知道 "v" 的拼法</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">以下哪种说法正确描述了英语和汉语的元音差异？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">汉语的元音比英语多</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">英语有 schwa 弱化而汉语没有</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">粤语被称为"九声六调"。"九声"和"六调"的区别在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">六调指六个不同的音高轮廓，九声额外区分了三个入声调</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">九声是笔误，应该是六个声调</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">普通话的 "一"（yī，第一声）和 "医"（yī，也是第一声）听起来一样。但为什么四川话里"一"和粤语里"一"听起来完全不同？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">四川人和粤语使用者用的字不一样</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">四川话和粤语的声调调值与普通话不同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">一个英语母语者把普通话 "sì"（四）和 "shì"（十）发成同样的音。最根本的原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">英语没有元音，所以分不清</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">英语中 s 后的 t 不送气，而普通话中送气与否区别词义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">以下哪种说法描述了入声的正确情况？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">普通话完整保留了入声</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">粤语是唯一在主要汉语方言中完整保留入声的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一个粤语母语者学普通话时，发现 "人"（rén）和四川人发音不同。这是因为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">粤语的 /r/ 是硬腭近音 [j]，而普通话和四川话的 /r/ 是卷舌音</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">粤语没有声调，所以 /r/ 的发音也不同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">四川话把入声字归入阳平，这导致四川话与普通话相比：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">声调数量更多，语言更复杂</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">入声字的声调模式与普通话完全不同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的语言学导师。如果你对某个音位的发音位置、某种声调的感知原理，或者某种口音背后的机制有疑问，那正是我们要讨论的。直接提出问题，我来解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://en.wikipedia.org/wiki/Phonetics" target="_blank">Wikipedia: Phonetics</a> — 了解 IPA 音标体系中如何描述全球语言的语音。
+  <br><br>
+  <a href="../reference/phonetic-systems.html" class="resource-link">查看速查卡片</a>
+</div>
+
+<div class="footer">
+  <a href="0002-linguistics-overview.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-syntax.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '普通话和粤语都没有 /v/ 音。四川人用 /w/ 替代 /v/ 是典型的母语语音系统迁移——你的大脑自动用最近的可用音位来"替换"目标语言中没有的音。', wrong: '这不仅仅是"不知道拼法"的问题。即使四川人认识字母 v，他们发不出 /v/（上齿咬下唇、声带振动的擦音）。这是语音系统的物理限制，不是知识缺失。' },
+    q2: { correct: '英语的非重读音节几乎必然弱化为 schwa /ə/，这是英语"吞音"的声学来源。而普通话每个音节元音都清晰饱满，没有这种弱化机制。这也是为什么中国学习者觉得"英语单词都听不清"的根本原因。', wrong: '恰恰相反——英语有 12–20 个元音（取决于分析方式），是四者中最复杂的。汉语普通话约 10 个元音。但关键差异不在数量，而在 schwa 弱化机制。' },
+    q3: { correct: '六调指六个不同的音高轮廓（53/33/22/21/23/35），九声额外区分了三个入声调（5/3/1），它们是短的、阻塞的音节结尾。入声调虽然不承载独立声调，但在韵律上与舒声调形成对比。', wrong: '不是笔误。"九声六调"是粤语声调系统的标准术语。六调指六个不同的音高轮廓，九声额外区分了三个入声调（-p/-t/-k 韵尾的短促音节）。' },
+    q4: { correct: '虽然"一"在普通话和粤语中都是第一声，但不同语言的"第一声"具体调值不同：普通话是 55（高平），粤语是 53（高降），四川话是 55（高平）但实际发音受方言影响。更重要的是同一字在不同语言中的实际基频曲线不同。', wrong: '字是一样的——但"第一声"在不同语言中不代表相同的音高。普通话第一声是 55（高平），粤语是 53（高降），四川话是 55。相同的调类名称对应不同的调值。' },
+    q5: { correct: '这是感知范畴的母语迁移。英语中 s 后的 t 是不送气的（如 "stop"），而普通话中送气 /tʰ/ 和不送气 /t/ 区别词义（"四 sì" vs "十 shì"）。英语母语者的大脑没有建立这种送气对立的范畴。', wrong: '问题出在辅音系统，不是元音。"四"和"十"的元音都是 i。根本障碍是送气与不送气对立在英语中不存在——不是元音的问题。' },
+    q6: { correct: '入声（-p/-t/-k 韵尾）在 14 世纪普通话中已经"入派三声"，但粤语完整保留了 -m/-p/-t/-k 韵尾，是唯一在主要汉语方言中完整保留入声的方言。', wrong: '恰恰相反——普通话在 14 世纪就已经"入派三声"，入声韵尾全部消失。粤语是唯一保留入声韵尾的主要汉语方言。' },
+    q7: { correct: '粤语的 /r/ 是硬腭近音 [j]（类似英语 "yes" 的起音），而普通话和四川话的 /r/ 是卷舌近音 [ɻ]。这个差异导致同一字的实际发音在不同方言中完全不同。', wrong: '粤语有声调——九声六调！问题出在 /r/ 的具体发音位置。粤语用硬腭近音 [j]，而普通话和四川话用卷舌近音 [ɻ]。' },
+    q8: { correct: '四川话的入声字归入阳平，但调值是低的（21），而普通话阳平是 35。同样的调类名对应不同的调值，这使四川话词汇辨义模式与普通话完全不同。', wrong: '四川话的声调数量实际上比普通话少（3–4 个 vs 4 个），不是更多。关键是入声字的调值分配模式不同，不是数量问题。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对语音系统对比有扎实的理解。';
+      else if (score >= 6) label.textContent = '做得不错！回顾你做错的题目——解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的概念卡片再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

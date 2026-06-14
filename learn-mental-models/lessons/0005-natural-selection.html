@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — 自然选择</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .step-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 1.6rem;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>自然选择</h1>
+<p class="lesson-meta">Lesson 5 &middot; ~12 minutes &middot; 生物学类比 · 决策与优化</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：用自然选择的四个步骤解释生物进化现象；识别商业、技术和决策中的"自然选择"类比；理解"适应度"的真实含义，避免常见误解。
+</div>
+
+<h2>为什么自然选择是一个思维模型</h2>
+<p>
+  自然选择是达尔文在1859年《物种起源》中提出的机制。它解释了一个令人困惑的问题：<strong>不需要设计师，复杂适应是如何产生的？</strong> 这个答案——算法式的逐步筛选——不仅适用于生物学，还广泛应用于人工智能（遗传算法）、经济学（市场选择）、文化演化、产品设计等领域。
+</p>
+<p>
+  把自然选择当作一个思维模型，核心是掌握它的<strong>四个步骤</strong>：变异、竞争、选择、累积。
+</p>
+
+<h2>自然选择的四个步骤</h2>
+
+<div class="concept-card">
+  <h3><span class="step-num">1</span>变异（Variation）</h3>
+  <p>同一物种的个体之间存在可遗传的差异。没有变异，就没有选择的原材料。</p>
+  <ul class="examples">
+    <li>细菌群体中，个别个体带有抗药基因突变</li>
+    <li>不同公司的产品功能组合各不相同</li>
+    <li>同一批种子发芽后，植株高矮、根系深浅各异</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3><span class="step-num">2</span>竞争（Competition）</h3>
+  <p>资源（食物、空间、注意力、资金）有限，个体之间为生存和繁殖展开竞争。</p>
+  <ul class="examples">
+    <li>抗生素环境下，细菌竞争生存空间</li>
+    <li>APP商店中，App 争夺用户时间和屏幕位置</li>
+    <li>初创公司争夺融资和市场注意力</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3><span class="step-num">3</span>选择（Selection）</h3>
+  <p>适应环境的性状更可能被保留下来。"适应"指的是在当前环境下的<strong>繁殖成功率</strong>，不是"最强壮"或"最聪明"。</p>
+  <ul class="examples">
+    <li>带有抗药突变的细菌存活并繁殖，敏感菌株死亡</li>
+    <li>用户更喜欢的 App 获得更多下载，不受欢迎的被淘汰</li>
+    <li> drought 环境下，根系深的植株存活率更高</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3><span class="step-num">4</span>累积（Accumulation）</h3>
+  <p>有利的变异经过世代累积，物种逐渐改变。微小优势的重复叠加，可以在长时间尺度上产生巨大的差异。</p>
+  <ul class="examples">
+    <li>今天一种抗生素失效 → 明天另一种 → 最终出现"超级细菌"</li>
+    <li>今天的微信比QQ多一个支付功能 → 明天的微信成为超级App</li>
+    <li>每年0.1%的改善，100年后是原来的2.7倍</li>
+  </ul>
+</div>
+
+<h2>关键概念：适应度（Fitness）</h2>
+<p>
+  在自然选择的语境中，"适应度"是一个精确定义的数学概念：<strong>一个个体留下后代的相对数量</strong>。它不等于力量、速度或智力。一只在寒冷环境中毛发更厚的兔子，适应度更高——哪怕它跑得很慢。
+</p>
+<p>
+  在商业类比中，"适应度"对应的是<strong>存活和增长的能力</strong>——一个产品、一家公司、一种工作方法的"适应度"，体现在它能持续产生正向回报。
+</p>
+
+<div class="chinese-note">
+  <strong>常见误解：</strong>很多人认为"适者生存"意味着最强壮的存活。事实上，<strong>最适合环境</strong>的才存活。在稳定的环境里，保守策略可能比激进策略有更高的适应度。达尔文观察到加拉帕戈斯群岛的地雀——喙形最合适的（恰好适应当地食物），而不是喙最大的。
+</div>
+
+<h2>证据：自然选择不只是理论</h2>
+<p>
+  达尔文的理论建立在多重独立证据线之上，这些证据相互印证，形成"证据三角"：
+</p>
+<ul class="examples">
+  <li><strong>化石记录</strong>：地层中化石的序列显示了物种的渐变。过渡化石（如始祖鸟、提塔利克鱼）填补了关键空白。</li>
+  <li><strong>比较解剖学</strong>：人类手臂、蝙蝠翅膀、鲸鱼鳍状肢拥有相同的骨骼排列——同源结构暗示共同祖先。</li>
+  <li><strong>生物地理学</strong>：加拉帕戈斯群岛上，不同岛屿的地雀喙部形态恰好适应各自的食物来源。</li>
+  <li><strong>分子生物学</strong>：DNA 序列比较揭示了物种间的亲缘关系。人类与黑猩猩共享约98.8%的DNA，与化石和解剖学证据一致。</li>
+</ul>
+
+<h2>自然选择作为思维模型的扩展应用</h2>
+<p>
+  自然选择的核心逻辑——<strong>变异 + 选择 + 累积</strong>——是一个通用的优化算法。它出现在多个领域：
+</p>
+
+<div class="concept-card">
+  <h3>遗传算法（Genetic Algorithms）</h3>
+  <p>在人工智能中，程序员定义一个"适应度函数"，然后让大量候选解随机变异，每代选择适应度最高的个体，重复循环。这个过程可以找到复杂问题的近似最优解，如天线设计、调度优化。</p>
+</div>
+
+<div class="concept-card">
+  <h3>市场竞争与"创造性破坏"</h3>
+  <p>经济学家熊彼特提出"创造性破坏"：市场上不断有新产品、新模式出现（变异），消费者用购买投票（选择），成功的企业扩大规模（累积），失败的企业退出市场。这个过程不需要中央计划，是分布式选择的结果。</p>
+</div>
+
+<div class="concept-card">
+  <h3>文化演化</h3>
+  <p> memes、习俗、管理方法也在经历类自然选择的过程。一个想法出现后，能否在人群中传播和留存，取决于它是否"适应"当前的文化环境。不是最好的想法存活，而是最易传播和复现的想法存活。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>自然选择是"盲的"——它没有目标、没有远景规划。但它能产生令人惊叹的复杂性。在做决策时，这个模型的启示是：<strong>不要追求一次性的完美方案，而是建立迭代和选择的机制。</strong> 小步快跑、快速试错、保留好的——这就是自然选择的智慧。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：自然选择思维模型</h2>
+  <p>以下是8道选择题，每道题有两个选项。点击你认为正确的选项，查看解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">在"适者生存"这个短语中，"适者"最准确的定义是什么？</div>
+    <div class="sentence">在自然选择中，"适者"指的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">最强壮、跑得最快的个体</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在当前环境下留下最多后代的个体</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一个细菌培养皿中加入抗生素。初始时有100万株细菌，其中1株带有抗药突变。</div>
+    <div class="sentence">经过几代繁殖后，培养皿中最可能出现的情况是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">几乎所有细菌都有抗药性</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">细菌全部死亡</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你正在为一个初创公司设计产品策略。你尝试了5种不同的用户界面方案，每种方案只在小范围用户中测试。</div>
+    <div class="sentence">这体现了自然选择的哪一个步骤？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">变异（Variation）— 产生多个候选方案</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">累积（Accumulation）— 逐步完善方案</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">某个热带岛屿上的蝴蝶群体颜色多样（从浅黄到深褐）。一场火山灰覆盖事件后，地面变成深灰色。</div>
+    <div class="sentence">接下来最可能发生的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">蝴蝶会逐渐进化出更鲜艳的颜色来吸引配偶</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">深色蝴蝶被鸟类捕食的概率降低，深色基因频率上升</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">在遗传算法中，程序员希望让程序自动设计一个高效的天线形状。</div>
+    <div class="sentence">"适应度函数"在这个场景中的角色是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">衡量每个天线候选解的性能，作为"选择"的标准</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">控制天线形状变异的随机程度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">"人类是从猴子进化来的"这是一个常见说法。</div>
+    <div class="sentence">用自然选择模型来看，这个说法的问题在哪里？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">进化论已经被现代科学推翻了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人类和现代猴子有共同祖先，但人类不是从现代猴子演化的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一个稳定的沙漠环境中，仙人掌群体中偶尔出现"多刺"的变异个体。</div>
+    <div class="sentence">在资源充足、环境稳定的条件下，这个变异是否会快速扩散到整个群体？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">会——有利变异总会迅速扩散</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不一定——如果没有选择压力，变异可能随机保留也可能随机消失</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你运营一个内容网站，每周发布10篇文章。一个月后，你发现点击率最高的几种主题和标题风格是什么。</div>
+    <div class="sentence">这种策略中，"自然选择"的"选择"环节体现在哪里？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">每周发布10篇文章本身就是选择</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">读者用点击投票，决定哪些内容"存活"下来获得传播</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 问我任何关于自然选择的问题——不确定为什么某个答案是对的？这正是我们该讨论的。直接问就好。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.ebsco.com/research-starters/science/origin-species-darwin" target="_blank">《物种起源》导读</a> — 理解达尔文原始论证的结构和逻辑。
+  <br><br>
+  <a href="../reference/natural-selection.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-normal-fat-tails.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-network-effects.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"适应度"在生物学中是精确的数学定义：留下后代的相对数量。一只跑得不快但产仔多的动物，适应度可能远高于跑得最快的个体。',
+      wrong: '"最强壮"是对适应度的常见误解。适应度看的是繁殖成功率——留下多少可育后代。在有些环境中，保守策略（低繁殖风险、稳定的后代数量）比激进策略（高繁殖但高风险）更有适应度。'
+    },
+    q2: {
+      correct: '抗药突变个体存活并繁殖，其无抗药性的后代继承了抗药性。几代之后，整个种群变为抗药性主导。这就是抗生素滥用导致"超级细菌"的原理。',
+      wrong: '1株抗药突变体在100万株中比例虽小，但只要有生存优势，它就会繁殖并传递抗药基因。几代之内，抗药性基因会在整个种群中扩散。'
+    },
+    q3: {
+      correct: '这是"变异"——产生多个候选方案。在自然选择模型中，第一步总是产生多样性。只有有了差异，后续的选择才有意义。',
+      wrong: '累积是第四步——有利的变异经过世代叠加。而这里你是在同时测试多种方案，这是产生变异，不是累积已有优势。'
+    },
+    q4: {
+      correct: '环境变化后，深色蝴蝶在新环境下有更好的伪装，被捕食的概率降低。这意味着它们的生存率和繁殖率高于浅色蝴蝶，深色基因频率将上升。这是自然选择的核心过程。',
+      wrong: '蝴蝶不会"主动进化"出更鲜艳的颜色。进化是被动的过程——环境筛选已有的变异，而不是个体或物种主动"想要"改变。'
+    },
+    q5: {
+      correct: '适应度函数决定了哪些天线设计"存活"——即哪些候选解被认为更优。它相当于自然选择中的"环境"，定义了"好"的标准。',
+      wrong: '变异的随机程度由变异率（mutation rate）参数控制。适应度函数只负责评估和排序，不控制变异本身。'
+    },
+    q6: {
+      correct: '人类和现代猴子（如黑猩猩）共享一个约600-700万年前的共同祖先。在这个祖先之后，一支演化为现代人类，另一支演化为现代黑猩猩。不是"猴子→人"，而是"共同祖先→人 + 共同祖先→黑猩猩"。',
+      wrong: '进化论是生物学最坚固的理论之一，得到化石、解剖学、分子生物学、生物地理学等多重独立证据的支撑。它不是已经被推翻的理论。'
+    },
+    q7: {
+      correct: '在没有选择压力（如食物充足、没有天敌）的情况下，有利变异也可能因为随机事件（遗传漂变）而丢失。进化不只是"好的存活"，还包括随机的"坏运气"——尤其在小型种群中。',
+      wrong: '有利变异不一定会"迅速"扩散。在小型种群中，遗传漂变（随机波动）可能完全压倒选择的力量。即使在选择作用下，扩散速度取决于选择强度和种群大小。'
+    },
+    q8: {
+      correct: '读者的点击行为就是"选择"——它决定了哪些内容被传播和留存。发布（变异）+ 点击（选择）+ 数据积累（累积）= 内容策略的自然选择过程。这正是"小步快跑、快速试错"的思维模型。',
+      wrong: '发布文章只是"变异"——产生候选内容。选择是由外部条件决定的，在这个场景里是读者的注意力。发布本身不包含筛选或评估。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经掌握了自然选择的核心逻辑。';
+      else if (score >= 6) label.textContent = '做得不错！回顾你做错的题目的解释，理解为什么。';
+      else label.textContent = '继续！重新阅读上面的内容，然后试试理解那些你答错的题目。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

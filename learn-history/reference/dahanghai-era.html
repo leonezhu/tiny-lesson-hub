@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡 — 大航海时代</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .ref-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .ref-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  .ref-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ref-card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+
+  .ref-card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    padding: 0.5rem 0.7rem;
+    text-align: left;
+    font-family: 'Merriweather', Georgia, serif;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>大航海时代 · 快速参考卡</h1>
+<p class="card-meta">参考卡 · 对应课程：第3课</p>
+
+<div class="ref-card">
+  <h3>四大驱动因素（15世纪末）</h3>
+  <ul>
+    <li>奥斯曼征服君士坦丁堡（1453）→ 切断传统商路</li>
+    <li>航海技术突破：卡拉维尔帆船、星盘、指南针、海图</li>
+    <li>伊比利亚政治统一：西班牙1492、葡萄牙1385</li>
+    <li>黄金与信仰：贵金属短缺 + 传教使命</li>
+  </ul>
+</div>
+
+<div class="ref-card">
+  <h3>葡萄牙 vs 西班牙模式对比</h3>
+  <table class="comparison-table">
+    <tr><th>维度</th><th>葡萄牙</th><th>西班牙</th></tr>
+    <tr><td>方向</td><td>非洲→印度洋</td><td>大西洋→美洲</td></tr>
+    <tr><td>目标</td><td>贸易节点控制</td><td>领土征服</td></tr>
+    <tr><td>方式</td><td>贸易站堡垒网络</td><td>总督辖区+移民</td></tr>
+    <tr><td>代表</td><td>达·伽马、麦哲伦</td><td>哥伦布、科尔特斯、皮萨罗</td></tr>
+  </table>
+</div>
+
+<div class="ref-card">
+  <h3>哥伦布大交换（核心条目）</h3>
+  <p style="font-size:0.95rem;"><strong>旧大陆 → 新大陆</strong>：小麦、水稻、甘蔗、马、牛、猪、天花、麻疹</p>
+  <p style="font-size:0.95rem;"><strong>新大陆 → 旧大陆</strong>：玉米、马铃薯、番茄、红薯、可可、烟草</p>
+  <p style="font-size:0.95rem;"><strong>人口影响</strong>：原住民减少90%（1500—1600年），主因是病原体</p>
+  <p style="font-size:0.95rem;"><strong>经济影响</strong>：马铃薯促进18世纪欧洲人口增长；白银引发"价格革命"</p>
+</div>
+
+<div class="ref-card">
+  <h3>为什么伊比利亚而非中国/印度？</h3>
+  <ul>
+    <li>地缘：小国+无陆上空间→被迫向海</li>
+    <li>竞争：多国体系→"不跟进就落后"的囚徒困境</li>
+    <li>制度：王室-商人利益共同体 vs 朝贡体系垄断</li>
+    <li>明朝郑和舰队（1405—1433）技术更强但缺乏持续激励</li>
+  </ul>
+</div>
+
+<div class="ref-card">
+  <h3>关键概念速查</h3>
+  <ul>
+    <li><strong>feitoria</strong>：葡萄牙贸易站堡垒</li>
+    <li><strong>卡拉维尔帆船</strong>：能逆风"之"字形航行的轻型帆船</li>
+    <li><strong>价格革命</strong>：美洲白银流入→16世纪欧洲物价涨4-5倍</li>
+    <li><strong>三角贸易</strong>：欧洲制成品→非洲奴隶→美洲原料→欧洲</li>
+    <li><strong>中心—边缘</strong>：大航海奠定的全球不平等分工格局</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a href="../lessons/0003-dahanghai-era.html">返回完整课程</a>
+</div>
+
+</body>
+</html>

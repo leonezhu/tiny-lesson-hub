@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 身心问题：意识从何而来？</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .theory-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .theory-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .theory-card .definition {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .theory-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .theory-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .theory-card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>身心问题：意识从何而来？</h1>
+<p class="lesson-meta">第11课 &middot; ~12分钟 &middot; 心灵哲学的核心难题</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够：理解身心问题的历史脉络，识别五种主要立场（二元论、物理主义、属性二元论、功能主义、取消唯物主义）的核心论点，并运用经典思想实验（如"中文房间""知识论证"）来评估不同立场的强弱。
+</div>
+
+<h2>什么是身心问题？</h2>
+<p>
+  身心问题是哲学中最古老也最棘手的问题之一，可以用一句话概括：</p>
+<p>
+  <strong>如果人只是物理的物体（由原子、分子构成），那么"疼痛""颜色""情感""思考"这些主观体验从何而来？</strong>
+</p>
+<p>
+  你的大脑是一个物理器官——大约860亿个神经元通过电信号和化学物质互相连接。这完全可以被CT扫描仪、fMRI成像和电极记录下来。但与此同时，当你尝到柠檬的味道时，那种酸涩的主观感受——哲学家称之为<strong>感质</strong>（qualia）——似乎无法被任何物理描述完全捕捉。
+</p>
+<p>
+  这就是身心问题的核心张力：<strong>物理世界似乎是客观的、可测量的；主观体验似乎是私密的、不可约的。</strong>它们之间是什么关系？
+</p>
+
+<h2>笛卡尔的二元论：两个世界的难题</h2>
+<div class="theory-card">
+  <h3>笛卡尔的立场：心物二元论</h3>
+  <p class="definition">"心灵"和"物质"是两种完全不同的实体。物质有广延（占据空间），心灵没有广延（不占据空间）。</p>
+  <ul class="examples">
+    <li>笛卡尔的论证：我能清楚地想象"我只有一颗心，没有身体"，所以心灵可以独立于身体存在。</li>
+    <li>他的解决方案：心灵和身体通过松果腺（pineal gland）相互作用——这个观点后来被神经科学彻底推翻。</li>
+    <li>留下的难题：如果心灵不是物质的，它如何推动你的手臂？如果它不占据空间，它如何"位于"你的头部？</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>二元论的致命问题：</strong>如果心灵是非物质的，它如何与物质的大脑发生因果互动？这是笛卡尔本人也无法回答的。你的"想举手"这个念头——如果是非物质的——凭什么能让你的肌肉纤维收缩？
+</div>
+
+<h2>物理主义的回应</h2>
+<p>
+  物理主义（physicalism）是当代心灵哲学的主流立场。它的核心主张很简单：<strong>一切存在的东西最终都是物理的。没有"非物质的心灵"这种东西。</strong>但它有多种版本：
+</p>
+
+<div class="theory-card">
+  <h3>1. 同一论（Identity Theory）</h3>
+  <p class="definition">每一种心理状态都等同于某种大脑状态。疼痛 = C纤维激活。</p>
+  <ul class="examples">
+    <li>类比：闪电就是放电。看起来两种不同的东西，其实是同一件事的不同描述。</li>
+    <li>问题：如果另一种外星生物有"疼痛"但没有C纤维，同一论就错了。</li>
+  </ul>
+</div>
+
+<div class="theory-card">
+  <h3>2. 功能主义（Functionalism）</h3>
+  <p class="definition">心理状态不由"材料"定义，而由其"功能角色"定义——即它在整个认知系统中的输入-输出关系。</p>
+  <ul class="examples">
+    <li>类比：软件不依赖特定硬件。同一个程序可以在硅芯片上运行，也可以在纸上运行（只要符号操作一致）。</li>
+    <li>这意味着：如果一台电脑正确地处理了中文输入并输出恰当的中文回答，它就在"理解"中文。</li>
+    <li>这就是著名的"中文房间"思想实验的核心论点。</li>
+  </ul>
+</div>
+
+<div class="theory-card">
+  <h3>3. 取消唯物主义（Eliminative Materialism）</h3>
+  <p class="definition">日常心理学概念（"信念""欲望""疼痛"）是错误的理论建构，终将被成熟的神经科学取代。</p>
+  <ul class="examples">
+    <li>激进主张："信念"就像"燃素"一样——历史上被证伪的概念。未来的人类可能无法理解"我相信明天会下雨"这句话。</li>
+    <li>代表人物：保罗·丘奇兰德（Paul Churchland）。</li>
+  </ul>
+</div>
+
+<h2>挑战物理主义的思想实验</h2>
+
+<div class="theory-card">
+  <h3>知识论证（Mary's Room）</h3>
+  <p class="definition">玛丽是一位超级科学家，她知道关于颜色的所有物理知识——波长、神经通路、大脑区域。但她从小生活在黑白房间里，从未亲眼见过颜色。当她第一次走出房间看到红色时，她学到了新东西吗？</p>
+  <ul class="examples">
+    <li>如果她说"是的，我看到了红色是什么感觉"→ 物理主义为假（存在非物理的事实）。</li>
+    <li>如果她说"不，我什么都没说"→ 物理主义为真（所有事实都是物理事实）。</li>
+    <li>这个论证由弗兰克·杰克逊（Frank Jackson, 1982）提出，他后来放弃了它。</li>
+  </ul>
+</div>
+
+<div class="theory-card">
+  <h3>僵尸论证（Philosophical Zombies）</h3>
+  <p class="definition">想象一个和你完全相同的物理复制品——同样的大脑结构、同样的行为反应——但它没有任何主观体验。它在黑暗中不会感到"黑暗"，吃到糖不会感到"甜"。这样的僵尸在逻辑上可能吗？</p>
+  <ul class="examples">
+    <li>大卫·查尔莫斯（David Chalmers）认为：如果僵尸在逻辑上可能，那么物理主义就为假——因为存在超越物理事实的事实。</li>
+    <li>反对者反驳：僵尸的概念是自相矛盾的——如果你完全复制了一个人的物理状态，你就复制了他的体验。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键区分：</strong>"逻辑上可能"不等于"物理上可能"。即使僵尸在逻辑上 conceivable（可想象的），也不等于它在现实中可能存在——就像"水不是H₂O"是可想象的，但根据科学发现，水必然是H₂O。
+</div>
+
+<h2>当代进展：具身认知与延展心智</h2>
+<p>
+  身心问题并没有停留在"大脑 vs 灵魂"的老问题上。当代哲学提出了更激进的方向：
+</p>
+<ul class="examples">
+  <li><strong>具身认知（Embodied Cognition）：</strong>心智不只在大脑中，而是在身体与环境的互动中涌现。你的手势、姿势甚至肠道微生物都在参与"思考"。</li>
+  <li><strong>延展心智（Extended Mind）：</strong>安迪·克拉克和大卫·查尔莫斯提出：如果你的笔记本承担了和海马体相同的功能——记住信息——那么它就是你心智的一部分。心智不局限于颅骨之内。</li>
+  <li><strong>预测编码（Predictive Processing）：</strong>大脑不是被动接收感官输入，而是不断生成对世界的预测模型。意识可能是这个预测过程的一种"受控幻觉"。</li>
+</ul>
+
+<h2>为什么这个问题重要？</h2>
+<p>
+  身心问题不只是学术争论。它直接影响我们对以下问题的理解：
+</p>
+<ul class="examples">
+  <li><strong>人工智能：</strong>如果一个AI系统表现得和你一样聪明，它真的有"意识"吗？还是只是复杂的自动机？</li>
+  <li><strong>伦理学：</strong>如果意识可以完全还原为神经活动，那么"自由意志"是否存在？我们还能谴责罪犯吗？</li>
+  <li><strong>医学：</strong>抑郁症是"化学失衡"还是"生活的困境"？这两种解释对应着完全不同的治疗路径。</li>
+  <li><strong>自我理解：</strong>你认为自己是"有灵魂的生物"还是"复杂的机器"？这个答案会影响你如何看待死亡、爱情和人生的意义。</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：评估你的立场</h2>
+  <p>下面有8个问题，每个有两个选项。选出你认为更合理的，然后点击查看答案和解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你正在评估两种关于意识的理论。</div>
+    <div class="sentence">玛丽走出黑白房间看到红色时，她学到了新东西。这意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">存在非物理的事实——物理主义为假</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">她学到的只是"知道红色是什么样子"这一技能——物理主义仍然为真</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你正在设计一个人工智能系统。</div>
+    <div class="sentence">按照功能主义的观点，判断一个系统是否有"心理状态"的标准是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它是否由碳基生物组织构成</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它是否在认知系统中扮演了正确的功能角色</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你向朋友解释笛卡尔二元论的问题。</div>
+    <div class="sentence">笛卡尔二元论面临的最严重挑战是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">因果互动问题——非物质的思想如何影响物质的身体</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">无法证明外部世界存在</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你读到一篇论文声称"疼痛只是C纤维激活"。</div>
+    <div class="sentence">这个观点最接近哪种理论？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">功能主义</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">同一论</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在辩论中遇到了一个反对者。</div>
+    <div class="sentence">"僵尸论证"试图证明：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">僵尸在现实中可能存在</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">存在超越物理描述的事实——因此物理主义为假</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你正在研究抑郁症的治疗方案。</div>
+    <div class="sentence">如果取消唯物主义是正确的，那么治疗抑郁症的正确方式是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">改变你的认知框架和生活叙事</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">直接干预大脑的神经活动——因为"抑郁"本身就是一个错误的概念</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在使用手机时读到延展心智理论。</div>
+    <div class="sentence">按照克拉克和查尔莫斯的观点，你的智能手机被认为是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你身体的延伸——就像义肢一样</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你心智的一部分——因为它承担了你原本由大脑完成的信息存储功能</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在思考"我思故我在"的含义。</div>
+    <div class="sentence">笛卡尔从"我在怀疑"推出"我存在"。这个论证的关键假设是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">身体一定存在——否则没有东西在怀疑</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">怀疑是一种思想活动——即使怀疑的对象是假的，进行怀疑的那个"我"必须存在</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="0010-free-will-problem.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-language-philosophy.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '知识论证的核心洞见：玛丽知道所有物理事实，但仍然学到了新东西（红色的主观体验）。这说明存在非物理的事实——感质。如果物理主义为真，"所有事实都是物理事实"，玛丽不应该学到任何东西。这个论证至今没有被完全驳倒。', wrong: '有些哲学家（如丹尼尔·丹尼特）确实认为玛丽学到的只是"技能知识"而非"命题知识"。但知识论证的支持者反驳：知道"红色是什么样子"是一种全新的认知内容，不是"会做什么"的问题——你无法通过阅读任何物理教科书获得它。' },
+    q2: { correct: '功能主义的核心主张：心理状态不由构成材料定义，而由其功能角色定义。就像"排序"这个算法可以在硅芯片上运行、也可以在纸上运行——重要的是功能结构，不是物理载体。因此，如果AI正确实现了这些功能角色，它就拥有心理状态。', wrong: '功能主义明确反对"只有碳基生物才有意识"的观点。这正是它被称为"多重可实现性"理论的原因——同一个心理状态可以在不同的物理基质中实现。碳基不是必要条件。' },
+    q3: { correct: '因果互动问题是二元论最致命的难题。笛卡尔承认心灵和身体"相互作用"，但他无法解释一个非物质的东西如何推动一个物质的东西。现代神经科学表明，每一个身体动作都有完整的物理因果链——如果"非物质的思想"也在推动动作，那就违反了物理学的因果封闭性原则。', wrong: '"无法证明外部世界存在"是笛卡尔怀疑论的问题，不是二元论特有的问题。笛卡尔用上帝的诚实性来解决外部世界问题。二元论的真正难题是：两种完全不同性质的实体如何在一个系统中协同工作。' },
+    q4: { correct: '同一论主张心理状态和大脑状态是同一件事的不同描述。"疼痛 = C纤维激活"正是同一论的经典表述——就像"闪电 = 大气放电"。它认为每个心理状态都能精确对应某个神经过程。', wrong: '功能主义会说：疼痛不是某个特定的神经激活模式，而是某种功能角色——它通常由伤害性刺激引起，导致回避行为，并与信念和欲望相互作用。同一论和功能主义的根本分歧在于：心理状态是由"材料"还是由"功能"定义的。' },
+    q5: { correct: '僵尸论证的逻辑：如果"在逻辑上可能的僵尸"存在，那就说明"物理事实"不等于"全部事实"——因为僵尸有全部物理事实却没有意识。查尔莫斯认为，既然僵尸是可想象的（不构成逻辑矛盾），它就是逻辑上可能的，因此物理主义为假。', wrong: '僵尸论证不是在论证僵尸在现实中存在。它是一个思想实验——通过设想一个逻辑上可能的场景来检验某个理论的完备性。即使僵尸在物理上不可能，只要在逻辑上可能，就能对物理主义构成挑战。' },
+    q6: { correct: '取消唯物主义的极端之处：它不认为"疼痛""信念""欲望"这些日常心理学概念对应任何真实的自然种类——就像"燃素""生命力"一样是错误的理论建构。如果这是对的，那么治疗抑郁症就不应该围绕"调整你的想法"，而应该直接修改神经化学——因为"抑郁"这个概念本身就应该被神经科学的精确描述所取代。', wrong: '改变认知框架是传统心理治疗的路径，但取消唯物主义认为这条路建立在错误的基础上。丘奇兰德认为，就像"魔法治疗"在科学时代不再有效，"谈话治疗"可能在神经科学成熟后被更精确的神经干预所取代。' },
+    q7: { correct: '延展心智论的核心洞见：心智的边界不在颅骨处，而在功能边界处。如果你的笔记本以稳定、可靠的方式承担了你原本由海马体承担的记忆功能——随时可访问、你信任它的内容——那么它在功能上就是你记忆系统的一部分。这不是比喻，而是字面意义上的"心智延展"。', wrong: '义肢（如假腿）是身体的延伸，但克拉克和查尔莫斯讨论的是"心智的延伸"——即认知功能的扩展。关键区别不在于物理连接，而在于功能角色的替代：笔记本替代的不是你的腿，而是你的海马体。' },
+    q8: { correct: '笛卡尔的"我思故我在"的精妙之处在于：怀疑本身就是一种思想活动。无论你怀疑什么——外部世界是否存在、你的身体是否存在——"正在怀疑的这个活动"本身是不可怀疑的。而一个活动必须有一个执行者。因此，即使一切都被怀疑了，"执行怀疑的那个我"必须存在。', wrong: '笛卡尔恰恰在第一步就排除了身体的存在——他的方法论怀疑包括了"也许我的身体只是一个幻觉"。"我思"论证的关键是：即使身体是幻觉，那个"正在经历幻觉的我"仍然存在。怀疑不需要身体，只需要思想。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '出色！你对身心问题的核心争论有了扎实的理解。';
+      else if (score >= 6) label.textContent = '不错！身心问题是哲学中最烧脑的主题之一——重读错题的解释，理解为什么。';
+      else label.textContent = '继续加油！这个领域挑战直觉，多思考几遍就会豁然开朗。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

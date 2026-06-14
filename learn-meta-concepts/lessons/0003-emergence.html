@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 — 涌现：整体大于部分之和</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>涌现：整体大于部分之和</h1>
+<p class="lesson-meta">Lesson 3 &middot; ~10 minutes &middot; 元概念 · 基础层</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够：(1) 用你自己的话解释什么是"涌现"；(2) 在复杂系统、AI、经济学等领域中识别涌现现象；(3) 区分"简单加总"与"涌现"的本质差异。
+</div>
+
+<h2>什么是涌现？</h2>
+<p>
+  "涌现"（Emergence）是元概念中最有启发性的一个。它的核心思想用一句名言概括就是：<strong>"整体大于部分之和"</strong>（The whole is greater than the sum of its parts）。当你把大量简单个体放在一起时，它们之间通过简单的互动规则相互作用，最终会自发产生出个体本身不具备的全新特性。
+</p>
+<p>
+  这个定义听起来很抽象，但你可以立刻想到几个例子：一只蚂蚁很简单，没有 intelligence；但一个蚁群却能建造复杂的地下城市、精确分工、甚至进行"战争"。单个神经元只有电信号，但亿万个神经元一起工作就产生了"意识"。单个网页很简单，但整个互联网涌现出了信息、经济、社会运动。
+</p>
+
+<h2>涌现的三个关键特征</h2>
+
+<div class="concept-card">
+  <h3>① 不可还原性（Irreducibility）</h3>
+  <p class="sub">你不能通过分析个体来理解整体</p>
+  <ul class="examples">
+    <li>你研究一只鸟的每根羽毛，永远无法理解"鸟为什么能飞"</li>
+    <li>你分析一个分子的化学结构，无法预测"水的湿润性"</li>
+    <li>你查看一个人脑的单个神经元，找不到"自我意识"</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>② 自组织（Self-organization）</h3>
+  <p class="sub">没有中央控制器，秩序从底部自发产生</p>
+  <ul class="examples">
+    <li>鸟群飞行：每只鸟只遵循三条简单规则（靠近、对齐、不碰撞），整体就形成优美的编队</li>
+    <li>股票市场：没有中央计划者，但供需关系自发形成了价格体系</li>
+    <li>蛋白质折叠：没有"设计师"，分子间力让蛋白质自动折叠成正确形状</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>③ 新的层级（New Level）</h3>
+  <p class="sub">涌现出来的东西是一个全新的层次，有自己的一套规律</p>
+  <ul class="examples">
+    <li>原子 → 分子 → 细胞 → 生物（每一层都有自己的规律）</li>
+    <li>单个神经元没有"思维"，但大脑涌现出了"思维"</li>
+    <li>单个 AI 参数没有智能，但几十亿参数一起涌现出了"理解能力"</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>最常见的误解：</strong>涌现 ≠ 简单的"加总"。100 个人站在一起，不会涌现出超能力——这只是加总。但 100 个人组成一个团队，各自分工、协作，就可能做出一个人无法完成的事——这才是涌现。关键区别在于：<strong>个体之间有没有产生新的互动模式</strong>。
+</div>
+
+<h2>涌现在不同领域中的例子</h2>
+
+<div class="concept-card">
+  <h3>🧠 人工智能：大语言模型的涌现能力</h3>
+  <p>
+    当 GPT-3 的参数量达到千亿级时，模型突然展现出之前没有的能力：零样本推理、指令跟随、甚至跨语言翻译。这种现象被称为"涌现能力"（Emergent Abilities）——单个参数只是数字，但大量参数通过训练形成了内部表征，涌现出了"理解语言"的能力。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>🐜 生物学：蚁群智能</h3>
+  <p>
+    每只蚂蚁的"决策规则"极其简单：找到食物就留下信息素，碰到信息素就沿着走。但整个蚁群能在几分钟内找到最短的食物路径。没有"总蚂蚁"在指挥——最短路径是涌现出来的最优解。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>💰 经济学：市场</h3>
+  <p>
+    亚当·斯密称之为"看不见的手"。每个交易者只关心自己的利益，但成千上万人的交易互动涌现出了价格机制、资源配置效率——这些都不是任何个体设计出来的。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>🌊 物理学：水的湿润性</h3>
+  <p>
+    单个 H₂O 分子是"干"的。但大量 H₂O 分子聚集在一起时，涌现出了"湿润"这个宏观特性。你无法从单个分子的化学式推导出"湿"——这是一个涌现属性。
+  </p>
+</div>
+
+<h2>为什么理解涌现很重要？</h2>
+<p>
+  理解涌现改变你对世界的认知方式。它告诉你：
+</p>
+<ul class="examples" style="padding-left: 1.2rem; margin-bottom: 1rem;">
+  <li><strong>不要过度设计：</strong>很多时候秩序会从底部自发产生，不需要中央控制。管理一个团队时，有时"放手"比"管控"更能涌现创造力。</li>
+  <li><strong>复杂性可以产生于简单规则：</strong>复杂的系统（城市、经济、生态）不一定需要复杂的底层设计。好的设计是让简单规则产生好结果。</li>
+  <li><strong>预测有限：</strong>涌现意味着系统的整体行为无法从个体行为精确预测。你知道每片雪花遵循物理规律，但你无法预测下一场雪的具体形状。</li>
+  <li><strong>干预要小心：</strong>在复杂系统中修改一个参数，可能引发意想不到的涌现结果——这就是"政策的第二阶效应"。</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>与"熵"的关系：</strong>前一课讲了熵（无序的度量）。涌现和熵是一对有趣的"对手"——熵让系统趋向无序，涌现让系统从无序中自组织出秩序。生命本身就是对抗熵增的涌现现象。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别涌现</h2>
+  <p>选出最能体现"涌现"特性的选项。共 8 题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在分析一个现象。</div>
+    <div class="sentence">以下哪个是真正的"涌现"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">一箱苹果总重量等于每个苹果重量之和</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">大量简单程序协同工作，涌现出人工智能</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在设计一个团队。</div>
+    <div class="sentence">以下哪种做法最可能产生涌现？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">让团队成员自由协作、自发形成分工</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">给每个人分配固定任务、严格按流程执行</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在学习 AI。</div>
+    <div class="sentence">"涌现能力"在 AI 中指的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">模型在训练中逐步学到的预设技能</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">模型规模达到某个阈值后突然获得的新能力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在观察自然。</div>
+    <div class="sentence">以下哪个不是涌现？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">白蚁用唾液和泥土建造高达 9 米的巢穴</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">用 100 块相同的砖头堆砌成一面墙</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在做系统分析。</div>
+    <div class="sentence">涌现现象的关键特征是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">有一个中央控制器在指导整体行为</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">整体特性无法从个体特性直接推导</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在讨论社会现象。</div>
+    <div class="sentence">社交媒体上的"病毒式传播"体现了涌现吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">是的——单个用户发一条帖子，互动网络自发产生病毒传播</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不是——只有官方账号有计划地发布才算</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在思考复杂系统。</div>
+    <div class="sentence">以下哪种直觉最能抓住涌现的精髓？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">把所有部分放在一起，总量就会自然增加</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">简单部分通过互动产生全新的、不可预见的特性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在评估一个决策。</div>
+    <div class="sentence">在复杂系统中干预时，为什么需要小心？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为系统过于简单，干预很容易出错</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为涌现意味着微小的改变可能产生意想不到的大规模新特性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——任何不理解的地方都可以展开聊。比如：涌现是不是神秘的"魔法"？不是，它完全可以用数学建模和模拟来研究。只是它的行为不像机械因果那样线性可预测。
+  <br><br>
+  <strong>推荐阅读：</strong>Stuart Kauffman《Home in the Universe》——涌现与自组织的经典论述；James Gleick《混沌》——非线性与混沌的入门。
+  <br><br>
+  <a href="../reference/emergence.html" class="resource-link">查看速查卡片</a>
+</div>
+
+<div class="footer">
+  <a href="0002-entropy.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-feedback-loops.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: 'AI 的涌现能力是涌现的经典例子：单个程序/参数很简单，但大量协同工作后涌现出了智能。', wrong: '苹果重量之和只是简单的数学加总——每个苹果的属性没变，只是数量增加了。涌现需要产生新的、个体不具备的特性。' },
+    q2: { correct: '自组织是涌现的核心：自由协作中，团队成员通过互动自发形成新的分工模式，涌现出集体智慧。', wrong: '固定任务和严格流程是"中央控制"——个体之间没有新的互动产生，只是按预定方式执行，这是机械组合而非涌现。' },
+    q3: { correct: '涌现能力指模型规模（参数量或数据量）达到某个临界阈值后，"突然"展现出之前没有的能力——这不是预设的，而是涌现的。', wrong: '预设技能是通过训练逐步学会的——每个技能在训练时就被设计了。涌现能力的特征是：你事先不知道它会出现，它是在规模超过某个点后自发冒出来的。' },
+    q4: { correct: '白蚁巢穴是经典涌现：每只白蚁遵循简单规则（用唾液粘合泥土、沿信息素走），但整个蚁群能建造复杂的高塔。没有"总白蚁"在指挥。', wrong: '用砖头堆墙只是物理加总——砖头本身没有互动，墙的特性（承重、挡雨）是砖头功能的简单叠加，没有新特性涌现。' },
+    q5: { correct: '涌现的核心：整体特性是"新"的，无法通过分析个体来理解整体。就像分析水分子无法理解"湿润"。', wrong: '涌现的关键恰恰是"没有中央控制器"——秩序从个体间的简单互动中自发产生。如果有中央控制器，那只是设计而非涌现。' },
+    q6: { correct: '正是涌现的典型：没有中央策划——每个用户只是转发、点赞，但互动网络的复杂性使得内容自发"爆炸式"传播。这是涌现。', wrong: '官方账号有计划发布只是线性传播。真正的病毒式传播是用户之间自发互动的结果——每个人都是传播节点，涌现出了传播浪潮。' },
+    q7: { correct: '这就是涌现的精髓：简单个体 → 互动 → 新特性。不是"更多"，而是"不同"。', wrong: '简单的数量增加只是加总——1+1=2。涌现是 1+1>2，产生了全新的东西。比如单个神经元没有思维，但亿万个一起就有了。' },
+    q8: { correct: '涌现意味着系统在规模或复杂度超过阈值后会出现新行为。微小的改变可能触发意想不到的大规模涌现——这就是为什么好政策要考虑二阶效应。', wrong: '复杂系统恰恰不是"过于简单"，而是太复杂以至于线性因果推理失效。干预要小心是因为涌现使得结果不可线性预测，不是因为系统太简单。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对涌现的理解已经非常扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾你做错的题，解释告诉你为什么。';
+      else label.textContent = '继续加油！重读上面的例子，再来一次。';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

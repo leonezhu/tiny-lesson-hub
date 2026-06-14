@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 罗马共和国与帝国的兴衰</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card .period {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .timeline-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .insight-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .insight-box strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-family: 'Merriweather', Georgia, serif;
+    border: 1px solid var(--border);
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>罗马共和国与帝国的兴衰</h1>
+<p class="lesson-meta">第1课 · ~12分钟 · 历史基础</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：描述罗马从城邦到共和国再到帝国的三阶段演变，识别共和国崩溃的三个关键制度缺陷，并理解帝国维持两百年的核心策略。
+</div>
+
+<h2>为什么要从罗马开始</h2>
+<p>
+  罗马是人类历史上第一个真正的"超大规模社会"——它把地中海沿岸几十个文化各异的民族纳入同一个政治框架。现代政治家、投资者和管理者反复回到罗马，因为它提供了三个永恒的教训：<strong>制度如何塑造兴衰</strong>、<strong>权力如何在机构和个人之间转移</strong>、<strong>成功本身如何孕育失败</strong>。
+</p>
+
+<div class="timeline-card">
+  <h3>时间线：三阶段</h3>
+  <div class="period">王政时期（约前753—前509年）</div>
+  <ul>
+    <li>罗马从台伯河畔一个小城邦起步</li>
+    <li>七位国王，最后一位国王因暴政被驱逐</li>
+    <li>核心教训：绝对权力引发反抗</li>
+  </ul>
+  <div class="period" style="margin-top:1rem;">共和国（前509—前27年）</div>
+  <ul>
+    <li>建立"共和"制度（res publica = 公共事务）</li>
+    <li>元老院、执政官、保民官三权制衡</li>
+    <li>征服地中海全境，成为超级大国</li>
+    <li>内部矛盾激化：平民与贵族、老兵与土地、奴隶起义</li>
+    <li>马略改革、苏拉独裁、凯撒跨越卢比孔河</li>
+  </ul>
+  <div class="period" style="margin-top:1rem;">帝国（前27年—公元476年西罗马灭亡）</div>
+  <ul>
+    <li>奥古斯都建立"元首制"：披着共和外衣的帝制</li>
+    <li>黄金时代：安东尼五帝（96—180年）</li>
+    <li>三世纪危机：内战、瘟疫、经济崩溃</li>
+    <li>戴克里先四帝共治，君士坦丁迁都</li>
+    <li>476年西罗马灭亡，东罗马延续至1453年</li>
+  </ul>
+</div>
+
+<h2>共和国的制度设计：为何成功</h2>
+<p>
+  罗马共和国的政体是古代世界最复杂的混合政体。波利比乌斯（公元前2世纪希腊观察家）分析认为，罗马的成功在于它的制度融合了三种政体的优点：
+</p>
+
+<table class="comparison-table">
+  <tr>
+    <th>机构</th>
+    <th>对应政体</th>
+    <th>权力</th>
+  </tr>
+  <tr>
+    <td><strong>执政官</strong></td>
+    <td>君主制元素</td>
+    <td>军事指挥权，任期一年，两人互否</td>
+  </tr>
+  <tr>
+    <td><strong>元老院</strong></td>
+    <td>贵族制元素</td>
+    <td>财政、外交、政策建议，终身制</td>
+  </tr>
+  <tr>
+    <td><strong>公民大会 + 保民官</strong></td>
+    <td>民主制元素</td>
+    <td>立法、选举，保民官可否决议案</td>
+  </tr>
+</table>
+
+<p>
+  <strong>关键创新</strong>：每个机构都权力有限，但组合起来能产生强大的决策能力。执政官不能独断（一年任期+同僚否决），元老院不能直接立法（只有建议权），平民不能为所欲为（受元老院和执政官制约）。
+</p>
+
+<div class="insight-box">
+  <strong>投资视角：</strong>这种制衡设计类似于现代公司治理中的董事会-管理层-股东结构。好的制度不是让一个人做大事，而是防止一个人把事做烂。
+</div>
+
+<h2>共和国为何崩溃：三个致命缺陷</h2>
+
+<h3>1. 领土膨胀 vs 制度小国化</h3>
+<p>
+  共和国的制度是为罗马城邦设计的——公民可以步行到广场投票。但当领土扩张到地中海三圈时，行省总督拥有了私人军队，公民大会无法有效决策。制度没有随规模扩展。
+</p>
+<p>
+  <strong>具体案例</strong>：将军庞培在前61年从东方归来时，他控制的行省收入超过罗马国库年收入的两倍。他的私人军团忠诚于他自己而非共和国。
+</p>
+
+<h3>2. 土地与老兵问题</h3>
+<p>
+  罗马士兵长期服役却得不到土地，而贵族通过奴隶大庄园垄断了土地。格拉古兄弟试图改革失败并被杀害（前133年和前121年），这开了一个危险先例：<strong>政治分歧用暴力解决</strong>。
+</p>
+
+<h3>3. 军队私有化</h3>
+<p>
+  马略改革（前107年）允许无产者入伍，由将军而非国家提供装备。士兵效忠对象从"罗马共和国"变成了"给我土地和战利品的将军"。苏拉、凯撒、庞培、屋大维——他们都是用自己的军团推翻共和国的。
+</p>
+
+<div class="insight-box">
+  <strong>核心洞见</strong>：罗马的崩溃不是因为它做错了什么，而是因为它做对了太多。军事成功产生了制度无法消化的后果——领土太大、军队太私、贫富差距太大。成功孕育了失败的条件。
+</div>
+
+<h2>帝国如何维持秩序：奥古斯都的方案</h2>
+<p>
+  屋大维（后称奥古斯都）在亚克兴角击败安东尼和克利奥帕特拉后，面临选择：直接称王会重蹈凯撒覆辙（被刺杀），继续共和名存实亡则无法稳定局势。他的解决方案堪称政治工程学杰作：
+</p>
+
+<div class="timeline-card">
+  <h3>元首制的伪装术</h3>
+  <ul>
+    <li>保留所有共和机构：元老院照常开会，执政官照常选举</li>
+    <li>自己接受"第一公民"（princeps）头衔——不是"皇帝"也不是"国王"</li>
+    <li>控制13个行省（含军事边境行省），其余行省由元老院管理</li>
+    <li>建立"禁卫军"作为个人武力后盾</li>
+    <li>改革税收和货币体系，恢复经济稳定</li>
+  </ul>
+</div>
+
+<p>
+  这套方案维持了约两百年。安东尼五帝时期（96—180年）被称为"五贤帝时代"，罗马帝国达到巅峰：疆域最大、经济繁荣、法律体系成熟。马可·奥勒留的《沉思录》至今仍是斯多葛哲学的经典。
+</p>
+
+<h2>帝国的衰落：不只是"道德败坏"</h2>
+<p>
+  传统叙事喜欢把罗马衰落归咎于道德败坏或基督教"软弱化"男性气质。但现代历史学家更倾向于多因素分析：</p>
+
+<div class="timeline-card">
+  <h3>三世纪危机的复合打击（235—284年）</h3>
+  <ul>
+    <li><strong>政治</strong>：50年内出现26个皇帝，绝大多数死于暗杀或被处决</li>
+    <li><strong>经济</strong>：恶性通货膨胀，货币含银量从尼禄时代的90%降到三世纪末的5%</li>
+    <li><strong>军事</strong>：边境压力倍增——哥特人、汪达尔人、波斯萨珊王朝同时进攻</li>
+    <li><strong>健康</strong>：安东尼瘟疫（约165—180年）可能杀死了1/10的人口</li>
+    <li><strong>制度</strong>：戴克里先的"四帝共治"本为解决继承问题，反而制度化内战</li>
+  </ul>
+</div>
+
+<div class="insight-box">
+  <strong>制度经济学视角</strong>（道格拉斯·诺斯）：罗马的衰落不是因为某个坏人当权，而是因为制度逐渐丧失了约束权力、保护产权、激励生产的能力。当皇帝变成卖官鬻爵的市场、当法律变成强者的工具，社会的合作基础就崩塌了。
+</div>
+
+<h2>罗马留给现代的三个遗产</h2>
+
+<h3>1. 法律思维</h3>
+<p>
+  罗马法（从十二铜表法到查士丁尼民法大全）奠定了现代民法体系的基础。它发展出了一套精密的权利、契约、财产理论——这些概念今天仍在欧盟各国和中国大陆法系中使用。
+</p>
+
+<h3>2. 大规模治理的实验</h3>
+<p>
+  罗马证明了不同文化、语言、宗教的民族可以在同一套法律框架下共存。但代价是：中央集权越强，地方适应性越差。这个张力至今仍是治理的核心难题。
+</p>
+
+<h3>3. 兴衰周期</h3>
+<p>
+  罗马从一个城邦用了500年扩张，又用了500年衰落。这种规模不是巧合——任何制度在扩张中积累的权力，最终会反过来消耗制度本身。这不是宿命论，而是制度演化的自然趋势：成功创造的问题，往往需要超越原有框架才能解决。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验理解</h2>
+  <p>共8题，每题选择一个答案，点击后立即显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在学习波利比乌斯对罗马政体的分析。</div>
+    <div class="sentence">波利比乌斯认为罗马成功的关键在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">罗马人比希腊人更勇敢</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">混合政体的权力制衡</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在研究格拉古兄弟的改革。</div>
+    <div class="sentence">格拉古兄弟改革失败并遇害，最重要的后果是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">政治分歧开始用暴力解决</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">罗马从此再也没进行过土地改革</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你在分析马略军事改革（前107年）。</div>
+    <div class="sentence">马略改革后，罗马士兵效忠对象的根本变化是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">从效忠元老院变为效忠皇帝</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">从效忠国家变为效忠提供战利品的将军</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你在阅读关于奥古斯都的历史。</div>
+    <div class="sentence">奥古斯都的"元首制"之所以能稳定罗马，核心原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">他消灭了所有政治对手并实行独裁</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">他保留了共和外壳，让旧精英继续有参与感</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在研究三世纪危机（235—284年）。</div>
+    <div class="sentence">下列哪项是三世纪危机的直接表现？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">50年内出现26个皇帝</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">罗马公民权被完全废除</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你在比较罗马法对现代法律的影响。</div>
+    <div class="sentence">现代"大陆法系"（民法法系）最直接继承自：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">罗马法体系</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">英国普通法传统</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你在思考制度经济学对罗马衰落的分析。</div>
+    <div class="sentence">道格拉斯·诺斯认为罗马衰落的根本原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">蛮族入侵摧毁了罗马的军事力量</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">制度丧失了对权力的约束和产权的保护能力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在做投资分析，思考"成功孕育失败"的模式。</div>
+    <div class="sentence">下列哪项最能描述罗马共和国崩溃的制度逻辑？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">罗马人天性贪婪，导致道德败坏</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">军事成功扩大了权力，原有制度无法约束新权力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>想深入了解？</strong>历史不是背诵年月日，而是理解"为什么"。如果你对某个具体问题有疑问——比如为什么凯撒必须跨越卢比孔河，或者为什么元老院杀了凯撒却没有拯救共和国——直接问我，我们一起拆解。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://en.wikipedia.org/wiki/Roman_Republic" target="_blank">罗马共和国（维基百科）</a> ·
+  <a href="https://en.wikipedia.org/wiki/Roman_Emperor" target="_blank">罗马皇帝（维基百科）</a>
+  <br><br>
+  <a href="../reference/rome-republic-empire.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-qin-han-da-yi-tong.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '波利比乌斯是希腊人，他在被带到罗马后观察了共和国政体。他分析认为，执政官（君主制）、元老院（贵族制）、公民大会（民主制）三者之间的制衡是罗马强大的根源。', wrong: '波利比乌斯不是用"勇敢"来解释的。他的分析是制度性的——混合政体融合了三种政体的优点，同时抑制了三者的退化形式。' },
+    q2: { correct: '前133年提比略·格拉古和前121年盖约·格拉古的死亡开启了一个可怕先例：政治改革可以（也必须）用暴力和私兵来实现。此后苏拉、凯撒都用同一套路。', wrong: '罗马后来仍有土地立法尝试，但格拉古之死让"政治分歧→暴力解决"成为常态。这个制度文化的转变比任何具体政策都更致命。' },
+    q3: { correct: '马略改革前，罗马士兵是有产公民，为国家服役。改革后，无产者也能参军，将军负责提供装备和承诺战利品。士兵的经济生存依赖将军，自然忠诚于将军而非抽象的共和国。', wrong: '当时还没有"皇帝"这个概念。问题在于军队从"国家的军队"变成了"将军的私人武装"。苏拉、凯撒、庞培都用军队来政治博弈。' },
+    q4: { correct: '奥古斯都的精妙之处在于他知道罗马人恨"国王"这个词。所以他保留元老院、执政官、保民官——机构都还在，只是权力实际集中在他手中。旧精英可以继续假装共和国存在。', wrong: '奥古斯都确实清除了一些对手，但他没有实行公开独裁。他的统治之所以稳定20年，恰恰是因为表面上共和制度仍在运作。' },
+    q5: { correct: '235—284年的"三世纪危机"期间，罗马帝国在50年内经历了至少26位皇帝的更替，绝大多数死于暗杀、内战或被处决。这反映了制度层面的继承危机。', wrong: '罗马公民权反而在扩大——212年卡拉卡拉敕令把公民权授予帝国境内所有自由民。公民权不是被废除，而是被贬值了。' },
+    q6: { correct: '大陆法系（民法法系）——覆盖欧洲大陆、拉丁美洲、东亚大部分——其核心概念（权利、义务、契约、物权）直接来自罗马法传统，尤其是《民法大全》。', wrong: '英国普通法是另一种传统，基于判例和习惯法。它与罗马法在方法论上完全不同：一个从具体案件出发，一个从抽象原则出发。' },
+    q7: { correct: '诺斯用制度经济学分析历史：当制度丧失约束权力、保护产权、激励生产的能力时，经济长期增长就不可持续。罗马的问题正是制度路径依赖——旧制度无法适应新现实。', wrong: '蛮族入侵是衰落的表现而非根本原因。诺斯的观点是：一个有良好制度的社会即使面临蛮族入侵也不会崩溃——关键在制度质量。' },
+    q8: { correct: '这正是"路径依赖"的经典案例：罗马共和国靠军事力量扩张，但军事成功创造了将军权力过大、军队私有化、土地不均等问题，而旧制度没有机制来消化这些新权力。', wrong: '道德败坏论过于简单。历史学家发现，共和国晚期罗马社会的"道德"并不比早期更差——问题在制度结构，不在个人品质。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对罗马共和国与帝国的兴衰有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题——解释里包含了关键洞察。';
+      else label.textContent = '继续加油！重读上面的内容，重点关注制度设计的逻辑。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考卡：博弈论基础</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.5rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    color: var(--accent);
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+
+  th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0.1rem 0.15rem;
+  }
+
+  .note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.6rem 0.8rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+
+  .note strong { color: #e65100; }
+
+  .link-box {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+
+  .link-box a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>博弈论基础</h1>
+<p class="meta">参考卡 · 博弈论入门速查</p>
+
+<h2>一句话定义</h2>
+<p>博弈论研究<strong>决策主体行为相互影响</strong>时的策略选择——你的收益取决于你和对手的共同选择。</p>
+
+<h2>三大要素</h2>
+<div class="card">
+  <h3>1. 参与者（Players）</h3>
+  <p>谁在局里？各自目标是什么？</p>
+</div>
+<div class="card">
+  <h3>2. 策略（Strategies）</h3>
+  <p>每个人能做什么？同时还是轮流？</p>
+</div>
+<div class="card">
+  <h3>3. 支付（Payoffs）</h3>
+  <p>每种组合下每个人得到什么？</p>
+</div>
+
+<h2>核心概念速查</h2>
+
+<div class="card">
+  <h3>占优策略（Dominant Strategy）</h3>
+  <p>不管对手怎么选，这个策略对你都是最优的。囚徒困境中"告发"就是占优策略。</p>
+</div>
+
+<div class="card">
+  <h3>纳什均衡（Nash Equilibrium）</h3>
+  <p>给定其他人的选择，没有人想单方面改变策略。<strong>≠ 最优</strong>，只是<strong>稳定</strong>。</p>
+</div>
+
+<div class="card">
+  <h3>囚徒困境（Prisoner's Dilemma）</h3>
+  <table>
+    <tr><th></th><th>对方：合作</th><th>对方：背叛</th></tr>
+    <tr><td>你：合作</td><td>各判1年 ✅</td><td>你判10年</td></tr>
+    <tr><td>你：背叛</td><td>你自由</td><td>各判5年 ❌</td></tr>
+  </table>
+  <p>个人理性 → 集体非理性。占优策略导致次优均衡。</p>
+</div>
+
+<h2>破解囚徒困境的三种方法</h2>
+<p>
+  <span class="tag">改变支付结构</span>
+  <span class="tag">重复互动</span>
+  <span class="tag">第三方监管</span>
+</p>
+<p>
+  1. 让合作的收益 > 背叛的收益（如按贡献评分）<br>
+  2. 长期关系中，背叛会触发报复（以牙还牙）<br>
+  3. 引入外部力量强制合作（如合同、监管）
+</p>
+
+<h2>现实应用场景</h2>
+<p>
+  <span class="tag">价格战</span>
+  <span class="tag">军备竞赛</span>
+  <span class="tag">公地悲剧</span>
+  <span class="tag">谈判</span>
+  <span class="tag">团队管理</span>
+  <span class="tag">拍卖设计</span>
+  <span class="tag">政策制定</span>
+</p>
+
+<div class="note">
+  <strong>关键洞察：</strong>博弈论的价值不在于"算出最优解"，而在于看清"为什么好的选择做不出来"。大多数困境的根源是制度设计没有把合作变成占优策略。
+</div>
+
+<div class="link-box">
+  <strong>完整课程：</strong> <a href="../lessons/0005-boyi-lun-jichu.html">Lesson 5 — 博弈论基础：聪明人如何斗智斗勇</a>
+</div>
+
+</body>
+</html>

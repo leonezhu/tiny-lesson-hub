@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 — 网络效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .step-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 1.6rem;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>网络效应</h1>
+<p class="lesson-meta">Lesson 6 &middot; ~10 minutes &middot; 多元思维模型</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够解释什么是网络效应、它的不同类型，为什么它会让某些产品形成"赢家通吃"的局面，以及如何在商业和个人职业中识别和利用这种力量。
+</div>
+
+<h2>什么是网络效应？</h2>
+<p>
+  网络效应（Network Effects）指的是：<strong>一个产品或服务的价值，随着使用它的用户增多而增加</strong>。这不是因为产品本身变好了，而是因为更多人用了之后，它对你来说更有用了。
+</p>
+<p>
+  这是商业世界中最强大的力量之一。理解它，你就能理解为什么微信在中国几乎无人能敌、为什么某些技术标准一旦胜出就很难被取代。
+</p>
+
+<div class="concept-card">
+  <h3>核心公式</h3>
+  <p style="font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin: 0.5rem 0;">
+    产品价值 ∝ 网络中节点的数量
+  </p>
+  <p style="color: var(--muted); font-size: 0.9rem;">
+    这个"节点"可以是人、设备、开发者、内容创作者……取决于具体的产品类型。
+  </p>
+</div>
+
+<h2>网络效应的四种类型</h2>
+
+<div class="concept-card">
+  <h3>1. 直接网络效应（Direct）</h3>
+  <p>使用者越多，对每个使用者的价值越大——因为可以联系的人更多。</p>
+  <ul class="examples">
+    <li>电话：一个人有电话没用，十个人有电话才有用，一百个人有电话就是革命</li>
+    <li>微信：你的朋友都在上面，所以你不得不也在上面</li>
+    <li>Facebook / WhatsApp：社交网络的经典案例</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>2. 间接网络效应（Indirect / Two-sided）</h3>
+  <p>一边用户增多，吸引另一边用户，两边互相促进。</p>
+  <ul class="examples">
+    <li>iOS：更多用户 → 更多开发者 → 更多好应用 → 更多用户</li>
+    <li>淘宝：更多买家 → 更多卖家 → 更多商品 → 更多买家</li>
+    <li>信用卡：更多商户接受 → 更多消费者使用 → 更多商户接受</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>3. 数据网络效应（Data）</h3>
+  <p>用户越多，产生的数据越多，产品就越聪明，越聪明就吸引更多用户。</p>
+  <ul class="examples">
+    <li>Google搜索：更多搜索 → 更好算法 → 更好结果 → 更多搜索</li>
+    <li>地图App：更多用户上报路况 → 更实时准确 → 更多人用</li>
+    <li>推荐系统：Netflix/抖音的用户行为数据让推荐越来越精准</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>4. 品牌/标准网络效应（Branded / Standards）</h3>
+  <p>某个品牌或标准成为"默认选择"后，新用户会自然选择它以确保兼容性。</p>
+  <ul class="examples">
+    <li>PDF格式：不管谁写的文档，发PDF保证对方能看到</li>
+    <li>QWERTY键盘：不是最优设计，但因为大家都在用，换的成本太高</li>
+    <li>USB接口：通用标准让所有设备都能互联</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>网络效应 ≠ 规模效应。规模效应是"做得越多，单位成本越低"（比如工厂大规模生产）。网络效应是"用得越多，产品价值越高"——这是完全不同的增长逻辑。前者是效率问题，后者是价值问题。
+</div>
+
+<h2>赢家通吃与临界点</h2>
+<p>
+  网络效应有一个危险而迷人的特性：<strong>它往往导致"赢家通吃"</strong>。当一个产品达到了临界用户数（critical mass），它的网络效应就开始自我强化，竞争对手即使有更好的产品也很难赢。
+</p>
+
+<div class="concept-card">
+  <h3>为什么难以竞争？</h3>
+  <ul class="examples">
+    <li><strong>转换成本高：</strong>你朋友都在微信上，换一个通讯工具意味着失去联系</li>
+    <li><strong>冷启动问题：</strong>新平台没有用户 = 没有价值 = 没人来</li>
+    <li><strong>正反馈循环：</strong>领先者越来越强，落后者越来越弱，差距越来越大</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>历史上的失败案例</h3>
+  <ul class="examples">
+    <li><strong>Google+：</strong>谷歌投入巨大资源，但用户已经在了Facebook上，无法突破临界点</li>
+    <li><strong>Segway：</strong>技术很强，但没有网络效应支撑，最终失败</li>
+    <li><strong>VHS vs Betamax：</strong>Betamax画质更好，但VHS赢得了格式战争，因为更多人买了V录像机和录像带</li>
+  </ul>
+</div>
+
+<h2>个人层面的网络效应</h2>
+<p>
+  网络效应不只适用于商业。你的职业生涯、知识积累、人际关系中都存在类似的力量：
+</p>
+
+<div class="concept-card">
+  <h3>知识网络效应</h3>
+  <p>你学的知识越多，新知识就越容易理解——因为旧知识为新知识提供了"挂钩"。这就是为什么跨学科学习特别有价值。</p>
+</div>
+
+<div class="concept-card">
+  <h3>人脉网络效应</h3>
+  <p>认识的人越多，你能接触到的人和机会就越多。而当你成为一个有价值的连接者时，会有更多人想认识你。</p>
+</div>
+
+<div class="concept-card">
+  <h3>声誉网络效应</h3>
+  <p>你的声誉越好，别人越愿意为你推荐，你的机会就越多，声誉就越好——这是一个正反馈循环。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>行动思考：</strong>你在哪个领域建立了网络效应？如果你的知识、人脉或声誉还在冷启动阶段，早期的投入看起来回报很低，但一旦越过临界点，增长会非常快。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别网络效应</h2>
+  <p>以下每道题描述了一个场景，判断它体现了哪种类型的网络效应（或是否属于网络效应）。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你决定留在某家公司工作，不是因为工资最高，而是因为这里同事的人脉网络最有价值。</div>
+    <div class="sentence">这属于哪种网络效应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">直接网络效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">规模效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">一个短视频App的推荐算法因为用户数据丰富而越来越精准。</div>
+    <div class="sentence">这体现了哪种网络效应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">直接网络效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">数据网络效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一辆自行车对一个人来说很有用，但一辆自行车的价值不会因为世界上自行车多了而变多。</div>
+    <div class="sentence">自行车有网络效应吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">有，因为更多人骑自行车更安全</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有，使用人数不影响单车价值</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">一个二手交易平台：卖家越多，买家选择越多；买家越多，卖家更愿意来卖。</div>
+    <div class="sentence">这属于哪种网络效应？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">间接网络效应（双边市场）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">数据网络效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你发现因为学过线性代数，学机器学习变得容易了很多。</div>
+    <div class="sentence">这体现了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">知识网络效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">规模效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">一个社交App有100万用户，但他们的朋友都不在上面，所以这个App很难留住用户。</div>
+    <div class="sentence">这个问题叫什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">数据偏差问题</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">冷启动问题</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">一家工厂因为产量翻倍，每件产品的成本降低了30%。</div>
+    <div class="sentence">这属于网络效应吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">是，这是网络效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不是，这是规模效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你坚持在社交媒体上分享高质量内容，粉丝越来越多，每次发布的内容触达面也越来越广。</div>
+    <div class="sentence">这主要体现了什么力量？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">网络效应带来的正反馈循环</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">单纯的努力就会有回报</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——我是你的思维模型导师。不确定某个场景到底有没有网络效应？那就是最好的讨论起点。直接提问，我们一起拆解。
+  <br><br>
+  <strong>延伸阅读：</strong><a href="https://www.goodreads.com/book/show/112831.Network_Effects" target="_blank">《网络效应》— Will Lewis, Scott Galloway</a> — 深入理解数字时代的竞争本质。
+  <br><br>
+  <a href="../reference/network-effects.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0005-natural-selection.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-first-principles.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确。同事人脉网络属于直接网络效应——你从"其他人也在其中"获得价值。这和人脉网络效应的核心逻辑一致：节点越多、连接越强，价值越大。',
+      wrong: '规模效应关注的是成本降低（做得越多越便宜）。这里你留下是因为"人的连接"有价值，不是因为公司成本低了。这是直接网络效应。'
+    },
+    q2: {
+      correct: '正确。用户越多 → 数据越多 → 算法越准 → 体验越好 → 更多用户，这就是典型的数据网络效应。',
+      wrong: '直接网络效应是"更多人用 = 直接更好"（比如打电话）。这里的关键是数据让算法变聪明，而不是用户之间的直接互动增加了价值。'
+    },
+    q3: {
+      correct: '正确。自行车的价值在于骑行本身，不依赖于有多少人也在骑。即使全世界只有你一个人骑，它还是一样有用。没有网络效应。',
+      wrong: '虽然更多人骑车可能让道路更安全，但这只是间接好处。自行车的核心价值（代步工具）并不因用户数量变化而变化，所以不属于网络效应。'
+    },
+    q4: {
+      correct: '正确。买卖双方构成两个不同的群体，一边的增长吸引另一边，这是典型的间接网络效应（也叫双边市场效应）。',
+      wrong: '数据网络效应关注的是用户行为数据如何改进产品。这里的核心是买卖双方互相吸引，不是数据在起作用。'
+    },
+    q5: {
+      correct: '正确。旧知识为新知识提供了"挂钩"，学的越多，学新的越容易。这就是知识网络效应——知识积累产生了复利。',
+      wrong: '规模效应是关于成本和产量的关系。这里是关于知识的关联性，你学到的东西之间互相促进了理解。'
+    },
+    q6: {
+      correct: '正确。冷启动问题是网络效应产品的经典难题：你需要足够的用户让产品有价值，但用户不愿意加入一个没有价值的产品。',
+      wrong: '数据偏差是指数据不准确或不完整。这里的问题是没有人用这个App，所以不存在数据问题——根本还没有用户。'
+    },
+    q7: {
+      correct: '正确。产量增加导致单位成本降低，这是规模效应（economies of scale）。网络效应是用户增加导致产品价值增加，两者完全不同。',
+      wrong: '网络效应关注的是"用户越多，产品越好用"。成本降低是生产效率问题，属于规模效应。不要混淆这两个概念。'
+    },
+    q8: {
+      correct: '正确。粉丝越多，触达越广，影响力越大，又会吸引更多粉丝——这是典型的网络效应正反馈循环。不只是努力的问题，而是系统性的放大效应。',
+      wrong: '努力确实重要，但这里的关键是"网络"在放大你的努力。同样的内容，100粉丝和10万粉丝的触达量天差地别，这就是网络效应在起作用。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对网络效应的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得不错！看看错题的解释，理解为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

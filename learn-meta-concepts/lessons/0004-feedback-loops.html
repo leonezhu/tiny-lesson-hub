@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程 4 — 反馈回路：系统如何自我调节</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .concept-card .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>反馈回路：系统如何自我调节</h1>
+<p class="lesson-meta">课程 4 &middot; ~12 minutes &middot; 元概念</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够识别现实世界中的正反馈和负反馈回路，理解"时间延迟"如何决定系统的稳定性，并能用反馈思维分析投资、产品、健康等领域的关键问题。
+</div>
+
+<h2>什么是反馈回路？</h2>
+<p>
+  反馈回路（Feedback Loop）是系统中最基本的动态结构：<strong>系统的输出作为未来的输入返回到系统中</strong>，形成循环因果链。你每天经历的每一个自我调节过程——从体温保持到手机自动亮度——本质上都是一个反馈回路在运作。
+</p>
+<p>
+  正反馈回路<strong>放大</strong>初始偏差，导致指数增长或崩溃；负反馈回路<strong>抵消</strong>偏差，维持系统稳定。几乎所有复杂系统的行为——从全球气候到人类体温、从复利投资到社会运动——都可以分解为若干正负反馈回路的组合。
+</p>
+
+<h2>正反馈：增长的飞轮与崩溃的螺旋</h2>
+
+<div class="concept-card">
+  <h3>结构：A → B → C → 放大 A</h3>
+  <p class="subtitle">每一步都放大前一步的效果，形成自我强化的循环</p>
+  <ul class="examples">
+    <li><strong>复利效应：</strong>1% 日收益率，365 天后变成 37.8 倍；-1% 日损耗，365 天后只剩 0.03%。公式：A = P(1+r)^n</li>
+    <li><strong>流行病传播：</strong>每个感染者平均传染 R0 个人，感染者数量以指数增长。2020 年 3 月，如果各国早一周封锁，以每天 2% 的增长率计算，感染病例可减少约 70%</li>
+    <li><strong>社交网络病毒效应：</strong>更多人使用 → 产品价值更大 → 更多人加入</li>
+    <li><strong>2008 年金融危机：</strong>房价下跌 → 抵押品贬值 → 银行抛售资产 → 房价进一步下跌（毁灭性正反馈循环）</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>正反馈不总是"好"的——它既产生增长飞轮，也产生死亡螺旋。区分两者的关键是：<strong>是否有负反馈在制衡</strong>。一个只有正反馈的系统最终要么爆炸，要么耗尽资源。
+</div>
+
+<h2>负反馈：稳定器的力量</h2>
+
+<div class="concept-card">
+  <h3>结构：A → B → C → 抑制 A</h3>
+  <p class="subtitle">检测偏差 → 执行纠正 → 回归目标值</p>
+  <ul class="examples">
+    <li><strong>人体体温调节：</strong>核心温度升高 → 下丘脑检测偏差 → 激活汗腺和血管扩张 → 散热增加 → 温度回归 37°C（误差小于 0.1°C）</li>
+    <li><strong>恒温器原理：</strong>设定目标值 → 检测实际值与目标值的差距 → 执行加热或制冷</li>
+    <li><strong>血糖调节：</strong>进食 → 血糖升高 → 胰岛素分泌 → 细胞吸收葡萄糖 → 血糖下降 → 胰岛素分泌减少</li>
+    <li><strong>生态系统捕食者-猎物：</strong>猎物增多 → 捕食者增多 → 猎物减少 → 捕食者减少 → 猎物恢复（周期性振荡）</li>
+  </ul>
+</div>
+
+<h2>时间延迟：系统行为的隐藏开关</h2>
+<p>
+  反馈回路的核心特征是<strong>时间延迟</strong>。没有延迟，负反馈可以瞬间消除偏差，系统永远静止；有了延迟，负反馈就变成了振荡。
+</p>
+
+<div class="concept-card">
+  <h3>延迟 × 反馈 = 系统行为</h3>
+  <ul class="examples">
+    <li><strong>没有延迟：</strong>负反馈瞬间生效 → 系统稳定</li>
+    <li><strong>适度延迟：</strong>纠正动作滞后 → 系统振荡（如经济周期、库存波动）</li>
+    <li><strong>过强/过长的延迟：</strong>纠正不及恶化 → 系统混沌</li>
+  </ul>
+  <p style="margin-top:0.75rem;">John Sterman 在《Business Dynamics》中证明：<strong>几乎所有管理失败的根源都可以追溯到对反馈延迟的误判</strong>。当管理者看到问题已经出现才行动时，由于延迟的存在，他们往往会在系统已经越过临界点后施加过强的纠正力，造成"矫枉过正"。</p>
+</div>
+
+<h2>正负反馈的协同</h2>
+<p>
+  正反馈和负反馈不是对立的——它们<strong>共同</strong>构成系统的行为模式。Paul Krugman 的"新经济地理学"证明：产业集聚的正反馈（更多企业 → 更多人才 → 更多企业）和分散的负反馈（租金上涨、交通拥堵）共同决定了全球城市网络的空间格局。
+</p>
+
+<div class="chinese-note">
+  <strong>常见误区：</strong>线性思维（A 导致 B）在绝大多数现实场景中失效，因为现实系统是回路而非链条。Peter Senge 在《第五项修炼》中指出，大多数组织决策失败的根本原因是"症状解"——处理了表面症状却忽略了深层的反馈结构。
+</div>
+
+<h2>跨学科中的反馈回路</h2>
+
+<div class="concept-card">
+  <h3>经济学：凯恩斯乘数 vs 节俭悖论</h3>
+  <ul class="examples">
+    <li><strong>正反馈（乘数效应）：</strong>政府支出增加 → 收入增加 → 消费增加 → 收入再增加</li>
+    <li><strong>负反馈陷阱（节俭悖论）：</strong>个体理性储蓄 → 总需求下降 → 企业收入减少 → 裁员 → 总储蓄不增反降</li>
+    <li><strong>正反馈交易（追涨杀跌）：</strong>Barberis 等人 1998 年模型证明，投资者的正反馈交易足以解释股票市场 2-3 倍的超额波动率</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>生物学：生命即反馈</h3>
+  <ul class="examples">
+    <li><strong>负反馈：</strong>血糖调节、体温调节、渗透压平衡——维持内环境稳态</li>
+    <li><strong>失控正反馈：</strong>癫痫发作时，神经元异常放电 → 更多神经元被激活 → 更大范围的异常放电，必须通过药物强制打破</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>社会学：变革的雪崩</h3>
+  <p>社会运动的正反馈解释了为什么变革往往"看起来从不发生，然后一夜之间改变一切"。Mark Granovetter 的阈值模型证明，每个人参与抗议的阈值不同（有人零阈值、有人要 80% 的人先参加），正反馈使参与人数跨越阈值后加速增长。1989 年东欧剧变中，一个国家的变革成功通过媒体网络成为其他国家参与者的正反馈信号，导致政治格局在数周内雪崩式重构。</p>
+</div>
+
+<h2>实际应用</h2>
+
+<div class="concept-card">
+  <h3>AI 训练中的反馈</h3>
+  <p>大语言模型的 RLHF（Reinforcement Learning from Human Feedback）本质上是一个精妙的反馈回路：模型生成输出 → 人类评分 → 评分信号调整模型权重 → 模型生成更高质量输出。人类评分的一致性问题（不同标注者评分标准差约 0.8 个标准差）意味着反馈信号中包含大量噪声，限制了 RLHF 的上限。</p>
+</div>
+
+<div class="concept-card">
+  <h3>产品设计的反馈飞轮</h3>
+  <p>Slack 的增长飞轮：更多团队成员加入 → 消息量增加 → 产品价值提升 → 吸引更多团队成员。关键策略是降低初始加入门槛（免费层）并设置正反馈加速器（集成生态）。Facebook 早期"五个宿舍法则"精确利用了社交网络正反馈——一旦一个宿舍的参与度超过临界点（约 40% 活跃用户），剩余用户的加入率呈指数增长。</p>
+</div>
+
+<div class="concept-card">
+  <h3>投资中的反身性</h3>
+  <p>索罗斯的"反身性理论"本质上是金融市场中正反馈的哲学表述：投资者偏见影响基本面，基本面变化强化偏见，形成自我实现的正反馈循环。2000 年互联网泡沫中，股价上涨 → 公司融资更容易 → 扩张更快 → 盈利预期上调 → 股价进一步上涨。理解反馈回路结构，使投资者可以在正反馈阶段识别泡沫、在负反馈阶段识别超卖。</p>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：识别反馈类型</h2>
+  <p>以下每个场景涉及正反馈（放大偏差）、负反馈（抵消偏差），还是时间延迟导致的系统行为？选择最符合的选项。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你发现自己的零存整取账户，每月利息不断计入本金，下个月利息按新本金计算。</div>
+    <div class="sentence">这种"利滚利"效应属于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正反馈</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">负反馈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">空调检测到房间温度高于设定值，自动开启制冷；当温度降到设定值以下，自动停止。</div>
+    <div class="sentence">这是哪种反馈机制？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">正反馈</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">负反馈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">一家公司的客服考核只看"平均通话时长"，客服为缩短时间匆忙挂断电话，导致客户投诉增加，考核压力更大，通话更短。</div>
+    <div class="sentence">这体现了什么原理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正反馈失控（Goodhart 定律）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">负反馈调节</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">管理者发现库存不足，立刻大量补货；但当货物到达时，市场需求已回落，导致严重过剩。</div>
+    <div class="sentence">造成"矫枉过正"的关键因素是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">正反馈放大</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">反馈延迟</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">一个社交平台上，越来越多名人入驻 → 普通用户涌入 → 内容质量提升 → 吸引更多名人。</div>
+    <div class="sentence">这属于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">正反馈增长飞轮</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">负反馈稳态维持</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">抗生素使用杀死敏感菌，但残留的耐药菌因竞争减少而指数繁殖，最终导致药物失效。</div>
+    <div class="sentence">这揭示了"症状解"的什么问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">负反馈被切断</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正反馈未被识别</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">2008 年金融危机中，房价下跌 → 抵押品贬值 → 银行抛售 → 房价进一步下跌，形成恶性循环。</div>
+    <div class="sentence">这个循环为什么难以阻止？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">负反馈太强</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正反馈速度超过负反馈纠正速度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">猞猁和雪兔的毛皮交易记录显示，两种动物的种群数量呈约 10 年的周期性波动。</div>
+    <div class="sentence">这种周期性振荡的来源是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">纯粹的随机波动</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">捕食者-猎物的正负反馈交替</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的元概念导师。不确定为什么某个场景是正反馈还是负反馈？这正是我们该讨论的问题。直接提问，我会解释清楚。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.donellameadows.org/archives/thinking-in-systems-a-blueprint/" target="_blank">Donella Meadows《系统之美》</a> — 理解反馈延迟和系统动力学的经典之作。
+  <br><br>
+  <a href="../reference/feedback-loops.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0003-emergence.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-symmetry-breaking.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"利滚利"是经典正反馈——利息成为新本金，产生更多利息，形成自我强化的放大循环。正反馈就是输出反过来增强输入。', wrong: '这不是负反馈。负反馈会抵消偏差、维持稳定；而"利滚利"恰恰是不断放大偏差——本金越多，利息越多。' },
+    q2: { correct: '空调检测温度偏差 → 执行纠正 → 回归设定值，这是标准负反馈结构。负反馈的核心是"抵消偏差"。', wrong: '空调不是在放大温差，而是在缩小温差。它检测偏差并执行纠正动作，这正是负反馈的定义。' },
+    q3: { correct: 'Goodhart 定律："当指标成为目标，它就不再是好指标。"考核通话时长这个正反馈被放大，反而损害了真正的目标——客户满意度。', wrong: '这不是负反馈调节。负反馈会抵消偏差、回归目标，但这里指标扭曲导致行为偏离目标，正反馈持续恶化问题。' },
+    q4: { correct: '管理者看到问题时已滞后，补货到达时市场已变——这就是反馈延迟造成的"矫枉过正"。Sterman 称之为系统动力学中最常见的管理失败模式。', wrong: '这不是正反馈放大的问题。正反馈会自我增强，但这里的问题是"纠正动作来得太晚"，导致过度反应。' },
+    q5: { correct: '更多名人 → 更多用户 → 更多内容 → 更多名人——每一步都在放大前一步的效果，形成正反馈增长飞轮。', wrong: '这不是负反馈稳态。负反馈会抑制变化、维持稳定；而这里的变化在自我强化——用户和内容数量都在增长而非稳定。' },
+    q6: { correct: '抗生素杀死了敏感菌（表面症状解），但残留耐药菌获得竞争优势并指数繁殖——正反馈循环未被切断，最终导致无药可用。', wrong: '这不是负反馈被切断的问题。耐药菌的指数繁殖是正反馈——每个耐药菌产生更多耐药菌，形成自我强化的增长。' },
+    q7: { correct: '2008 年危机的关键不是缺少负反馈，而是正反馈（抛售循环）的速度远远超过了负反馈（美联储降息）的纠正速度。', wrong: '这不是负反馈太强的问题。事实上，银行的负反馈（风险控制）在危机中被严重低估——真正的问题是正反馈循环太快。' },
+    q8: { correct: 'Lotka-Volterra 方程描述的捕食者-猎物系统是最经典的振荡反馈模型：猎物多→捕食者多→猎物少→捕食者少→猎物恢复，正负反馈交替产生周期性振荡。', wrong: '这不是随机波动。猞猁和雪兔的 10 年周期有精确的数学结构——它来自捕食者-猎物系统的正负反馈交替，可以用微分方程精确描述。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经掌握了反馈回路的核心逻辑。';
+      else if (score >= 6) label.textContent = '做得不错！回顾做错的题目的解释，你会理解得更深。';
+      else label.textContent = '继续加油！重新阅读上面的案例再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

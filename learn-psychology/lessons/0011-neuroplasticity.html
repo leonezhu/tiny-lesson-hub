@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 11 课 — 神经可塑性：大脑如何被经验重塑</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .comparison .col {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+  }
+
+  .comparison .col h4 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>神经可塑性：大脑如何被经验重塑</h1>
+<p class="lesson-meta">第 11 课 · ~10 分钟 · 神经科学与心理学的交汇</p>
+
+<div class="goal-box">
+  <strong>通过本课你将能够：</strong>理解神经可塑性的三个层次——突触可塑性、结构可塑性和功能重组；用赫布定律解释\"练习造就完美\"的神经机制；理解关键期的含义及其对个人发展的启示；能用神经可塑性原理解释冥想、学习和康复的实际效果。
+</div>
+
+<h2>一个被颠覆的旧观念</h2>
+<p>
+  在过去半个世纪里，神经科学家和教育者反复听到同一个说法：<strong>成年后的大脑是固定的——你成年后学到的东西，不会改变大脑的物理结构</strong>。这个观点有一个朴素的基础：大脑在发育早期快速增长，突触数量在幼儿期达到顶峰后就开始减少。很多人由此推断——大脑在成年后就没多少变化空间了。
+</p>
+<p>
+  现代神经科学已经完全推翻了这一观念。过去三十年的研究发现，<strong>大脑在整个生命周期中都在改变它的结构、功能和连接方式</strong>。你读这句话时，大脑里的某些突触就在变强——这不是比喻，而是实实在在的物理变化。
+</p>
+
+<div class="highlight-box">
+  <strong>核心定义：</strong>神经可塑性（neuroplasticity）是指大脑的结构和功能在生命周期中持续变化的能力。它不是\"大脑可以改变\"这种模糊说法，而是有明确的机制、测量方法和实验证据。
+</div>
+
+<h2>三种可塑性：从突触到大脑区域</h2>
+
+<div class="card">
+  <h3>1. 突触可塑性 — 连接强度的变化</h3>
+  <ul>
+    <li><strong>机制：</strong>神经元之间的连接（突触）可以变强或变弱。这不是\"有或无\"的开关，而是一个连续的调节过程。</li>
+    <li><strong>长时程增强（LTP）：</strong>当两个神经元反复同时激活时，它们之间的突触连接会持续增强。这就像在草丛中走出一条小路——走得越多，路越明显。</li>
+    <li><strong>长时程抑制（LTD）：</strong>长期不用的连接会被削弱。大脑每天有大量突触在被修剪——这是\"用进废退\"的分子层面证据。</li>
+    <li><strong>实验证据：</strong>埃里克·坎德尔在海兔（Aplysia，一种简单的海洋生物）中发现LTP的分子机制，因此获得2000年诺贝尔奖。海兔的突触机制与人类高度保守——你在学的东西，底层机制是一样的。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. 结构可塑性 — 物理结构的改变</h3>
+  <ul>
+    <li><strong>核心发现：</strong>长期的学习和训练可以改变大脑不同区域的物理体积（灰质密度）。</li>
+    <li><strong>伦敦出租车司机研究：</strong>马克·贝克尔（Mark Betzel 团队）的研究显示，经过\"知识\"（伦敦街道网络，超过20000条街道和数千地标）的严格考核后，出租车司机的海马体后部（空间记忆相关区域）体积明显大于普通人。而且这个变化与驾驶年限正相关。</li>
+    <li><strong>逆向效应：</strong>当出租车司机退休后不再使用空间导航技能，海马体体积会回缩。这说明结构变化不是单向的——不用就会退。</li>
+    <li><strong>更多证据：</strong>学习演奏乐器的人在运动皮层和听觉皮层对应区域有更多灰质；学习外语的人在左半球语言区体积增大。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>3. 功能重组 — 大脑区域的任务更换</h3>
+  <ul>
+    <li><strong>中风康复：</strong>当大脑某个区域因中风受损，其他区域可以\"接管\"它原来负责的功能。这解释了为什么中风康复训练（反复练习失去的功能）能让患者重新走路或说话。</li>
+    <li><strong>盲人视觉皮层：</strong>天生盲人的视觉皮层并没有\"闲置\"——它被重新用于处理触觉和听觉信息。盲人读盲文时，视觉皮层会活跃；用声音定位物体时，视觉皮层也参与。这不是\"视觉皮层变成了触觉皮层\"，而是视觉皮层所处理的信息类型被改变了。</li>
+    <li><strong>关键含义：</strong>大脑区域的功能不是固定的——经验决定了某个区域\"做什么\"。</li>
+  </ul>
+</div>
+
+<h2>赫布定律：大脑的学习法则</h2>
+<p>
+  1949年，加拿大神经心理学家唐纳德·赫布（Donald Hebb）提出了神经科学史上最有影响力的一个假设：
+</p>
+
+<div class="highlight-box">
+  <strong>赫布定律：</strong><em>\"一起激发的神经元会连接在一起\"</em>（Neurons that fire together, wire together.）当神经元A反复参与激活神经元B时，A到B的连接强度会增加。
+</div>
+
+<p>
+  这句话听起来简单，但它解释了大量学习现象。用现代术语翻译：
+</p>
+
+<div class="card">
+  <h3>赫布定律的实践含义</h3>
+  <ul>
+    <li><strong>联想学习：</strong>巴甫洛夫的狗听到铃声流口水——因为铃声（听觉皮层激活）和食物（味觉皮层激活）在大脑中反复同时出现，听觉和味觉区域之间的连接被增强了。</li>
+    <li><strong>刻意练习：</strong>为什么\"有反馈地\"练习比盲目重复更有效？因为有反馈时，你正在精确地同步\"当前表现\"和\"目标表现\"两个神经表征，赫布连接只在这两个表征同时激活时才加强。</li>
+    <li><strong>习惯形成：</strong>每天在固定时间刷手机——手机通知音和满足感在大脑中反复同时激活，连接变强后，你甚至不需要看到通知，手机一亮就会手痒。这就是\"习惯回路\"的神经学基础。</li>
+  </ul>
+</div>
+
+<h2>关键期：可塑性的窗口</h2>
+<p>
+  如果一个概念叫\"可塑性\"，那它应该随时都有效吗？答案是：<strong>不是。大脑在某些阶段的可塑性远高于其他阶段</strong>。
+</p>
+
+<div class="card">
+  <h3>关键期与敏感期</h3>
+  <ul>
+    <li><strong>关键期（critical period）：</strong>某些能力（如语言的第一语言习得、视觉系统的正常发育）有严格的时间窗口。错过这个窗口，能力就几乎无法发展。经典案例：\"野孩子\"卡玛拉（Genie），13岁才被从囚禁中解救，此后从未学会语法。</li>
+    <li><strong>敏感期（sensitive period）：</strong>比关键期宽松——在某个阶段学习效率最高，但之后仍然可以学，只是更困难、效率更低。第二语言学习就是典型的敏感期现象：小时候学的口音通常更地道，但成年人完全可以学会一门流利的外语。</li>
+    <li><strong>可塑性的代价：</strong>大脑之所以在发育早期高度可塑，是因为它需要根据环境来\"安装\"必要的功能。但代价是——这个时期的大脑也更脆弱（易受毒品、创伤、剥夺的影响）。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>实用洞察：</strong>理解关键期不是为了让人绝望——\"我过了黄金年龄学不了这个了\"——而是为了让你<strong>在关键期出现时充分把握</strong>，在关键期过后<strong>接受更高的努力成本但仍然值得投入</strong>。成年人学外语的发音比儿童难，但词汇和语法理解可能更快——因为不同语言的子技能可能有不同的关键期。
+</div>
+
+<h2>为什么这很重要：从理论到实践</h2>
+
+<div class="comparison">
+  <div class="col">
+    <h4>教育应用</h4>
+    <p>如果大脑是通过\"连接强度\"来学习的，那么教育的核心任务就不是\"往大脑里灌内容\"，而是<strong>设计经验来塑造连接</strong>。这意味着：重复不够——需要有反馈的重复（赫布连接需要同步激活）；间隔重复比集中填鸭更有效（突触强化需要时间巩固）；多学科交叉学习可以创建更丰富的连接网络。</p>
+  </div>
+  <div class="col">
+    <h4>个人成长</h4>
+    <p>神经可塑性的最直接含义是：<strong>你的选择塑造你的大脑</strong>。每一次学习、每一次习惯的养成或打破，都在物理上改变大脑的结构。这不是鸡汤——是可以通过核磁共振（fMRI）看到的物理变化。</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>有科学验证的可塑性实践</h3>
+  <ul>
+    <li><strong>冥想：</strong>8周的正念冥想训练（每天20-30分钟）在fMRI中显示前额叶皮层增厚（增强执行控制）、杏仁核体积减小（降低恐惧反应）。这不是\"心理暗示\"——是物理训练。</li>
+    <li><strong>运动：</strong>有氧运动促进脑源性神经营养因子（BDNF）的分泌，BDNF被称为\"大脑的肥料\"——它促进新突触的形成和已有突触的强化。运动不只是锻炼身体，也是锻炼大脑。</li>
+    <li><strong>技能迁移：</strong>学习第二技能时，选择与第一技能共享神经表征的路径可以加速学习。例如：先学钢琴再学键盘乐器更容易，因为它们共享运动皮层和听觉皮层的表征。</li>
+  </ul>
+</div>
+
+<h2>跨学科视角</h2>
+<p>
+  神经可塑性是理解\"心智与大脑\"关系的核心证据。<strong>心智不是独立于大脑的抽象实体，而是大脑活动的涌现现象</strong>——你\"想\"什么、\"感受\"什么、\"成为\"什么人，本质上都是神经网络的连接模式。这个观点有深远含义：
+</p>
+<ul>
+  <li><strong>AI的启发：</strong>人工神经网络的反向传播算法与赫布学习不同，但可塑性概念启发了\"终身学习\"和\"课程学习\"等研究范式——如何让人工智能像生物一样持续学习而不遗忘旧知识（灾难性遗忘问题）。</li>
+  <li><strong>哲学意义：</strong>如果大脑可以被经验重塑，那么\"自由意志\"不再是抽象讨论——它变成了具体的神经生物学实践。你可以通过刻意选择经验和训练来\"塑造自己\"。</li>
+  <li><strong>心理治疗：</strong>抑郁症、焦虑症可以理解为\"不良的神经连接模式\"。认知行为疗法（CBT）的核心机制就是：通过反复练习新的思维模式，建立新的神经通路来替代旧的、消极的通路。</li>
+</ul>
+
+<h2>常见误解</h2>
+
+<div class="card">
+  <h3>神经可塑性的迷思 vs 事实</h3>
+  <ul>
+    <li><strong>迷思：\"人类只用了大脑的10%\"</strong> — 事实：fMRI显示，即使在简单任务中，大部分大脑区域也在活跃。10%的迷思来自对神经细胞比例的误解（神经元只占大脑细胞的约一半，其余是胶质细胞）。</li>
+    <li><strong>迷思：\"右脑人 vs 左脑人\"</strong> — 事实：大脑半球的分工确实存在（语言主要在左半球，空间处理主要在右半球），但创造性、逻辑推理等复杂功能需要两半球协同工作。没有证据支持\"左脑人更理性、右脑人更感性\"的分类。</li>
+    <li><strong>迷思：\"左脑学习法/右脑学习法\"</strong> — 事实：某些学习风格偏好确实存在（有人更喜欢视觉、有人更喜欢听觉），但没有证据表明\"匹配学习风格能提高学习效果\"。最有效的学习往往是多通道的——同时看、听、动手操作。</li>
+    <li><strong>迷思：\"成年后大脑不可改变\"</strong> — 事实：这是本课的核心论点。成年大脑仍然可塑，只是可塑性的速度和程度低于儿童期。但通过有针对性的训练，成年人仍然可以实现显著的神经变化。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>与中国语境的联系：</strong>中国传统智慧中有很多与神经可塑性相呼应的朴素洞察。\"温故而知新\"（《论语》）本质上描述的是突触强化需要重复激活——\"时习之\"的\"习\"字本身就有\"反复练习\"的意思。\"授之以鱼不如授之以渔\"则体现了技能迁移的神经学原理——学习底层能力（渔）比学习具体技能（鱼）能产生更广泛的连接网络。但要注意，传统语境中的\"命\"和\"天性\"有时被用来为\"学不了\"辩护，这与神经可塑性的实证精神相悖。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你在学习一个新概念时反复练习。</div>
+    <div class="sentence">根据赫布定律，反复练习为什么能提升学习效果？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">练习让大脑产生更多神经元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">练习让相关的神经元反复同时激活，增强它们之间的突触连接</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：一个伦敦出租车司机正在准备\"知识\"考试。</div>
+    <div class="sentence">研究表明，通过考试后，他的哪个脑区最可能发生结构变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">海马体后部（空间记忆区域）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">小脑（运动协调区域）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：一个天生盲人通过触觉阅读盲文。</div>
+    <div class="sentence">fMRI扫描发现，盲人在读盲文时哪个脑区也会活跃？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">运动皮层（只激活运动指令）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">视觉皮层（功能重组）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你在比较不同学习策略的效果。</div>
+    <div class="sentence">以下哪项最准确地描述了\"刻意练习\"比\"简单重复\"更有效的神经学原因？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">刻意练习使用更多脑区，所以消耗更多能量</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">刻意练习有反馈，能让\"当前表现\"和\"目标表现\"的神经表征同步激活，强化赫布连接</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：一个成年人决定学习弹吉他。</div>
+    <div class="sentence">关于成年人大脑的可塑性，以下哪项正确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">成年后大脑已经完全固定，学习只是建立新的记忆但不改变大脑结构</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">成年大脑仍然可塑，只是可塑性低于儿童期，需要有针对性的训练</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：一个中风患者正在接受康复训练。</div>
+    <div class="sentence">康复训练（反复练习失去的功能）为什么有效？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">康复训练让受损的神经元再生</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">康复训练帮助未受损的大脑区域接管受损区域的功能（功能重组）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：你正在评估\"学习风格匹配\"理论。</div>
+    <div class="sentence">神经科学研究对学习风格匹配（VARK：视觉/听觉/读写/动觉）的发现是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">匹配学习风格能显著提高学习效果</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没有证据支持匹配学习风格能提高效果，多通道学习更有效</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：一个8周冥想实验。</div>
+    <div class="sentence">研究表明，坚持8周正念冥想的人，大脑出现了什么变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">大脑整体体积缩小——冥想减少神经活动</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">前额叶皮层增厚，杏仁核反应减弱</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的心理学导师。如果你对赫布定律的分子机制感兴趣、想了解BDNF如何促进突触形成，或者想知道神经可塑性在心理治疗中的具体应用，直接问我。你也可以试着想一想：你日常生活中的哪些习惯可能正在塑造你的大脑？哪些是加强了你想要的连接？哪些在加强你不想要的？
+  <br><br>
+  <strong>推荐资源：</strong> 《重塑大脑，重塑人生》（Brain on Fire）—— 安妮·哈里斯（Annie Murphy Paul）。这本书系统梳理了神经可塑性的研究历史、关键实验和实际应用，是理解这个主题的入门首选。
+  <br><br>
+  <a href="../reference/neuroplasticity.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0010-positive-psychology.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-cognitive-biases.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '赫布定律的核心是\"一起激发的神经元会连接在一起\"。反复练习让相关的神经元反复同时激活，突触连接随之增强（LTP，长时程增强）。这不是\"产生更多神经元\"——成年后大脑产生的新神经元极少，学习主要靠改变已有连接的强度。', wrong: '练习不会让大脑产生更多神经元。成年人的神经发生（neurogenesis）极其有限（主要在海马体）。学习的核心机制是改变<strong>已有神经元之间的连接强度</strong>——赫布定律描述的就是这个过程。' },
+    q2: { correct: '伦敦出租车司机的研究是神经可塑性的经典案例。\"知识\"考试要求记忆超过20000条街道和数千地标，这需要极强的空间记忆能力。fMRI显示，通过考试后，出租车司机的海马体后部（空间记忆的核心区域）体积显著增大，且与驾驶年限正相关。', wrong: '小脑主要负责运动协调和程序性记忆（如骑自行车）。伦敦出租车司机的工作主要依赖空间记忆和导航——这些功能由海马体负责，而不是小脑。' },
+    q3: { correct: '这是功能重组的经典证据。天生盲人的视觉皮层没有\"闲置\"——它被重新用于处理触觉（读盲文）和听觉信息。fMRI显示盲人在读盲文时视觉皮层活跃，说明大脑区域的功能不是固定的，而是由经验塑造的。', wrong: '如果只激活运动皮层，那就意味着盲文阅读只是\"手指运动\"。但实际上，fMRI显示视觉皮层也参与——这说明触觉信息被\"重新路由\"到了视觉处理区域，是大脑功能重组的结果。' },
+    q4: { correct: '赫布连接需要两个神经表征\"同时激活\"。刻意练习有即时反馈——你在练习时同时激活\"当前表现\"和\"目标表现\"两个神经表征，它们同时激活导致赫布连接加强。简单重复只激活\"当前表现\"，缺少目标参照，连接强化效率低得多。', wrong: '刻意练习和简单重复可能使用差不多数量的脑区。关键区别不在于\"消耗更多能量\"，而在于刻意练习通过反馈实现了\"当前表现\"和\"目标表现\"神经表征的同步激活——这是赫布连接强化的必要条件。' },
+    q5: { correct: '成年大脑仍然可塑——结构可塑性研究（如出租车司机、音乐家、学习新语言的人）反复证明了这一点。差异在于：儿童期的大脑可塑性更大、更快、更广泛（敏感期的存在），但成年人的可塑性仍然是真实的、可测量的、有实际意义的。', wrong: '\"成年后大脑完全固定\"是一个已经被推翻的旧观念。虽然成年大脑的可塑程度低于儿童期（关键期之后），但大量的fMRI和结构成像研究已经确认：成年人通过学习、训练和经验可以实现显著的神经变化。' },
+    q6: { correct: '中风康复的核心机制是功能重组——未受损的大脑区域通过反复练习（康复训练）接管受损区域的功能。这不是\"受损神经元再生\"（成年大脑的神经发生极其有限），而是其他区域\"学习\"了受损区域原来的任务。这就是为什么康复训练必须是\"反复的\"——连接强化需要重复。', wrong: '成年大脑的神经再生（neurogenesis）极其有限，中风后受损的神经元通常不会再生。康复训练有效的关键是：通过反复练习让<strong>未受损区域</strong>接管功能——这就是功能重组。' },
+    q7: { correct: '尽管\"学习风格匹配\"理论在教育和培训领域非常流行，但大量元分析研究（如Pashler等人2008年的综述）发现：没有可靠证据表明匹配学习风格能提高学习效果。真正有效的是多通道学习——同时使用视觉、听觉和动手操作，无论学生\"偏好\"什么风格。', wrong: '\"匹配学习风格能显著提高学习效果\"是一个广泛流传但缺乏科学支持的迷思。学生确实有风格偏好，但研究表明，无论偏好如何，多通道教学（同时提供多种呈现方式）对所有学生都更有效。' },
+    q8: { correct: 'Kazui等人（2013）和Tang等人（2005）的研究发现：8周正念冥想训练后，前额叶皮层（执行控制、决策）的灰质密度增加，杏仁核（恐惧反应、压力）的反应减弱。这些变化可以通过fMRI测量——冥想不只是\"感觉平静\"，它物理上改变了大脑。', wrong: '冥想不会让大脑\"变小\"。相反，研究显示前额叶皮层（负责执行控制）增厚，杏仁核（恐惧反应）活动减弱。这不是\"减少神经活动\"，而是改变不同脑区的结构和连接模式。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对神经可塑性的核心概念掌握得很好。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，理解比分数重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 第三课：深度学习与反向传播</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .diagram {
+    background: #f7f9fb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .diagram .node {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 0.8rem;
+    margin: 0 6px;
+    vertical-align: middle;
+  }
+
+  .diagram .layer-label {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .diagram .arrow {
+    color: var(--muted);
+    font-size: 1.2rem;
+    vertical-align: middle;
+  }
+
+  .diagram .sep {
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    vertical-align: middle;
+    margin: 0 8px;
+  }
+
+  .math-block {
+    background: #f7f9fb;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .math-block .label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>深度学习与反向传播</h1>
+<p class="lesson-meta">第三课 &middot; ~12 分钟 &middot; 神经网络的核心算法</p>
+
+<div class="goal-box">
+  <strong>学完这节课后</strong>，你将能够：<br>
+  1. 解释为什么"深度"是神经网络能力飞跃的关键<br>
+  2. 逐步推导反向传播的链式法则（Chain Rule）<br>
+  3. 描述梯度下降如何更新权重<br>
+  4. 理解学习率、批量大小、过拟合等核心超参数的直觉含义
+</div>
+
+<h2>从"浅"到"深"——为什么需要很多层？</h2>
+<p>
+  上一课我们学到，一个隐藏层的前馈神经网络就能逼近任何连续函数（万能近似定理）。那为什么我们还要研究"深度"学习？为什么要把网络堆到几十层、几百层甚至上千层？
+</p>
+<p>
+  答案在于<strong>表示的效率</strong>。一个深层网络可以用指数级更少的神经元来表达一个浅层网络需要表达的功能。想象一下：如果浅层网络需要一个包含 1000 个神经元的隐藏层来识别图像中的"圆形"，那么一个深层网络可能只需要两层、每层 10 个神经元就能做同样的事情——因为第一层可以学到"边缘"，第二层可以把边缘组合成"曲线"，自然就得到了"圆形"。
+</p>
+
+<div class="card">
+  <h3>深度网络的层次化学习</h3>
+  <ul>
+    <li><strong>第 1-2 层</strong>：学习低级特征——边缘、角点、颜色渐变（在图像中）；词根、短语（在文本中）</li>
+    <li><strong>第 3-5 层</strong>：组合低级特征——形状、纹理、词组结构</li>
+    <li><strong>第 6-10 层</strong>：高级语义——物体的部分（车轮、眼睛）、概念的组合</li>
+    <li><strong>最后几层</strong>：任务特定的决策——"这是一只猫" vs "这是一辆汽车"</li>
+  </ul>
+</div>
+
+<div class="diagram">
+  <span class="layer-label">浅层网络</span>
+  输入 <span class="arrow">&rarr;</span>
+  <span class="node" style="background:#e65100">隐藏层（很多神经元）</span>
+  <span class="arrow">&rarr;</span>
+  输出
+  <br><br>
+  <span class="layer-label">深层网络</span>
+  输入 <span class="arrow">&rarr;</span>
+  <span class="node">层1</span> <span class="arrow">&rarr;</span>
+  <span class="node">层2</span> <span class="arrow">&rarr;</span>
+  <span class="node">层3</span> <span class="arrow">&rarr;</span>
+  ...
+  <span class="arrow">&rarr;</span>
+  <span class="node" style="background:#e65100">层N</span>
+  <span class="arrow">&rarr;</span>
+  输出
+</div>
+
+<div class="chinese-note">
+  <strong>类比理解：</strong>想象你要判断一幅画是不是毕加索的作品。一个"浅层"方法可能要求你记住毕加索所有画作的像素级模板——这需要海量的记忆。而一个"深层"方法会让你先看"有没有不规则的形状"，再看"有没有立体主义的特征"，再看"色彩和构图是否独特"——层层深入，每一步都只问一个简单的判断，最终组合起来就能做出准确的判断。这就是深度学习的力量。
+</div>
+
+<h2>反向传播——神经网络如何"学习"</h2>
+
+<p>
+  这是整节课的核心，也是深度学习之所以可能的基础算法。我们已经知道：<strong>前向传播</strong>是用当前权重做预测；<strong>损失函数</strong>告诉我们预测有多错。那下一步呢——我们怎么知道"该往哪个方向调整权重"才能让损失变小？
+</p>
+<p>
+  <strong>反向传播（Backpropagation）</strong>给出了精确的答案。它的核心思想是数学中的<strong>链式法则</strong>（Chain Rule）：如果一个变量 A 影响 B，B 影响 C，那么 A 对 C 的影响 = A 对 B 的影响 × B 对 C 的影响。
+</p>
+
+<div class="card">
+  <h3>反向传播的三步走</h3>
+  <ul>
+    <li><strong>第一步：前向传播</strong>——输入数据通过网络，计算每一层的输出，最终得到预测值和损失。</li>
+    <li><strong>第二步：反向传播梯度</strong>——从输出层开始，沿着网络"往回走"，用链式法则计算损失对每一层每个参数的偏导数（梯度）。</li>
+    <li><strong>第三步：更新权重</strong>——沿着梯度的反方向更新权重，使损失减小。</li>
+  </ul>
+</div>
+
+<h2>链式法则——反向传播的数学引擎</h2>
+<p>
+  让我们用一个极简的例子来理解反向传播是如何工作的。假设我们有一个三层的网络：
+</p>
+
+<div class="math-block">
+  <div class="label">网络结构</div>
+  输入 x → 加权 + 激活 → h → 加权 + 激活 → 输出 ŷ → 损失 L
+  <br><br>
+  <div class="label">具体公式</div>
+  h = ReLU(w₁ · x + b₁)
+  <br>
+  ŷ = w₂ · h + b₂
+  <br>
+  L = (ŷ - y)²  （均方误差）
+</div>
+
+<p>
+  现在我们的目标是：<strong>损失 L 对 w₁ 的偏导数是多少？</strong>也就是说，如果我把 w₁ 稍微增大一点，损失会怎么变化？
+</p>
+
+<div class="math-block">
+  <div class="label">用链式法则分解</div>
+  ∂L/∂w₁ = ∂L/∂ŷ · ∂ŷ/∂h · ∂h/∂w₁
+  <br><br>
+  <div class="label">逐步计算</div>
+  ∂L/∂ŷ = 2(ŷ - y)  （损失的导数）
+  <br>
+  ∂ŷ/∂h = w₂  （ŷ 对 h 的导数）
+  <br>
+  ∂h/∂w₁ = x · ReLU'(w₁·x + b₁)  （ReLU 的导数：输入 > 0 时为 x，否则为 0）
+  <br><br>
+  <div class="label">最终结果</div>
+  ∂L/∂w₁ = 2(ŷ - y) · w₂ · x · ReLU'(w₁·x + b₁)
+</div>
+
+<div class="chinese-note">
+  <strong>关键直觉：</strong>链式法则把"一个遥远参数的影响"分解成了几步"近处参数的影响"的乘积。每一步都只关心"这一步的微小变化对下一步的影响"，然后把这些"近处影响"乘起来，就得到了"远处的影响"。这就是反向传播的精髓——它不需要猜测，不需要暴力枚举，只需要一步一步地"往回推导"。
+</div>
+
+<h2>梯度下降——沿着梯度下山</h2>
+<p>
+  有了梯度（损失对每个参数的偏导数），我们就可以更新权重了。最基础的方法是<strong>随机梯度下降</strong>（SGD）。
+</p>
+
+<div class="math-block">
+  <div class="label">权重更新公式</div>
+  w_new = w_old - learning_rate · ∂L/∂w
+  <br><br>
+  <div class="label">直觉理解</div>
+  梯度 ∂L/∂w 告诉我们在哪个方向损失增长最快。为了最小化损失，我们要沿着梯度的<strong>反方向</strong>走一步。"学习率"（learning_rate）决定了这一步有多大。
+</div>
+
+<div class="card">
+  <h3>学习率——最关键超参数的直觉</h3>
+  <ul>
+    <li><strong>学习率太大</strong>（如 0.1）——每一步跨得太远，可能跳过最低点，甚至发散。</li>
+    <li><strong>学习率太小</strong>（如 0.0001）——每一步都很谨慎，但需要数百万步才能到达最低点，训练极其缓慢。</li>
+    <li><strong>合适的学习率</strong>（通常 0.001 ~ 0.01）——稳步下降，在合理的步数内收敛。</li>
+  </ul>
+</div>
+
+<div class="diagram">
+  <span class="layer-label">学习率对训练的影响</span>
+  L（损失）<br>
+  ↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 太小：缓慢但稳定\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 太大：跳过最低点\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·\n
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 训练步数
+</div>
+
+<h2>批量训练与 Mini-Batch</h2>
+<p>
+  在现实中，我们不会用单个样本来更新权重（那叫纯随机梯度下降），也不会一次用全部数据（那叫批量梯度下降，在大数据集上计算量巨大）。折中的方案是 <strong>Mini-Batch 梯度下降</strong>——每次取一小批数据（比如 32、64 或 128 个样本）来计算梯度和更新权重。
+</p>
+
+<div class="card">
+  <h3>批量大小（Batch Size）的权衡</h3>
+  <ul>
+    <li><strong>小批量（16-32）</strong>——梯度噪音大，但每步更新快。噪音反而有帮助：它让梯度下降不会陷入尖锐的局部最优，更容易找到"平坦的"、泛化能力更好的解。</li>
+    <li><strong>中等批量（128-256）</strong>——大多数深度学习任务的标准选择。在稳定性和效率之间取得了良好的平衡。</li>
+    <li><strong>大批量（1024+）</strong>——GPU 利用率高，每轮训练快。但梯度估计更精确，噪音更少，可能泛化能力稍差（这个现象被称为"批量大小gap"）。</li>
+  </ul>
+</div>
+
+<h2>过拟合——深度学习最著名的挑战</h2>
+<p>
+  想象一个学生为了考试而死记硬背所有习题的答案——考试时如果遇到一模一样的题目，他能满分通过。但如果题目稍微变了一下，他就完全不会了。这就是<strong>过拟合</strong>（Overfitting）：模型在训练数据上表现很好，但在未见过的数据上表现很差。
+</p>
+
+<div class="card">
+  <h3>防止过拟合的常见方法</h3>
+  <ul>
+    <li><strong>数据增强（Data Augmentation）</strong>——对训练数据进行变换（图像翻转、裁剪、加噪声），人为扩充数据集，让模型见到更多"变体"。</li>
+    <li><strong>Dropout</strong>——在训练时随机"关掉"一部分神经元（设为 0），迫使网络不要过度依赖任何单个神经元，增强鲁棒性。测试时所有神经元都打开。</li>
+    <li><strong>早停（Early Stopping）</strong>——监控验证集上的性能，当验证集性能不再提升时停止训练。防止模型在训练集上"学过头"。</li>
+    <li><strong>权重衰减（L2 Regularization）</strong>——在损失函数中加入权重的平方和惩罚项，迫使权重保持较小，降低模型复杂度。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>一个有趣的观察：</strong>深度学习中最强大的模型往往参数量远超训练数据的"信息容量"。理论上它们应该严重过拟合，但实际上它们泛化得很好。这个现象被称为"深度学习的悖论"，至今仍在研究中。一个可能的解释是：梯度下降本身就是一个隐式的正则化器——它自然地倾向于找到"最简单的"解（参数小的解），即使模型有巨大的容量。
+</div>
+
+<h2>优化器的进化——从 SGD 到 Adam</h2>
+<p>
+  基本的 SGD 是最简单的优化器，但它有一些明显的局限性：它使用统一的学习率更新所有参数，对每个参数的"学习速度"是一视同仁的。而在现实中，不同的参数可能需要不同的学习速度。
+</p>
+
+<div class="card">
+  <h3>主流优化器对比</h3>
+  <ul>
+    <li><strong>SGD（随机梯度下降）</strong>——基础版。简单、可解释，但不考虑历史梯度信息。</li>
+    <li><strong>Momentum（动量）</strong>——引入"速度"的概念，让梯度下降像滚动的球一样，在梯度方向上一致时加速，在方向交替时减速。能有效穿过平坦区域和窄谷。</li>
+    <li><strong>Adam（Adaptive Moment Estimation）</strong>——当前最流行的优化器。同时维护梯度的"一阶矩"（均值）和"二阶矩"（方差），为每个参数自适应地调整学习率。在大多数任务上表现优秀，是默认选择。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>实践建议：</strong>如果你不确定用什么优化器，就用 Adam（学习率设为 0.001）。它是大多数任务的起点。如果追求极限性能，可以试试 SGD + Momentum + 学习率调度（学习率随训练逐渐降低）。AdamW 是 Adam 的改进版，将权重衰减独立出来，通常效果更好。
+</div>
+
+<h2>这一课的核心要点</h2>
+<ul>
+  <li>深度网络的每一层学习不同层次的抽象——从低级特征到高级语义，层次化地组织知识。</li>
+  <li>反向传播 = 前向传播 + 链式法则 + 权重更新。它精确地计算了每个参数对损失的"贡献"。</li>
+  <li>梯度下降沿着梯度的反方向更新权重。学习率决定了步长，太小太慢，太大发散。</li>
+  <li>Mini-Batch 梯度下降是实践中的标准：每次用一小批数据估计梯度，在效率和泛化之间取得平衡。</li>
+  <li>过拟合是深度学习最大的敌人——防止过拟合需要数据增强、Dropout、早停、权重衰减等多种手段。</li>
+  <li>Adam 是目前最常用的优化器——它自适应地为每个参数调整学习率，在大多数任务上表现优异。</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：测试你对反向传播的理解</h2>
+  <p>共 8 题，每题选择一个答案。点击后显示解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">场景：你有一个 4 层神经网络。前向传播产生了输出，你计算得到损失为 0.35。</div>
+    <div class="sentence">反向传播的第一步是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">从输入层开始，逐层向前计算每个神经元的输出</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">从输出层开始，计算损失对输出层权重的梯度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">场景：你正在手动推导一个简单的线性层反向传播。输出 ŷ = w · x + b，损失 L = (ŷ - y)²。</div>
+    <div class="sentence">损失 L 对偏置 b 的偏导数 ∂L/∂b 等于什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">2x(ŷ - y)</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">2(ŷ - y)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">场景：你发现训练损失在持续下降，但验证集损失在训练 10 个 epoch 后开始上升。</div>
+    <div class="sentence">这表明了什么？最合适的做法是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">模型开始过拟合；应该使用早停，回到验证损失最低的权重</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">模型欠拟合；应该增加网络深度或训练更多轮数</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">场景：你在训练一个图像分类网络，GPU 利用率只有 30%，每步更新很慢。</div>
+    <div class="sentence">最可能的原因是什么？如何改进？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">学习率太高；应该降低学习率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">批量大小太小（如 1 或 2）；应该增大批量大小以提高 GPU 利用率</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">场景：你正在比较 SGD 和 Adam 优化器在一个 NLP 任务上的表现。两者都用了相同的学习率和数据。</div>
+    <div class="sentence">为什么 Adam 通常比 SGD 更容易训练？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Adam 为每个参数自适应地调整学习率，对超参数不那么敏感</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Adam 使用了更多的计算资源，所以一定更好</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">场景：一个深层网络（50 层）在训练时，你发现靠近输入层的权重几乎不更新，但靠近输出层的权重更新很快。</div>
+    <div class="sentence">这可能是什么问题？根本原因是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">学习率太大；应该降低学习率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">梯度消失问题；链式法则的连乘效应使得靠近输入的层梯度越来越小</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">场景：你在训练一个 CNN 时使用了 Dropout（p=0.5）。</div>
+    <div class="sentence">Dropout 在训练和测试阶段的行为有什么区别？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">训练时所有神经元都工作，测试时随机关掉一半</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">训练时随机关掉一半神经元，测试时所有神经元都打开</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">场景：你训练了一个模型，训练准确率 99%，测试准确率 60%。</div>
+    <div class="sentence">这最可能是什么问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">欠拟合——模型太简单，没有学到足够的模式</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">严重的过拟合——模型记住了训练数据，但无法泛化到新数据</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 我是你的 AI 导师。如果你对"梯度消失"的具体数学推导、想了解 Adam 优化器的完整公式、或者想讨论"为什么深度学习的悖论尚未被完全解释"，直接问我。你也可以试试：找一个你熟悉的简单函数（比如 y = x² + 2x），用手算的方式推导它的梯度——你会感受到反向传播就是链式法则的直接应用。
+  <br><br>
+  <strong>推荐资源：</strong> <a href="https://www.youtube.com/watch?v=IHZwWFmx5FE" target="_blank">3Blue1Brown — 梯度下降的本质</a> —— 用动画展示梯度如何在损失曲面上指引方向。
+  <br><br>
+  <a href="../reference/deep-learning-backprop.html" class="resource-link">查看快速参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0002-neural-networks.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-cnn.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '反向传播从输出层开始"往回走"。具体来说，先计算损失对输出层权重和偏置的梯度（∂L/∂w 和 ∂L/∂b），然后用链式法则把梯度传播到前一层。这就是"反向"的含义——和"前向传播"的方向相反。', wrong: '反向传播的名字就是答案：它是"反向"的。前向传播是从输入层到输出层，而反向传播是从输出层到输入层。第一步一定是从输出层开始计算梯度。' },
+    q2: { correct: '∂L/∂b = ∂L/∂ŷ · ∂ŷ/∂b。首先 ∂L/∂ŷ = 2(ŷ - y)，然后 ŷ = w·x + b 对 b 的偏导是 1（因为 b 的系数是 1）。所以 ∂L/∂b = 2(ŷ - y) · 1 = 2(ŷ - y)。注意：偏置的梯度与输入 x 无关，因为 ŷ 对 b 的导数是 1。', wrong: '2x(ŷ - y) 是损失对 w 的导数（∂L/∂w = 2(ŷ-y) · x），不是对 b 的导数。b 的系数是 1，所以 ∂L/∂b = 2(ŷ - y)。区分清楚：∂L/∂w 乘以 x，∂L/∂b 不乘 x。' },
+    q3: { correct: '这是典型的过拟合信号：训练损失持续下降但验证损失开始上升，说明模型开始在训练数据上"死记硬背"，失去了泛化能力。正确的做法是使用早停（Early Stopping）——保存验证损失最低时的模型权重，不再继续训练。', wrong: '欠拟合的表现是训练损失和验证损失都很高。这里训练损失在持续下降，说明模型有能力学习，只是学得"太好了"——好到记住了训练数据而不是学会了泛化规律。增加网络深度会让过拟合更严重。' },
+    q4: { correct: 'GPU 并行计算大批量数据时效率最高。当批量大小太小（如 1 或 2）时，GPU 大部分时间在等待数据而不是做矩阵运算，利用率自然很低。增大批量大小（如 64、128、256）可以显著提高 GPU 利用率，加快训练速度。', wrong: '学习率和 GPU 利用率无关。学习率控制的是每次更新权重的大小，而 GPU 利用率取决于计算的并行度。如果学习率太高，模型会发散，但 GPU 利用率不一定低。' },
+    q5: { correct: 'Adam 的核心优势在于它为每个参数维护了一个自适应的学习率。这意味着即使你选的初始学习率不太精确，Adam 也能通过它内部的动量和方差估计自动调整。而 SGD 使用统一的学习率，对初始学习率的选择非常敏感。', wrong: 'Adam 和 SGD 的计算量在同一数量级——Adam 额外维护了动量和方差两个状态变量，每次更新多做一些计算，但这不是它更好的原因。Adam 更好的根本原因是自适应学习率。' },
+    q6: { correct: '这是梯度消失的经典症状。在深层网络中，反向传播通过链式法则逐层相乘梯度。如果每层的梯度都小于 1（比如 Sigmoid 在大绝对值输入时导数趋近于 0），连乘后靠近输入的层梯度会指数级衰减，导致那些层的权重几乎不更新。ReLU 激活函数在一定程度上缓解了这个问题（正值区域导数为 1）。', wrong: '学习率太高会导致权重更新过大甚至发散，但不会导致靠近输入层的权重"几乎不更新"。这是梯度消失的特征——梯度在反向传播过程中被"消掉"了，而不是"放大"了。' },
+    q7: { correct: 'Dropout 的设计思路是：训练时随机"关掉"神经元（模拟不同的网络结构），迫使网络不过度依赖任何单个神经元；测试时所有神经元都打开，得到更稳定和更强大的预测。这是一种集成学习的思想——把许多"子网络"集成在一起。', wrong: '这正是 Dropout 的反向行为。如果训练时不 Drop 而测试时 Drop，模型在训练中学到的模式在测试时就会被破坏。正确的做法是：训练时随机 Dropout，测试时全部使用。' },
+    q8: { correct: '训练准确率 99% 说明模型完美"记住"了训练数据。但测试准确率 60% 说明模型没有学到任何泛化的规律——它只是在背诵训练集的每个样本，遇到新样本就无能为力。这是最严重的过拟合之一。解决方法包括：增加训练数据、使用 Dropout、增加正则化、简化网络结构等。', wrong: '欠拟合的表现是训练准确率和测试准确率都很低——模型"什么都没学会"。这里模型在训练集上几乎完美，说明它学到了足够的模式，只是学到的模式"太特殊"，无法迁移到新数据上。这是过拟合，不是欠拟合。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '优秀！你对反向传播的理解非常扎实。';
+      else if (score >= 6) label.textContent = '不错！回顾一下答错的题目——解释里有关键要点。';
+      else label.textContent = '继续加油！重读上面的内容再试试，反向传播确实有挑战性。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>
