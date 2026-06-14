@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 15 — Email &amp; Meeting English: Professional Tone</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card .examples li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .comparison .do {
+    background: var(--correct-bg);
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .comparison .dont {
+    background: var(--wrong-bg);
+    border: 1px solid var(--wrong);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .comparison .do h4 { color: var(--correct); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .comparison .dont h4 { color: var(--wrong); font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+  .comparison .do p, .comparison .dont p {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Email &amp; Meeting English: Professional Tone</h1>
+<p class="lesson-meta">Lesson 15 &middot; ~10 minutes &middot; Professional communication</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to write polite professional emails and participate in workplace meetings using the right register — moving from casual to appropriately formal without sounding robotic.
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  In Chinese workplaces, you can say <em>"把这个给我看一下"</em> to a colleague and it's perfectly normal. If you translate that directly to English, it sounds aggressive or rude. English has a built-in "politeness layer" — using modal verbs, indirect structures, and hedging words — that Chinese speakers often skip. This lesson covers the patterns you actually need at work.
+</div>
+
+<h2>Email Writing: Tone Spectrum</h2>
+<p>
+  The biggest mistake non-native speakers make is writing emails that are either <strong>too blunt</strong> (like a command) or <strong>too stiff</strong> (like a legal contract). Here's the spectrum:
+</p>
+
+<div class="comparison">
+  <div class="do">
+    <h4>Good: Polite but natural</h4>
+    <p>"Could you please take a look at the report when you get a chance?"</p>
+    <p>"I was wondering if we could schedule a quick call?"</p>
+  </div>
+  <div class="dont">
+    <h4>Avoid: Too direct</h4>
+    <p>"Send me the report."</p>
+    <p>"We need to have a call."</p>
+  </div>
+</div>
+
+<h2>Key Email Patterns</h2>
+
+<div class="card">
+  <h3>1. Opening Lines</h3>
+  <ul class="examples">
+    <li><strong>Formal:</strong> "I hope this email finds you well."</li>
+    <li><strong>Semi-formal (most common):</strong> "Hope you're having a good week."</li>
+    <li><strong>Casual (internal team):</strong> "Hi [name], quick question..."</li>
+    <li><strong>Following up:</strong> "Just following up on my previous email about..."</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. Making Requests (The Politeness Ladder)</h3>
+  <p>English requests have built-in gradations of politeness:</p>
+  <ul class="examples">
+    <li><strong>Direct:</strong> "Send me the file." <em>(rude to anyone except close colleagues)</em></li>
+    <li><strong>Softer:</strong> "Please send me the file." <em>(acceptable in urgent situations)</em></li>
+    <li><strong>Polite:</strong> "Could you send me the file?" <em>(standard professional)</em></li>
+    <li><strong>Very polite:</strong> "Would you mind sending me the file?" <em>(when asking a favour)</em></li>
+    <li><strong>Indirect:</strong> "I was wondering if you could possibly send me the file." <em>(hedged, very safe)</em></li>
+  </ul>
+  <div class="chinese-note">
+    <strong>Key insight:</strong> The word "could" is your best friend. "Could you..." works in 95% of work situations. It signals respect without sounding awkward.
+  </div>
+</div>
+
+<div class="card">
+  <h3>3. Delivering Bad News or Pushback</h3>
+  <p>Don't just say "no." Use the "softener + no + alternative" pattern:</p>
+  <ul class="examples">
+    <li>"I understand the urgency, but we won't be able to meet that deadline. Could we aim for Friday instead?"</li>
+    <li>"That's an interesting idea. I'm not sure it's the right approach for this phase, though. What if we..."</li>
+    <li>"Unfortunately, we don't have the budget for that at the moment."</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>4. Email Sign-offs</h3>
+  <ul class="examples">
+    <li><strong>Formal:</strong> "Best regards," "Kind regards,"</li>
+    <li><strong>Semi-formal:</strong> "Best," "Thanks," "Many thanks,"</li>
+    <li><strong>Casual:</strong> "Cheers," (UK/AU only, not US)</li>
+  </ul>
+  <div class="chinese-note">
+    <strong>Common mistake:</strong> Avoid "Sincerely" unless it's a very formal cover letter. In day-to-day business, "Best regards" or just "Best" is the standard.
+  </div>
+</div>
+
+<h2>Meeting English</h2>
+<p>
+  Meetings have their own vocabulary and patterns. Here are the most useful phrases for each phase:
+</p>
+
+<div class="card">
+  <h3>Starting a Meeting / Taking the Floor</h3>
+  <ul class="examples">
+    <li>"Shall we get started?"</li>
+    <li>"Thanks everyone for joining. The purpose of today's meeting is..."</li>
+    <li>"I'd like to kick us off by going through..."</li>
+    <li>"Could I just jump in here?" <em>(to interrupt politely)</em></li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Agreeing and Disagreeing</h3>
+  <ul class="examples">
+    <li><strong>Agreeing:</strong> "I see your point." / "That makes sense." / "I'm with you on that."</li>
+    <li><strong>Soft disagreement:</strong> "I see what you're saying, but..." / "I'm not sure I totally agree — have we considered...?" / "That's one way to look at it, but..."</li>
+    <li><strong>Strong disagreement (careful):</strong> "I have to disagree with that." / "I'm afraid I can't support that approach."</li>
+  </ul>
+  <div class="chinese-note">
+    <strong>The "I'm afraid" trick:</strong> Adding "I'm afraid" before a disagreement softens it naturally. "I'm afraid I disagree" sounds much softer than just "I disagree."
+  </div>
+</div>
+
+<div class="card">
+  <h3>Clarifying and Checking Understanding</h3>
+  <ul class="examples">
+    <li>"Could you elaborate on that?"</li>
+    <li>"So, if I understand correctly, you're saying that..."</li>
+    <li>"Just to make sure I've got this right..."</li>
+    <li>"What do you mean by [term]?"</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Wrapping Up</h3>
+  <ul class="examples">
+    <li>"So, the action items are..."</li>
+    <li>"I think we've covered everything. Shall we call it a day?"</li>
+    <li>"Let me summarise what we've decided."</li>
+    <li>"I'll follow up with an email recapping our decisions."</li>
+  </ul>
+</div>
+
+<h2>Common Mistakes from Chinese Speakers</h2>
+
+<div class="chinese-note">
+  <strong>1. No subject in requests:</strong> In Chinese you can say "能发一下文件吗？" (drop the subject). In English, "Can send the file?" is incomplete. Always include the subject: "Can <strong>you</strong> send the file?"</p>
+  
+  <strong>2. "Sorry" overuse:</strong> Chinese speakers often say "sorry" in contexts where English speakers wouldn't. In English, "sorry" implies fault. If you're just asking a question, say "Sorry to bother you" or better yet, "Quick question — can you help with...?"</p>
+  
+  <strong>3. Over-apologizing in emails:</strong> "I'm so sorry to disturb you again and again..." is too emotional for professional English. Use: "Following up on this" or "Just a quick reminder" instead.
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Tone</h2>
+  <p>Pick the most appropriate option for each workplace situation. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You need a colleague to send you a report. You work together on the same team.</div>
+    <div class="sentence">Choose the most natural request:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Send me the report please.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Could you send me the report when you get a chance?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">You're disagreeing with a client's suggestion in an email. They're important.</div>
+    <div class="sentence">Which is the most appropriate?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">I see your point, but I'm not sure that approach works for our situation.</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">You're wrong. That won't work.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">You're starting a team meeting with 5 colleagues.</div>
+    <div class="sentence">Choose the best opening:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Start the meeting now. We have little time.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Thanks everyone for joining. Let me go through today's agenda.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You need to push back on a tight deadline your manager set.</div>
+    <div class="sentence">Which is the most professional response?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">I can't finish this by Friday. It's impossible.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">I'm worried we won't be able to meet Friday's deadline with the current scope. Could we either extend the date or reduce the deliverables?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Following up on an email you sent three days ago with no response.</div>
+    <div class="sentence">Choose the best follow-up line:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">I am so sorry to bother you again and again. I sent you an email 3 days ago. Sorry!</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Just following up on my email below — let me know if you need any more information from my side.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Someone made a point in a meeting that you partly agree with but want to add to.</div>
+    <div class="sentence">Choose the best way to "jump in":</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">No, that's not right. I think...</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Could I just jump in here? I agree with [name]'s point, and I'd add that...</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Writing the sign-off of a professional email to a client.</div>
+    <div class="sentence">Which sign-off is most appropriate?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Cheers</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Best regards</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">You didn't understand a colleague's point in a meeting. You want to clarify.</div>
+    <div class="sentence">Choose the most natural clarification:</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">I don't understand. Say it again.</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Just to make sure I've got this right — are you saying the timeline should shift to next month?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Not sure about the right tone for a specific email? Paste it here and I'll help you rewrite it. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/free-resources/writing/business-writing" target="_blank">British Council Business Writing</a> — practice writing professional emails with feedback.
+  <br><br>
+  <a href="../reference/email-meeting-english-quick-ref.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0014-confusing-words.html">上一课</a> | <a href="../index.html">目录</a> | <span class="nav-disabled">下一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Could you... when you get a chance?" is the standard polite form. It uses a modal verb + gives the other person flexibility. "Send me the report" sounds like a command.', wrong: '"Send me the report" is a direct command. Even with "please", it sounds too blunt for colleagues. Use "Could you send me..." for professional tone.' },
+    q2: { correct: '"I see your point, but..." is a classic soft disagreement. It acknowledges the other person\'s view before disagreeing — this is how native speakers handle client pushback.', wrong: '"You\'re wrong. That won\'t work." is far too direct for client communication. It damages the relationship. Even disagreeing strongly needs a softener in English.' },
+    q3: { correct: '"Thanks everyone for joining" + "let me go through today\'s agenda" sets a positive, structured tone. It\'s professional without being stiff.', wrong: '"Start the meeting now" sounds like a military order. Meetings start with acknowledgments and context, not commands.' },
+    q4: { correct: 'This uses the "softener + concern + alternative" pattern. "I\'m worried" expresses concern without blame. Offering options (extend date or reduce scope) shows problem-solving, not just rejection.', wrong: '"Impossible" is an absolute word that sounds emotional and unprofessional. It shuts down dialogue. In English, you express concerns and propose alternatives — you don\'t just say "no".' },
+    q5: { correct: '"Just following up" is the standard, natural phrase. It\'s neutral, professional, and doesn\'t over-apologize. "Let me know if you need..." puts the ball in their court politely.', wrong: 'Over-apologizing ("so sorry", "again and again", "sorry" repeated) signals insecurity, not politeness. In English business communication, a simple "Just following up" is confident and professional.' },
+    q6: { correct: '"Could I just jump in here?" is the standard polite interrupt. Then acknowledging what the other person said before adding your point shows respect.', wrong: '"No, that\'s not right" is confrontational. It puts the other person on the defensive. In meetings, you always acknowledge before challenging.' },
+    q7: { correct: '"Best regards" is the standard professional sign-off for client emails. It\'s warm but maintains appropriate distance.', wrong: '"Cheers" is casual and primarily used in the UK/Australia with colleagues you know well. It\'s inappropriate for client communication, especially US clients.' },
+    q8: { correct: '"Just to make sure I\'ve got this right" is a natural clarifying phrase. Restating what you heard ("are you saying...") confirms understanding and shows you were listening.', wrong: '"I don\'t understand. Say it again." is too direct and can sound demanding. Always soften clarification requests with "just to make sure" or "could you clarify".' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You\'ve got professional tone down cold.';
+      else if (score >= 6) label.textContent = 'Good work! Review the explanations for the ones you missed.';
+      else label.textContent = 'Keep practicing! Tone takes time — re-read the cards above and try again.';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

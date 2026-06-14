@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Reference — Confusing Words</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .ref-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .ref-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .ref-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .ref-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ref-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .ref-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+  }
+
+  th, td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Confusing Words — Quick Reference</h1>
+<p class="lesson-meta">Reference card for Lesson 14 · Confusing Words</p>
+
+<div class="chinese-note">
+  <strong>核心规则：</strong> 记住<strong>词性</strong>比记住中文翻译更有用。同一个中文意思在英语中可能是不同的词，区别在于它是名词、动词还是形容词。
+</div>
+
+<div class="ref-card">
+  <h3>Affect vs. Effect</h3>
+  <table>
+    <tr><th>Word</th><th>Part of Speech</th><th>Chinese</th><th>Example</th></tr>
+    <tr><td><strong>affect</strong></td><td><em>verb</em></td><td>影响</td><td>The weather <strong>affected</strong> our plans.</td></tr>
+    <tr><td><strong>effect</strong></td><td><em>noun</em></td><td>影响（结果）</td><td>What was the <strong>effect</strong>?</td></tr>
+    <tr><td><strong>effort</strong></td><td><em>noun</em></td><td>努力</td><td>It took a lot of <strong>effort</strong>.</td></tr>
+  </table>
+  <p style="margin-top:0.5rem; font-size:0.9rem;"><strong>Trick:</strong> "The ______" = <em>effect</em> (noun). "The ______ the ______" = <em>affect</em> (verb).</p>
+</div>
+
+<div class="ref-card">
+  <h3>Principal vs. Principle</h3>
+  <table>
+    <tr><th>Word</th><th>Part of Speech</th><th>Chinese</th><th>Example</th></tr>
+    <tr><td><strong>principal</strong></td><td><em>adj. / n.</em></td><td>主要的 / 校长</td><td>The <strong>principal</strong> reason. / The school <strong>principal</strong>.</td></tr>
+    <tr><td><strong>principle</strong></td><td><em>noun</em></td><td>原则</td><td>Act on <strong>principle</strong>.</td></tr>
+  </table>
+  <p style="margin-top:0.5rem; font-size:0.9rem;"><strong>Trick:</strong> "Princ<strong>ipal</strong>" = your <strong>pal</strong>. "Princ<strong>iple</strong>" = rule.</p>
+</div>
+
+<div class="ref-card">
+  <h3>Lie vs. Lay</h3>
+  <table>
+    <tr><th>Word</th><th>Type</th><th>Chinese</th><th>Example</th></tr>
+    <tr><td><strong>lie</strong></td><td>intransitive (no object)</td><td>躺</td><td>I <strong>lie</strong> down. / I <strong>lay</strong> down yesterday.</td></tr>
+    <tr><td><strong>lay</strong></td><td>transitive (needs object)</td><td>放下</td><td>Please <strong>lay</strong> the book down. / She <strong>laid</strong> it down.</td></tr>
+  </table>
+  <p style="margin-top:0.5rem; font-size:0.9rem;"><strong>Trick:</strong> If something is being put down → <em>lay/laid</em>. If it's just "you" resting → <em>lie/lay/lain</em>.</p>
+</div>
+
+<div class="ref-card">
+  <h3>Their / There / They're</h3>
+  <table>
+    <tr><th>Word</th><th>Meaning</th><th>Chinese</th><th>Example</th></tr>
+    <tr><td><strong>their</strong></td><td>possessive</td><td>他们的</td><td>That's <strong>their</strong> car.</td></tr>
+    <tr><td><strong>there</strong></td><td>place</td><td>那里</td><td>Put it over <strong>there</strong>.</td></tr>
+    <tr><td><strong>they're</strong></td><td>"they are"</td><td>他们是</td><td><strong>They're</strong> coming.</td></tr>
+  </table>
+  <p style="margin-top:0.5rem; font-size:0.9rem;"><strong>Trick:</strong> Can you say "they are"? → <em>they're</em>. Is it possession? → <em>their</em>. Is it a place? → <em>there</em>.</p>
+</div>
+
+<p style="margin-top: 2rem; font-size: 0.85rem; color: var(--muted);">
+  <a href="../lessons/0014-confusing-words.html" class="resource-link">← Full Lesson</a>
+</p>
+
+</body>
+</html>

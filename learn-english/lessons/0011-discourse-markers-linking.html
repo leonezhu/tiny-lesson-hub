@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 11 — Discourse Markers &amp; Linking Words</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Discourse Markers &amp; Linking Words</h1>
+<p class="lesson-meta">Lesson 11 &middot; ~12 minutes &middot; Advanced speaking &amp; writing</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to use discourse markers and linking words to make your English sound more natural, logical, and fluent — moving from choppy, basic sentences to connected, professional communication.
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  When Chinese speakers talk in English, they often string ideas together with simple "and" or just new sentences. This sounds choppy and basic. In professional English, <strong>linking words and discourse markers</strong> show how ideas relate to each other — contrast, addition, cause, sequence. They are one of the clearest signals of B2-level fluency.
+</p>
+<p>
+  Think of it this way: without linking words, your English is like a list of bullet points. With them, it becomes a coherent argument or story.
+</p>
+
+<h2>Category 1: Adding Information (补充)</h2>
+
+<div class="tense-card">
+  <h3>Furthermore / Moreover / Also</h3>
+  <p class="form">Used to add a related point — especially in writing and formal speech.</p>
+  <ul class="examples">
+    <li>The system is fast. <strong>Furthermore</strong>, it's very easy to use. <em>(adds a positive point in formal context)</em></li>
+    <li>She has strong technical skills. <strong>Moreover</strong>, she understands the business side. <em>(stronger than "also" — the second point is even more important)</em></li>
+    <li>We need more budget. We <strong>also</strong> need more people. <em>(informal — "also" is more conversational)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>In addition (to) / As well as</h3>
+  <p class="form">Similar to "furthermore" but slightly more flexible.</p>
+  <ul class="examples">
+    <li><strong>In addition to</strong> the meeting at 3pm, we have a call at 5.</li>
+    <li>He speaks fluent Mandarin, <strong>as well as</strong> good Japanese.</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>中文思维误区：</strong>中文常用"而且"、"还有"来连接，但英文中"and"用多了会显得单调。当你想说"而且"时，试着用 "Furthermore," "Additionally," 或 "In addition," 开头，后面加逗号，这样更正式、更专业。
+</div>
+
+<h2>Category 2: Contrast (转折)</h2>
+
+<div class="tense-card">
+  <h3>However / Nevertheless / Nonetheless</h3>
+  <p class="form">Used to introduce a contrasting point — the most common in professional writing.</p>
+  <ul class="examples">
+    <li>The project is on budget. <strong>However</strong>, it is two weeks behind schedule.</li>
+    <li>The data was incomplete. <strong>Nevertheless</strong>, we proceeded with the analysis. <em>(stronger — despite the problem)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Although / Even though / While / Whereas</h3>
+  <p class="form">Used to connect two contrasting ideas in a single sentence.</p>
+  <ul class="examples">
+    <li><strong>Although</strong> we agreed on the price, we couldn't agree on the timeline.</li>
+    <li><strong>While</strong> the North China office grew, the South China office declined. <em>("While" = contrast, not time here)</em></li>
+    <li><strong>Whereas</strong> Chinese teams tend to prioritize speed, US teams tend to prioritize accuracy. <em>(more formal contrast)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>On the other hand / Then again</h3>
+  <p class="form">Used to show the other side of an argument — especially in discussions.</p>
+  <ul class="examples">
+    <li>Remote work saves time. <strong>On the other hand</strong>, it reduces spontaneous collaboration.</li>
+    <li>We could hire locally. <strong>Then again</strong>, it might be better to outsource. <em>(informal, spoken)</em></li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>常见错误：</strong>不要用 "But" 在正式写作的句首。用 "However," 代替。比如：不要写 "But we disagree." 改为 "However, we disagree." 但口语中 "But" 完全没问题。
+</div>
+
+<h2>Category 3: Cause &amp; Effect (因果)</h2>
+
+<div class="tense-card">
+  <h3>Therefore / Thus / Consequently / As a result</h3>
+  <p class="form">All mean "so / therefore" — choose based on formality.</p>
+  <ul class="examples">
+    <li>The client changed the requirements. <strong>Therefore</strong>, we need to revise the timeline. <em>(standard formal)</em></li>
+    <li>Several key team members left. <strong>Consequently</strong>, the launch was delayed. <em>(emphasis on the outcome)</em></li>
+    <li>We didn't get enough feedback. <strong>As a result</strong>, we made assumptions. <em>(natural, slightly less formal)</em></li>
+    <li>The cost per unit dropped to ¥12, <strong>thus</strong> increasing margins by 15%. <em>(very formal, often followed by -ing)</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Because of / Due to / Owing to</h3>
+  <p class="form">All mean "因为" — used before a noun, not a full clause.</p>
+  <ul class="examples">
+    <li><strong>Due to</strong> bad weather, the flight was cancelled.</li>
+    <li>The delay was <strong>caused by</strong> a server outage. <em>(alternative: "because of" — "Because of a server outage, the delay...")</em></li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>中文思维误区：</strong>中文常说"因为...所以..."连用。英文中不能同时用 "Because" 和 "So/Therefore"：不要写 "Because it rained, therefore we stayed home." 正确写法是 "Because it rained, we stayed home." 或 "It rained; therefore, we stayed home."
+</div>
+
+<h2>Category 4: Sequencing &amp; Structure (顺序与结构)</h2>
+
+<div class="tense-card">
+  <h3>First (of all) / Second / Finally / Lastly</h3>
+  <p class="form">The most common sequencing words — used everywhere from meetings to reports.</p>
+  <ul class="examples">
+    <li><strong>First of all</strong>, we need to define the problem. <strong>Second</strong>, we'll explore solutions. <strong>Finally</strong>, we'll pick one and test it.</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Meanwhile / In the meantime / Subsequently</h3>
+  <p class="form">Used to connect events happening at different times.</p>
+  <ul class="examples">
+    <li>We're updating the website. <strong>Meanwhile</strong>, the marketing team is preparing the campaign.</li>
+    <li>The investigation ended in March. <strong>Subsequently</strong>, new policies were introduced. <em>(more formal, "after that")</em></li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>To sum up / In conclusion / Overall</h3>
+  <p class="form">Used to signal you're wrapping up.</p>
+  <ul class="examples">
+    <li><strong>In conclusion</strong>, I'd recommend we proceed with option B. <em>(formal writing / presentations)</em></li>
+    <li><strong>To sum up</strong>, we're over budget but on schedule. <em>(meeting context)</em></li>
+    <li><strong>Overall</strong>, the project was a success. <em>(general assessment)</em></li>
+  </ul>
+</div>
+
+<h2>Category 5: Clarifying &amp; Emphasizing (澄清与强调)</h2>
+
+<div class="tense-card">
+  <h3>In fact / Actually / In other words / That is to say</h3>
+  <p class="form">Used to clarify, correct, or rephrase.</p>
+  <ul class="examples">
+    <li>The budget was tight. <strong>In fact</strong>, it was below what we requested. <em>(emphasizing a stronger point)</em></li>
+    <li>The feature isn't broken. <strong>Actually</strong>, it's working as designed. <em>(polite correction)</em></li>
+    <li>The system is inefficient. <strong>In other words</strong>, it wastes time and money.</li>
+  </ul>
+</div>
+
+<div class="tense-card">
+  <h3>Importantly / Notably / Particularly</h3>
+  <p class="form">Used to highlight something worth paying attention to.</p>
+  <ul class="examples">
+    <li><strong>Importantly</strong>, all findings were consistent across regions.</li>
+    <li>The team performed well, <strong>particularly</strong> the design department.</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>口语高频词：</strong>"Actually" 和 "I mean" 是最常用的口语标记词（discourse markers），但要注意：英语母语者用 "actually" 做礼貌纠正时语气很自然，但中文学习者可能显得语气不自然。在正式写作中尽量少用 "actually"，用 "In fact" 或 "In reality" 代替。
+</div>
+
+<h2>Quick guide: choosing the right linker</h2>
+
+<div class="tense-card">
+  <h3>Informal vs. Formal</h3>
+  <p>Not all linking words are created equal. Here's a quick reference:</p>
+  <ul class="examples">
+    <li><strong>So</strong> (informal) → <strong>Therefore</strong> (formal)</li>
+    <li><strong>And also</strong> (informal) → <strong>Furthermore / Moreover</strong> (formal)</li>
+    <li><strong>But</strong> (informal) → <strong>However</strong> (formal)</li>
+    <li><strong>Like</strong> (informal) → <strong>Such as</strong> (formal)</li>
+    <li><strong>Anyway</strong> (informal) → <strong>Regardless</strong> (formal)</li>
+    <li><strong>So yeah</strong> (informal) → <strong>Thus</strong> (formal)</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Linker</h2>
+  <p>Each question gives you a context and a sentence with a blank. Pick the best linking word or discourse marker to fill it.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You're writing a formal report. You want to add another positive point about a product.</div>
+    <div class="sentence">The interface is intuitive. ________, the price is competitive.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">But</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Furthermore</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">You're in a meeting discussing two options. You want to show contrast.</div>
+    <div class="sentence">Option A is cheaper. ________, it has fewer features.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">However</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Therefore</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">You're explaining a cause in your email.</div>
+    <div class="sentence">The server went down. ________, we couldn't process orders all afternoon.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Although</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">As a result</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">You're correcting someone's assumption politely.</div>
+    <div class="sentence">I thought the meeting was at 3. ________ — it's at 3:30.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">Actually</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Furthermore</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">You're giving a presentation and about to summarize your key point.</div>
+    <div class="sentence">________, I believe our strategy is sound, but we need to accelerate execution.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Meanwhile</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">In conclusion</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">You want to rephrase a complex point more simply.</div>
+    <div class="sentence">The ROI is below our threshold. ________, this deal isn't worth pursuing.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">In other words</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">On the other hand</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">You're discussing the pros and cons of a decision.</div>
+    <div class="sentence">Remote teams save office costs. ________, they can feel disconnected from company culture.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">In addition</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">On the other hand</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">You want to emphasize a strong point in a formal email.</div>
+    <div class="sentence">The data shows improvement. ________, user engagement has increased by 40%.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">Actually</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">In fact</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Struggling to know when to use "however" vs. "although"? That's exactly what we should talk about. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/skills/grammar/full-list-b1-b2-grammar-points" target="__blank">British Council B2 Grammar Points</a> — browse their full list of B1-B2 grammar topics with practice exercises.
+  <br><br>
+  <a href="../reference/discourse-markers-quick-ref.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0010-cleft-sentences-emphasis.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-collocations-professional-writing.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Furthermore" adds a related positive point in formal writing. "But" would introduce contrast, not addition. "Furthermore" is the right choice for formal reports.', wrong: '"But" introduces contrast, but here both points are positive (intuitive AND competitive). You need an additive linker: "Furthermore" or "Moreover".' },
+    q2: { correct: '"However" signals contrast. You\'re saying A is cheaper BUT it has fewer features. "Therefore" would mean the second part follows from the first, which isn\'t the case.', wrong: '"Therefore" shows cause and effect — but "fewer features" doesn\'t follow from "cheaper" as a result. You need a contrast word: "However".' },
+    q3: { correct: '"As a result" shows cause and effect. Server down → couldn\'t process orders. "Although" would show contrast, which doesn\'t fit here.', wrong: '"Although" signals contrast. But here, the second event is a direct result of the first: server down caused the problem. Use "As a result".' },
+    q4: { correct: '"Actually" is the standard discourse marker for polite correction in English. You\'re gently correcting someone\'s wrong assumption.', wrong: '"Furthermore" adds information, but here you\'re correcting someone\'s mistake ("I thought the meeting was at 3" → it\'s not). "Actually" is the correct marker for correction.' },
+    q5: { correct: '"In conclusion" signals you\'re wrapping up. It\'s used in presentations and formal writing to introduce your final summary. "Meanwhile" means "at the same time," which doesn\'t fit.', wrong: '"Meanwhile" means "at the same time" and is used for concurrent events. Here you\'re summarizing, so "In conclusion" is correct.' },
+    q6: { correct: '"In other words" means you\'re rephrasing the same idea in simpler terms. The ROI being below threshold = the deal isn\'t worth it. Same point, different words.', wrong: '"On the other hand" shows contrast between two sides. But here you\'re rephrasing, not contrasting. "In other words" signals: let me say this more simply.' },
+    q7: { correct: '"On the other hand" introduces the other side of an argument. First point: remote saves costs (pro). Second: disconnected (con). This is a classic pro-vs-con contrast.', wrong: '"In addition" would add another pro (another positive point). But "disconnected from culture" is a CON, not another pro. Use "On the other hand" for the opposing viewpoint.' },
+    q8: { correct: '"In fact" emphasizes a stronger or more surprising point that supports what you just said. The 40% increase is a strong supporting detail.', wrong: '"Actually" is used for correction. Here you\'re not correcting anyone — you\'re emphasizing and supporting your point with data. "In fact" is the right choice for emphasis.' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Excellent! You have a strong command of discourse markers.';
+      else if (score >= 6) label.textContent = 'Good work! Review the explanations for the ones you missed.';
+      else label.textContent = 'Keep going! Re-read the categories above and try again.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

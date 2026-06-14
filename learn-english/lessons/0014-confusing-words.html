@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 14 — Confusing Words (affect/effect, affect/effort…)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .tense-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .tense-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .tense-card .form {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .tense-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tense-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .tense-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .confuse-pair {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .confuse-pair .pair-label {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--accent-light);
+  }
+
+  .confuse-pair .word-group {
+    margin: 0.6rem 0;
+  }
+
+  .confuse-pair .word-group .word {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .confuse-pair .word-group .pos {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .confuse-pair .word-group .ex {
+    color: var(--text);
+    margin-top: 0.15rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Confusing Words: Affect, Effect, Effort, and More</h1>
+<p class="lesson-meta">Lesson 14 &middot; ~10 minutes &middot; Vocabulary precision</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to confidently choose between the word pairs that trip up even B1 speakers: affect vs. effect, effect vs. affect, effort vs. affect, and several other high-frequency pairs.
+</div>
+
+<h2>Why this matters</h2>
+<p>
+  Mandarin speakers regularly mix up <strong>affect/effect</strong> because both map loosely to <em>影响</em>. But in English, one is a <em>verb</em> and the other is a <em>noun</em> — and using them wrong makes your writing look amateurish, even at B2 level. The same goes for effort/affort, principal/principle, and several other pairs that sound identical or similar but carry different grammatical roles.
+</p>
+
+<div class="chinese-note">
+  <strong>关键原则：</strong> 英语里有一批"同音或近音词"，它们的意思不同、词性不同。中文翻译可能相同，但英语靠<strong>词性</strong>和<strong>固定搭配</strong>来区分。记住词性比记住中文翻译更有用。
+</div>
+
+<h2>The Top 6 Confusing Pairs</h2>
+
+<!-- Pair 1: Affect vs. Effect -->
+<div class="confuse-pair">
+  <div class="pair-label">1. Affect (v.) vs. Effect (n.)</div>
+  <div class="word-group">
+    <strong><span class="word">Affect</span> <span class="pos">— verb</span></strong>
+    <p class="ex">To influence or change something.</p>
+    <ul class="examples">
+      <li>The weather <strong>affected</strong> our travel plans. (影响 = 动词)</li>
+      <li>Stress can <strong>affect</strong> your health. (压力会影响健康)</li>
+      <li>How does this policy <strong>affect</strong> you? (这项政策如何影响你？)</li>
+    </ul>
+  </div>
+  <div class="word-group">
+    <strong><span class="word">Effect</span> <span class="pos">— noun</span></strong>
+    <p class="ex">The result of a change.</p>
+    <ul class="examples">
+      <li>The <strong>effect</strong> of the weather was huge. (影响 = 名词)</li>
+      <li>What <strong>effects</strong> did the policy have? (有什么影响？)</li>
+      <li>The medication had a side <strong>effect</strong>. (副作用)</li>
+    </ul>
+  </div>
+  <p style="margin-top: 0.75rem; font-size: 0.9rem;"><strong>Quick trick:</strong> Can you put "the" or "an" before it? If yes → <em>effect</em> (noun). If no → <em>affect</em> (verb).</p>
+  <p style="font-size: 0.9rem;"><strong>⚠️ Rare exception:</strong> "Effect" can be a verb meaning "to bring about" (e.g., "to effect change"). "Affect" can be a noun in psychology (e.g., "flat affect"). These are advanced — ignore them for now.</p>
+</div>
+
+<!-- Pair 2: Effect (v.) vs. Affect (v.) — "To effect change" -->
+<div class="confuse-pair">
+  <div class="pair-label">2. Effect (as verb) vs. Affect (as verb)</div>
+  <p>Don't confuse these two very different verb patterns:</p>
+  <ul class="examples">
+    <li><strong>Affect</strong> = influence/change → "The data affected my decision." (影响)</li>
+    <li><strong>Effect</strong> = cause to happen / implement → "The CEO effected major reforms." (实现/推行)</li>
+  </ul>
+  <p style="margin-top: 0.5rem; font-size: 0.9rem;">The phrase <em>"effect change"</em> is the most common — it means "bring change into reality." Not "influence change."</p>
+</div>
+
+<!-- Pair 3: Effort vs. Affect — 发音混淆 -->
+<div class="confuse-pair">
+ 
+  <div class="pair-label">3. Effort (n.) vs. Affect (v.) — 发音相似</div>
+  <p>These two sound slightly similar (/ˈɛfərt/ vs. /əˈfɛkt/) and both relate to "influence," but:</p>
+  <ul class="examples">
+    <li><strong>Effort</strong> = noun: "It took a lot of <strong>effort</strong>." (努力 — 名词)</li>
+    <li><strong>Affect</strong> = verb: "The data <strong>affected</strong> the outcome." (影响 — 动词)</li>
+  </ul>
+  <p style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Common mistake:</strong> "It takes a lot of affect" → WRONG. Should be <em>"effort."</em></p>
+</div>
+
+<!-- Pair 4: Principal vs. Principle -->
+<div class="confuse-pair">
+  <div class="pair-label">4. Principal vs. Principle</div>
+  <p>Sounds identical. Different meanings and word types.</p>
+  <ul class="examples">
+    <li><strong>Principal</strong> <span class="pos">(adj. or n.)</span> — first in rank; the head of a school.</li>
+    <li>The <strong>principal</strong> spoke at the assembly. (校长)</li>
+    <li>The <strong>principal</strong> reason was cost. (主要的)</li>
+    <li><strong>Principle</strong> <span class="pos">(n.)</span> — a fundamental belief or rule.</li>
+    <li>She acted on <strong>principle</strong>. (出于原则)</li>
+    <li>It's one of my <strong>principles</strong> to be honest. (我的原则之一)</li>
+  </ul>
+  <p style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Quick trick:</strong> "Princ<strong>ipal</strong>" = your pal (pal = friend). "Princ<strong>iple</strong>" ends in "-le" like "rule."</p>
+</div>
+
+<!-- Pair 5: Lay vs. Lie -->
+<div class="confuse-pair">
+  <div class="pair-label">5. Lay vs. Lie</div>
+  <p>The most notorious confusion in English. The problem: "lay" can be the past tense of "lie" AND a separate verb entirely.</p>
+  <div class="word-group">
+    <strong><span class="word">Lie</span> <span class="pos">(intransitive)</span> — to recline, not putting something down</strong>
+    <ul class="examples">
+      <li>I <strong>lie</strong> down. (我去躺下 — 自己躺)</li>
+      <li>I <strong>lay</strong> down yesterday. (过去式: lie → lay)</li>
+      <li>I <strong>have lain</strong> here for hours. (过去分词: lie → lain)</li>
+    </ul>
+  </div>
+  <div class="word-group">
+    <strong><span class="word">Lay</span> <span class="pos">(transitive)</span> — to put something down, requires an object</strong>
+    <ul class="examples">
+      <li>Please <strong>lay</strong> the book on the table. (把书放下 — 需要宾语)</li>
+      <li>She <strong>laid</strong> the keys down. (过去式: lay → laid)</li>
+      <li>The hen <strong>laid</strong> an egg. (母鸡下了一个蛋)</li>
+    </ul>
+  </div>
+  <p style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Quick trick:</strong> If there's <em>something</em> being put down (a book, keys, an egg) → <em>lay/laid</em>. If it's just "you" going to rest → <em>lie/lay/lain</em>.</p>
+</div>
+
+<!-- Pair 6: Their vs. There vs. They're -->
+<div class="confuse-pair">
+  <div class="pair-label">6. Their / There / They're</div>
+  <ul class="examples">
+    <li><strong>Their</strong> = possessive → "That is <strong>their</strong> car." (他们的)</li>
+    <li><strong>There</strong> = place → "Put it over <strong>there</strong>." (那里)</li>
+    <li><strong>They're</strong> = "they are" → "<strong>They're</strong> coming later." (他们是)</li>
+  </ul>
+  <p style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Common email mistake:</strong> "Their going to the meeting" → should be "<strong>They're</strong> going."</p>
+</div>
+
+<h2>Memory table: the quick reference</h2>
+<p>When in doubt, use this table:</p>
+
+<div class="confuse-pair">
+  <div class="pair-label">At a Glance</div>
+  <table style="width:100%; border-collapse:collapse; font-size:0.9rem; margin-top: 0.5rem;">
+    <tr style="border-bottom: 1px solid var(--border);"><th style="text-align:left; padding:0.3rem;">Word</th><th style="text-align:left; padding:0.3rem;">Part of Speech</th><th style="text-align:left; padding:0.3rem;">Meaning</th></tr>
+    <tr style="border-bottom: 1px solid var(--border);"><td style="padding:0.3rem;"><strong>affect</strong></td><td style="padding:0.3rem;"><em>verb</em></td><td style="padding:0.3rem;">to influence</td></tr>
+    <tr style="border-bottom: 1px solid var(--border);"><td style="padding:0.3rem;"><strong>effect</strong></td><td style="padding:0.3rem;"><em>noun</em> (usually)</td><td style="padding:0.3rem;">result, consequence</td></tr>
+    <tr style="border-bottom: 1px solid var(--border);"><td style="padding:0.3rem;"><strong>effort</strong></td><td style="padding:0.3rem;"><em>noun</em></td><td style="padding:0.3rem;">physical/mental exertion</td></tr>
+    <tr style="border-bottom: 1px solid var(--border);"><td style="padding:0.3rem;"><strong>principal</strong></td><td style="padding:0.3rem;"><em>adj./n.</em></td><td style="padding:0.3rem;">main; head of school</td></tr>
+    <tr style="border-bottom: 1px solid var(--border);"><td style="padding:0.3rem;"><strong>principle</strong></td><td style="padding:0.3rem;"><em>noun</em></td><td style="padding:0.3rem;">belief, rule, doctrine</td></tr>
+    <tr style="border-bottom: 1px solid var(--border);"><td style="padding:0.3rem;"><strong>lie</strong></td><td style="padding:0.3rem;"><em>intrans. verb</em></td><td style="padding:0.3rem;">recline (no object)</td></tr>
+    <tr><td style="padding:0.3rem;"><strong>lay</strong></td><td style="padding:0.3rem;"><em>trans. verb</em></td><td style="padding:0.3rem;">put down (needs object)</td></tr>
+  </table>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Not sure why one answer is right and another is wrong? That's exactly what we should talk about. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://learnenglish.britishcouncil.org/free-resources/grammar" target="_blank">British Council Grammar Bank</a> — search for any confusing pair you want to clear up.
+  <br><br>
+  <a href="../reference/confusing-words-quick-ref.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0013-idioms-fixed-expressions.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0015-email-meeting-english.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"The ______ of the policy" → "the" before the word means it is a noun. "Effect" = noun = 影响 (名词). "Affect" would be wrong here.', wrong: '"The" before the blank signals a noun. "Effect" is the noun form (影响). "Affect" is a verb — you can\'t say "the affect of the policy".' },
+    q2: { correct: '"The data affected the result" → "affected" describes what the data did. A verb = action/influence → "affect."', wrong: 'You need a VERB here. The data did something to the result. "Affect" = verb (影响). "Effect" as a noun doesn\'t work: "the data the effect the result" makes no sense.' },
+    q3: { correct: '"It takes a lot of ______" → "of" before the word means it is a noun. "Effort" = 努力 (noun). "Affect" is a verb.', wrong: '"A lot of" is followed by a noun. "Effort" (努力) is the noun. "Affect" is a verb and doesn\'t fit: "a lot of affect" is grammatically wrong.' },
+    q4: { correct: '"One of my ______" → "of my" means a noun. "Principle" = 原则 (noun). "Principal" = adj./n. (school head), not what you want here.', wrong: 'You\'re talking about beliefs/rules, not the school principal. "Principle" (原则) is the noun for a belief or rule. "My principal" would mean "my school head" — wrong meaning.' },
+    q5: { correct: '"She ______ the book on the table" → there IS an object (the book). "Lay" is transitive and needs an object. Past tense of "lay" = "laid."', wrong: 'There is an object: "the book." When you put something down, you use "lay/laid." "She lied the book" is grammatically wrong — "lie" is intransitive and has no object.' },
+    q6: { correct: '"______ are coming to the party" → "______ are" = "they are" contracted. "They\'re" = "they are."', wrong: 'Their = their (possessive). There = over there (place). They\'re = they are. The sentence needs "they are" → "They\'re coming."' },
+    q7: { correct: '"The ______ reason" → "reason" is a noun being described by an adjective. "Principal" can be an adjective meaning "main, most important."', wrong: '"The" before the blank signals the word modifies "reason." You need an adjective. "Principal" can be an adj. meaning "main." "The principal reason" = the main reason. "Principle" is only a noun.' },
+    q8: { correct: '"They\'re responsible for this" → "They\'re" = "they are." You can expand it: "they are responsible." "Their" or "There" don\'t work when you can say "they are."', wrong: 'Can you say "they are" in the sentence? Yes → "They\'re." "Their" would make it "Their are responsible" — wrong. "There are" would mean "there exist," which changes the meaning completely.' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Perfect! You\'ve got these confusing words down cold.';
+      else if (score >= 6) label.textContent = 'Good work! Review the pairs you missed — the explanations explain why.';
+      else label.textContent = 'Keep at it. These pairs take practice. Re-read the cards above.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>

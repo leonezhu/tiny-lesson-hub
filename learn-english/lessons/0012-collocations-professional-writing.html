@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 12 — Collocations for Professional Writing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .collocation-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .collocation-card h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .collocation-card .category {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+
+  .collocation-card .ccol {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .collocation-card .ccol strong {
+    color: var(--accent);
+  }
+
+  .collocation-card .ccol .cn {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .collocation-card .examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .collocation-card .examples li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .collocation-card .examples li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .common-mistake {
+    background: #fef2f2;
+    border-left: 3px solid #dc2626;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .common-mistake strong { color: #dc2626; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .ref-card {
+    background: #fafafa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .ref-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .ref-card table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+  }
+
+  .ref-card table td {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-card table tr:last-child td { border-bottom: none; }
+  .ref-card table td:first-child { font-weight: 600; width: 40%; color: var(--accent); }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Collocations for Professional Writing</h1>
+<p class="lesson-meta">Lesson 12 · ~10 minutes · Business English vocabulary</p>
+
+<div class="goal-box">
+  <strong>By the end of this lesson</strong>, you'll be able to choose the right collocations for professional emails, reports, and meetings — moving beyond literal translations to sound natural and credible in English business communication.
+</div>
+
+<h2>What are collocations?</h2>
+<p>
+  Collocations are word pairs that native speakers naturally use together. They're not random — they're patterns built by years of usage. Using the right collocation makes you sound fluent; using the wrong one makes your English sound "translated."
+</p>
+
+<p>
+  In Chinese, you might say <strong>"解决问题"</strong> (solve problem), which translates directly to "solve a problem" — that's fine. But <strong>"做决定"</strong> is <em>make</em> a decision, not <em>do</em> a decision. This kind of mismatch is the hallmark of non-native writing.
+</p>
+
+<div class="chinese-note">
+  <strong>中文思维提醒：</strong>中文动词往往万能——"做决定"、"提建议"、"给帮助"。英语中每个名词都有固定的搭配动词。不要直译，要记固定组合。
+</div>
+
+<h2>Essential Collocations by Category</h2>
+
+<div class="collocation-card">
+  <h3>Decision &amp; Action</h3>
+  <p class="category">Decisions, choices, and taking steps</p>
+  <p class="ccol"><strong>Make</strong> a decision <span class="cn">= 做决定</span></p>
+  <ul class="examples">
+    <li>We need to <strong>make a decision</strong> by Friday.</li>
+    <li>It was a difficult <strong>decision</strong>, but we went ahead.</li>
+  </ul>
+  <p class="ccol"><strong>Take</strong> action <span class="cn">= 采取行动</span></p>
+  <ul class="examples">
+    <li>We need to <strong>take action</strong> before the deadline.</li>
+    <li>The government has finally <strong>taken action</strong> on climate change.</li>
+  </ul>
+  <p class="ccol"><strong>Take</strong> responsibility <span class="cn">= 承担责任</span></p>
+  <ul class="examples">
+    <li>She <strong>took responsibility</strong> for the delay and apologized.</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>Communication &amp; Meetings</h3>
+  <p class="category">Emails, discussions, and collaboration</p>
+  <p class="ccol"><strong>Raise</strong> an issue / <strong>bring up</strong> a point <span class="cn">= 提出问题</span></p>
+  <ul class="examples">
+    <li>I'd like to <strong>raise an issue</strong> about the project timeline.</li>
+    <li>He <strong>brought up</strong> a good point during the meeting.</li>
+  </ul>
+  <p class="ccol"><strong>Reach</strong> an agreement <span class="cn">= 达成协议</span></p>
+  <ul class="examples">
+    <li>We <strong>reached an agreement</strong> on the pricing model.</li>
+  </ul>
+  <p class="ccol"><strong>Provide</strong> feedback <span class="cn">= 提供反馈</span></p>
+  <ul class="examples">
+    <li>Could you <strong>provide some feedback</strong> on this draft?</li>
+  </ul>
+  <p class="ccol"><strong>Follow up</strong> on something <span class="cn">= 跟进某事</span></p>
+  <ul class="examples">
+    <li>I'll <strong>follow up on</strong> this with the engineering team.</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>Data &amp; Analysis</h3>
+  <p class="category">Reports, metrics, and insights</p>
+  <p class="ccol"><strong>Draw</strong> a conclusion <span class="cn">= 得出结论</span></p>
+  <ul class="examples">
+    <li>Based on the data, we can <strong>draw the conclusion</strong> that the campaign was successful.</li>
+  </ul>
+  <p class="ccol"><strong>Gain</strong> insight <span class="cn">= 获得洞察</span></p>
+  <ul class="examples">
+    <li>The survey helped us <strong>gain valuable insights</strong> into customer behavior.</li>
+  </ul>
+  <p class="ccol"><strong>Meet</strong> a deadline / <strong>meet</strong> expectations <span class="cn">= 满足截止日期/期望</span></p>
+  <ul class="examples">
+    <li>We're on track to <strong>meet the deadline</strong>.</li>
+    <li>The product <strong>met all our expectations</strong>.</li>
+  </ul>
+</div>
+
+<div class="collocation-card">
+  <h3>Problem Solving</h3>
+  <p class="category">Addressing challenges and finding solutions</p>
+  <p class="ccol"><strong>Resolve</strong> a conflict / <strong>resolve</strong> an issue <span class="cn">= 解决冲突/问题</span></p>
+  <ul class="examples">
+    <li>We've <strong>resolved the issue</strong> with the payment gateway.</li>
+  </ul>
+  <p class="ccol"><strong>Address</strong> a concern <span class="cn">= 回应关切</span></p>
+  <ul class="examples">
+    <li>Let me <strong>address your concern</strong> about security.</li>
+  </ul>
+  <p class="ccol"><strong>Implement</strong> a solution <span class="cn">= 实施解决方案</span></p>
+  <ul class="examples">
+    <li>We've <strong>implemented a new solution</strong> that reduces load times by 40%.</li>
+  </ul>
+</div>
+
+<div class="common-mistake">
+  <strong>⚠ Common mistakes:</strong>
+  <ul style="margin-top:0.5rem; margin-left:1rem;">
+    <li><strong>"Do a decision"</strong> → Wrong. Always <strong>"make a decision."</strong></li>
+    <li><strong>"Give advice"</strong> → Correct! But <strong>"give a suggestion"</strong> → Wrong. Say <strong>"make a suggestion."</strong></li>
+    <li><strong>"Commit a mistake"</strong> → Wrong. Say <strong>"make a mistake."</strong></li>
+    <li><strong>"Perform an effort"</strong> → Wrong. Say <strong>"make an effort."</strong></li>
+  </ul>
+</div>
+
+<h2>Collocations that change meaning</h2>
+<p>
+  Some collocations are so fixed that changing the verb completely changes the tone or meaning:
+</p>
+
+<div class="ref-card">
+  <h4>Strong vs. Weak Collocations</h4>
+  <table>
+    <tr><td>"<strong>Strongly recommend</strong>"</td><td>Professional, confident</td></tr>
+    <tr><td>"<strong>Really recommend</strong>"</td><td>Casual, spoken</td></tr>
+    <tr><td>"<strong>Conduct</strong> research"</td><td>Formal, academic</td></tr>
+    <tr><td>"<strong>Do</strong> research"</td><td>Informal, everyday</td></tr>
+    <tr><td>"<strong>Heavy rain"</strong>"</td><td>Natural English</td></tr>
+    <tr><td>""<strong>Big rain</strong>"</td><td>Unnatural — sounds translated</td></tr>
+    <tr><td>""<strong>Fast food</strong>"</td><td>Natural English</td></tr>
+    <tr><td>""<strong>Quick food</strong>"</td><td>Unnatural</td></tr>
+  </table>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>很多形容词搭配是任意的。英语说"heavy rain"不说"big rain"，说"fast food"不说"quick food"。这些没有逻辑，只能靠积累。阅读越多，直觉越强。
+</div>
+
+<h2>How to build your collocation bank</h2>
+<p>
+  Don't memorize isolated words. Memorize <strong>chunks</strong>:
+</p>
+<ol style="margin-left: 1.5rem; margin-bottom: 0.75rem;">
+  <li><strong>When reading emails,</strong> highlight collocations — not individual words. Notice patterns: "reach an agreement," "meet a deadline."</li>
+  <li><strong>Keep a notebook</strong> (or digital doc) organized by category. Write the full collocation, not just the verb.</li>
+  <li><strong>Use them immediately.</strong> In your next email, consciously use 2–3 new collocations. Repetition cements them.</li>
+  <li><strong>Use a dictionary.</strong> Cambridge Dictionary and Oxford Learner's Dictionaries list common collocations for each word.</li>
+</ol>
+
+<h2>Why this matters</h2>
+<p>
+  Native speakers don't think about collocations — they just <em>feel</em> right or wrong. At the B2 level, using natural collocations is what separates "good English" from "fluent English." Your ideas might be brilliant, but if you say "do a decision" instead of "make a decision," readers will doubt your professionalism.
+</p>
+
+<div class="quiz-section">
+  <h2>Practice: Choose the Right Collocation</h2>
+  <p>Pick the correct collocation for each professional scenario. There are 8 questions.</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">You need to tell your team about a choice you've decided on.</div>
+    <div class="sentence">The team needs to ________ by end of day.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">do a decision</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">make a decision</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">Writing a formal email to a client about resolving their complaint.</div>
+    <div class="sentence">We have ________ regarding the billing discrepancy.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">resolved the issue</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">solved the problem</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">You want to politely bring up a concern in a meeting.</div>
+    <div class="sentence">I'd like to ________ about the timeline — it seems unrealistic.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">give a suggestion</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">raise an issue</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">Your project is behind schedule and you need to act.</div>
+    <div class="sentence">We can't just wait — we need to ________ immediately.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">take responsibility</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">take action</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">Describing what your research revealed about customers.</div>
+    <div class="sentence">Our survey helped us ________ into purchasing behavior.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">get an insight</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">gain insights</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">Writing a formal report conclusion based on data analysis.</div>
+    <div class="sentence">Based on the quarterly figures, we can ________ that sales are recovering.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">make a conclusion</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">draw a conclusion</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">Describing the weather conditions affecting your outdoor event.</div>
+    <div class="sentence">Unfortunately, ________ forced us to move the event indoors.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">big rain</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">heavy rain</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">Following up after a meeting to confirm next steps.</div>
+    <div class="sentence">I'll ________ the marketing team about the design changes.</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">catch up</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">follow up with</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>Got questions?</strong> Ask me anything — I'm your English tutor. Not sure whether to say "make a suggestion" or "give a suggestion"? That's exactly what we should talk about. Just type your question and I'll explain.
+  <br><br>
+  <strong>Recommended resource:</strong> <a href="https://dictionary.cambridge.org/" target="_blank">Cambridge Dictionary — Collocations Section</a> — search any word and see its most common collocations listed right on the entry page.
+  <br><br>
+  <a href="../reference/collocations-professional-writing.html" class="resource-link">View Quick Reference Card</a>
+</div>
+
+<div class="footer">
+  <a href="0011-discourse-markers-linking.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0013-idioms-fixed-expressions.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"Make a decision" is the fixed collocation. You never "do a decision" in English — "make" is the correct verb for decisions, choices, and plans.', wrong: '"Do a decision" is a common translation error from Chinese "做决定". In English, the fixed collocation is always "make a decision".' },
+    q2: { correct: '"Resolved the issue" is more formal and precise for professional contexts. While "solved the problem" isn\'t wrong, "resolved" is the standard collocation for business disputes and complaints.', wrong: '"Solved the problem" isn\'t grammatically wrong, but in formal business communication about complaints and billing, "resolved the issue" is the standard professional collocation.' },
+    q3: { correct: '"Raise an issue" is the standard professional phrase for bringing up a concern formally. "Give a suggestion" is incorrect — you "make a suggestion," not "give" one.', wrong: '"Give a suggestion" is wrong. The correct collocation is "make a suggestion." To bring up a concern, use "raise an issue" or "bring up a point."' },
+    q4: { correct: '"Take action" = to do something about a problem. "Take responsibility" means accepting blame, which is different from actively solving the problem.', wrong: '"Take responsibility" means accepting blame for something wrong. Here you need to describe doing something about the delay, which is "take action."' },
+    q5: { correct: '"Gain insights" is the standard collocation. "Insight" pairs with "gain," not "get" in professional writing. "Gain insights" (plural) is especially common.', wrong: '"Get an insight" is too informal and uses the wrong article. The natural collocation is "gain insights" (plural) — it\'s the standard phrase in business and research contexts.' },
+    q6: { correct: '"Draw a conclusion" is the fixed collocation. You draw conclusions from evidence/data. "Make a conclusion" is a common error — the correct verb is "draw."', wrong: '"Make a conclusion" is a frequent error. The correct collocation is "draw a conclusion" — you draw conclusions from data, evidence, or analysis.' },
+    q7: { correct: '"Heavy rain" is the natural English collocation. "Big" doesn\'t pair with rain in English — it\'s a common translation error. Heavy, light, and torrential are the natural descriptors.', wrong: '"Big rain" sounds unnatural. English uses "heavy" for intense rain, "light" for gentle rain. Adjective-noun collocations like this must be memorized.' },
+    q8: { correct: '"Follow up with" someone = to contact them after a previous interaction to check progress. "Catch up" means to reconnect socially or to reach the same level.', wrong: '"Catch up" means to reconnect socially or to reach the same level as someone. To describe contacting someone after a meeting about next steps, use "follow up with."' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = 'Excellent! You have a strong grasp of professional collocations.';
+      else if (score >= 6) label.textContent = 'Good work! Review the explanations for the ones you missed.';
+      else label.textContent = 'Keep going! Focus on the verb-noun combinations you got wrong.';
+      box.classList.add('show');
+    }
+  }
+</script></body>
+</html>
