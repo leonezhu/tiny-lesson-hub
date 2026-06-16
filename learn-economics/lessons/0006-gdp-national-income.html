@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 国民收入核算（GDP 的本质）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    background: var(--accent-light);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  .example-box {
+    background: #f5f7fa;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  .chart-placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .chart-placeholder svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #f8f9fb;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>国民收入核算（GDP 的本质）</h1>
+<p class="lesson-meta">第6课 · ~12分钟 · 宏观经济学基础</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解 GDP 到底是什么、它如何被计算、它衡量了什么（以及更重要的——它没有衡量什么。你将掌握支出法、收入法和生产法的三种核算方式，并能批判性地评估 GDP 作为社会福祉指标的有效性。
+</div>
+
+<h2>GDP 是什么？不是什么？</h2>
+
+<p>国内生产总值（Gross Domestic Product, GDP）是宏观经济学中最常被引用的数字。新闻里说"GDP 增长了 5%"、"GDP 超过 XX 万亿"——但大多数人并不真正理解这个数字的含义。</p>
+
+<div class="concept-card">
+  <h3>GDP 的定义</h3>
+  <p><strong>GDP 是一个国家（或地区）在一定时期内（通常为一年或一季度）所生产的全部最终产品和服务的市场价值。</strong></p>
+  <p>关键词拆解：</p>
+  <ul style="margin: 0.5rem 0 0 1.5rem;">
+    <li><strong>最终</strong>：只计算最终产品，不包括中间产品（否则重复计算）</li>
+    <li><strong>产品和服务</strong>：既有实物商品，也有无形服务</li>
+    <li><strong>市场价值</strong>：需要用价格来加总不同的物品</li>
+    <li><strong>一定时期</strong>：是流量（flow），不是存量（stock）</li>
+  </ul>
+</div>
+
+<div class="example-box">
+  <strong>🍞 为什么只算"最终"产品？</strong><br>
+  假设农民种小麦卖给面粉厂（1元），面粉厂磨成面粉卖给面包店（2元），面包店做成面包卖给你（5元）。GDP 只计入最终的 5 元面包，而不计入 1+2+5=8 元。如果全部计入，就重复计算了中间环节的价值。<br><br>
+  那 5 元面包中包含的"增加值"是多少？农民增加了 1 元，面粉厂增加了 1 元（2-1），面包店增加了 3 元（5-2）。三者相加 = 5 元，正好等于最终产品价格。这就是<strong>增加值法</strong>的精髓。
+</div>
+
+<h2>三种核算方法</h2>
+
+<p>GDP 可以从三个不同角度来测量——理论上它们应该得出相同的结果。这就是著名的"GDP 恒等式"。</p>
+
+<div class="concept-card">
+  <h3>方法一：支出法（Expenditure Approach）</h3>
+  <p>从"谁花钱"的角度来核算 GDP。公式如下：</p>
+  <div class="formula">
+    GDP = C + I + G + (X − M)<br>
+    <span style="font-size: 0.85rem; color: var(--muted);">消费 + 投资 + 政府支出 + 净出口</span>
+  </div>
+  <ul style="margin: 0.5rem 0 0 1.5rem;">
+    <li><strong>C（消费）</strong>：家庭购买产品和服务的支出，占 GDP 约 60-70%。包括食品、住房租金、医疗、教育等。</li>
+    <li><strong>I（投资）</strong>：企业购买资本品（机器、设备、厂房）和存货变动。<strong>注意：金融投资（买股票、债券）不计入 GDP</strong>——它们只是资产所有权的转移，不创造新的产出。</li>
+    <li><strong>G（政府支出）</strong>：政府购买产品和服务的支出。包括公务员工资、基础设施建设等。<strong>转移支付（养老金、失业救济）不计入</strong>——因为它们不是对产出的交换。</li>
+    <li><strong>X − M（净出口）</strong>：出口减去进口。出口是本国生产的、被外国人买的（计入），进口是外国生产的、被本国买的（需要减去，因为已包含在 C、I 或 G 中）。</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>方法二：收入法（Income Approach）</h3>
+  <p>从"谁收到钱"的角度来核算 GDP。所有生产出来的东西，最终都会变成某个人的收入：</p>
+  <div class="formula">
+    GDP = 工资 + 利息 + 租金 + 利润 + 折旧 + 间接税 − 补贴
+  </div>
+  <p>简而言之：<strong>GDP = 所有生产要素的收入总和</strong>。劳动者拿工资，资本所有者拿利息和利润，土地所有者拿租金。</p>
+</div>
+
+<div class="concept-card">
+  <h3>方法三：生产法/增加值法（Value-Added Approach）</h3>
+  <p>从"每个环节创造了多少价值"的角度来核算。每个生产阶段的增加值之和等于最终产品的价值：</p>
+  <div class="formula">
+    GDP = Σ(各生产阶段的增加值)
+  </div>
+  <p>回到面包的例子：小麦 1 元 + 面粉加工 1 元 + 面包制作 3 元 = 5 元 GDP。</p>
+</div>
+
+<h2>GDP 的局限：它没有告诉你什么</h2>
+
+<p>这是本课最重要的部分。GDP 是一个有用的指标，但它远非完美的社会福祉衡量标准。诺贝尔经济学奖得主、著名统计学家 Simon Kuznets 在 1934 年就警告过：</p>
+
+<div class="chinese-note">
+  <strong>⚠️ 一个国家的 GDP 几乎不能用来衡量它的幸福。</strong>—— Simon Kuznets, 1934
+</div>
+
+<p>GDP 的著名缺陷包括：</p>
+
+<table class="comparison-table">
+  <thead>
+    <tr><th>没有被 GDP 衡量</th><th>原因</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>家务劳动</td><td>没有市场交易，不计入</td></tr>
+    <tr><td>地下经济 / 黑市</td><td>无法统计</td></tr>
+    <tr><td>环境污染</td><td>GDP 只计产出，不计损耗。工厂生产越多，GDP 越高，即使它污染了河流</td></tr>
+    <tr><td>收入分配</td><td>GDP 总量看不出贫富差距。一个富人和一个穷人的 GDP 贡献都是 1，但生活天差地别</td></tr>
+    <tr><td>闲暇时间</td><td>工作 10 小时比工作 8 小时产生更多 GDP，但你可能更累、更不开心</td></tr>
+    <tr><td>产品质量改进</td><td>新旧手机价格相同，但新手机功能更强——GDP 无法完全捕捉质量变化</td></tr>
+    <tr><td>健康与寿命</td><td>医疗支出增加推高 GDP，但可能只是因为人生病了</td></tr>
+    <tr><td>社会资本与信任</td><td>社区凝聚力、人际信任无法量化为市场价值</td></tr>
+  </tbody>
+</table>
+
+<div class="example-box">
+  <strong>💡 经典讽刺：</strong>如果一个人生病去看医生，医疗费计入 GDP。如果他不生病，就没有这笔支出。从 GDP 角度看，"生病"似乎促进了经济——但这显然是荒谬的。GDP 衡量的是经济活动，不是福祉。
+</div>
+
+<h2>名义 GDP vs 实际 GDP</h2>
+
+<p>这是理解 GDP 数据的关键区分。新闻里说的"GDP 增长 5%"，到底是真的增长了，还是仅仅因为价格上涨了？</p>
+
+<div class="concept-card">
+  <h3>名义 GDP（Nominal GDP）</h3>
+  <p>用<strong>当前价格</strong>计算的 GDP。它同时反映了产量变化和价格变化。</p>
+</div>
+
+<div class="concept-card">
+  <h3>实际 GDP（Real GDP）</h3>
+  <p>用<strong>基年价格</strong>计算的 GDP。剔除了价格变化的影响，只反映产量的真实变化。</p>
+</div>
+
+<div class="formula">
+  GDP 平减指数 = (名义 GDP / 实际 GDP) × 100<br>
+  <span style="font-size: 0.85rem; color: var(--muted);">它衡量的是整体物价水平的变化</span>
+</div>
+
+<p><strong>举例：</strong>假设某国第一年生产 100 个面包，每个 1 元，GDP = 100 元。第二年生产 110 个面包，但每个涨到 1.2 元。名义 GDP = 132 元（增长 32%），但如果用第一年的价格算，实际 GDP = 110 × 1 = 110 元（增长 10%）。真实的产量增长是 10%，而不是 32%。</p>
+
+<h2>GDP 能告诉我们什么？</h2>
+
+<p>尽管有这么多局限，GDP 仍然是非常有用的指标。它在以下方面提供了重要信息：</p>
+
+<ul>
+  <li><strong>经济周期</strong>：GDP 增速放缓或连续两个季度负增长 → 衰退。增速加快 → 扩张。</li>
+  <li><strong>生活水平比较</strong>：人均 GDP（GDP / 人口）可以用来粗略比较不同国家或不同时期的平均物质生活水平。</li>
+  <li><strong>政策制定</strong>：政府根据 GDP 数据调整财政政策和货币政策。</li>
+  <li><strong>市场规模</strong>：GDP 大的国家拥有更大的消费市场，对企业投资决策有重要参考价值。</li>
+</ul>
+
+<p>但聪明的读者应该始终问自己一个问题：<strong>"这个 GDP 数字背后，隐藏了什么？"</strong></p>
+
+<div class="chinese-note">
+  <strong>中文思维对照：</strong>古人云"仓廪实而知礼节"——GDP 衡量的正是"仓廪实"的部分。但它不衡量"知礼节"。一个社会可以 GDP 高速增长，但道德滑坡、环境恶化、社会撕裂。真正的繁荣需要多个维度来衡量。
+</div>
+
+<h2>本课小结</h2>
+<ul>
+  <li>GDP = 最终产品和服务的市场价值，有三种核算方法：支出法（C+I+G+(X-M)）、收入法、生产法</li>
+  <li>名义 GDP 含价格变化，实际 GDP 剔除价格变化——比较时必须用实际 GDP</li>
+  <li>GDP 不衡量幸福、环境、分配公平、闲暇、家务劳动等关键福祉维度</li>
+  <li>GDP 是有用的工具，但不是终极目标。聪明的决策者用它但不迷信它</li>
+</ul>
+
+<!-- ==================== QUIZ SECTION ==================== -->
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">概念理解</div>
+    <div class="question-text">以下哪项应计入 GDP？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你妈妈在家做的饭菜</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你去年买的二手房</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">面包店新烤制的面包</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你买的股票</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">支出法构成</div>
+    <div class="question-text">在 GDP = C + I + G + (X−M) 中，下列哪项属于 I（投资）？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">家庭购买新房子</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">企业购买一台新的数控机床</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">政府修建一条高速公路</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你购买了一辆二手自行车</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">中间产品与重复计算</div>
+    <div class="question-text">为什么 GDP 只计算最终产品而不计算中间产品？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为中间产品不重要</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为了避免重复计算</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为中间产品没有价值</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为政府不允许</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">名义 vs 实际</div>
+    <div class="question-text">某国今年名义 GDP 为 1000 亿元，GDP 平减指数为 125。该国实际 GDP 约为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">1250 亿元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">800 亿元</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">1000 亿元</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">125 亿元</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">GDP 的局限</div>
+    <div class="question-text">以下哪项最能说明 GDP 不能作为福祉的完美指标？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP 增长速度太慢</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP 数据容易被政府操纵</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">GDP 不衡量收入分配和环境质量</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP 只计算商品不计算服务</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">收入法</div>
+    <div class="question-text">用收入法核算 GDP 时，以下哪项不属于生产要素收入？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">工人工资</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">房东租金</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">政府发放的失业救济金</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">企业家利润</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">净出口</div>
+    <div class="question-text">如果一国出口 200 亿元，进口 300 亿元，净出口对 GDP 的贡献是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">+500 亿元</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">+200 亿元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">−100 亿元</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">−300 亿元</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">综合分析</div>
+    <div class="question-text">某国一年内发生了严重的洪水灾害，政府投入大量资金重建基础设施。这对 GDP 的影响是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP 下降，因为灾害破坏了财富</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">GDP 上升，因为重建支出了增加</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP 不变，因为灾害不计入 GDP</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP 先降后升，相互抵消</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——无论是关于 GDP 的计算方法、名义与实际的区别，还是它对现实政策的启示。不理解的地方正是最值得讨论的地方。
+  <br><br>
+  <strong>推荐延伸阅读：</strong> <a href="https://www.nber.org/books-and-chapters/how-measure-your-community-goal-improving-ways-measure-economic" target="_blank">NBER — Beyond GDP: New Ways to Measure Progress</a> — 了解 GDP 之外还有哪些福祉指标正在被开发。
+  <br><br>
+  <a href="../index.html" class="resource-link">返回目录</a>
+</div>
+
+<div class="footer">
+  <a href="0005-public-goods.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-money-banking.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '面包店新烤制的面包是当期生产的最终产品，有市场交易价格，计入 GDP。家务劳动没有市场交易，不计入；二手房是存量交易（生产发生在去年）；买股票只是资产转移，不创造新产出。',
+      wrong: '妈妈在家做饭没有市场交易，不计入 GDP；去年买的二手房在生产当年已计入，今年不算；买股票是金融资产转移，不是生产活动。只有新烤制的面包是当期生产的最终产品。'
+    },
+    q2: {
+      correct: '企业购买机床是固定资产投资——它直接用于生产，增加经济体的生产能力。家庭买房在国民经济核算中被视为投资（住宅投资），但企业购买设备是更典型的 I。政府修路属于 G（政府支出）。',
+      wrong: '家庭购房在 GDP 核算中算作住宅投资，但企业购买机床是更标准的"投资"例子。政府修路属于 G。二手自行车是存量交易，不计入。'
+    },
+    q3: {
+      correct: '如果把小麦 1 元、面粉 2 元、面包 5 元全部相加，会得到 8 元，但实际只生产了价值 5 元的面包。中间产品的价值已经包含在最终产品价格中了。只算最终产品可以避免这种重复计算。',
+      wrong: '中间产品非常重要（它们是生产过程的一部分），也有价值，也不是政府规定的。核心原因是：如果同时算中间产品和最终产品，同一价值会被多次计算，导致 GDP 虚高。'
+    },
+    q4: {
+      correct: '实际 GDP = 名义 GDP / (GDP 平减指数 / 100) = 1000 / (125 / 100) = 1000 / 1.25 = 800 亿元。平减指数 125 意味着物价总体上涨了 25%，所以实际产出比名义数字小。',
+      wrong: 'GDP 平减指数 = (名义/实际) × 100，所以实际 = 名义 / (平减指数/100) = 1000 / 1.25 = 800。1250 是把除法做反了；1000 是名义值；125 是平减指数本身。'
+    },
+    q5: {
+      correct: 'GDP 只衡量市场交易的价值，不衡量分配公平（贫富差距）、环境质量（污染）、闲暇时间、幸福感等关键福祉维度。一个 GDP 很高的国家可能同时存在严重的不平等和环境退化。',
+      wrong: 'GDP 增长速度不是问题；数据操纵是可能的但不是 GDP 本身的缺陷；GDP 同时计算商品和服务。核心问题是：GDP 衡量的是经济活动规模，不是社会福祉的全貌。'
+    },
+    q6: {
+      correct: '失业救济金是政府的转移支付，不是对生产要素的报酬。它不涉及任何生产活动的交换，所以在收入法中不计入 GDP。工资是对劳动的报酬，租金是对土地的报酬，利润是对企业家的报酬——这些都是要素收入。',
+      wrong: '工资、租金和利润分别是劳动、土地和企业家的要素报酬，属于收入法 GDP 的核心组成部分。失业救济金是政府单方面转移，不涉及生产交换，因此不计入。'
+    },
+    q7: {
+      correct: '净出口 = X − M = 200 − 300 = −100 亿元。进口大于出口意味着该国从国外购买了更多，这部分支出被包含在 C、I 或 G 中，所以要减去进口额。净出口为负，对 GDP 的贡献是 −100 亿元。',
+      wrong: '净出口 = 出口 − 进口 = 200 − 300 = −100。不能把两者相加（500），也不能只算其中一个（200 或 300）。负值表示贸易逆差。'
+    },
+    q8: {
+      correct: 'GDP 衡量的是经济活动（支出），而不是福祉。洪水后的重建支出（政府购买 G 增加、企业投资 I 增加）会推高 GDP——即使这场灾害显然降低了人民的福祉。这恰恰说明了 GDP 的局限性。',
+      wrong: 'GDP 不直接衡量财富或福祉的增减，它衡量的是市场交易活动。重建支出是真实发生的经济活动，所以 GDP 上升。但要注意：这正是 GDP 不能反映灾害损害的原因。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对 GDP 核算有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得不错！回顾一下你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

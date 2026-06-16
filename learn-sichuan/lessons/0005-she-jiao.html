@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 四川话里的社交娱乐</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #c0392b;
+    --accent-light: #fdf2f2;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .vocab-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+  }
+
+  .vocab-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    background: var(--accent-light);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .vocab-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+
+  .vocab-table tr:last-child td { border-bottom: none; }
+
+  .dialect { font-weight: 600; color: var(--accent); }
+  .standard { color: var(--muted); font-size: 0.9rem; }
+
+  .dialogue-box {
+    background: #f7f8fa;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .dialogue-line {
+    margin: 0.75rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+  }
+
+  .dialogue-line .speaker {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .dialogue-line .speech {
+    font-size: 1rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .tip-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .tip-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', 'Noto Serif SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话里的社交娱乐</h1>
+<p class="lesson-meta">第5课 · 约10分钟 · 社交与娱乐</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>学会用四川话聊天、摆龙门阵、约朋友出去玩，掌握四川人社交中最常用的表达方式和语气词。
+</div>
+
+<h2>为什么学这个</h2>
+<p>
+  四川人最爱干的两件事：<strong>喝茶</strong>和<strong>摆龙门阵</strong>。在成都的街头巷尾，随便找个茶馆坐下来，听旁边大爷大妈聊天的内容，你就知道"摆龙门阵"是什么意思了——它不只是聊天，是一种文化。
+</p>
+<p>
+  四川话的社交特点是<strong>亲切、直接、爱开玩笑</strong>。普通话里你可能说"你在干嘛"，四川人说"你在做啥子"。普通话里说"太好了"，四川人说"巴适得板"。这些差异看似小，但掌握了就能让当地人觉得你很"对头"。
+</p>
+
+<h2>核心词汇</h2>
+
+<div class="vocab-card">
+  <h3>🗣️ 社交聊天常用词</h3>
+  <table class="vocab-table">
+    <tr><th>四川话</th><th>普通话</th><th>说明</th></tr>
+    <tr><td class="dialect">摆龙门阵</td><td class="standard">聊天</td><td>四川话的灵魂词汇，指悠闲地聊天、讲故事</td></tr>
+    <tr><td class="dialect">做啥子</td><td class="standard">干什么</td><td>"你在做啥子？"=你在干嘛？</td></tr>
+    <tr><td class="dialect">耍</td><td class="standard">玩</td><td>"出去耍"=出去玩，"耍朋友"=谈恋爱</td></tr>
+    <tr><td class="dialect">安逸</td><td class="standard">舒服、享受</td><td>喝茶打牌的感觉叫"安逸"</td></tr>
+    <tr><td class="dialect">撇脱</td><td class="standard">方便、省事</td><td>"这个事情好撇脱"=这件事很方便</td></tr>
+    <tr><td class="dialect">雄起</td><td class="standard">加油、起来</td><td>看球赛时喊"雄起"，也是成都蓉城的口号</td></tr>
+    <tr><td class="dialect">瓜兮兮</td><td class="standard">傻乎乎的</td><td>熟人之间开玩笑用，别当真</td></tr>
+    <tr><td class="dialect">瓜分</td><td class="standard">分一下</td><td>"把西瓜瓜分一下"=把西瓜分一下</td></tr>
+    <tr><td class="dialect">巴适得板</td><td class="standard">好极了、爽翻了</td><td>"巴适"的加强版，极度满意</td></tr>
+    <tr><td class="dialect">要得</td><td class="standard">好的、行</td><td>同意别人提议时用，万能回复词</td></tr>
+  </table>
+</div>
+
+<div class="vocab-card">
+  <h3>🎭 语气词大全</h3>
+  <p>四川话的灵魂在于语气词。同样的意思，加不同的语气词，味道完全不一样：</p>
+  <table class="vocab-table">
+    <tr><th>语气词</th><th>作用</th><th>例子</th></tr>
+    <tr><td class="dialect">嘛</td><td>建议、撒娇</td><td>走嘛！（走吧！）/ 吃嘛！（吃吧！）</td></tr>
+    <tr><td class="dialect">噻</td><td>强调、理所当然</td><td>那还用说噻！（当然！）</td></tr>
+    <tr><td class="dialect">撒</td><td>催促、不耐烦</td><td>快点撒！（快点！）</td></tr>
+    <tr><td class="dialect">咯</td><td>陈述、确认</td><td>是咯。（是啊。）</td></tr>
+    <tr><td class="dialect">哈</td><td>提醒、确认</td><td>记得哈！（记得啊！）</td></tr>
+    <tr><td class="dialect">啵</td><td>反问、质疑</td><td>你晓得不啵？（你不知道吗？）</td></tr>
+    <tr><td class="dialect">哟</td><td>惊讶</td><td>哇塞，好漂亮哟！</td></tr>
+  </table>
+</div>
+
+<h2>场景一：摆龙门阵</h2>
+
+<div class="dialogue-box">
+  <div class="dialogue-line">
+    <span class="speaker">甲：</span>
+    <span class="speech">周末有空不？出来<span class="dialect">摆哈龙门阵</span>。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">乙：</span>
+    <span class="speech">要得！去哪儿？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">甲：</span>
+    <span class="speech">人民公园那个茶馆，喝茶、摆龙门阵，<span class="dialect">安逸得很</span>。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">乙：</span>
+    <span class="speech">好嘛，我<span class="dialect">瓜兮兮</span>等了一周了，终于有人陪我摆了。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">甲：</span>
+    <span class="speech">哈哈，你少贫。下午三点，老地方见。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">乙：</span>
+    <span class="speech">没问题，<span class="dialect">要得</span>！</span>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>重点：</strong>"摆哈龙门阵"=聊一会儿天。"哈"在这里是量词用法，表示"一会儿"。"瓜兮兮"是开玩笑说自己等了很久。四川人的聊天不是正式会议，而是一种休闲活动。
+</div>
+
+<h2>场景二：约朋友出去玩</h2>
+
+<div class="dialogue-box">
+  <div class="dialogue-line">
+    <span class="speaker">小李：</span>
+    <span class="speech">今晚有<span class="dialect">啥子活动</span>不？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小王：</span>
+    <span class="speech">看你想咋子耍。去KTV唱歌？还是<span class="dialect">搓麻将</span>？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小李：</span>
+    <span class="speech">搓麻将可以，但是我技术不行，怕输惨了。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小王：</span>
+    <span class="speech">怕啥子嘛！输了算我的，赢了归你。<span class="dialect">撇脱</span>！</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小李：</span>
+    <span class="speech">你这样说我就放心了。几点开始？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小王：</span>
+    <span class="speech">八点钟，别迟到哈！迟到的人<span class="dialect">发红包</span>。</span>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>重点：</strong>"搓麻将"=打麻将，四川人常说"搓"。"撇脱"=干脆、省事，表示不用犹豫。"怕啥子嘛"=有什么好怕的。迟到发红包是四川朋友间常见的约定。
+</div>
+
+<h2>场景三：KTV唱歌</h2>
+
+<div class="dialogue-box">
+  <div class="dialogue-line">
+    <span class="speaker">服务员：</span>
+    <span class="speech">您好，请问几位？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小李：</span>
+    <span class="speech">四个。有没有<span class="dialect">小包</span>？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">服务员：</span>
+    <span class="speech">有的，请跟我来。这是你们的房间。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小王：</span>
+    <span class="speech">来来来，先点歌。我要唱《成都》。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小李：</span>
+    <span class="speech">你唱那个？<span class="dialect">瓜兮兮</span>的，你会唱吗？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">小王：</span>
+    <span class="speech">你莫管我，先<span class="dialect">整起</span>！唱得好不好不重要，<span class="dialect">吼得响</span>就行！</span>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>重点：</strong>"整起"=开始、搞起。"吼得响"=唱得大声就行，四川人唱歌重在参与和释放，不在乎技巧。"瓜兮兮"在这里是调侃朋友。
+</div>
+
+<h2>语法点：四川话的特殊句式</h2>
+
+<h3>1. "……得很" = 非常……</h3>
+<p>
+  四川话用"得很"来表示程度高，相当于普通话的"非常"、"很"：
+</p>
+<p>
+  <strong>好吃得很</strong> = 非常好吃<br>
+  <strong>累得很</strong> = 非常累<br>
+  <strong>高兴得很</strong> = 非常高兴<br>
+  <strong>热闹得很</strong> = 非常热闹
+</p>
+
+<h3>2. "……得要死" = 超级……</h3>
+<p>
+  比"得很"更强的表达方式：
+</p>
+<p>
+  <strong>热得要死</strong> = 超级热<br>
+  <strong>笑死我了</strong> = 太好笑了<br>
+  <strong>帅得要死</strong> = 超级帅
+</p>
+
+<h3>3. "把"字句的变化</h3>
+<p>
+  普通话"把西瓜切一下"，四川话说"把西瓜<span class="dialect">瓜分一下</span>"。"瓜"在这里是重叠动词的前缀，是四川话的特色。类似的还有"瓜分""瓜吃"等。
+</p>
+
+<div class="tip-box">
+  <strong>💡 社交文化提示：</strong>
+  <ul style="margin-top:0.5rem;padding-left:1.2rem;">
+    <li>四川人约朋友很随意，"有空出来耍"就是最常见的邀请</li>
+    <li>朋友之间互相调侃是常态，"瓜兮兮""瓜娃子"都是玩笑话</li>
+    <li>四川人不爱说"谢谢"，更常说"要得""好嘛"来表达感谢和认可</li>
+    <li>集体活动时，迟到的人通常要"发红包"或请客，这是一种社交规则</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：选对四川话</h2>
+  <p>根据场景选择最地道的四川话表达。共8道题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你想约朋友周末一起聊天放松。</div>
+    <div class="sentence">周末有空不？出来______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">聊天哈</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">摆哈龙门阵</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">说话嘛</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">聚一哈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">朋友请你喝了一杯茶，你想表达感谢和认可。</div>
+    <div class="sentence">______！这茶好巴适。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">非常感谢</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">谢谢你了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">要得</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">好的嘛</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你想说"这个火锅非常好吃"。</div>
+    <div class="sentence">这个火锅______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">好吃得很</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">很好吃啊</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">A和B都对，但A更四川</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">好吃得要死</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">朋友说要去KTV唱歌，你想让他叫上你。</div>
+    <div class="sentence">带我一个嘛！我也想去______。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">唱歌</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">吼两嗓子</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">表演节目</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">展示才艺</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">朋友说"我明天要去打麻将"，你想表达"好啊，我也要去"。</div>
+    <div class="sentence">______！算我一个！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">非常好</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不错嘛</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">要得</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">行吧</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">朋友唱了一首很难的歌，你夸他唱得好。</div>
+    <div class="sentence">哇，你唱得______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">很好听嘛</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">巴适得板</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">太棒了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不错哟</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">朋友约你出去，但你今天很忙。</div>
+    <div class="sentence">今天没空，明天______嘛。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">再说吧</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">以后再说</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">再约</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">改天</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">朋友说"你看那个人的衣服好丑"，你想用四川话开玩笑回应。</div>
+    <div class="sentence">你______的，人家穿啥子关你啥子事嘛。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">多管闲事</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">好八卦</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">瓜兮兮</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">神经病</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>问我任何关于四川话的问题——哪个词什么意思、这句话该怎么说、某个语气词怎么用？尽管问，我就是你的四川话老师。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://www.bilibili.com/search?keyword=四川话教学" target="_blank">B站搜"四川话教学"</a> — 看视频学四川话，听本地人怎么说。
+  <br><br>
+  <a href="../reference/sichuan-social-cheatsheet.html" class="resource-link">查看社交用语速查卡</a>
+</div>
+
+<div class="footer">
+  <a href="0004-gou-wu.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0006-jiu-zuo.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"摆龙门阵"=聊天，是四川话最经典的社交表达。"摆哈龙门阵"=聊一会儿天。', wrong: '普通话会说"聊天"或"聚一聚"，但四川人说"摆龙门阵"，这是四川文化的核心词。' },
+    q2: { correct: '"要得"=好的、行、没问题，四川人表达认可和感谢的万能词。', wrong: '四川人不爱说"谢谢"，更习惯说"要得"来表示认可和感谢。"非常感谢"太正式了。' },
+    q3: { correct: '"好吃得很"=非常好吃，"得很"是四川话的程度副词。A和B都可以，但A更地道。', wrong: '"好吃得很"是最地道的四川话说法。"很好吃啊"是普通话。"好吃得要死"也可以，但语气更强烈。' },
+    q4: { correct: '"吼两嗓子"=唱几首歌，四川人常用"吼"表示大声唱或喊。', wrong: '"吼两嗓子"是四川话里"唱几首歌"的地道说法。"唱歌"太普通了，没有四川味。' },
+    q5: { correct: '"要得"=好的、行，四川人答应别人提议时最常用的词。', wrong: '"要得"是四川话中表示同意的万能词。"行吧"有点勉强，"非常好"太正式。' },
+    q6: { correct: '"巴适得板"=好极了、爽翻了，是"巴适"的加强版，表示极度满意。', wrong: '"巴适得板"是四川话里最高级别的赞美之一。"不错哟"也可以，但力度不够。' },
+    q7: { correct: '"再约"=下次再约，四川人约不成时最常用的说法。', wrong: '"再约"比"改天"更口语化，更符合四川人的说话习惯。' },
+    q8: { correct: '"瓜兮兮"=傻乎乎的，朋友之间开玩笑用的调侃词。', wrong: '"瓜兮兮"是朋友间的调侃，意思是"你瞎操心啥子嘛"。"多管闲事"太正式了。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太巴适了！全对！你已经是个四川通了。';
+      else if (score >= 6) label.textContent = '不错嘛！大部分都掌握了，错的再看看解释。';
+      else label.textContent = '莫急嘛，多听多说，慢慢就学会了。回去再看一遍。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

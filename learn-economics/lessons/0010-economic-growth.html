@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 经济增长与发展</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    background: var(--accent-light);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box {
+    background: #f7f9fb;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 { margin-top: 0; }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  ul.examples-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.examples-list li {
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  ul.examples-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>经济增长与发展</h1>
+<p class="lesson-meta">第10课 · ~12分钟 · 宏观经济学进阶</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解经济增长的源泉——资本、劳动力和技术进步之间的关系；掌握索洛增长模型的基本逻辑；了解为什么有些国家富而有些国家穷；区分"增长"和"发展"的概念。
+</div>
+
+<h2>增长 vs 发展</h2>
+<p>
+  在讨论经济增长之前，我们需要区分两个常被混用的概念：<strong>经济增长（Economic Growth）</strong>和<strong>经济发展（Economic Development）</strong>。
+</p>
+
+<div class="concept-card">
+  <h3>经济增长</h3>
+  <p>指一个国家或地区产出能力的增加，通常用GDP或人均GDP的增长率来衡量。这是一个<strong>数量概念</strong>。</p>
+  <ul class="examples-list">
+    <li>中国GDP年均增长率约6-8%（改革开放至今）</li>
+    <li>美国过去50年人均GDP年均增长约2%</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>经济发展</h3>
+  <p>指经济结构的改善和生活质量的全面提升。这是一个<strong>质量概念</strong>，包括收入分配、教育、健康、环境等维度。</p>
+  <ul class="examples-list">
+    <li>人类发展指数（HDI）综合了寿命、教育和收入</li>
+    <li>基尼系数衡量收入不平等程度</li>
+    <li>绿色GDP把环境污染成本从增长中扣除</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>一个国家可以增长但不发展。比如某些石油出口国GDP很高，但教育、医疗、民主指数很低。增长是发展的必要条件，但不是充分条件。
+</div>
+
+<h2>经济增长的源泉</h2>
+<p>
+  什么驱动了一个国家的长期增长？经济学家们研究了上百年，最终归结为三大要素：
+</p>
+
+<div class="concept-card">
+  <h3>1. 物质资本积累（Physical Capital）</h3>
+  <p>机器、厂房、基础设施等生产工具的积累。</p>
+  <ul class="examples-list">
+    <li>修一条高速公路 → 降低物流成本 → 提升经济效率</li>
+    <li>建一座工厂 → 增加生产能力 → 提高GDP</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>2. 劳动力增长与人力资本（Labor & Human Capital）</h3>
+  <p>更多的人口意味着更多的劳动者，更好的教育和培训意味着更高的劳动生产率。</p>
+  <ul class="examples-list">
+    <li>中国过去40年的"人口红利"：大量农村劳动力转移到城市工业</li>
+    <li>韩国投资教育，从农业国变成了高科技强国</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>3. 技术进步（Technological Progress）</h3>
+  <p>同样的投入，产出更多。这是长期增长的<strong>根本驱动力</strong>。</p>
+  <ul class="examples-list">
+    <li>互联网让信息传递成本趋近于零</li>
+    <li>人工智能正在重塑几乎所有行业</li>
+  </ul>
+</div>
+
+<h2>索洛增长模型（Solow Model）</h2>
+<p>
+  罗伯特·索洛（Robert Solow）在1956年提出的增长模型是宏观经济学最重要的模型之一。它的核心结论非常深刻：
+</p>
+
+<div class="concept-card">
+  <h3>资本积累的"边际递减"规律</h3>
+  <p>
+    每增加一单位资本，产出的增加量会逐渐减少。第一台拖拉机让农民效率翻倍，第二台拖拉机可能只让效率提升10%，第三台可能几乎没用。
+  </p>
+  <div class="formula">MPK（资本的边际产出）随着资本存量增加而递减</div>
+</div>
+
+<div class="concept-card">
+  <h3>稳态（Steady State）</h3>
+  <p>
+    当资本积累带来的产出增加正好等于折旧和人口增长的消耗时，经济达到"稳态"——人均产出不再增长。在稳态下，<strong>只有技术进步才能带来持续的人均增长</strong>。
+  </p>
+</div>
+
+<div class="example-box">
+  <strong>直观理解：</strong><br>
+  想象你在跑步机上跑步。一开始加速很快（资本积累），但跑到一定速度后，你只能维持这个速度（稳态）。要想跑得更快，你需要换一台更快的跑步机——这就是技术进步。
+</div>
+
+<h2>为什么有的国家富，有的国家穷？</h2>
+<p>
+  这是经济学最根本的问题之一。诺贝尔奖得主罗伯特·巴罗（Robert Barro）的研究表明，以下几个因素至关重要：
+</p>
+
+<ul class="examples-list">
+  <li><strong>制度质量：</strong>产权保护、法治、政府效率——这是最根本的因素</li>
+  <li><strong>教育水平：</strong>人力资本决定了技术吸收和创新的能力</li>
+  <li><strong>开放程度：</strong>贸易和投资开放促进技术扩散</li>
+  <li><strong>储蓄率：</strong>高储蓄率支持高投资，推动资本积累</li>
+  <li><strong>地理因素：</strong>热带国家往往面临更多疾病和农业挑战</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>争议焦点：</strong>学者们在这些因素中哪个最重要上存在巨大分歧。阿西莫格鲁（Acemoglu）认为制度是根本原因——好的制度催生好的经济政策和技术创新。而一些学者则认为地理和文化同样重要。
+</div>
+
+<h2>收敛还是发散？</h2>
+<p>
+  一个重要的实证发现叫作"<strong>条件收敛（Conditional Convergence）</strong>"：条件相似的国家（储蓄率、教育水平、制度相近），穷国增长快于富国，最终趋向同一水平。但如果没有这些共同条件，穷国可能永远追不上富国。
+</p>
+
+<div class="example-box">
+  <strong>案例对比：</strong><br>
+  韩国和朝鲜在1950年几乎一样穷——同样的文化、地理、制度起点。70年后，韩国人均GDP约3万美元，朝鲜不到2000美元。这说明了什么？制度和政策选择的力量远超想象。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共有6道题，每题选择一个答案，立即获得反馈。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">概念辨析</div>
+    <div class="question-text">以下哪个指标最能反映一个国家的"经济发展"水平，而不仅仅是"经济增长"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP总量</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">GDP增长率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人类发展指数（HDI）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">外汇储备规模</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">索洛模型理解</div>
+    <div class="question-text">根据索洛增长模型，在稳态下，人均产出的持续增长来源于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">资本积累的增加</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">劳动力数量的增加</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">技术进步</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">储蓄率的提高</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">边际递减</div>
+    <div class="question-text">为什么资本积累的边际产出会递减？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为机器会磨损老化</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为每新增一台机器，它的利用率相对于现有劳动力来说越来越低</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为原材料会耗尽</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为政府会加税</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">案例分析</div>
+    <div class="question-text">韩国和朝鲜在1950年起点相似，但现在差距巨大。这主要说明了什么因素的重要性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">地理因素</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">自然资源禀赋</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">制度和政策选择</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">文化传统</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">概念应用</div>
+    <div class="question-text">"条件收敛"意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有穷国最终都会追上富国</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">条件相似的国家中，穷国增长更快，趋向同一水平</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">富国的增长速度永远快于穷国</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">经济增长与经济发展是同一回事</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">综合分析</div>
+    <div class="question-text">以下哪个因素被认为是对长期经济增长影响最大的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">外汇储备</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">短期利率政策</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">制度质量（产权保护、法治、政府效率）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">自然资源储量</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？随时问我。</strong>索洛模型有点抽象？不理解为什么资本积累不能带来永久增长？想知道中国在经济增长中的特殊角色？这些都是经济学最前沿的议题。告诉我你的想法，我们一起探讨。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://www.econlib.org/library/Enc/GrowthTheory.html" target="_blank" class="resource-link">Mises Institute: Economic Growth Theory</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0011-behavioral-economics.html">下一课：行为经济学</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确！HDI综合了预期寿命、教育年限和人均收入，是衡量"发展"而非单纯"增长"的最佳指标。',
+      wrong: 'GDP总量和增长率只衡量经济规模，不反映生活质量。外汇储备衡量国际支付能力。HDI综合了健康、教育和收入，才是衡量"发展"的指标。'
+    },
+    q2: {
+      correct: '完全正确！索洛模型的核心结论：资本积累的边际递减意味着它不能带来永久增长，只有技术进步才能实现人均产出的持续增长。',
+      wrong: '在稳态下，资本积累和劳动力增长只能让人均产出维持在一个水平上。要持续增长，必须有技术进步——它让同样的投入产出更多。'
+    },
+    q3: {
+      correct: '正确！边际递减是因为每新增一台机器，分到的工人数量减少了。一台拖拉机配一个农民效率最高，十台拖拉机配一个农民就没意义了。',
+      wrong: '边际递减不是因为机器老化或资源耗尽，而是因为资本和劳动力的比例失衡。每台新增机器分到的工人越来越少，所以增产效果越来越小。'
+    },
+    q4: {
+      correct: '正确！韩国和朝鲜的案例被称为"自然实验"——相同的文化和地理条件，不同的制度和政策，导致了巨大的经济差距。',
+      wrong: '韩国和朝鲜共享相同的文化、地理和历史起点。唯一的重大差异是制度和政策选择——韩国的市场经济vs朝鲜的计划经济。'
+    },
+    q5: {
+      correct: '正确！"条件收敛"强调的前提是"条件相似"——储蓄率、教育水平、制度等相近的国家之间才会出现穷国追赶富国的现象。',
+      wrong: '"条件收敛"不是说所有穷国都会追上富国，而是说在相似条件下（储蓄率、教育、制度等），穷国会增长更快。条件不同，结果也不同。'
+    },
+    q6: {
+      correct: '正确！大量实证研究表明，制度质量是影响长期经济增长最核心的因素。好的制度激励人们投资、创新和交易。',
+      wrong: '外汇储备、利率政策和自然资源都是短期或次要因素。制度质量——产权保护、法治、政府效率——决定了人们是否有动力去创造财富。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 6;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对经济增长的理解非常深入。';
+      else if (score >= 4) label.textContent = '不错！回顾一下错题的解释，理解会更全面。';
+      else label.textContent = '建议重新阅读索洛模型部分，这是理解经济增长的关键。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 — 制度经济学：规则如何塑造经济</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    background: var(--accent-light);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box {
+    background: #f7f9fb;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 { margin-top: 0; }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  ul.examples-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.examples-list li {
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  ul.examples-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>制度经济学：规则如何塑造经济</h1>
+<p class="lesson-meta">第12课 · ~12分钟 · 制度与经济绩效</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解制度（正式规则和非正式约束）如何从根本上塑造经济绩效；掌握诺斯、威廉姆森等人的核心观点；区分不同类型的制度安排及其经济后果；思考"好制度"的标准是什么。
+</div>
+
+<h2>为什么制度很重要？</h2>
+<p>
+  想象两个国家，地理相近、文化相似、资源丰富程度差不多，但经济发展差距巨大。为什么会这样？答案往往指向同一个词：<strong>制度（Institutions）</strong>。
+</p>
+<p>
+  制度经济学的核心命题是：<strong>制度是经济绩效的根本决定因素。</strong>资本、劳动力、技术都很重要，但它们如何被组织、如何被激励使用，取决于制度框架。
+</p>
+
+<div class="chinese-note">
+  <strong>一个经典对比：</strong>朝鲜和韩国。1950年两国几乎一模一样——同样的民族、同样的文化、同样的地理条件、同样的自然资源起点。今天，韩国人均GDP约3万美元，朝鲜不到2000美元。唯一的根本差异是制度：市场经济 vs 计划经济。
+</div>
+
+<h2>什么是制度？</h2>
+<p>
+  诺贝尔奖得主道格拉斯·诺斯（Douglass North）给出了最著名的定义：<strong>制度是"社会的游戏规则"——或者是人为设计的、用来约束人类互动的结构和激励。</strong>
+</p>
+
+<div class="concept-card">
+  <h3>正式制度（Formal Institutions）</h3>
+  <p>明文规定的规则，由国家强制力保证执行。</p>
+  <ul class="examples-list">
+    <li>宪法和法律</li>
+    <li>产权制度（谁拥有什么、如何使用）</li>
+    <li>合同法和公司法</li>
+    <li>税收制度</li>
+    <li>市场监管规则</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>非正式制度（Informal Institutions）</h3>
+  <p>不成文的规范、习俗、价值观和行为准则。</p>
+  <ul class="examples-list">
+    <li>信任文化——陌生人之间是否容易建立合作</li>
+    <li>商业道德——契约精神是否深入人心</li>
+    <li>关系网络（Guanxi）——在中国社会中，人际关系对经济活动的影响</li>
+    <li>社会规范——对勤劳、创新、冒险的态度</li>
+  </ul>
+</div>
+
+<h2>制度的核心功能</h2>
+
+<h3>1. 降低交易成本</h3>
+<p>
+  制度最基本的功能是降低人与人之间的"交易成本"——获取信息、谈判、监督和执行的成本。
+</p>
+<div class="example-box">
+  <strong>有制度的情况：</strong>你在中国网购，因为平台有评价系统、支付宝有担保交易、消费者保护法有规定——你敢于下单。没有这些制度，你可能不敢在网上买东西，因为担心被骗。
+</div>
+
+<h3>2. 提供激励</h3>
+<p>
+  制度决定了"做什么有利可图"。好的制度激励人们创造价值，坏的制度激励人们掠夺价值。
+</p>
+<div class="example-box">
+  <strong>对比：</strong>在专利保护完善的国家，发明新药的公司可以获得垄断利润来回收研发成本——这激励创新。在没有专利保护的地方，公司没有动力投入昂贵的研发——因为仿制药可以立刻抢走市场。
+</div>
+
+<h3>3. 解决"谁说了算"的问题</h3>
+<p>
+  制度规定了权力的边界。谁有权征税？谁可以罢免官员？企业家敢不敢投资而不必担心资产被没收？
+</p>
+
+<h2>包容性制度 vs 榨取性制度</h2>
+<p>
+  阿西莫格鲁（Daron Acemoglu）和罗宾逊（James Robinson）在《国家为什么会失败》中提出了一个深刻的分类：</p>
+
+<div class="concept-card">
+  <h3>包容性制度（Inclusive Institutions）</h3>
+  <p>让大多数人能够参与经济活动、分享收益的制度。</p>
+  <ul class="examples-list">
+    <li>广泛的产权保护</li>
+    <li>法治面前人人平等</li>
+    <li>开放的市场经济</li>
+    <li>公平的选举和政治参与</li>
+    <li>鼓励创新和投资的税收政策</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>榨取性制度（Extractive Institutions）</h3>
+  <p>让少数精英从多数人身上提取资源的制度。</p>
+  <ul class="examples-list">
+    <li>产权只保护精英阶层</li>
+    <li>法律成为压迫工具</li>
+    <li>垄断和准入壁垒</li>
+    <li>强制劳动或高额剥削性税收</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心论点：</strong>榨取性制度可能在短期内带来增长（比如苏联早期），但不能持续。包容性制度虽然看起来"低效"（因为有制衡、有辩论），但长期来看创造了持续创新的土壤。
+</div>
+
+<h2>制度变迁的路径依赖</h2>
+<p>
+  制度一旦形成，就会有很强的"惯性"——这叫<strong>路径依赖（Path Dependence）</strong>。一个初始的制度选择，可能会把整个社会锁定在某条发展路径上。
+</p>
+
+<div class="example-box">
+  <strong>经典案例：拉丁美洲的殖民遗产</strong><br>
+  西班牙在拉美建立了以采矿和种植园为主的榨取性制度，由少数精英控制。即使后来独立了，这些制度结构依然延续——精英阶层不愿放弃特权。相比之下，北美殖民地因为气候不适合大规模种植园，建立了更分散的土地所有制和更包容的制度。
+</div>
+
+<h2>制度 vs 文化 vs 地理</h2>
+<p>
+  关于经济发展的原因，有三个主要解释框架：</p>
+
+<table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.95rem;">
+  <thead>
+    <tr style="background:var(--accent-light);">
+      <th style="padding:0.5rem;border:1px solid var(--border);text-align:left;">因素</th>
+      <th style="padding:0.5rem;border:1px solid var(--border);text-align:left;">代表人物</th>
+      <th style="padding:0.5rem;border:1px solid var(--border);text-align:left;">核心观点</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:0.5rem;border:1px solid var(--border);">制度</td>
+      <td style="padding:0.5rem;border:1px solid var(--border);">阿西莫格鲁、诺斯</td>
+      <td style="padding:0.5rem;border:1px solid var(--border);">制度是根本原因</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border:1px solid var(--border);">文化</td>
+      <td style="padding:0.5rem;border:1px solid var(--border);">韦伯、福山</td>
+      <td style="padding:0.5rem;border:1px solid var(--border);">信任、宗教、价值观影响经济</td>
+    </tr>
+    <tr>
+      <td style="padding:0.5rem;border:1px solid var(--border);">地理</td>
+      <td style="padding:0.5rem;border:1px solid var(--border);">杰弗里·萨克斯</td>
+      <td style="padding:0.5rem;border:1px solid var(--border);">气候、疾病、资源禀赋决定发展</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  目前学术界的主流观点是：<strong>制度是最核心的因素</strong>，但文化、地理也会通过影响制度形成来发挥作用。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共有6道题，每题选择一个答案，立即获得反馈。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">概念理解</div>
+    <div class="question-text">根据诺斯的定义，制度的核心功能是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">制定法律条文</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约束人类互动、提供激励</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">促进国际贸易</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加政府财政收入</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">制度分类</div>
+    <div class="question-text">以下哪项属于"非正式制度"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">《公司法》</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">个人所得税法</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">社会中的信任文化和契约精神</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">中央银行利率政策</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">包容性 vs 榨取性</div>
+    <div class="question-text">以下哪种制度安排最可能属于"榨取性制度"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">广泛的产权保护和法治</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">公平的选举和权力制衡</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">精英阶层垄断关键资源，普通民众被排除在经济参与之外</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">鼓励创新的专利制度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">路径依赖</div>
+    <div class="question-text">"路径依赖"在制度经济学中意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">历史不重要，未来才是关键</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">初始的制度选择会对后续发展产生深远影响，甚至形成"锁定"效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">制度总是朝着更好的方向演进</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有国家最终都会发展出相似的制度</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">政策分析</div>
+    <div class="question-text">如果一个国家建立了完善的专利保护制度，这主要通过什么机制促进经济增长？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">降低了交易成本</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">提供了创新的激励——让发明者可以从创新中获得回报</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加了政府的财政收入</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">减少了国际贸易壁垒</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">综合理解</div>
+    <div class="question-text">阿西莫格鲁和罗宾逊认为，韩国和朝鲜经济发展差距的根本原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">地理条件不同</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">文化传统不同</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">制度选择不同——市场经济 vs 计划经济</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">自然资源禀赋不同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？随时问我。</strong>制度这个话题很深——好的制度一定是"西方民主制度"吗？中国的发展模式说明了什么？制度变迁有可能"自上而下"推动吗？这些都是经济学和政治学最前沿的争论。告诉我你的想法。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://www.amazon.cn/dp/7508626858" target="_blank" class="resource-link">《国家为什么会失败》— 阿西莫格鲁 & 罗宾逊</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <span class="nav-disabled">最后一课</span>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确！诺斯认为制度的本质是"社会的游戏规则"——它约束人类互动的方式，同时提供激励结构，决定了人们做什么有利可图。',
+      wrong: '诺斯的定义是：制度是"社会的游戏规则"。它的核心功能是通过约束和激励来影响人类互动，而不是简单地制定法律或增加收入。'
+    },
+    q2: {
+      correct: '正确！信任文化、契约精神、商业道德等都是非正式制度——它们不成文，但深刻影响着经济行为。',
+      wrong: '《公司法》、税法、央行政策都是正式制度（有明文规定、由国家强制力执行）。信任和契约精神是非正式制度——它们在社会中潜移默化地发挥作用。'
+    },
+    q3: {
+      correct: '正确！榨取性制度的核心特征就是精英垄断资源，普通民众被排除在经济参与之外，他们的劳动成果被提取到精英手中。',
+      wrong: '产权保护、法治、选举、专利制度都是包容性制度的特征。榨取性制度的核心是少数人控制资源、多数人无法参与经济活动。'
+    },
+    q4: {
+      correct: '正确！路径依赖意味着"历史很重要"——初始的制度选择会产生累积效应，把社会锁定在特定的发展轨迹上。这就是为什么制度改革如此困难。',
+      wrong: '路径依赖不是说历史不重要，恰恰相反——它强调初始条件对后续发展的决定性影响。制度不会自动变好，也不会自动趋同。'
+    },
+    q5: {
+      correct: '正确！专利保护通过"激励"机制促进增长：发明者知道他们可以独占收益，所以愿意投入时间和资金去创新。',
+      wrong: '专利制度主要不是降低交易成本或增加财政收入，而是通过确保创新者能够获得回报，从而激励更多人从事研发和创新。'
+    },
+    q6: {
+      correct: '正确！韩国和朝鲜是制度经济学的经典"自然实验"——相同的文化、地理、历史起点，不同的制度选择，导致了截然不同的经济命运。',
+      wrong: '韩国和朝鲜共享相同的民族、文化和地理条件。差异的核心在于制度：韩国实行市场经济和民主政治，朝鲜实行计划经济和专制体制。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 6;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对制度经济学的核心理念掌握得很好。';
+      else if (score >= 4) label.textContent = '不错！回顾一下错题的解释，制度的力量比表面看起来更深。';
+      else label.textContent = '建议重读包容性制度和榨取性制度的区别——这是理解经济发展的关键。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

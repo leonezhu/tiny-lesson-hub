@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 工作与职场（上班、开会、同事交流）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .vocab-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .vocab-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .vocab-list li {
+    padding: 0.3rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .vocab-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .vocab-list .sc { font-weight: 600; color: var(--accent); }
+  .vocab-list .py { color: var(--muted); font-size: 0.9rem; }
+  .vocab-list .mn { color: var(--text); }
+
+  .dialogue-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .dialogue-box h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  .dialogue-line {
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+  }
+
+  .dialogue-line .speaker {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .dialect-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .dialect-note strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>工作与职场（上班、开会、同事交流）</h1>
+<p class="lesson-meta">第7课 · 约10分钟 · 四川话职场表达</p>
+
+<div class="goal-box">
+  <strong>学完这节课</strong>，你能用四川话聊上班、开会、跟同事打招呼，还能在办公室用四川话"摆"一摆工作情况——不是背单词，是真正能在四川的办公室里融入的那种自然说法。
+</div>
+
+<h2>为什么学这个</h2>
+<p>
+  四川的职场有一个很有趣的现象：普通话是正式场合的"外壳"，但四川话才是同事之间、熟人之间的"内核"。你在成都的办公室，开会用普通话，但到了茶水间、午饭时间，大家自然就会切换成四川话。学会这些表达，能让你在四川的职场里不再是个"外地人"。
+</p>
+
+<div class="dialect-note">
+  <strong>核心规律：</strong>四川话在职场表达中的最大特点，是把很多普通话的书面词换成更口语、更有生活气息的说法。比如"上班"可以说"打卡"或者直接说"去公司"，"开会"会说"开会会"或者"扯会儿"（扯皮、讨论的意思）。
+</div>
+
+<h2>一、上班相关</h2>
+
+<div class="vocab-card">
+  <h3>日常通勤与上班</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">打卡</span> <span class="py">da ka</span> — 上班签到，四川话和普通话一样说，但语气更随意：<em>"我每天都八点半过就卡到了。"</em></li>
+    <li><span class="sc">迟到</span> <span class="py">chi dou</span> — 普通话读 chídào，四川话读 <em>cí-dòu</em>，声调变了：<em>"今天堵车，我迟到了哈。"</em></li>
+    <li><span class="sc">早走</span> <span class="py">zou zao</span> — 提前下班，四川话说：<em>"我明天想早点走，有事。"</em></li>
+    <li><span class="sc">加班</span> <span class="py">jia ban</span> — 和普通话一样，但四川话常说：<em>"又在加喔？"</em>（语气词"喔"强调惊讶或关心）</li>
+    <li><span class="sc">摸鱼</span> <span class="py">mo yu</span> — 上班偷懒，四川话也有说法：<em>"莫在办公室头摸鱼喔，老板在看。"</em></li>
+    <li><span class="sc">准点</span> <span class="py">zun dian</span> — 准时，四川话说：<em>"你每天都准点到的？"</em></li>
+  </ul>
+</div>
+
+<div class="dialect-note">
+  <strong>成都话小贴士：</strong>"办公室头" = 办公室里。四川话常用"头"表示"里面"的空间概念。<em>"在办公室头搞啥子？"</em> = 在办公室里干什么？
+</div>
+
+<h2>二、开会场景</h2>
+
+<div class="vocab-card">
+  <h3>会议中的四川话表达</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">开会</span> <span class="py">kai hui</span> — 普通话里就说"开会"，四川话说：<em>"下午三点有个会，你要不嘛？"</em></li>
+    <li><span class="sc">扯皮</span> <span class="py">ce pi</span> — 开会讨论（通常带贬义，指争论不休）：<em>"那个会硬是扯皮，扯了两三个钟头。"</em></li>
+    <li><span class="sc">拍板</span> <span class="py">pa ban</span> — 做决定：<em>"这个事老总要明天才拍板。"</em></li>
+    <li><span class="sc">过一下</span> <span class="py">guo yi xia</span> — 快速讨论/审查：<em>"你把方案拿来，我们过一下。"</em></li>
+    <li><span class="sc">甩锅</span> <span class="py">shuai guo</span> — 推卸责任：<em>"他又在甩锅了，明明是他没做好。"</em></li>
+    <li><span class="sc">接活</span> <span class="py">jie huo</span> — 承接任务：<em>"老板又把活甩给我了。"</em></li>
+  </ul>
+</div>
+
+<div class="dialogue-box">
+  <h3>对话：茶水间的闲聊</h3>
+  <div class="dialogue-line"><span class="speaker">老王：</span>你昨天那个会开如果嘛？（昨天那个会议开得怎么样？）</div>
+  <div class="dialogue-line"><span class="speaker">小李：</span>硬是扯皮！扯了两个钟头，啥子结论都没得。</div>
+  <div class="dialogue-line"><span class="speaker">老王：</span>哎呀，又甩锅了？</div>
+  <div class="dialogue-line"><span class="speaker">小李：</span>那个！设计部把锅甩到我们技术头了。</div>
+  <div class="dialogue-line"><span class="speaker">老王：</span>算了算了，下午还要过方案，你搞快点。</div>
+  <div class="dialect-note" style="margin-top:0.75rem;"><strong>翻译：</strong>小李说会议很浪费时间（扯皮），没有人做决定，设计部推卸责任。老王安慰后提醒下午还有工作。</div>
+</div>
+
+<h2>三、跟同事交流</h2>
+
+<div class="vocab-card">
+  <h3>办公室日常对话</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">你搞哪样</span> <span class="py">ni goo yaang</span> — 你干什么？/ 你在忙啥？（熟人之间用，语气友好）</li>
+    <li><span class="sc">巴适</span> <span class="py">ba si</span> — 好、舒服、不错：<em>"这个方案巴适得很！"</em></li>
+    <li><span class="sc">瓜娃子</span> <span class="py">gua wa zi</span> — 笨蛋（熟人之间开玩笑用，不要对领导说！）</li>
+    <li><span class="sc">雄起</span> <span class="py">xiong qi</span> — 加油、起来：<em>"兄弟，雄起！今晚通宵把它搞完。"</em></li>
+    <li><span class="sc">摆平</span> <span class="py">bai ping</span> — 搞定、解决：<em>"这个事我已经摆平了。"</em></li>
+    <li><span class="sc">莫得事</span> <span class="py">mo de si</span> — 没问题、没关系：<em>"这点小事，莫得事。"</em></li>
+  </ul>
+</div>
+
+<div class="comparison-table">
+  <table>
+    <tr><th>普通话</th><th>四川话</th><th>备注</th></tr>
+    <tr><td>你好吗？</td><td>你好哇？/ 最近如果嘛？</td><td>"如果" = 怎么样</td></tr>
+    <tr><td>我知道了</td><td>晓得了 / 知道了</td><td>"晓得"比"知道"更口语</td></tr>
+    <tr><td>没关系</td><td>莫得事 / 不打紧</td><td>"不打紧"在成都话里很常用</td></tr>
+    <tr><td>做什么</td><td>搞哪样 / 做啥子</td><td>"啥子"是标志性词汇</td></tr>
+    <tr><td>不行</td><td>雄不起来 / 搞不赢</td><td>"搞不赢" = 来不及/搞不定</td></tr>
+    <tr><td>很好</td><td>巴适 / 巴适得很</td><td>经典成都话，万物皆可巴适</td></tr>
+  </table>
+</div>
+
+<div class="dialect-note">
+  <strong>关键词"啥子"：</strong>四川话里最高频的词之一，相当于"什么"，但比"什么"更口语、更接地气。<em>"你在搞啥子？" "这是啥子？" "啥子时候？"</em> 学会这个，你的四川话立刻就有内味了。
+</div>
+
+<h2>四、职场进阶表达</h2>
+
+<div class="vocab-card">
+  <h3>更地道的说法</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">搞不赢</span> <span class="py">goo bu ring</span> — 来不及、搞不定：<em>"今天这么多活，搞不赢喔。"</em></li>
+    <li><span class="sc">硬是</span> <span class="py">yin si</span> — 真是、确实是（强调）：<em>"这个客户硬是难搞！"</em></li>
+    <li><span class="sc">瓜兮兮</span> <span class="py">gua xi xi</span> — 傻乎乎的样子：<em>"你瓜兮兮的，那个邮件早该发了。"</em></li>
+    <li><span class="sc">甩脱</span> <span class="py">shuai tuo</span> — 摆脱、脱手：<em>"这个项目终于甩脱了，轻松了。"</em></li>
+    <li><span class="sc">安分</span> <span class="py">an fen</span> — 规矩、本分：<em>"你安分点嘛，不要在老板面头乱说。"</em></li>
+    <li><span class="sc">麻溜</span> <span class="py">ma liu</span> — 快点、利索：<em>"麻溜点，还要赶车。"</em></li>
+  </ul>
+</div>
+
+<div class="dialogue-box">
+  <h3>对话：项目汇报</h3>
+  <div class="dialogue-line"><span class="speaker">经理：</span>小张，那个项目如果了嘛？</div>
+  <div class="dialogue-line"><span class="speaker">小张：</span>已经摆平了，客户也同意了。</div>
+  <div class="dialogue-line"><span class="speaker">经理：</span>巴适！那个预算硬是超了？</div>
+  <div class="dialogue-line"><span class="speaker">小张：</span>是超了一点点，但是效果巴适得很，值得。</div>
+  <div class="dialogue-line"><span class="speaker">经理：</span>晓得了，明天开会过一下，你准备一下。</div>
+  <div class="dialogue-line"><span class="speaker">小张：</span>没问题，我搞快点。</div>
+  <div class="dialect-note" style="margin-top:0.75rem;"><strong>要点：</strong>即使是工作汇报，四川人也常用四川话在私下场合交流。"巴适"夸成果好，"摆平"表示搞定，"晓得了"表示收到/知道了。</div>
+</div>
+
+<div class="dialect-note">
+  <strong>重要提醒：</strong>四川话在职场里通常是"半公开"的。对内（同事之间）用四川话很自然，但对客户、对上级在正式场合还是用普通话更安全。"看人下菜碟"是基本原则。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：测试一下</h2>
+  <p>下面是8道题目，看看你掌握了多少四川话职场表达。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">同事问你会议开得怎么样，你说会议扯了很久，没有结论。用四川话怎么说？</div>
+    <div class="sentence">那个会硬是________，啥子结论都没得。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">扯皮</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">巴适</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你想说"这个方案很好"。</div>
+    <div class="sentence">这个方案________得很！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">扯皮</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">巴适</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">同事问你"你在干什么？"，用四川话怎么说？</div>
+    <div class="sentence">你________？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">啥子时候</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">搞哪样 / 做啥子</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你说"我在办公室里面忙"，四川话怎么说？</div>
+    <div class="sentence">我在办公室________忙。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">头</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">面</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">同事说项目"搞不定了"，用四川话说。</div>
+    <div class="sentence">这个项目________。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">摆了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">搞不赢</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你说"你真是难搞啊"，用四川话的强调方式怎么说？</div>
+    <div class="sentence">这个客户________难搞！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">硬是</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">瓜兮兮</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">同事说"我已经搞定了"，用四川话说。</div>
+    <div class="sentence">这个事我已经________了。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">扯皮</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">摆平</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">同事问你"明天有空吗？"，你说"没问题"，用四川话怎么说？</div>
+    <div class="sentence">________，明天有空的。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">硬是</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">莫得事</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——哪句话什么意思、怎么说更地道，都可以。你不是在背课文，是在学一门活语言。我陪你练。
+  <br><br>
+  <strong>下一步：</strong>第8课 <em>教育与学校</em>，学学四川话里关于上学、考试、老师的说法。
+  <br><br>
+  <a href="../reference/workplace-quick-ref.html" class="resource-link">查看职场快速参考卡</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0008-jiao-yu.html">下一课</a>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"扯皮"指开会讨论但没结论，是四川话职场经典表达。"硬是扯皮"= 真是扯了很久。', wrong: '"巴适"是好、舒服的意思，不能用来形容开会。形容扯皮没结果的会议要用"扯皮"。' },
+    q2: { correct: '"巴适" = 好、棒。"巴适得很"是四川话夸东西好的标准说法。', wrong: '"扯皮"是贬义词，指开会没结果。夸方案应该用"巴适"。' },
+    q3: { correct: '"搞哪样"或"做啥子" = 干什么。"啥子"是四川话标志词，替代"什么"。', wrong: '"啥子时候" = 什么时候，是问时间的。问"在干什么"应该用"搞哪样"或"做啥子"。' },
+    q4: { correct: '"头"在四川话里表示"里面"。"办公室头" = 办公室里。', wrong: '"面"是普通话用法。四川话用"头"表示空间内部："办公室头"、"家头"。' },
+    q5: { correct: '"搞不赢" = 来不及、搞不定。"这个项目搞不赢" = 做不完/搞不定。', wrong: '"摆了"不是这个意思。"搞不赢"才是表达"做不完、搞不定"的四川话说法。' },
+    q6: { correct: '"硬是"是强调词，相当于"真是"。"硬是难搞"= 真是太难搞了。', wrong: '"瓜兮兮"是傻乎乎的意思，不能用来强调"难搞"。强调用"硬是"。' },
+    q7: { correct: '"摆平" = 搞定、解决。"这个事摆平了" = 这件事已经搞定了。', wrong: '"扯皮"指争论不休，和"搞定"完全相反。搞定应该用"摆平"。' },
+    q8: { correct: '"莫得事" = 没问题、没关系。"莫得事，明天有空的" = 没问题。', wrong: '"硬是"是强调词（真是），不是表示"没问题"的用法。表示"没问题"用"莫得事"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '巴适！全对！你的四川话职场表达已经够用了。';
+      else if (score >= 6) label.textContent = '不错！错的几题复习一下，其他已经掌握了。';
+      else label.textContent = '多练几次嘛！重新看一遍课文，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

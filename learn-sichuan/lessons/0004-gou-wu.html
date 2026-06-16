@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — 四川话里的购物砍价</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #c0392b;
+    --accent-light: #fdf2f2;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .vocab-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+  }
+
+  .vocab-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    background: var(--accent-light);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .vocab-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+
+  .vocab-table tr:last-child td { border-bottom: none; }
+
+  .dialect { font-weight: 600; color: var(--accent); }
+  .standard { color: var(--muted); font-size: 0.9rem; }
+
+  .dialogue-box {
+    background: #f7f8fa;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .dialogue-line {
+    margin: 0.75rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--border);
+  }
+
+  .dialogue-line .speaker {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .dialogue-line .speech {
+    font-size: 1rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .tip-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .tip-box strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', 'Noto Serif SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话里的购物砍价</h1>
+<p class="lesson-meta">第4课 · 约10分钟 · 购物与砍价</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>学会在菜市场、夜市、商场用四川话砍价和讨价还价，掌握四川人买东西时最地道的表达方式。
+</div>
+
+<h2>为什么学这个</h2>
+<p>
+  在四川，买菜去菜市场，买衣服去夜市或者批发市场——这些地方大多可以砍价。普通话里你说"能不能便宜点"，四川人有更地道的说法。学会了这些，你就不像个外地人了。
+</p>
+<p>
+  四川话的砍价文化有两个特点：<strong>一是语气要"软"</strong>，不能太硬，否则老板嫌你不讲理；<strong>二是会用一些特有的词汇</strong>，比如"巴适""扯白"等。
+</p>
+
+<h2>核心词汇</h2>
+
+<div class="vocab-card">
+  <h3>🛒 市场常用词</h3>
+  <table class="vocab-table">
+    <tr><th>四川话</th><th>普通话</th><th>说明</th></tr>
+    <tr><td class="dialect">啥子</td><td class="standard">什么</td><td>最常用疑问词，啥子东西、啥子价格</td></tr>
+    <tr><td class="dialect">好多</td><td class="standard">多少</td><td>问价格用"好多钱"，不是"多少钱"</td></tr>
+    <tr><td class="dialect">贵死了</td><td class="standard">太贵了</td><td>"……死了"是强调结构，贵死了、累死了</td></tr>
+    <tr><td class="dialect">便宜点儿嘛</td><td class="standard">便宜一点吧</td><td>"嘛"是撒娇式的语气词，砍价必备</td></tr>
+    <tr><td class="dialect">打个折</td><td class="standard">打折</td><td>口语中说"打个折""少点嘛"</td></tr>
+    <tr><td class="dialect">拿手</td><td class="standard">拿给我</td><td>"拿手"=拿给我，四川话常用省略</td></tr>
+    <tr><td class="dialect">巴适</td><td class="standard">好、舒服、地道</td><td>好东西可以说"巴适得板"</td></tr>
+    <tr><td class="dialect">瓜娃子</td><td class="standard">傻孩子</td><td>熟人之间开玩笑用，别对陌生人说</td></tr>
+    <tr><td class="dialect">莫</td><td class="standard">不要</td><td>"莫贵了""莫走嘛"——否定词"莫"超常用</td></tr>
+    <tr><td class="dialect">晓得</td><td class="standard">知道</td><td>"晓不得"=不知道</td></tr>
+  </table>
+</div>
+
+<h2>场景一：菜市场买菜</h2>
+
+<div class="dialogue-box">
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">老板，这西红柿<span class="dialect">咋子卖</span>？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">老板：</span>
+    <span class="speech">三块五一斤。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">哎呀，<span class="dialect">贵死了</span>！隔壁市场才两块五。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">老板：</span>
+    <span class="speech">妹儿，我这个是好西红柿，你看这个颜色……</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">三块钱嘛，<span class="dialect">拿两斤</span>。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">老板：</span>
+    <span class="speech">算了算了，<span class="dialect">遭你了</span>，三块就三块。</span>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>重点：</strong>"咋子卖"=怎么卖，"遭你了"=服了你了（妥协时的说法），"妹儿"是对年轻女性的称呼。四川菜市场砍价的核心就是"磨"——反复说贵，老板慢慢就松口了。
+</div>
+
+<h2>场景二：夜市买衣服</h2>
+
+<div class="dialogue-box">
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">这件衣服<span class="dialect">好多钱</span>？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">老板：</span>
+    <span class="speech">一百八。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">啊？<span class="dialect">贵惨了</span>！五十卖不卖？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">老板：</span>
+    <span class="speech">哎哟，你开<span class="dialect">扯白</span>哦！进价都不止五十！八十最低了。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">六十，成交不？不成交我走了哈。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">老板：</span>
+    <span class="speech">过来过来，七十，算是交个朋友。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">行嘛，<span class="dialect">巴适</span>！</span>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>重点：</strong>"开扯白"=说瞎话、吹牛。夜市砍价有个规律：老板报价后，你直接砍到三分之一左右，然后双方各让一步。最后说"巴适"表示满意成交。
+</div>
+
+<h2>场景三：商场里不讲价</h2>
+<p>
+  注意：商场、超市、连锁店<strong>不能砍价</strong>。这些地方的四川话重点是<strong>问促销和折扣</strong>：
+</p>
+
+<div class="dialogue-box">
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">请问这个在搞啥子活动不？</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">店员：</span>
+    <span class="speech">现在第二件半价。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">哦，那就是买两件比单买一件划算嘛。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">店员：</span>
+    <span class="speech">对头！而且今天还可以积分。</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    <span class="speech">那给我包起来嘛。</span>
+  </div>
+</div>
+
+<div class="chinese-note">
+  <strong>重点：</strong>"对头"=对的、没错，四川话高频肯定词。"包起来"=帮我包起来（结账）。商场里不用砍价，但要学会问"有啥子活动"。
+</div>
+
+<div class="tip-box">
+  <strong>💡 砍价小贴士：</strong>
+  <ul style="margin-top:0.5rem;padding-left:1.2rem;">
+    <li>菜市场：直接说"三块嘛""两块五嘛"，报一个你觉得合理的价格</li>
+    <li>夜市：先问价，然后砍到1/3，双方各让一步</li>
+    <li>关键词："嘛"字结尾显得随和，"死了/惨了"用来夸张地嫌贵</li>
+    <li>莫用普通话的"您"，四川人说"老板"或者"师傅"</li>
+  </ul>
+</div>
+
+<h2>语法点："……死了"和"……惨了"</h2>
+<p>
+  四川话喜欢用"死了"和"惨了"来<strong>程度副词</strong>，相当于普通话的"非常"：
+</p>
+<p>
+  <strong>贵死了</strong> = 太贵了<br>
+  <strong>热惨了</strong> = 非常热<br>
+  <strong>好吃死了</strong> = 特别好吃<br>
+  <strong>累死了</strong> = 非常累<br>
+  <strong>笑惨了</strong> = 笑得不得了
+</p>
+<p>
+  这个结构可以用于正面和负面情绪，是四川话里最常用的强调方式之一。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：选对四川话</h2>
+  <p>根据场景选择最地道的四川话表达。共8道题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在菜市场问西红柿的价格。</div>
+    <div class="sentence">老板，这西红柿______？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">啥子卖的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">咋子卖的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">多少卖的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">怎么卖的啦</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你觉得老板报价太高了。</div>
+    <div class="sentence">哎呀，______！隔壁才卖两块五。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">太贵了嘛</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">贵死了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">好贵哦</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">贵得很呐</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">老板说你的出价在开玩笑。</div>
+    <div class="sentence">你开______哦！进价都不止这个数！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">瞎话</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">玩笑</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">扯白</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">空话</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">店员确认促销活动是对的。</div>
+    <div class="sentence">对头！第二件半价，______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">对啊</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">没错呢</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">对头</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">是的呀</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你在夜市想买衣服，想表达"给我拿过来看看"。</div>
+    <div class="sentence">把那件______看一下嘛。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">拿给我</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">拿手</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">递给我</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">给我拿</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">天气很热，你想用四川话夸张地说。</div>
+    <div class="sentence">今天______！热得我都要化了。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">热得很</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">好热哦</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">热惨了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">太热了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">老板最终同意降价，表示妥协。</div>
+    <div class="sentence">算了算了，______，三块就三块。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">服了你</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">遭你了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">认命了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">没办法嘛</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你在商场问有没有优惠活动。</div>
+    <div class="sentence">请问这个在搞啥子______不？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">买卖</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">事情</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">活动</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">名堂</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong> 问我任何关于四川话的问题——哪个词什么意思、什么时候能用、怎么说更地道？随时问，我来解释。<br><br>
+  <strong>推荐练习：</strong>下次去菜市场或夜市，试着用四川话砍价。说"咋子卖的""贵死了""拿手"，观察老板的反应——这是最快的学习方式。
+</div>
+
+<div class="footer">
+  <a href="0003-chu-xing.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-gou-wu.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"咋子卖的"是四川话问价格的标配。"咋子"=怎么，"卖的"=卖的钱。比"啥子卖的"更地道。', wrong: '问价格要用"咋子卖的"。"咋子"=怎么，这是四川话的标准搭配。' },
+    q2: { correct: '"贵死了"是四川话嫌贵的标准表达。"……死了"表程度，比"太贵了"更有四川味。', wrong: '四川人嫌贵常说"贵死了"，"……死了"是强调程度的结构。' },
+    q3: { correct: '"开扯白"=说瞎话、吹牛。老板觉得你在乱砍价，所以说你"开扯白"。', wrong: '"开扯白"是四川话，意思是"说瞎话/吹牛"。老板说你开扯白，就是觉得你在乱砍价。' },
+    q4: { correct: '"对头"=对的、没错。四川话高频肯定词，比"对啊""是的"更地道。', wrong: '"对头"是四川话里最常用的肯定词，相当于"对的""没错"。' },
+    q5: { correct: '"拿手"=拿给我。四川话里"手"代替"给我"，拿手=拿给我，摆手=摆给我。', wrong: '"拿手"是四川话"拿给我"的简略说法。类似的还有"摆手"（摆给我）、"端手"（端给我）。' },
+    q6: { correct: '"热惨了"是"……惨了"结构的用法，表程度非常高。"惨了"不一定负面，也可以说"好吃惨了"。', wrong: '"热惨了"=非常热。"……惨了"和"……死了"一样，都是强调程度的结构。' },
+    q7: { correct: '"遭你了"=服了你了。老板被砍价砍到没脾气了，用"遭你了"表示妥协。', wrong: '"遭你了"是四川话中表示"服了你了/算你狠"的说法。老板妥协时常用。' },
+    q8: { correct: '"搞啥子活动"=有什么促销活动。商场里不说砍价，问"有啥子活动"最地道。', wrong: '商场里问优惠要说"搞啥子活动不"，"活动"指促销活动。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太巴适了！全对！你对四川话砍价已经很有感觉了。';
+      else if (score >= 6) label.textContent = '不错嘛！错的几题回去再看看， explanations 告诉你为啥。';
+      else label.textContent = '莫急，再读一遍上面的对话和词汇，多练几次就熟了。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

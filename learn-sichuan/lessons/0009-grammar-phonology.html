@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 四川话的语法与音韵特色</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #4a148c;
+    --accent-light: #f3e5f5;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .feature-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .feature-card h4 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card .rule {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.4rem;
+  }
+
+  .feature-card .example {
+    font-size: 0.95rem;
+    color: var(--muted);
+    padding-left: 1rem;
+    border-left: 2px solid var(--border);
+    margin: 0.3rem 0;
+  }
+
+  .feature-card .example .sc {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .feature-card .example .std {
+    color: #555;
+  }
+
+  .pronunciation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .pronunciation-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-family: 'Noto Serif SC', Georgia, serif;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .pronunciation-table td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pronunciation-table tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .pronunciation-table .sc-word {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .pronunciation-table .std-word {
+    color: #555;
+  }
+
+  .tip-box {
+    background: #e3f2fd;
+    border-left: 4px solid #1565c0;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .tip-box strong { color: #1565c0; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', 'Noto Serif SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话的语法与音韵特色</h1>
+<p class="lesson-meta">第9课 · 约15分钟 · 语言结构深度解析</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你能系统理解四川话在发音和语法上与普通话的核心差异，并能准确判断和转换常见句式。
+</div>
+
+<h2>一、音韵特征：四川话怎么"听"起来不一样？</h2>
+<p>
+  四川话属于西南官话，和普通话同属汉藏语系，但发音有显著差异。理解这些差异，是你真正听懂四川话的第一步。
+</p>
+
+<div class="feature-card">
+  <h4>1. 平翘舌不分（z/c/s ≠ zh/ch/sh）</h4>
+  <p class="rule">四川话没有翘舌音（zh, ch, sh），全部归入平舌音（z, c, s）。</p>
+  <div class="example"><span class="sc">四川话：</span> "zi chi si"（字吃丝）</div>
+  <div class="example"><span class="std">普通话：</span> "zhī chī shī"（知吃师）</div>
+  <div class="example"><span class="sc">四川话：</span> "san"（山）</div>
+  <div class="example"><span class="std">普通话：</span> "shan"（山）</div>
+</div>
+
+<div class="feature-card">
+  <h4>2. n/l 混读</h4>
+  <p class="rule">部分四川人分不清 n 和 l，"牛"和"流"听起来一样。</p>
+  <div class="example"><span class="sc">四川话：</span> "liu" 可能同时表示"牛"或"流"</div>
+  <div class="example"><span class="std">普通话：</span> niú / liú</div>
+</div>
+
+<div class="feature-card">
+  <h4>3. 前后鼻音不分（-n ≠ -ng）</h4>
+  <p class="rule">四川话中 en/in 和 eng/ing 经常混同，"陈"和"成"可能听起来一样。</p>
+  <div class="example"><span class="sc">四川话：</span> "chen" ≈ "cheng"</div>
+  <div class="example"><span class="std">普通话：</span> chén / chéng</div>
+</div>
+
+<div class="feature-card">
+  <h4>4. 声调特点</h4>
+  <p class="rule">四川话有四声，但调值与普通话不同：</p>
+  <table class="pronunciation-table">
+    <tr><th>声调</th><th>普通话</th><th>四川话</th><th>例子</th></tr>
+    <tr><td>阴平（一声）</td><td>高平 55</td><td>高降 53</td><td>妈 → 听上去像"马"的调</td></tr>
+    <tr><td>阳平（二声）</td><td>中升 35</td><td>中降 21</td><td>麻 → 听上去像轻声</td></tr>
+    <tr><td>上声（三声）</td><td>降升 214</td><td>高平 55</td><td>马 → 听上去像"妈"</td></tr>
+    <tr><td>去声（四声）</td><td>全降 51</td><td>全降 53</td><td>骂 → 和普通话接近</td></tr>
+  </table>
+</div>
+
+<div class="tip-box">
+  <strong>🎧 听力技巧：</strong>四川话的阴平（一声）比普通话低，阳平（二声）是下降调而不是上升调。这是外地人听四川话最容易混淆的地方。
+</div>
+
+<h2>二、语法特征：四川话怎么"说"起来不一样？</h2>
+
+<div class="feature-card">
+  <h4>1. 体标记系统（"了/着/过"的特殊用法）</h4>
+  <p class="rule">四川话用"了/倒/过"来表示动作的状态，与普通话不完全对应。</p>
+  <div class="example"><span class="sc">四川话：</span> "我吃<strong>了</strong>饭了。"</div>
+  <div class="example"><span class="std">普通话：</span> "我吃饭了。"（句末"了"更关键）</div>
+  <div class="example"><span class="sc">四川话：</span> "门还<strong>倒</strong>那里关起。"</div>
+  <div class="example"><span class="std">普通话：</span> "门还关在那里。"（用"倒"表持续状态）</div>
+</div>
+
+<div class="feature-card">
+  <h4>2. 疑问句：用"撒"、"嘛"、"唛"结尾</h4>
+  <p class="rule">四川话疑问句常用语气词结尾，相当于普通话的"吗"。</p>
+  <div class="example"><span class="sc">四川话：</span> "你去不去撒？" / "你要不要嘛？"</div>
+  <div class="example"><span class="std">普通话：</span> "你去不去吗？"（普通话不用"吗"搭配疑问词）</div>
+</div>
+
+<div class="feature-card">
+  <h4>3. 否定词："莫"代替"不要"，"没得"代替"没有"</h4>
+  <p class="rule">这是四川话最标志性的语法特征。</p>
+  <div class="example"><span class="sc">四川话：</span> "<strong>莫</strong>说话！" / "我<strong>没得</strong>钱。"</div>
+  <div class="example"><span class="std">普通话：</span> "不要说话！" / "我没有钱。"</div>
+</div>
+
+<div class="feature-card">
+  <h4>4. 形容词重叠：AABB式更丰富</h4>
+  <p class="rule">四川话形容词重叠比普通话更灵活，常加"乎乎的"后缀。</p>
+  <div class="example"><span class="sc">四川话：</span> "冷乎乎" / "热兮兮" / "胖墩墩"</div>
+  <div class="example"><span class="std">普通话：</span> "冷冷的" / "热热的"（重叠形式较少）</div>
+</div>
+
+<div class="feature-card">
+  <h4>5. 特殊句式："V + 起"（提起/拿起/做起）</h4>
+  <p class="rule">"V起"在四川话中表示"开始做"或"拿起"的动作，比普通话更频繁。</p>
+  <div class="example"><span class="sc">四川话：</span> "我们坐起聊嘛。" / "把碗端起起。"</div>
+  <div class="example"><span class="std">普通话：</span> "我们坐着聊吧。" / "端起碗来。"</div>
+</div>
+
+<h2>三、音韵对照表（高频易混字）</h2>
+
+<table class="pronunciation-table">
+  <tr><th>字</th><th>普通话</th><th>四川话</th><th>备注</th></tr>
+  <tr><td class="sc-word">人</td><td>rén</td><td>nín</td><td>r→n 是西南官话特征</td></tr>
+  <tr><td class="sc-word">四</td><td>sì</td><td>si（平舌）</td><td>无翘舌</td></tr>
+  <tr><td class="sc-word">川</td><td>chuān</td><td>suān</td><td>ch→s</td></tr>
+  <tr><td class="sc-word">飞</td><td>fēi</td><td>fēi</td><td>四川话 f/h 有时也混</td></tr>
+  <tr><td class="sc-word">花</td><td>huā</td><td>fā</td><td>部分片区 h→f</td></tr>
+  <tr><td class="sc-word">学</td><td>xué</td><td>xié</td><td>声调不同</td></tr>
+</table>
+
+<h2>四、文化延伸：为什么四川话这么"好听"？</h2>
+<p>
+  很多人觉得四川话好听、有亲和力，原因有三：一是声调起伏不像普通话那么"硬"，二是语调中自带一种"拖腔"的美感（类似唱歌），三是四川话保留了大量古汉语词汇和发音（比如"行"读 háng，"笑"说"莞尔"式的表达）。
+</p>
+<p>
+  从语言学角度看，四川话是明清时期湖广填四川移民运动形成的混合方言，融合了湖北、湖南、江西等地的方言特点，最终在成都话的基础上定型。这也是为什么四川话虽然属于官话，却和北京话听起来差别这么大的原因。
+</p>
+
+<!-- ========== QUIZ SECTION ========== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+  <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">考考你对四川话音韵和语法的理解！</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="sentence">四川话中"zh, ch, sh"在普通话中读翘舌音的字，在四川话中读什么音？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">还是翘舌音</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', true)">平舌音 z, c, s</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">变成 r 音</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">变成 f 音</button>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="sentence">"我莫得钱" 翻译成普通话是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">我不有钱</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', true)">我没有钱</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">我不要钱</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">我不缺钱</button>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="sentence">四川话中，普通话的"二声"（阳平）通常是怎样的声调？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">上升调</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', true)">下降调</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">平调</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false')">曲折调</button>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="sentence">"门还倒那里关起" 中的"倒"表示什么语法功能？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">过去时</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">将来时</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', true)">持续状态</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">完成体</button>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="sentence">下列哪个词在四川话中 r 会变成 n？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">人</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', true)">人（rén → nín）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">四</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">花</button>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="sentence">"冷乎乎" 这种形容词重叠方式体现了四川话的什么特点？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">省略动词</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', true)">丰富的形容词后缀（-乎乎/-兮兮）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">改变词性</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">合并句子</button>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="sentence">"你去不去撒？" 中的"撒"相当于普通话的：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">的</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', true)">吗（疑问语气词）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">了（完成语气）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">呢（追问语气）</button>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="sentence">四川话属于哪个官话分支？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">北方官话</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">胶辽官话</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', true)">西南官话</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">江淮官话</button>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 8;
+
+const explanations = {
+  q1: '四川话没有翘舌音（zh/ch/sh），全部归入平舌音（z/c/s）。所以"吃"在四川话里读"ci"而不是"chi"。',
+  q2: '"没得"=普通话"没有"。这是四川话最核心的否定句式之一，"莫得"和"没得"可以互换。',
+  q3: '四川话的阳平（二声）是下降调（21），而普通话的阳平是上升调（35）。这是最容易让外地人困惑的地方。',
+  q4: '"倒"在四川话中表示动作的持续状态，相当于普通话的"着"。"门倒起"= "门开着"。',
+  q5: '"人"普通话读 rén，四川话读 nín。r→n 是西南官话的典型特征，其他例子还有"肉→nòu"。',
+  q6: '四川话形容词有丰富的后缀系统："-乎乎"（冷乎乎）、"-兮兮"（热兮兮）、"-墩墩"（胖墩墩），比普通话灵活得多。',
+  q7: '"撒/嘛/唛"都是四川话的疑问语气词，放在句尾表示疑问或建议。"你去不去撒？"≈"你要不要去？"',
+  q8: '四川话属于西南官话，主要分布在四川、重庆、云南、贵州、湖北西部等地。和北京话同属官话但差异很大。'
+};
+
+function checkAnswer(btn, qId, isCorrect) {
+  const question = document.getElementById(qId);
+  const buttons = question.querySelectorAll('.option-btn');
+  const feedback = document.getElementById('fb-' + qId);
+
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  buttons.forEach(b => {
+    b.style.pointerEvents = 'none';
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.className = 'feedback show correct-fb';
+    feedback.innerHTML = '<strong>✅ 正确！</strong> ' + explanations[qId];
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    buttons.forEach(b => {
+      if (b.onclick.toString().includes('true')) {
+        b.classList.add('reveal-correct');
+      }
+    });
+    feedback.className = 'feedback show wrong-fb';
+    feedback.innerHTML = '<strong>❌ 不对哦。</strong> ' + explanations[qId];
+  }
+
+  answered++;
+
+  if (answered === total) {
+    const scoreBox = document.getElementById('score-box');
+    const scoreNum = document.getElementById('score-num');
+    const scoreLabel = document.getElementById('score-label');
+    scoreNum.textContent = score + '/' + total;
+    if (score === total) {
+      scoreLabel.textContent = '🎉 太雄起了！语言学大师！';
+    } else if (score >= 6) {
+      scoreLabel.textContent = '👍 巴适！对四川话很有研究嘛。';
+    } else if (score >= 4) {
+      scoreLabel.textContent = '😄 还可以，多和四川大爷摆几次龙门阵就精通了。';
+    } else {
+      scoreLabel.textContent = '💪 莫慌，多听多说慢慢就来咯！';
+    }
+    scoreBox.classList.add('show');
+  }
+}
+</script>
+
+<div class="footer">
+  <p><a href="../index.html">← 返回课程目录</a></p>
+  <p style="margin-top: 0.5rem;">TeachHub · 四川话入门 · 第9课</p>
+</div>
+
+</body>
+</html>

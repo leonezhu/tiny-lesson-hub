@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 通货膨胀与通货紧缩</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+    --danger: #d32f2f;
+    --danger-bg: #fce4ec;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .formula-box .label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .danger-note {
+    background: var(--danger-bg);
+    border-left: 3px solid var(--danger);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .danger-note strong { color: var(--danger); }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>通货膨胀与通货紧缩</h1>
+<p class="lesson-meta">第8课 · ~12分钟 · 宏观经济学核心概念</p>
+
+<div class="goal-box">
+  <strong>学完这节课后</strong>，你将能够解释通货膨胀和通货紧缩的根本原因，理解它们对普通人钱包的真实影响，并判断一个经济体处于哪种状态。
+</div>
+
+<h2>为什么这很重要</h2>
+<p>
+  你每个月收到的工资数字看起来差不多，但超市里的东西越来越贵——这就是通货膨胀。反过来，如果物价持续下跌，听起来似乎对你有利，但实际上可能意味着整个经济正在萎缩。理解通胀和通缩，就是理解你的钱到底"值多少"。
+</p>
+<p>
+  全球几乎所有央行（包括中国人民银行、美联储）最核心的任务就是控制通胀。2% 的通胀率是多数央行的目标。为什么不是 0%？为什么不是 10%？答案就在下面。
+</p>
+
+<h2>什么是通货膨胀？</h2>
+<p>
+  <strong>通货膨胀（Inflation）</strong>是指整体物价水平持续上涨、货币购买力持续下降的现象。注意关键词：<strong>"整体"和"持续"</strong>。偶尔一次猪肉涨价不叫通胀，只有当大多数商品和服务的价格都在涨，才叫通胀。
+</p>
+
+<div class="card">
+  <h3>衡量通胀的指标：CPI</h3>
+  <p><strong>CPI（消费者价格指数）</strong>追踪一篮子典型消费品和服务的价格变化。这个"篮子"通常包括：</p>
+  <ul>
+    <li>食品与饮料（米面粮油、肉蛋奶）</li>
+    <li>住房（房租或虚拟租金）</li>
+    <li>交通（油价、公交费）</li>
+    <li>医疗、教育、娱乐</li>
+  </ul>
+</div>
+
+<div class="formula-box">
+  <div class="label">通胀率计算公式</div>
+  通胀率 = (本期 CPI − 上期 CPI) ÷ 上期 CPI × 100%
+</div>
+
+<p>
+  <strong>举例：</strong>去年 CPI 是 100，今年 CPI 是 103。通胀率 = (103−100)/100 × 100% = 3%。这意味着同样的一篮子商品，今年比去年贵了 3%。
+</p>
+
+<h2>通胀的三个等级</h2>
+
+<table class="comparison-table">
+  <tr><th>类型</th><th>年通胀率</th><th>特点</th></tr>
+  <tr><td>温和通胀</td><td>1% – 3%</td><td>经济健康的标志，鼓励消费和投资</td></tr>
+  <tr><td>恶性通胀</td><td>月通胀率 &gt; 50%</td><td>货币崩溃，如津巴布韦、委内瑞拉</td></tr>
+  <tr><td>通货紧缩</td><td>负值（物价持续下跌）</td><td>经济衰退的信号，比通胀更危险</td></tr>
+</table>
+
+<h2>通胀是怎么来的？两大理论</h2>
+
+<h3>1. 需求拉动型通胀（Demand-Pull）</h3>
+<p>
+  当"太多的钱追逐太少的商品"时，物价被推高。想象一下双十一：大家都在抢同一款手机，供给有限，价格就被抬上去了。宏观经济中也是如此——如果大家的收入增加、消费旺盛，但工厂的生产能力跟不上，物价就会普遍上涨。
+</p>
+<p>
+  <strong>中国例子：</strong>2007–2008 年，中国经济高速增长，大量投资涌入，CPI 一度突破 8%，就是典型的需求拉动型通胀。
+</p>
+
+<h3>2. 成本推动型通胀（Cost-Push）</h3>
+<p>
+  当生产要素的成本上升时，企业把成本转嫁给消费者，物价上涨。比如石油涨价了——运输成本、化工成本、塑料成本全部上升，最终你买什么都更贵。
+</p>
+<p>
+  <strong>经典案例：</strong>1970 年代的石油危机。中东战争导致石油供应骤减，油价翻了四倍，美国和欧洲同时陷入"滞胀"——通胀高企、经济停滞。这是经济学家最头疼的情况。
+</p>
+
+<div class="chinese-note">
+  <strong>关键区分：</strong>需求拉动 = 大家太有钱了，买买买；成本推动 = 原材料太贵了，不得不涨。现实中两种往往同时存在。
+</div>
+
+<h2>通胀的隐性税：谁在买单？</h2>
+<p>
+  通胀就像一种隐形的税。它不公平地影响着不同的人：
+</p>
+
+<div class="card">
+  <h3>通胀对不同群体的影响</h3>
+  <ul>
+    <li><strong>储蓄者亏钱：</strong>存在银行的钱，购买力逐年缩水。1% 的利率跑不赢 3% 的通胀，实际收益是负的。</li>
+    <li><strong>债务人受益：</strong>欠债的人其实喜欢通胀。因为你借的是"今天的钱"，还的是"明天贬值的钱"。房贷族在通胀期实际上减轻了负担。</li>
+    <li><strong>固定收入者最惨：</strong>养老金、低保等固定收入，涨得永远追不上物价。</li>
+    <li><strong>持有实物资产的人：</strong>房子、黄金、股票通常在通胀中保值甚至增值。</li>
+  </ul>
+</div>
+
+<h3>费雪效应</h3>
+<p>
+  经济学家欧文·费雪发现了一个重要关系：名义利率 ≈ 实际利率 + 预期通胀率。这意味着如果通胀预期上升，银行会提高贷款利率来保护自己。
+</p>
+
+<div class="formula-box">
+  <div class="label">费雪方程</div>
+  名义利率 = 实际利率 + 预期通胀率
+</div>
+
+<h2>通货紧缩：被低估的威胁</h2>
+<p>
+  很多人觉得"物价下跌"是好事，但持续的通货紧缩（Deflation）比温和通胀危险得多。原因如下：
+</p>
+
+<div class="card">
+  <h3>通缩螺旋（Deflationary Spiral）</h3>
+  <p>物价下跌 → 消费者推迟购买（反正明天更便宜） → 企业卖不出去 → 裁员降薪 → 人们更没钱 → 物价继续跌 → 循环往复</p>
+</div>
+
+<p>
+  <strong>日本的"失去的三十年"：</strong>1990 年代资产泡沫破裂后，日本经历了长期的通货紧缩。物价每年下跌约 0.5%–1%，但经济几乎零增长。人们宁愿把钱藏在床垫下也不消费、不投资。央行把利率降到接近零，还是无法摆脱通缩陷阱——这就是著名的"流动性陷阱"。
+</p>
+
+<div class="danger-note">
+  <strong>为什么央行宁可要 2% 通胀也不要 0%？</strong>因为 0% 离通缩太近了，一旦经济出现冲击，很容易滑入通缩螺旋。2% 提供了一个缓冲垫。
+</div>
+
+<h2>央行怎么控制通胀？</h2>
+<p>
+  中央银行有三大武器来控制通胀和通缩：
+</p>
+
+<div class="card">
+  <h3>货币政策工具</h3>
+  <ul>
+    <li><strong>加息：</strong>提高基准利率 → 贷款变贵 → 消费和投资减少 → 需求下降 → 物价压力减轻。但副作用是可能引发失业。</li>
+    <li><strong>提高存款准备金率：</strong>银行能放贷的钱变少 → 货币供应量减少 → 通胀降温。</li>
+    <li><strong>公开市场操作：</strong>卖出政府债券 → 从市场上收回流动性 → 减少货币供应量。</li>
+  </ul>
+</div>
+
+<p>
+  <strong>现实案例：</strong>2022–2023 年，美国通胀飙升至 9%（40 年最高）。美联储激进加息，从接近 0% 迅速拉到 5%–5.25%，成功将通胀压回 3% 以下。代价是银行业动荡（硅谷银行倒闭）和经济放缓的预期。
+</p>
+
+<h2>中国的通胀特点</h2>
+<p>
+  中国 CPI 的构成有一些独特之处：
+</p>
+
+<div class="card">
+  <h3>中国 CPI 的特色</h3>
+  <ul>
+    <li><strong>猪肉权重高：</strong>猪肉在 CPI 篮子中的权重约 2%，但"猪周期"对 CPI 波动影响巨大。2019–2020 年非洲猪瘟导致猪肉价格翻倍，CPI 随之飙升。</li>
+    <li><strong>"核心 CPI"更重要：</strong>剔除食品和能源后的核心 CPI 更能反映真实通胀趋势。中国核心 CPI 常年偏低（0.5%–1%），说明内需不足。</li>
+    <li><strong>PPI（生产者价格指数）：</strong>中国的 PPI 波动比 CPI 大得多，反映工业领域的供需变化。PPI 向 CPI 的传导有时滞后数月。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>记住一句话：</strong>核心 CPI 看趋势，PPI 看先行信号，猪肉价格看短期波动。三者结合才能判断通胀全貌。
+</div>
+
+<h2>总结：通胀与通缩的核心要点</h2>
+<ul>
+  <li>温和通胀（1%–3%）是经济健康的标志，不是敌人</li>
+  <li>通胀分两类：需求拉动（太有钱）和成本推动（太贵）</li>
+  <li>通胀对储蓄者是税，对债务人是朋友</li>
+  <li>通缩比通胀更危险——它会触发"通缩螺旋"</li>
+  <li>央行用加息、准备金率、公开市场操作来调控</li>
+  <li>中国 CPI 受猪肉价格影响显著，要看核心 CPI 把握真实趋势</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，选出你认为正确的答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">概念理解</div>
+    <div class="question-text">以下哪种情况属于通货膨胀？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">猪肉价格本月上涨了 20%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">全国 CPI 连续 6 个月同比上涨 3%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">iPhone 降价了 1000 元</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">某小区房租涨了 5%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">计算题</div>
+    <div class="question-text">去年 CPI 为 105，今年 CPI 为 108。今年的通胀率约为多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">2.86%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">2.86%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">3.00%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">5.71%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情境分析</div>
+    <div class="question-text">如果你有一笔 10 万元的一年期定期存款，年利率 2%，而当年通胀率为 4%。你的实际购买力发生了什么变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">减少了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">没有变化</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">先增后减</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理论应用</div>
+    <div class="question-text">国际油价暴涨导致运输成本大幅上升，进而推高所有商品价格。这属于哪种通胀？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">成本推动型通胀</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">需求拉动型通胀</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">结构性通胀</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">通货紧缩</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">逻辑推理</div>
+    <div class="question-text">为什么通货紧缩比温和通胀更危险？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为物价下跌会让所有人变穷</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为可能触发"通缩螺旋"，导致经济持续萎缩</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为央行无法用任何政策应对</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为通缩会导致汇率暴跌</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">政策分析</div>
+    <div class="question-text">当通胀过高时，央行最可能采取哪种措施？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">降低基准利率</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">降低存款准备金率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">提高基准利率</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加货币供应量</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">结合实际</div>
+    <div class="question-text">2019–2020 年非洲猪瘟导致猪肉价格翻倍，CPI 随之飙升。这主要属于哪个层面的影响？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">长期结构性通胀</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">短期价格波动</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">通缩螺旋</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">流动性陷阱</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">综合判断</div>
+    <div class="question-text">假设名义利率为 5%，预期通胀率为 3%。根据费雪效应，实际利率约为多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">8%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">2%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">1.67%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">5%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——无论是"为什么我爸妈总说存钱好"还是"通胀和房价有什么关系"，都是值得聊的话题。直接把你的疑问丢过来就行。
+  <br><br>
+  <strong>延伸阅读：</strong><a href="https://www.imf.org/External/Pubs/FT/fandd/2021/09/" target="_blank">IMF 关于通胀的通俗解释</a> — 国际货币基金组织写的入门文章。
+  <br><br>
+  <a href="../index.html" class="resource-link">← 返回经济学课程目录</a>
+</div>
+
+<div class="footer">
+  <a href="0007-money-banking.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0009-international-trade.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '通胀的关键是"整体物价持续上涨"。CPI 连续 6 个月同比上涨 3% 说明整体物价在持续上升，这才是通胀。单一商品涨价不算。', wrong: '通胀需要两个条件：整体性和持续性。猪肉涨价只是个别商品，iPhone 降价反而是相反方向，房租涨幅太小且不是全国性数据。CPI 连续上涨才是真正的答案。' },
+    q2: { correct: '(108−105)÷105×100% = 3÷105×100% ≈ 2.86%。记住公式：(本期−上期)÷上期。', wrong: '计算公式是：(本期 CPI − 上期 CPI) ÷ 上期 CPI × 100% = (108−105)÷105×100% ≈ 2.86%。' },
+    q3: { correct: '实际利率 = 名义利率 − 通胀率 = 2% − 4% = −2%。你的钱虽然多了 2000 元利息，但物价涨了 4%，购买力反而下降了。', wrong: '虽然你的账户余额增加了（2% 的利息），但物价涨了 4%。实际利率 = 2% − 4% = −2%，你的钱实际上更"不值钱"了。' },
+    q4: { correct: '成本推动型通胀——原材料（石油）价格上涨，企业将成本转嫁给消费者，导致整体物价上升。', wrong: '这不是因为大家有钱了去买东西（需求拉动），而是因为生产成本涨了。石油涨价 → 运输/化工/塑料成本上升 → 物价普涨，这是典型的成本推动型通胀。' },
+    q5: { correct: '通缩螺旋是最危险的：物价跌 → 消费者推迟购买 → 企业卖不出去 → 裁员 → 经济进一步萎缩 → 物价继续跌。这是一个自我强化的恶性循环。', wrong: '不是所有人都会变穷（债务人受益），央行有政策工具（如量化宽松），通缩也不必然导致汇率暴跌。核心危险在于"通缩螺旋"的自我强化机制。' },
+    q6: { correct: '加息使贷款变贵、消费和投资减少，从而降低需求、缓解通胀压力。这是央行对抗通胀最常用的工具。', wrong: '降息、降准、增加货币供应都是扩张性政策，会加剧通胀。对抗通胀需要收紧银根——加息是最直接有效的手段。' },
+    q7: { correct: '猪肉价格属于 CPI 篮子中的短期波动因素。非洲猪瘟是突发事件，影响是暂时的。判断真实通胀趋势应该看"核心 CPI"（剔除食品和能源）。', wrong: '这不是长期结构性问题（猪周期过后价格会恢复），也不是通缩或流动性陷阱。它是短期的供给冲击导致的 CPI 波动，要看核心 CPI 来判断真实趋势。' },
+    q8: { correct: '根据费雪方程：实际利率 = 名义利率 − 预期通胀率 = 5% − 3% = 2%。', wrong: '费雪方程：实际利率 = 名义利率 − 预期通胀率 = 5% − 3% = 2%。不要相加（那是错的），也不要混淆名义和实际。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你已经完全掌握了通胀与通缩的核心逻辑。';
+      else if (score >= 6) label.textContent = '做得不错！看看错题的解释，巩固一下薄弱环节。';
+      else label.textContent = '回去重新读一遍笔记吧，这些概念很重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

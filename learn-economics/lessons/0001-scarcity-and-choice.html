@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 经济学第一定律：稀缺性与选择</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>经济学第一定律：稀缺性与选择</h1>
+<p class="lesson-meta">TeachHub · 经济学 · 第1课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解「稀缺性」为何是经济学的核心问题，掌握机会成本、生产可能性边界和边际思维三个基础工具，学会用经济学视角审视日常决策。
+</div>
+
+<h2>一、一切始于「不够分」</h2>
+
+<p>经济学研究的是什么？教科书的答案五花八门，但最本质的一句是：</p>
+
+<div class="key-idea">
+  「经济学是研究稀缺资源如何在相互竞争的用途之间进行分配的学科。」—— Lionel Robbins, 1932
+</div>
+
+<p>什么意思？想象一个周末下午，你手里有 <strong>4 小时空闲</strong>。你可以：</p>
+<ul>
+  <li>看电影（3 小时）</li>
+  <li>写报告（4 小时）</li>
+  <li>和朋友聊天（2 小时）+ 逛超市（1 小时）</li>
+  <li>什么都不做，发呆（4 小时）</li>
+</ul>
+
+<p>但你不能同时做所有事情。时间稀缺，你的精力稀缺，金钱稀缺——<strong>稀缺性无处不在</strong>。</p>
+
+<p>这就是经济学的第一前提：<strong>资源是有限的，欲望是无限的</strong>。不是因为你不该想要更多，而是因为世界本身就有物理约束。</p>
+
+<div class="vocab-card">
+  <span class="term">稀缺性 (Scarcity)</span><br>
+  资源（时间、金钱、土地、人才……）的总量不足以同时满足所有欲望。稀缺性是经济学的起点，没有稀缺性，就不需要选择，也就不需要经济学。
+</div>
+
+<div class="example-box">
+  <strong>日常例子：</strong>你月薪 15000，房租 4000。你既想买新款手机（6000），又想存钱旅行（至少 8000）。钱不够同时满足两者——这就是稀缺性在你生活中的直接体现。
+</div>
+
+<h2>二、机会成本：你真正付出的东西</h2>
+
+<p>当你做出选择时，你失去的不是"什么都不做"——你失去的是<strong>你放弃的选项中最有价值的那个</strong>。这叫<strong>机会成本</strong>。</p>
+
+<div class="key-idea">
+  机会成本 = 你放弃的所有选项中，价值最高的那一个。
+</div>
+
+<p>继续上面的周末例子：你选择看电影（4 小时），你的机会成本不是"4 小时空白"，而是你原本可以用这 4 小时做的<strong>最有价值</strong>的事情——假设是写报告（因为这能让你获得好评），那么 4 小时报告写作就是你的机会成本。</p>
+
+<p>注意关键点：<strong>机会成本不包含沉没成本</strong>。你已经花掉的 500 块电影票钱（如果你不退票）不是机会成本的一部分——那已经消失了。机会成本关注的是<strong>未来的选择</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">机会成本 (Opportunity Cost)</span><br>
+  做出某选择时所放弃的<strong>最佳替代方案</strong>的价值。它不是所有放弃选项的总和，而是其中最有价值的那一个。
+</div>
+
+<h3>为什么这个概念如此有力？</h3>
+
+<p>因为它强迫你思考 <strong>"除了这个，最好的选择是什么？"</strong> 这个反问，几乎适用于你人生中的每一个重大决定：</p>
+
+<ul>
+  <li><strong>上大学</strong>的机会成本 = 学费 + 四年里你如果工作能赚到的钱</li>
+  <li><strong>创业</strong>的机会成本 = 稳定工资 + 稳定的社会保障</li>
+  <li><strong>读这本书（这个课程）</strong>的机会成本 = 这段时间你本来可以做的其他任何事</li>
+</ul>
+
+<p>大多数人不计算机会成本，所以他们永远不知道自己的选择到底"值不值"。知道这个机会成本的人，能做更清醒的决定。</p>
+
+<div class="example-box">
+  <strong>经典案例：</strong>比尔·盖茨从哈佛大学退学创办 Microsoft。他的机会成本是"辍学的风险 + 哈佛学位的价值"，但他的预期收益是"创办一家帝国级公司的可能性"。在 1975 年的环境下，这个选择的期望值极高——所以他做了。这不是勇气的问题，是机会成本的计算。
+</div>
+
+<h2>三、生产可能性边界：选择的可视化</h2>
+
+<p>经济学家用一个叫做<strong>生产可能性边界（PPF）</strong>的模型来可视化稀缺性带来的选择问题。想象一个国家只有两种产品可以生产：食品和设备。它的全部资源（土地、劳动力、资本）是有限的。</p>
+
+<p>如果你把全部资源用于生产食品，就能生产 100 单位食品、0 单位设备。如果你把全部资源用于生产设备，就能生产 50 单位设备、0 单位食品。但如果你把资源分配给两者，就会得到中间的某个组合。</p>
+
+<div class="key-idea">
+  PPF 曲线上的每个点代表一个<strong>有效率的</strong>资源配置方案。曲线内侧的点代表资源浪费，曲线外侧的点在现有资源下<strong>不可能达到</strong>。
+</div>
+
+<p>PPF 的核心洞察：</p>
+<ul>
+  <li><strong>曲线向内凹</strong>意味着"递增的机会成本"——当你生产越来越多的食品时，每多生产一单位食品需要放弃的设备越来越多。因为最适合生产食品的资源已经被用完了。</li>
+  <li><strong>技术进步</strong>会使 PPF 向外移动——同样的资源可以生产更多。</li>
+  <li><strong>选择</strong>就是沿着 PPF 曲线移动——你总是可以在边界上找到想要的组合。</li>
+</ul>
+
+<div class="example-box">
+  <strong>个人版 PPF：</strong>你每天有 24 小时（资源），你可以在"工作"和"休息"之间分配。如果你把 16 小时用于工作，8 小时休息，你就在 PPF 上。如果你只工作 8 小时、刷手机 10 小时、休息 6 小时——你在 PPF 内侧（低效率）。PPF 告诉你：你真正能做到的，比你以为的多得多。
+</div>
+
+<h2>四、边际思维：聪明人怎么做决定</h2>
+
+<p>绝大多数人的决策方式是<strong>二元的</strong>："我去还是不去？""我买还是不买？"——全有或全无。</p>
+
+<p>经济学家不这样做。经济学家用<strong>边际思维</strong>：每多做（或少做）<em>一点点</em>，值不值得？</p>
+
+<div class="key-idea">
+  边际分析 = 比较<strong>边际收益</strong>和<strong>边际成本</strong>。只要边际收益 ≥ 边际成本，就多做一点。直到 MR = MC 时停止。
+</div>
+
+<p>经典例子：</p>
+
+<ul>
+  <li><strong>航空公司</strong>：航班已经起飞了，座位空着也是空着。一个乘客愿意出 200 块从北京到上海，多搭载他的成本（一顿飞机餐）只有 50 块。50 &lt; 200，所以应该搭载。即使航班的平均成本是 2000 块/人。</li>
+  <li><strong>学习</strong>：你复习了 3 小时，还要不要继续？第 4 小时的边际收益是"多掌握的知识点"，边际成本是"疲劳导致的效率下降"。如果前者 > 后者，继续。如果后者 > 前者，停止。</li>
+</ul>
+
+<p>边际思维解释了为什么"水有用但便宜，钻石没用但昂贵"——这叫做<strong>边际效用悖论</strong>。水的总效用极高，但边际效用极低（因为太多了）；钻石总效用低，但边际效用极高（因为稀缺）。价格由边际决定，不由总效用决定。</p>
+
+<h2>五、稀缺性的三个层次</h2>
+
+<p>理解稀缺性不仅是理解一个概念——它有三个递进的层次：</p>
+
+<h3>层次 1：个人稀缺</h3>
+<p>你的时间、金钱、精力有限。你需要做出取舍。这是最常见的层面。</p>
+
+<h3>层次 2：社会稀缺</h3>
+<p>一个社会的资源（土地、矿产、人才、资本）有限。如何分配这些资源决定了社会的结构和不平等程度。这是政治经济学的核心问题。</p>
+
+<h3>层次 3：宇宙稀缺</h3>
+<p>即使技术再发达，有些资源永远稀缺。热力学第二定律告诉我们：熵永远增加。一个有序、低熵的系统（比如一座城市、一个身体）永远需要能量输入来维持。**稀缺性不是技术不够发达的问题——它是物理规律。**</p>
+
+<div class="key-idea">
+  稀缺性是永恒的。技术进步可以改变稀缺的<strong>种类</strong>和<strong>程度</strong>，但不会消除稀缺性本身。理解这一点，你就理解了经济学为什么永远存在。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>稀缺性是一切经济问题的起点——资源有限，欲望无限</li>
+    <li>机会成本是你放弃的最佳替代方案的价值——它决定了选择的真实代价</li>
+    <li>生产可能性边界可视化了选择的取舍——沿边界移动，而不是在边界内浪费</li>
+    <li>边际思维：聪明人比较的是"再多一点"的边际收益和边际成本，而不是"全部"的总收益和总成本</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 你花 100 元买了一部电影票，看了 20 分钟发现很难看。100 元属于什么成本？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 机会成本</label>
+      <label><input type="radio" name="q1" value="b"> B. 沉没成本</label>
+      <label><input type="radio" name="q1" value="c"> C. 边际成本</label>
+      <label><input type="radio" name="q1" value="d"> D. 机会成本 + 边际成本</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 你有一小时空闲，可以选择学习或打游戏。你最终选择学习。你的机会成本是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 学习获得的知识</label>
+      <label><input type="radio" name="q2" value="b"> B. 打游戏和学习加起来的全部</label>
+      <label><input type="radio" name="q2" value="c"> C. 打游戏的乐趣</label>
+      <label><input type="radio" name="q2" value="d"> D. 零——因为你选择了学习</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 生产可能性边界（PPF）向外移动意味着什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 技术进步或资源增加</label>
+      <label><input type="radio" name="q3" value="b"> B. 选择变得更困难</label>
+      <label><input type="radio" name="q3" value="c"> C. 稀缺性消失了</label>
+      <label><input type="radio" name="q3" value="d"> D. 资源配置变差了</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 为什么"边际思维"比"全部思维"更优越？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 因为它总是告诉你不要做</label>
+      <label><input type="radio" name="q4" value="b"> B. 因为它只看总成本</label>
+      <label><input type="radio" name="q4" value="c"> C. 因为它忽略了机会成本</label>
+      <label><input type="radio" name="q4" value="d"> D. 因为它关注的是"再多一点"的收益和成本，更精确</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 水的总效用比钻石高，但水比钻石便宜。这个矛盾怎么解释？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 经济学理论有误</label>
+      <label><input type="radio" name="q5" value="b"> B. 价格由边际效用决定，不是总效用</label>
+      <label><input type="radio" name="q5" value="c"> C. 政府干预了水的价格</label>
+      <label><input type="radio" name="q5" value="d"> D. 钻石的生产成本太高</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 以下哪个陈述是正确的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 稀缺性只存在于贫困地区</label>
+      <label><input type="radio" name="q6" value="b"> B. 技术进步可以完全消除稀缺性</label>
+      <label><input type="radio" name="q6" value="c"> C. 稀缺性是永恒的物理约束</label>
+      <label><input type="radio" name="q6" value="d"> D. 稀缺性只关乎金钱</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 一家航空公司在已经起飞的航班上，以半价卖出一个空座位。这是合理的，因为：</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 边际成本 < 边际收益</label>
+      <label><input type="radio" name="q7" value="b"> B. 平均成本下降了</label>
+      <label><input type="radio" name="q7" value="c"> C. 这是沉没成本的回收</label>
+      <label><input type="radio" name="q7" value="d"> D. 乘客不在乎价格</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> PPF 曲线向内凹（即远离原点弯曲）说明了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 资源在所有用途中效率相同</label>
+      <label><input type="radio" name="q8" value="b"> B. 递增的机会成本</label>
+      <label><input type="radio" name="q8" value="c"> C. 稀缺性在减少</label>
+      <label><input type="radio" name="q8" value="d"> D. 生产可能性在缩小</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q9.</span> 你在一个项目上已经投入了 10 万元和 3 个月，发现方向错了。此时最理性的做法是：</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 继续投入，因为已经花了那么多</label>
+      <label><input type="radio" name="q9" value="b"> B. 放弃，因为浪费</label>
+      <label><input type="radio" name="q9" value="c"> C. 让别人决定</label>
+      <label><input type="radio" name="q9" value="d"> D. 忽略沉没成本，只看未来的边际收益和边际成本</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 如果一个选择的机会成本是零，这意味着什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 这个选择一定是最优的</label>
+      <label><input type="radio" name="q10" value="b"> B. 稀缺性不存在了</label>
+      <label><input type="radio" name="q10" value="c"> C. 所有替代方案的價值都为零</label>
+      <label><input type="radio" name="q10" value="d"> D. 这是经济学的一个悖论</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="../index.html">← 经济学目录</a>
+  <span>第 1 课 / 共 12 课</span>
+  <a href="#">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '100 元已经花出去了，无法收回，是典型的沉没成本。决策时不应考虑它，而应比较"继续看"和"离开"的边际收益与边际成本。' },
+  q2: { correct: 'c', explanation: '机会成本是你放弃的最佳替代方案——在这里就是打游戏的乐趣。不是学习获得的收益（那是收益，不是成本），也不是所有选项之和。' },
+  q3: { correct: 'a', explanation: 'PPF 向外移动意味着在同样的资源下可以生产更多——通常是因为技术进步或资源增加。稀缺性没有消失，只是程度降低了。' },
+  q4: { correct: 'd', explanation: '边际思维关注的是"再多一点"的增量收益和增量成本，这比"全部"思维更精确，因为它避免了沉没成本的干扰。' },
+  q5: { correct: 'b', explanation: '这是"边际效用悖论"。价格由最后一单位（边际）的效用决定，不是总效用。水的边际效用极低（因为它太多），钻石的边际效用极高（因为它稀缺）。' },
+  q6: { correct: 'c', explanation: '稀缺性是永恒的——即使技术再发达，物理规律（如热力学第二定律）决定了有序系统永远需要能量输入。稀缺性不只关乎金钱或贫困。' },
+  q7: { correct: 'a', explanation: '边际成本（一顿餐 ~50 元）< 边际收益（200 元票价），所以搭载这个乘客是合理的。平均成本不影响边际决策。' },
+  q8: { correct: 'b', explanation: 'PPF 向内凹（远离原点弯曲）意味着递增的机会成本：随着你生产越来越多的某种产品，每多生产一单位需要放弃的另一种产品越来越多。' },
+  q9: { correct: 'd', explanation: '10 万元和 3 个月是沉没成本，不应该影响未来决策。理性的做法是忽略它们，只看未来的边际收益和边际成本。' },
+  q10: { correct: 'c', explanation: '如果机会成本为零，意味着你放弃的所有替代方案中，最有价值的那个价值也是零——即所有替代方案都没有价值。这通常是假设性的，因为现实中几乎总有机会成本。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    // Reset styles
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确答案。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    // Disable radios after submission
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  // Show score
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了经济学第一定律。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了核心概念。再看一遍错题就彻底掌握了。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读课程中的错题部分，加深理解。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重读课程内容，尤其是机会成本和边际思维部分。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // Disable submit button
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

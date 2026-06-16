@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — 供需模型：市场的隐形之手</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .concept-card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .concept-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .graph-box {
+    background: #f5f7fa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+
+  .graph-box svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .graph-box .caption {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .equation {
+    font-family: 'Merriweather', Georgia, serif;
+    background: #f0f4f8;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    text-align: center;
+    font-size: 1.05rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  .case-study {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .case-study strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 500px) {
+    .options { grid-template-columns: 1fr; }
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-prev { color: var(--muted); text-decoration: none; }
+  .nav-next { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>供需模型：市场的隐形之手</h1>
+<p class="lesson-meta">第2课 · ~12分钟 · 微观经济学核心</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够解释供给与需求如何决定市场价格，理解均衡的概念，并能分析价格上限、价格下限等政策如何扭曲市场结果。
+</div>
+
+<h2>看不见的手</h2>
+<p>
+  1776年，亚当·斯密在《国富论》中提出了一个革命性的想法：不需要任何中央计划者，成千上万的买家和卖家各自追求自身利益，就能让资源分配到最有效率的地方。他把这种现象称为<strong>"看不见的手"</strong>。
+</p>
+<p>
+  在中文语境里，我们常说"物以稀为贵"——这正是供需关系的朴素表达。经济学只是把这个直觉变成了可以精确分析的模型。
+</p>
+
+<h2>需求定律</h2>
+<p>
+  <strong>需求定律</strong>是经济学中最基本的规律之一：<strong>在其他条件不变的情况下，价格越高，需求量越少；价格越低，需求量越多。</strong>
+</p>
+
+<div class="concept-card">
+  <h3>为什么需求曲线向下倾斜？</h3>
+  <ul>
+    <li><strong>替代效应：</strong>当咖啡涨价，你会改喝茶。替代品让你转向更便宜的选择。</li>
+    <li><strong>收入效应：</strong>当价格上涨，你的实际购买力下降，你买得更少。</li>
+    <li><strong>边际效用递减：</strong>你愿意为第一杯咖啡付30元，但第二杯只愿意付15元，第三杯可能就不想喝了。</li>
+  </ul>
+</div>
+
+<div class="graph-box">
+  <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Axes -->
+    <line x1="60" y1="260" x2="360" y2="260" stroke="#333" stroke-width="2"/>
+    <line x1="60" y1="260" x2="60" y2="30" stroke="#333" stroke-width="2"/>
+    <!-- Labels -->
+    <text x="210" y="290" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">数量 (Q)</text>
+    <text x="25" y="150" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif" transform="rotate(-90,25,150)">价格 (P)</text>
+    <!-- Demand curve (downward) -->
+    <line x1="100" y1="50" x2="320" y2="230" stroke="#c62828" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="330" y="235" font-size="12" fill="#c62828" font-weight="bold" font-family="sans-serif">需求 D</text>
+    <!-- Supply curve (upward) -->
+    <line x1="120" y1="230" x2="310" y2="50" stroke="#2e7d32" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="315" y="45" font-size="12" fill="#2e7d32" font-weight="bold" font-family="sans-serif">供给 S</text>
+    <!-- Equilibrium point -->
+    <circle cx="210" cy="140" r="5" fill="#2a6496"/>
+    <text x="220" y="135" font-size="12" fill="#2a6496" font-weight="bold" font-family="sans-serif">均衡点 E</text>
+    <!-- Dashed lines -->
+    <line x1="210" y1="140" x2="210" y2="260" stroke="#999" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="60" y1="140" x2="210" y2="140" stroke="#999" stroke-width="1" stroke-dasharray="4,4"/>
+    <!-- Equilibrium labels -->
+    <text x="210" y="278" text-anchor="middle" font-size="11" fill="#666" font-family="sans-serif">Q*</text>
+    <text x="50" y="144" text-anchor="end" font-size="11" fill="#666" font-family="sans-serif">P*</text>
+  </svg>
+  <p class="caption">图：供给曲线（向上）与需求曲线（向下）的交点即为市场均衡</p>
+</div>
+
+<h2>供给定律</h2>
+<p>
+  <strong>供给定律</strong>：在其他条件不变的情况下，价格越高，生产者愿意提供的数量越多；价格越低，供给越少。
+</p>
+<p>
+  这听起来很直观——如果你卖的东西越来越贵，你当然想多卖点。但背后的经济学原理是：<strong>边际成本递增</strong>。当你已经满负荷生产时，再增产就需要加班费、新设备或更贵的原材料，所以只有在更高价格下才值得。
+</p>
+
+<div class="concept-card">
+  <h3>什么会改变供给？（非价格因素）</h3>
+  <ul>
+    <li><strong>生产成本：</strong>原材料涨价 → 供给减少（供给曲线左移）</li>
+    <li><strong>技术进步：</strong>新工艺降低成本 → 供给增加（右移）</li>
+    <li><strong>生产者数量：</strong>更多企业进入市场 → 供给增加</li>
+    <li><strong>政府政策：</strong>减税鼓励生产，征税抑制生产</li>
+    <li><strong>自然条件：</strong>干旱减少农产品供给</li>
+  </ul>
+</div>
+
+<h2>均衡：市场如何"说话"</h2>
+<p>
+  <strong>均衡价格（均衡价格 P*）</strong>是供给量等于需求量时的价格。在这个价格上，想买的人都能买到，想卖的人都能卖掉——没有短缺，也没有过剩。
+</p>
+
+<div class="equation">
+  需求量(Q<sub>D</sub>) = 供给量(Q<sub>S</sub>) → 市场出清
+</div>
+
+<div class="case-study">
+  <strong>📌 现实案例：演唱会门票</strong><br><br>
+  假设周杰伦演唱会场馆能容纳5万人。如果票价定在100元，可能有10万人抢票——<strong>短缺</strong>（需求 &gt; 供给）。黄牛趁机倒卖，溢价到2000元。<br><br>
+  如果票价定在5000元，可能只有1万人想买——<strong>过剩</strong>（供给 &gt; 需求）。主办方不得不降价促销。<br><br>
+  最理想的情况：定价在某个水平，恰好5万人想买。这就是均衡价格——虽然现实中由于信息不完全和交易摩擦，市场很少完美达到均衡。
+</div>
+
+<h2>市场如何调整</h2>
+<p>
+  当价格不在均衡点上时，市场有一种内在力量推动它回归均衡：
+</p>
+
+<div class="concept-card">
+  <h3>短缺时（价格低于均衡）</h3>
+  <ul>
+    <li>想买的人多于能卖的 → 买家之间产生竞争</li>
+    <li>有人愿意出更高的价 → 价格上升</li>
+    <li>价格上升 → 需求量减少，供给量增加 → 向均衡靠近</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>过剩时（价格高于均衡）</h3>
+  <ul>
+    <li>想卖的多于想买的 → 卖家之间产生竞争</li>
+    <li>有人降价促销 → 价格下降</li>
+    <li>价格下降 → 供给量减少，需求量增加 → 向均衡靠近</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>价格不只是"商品值多少钱"的数字标签，它是<strong>信息的载体</strong>。当某样东西变得稀缺，价格上涨，这个信号告诉消费者"省着点用"，同时告诉生产者"多生产点"。这就是"看不见的手"运作的方式。
+</div>
+
+<h2>需求的变动 vs. 需求量的变动</h2>
+<p>
+  这是经济学初学者最容易混淆的概念：
+</p>
+
+<div class="concept-card">
+  <h3>需求量的变动（沿着需求曲线移动）</h3>
+  <ul>
+    <li>由<strong>商品价格本身变化</strong>引起</li>
+    <li>表现为在同一条曲线上从一个点移动到另一个点</li>
+    <li>例：油价从8元涨到10元/升 → 你开车少了</li>
+  </ul>
+</div>
+
+<div class="concept-card">
+  <h3>需求的变动（整条曲线平移）</h3>
+  <ul>
+    <li>由<strong>价格以外的因素</strong>引起</li>
+    <li>表现为整条需求曲线的左移或右移</li>
+    <li>例：电动车补贴出台 → 即使燃油车价格不变，大家也更想买燃油车以外的替代品 → 燃油车需求曲线左移</li>
+  </ul>
+</div>
+
+<h2>课后练习</h2>
+<p>以下10道题检验你对供需模型的理解。每题选择一个答案，系统会即时反馈。</p>
+
+<div class="quiz-section">
+  <h2>练习：供需模型</h2>
+  <p>共10题，涵盖需求定律、供给曲线、均衡分析和市场干预。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">基本概念</div>
+    <div class="question-text">根据需求定律，当某种商品的价格上升时，会发生什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">需求量增加</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">需求量减少</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">均衡分析</div>
+    <div class="question-text">当市场价格低于均衡价格时，市场上会出现：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">过剩（surplus）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">短缺（shortage）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">供给因素</div>
+    <div class="question-text">新技术使手机芯片的生产成本大幅降低。这将导致：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">供给曲线向右移动</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">需求曲线向左移动</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">需求因素</div>
+    <div class="question-text">一项研究发现吃巧克力对心脏有益。这对巧克力市场的影响是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">供给曲线右移</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">需求曲线右移，均衡价格和数量都上升</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">价格上限</div>
+    <div class="question-text">政府在房租市场上设定了低于均衡水平的租金上限（rent ceiling）。最可能的结果是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">住房短缺，出现排队和黑市</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">住房过剩，房东大量空置</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">需求弹性</div>
+    <div class="question-text">下列哪种商品的需求通常最有弹性（即价格变动引起需求量大幅变动）？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">食盐</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">某特定品牌的矿泉水</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">供给变动</div>
+    <div class="question-text">一场台风摧毁了大量柑橘果园。柑橘汁市场的均衡价格和数量将如何变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">价格上升，数量减少</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">价格下降，数量增加</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">概念辨析</div>
+    <div class="question-text">"猪肉价格上涨导致人们买的猪肉减少了"描述的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">需求曲线的移动</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">沿着需求曲线的移动（需求量的变动）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q9">
+    <span class="q-num">Q9</span>
+    <div class="context">价格下限</div>
+    <div class="question-text">最低工资是一种价格下限（price floor）。当最低工资设定在均衡工资之上时，劳动力市场会出现：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">劳动力短缺（岗位多于求职者）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">劳动力过剩（失业增加）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q10">
+    <span class="q-num">Q10</span>
+    <div class="context">综合应用</div>
+    <div class="question-text">假设同时发生两件事：①消费者收入增加（正常品）；②生产技术进步。对该商品的影响是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">均衡价格一定上升，数量不确定</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">均衡数量一定上升，价格变化方向不确定</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——无论是某个概念不理解，还是想深入探讨某个现实案例。经济学不是背公式，而是学会用一套新的眼睛看世界。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.econlib.org/library/Columns/y2016/SenEtAl.html" target="_blank">《魔鬼经济学》（Freakonomics）</a>——用供需思维解读日常生活中的非直觉现象。
+  <br><br>
+  <a href="../reference/supply-demand-cheatsheet.html" class="resource-link">查看供需速查表</a>
+</div>
+
+<div class="footer">
+  <a href="0001-scarcity-and-choice.html" class="nav-prev">← 上一课：稀缺性与选择</a> |
+  <a href="../index.html">目录</a> |
+  <a href="0003-elasticity.html" class="nav-next">下一课：弹性 →</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '需求定律的核心：价格↑ → 需求量↓。这是经济学第一条规律，几乎所有其他模型都建立在这之上。',
+      wrong: '需求定律说得很清楚：价格越高，消费者愿意买得越少。所以答案是"需求量减少"。'
+    },
+    q2: {
+      correct: '价格低于均衡 → 需求量 > 供给量 → 短缺。就像演唱会低价票，人太多而票太少。',
+      wrong: '想想看：价格很低时，大家都想买（需求量大），但生产者不愿低价卖（供给量少）。需求 > 供给 = 短缺。'
+    },
+    q3: {
+      correct: '技术进步降低了生产成本 → 企业在任何价格下都愿意提供更多 → 供给曲线右移。注意：这不是需求的变化！',
+      wrong: '技术影响的是生产成本，属于供给端因素。成本降低意味着供给增加 → 供给曲线右移。需求曲线不受直接影响。'
+    },
+    q4: {
+      correct: '健康研究改变了消费者的偏好 → 需求曲线右移。需求增加 → 均衡价格上升，均衡数量也上升。',
+      wrong: '健康研究影响的是消费者意愿，不是生产成本。需求曲线右移后，新的均衡点在更高价格和更高数量处。'
+    },
+    q5: {
+      correct: '租金上限低于均衡价 → 租房需求 > 供给 → 短缺。结果是排队找房、黑市交易、房东不愿维护房屋。',
+      wrong: '价格被压得太低 → 租客多（需求高），房东少（供给低）→ 短缺而非过剩。房东觉得不划算就不出租了。'
+    },
+    q6: {
+      correct: '有接近替代品的商品需求更有弹性。某品牌矿泉水很容易被其他品牌替代，所以价格一涨就换牌子。食盐没有替代品，需求缺乏弹性。',
+      wrong: '食盐几乎没有替代品（你做饭总要放盐），所以即使涨价你也得买——需求缺乏弹性。特定品牌矿泉水很容易被替换，需求弹性大。'
+    },
+    q7: {
+      correct: '台风摧毁果园 → 供给减少（供给曲线左移）→ 在原有价格下出现短缺 → 价格上升 → 数量减少。',
+      wrong: '供给减少（曲线左移）意味着在任何价格下供给量都少了。结果是价格被推高，交易量下降。'
+    },
+    q8: {
+      correct: '猪肉价格本身的变化引起的是"沿着需求曲线的移动"（需求量的变动）。需求曲线的移动需要价格以外的因素（如收入变化、偏好变化）。',
+      wrong: '"猪肉价格上涨"是价格本身的变化。价格变化引起的是沿着需求曲线的移动，不是整条曲线的平移。'
+    },
+    q9: {
+      correct: '最低工资是价格下限。设在高工资水平 → 想工作的人多（劳动力供给多），企业想雇的人少（劳动力需求少）→ 劳动力过剩 = 失业。',
+      wrong: '价格下限设在均衡之上 → 供给量（想工作的人）> 需求量（企业想雇的人）→ 过剩 = 失业增加。'
+    },
+    q10: {
+      correct: '收入增加 → 需求曲线右移（价格↑, 数量↑）。技术进步 → 供给曲线右移（价格↓, 数量↑）。两者叠加：数量一定上升。但价格一个被推高、一个被压低 → 净效应不确定。',
+      wrong: '需求右移推高价格，供给右移压低价格 → 价格变化方向取决于哪个效应更强。但两个都推高数量 → 数量一定上升。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 10;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对供需模型的理解很扎实。';
+      else if (score >= 7) label.textContent = '做得不错！回顾一下错题的解释，薄弱环节就补上了。';
+      else label.textContent = '继续加油！重新阅读上面的内容，理解每个概念背后的直觉。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

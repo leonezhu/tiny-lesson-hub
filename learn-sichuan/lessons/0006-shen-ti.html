@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 身体与健康（生病、看医生、药店）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .vocab-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .vocab-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .vocab-list li {
+    padding: 0.3rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .vocab-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .vocab-list .sc { font-weight: 600; color: var(--accent); }
+  .vocab-list .py { color: var(--muted); font-size: 0.9rem; }
+  .vocab-list .mn { color: var(--text); }
+
+  .dialogue-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .dialogue-box h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  .dialogue-line {
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+  }
+
+  .dialogue-line .speaker {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .dialect-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .dialect-note strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent-light);
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>身体与健康（生病、看医生、药店）</h1>
+<p class="lesson-meta">第6课 · ~12分钟 · 生活场景</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你能用四川话描述身体哪里不舒服、跟医生说明症状、在药店买药。重点是掌握四川话里独特的表达方式，而不是照搬普通话。
+</div>
+
+<h2>为什么这很重要</h2>
+<p>
+  在成都，生病了很多人第一反应是去社区医院或者找中医馆，甚至先问亲戚推荐什么药。如果你只会说普通话，在跟本地老医生沟通时可能会觉得对方说的四川话像天书——尤其是那些描述身体感受的独特词汇。比如普通话的"发烧"，四川人说"发冷发热"或者干脆说"烧起来了"；"头疼"可以说"头昏脑涨"。
+</p>
+
+<h2>身体部位词</h2>
+
+<div class="vocab-card">
+  <h3>🏥 身体部位</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">头壳</span> <span class="py">tóu ké</span> — 脑袋（四川话常用"头壳"代替"头"）</li>
+    <li><span class="sc">脑壳痛</span> <span class="py">nǎo ké tàng</span> — 头痛，四川人常说"脑壳痛"而不是"头痛"</li>
+    <li><span class="sc">喉咙</span> <span class="py">hóu lóng</span> — 嗓子，四川人也说"喉管儿"</li>
+    <li><span class="sc">胃</span> <span class="py">wèi</span> — 同上，但四川人说"胃不舒服"更常说"胃里不得劲"</li>
+    <li><span class="sc">肚子</span> <span class="py">dǔ zi</span> — 腹部，四川人说"肚脐儿"</li>
+    <li><span class="sc">背脊</span> <span class="py">bèi jǐ</span> — 后背，四川话说"背脊骨"</li>
+    <li><span class="sc">膝盖</span> <span class="py">xī gài</span> — 膝盖，四川话也说"膝头儿"</li>
+    <li><span class="sc">脚杆</span> <span class="py">jiǎo gān</span> — 小腿/腿（四川特色词）</li>
+    <li><span class="sc">手杆</span> <span class="py">shǒu gān</span> — 手臂（四川特色词）</li>
+  </ul>
+</div>
+
+<div class="dialect-note">
+  <strong>四川话特色：</strong>"杆"这个后缀是四川话的一大特色。手杆（arm）、脚杆（leg/shin）、腰杆（lower back）。这些词在日常生活中非常高频，尤其是在说疼痛的时候："我手杆疼得很"。
+</div>
+
+<h2>描述症状的表达</h2>
+
+<div class="vocab-card">
+  <h3>😷 怎么说自己不舒服</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">我发烧了</span> — 四川话："我烧起来了" 或 "我发冷发热"</li>
+    <li><span class="sc">我头疼</span> — 四川话："我脑壳痛" 或 "我头壳痛"</li>
+    <li><span class="sc">我咳嗽</span> — 四川话："我在咳" 或 "我咳得凶"</li>
+    <li><span class="sc">我感冒了</span> — 四川话："我伤风了"（老派说法）或 "我感冒了"</li>
+    <li><span class="sc">我拉肚子</span> — 四川话："我跑稀"（非常地道的说法！）</li>
+    <li><span class="sc">我恶心/想吐</span> — 四川话："我反胃" 或 "我想呕"</li>
+    <li><span class="sc">我胃疼</span> — 四川话："我胃里不得劲" 或 "我胃里头痛"</li>
+    <li><span class="sc">我没力气</span> — 四川话："我好虚" 或 "我浑身没劲"</li>
+    <li><span class="sc">我睡不好</span> — 四川话："我晚上睡不踏实" 或 "我失眠了"</li>
+  </ul>
+</div>
+
+<div class="dialect-note">
+  <strong>重点词汇 — "跑稀"：</strong>这是四川话里最地道的"拉肚子"说法。"跑稀"字面意思是"跑着拉稀"，形容腹泻来得急又猛。记住这个词，你在成都看病的时候医生会觉得你很懂行。
+</div>
+
+<h2>对话：在社区医院</h2>
+
+<div class="dialogue-box">
+  <h3>👨‍⚕️ 场景：在社区医院跟医生说明症状</h3>
+
+  <div class="dialogue-line">
+    <span class="speaker">医生：</span>
+    咋个回事嘛？哪个地方不舒服？
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">病人：</span>
+    医生，我这两天脑壳痛，喉咙也痛，还烧起来了。
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">医生：</span>
+    来，张口让我看一下。嗯……扁桃体有点肿。你还有啥子症状？
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">病人：</span>
+    就是咳，咳得凶，晚上睡不踏实。还有点跑稀。
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">医生：</span>
+    你这是感冒加肠胃炎。我给你开点药，一天吃三次，吃完再来复查。
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">病人：</span>
+    好嘞，谢谢医生。
+  </div>
+</div>
+
+<div class="dialect-note">
+  <strong>对话要点：</strong>注意医生的用词——"咋个回事嘛"（怎么回事）、"哪个地方"（哪里）、"啥子"（什么）、"凶"（厉害）。这些都是四川话问诊时的典型用词。
+</div>
+
+<h2>对话：在药店买药</h2>
+
+<div class="dialogue-box">
+  <h3>💊 场景：在药店跟店员说你需要什么药</h3>
+
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    老板，我脑壳痛、喉咙痛，有啥子药可以推荐？
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">店员：</span>
+    你烧起没有嘛？
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    有一点，38度左右。
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">店员：</span>
+    那你要得吃退烧药。这个氨酚黄那敏片，一天三次，一次两片。再配一盒板蓝根冲剂，对喉咙好。
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">顾客：</span>
+    好，就按你说的来。多少钱？
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">店员：</span>
+    一共四十五块。
+  </div>
+</div>
+
+<div class="dialect-note">
+  <strong>对话要点：</strong>"有啥子药"（有什么药）、"你要得吃"（你需要吃）、"就按你说的来"（就这样办）。四川话在口语中经常省略主语，直接说动词。
+</div>
+
+<h2>四川话 vs 普通话：关键区别</h2>
+
+<table class="comparison-table">
+  <tr>
+    <th>场景</th>
+    <th>普通话</th>
+    <th>四川话</th>
+  </tr>
+  <tr>
+    <td>头痛</td>
+    <td>我头痛</td>
+    <td>我脑壳痛 / 我头壳痛</td>
+  </tr>
+  <tr>
+    <td>发烧</td>
+    <td>我发烧了</td>
+    <td>我烧起来了 / 我发冷发热</td>
+  </tr>
+  <tr>
+    <td>拉肚子</td>
+    <td>我拉肚子</td>
+    <td>我跑稀</td>
+  </tr>
+  <tr>
+    <td>哪里不舒服</td>
+    <td>哪个地方不舒服</td>
+    <td>哪个地方不得劲 / 哪个地方痛</td>
+  </tr>
+  <tr>
+    <td>很厉害</td>
+    <td>很严重</td>
+    <td>很凶 / 重得很</td>
+  </tr>
+  <tr>
+    <td>需要吃药</td>
+    <td>你需要吃药</td>
+    <td>你要得吃药</td>
+  </tr>
+  <tr>
+    <td>手臂疼</td>
+    <td>我手臂疼</td>
+    <td>我手杆痛</td>
+  </tr>
+  <tr>
+    <td>腿疼</td>
+    <td>我腿疼</td>
+    <td>我脚杆痛</td>
+  </tr>
+</table>
+
+<h2>药店常见药品名（四川话语境）</h2>
+
+<div class="vocab-card">
+  <h3>💊 你可能听到的药名</h3>
+  <ul class="vocab-list">
+    <li><span class="sc">布洛芬</span> <span class="py">bù luò fēn</span> — 止痛退烧，四川人说"吃颗布洛芬"</li>
+    <li><span class="sc">板蓝根</span> <span class="py">bǎn lán gēn</span> — 清热解毒，四川人家家常备</li>
+    <li><span class="sc">双黄连</span> <span class="py">shuāng huáng lián</span> — 感冒清热</li>
+    <li><span class="sc">蒙脱石散</span> <span class="py">méng tuō shí sàn</span> — 治拉肚子的</li>
+    <li><span class="sc">奥美拉唑</span> <span class="py">ào měi lā zuò</span> — 胃药</li>
+    <li><span class="sc">云南白药</span> <span class="py">yún nán bǎi yào</span> — 跌打损伤，四川人也很常用</li>
+    <li><span class="sc">藿香正气水</span> <span class="py">huò xiāng zhèng qì shuǐ</span> — 中暑、肠胃不适，味道苦但管用</li>
+  </ul>
+</div>
+
+<div class="dialect-note">
+  <strong>实用提示：</strong>"藿香正气水"是四川人家里的万能药，夏天防暑、冬天治肠胃都靠它。虽然味道苦到让人皱眉，但四川老人会说："苦是苦，管用嘛！"
+</div>
+
+<div class="quiz-section">
+  <h2>练习：选对四川话说法</h2>
+  <p>根据情境选择正确的四川话表达。共8道题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你想告诉朋友你头痛。</div>
+    <div class="sentence">下面哪句是地道的四川话？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我头痛得很</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我脑壳痛</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在药店，想问店员有没有退烧药。</div>
+    <div class="sentence">哪种说法最地道？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">老板，有啥子退烧药？</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">老板，请问有没有退烧药？</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你拉肚子了，跟同事解释。</div>
+    <div class="sentence">四川人会怎么说？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我拉肚子了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我跑稀了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">你不小心扭伤了脚踝。</div>
+    <div class="sentence">用四川话说"我的腿好痛"应该是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我的腿好痛</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我脚杆痛得很</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">医生问你哪里不舒服。</div>
+    <div class="sentence">"我胃里不舒服"用四川话怎么说更自然？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我胃不舒服</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我胃里不得劲</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你想说"你的咳嗽很严重"。</div>
+    <div class="sentence">四川话里"很严重"可以怎么说？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">很严重</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">很凶</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">你说"我需要吃点药"。</div>
+    <div class="sentence">四川话怎么说？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我要吃药</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我要得吃药</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">你胳膊受伤了。</div>
+    <div class="sentence">用四川话说"我的手臂疼"应该是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我手臂痛</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我手杆痛</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题吗？</strong> 随时问我——我是你的四川话老师。哪个词不理解？哪句话说不地道？直接问我，我来帮你改。
+  <br><br>
+  <strong>下一个场景：</strong> 学会看病之后，下一步可以学"买菜砍价"或者"点菜吃饭"。
+  <br><br>
+  <a href="../reference/body-health.html" class="resource-link">查看速查表</a>
+</div>
+
+<div class="footer">
+  <a href="0005-she-jiao.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0007-tian-qi.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"脑壳"是四川话里最常用的"头"的说法。"我脑壳痛"比"我头痛"地道多了。', wrong: '四川人很少说"头痛"，而是说"脑壳痛"或"头壳痛"。记住"脑壳"这个核心词！' },
+    q2: { correct: '"有啥子"是四川话"有什么"的标准说法。"啥子"=什么，是四川话高频词。', wrong: '普通话"请问有没有"太正式了。四川话日常交流用"有啥子"更自然。' },
+    q3: { correct: '"跑稀"是四川话最地道的"拉肚子"说法，形容腹泻来得急。', wrong: '"拉肚子"是普通话说法，四川人日常说"跑稀"。' },
+    q4: { correct: '"脚杆"是四川话里"腿/小腿"的说法。"脚杆痛得很"非常地道。', wrong: '"腿"是普通话。四川话说腿叫"脚杆"，所以是"脚杆痛"。' },
+    q5: { correct: '"不得劲"是四川话"不舒服"的地道说法。"胃里不得劲"比"胃不舒服"更自然。', wrong: '"胃不舒服"是普通话直译。四川人说"不得劲"来表达不舒服的感觉。' },
+    q6: { correct: '"凶"在四川话里可以表示"厉害、严重"。"咳得凶"=咳嗽很严重。', wrong: '"严重"是普通话。四川话口语中说"凶"来表示程度深。' },
+    q7: { correct: '"要得"是四川话"需要"的意思。"我要得吃药"=我需要吃药。', wrong: '"我要吃药"只是陈述需要，少了四川话特有的"要得"这个表达。' },
+    q8: { correct: '"手杆"是四川话"手臂"的说法。四川话用"杆"做后缀：手杆、脚杆、腰杆。', wrong: '"手臂"是普通话。四川话里手臂叫"手杆"，所以是"手杆痛"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你对四川话身体词汇掌握得很好！';
+      else if (score >= 6) label.textContent = '不错！看看错题的解释，把不会的记下来。';
+      else label.textContent = '多练几次！重新读一遍上面的词汇表再试试。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 — 四川话里的出行用语</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #c0392b;
+    --accent-light: #fdf2f2;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: white;
+  }
+
+  .vocab-card .word {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .vocab-card .pinyin {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .vocab-card .meaning {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .vocab-card .example {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f8f8;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+  }
+
+  .vocab-card .example .sc {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .dialogue-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: #fafafa;
+  }
+
+  .dialogue-line {
+    margin-bottom: 0.75rem;
+  }
+
+  .dialogue-line .speaker {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .dialogue-line .dialect {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-weight: 600;
+  }
+
+  .dialogue-line .translation {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Noto Serif SC', 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话里的出行用语</h1>
+<p class="lesson-meta">第3课 · ~12分钟 · 交通出行</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>学会在成都街头问路、打车、坐公交和地铁时用四川话交流。掌握12个出行相关词汇和4个实用句式，让你在成都出行不再迷路。
+</div>
+
+<h2>为什么出行用语很重要？</h2>
+<p>
+  成都的街道纵横交错，巷子又多又绕。本地人问路用的是四川话，出租车司机聊天用的也是四川话。学会出行用语，你不仅能顺利找到目的地，还能在等车的时候跟当地人聊上几句——毕竟四川人最喜欢\"摆龙门阵\"了。
+</p>
+
+<h2>核心词汇</h2>
+
+<div class="vocab-card">
+  <div class="word">赶场</div>
+  <div class="pinyin">gǎn chǎng</div>
+  <div class="meaning">赶集、去镇上买东西（源自农村集市的传统）</div>
+  <div class="example\">\"周末我们要去邛崃<span class=\"sc\">赶场</span>，买点腊肉回来。\"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">打转</div>
+  <div class="pinyin">dǎ zhuàn</div>
+  <div class="meaning">兜圈子、绕弯子（走路时找不到方向）</div>
+  <div class="example\">\"我在春熙路<span class=\"sc\">打转</span>了半天，硬是没找到那个店。\"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">顺到</div>
+  <div class="pinyin">shùn dào</div>
+  <div class="meaning沿着、顺着（某个方向走）</div>
+  <div class="example\"><span class=\"sc\">顺到</span>这条街走，走到头左转就到了。\"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">拐个弯</div>
+  <div class="pinyin">guǎi gè wān</div>
+  <div class="meaning">转弯（最常用的方向指示词）</div>
+  <div class="example\">\"前面<span class=\"sc\">拐个弯</span>就是。\"（前面转弯就到了）</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">堵惨了</div>
+  <div class="pinyin">dǔ cǎn le</div>
+  <div class="meaning">非常堵车（\"惨了\"表程度极深）</div>
+  <div class="example\">\"早高峰的人民南路<span class=\"sc\">堵惨了</span>，坐地铁嘛。\"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">跳伞</div>
+  <div class="pinyin">tiào sǎn</div>
+  <div class="meaning">（俚语）出租车不打表，漫天要价——字面意思是\"突然降落\"，实际指\"宰客\"</div>
+  <div class="example\">\"莫坐路边那种黑车，专门<span class=\"sc\">跳伞</span>的。\"</div>
+</div>
+
+<table class="comparison-table">
+  <thead>
+    <tr><th>普通话</th><th>四川话</th><th>说明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>怎么走</td><td>咋个走？</td><td>\"咋个\"=怎么，万能疑问词</td></tr>
+    <tr><td>多远</td><td>有多远？/ 好多路程？</td><td>\"好多\"=多少</td></tr>
+    <tr><td>往前直走</td><td>直着走 / 往前头走</td><td>\"前头\"=前面</td></tr>
+    <tr><td>往左/右拐</td><td>往左/右拐个弯</td><td>\"拐个弯\"=转弯</td></tr>
+    <tr><td>到了吗</td><td>到了没得？</td><td>\"没得\"=没有，句末疑问</td></tr>
+    <tr><td>下车</td><td>下车 / 下来</td><td>四川话和普通话基本一样</td></tr>
+  </tbody>
+</table>
+
+<h2>问路实战</h2>
+<p>
+  在成都街头迷路不可怕，可怕的是你用普通话问路，对方听不懂你的四川话——等等，这好像搞反了？其实很多外地人在成都待久了，也会不自觉地说出四川话。下面是几个经典问路场景：
+</p>
+
+<div class="dialogue-box">
+  <h3>场景一：在街上问路</h3>
+  <div class="dialogue-line">
+    <span class="speaker">你：</span>
+    <span class="dialect\">\"师傅，请问人民公园咋个走嘛？\"</span>
+    <br>
+    <span class="translation">（师傅，请问人民公园怎么走？）</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">路人：</span>
+    <span class="dialect\">\"你从这个路口直着走，走到头看到一个大商场，然后<span class=\"sc\">拐个弯</span>，走两百米就到了。\"</span>
+    <br>
+    <span class="translation">（从这个路口直走，到头看到大商场，然后转弯，走200米就到。）</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">你：</span>
+    <span class="dialect\">\"好嘞，要得不，谢谢师傅！\"</span>
+    <br>
+    <span class="translation">（好的，行，谢谢师傅！）</span>
+  </div>
+</div>
+
+<div class="dialogue-box">
+  <h3>场景二：坐出租车</h3>
+  <div class="dialogue-line">
+    <span class="speaker">你：</span>
+    <span class="dialect\">\"师傅，麻烦到天府广场，打表哈。\"</span>
+    <br>
+    <span class="translation">（师傅，麻烦去天府广场，请打表计价。）</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">司机：</span>
+    <span class="dialect\">\"要得嘛，坐稳哦。今天路上<span class=\"sc\">堵惨了</span>，可能要久一点。\"</span>
+    <br>
+    <span class="translation">（好的，坐好。今天路上很堵，可能要久一点。）</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">你：</span>
+    <span class="dialect\">\"没事嘛，慢慢开。\"</span>
+    <br>
+    <span class="translation">（没关系，慢慢开。）</span>
+  </div>
+</div>
+
+<div class="dialogue-box">
+  <h3>场景三：坐公交车</h3>
+  <div class="dialogue-line">
+    <span class="speaker">你：</span>
+    <span class="dialect\">\"师傅，这辆车的到武侯祠没得？\"</span>
+    <br>
+    <span class="translation">（师傅，这辆车到武侯祠吗？）</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">司机：</span>
+    <span class="dialect\">\"到到到，你坐到起，过几站就到了。\"</span>
+    <br>
+    <span class="translation">（到到到，你坐着，过几站就到了。）</span>
+  </div>
+  <div class="dialogue-line">
+    <span class="speaker">你：</span>
+    <span class="dialect\">\"好，麻烦到咯喊我一下哈。\"</span>
+    <br>
+    <span class="translation">（好，麻烦到了叫我一下。）</span>
+  </div>
+</div>
+
+<h2>常用句式</h2>
+
+<h3>1. 询问方向</h3>
+<p>
+  \"<strong>请问XX地方咋个走嘛？</strong>\"——最标准、最礼貌的问路句式。<br>
+  \"<strong>XX地方在哪个方向嘛？</strong>\"——\"哪个\"=哪个，这里指\"哪边\"。<br>
+  \"<strong>离这儿远不远嘛？</strong>\"——\"这儿\"=这里，问距离远近。
+</p>
+
+<h3>2. 描述方向</h3>
+<p>
+  \"<strong>直着走，走到头。</strong>\"——直走，到头。<br>
+  \"<strong>往左/右拐个弯。</strong>\"——向左/右转弯。<br>
+  \"<strong>顺到这条街走。</strong>\"——沿着这条街走。<br>
+  \"<strong>过了桥就到了。</strong>\"——过了桥就到了。
+</p>
+
+<h3>3. 打车用语</h3>
+<p>
+  \"<strong>打表哈，莫跳伞哦。</strong>\"——请打表计价，别宰客。<br>
+  \"<strong>到XX地方，搞快点。</strong>\"——去某地，快点走（赶时间时用）。<br>
+  \"<strong>停一下，就这里下。</strong>\"——停一下，就这里下车。
+</p>
+
+<h3>4. 公共交通</h3>
+<p>
+  \"<strong>这趟车到XX没得？</strong>\"——这趟车到XX吗？<br>
+  \"<strong>坐几路车去XX嘛？</strong>\"——坐几路车去XX？<br>
+  \"<strong>到咯喊我一下哈。</strong>\"——到了叫我一下。
+</p>
+
+<div class="chinese-note">
+  <strong>文化常识：</strong>成都的地铁非常发达，几乎可以去任何地方。但有些老街巷子里的味道，只有坐公交车才能感受到。成都公交有个特色——很多人上车后会主动帮司机看后视镜、提醒乘客，这种\"社区感\"在其他城市很少见。
+</div>
+
+<h2>成都地形小知识</h2>
+<p>
+  成都是平原，所以路基本是方方正正的格子状。但是！成都的老城区（比如锦里、宽窄巷子附近）有很多弯曲的小巷子，连本地人都容易迷路。如果你在那些地方问路，记住四川人有一个万能回答：
+</p>
+
+<div class="vocab-card">
+  <div class="word\">\"你跟我走嘛。\"</div>
+  <div class="meaning">跟着我走就行——这是四川人最实在的指路方式，说明这个人真的很热心。</div>
+  <div class="example\">\"哎呀你莫问了，<span class=\"sc\">你跟我走嘛</span>，我带你去。\"</div>
+</div>
+
+<div class="chinese-note">
+  <strong>小贴士：</strong>成都人说\"前面\"其实可以很远——\"前面那条街\"可能是500米外，也可能是2公里外。如果不确定，直接问\"有多远嘛？\"（有多远吗？）
+</div>
+
+<div class="quiz-section">
+  <h2>练习：选对四川话</h2>
+  <p>下面有8道题，看看你能不能选出正确的四川话表达。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">你在街上想问路，问\"怎么走？\"用四川话说？</div>
+    <div class="sentence\">请问这个地方<span class="blank">______</span>嘛？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">哪个走</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">咋个走</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">出租车司机告诉你路上很堵，他说\"堵惨了\"是什么意思？</div>
+    <div class="sentence\">\"堵<span class="blank">______</span>\" = 非常堵车</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">惨了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">巴适</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你想知道某地\"有多远\"，用四川话说？</div>
+    <div class="sentence\">这个<span class="blank">______</span>远嘛？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">好多</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">有</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">别人给你指路说\"往左拐个弯\"，\"拐个弯\"是什么意思？</div>
+    <div class="sentence\"><span class="blank">______</span> = 转弯</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">拐个弯</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">打转</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">在出租车上，你想让司机\"打表\"（正常计价），怎么说？</div>
+    <div class="sentence\">师傅，<span class="blank">______</span>，莫跳伞哦。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">搞快点</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">打表哈</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你想问公交车\"到不到XX地方\"，用四川话说？</div>
+    <div class="sentence">这辆车到武侯祠<span class="blank">______</span>？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">没</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">没得</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">\"打转\"在四川话里是什么意思？</div>
+    <div class="sentence\">我在春熙路<span class="blank">______</span>了半天，硬是没找到。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">顺到</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">打转</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">别人说要带你去目的地，说\"你跟我走嘛\"，这是什么意思？</div>
+    <div class="sentence\"><span class="blank">______</span> = 跟着我走</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">你跟我走嘛</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你打转嘛</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>下一步建议：</strong>下次去成都的老街区试试用四川话问路。哪怕只说一句\"请问XX地方咋个走嘛？\"，本地人的反应绝对不一样——他们会立刻觉得你\"是自己人\"，给你指路也更详细更热情。
+</div>
+
+<div class="footer">
+  <p>TeachHub · 四川话入门 · 第3课</p>
+  <p><a href="../index.html">← 返回课程目录</a></p>
+</div>
+
+<script>
+function check(btn) {
+  const question = btn.closest('.quiz-question');
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  const isCorrect = btn.dataset.correct === 'true';
+  const feedback = question.querySelector('.feedback');
+
+  // Disable all buttons in this question
+  const allBtns = question.querySelectorAll('.option-btn');
+  allBtns.forEach(b => {
+    b.style.pointerEvents = 'none';
+    if (b.dataset.correct === 'true') {
+      b.classList.add('reveal-correct');
+    }
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.className = 'feedback show correct-fb';
+    feedback.textContent = '✓ 正确！';
+  } else {
+    btn.classList.add('wrong');
+    feedback.className = 'feedback show wrong-fb';
+    feedback.textContent = '✗ 不对哦，正确答案已标绿。';
+  }
+
+  checkAllAnswered();
+}
+
+function checkAllAnswered() {
+  const questions = document.querySelectorAll('.quiz-question');
+  let answered = 0;
+  let correct = 0;
+  questions.forEach(q => {
+    if (q.dataset.answered === 'true') {
+      answered++;
+      const selected = q.querySelector('.option-btn.correct');
+      if (selected && selected.classList.contains('correct')) {
+        correct++;
+      }
+    }
+  });
+
+  if (answered === questions.length) {
+    const scoreBox = document.createElement('div');
+    scoreBox.className = 'score-box show';
+    scoreBox.innerHTML = `
+      <div class="score-num">${correct}/${questions.length}</div>
+      <div class="score-label">答对了 ${correct} 题</div>
+    `;
+    document.querySelector('.quiz-section').appendChild(scoreBox);
+  }
+}
+</script>
+
+</body>
+</html>

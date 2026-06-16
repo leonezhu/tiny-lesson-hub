@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 打招呼与日常用语</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+    --dialect-bg: #f3e5f5;
+    --dialect-border: #ab47bc;
+    --mandarin-bg: #e3f2fd;
+    --mandarin-border: #1976d2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .dialect-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .dialect-card .dialect-label {
+    display: inline-block;
+    background: var(--dialect-bg);
+    color: #7b1fa2;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+  }
+
+  .dialect-card .mandarin-label {
+    display: inline-block;
+    background: var(--mandarin-bg);
+    color: #1565c0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .dialect-word {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0.25rem 0;
+  }
+
+  .pinyin {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 0.3rem;
+  }
+
+  .meaning {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .example-row {
+    border-left: 3px solid var(--dialect-border);
+    padding: 0.6rem 1rem;
+    margin: 0.75rem 0;
+    background: var(--dialect-bg);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .example-row .dialect-text {
+    font-weight: 600;
+    color: #6a1b9a;
+  }
+
+  .example-row .mandarin-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .tip-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .tip-box strong { color: #e65100; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  .comparison-table .dialect-cell {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第1课：打招呼与日常用语</h1>
+<p class="lesson-meta">第 1 课 · ~10 分钟 · 四川话入门基础</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>学会四川话中最常用的打招呼方式和日常表达。掌握"咋个"、"要得"、"巴适"等核心词汇，能在简单对话中使用四川话问候他人。
+</div>
+
+<h2>四川话是什么？</h2>
+<p>
+  四川话（Sichuanese）是西南官话的一种，主要通行于四川省和重庆市。使用人口超过一亿，是中国使用人数最多的方言之一。四川话最大的特点是<strong>保留了很多古汉语的发音和词汇</strong>，同时又有自己独特的表达方式。
+</p>
+<p>
+  和普通话相比，四川话有几个显著特点：
+</p>
+<ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+  <li>没有卷舌音（zh/ch/sh → z/c/s）</li>
+  <li>前后鼻音不分（in/ing, en/eng 混读）</li>
+  <li>声调与普通话不同，但只有四个声调</li>
+  <li>有很多独特的词汇和语气词</li>
+</ul>
+
+<div class="tip-box">
+  <strong>💡 提示：</strong>学习四川话不需要一开始就追求"正宗"发音。先用这些词汇和表达方式，慢慢感受它的节奏和韵味。四川话的魅力在于"味道"，不在于完美。
+</div>
+
+<h2>核心词汇</h2>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>四川话</th>
+      <th>普通话</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="dialect-cell">咋个</td>
+      <td>怎么 / 怎样</td>
+      <td>万能疑问词，最核心的四川话词汇</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">要得</td>
+      <td>好的 / 行 / 可以</td>
+      <td>表示同意、认可</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">巴适</td>
+      <td>很好 / 舒服 / 到位</td>
+      <td>四川话的灵魂词汇，形容一切美好事物</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">晓得</td>
+      <td>知道</td>
+      <td>比"知道"更地道</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">摆龙门阵</td>
+      <td>聊天</td>
+      <td>四川人特有的"聊天"说法</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">莫得</td>
+      <td>没有</td>
+      <td>"莫"=不，"得"=有</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">啥子</td>
+      <td>什么</td>
+      <td>疑问代词，使用频率极高</td>
+    </tr>
+    <tr>
+      <td class="dialect-cell">愣是</td>
+      <td>真是 / 确实</td>
+      <td>表示强调</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>打招呼的表达</h2>
+
+<h3>1. "咋个啦？"</h3>
+<p>字面意思是"怎么了？"，但在四川话里，这就是最常见的打招呼方式，相当于普通话的"你好吗？"或者更随意一点的"最近怎么样？"</p>
+
+<div class="example-row">
+  <div class="dialect-text">A：咋个啦？</div>
+  <div class="mandarin-text">（怎么了？/ 最近咋样？）</div>
+  <br>
+  <div class="dialect-text">B：要得嘛，还好。</div>
+  <div class="mandarin-text">（挺好的，还行。）</div>
+</div>
+
+<h3>2. "吃了吗？"</h3>
+<p>这个在四川话和普通话里都一样，但四川人会加一个语气词变成<strong>"吃饭了没得？"</strong></p>
+
+<div class="example-row">
+  <div class="dialect-text">吃饭了没得？</div>
+  <div class="mandarin-text">（吃了吗？/ 你吃饭了没有？）</div>
+  <br>
+  <div class="dialect-text">吃了吃了，吃的火锅。</div>
+  <div class="mandarin-text">（吃了吃了，吃的火锅。）</div>
+</div>
+
+<h3>3. "好久见咯！"</h3>
+<p>用来打招呼说"好久没见了！"，表达见到朋友的惊喜。</p>
+
+<div class="example-row">
+  <div class="dialect-text">好久见咯！你最近在哪里嘛？</div>
+  <div class="mandarin-text">（好久没见了！你最近在哪里啊？）</div>
+</div>
+
+<h2>日常对话示例</h2>
+
+<div class="dialect-card">
+  <span class="dialect-label">四川话</span>
+  <span class="mandarin-label">普通话对照</span>
+  
+  <h3 style="margin-top: 0.75rem;">场景：在茶馆碰到朋友</h3>
+  
+  <div class="example-row">
+    <div class="dialect-text">A：哟，咋个在这里碰到你哦？吃茶没得？</div>
+    <div class="mandarin-text">（哟，怎么在这儿碰到你？喝茶了吗？）</div>
+  </div>
+  <div class="example-row">
+    <div class="dialect-text">B：刚坐到！你要不要一起？老板，两杯盖碗茶！</div>
+    <div class="mandarin-text">（刚坐下！你要不要一起？老板，来两杯盖碗茶！）</div>
+  </div>
+  <div class="example-row">
+    <div class="dialect-text">A：要得嘛！今天这茶巴适得很。</div>
+    <div class="mandarin-text">（好啊！今天这茶特别棒。）</div>
+  </div>
+  <div class="example-row">
+    <div class="dialect-text">B：那当然咯，我们成都的茶馆，那是杠杠的！来，摆哈龙门阵嘛。</div>
+    <div class="mandarin-text">（那当然了，我们成都的茶馆，最棒了！来，聊聊天吧。）</div>
+  </div>
+</div>
+
+<h2>语气词：四川话的"灵魂"</h2>
+<p>四川话有很多独特的语气词，它们让话语听起来"有味道"：</p>
+
+<div class="dialect-card">
+  <div class="dialect-word">"咯" (lo)</div>
+  <p class="meaning">表示动作完成或确认，类似普通话的"了"</p>
+  <div class="example-row">
+    <div class="dialect-text">走咯！（走了！）</div>
+    <div class="dialect-text">吃咯！（吃了！）</div>
+  </div>
+</div>
+
+<div class="dialect-card">
+  <div class="dialect-word">"嘛" (ma)</div>
+  <p class="meaning">表示理所当然、建议或缓和语气</p>
+  <div class="example-row">
+    <div class="dialect-text">走嘛！（走吧！/ 来嘛！）</div>
+    <div class="dialect-text">没事嘛。（没关系啦。）</div>
+  </div>
+</div>
+
+<div class="dialect-card">
+  <div class="dialect-word">"哦" (o)</div>
+  <p class="meaning">表示惊讶、感叹</p>
+  <div class="example-row">
+    <div class="dialect-text">好巴哦！（好棒啊！）</div>
+    <div class="dialect-text">那个娃儿好乖哦！（那个小孩好可爱啊！）</div>
+  </div>
+</div>
+
+<div class="dialect-card">
+  <div class="dialect-word">"噻" (sai)</div>
+  <p class="meaning">加强语气，带点"就这样呗"的感觉</p>
+  <div class="example-row">
+    <div class="dialect-text">要得噻！（行呗！/ 没问题！）</div>
+    <div class="dialect-text">晓得噻。（知道了呗。）</div>
+  </div>
+</div>
+
+<h2>快速对比：普通话 vs 四川话</h2>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>普通话</th>
+      <th>四川话</th>
+      <th>区别</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>你怎么了？</td>
+      <td class="dialect-cell">你咋个了？</td>
+      <td>怎→咋</td>
+    </tr>
+    <tr>
+      <td>这是什么？</td>
+      <td class="dialect-cell">这是啥子？</td>
+      <td>什→啥</td>
+    </tr>
+    <tr>
+      <td>我没有钱。</td>
+      <td class="dialect-cell">我莫得钱。</td>
+      <td>没有→莫得</td>
+    </tr>
+    <tr>
+      <td>我知道了。</td>
+      <td class="dialect-cell">我晓得了。</td>
+      <td>知道→晓得</td>
+    </tr>
+    <tr>
+      <td>好的，没问题。</td>
+      <td class="dialect-cell">要得。</td>
+      <td>完整的四川话回应</td>
+    </tr>
+    <tr>
+      <td>很好/很棒。</td>
+      <td class="dialect-cell">巴适。</td>
+      <td>万能赞美词</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="quiz-section">
+  <h2>练习：测试一下</h2>
+  <p>选出一个正确的答案。共 8 道题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">第1题</span>
+    <div class="question-text">"要得"在四川话里的意思最接近下面哪个？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">不行</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">好的 / 可以</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不知道</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">再见</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">第2题</span>
+    <div class="question-text">朋友对你说"咋个啦？"，你想回答"挺好的"，应该用哪个？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">要得嘛</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">莫得事</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">啥子嘛</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">晓得咯</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">第3题</span>
+    <div class="question-text">"巴适"这个词在四川话里通常用来形容什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">很难受</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">很匆忙</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">很好 / 很舒服</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">很奇怪</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">第4题</span>
+    <div class="question-text">"摆龙门阵"是什么意思？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">散步</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">聊天</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">做饭</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">喝茶</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">第5题</span>
+    <div class="question-text">把"我没有钱"翻译成四川话，应该是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">我不有钱</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">我莫得钱</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">我没钱钱</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">我啥子都没有</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">第6题</span>
+    <div class="question-text">"啥子"在四川话里对应普通话的哪个词？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">谁</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">哪里</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">什么</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">为什么</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">第7题</span>
+    <div class="question-text">下面哪句话用了四川话的语气词"咯"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你走嘛</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">好巴适哦</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">走咯</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">晓得噻</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">第8题</span>
+    <div class="question-text">如果你想用四川话说"你知道吗？"，最地道的表达是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你晓得啥子？</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你晓得伐？</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你知道不？</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你晓得吗？</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>下一步：</strong>试着在日常生活中找一找四川话的痕迹。四川很多餐厅的菜单、路边的小广告、甚至电视节目里都能听到四川话。留意那些词汇和语气词，你会发现自己越来越"入戏"。
+  <br><br>
+  <strong>推荐资源：</strong><a href="https://www.bilibili.com/search?keyword=四川话教学" target="_blank" class="resource-link">B站四川话教学视频</a> — 看视频学发音是最快的方式。
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-chi-he.html">下一课：吃喝（饮茶/点心/街市）</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"要得"是四川话里最常用的肯定回答，相当于"好的""行""没问题"。', wrong: '"要得"表示同意和认可，意思是"好的 / 可以 / 没问题"，不是否定词。' },
+    q2: { correct: '"要得嘛"表示"挺好的/可以嘛"，是对"咋个啦"（怎么了）的自然回应。', wrong: '"要得嘛"是四川话里表示"好/不错"的常用回答，适合回应别人的关心。' },
+    q3: { correct: '"巴适"是四川话的灵魂词汇，形容一切美好的事物——好吃、好耍、好安逸。', wrong: '"巴适"在四川话里就是"很好、很舒服、很到位"的意思，是正面评价的最高级。' },
+    q4: { correct: '"摆龙门阵"就是四川人特有的"聊天"说法，带有讲故事、侃大山的意味。', wrong: '"摆龙门阵"=聊天。四川人坐在茶馆里"摆龙门阵"是最经典的场景。' },
+    q5: { correct: '"莫得"是四川话里"没有"的标准说法。"我莫得钱"=我没有钱。', wrong: '"莫得"=没有。"我莫得钱"是四川话里"我没有钱"的地道说法。' },
+    q6: { correct: '"啥子"=什么。"这是啥子？"=这是什么？', wrong: '"啥子"是四川话中最常用的疑问代词，完全对应普通话的"什么"。' },
+    q7: { correct: '"走咯"里的"咯"表示动作完成，相当于普通话的"走了"。', wrong: '"咯"在这里表示动作已经完成。"走咯"=走了。其他选项用的是不同的语气词。' },
+    q8: { correct: '"你晓得伐？"是四川话问"你知道吗？"的方式，"晓得"+口语化的"伐"。', wrong: '"晓得"=知道。"你晓得伐？"是四川话里"你知道吗？"的自然说法。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太巴适了！全对！你已经掌握了四川话打招呼的基本功。';
+      else if (score >= 6) label.textContent = '要得！学得不错。再看看错题的解析，下次一定能拿满分。';
+      else label.textContent = '莫慌，再来一次。把上面的内容再看一遍，你肯定能行。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

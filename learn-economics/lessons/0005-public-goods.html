@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 — 公共物品与搭便车问题</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card ul {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card li { margin-bottom: 0.25rem; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .col-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .col-box h4 {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .col-box.private { border-top: 3px solid #1565c0; }
+  .col-box.public { border-top: 3px solid #2e7d32; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  tr:nth-child(even) { background: #fafafa; }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .scenario {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--accent);
+  }
+
+  .scenario strong { color: var(--accent); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>公共物品与搭便车问题</h1>
+<p class="lesson-meta">Lesson 5 · ~12 minutes · 经济学基础</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解什么是公共物品，为什么私人市场往往无法有效提供它们，以及"搭便车"（free rider）如何导致市场失灵。你将学会区分纯公共物品、准公共物品和私人物品，并能用经济学思维解释路灯、国防、公园等现实案例。
+</div>
+
+<h2>一个社区的故事</h2>
+<p>
+  想象你住在一个有100户的小社区。社区需要一条路灯——晚上更安全，房产价值更高。安装和维护这条路灯的成本是每年10万元。每户从路灯中获得的收益大约是每年1500元，总计15万元。
+</p>
+<p>
+  这看起来是个好买卖：总收益15万 &gt; 总成本10万。但问题来了：<strong>谁来出这笔钱？</strong>
+</p>
+
+<div class="scenario">
+  <strong>场景</strong>：社区发起人挨家挨户募捐，每户出1000元。到了第三家，你说："别担心，前两家肯定愿意出。就算他们不出，路灯装上了我也能受益。我干脆不出，看看别人会不会出。"
+</div>
+
+<p>
+  这就是<strong>搭便车问题</strong>的核心——当一个人可以不花钱就享受某种好处时，他就没有动力去为此付费。
+</p>
+
+<h2>公共物品的两个特征</h2>
+<p>
+  经济学中，判断某物是不是"公共物品"，要看它是否同时具备以下两个特征：
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>特征</th>
+      <th>含义</th>
+      <th>例子</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>非竞争性</strong><br>(Non-rivalry)</td>
+      <td>一个人消费它，不会减少其他人能消费的数量</td>
+      <td>你看路灯，不影响邻居也看</td>
+    </tr>
+    <tr>
+      <td><strong>非排他性</strong><br>(Non-excludability)</td>
+      <td>很难（或成本极高）阻止不付费的人使用它</td>
+      <td>路灯亮了，没人能禁止某个路人享受光线</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>只有<strong>同时</strong>满足这两个条件的物品，才是纯公共物品。</p>
+
+<h2>四类物品的对比</h2>
+
+<div class="two-col">
+  <div class="col-box private">
+    <h4>私人物品</h4>
+    <p><strong>竞争性 + 排他性</strong></p>
+    <ul>
+      <li>苹果、衣服、手机</li>
+      <li>你吃了，我就不能吃了</li>
+      <li>不买就买不到</li>
+    </ul>
+  </div>
+  <div class="col-box public">
+    <h4>公共物品</h4>
+    <p><strong>非竞争性 + 非排他性</strong></p>
+    <ul>
+      <li>国防、路灯、基础科学研究</li>
+      <li>你看，不影响我看</li>
+      <li>很难阻止你不付费就受益</li>
+    </ul>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="col-box" style="border-top: 3px solid #e65100;">
+    <h4>公共资源</h4>
+    <p><strong>竞争性 + 非排他性</strong></p>
+    <ul>
+      <li>公海鱼群、清洁空气、草原</li>
+      <li>你捕了鱼，我就少捕</li>
+      <li>很难阻止别人来捕捞</li>
+    </ul>
+  </div>
+  <div class="col-box" style="border-top: 3px solid #6a1b9a;">
+    <h4>俱乐部物品</h4>
+    <p><strong>非竞争性 + 排他性</strong></p>
+    <ul>
+      <li>Netflix会员、高速公路（不拥堵时）、健身房</li>
+      <li>你看了电影，不影响我也看</li>
+      <li>不交费就进不去</li>
+    </ul>
+  </div>
+</div>
+
+<h2>为什么市场会失灵？</h2>
+<p>
+  在完全竞争的私人市场中，价格机制能有效配置资源。但面对公共物品时，这个机制失效了，原因有二：
+</p>
+
+<div class="concept-card">
+  <h3>1. 搭便车问题（Free Rider Problem）</h3>
+  <p>
+    由于非排他性，每个人都会想："如果别人付了钱，我就能免费享受。所以我最好不出钱。"当所有人都这么想时，<strong>没有任何人会自愿付费</strong>，即使大家加起来的总收益远超成本。
+  </p>
+  <p>
+    <strong>结果：</strong>私人市场供给不足，甚至完全不供给。
+  </p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 无法收费（Impossible to Price）</h3>
+  <p>
+    即使有人想提供公共物品，也很难向每个受益者收费。你没法给每个路过路灯的人收0.01元。没有有效的收费机制，私人企业就没有动力生产。
+  </p>
+  <p>
+    <strong>结果：</strong>即使有企业尝试提供，也会因为收不回成本而放弃。
+  </p>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞见</strong>：市场失灵不是因为人们"自私"——每个人理性地选择不付费是完全合理的。问题在于个体的理性选择加起来，导致了集体的非理性结果。这就是"囚徒困境"在公共物品领域的体现。
+</div>
+
+<h2>解决方案：政府的作用</h2>
+<p>
+  既然市场搞不定，谁来提供公共物品？答案通常是<strong>政府通过税收强制筹资</strong>：
+</p>
+<ul>
+  <li><strong>国防</strong>：没人能选择"我不想要国防保护"。所以必须通过税收统一筹资。</li>
+  <li><strong>基础科研</strong>：一项发现可能被无数人使用，企业投入后很难独占收益。政府资助基础研究（如互联网最初就是国防研究项目）。</li>
+  <li><strong>路灯/城市照明</strong>：单个社区可能难以自发组织，但市政税收可以覆盖成本。</li>
+</ul>
+
+<p>但这并不意味着政府永远是最好的提供者。经济学家还讨论过其他方案：</p>
+
+<div class="concept-card">
+  <h3>替代方案</h3>
+  <ul>
+    <li><strong>社区自治</strong>：小型社区中，社会规范和声誉机制可以抑制搭便车（比如小区业主委员会集资）。</li>
+    <li><strong>慈善与捐赠</strong>：部分公共物品可以由慈善机构提供（如开源软件、维基百科）。</li>
+    <li><strong>俱乐部模式</strong>：将非排他变为排他（比如收费公路），让市场介入。</li>
+    <li><strong>庇古补贴</strong>：政府对产生正外部性的活动提供补贴。</li>
+  </ul>
+</div>
+
+<h2>公海鱼群的悲剧</h2>
+<p>
+  公共资源（竞争性 + 非排他性）面临的是另一个经典问题——<strong>"公地悲剧"</strong>（Tragedy of the Commons）。
+</p>
+<p>
+  每片海域的鱼对每个渔民来说是"公共资源"：你多捕一条，我就少捕一条（竞争性），但你很难阻止其他渔船出海捕鱼（非排他性）。每个渔民都有动力尽可能多地捕鱼，最终结果是<strong>鱼类资源被过度捕捞</strong>，所有人都受损。
+</p>
+<p>
+  解决思路包括：配额制度、可交易的捕捞权、社区自治管理等。诺贝尔经济学奖得主奥斯特罗姆（Elinor Ostrom）的研究证明，小型社区往往能通过自组织实现可持续管理——不需要政府，也不需要私有化。
+</p>
+
+<h2>本课小结</h2>
+<p>
+  公共物品之所以特殊，是因为它们同时具有非竞争性和非排他性。这导致搭便车问题不可避免，私人市场无法有效提供。政府的角色不是取代市场，而是在市场失灵的地方补位。理解这一点，你就能看懂为什么国防、基础科研、公共卫生等必须由公共财政支持。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共8道题，每题选择最正确的答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">判断公共物品的标准</div>
+    <div class="sentence">以下哪一项同时具备非竞争性和非排他性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">电影院电影</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">国防保护</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">超市里的面包</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">收费高速公路</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">搭便车问题的核心</div>
+    <div class="sentence">为什么私人市场通常无法有效提供路灯？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为路灯的成本太高</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为居民不需要路灯</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为很难阻止不付费的人享受路灯的光线</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为路灯不具备非竞争性</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">分类练习</div>
+    <div class="sentence">Netflix会员订阅属于哪一类物品？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">纯公共物品</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">俱乐部物品（非竞争性 + 排他性）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">私人物品</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">公共资源</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景分析</div>
+    <div class="sentence">一个社区的100户人家，每户从路灯中获得1500元收益，路灯成本10万元。如果所有居民都选择"搭便车"不出钱，结果是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">路灯会被成功安装，因为总收益大于总成本</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">路灯不会被安装，尽管对社会来说它值得建设</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">每户会自动被收取1000元</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">政府会免费提供路灯</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">公地悲剧</div>
+    <div class="sentence">"公地悲剧"发生的原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">公共资源具有非竞争性和非排他性</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">政府过度干预资源分配</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">公共资源具有竞争性和非排他性，个体理性导致集体非理性</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">私人物品被错误地公有化了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">非竞争性的理解</div>
+    <div class="sentence">以下哪个例子体现了"非竞争性"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你吃了一个苹果，我就不能吃那个苹果了</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">一个停车位只能停一辆车</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">一个人收听无线电广播，不影响其他人同时收听</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">海洋中的鱼被渔民捕走后数量减少</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">政策分析</div>
+    <div class="sentence">为什么基础研究（如物理学、数学）通常由政府和大学资助，而非私营企业主导？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为私营企业没有科学家</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为基础研究成果具有公共物品性质，企业难以独占收益，存在搭便车问题</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为基础研究没有经济价值</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为政府比企业更擅长做科学研究</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">综合判断</div>
+    <div class="sentence">以下哪项措施可以有效缓解公共物品供给中的搭便车问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">让每个居民自愿决定是否出资</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">提高公共物品的价格</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">减少公共物品的供给量</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">通过税收强制筹资，由政府统一提供</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——无论是关于公共物品的定义、搭便车问题的逻辑，还是它与现实政策的关联。不理解的地方正是最值得讨论的地方。
+  <br><br>
+  <strong>推荐延伸阅读：</strong> <a href="https://www.econlib.org/library/Enc/Publicgoodsandtragedyofthecommons.html" target="_blank">Murray Rothbard on Public Goods and Tragedy of the Commons</a> — 了解不同经济学派对公共物品的看法差异。
+  <br><br>
+  <a href="../reference/public-goods-cheatsheet.html" class="resource-link">查看公共物品速查表</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0006-gdp-national-income.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '国防保护同时具备非竞争性（我的安全不受影响）和非排他性（无法排除某个公民享受保护），是典型的纯公共物品。',
+      wrong: '电影院有排他性（不买票进不去）和竞争性（座位有限）；面包是私人物品；收费高速是非竞争性但有排他性（收费站）。只有国防同时满足两个条件。'
+    },
+    q2: {
+      correct: '路灯的非排他性意味着很难阻止不付费的人享受光线。这就是搭便车问题的根源——每个人都想免费享受，结果没人愿意出钱。',
+      wrong: '路灯成本并不特别高；居民显然需要路灯；路灯确实具备非竞争性。核心问题是：无法有效排除不付费者，导致搭便车。'
+    },
+    q3: {
+      correct: 'Netflix会员是非竞争性的（你看了电影不影响别人看）+ 排他性的（不交费就无法观看）。这正是"俱乐部物品"的定义。',
+      wrong: 'Netflix可以排除不付费用户（非公共物品），也不具有竞争性（你看了不影响别人看，非公共资源）。它符合俱乐部物品的两个特征。'
+    },
+    q4: {
+      correct: '虽然总收益（15万）大于总成本（10万），但每户都有搭便车的动机——"让别人出钱，我坐享其成"。当所有人都这样想时，路灯就不会被安装。这就是市场失灵。',
+      wrong: '搭便车问题恰恰说明，即使总收益大于总成本，私人市场也可能无法实现最优结果。自愿出资在存在搭便车时通常会失败。'
+    },
+    q5: {
+      correct: '公地悲剧中，公共资源具有竞争性（你多捕我就少捕）+ 非排他性（很难阻止别人捕鱼）。每个个体理性地追求自身利益，最终导致集体灾难。',
+      wrong: '公共资源是竞争性的（鱼被捕获后别人就没了），不是非竞争性的；公地悲剧与市场失灵相关，但不是政府过度干预造成的；它是公共资源的问题，不是私人物品公有化。'
+    },
+    q6: {
+      correct: '非竞争性意味着一个人的消费不会减少其他人的可用量。无线电广播就是一个经典例子——多一个人收听，不影响其他人。',
+      wrong: '苹果、停车位、海洋鱼群都是竞争性的——一个人用了，其他人可用的就少了。无线电广播是典型非竞争性。'
+    },
+    q7: {
+      correct: '基础研究成果一旦发表，任何人都可以使用（非排他性），而且一个人使用不影响其他人（非竞争性）。企业很难从中独占收益，因此缺乏投资动力。这正是政府资助的理由。',
+      wrong: '私营企业当然有科学家；基础研究有巨大的经济价值（互联网、GPS等都源于基础研究）；关键是公共物品属性导致的激励问题，而非能力问题。'
+    },
+    q8: {
+      correct: '税收强制筹资消除了搭便车的空间——每个人都必须按能力贡献，政府再统一提供公共物品。这是解决搭便车问题最经典的方法。',
+      wrong: '自愿出资正是搭便车问题的来源；提高价格对公共物品不适用（因为很难收费）；减少供给量反而加剧了福利损失。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对公共物品和搭便车问题有了扎实的理解。';
+      else if (score >= 6) label.textContent = '做得不错！回顾一下你做错的题目，解释告诉你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容后再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

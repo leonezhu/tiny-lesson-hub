@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 国际贸易与比较优势</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+    --danger: #d32f2f;
+    --danger-bg: #fce4ec;
+    --purple-bg: #f3e5f5;
+    --purple-border: #7b1fa2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .formula-box {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .formula-box .label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .danger-note {
+    background: var(--danger-bg);
+    border-left: 3px solid var(--danger);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .danger-note strong { color: var(--danger); }
+
+  .insight-note {
+    background: var(--purple-bg);
+    border-left: 3px solid var(--purple-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .insight-note strong { color: var(--purple-border); }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  .scenario-box {
+    background: #f5f7fa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .scenario-box .scenario-title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>国际贸易与比较优势</h1>
+<p class="lesson-meta">第9课 &middot; ~12分钟 &middot; 微观经济学核心原理</p>
+
+<div class="goal-box">
+  <strong>学完这节课后</strong>，你将能够解释为什么贸易不是零和游戏、理解"比较优势"这一经济学最著名的反直觉结论，并能分析关税和贸易壁垒的真实影响。
+</div>
+
+<h2>为什么贸易让所有人都受益？</h2>
+<p>
+  想象一下：如果你做饭很慢、洗衣服也很慢，难道你应该自己做饭又洗衣服，什么都不干吗？当然不是——如果你找人帮你洗衣服（哪怕她洗衣服比你更快），而你专心做你能做得相对更好的事，你们两个都会过得更好。
+</p>
+<p>
+  这就是大卫&middot;李嘉图在 1817 年提出的<strong>比较优势理论</strong>（Comparative Advantage）——被公认为经济学中最深刻、也最反直觉的发现之一。它告诉我们：<strong>即使一个人在所有事情上都比别人差，贸易仍然对他有利。</strong>
+</p>
+
+<div class="insight-note">
+  <strong>🧠 反直觉的核心：</strong>贸易的基础不是"谁更强"，而是"谁的机会成本更低"。一个顶尖律师可以自己打扫卫生，但如果她花一小时打扫就损失了 500 元的法律咨询费，而保洁员花一小时打扫只损失了 50 元的机会成本——那么律师打扫的"比较劣势"更大，保洁员的"比较优势"更大。
+</div>
+
+<h2>绝对优势 vs 比较优势</h2>
+
+<h3>绝对优势（Absolute Advantage）</h3>
+<p>
+  亚当&middot;斯密在《国富论》中首先提出：如果一个国家生产某种商品需要的资源更少（劳动时间更短、成本更低），它就在这个产品上有<strong>绝对优势</strong>。
+</p>
+
+<div class="scenario-box">
+  <div class="scenario-title">🇨🇳 中国 vs 🇺🇸 美国：衬衫与大豆</div>
+  <p>假设一年劳动时间内：</p>
+  <ul>
+    <li>中国可以生产 <strong>100 件衬衫</strong> 或 <strong>10 吨大豆</strong></li>
+    <li>美国可以生产 <strong>50 件衬衫</strong> 或 <strong>30 吨大豆</strong></li>
+  </ul>
+  <p>中国在衬衫和大豆上都有绝对优势（都能生产更多）。但斯密的理论到这里就结束了——它无法解释为什么中国应该和美国贸易。</p>
+</div>
+
+<h3>比较优势（Comparative Advantage）</h3>
+<p>
+  李嘉图的关键洞察：<strong>不看绝对产量，看机会成本。</strong>
+</p>
+
+<div class="formula-box">
+  <div class="label">机会成本 = 你为了得到这个东西而放弃的东西</div>
+  生产 1 吨大豆的机会成本 = 放弃生产的衬衫数量
+</div>
+
+<div class="scenario-box">
+  <div class="scenario-title">计算机会成本</div>
+  <table class="comparison-table">
+    <tr><th>国家</th><th>1 吨大豆的机会成本</th><th>1 件衬衫的机会成本</th></tr>
+    <tr><td>🇨🇳 中国</td><td>100/10 = <strong>10 件衬衫</strong></td><td>10/100 = <strong>0.1 吨大豆</strong></td></tr>
+    <tr><td>🇺🇸 美国</td><td>50/30 = <strong>1.67 件衬衫</strong></td><td>30/50 = <strong>0.6 吨大豆</strong></td></tr>
+  </table>
+  <p style="margin-top: 0.75rem;"><strong>结论：</strong></p>
+  <ul>
+    <li>生产大豆的机会成本：美国（1.67 件衬衫）&lt; 中国（10 件衬衫）→ <strong>美国在大豆上有比较优势</strong></li>
+    <li>生产衬衫的机会成本：中国（0.1 吨大豆）&lt; 美国（0.6 吨大豆）→ <strong>中国在衬衫上有比较优势</strong></li>
+  </ul>
+</div>
+
+<p>
+  所以最优策略是：<strong>中国专门生产衬衫，美国专门生产大豆，然后互相交易。</strong>即使中国在两方面都"更强"，双方通过分工和贸易都能获得更多。
+</p>
+
+<div class="chinese-note">
+  <strong>记忆口诀：</strong>"你擅长的事你不一定最擅长，但你应该做你那方面<strong>相对</strong>最擅长的。"比较优势看的是<strong>比率</strong>，不是绝对数值。
+</div>
+
+<h2>贸易的实际效果：世界变大了</h2>
+<p>
+  比较优势不只是理论——它解释了全球化时代的许多现象：
+</p>
+
+<div class="card">
+  <h3>比较优势在现代经济中的体现</h3>
+  <ul>
+    <li><strong>爱尔兰的制药业：</strong>这个小国的 GDP 一半以上来自制药出口。不是因为爱尔兰人比美国人更会制药，而是因为欧盟大市场让它能专业化。</li>
+    <li><strong>越南的咖啡：</strong>越南的气候和劳动力成本让它成为全球第二大咖啡出口国。它不是最好的咖啡产地，但在咖啡上的比较优势明显高于其他产业。</li>
+    <li><strong>芯片设计 vs 芯片制造：</strong>美国在设计上有比较优势（人才密集），台湾/韩国在制造上有比较优势（规模效应+工艺积累），两者合作创造了 iPhone。</li>
+  </ul>
+</div>
+
+<h2>贸易保护主义的代价</h2>
+<p>
+  每当一个国家决定"不跟别人贸易了"或者"加关税"，表面上是在保护本国产业，实际上付出了巨大的代价。
+</p>
+
+<h3>关税的真实成本</h3>
+<p>
+  当你对进口商品征收 25% 的关税时，你以为你在惩罚外国生产者？实际上，关税的成本主要由<strong>本国消费者</strong>承担：
+</p>
+
+<div class="card">
+  <h3>2018–2019 年美国对华加征关税的影响</h3>
+  <ul>
+    <li>美国进口商支付了约 99% 的关税成本（纽约联邦储备银行研究）</li>
+    <li>美国家庭平均每年多支出 <strong>$1,300</strong></li>
+    <li>美国制造业就业不仅没有增加，反而减少了约 24,000 个岗位</li>
+    <li>中国部分出口转向越南、墨西哥等国——全球供应链重组，效率下降</li>
+  </ul>
+</div>
+
+<div class="danger-note">
+  <strong>为什么贸易保护主义总是失败？</strong>因为它试图逆转比较优势。你可以通过补贴让任何产业在本国存在，但那个产业的生产成本会远高于国际水平。长期来看，整个国家的资源会被错配到低效领域。
+</div>
+
+<h2>自由贸易的批评与回应</h2>
+<p>
+  比较优势理论并非没有争议。以下是常见的批评及其回应：
+</p>
+
+<table class="comparison-table">
+  <tr><th>批评</th><th>回应</th></tr>
+  <tr><td>贸易导致发达国家工人失业</td><td>短期确实有影响，但贸易创造的新产业和新就业机会通常大于破坏的岗位。问题在于<strong>补偿机制</strong>——政府是否帮助受影响工人转型。</td></tr>
+  <tr><td>发展中国家被锁定在低端产业</td><td>这是"动态比较优势"问题。韩国、台湾最初也是低端出口国，通过教育和产业政策逐步升级。关键在于<strong>不要停留在比较优势的静态版本上</strong>。</td></tr>
+  <tr><td>环境成本被忽视</td><td>完全正确。理想的贸易政策应该纳入碳定价和环境标准，否则确实会造成"污染避难所"效应。</td></tr>
+  <tr><td>国家安全不能交给贸易</td><td>某些战略物资（粮食、能源、芯片）确实需要保障供应安全。但这应该是<strong>有针对性的例外</strong>，而不是全面贸易战的借口。</td></tr>
+</table>
+
+<h2>中国的比较优势演变</h2>
+<p>
+  理解中国过去 40 年的经济奇迹，最好的框架就是比较优势的变化：
+</p>
+
+<div class="card">
+  <h3>中国比较优势的三个阶段</h3>
+  <ul>
+    <li><strong>1980–2000（劳动密集型）：</strong>改革开放初期，中国拥有海量廉价劳动力。服装、玩具、鞋类出口爆发。这是典型的基于要素禀赋的比较优势。</li>
+    <li><strong>2000–2015（资本与技术密集型）：</strong>加入 WTO 后，基础设施完善、工程师红利显现。电子产品、机械设备成为出口主力。比较优势从"便宜劳动力"转向"熟练劳动力+规模制造"。</li>
+    <li><strong>2015 至今（创新驱动）：</strong>高铁、5G、新能源、AI 等领域开始展现技术领先。中国正在从"比较优势驱动"转向"竞争优势驱动"（波特理论）。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>比较优势不是永恒的。它可以被教育、基础设施投资和技术创新改变。中国的崛起正是系统性地将"潜在比较优势"转化为"现实竞争力"的过程。
+</div>
+
+<h2>总结：贸易与比较优势的核心要点</h2>
+<ul>
+  <li>贸易不是零和游戏——它可以让所有人受益</li>
+  <li>比较优势看的是<strong>机会成本</strong>，不是绝对效率</li>
+  <li>即使你在所有方面都比别人差，你仍然有比较优势——在你"相对不那么差"的事情上</li>
+  <li>关税的成本主要由本国消费者承担，而非外国生产者</li>
+  <li>比较优势可以随时间演变——教育和投资能改变它</li>
+  <li>贸易自由化的最大挑战不是效率问题，而是分配问题——如何补偿受损者</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，选出你认为正确的答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">概念理解</div>
+    <div class="question-text">比较优势理论的核心观点是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">每个国家都应该生产自己最有优势的产品</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">每个国家都应该生产自己机会成本最低的产品</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">计算题</div>
+    <div class="question-text">甲国 1 小时可生产 5 件衣服或 1 台电脑，乙国 1 小时可生产 2 件衣服或 1 台电脑。谁在衣服生产上有比较优势？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">甲国</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">乙国</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情境判断</div>
+    <div class="question-text">如果 A 国在生产小麦和钢铁上都有绝对优势（都比 B 国效率高），会发生什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">A 国不需要和 B 国贸易</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">两国仍可以从贸易中获益</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">政策分析</div>
+    <div class="question-text">一项研究显示美国对华关税 99% 的成本由谁承担？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">中国出口商</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">美国消费者和进口商</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">概念辨析</div>
+    <div class="question-text">以下哪项最能描述"动态比较优势"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">通过教育和投资可以改变一个国家的比较优势</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">比较优势只存在于发达国家之间</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">计算题</div>
+    <div class="question-text">生产 1 辆汽车的机会成本是 100 吨钢材，生产 1 吨钢材的机会成本是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">100 吨钢材</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">0.01 辆汽车</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">历史案例</div>
+    <div class="question-text">韩国、台湾从低端出口起步，后来升级到高科技产业，这说明了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">比较优势理论是错误的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">比较优势可以随时间和政策演变</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">综合分析</div>
+    <div class="question-text">自由贸易面临的最主要批评是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">贸易会让所有国家变得一样富裕</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">贸易的收益分配不均，部分人会受损</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——无论是比较优势的计算、关税的影响，还是你想讨论某个具体国家的贸易政策，都是很好的话题。不理解的地方就是最值得问的地方。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.econlib.org/library/Yewng/yewEng.html" target="_blank">《贫穷的本质》</a>（Abhijit Banerjee & Esther Duflo）——了解贸易如何真正影响发展中国家穷人的生活。
+  <br><br>
+  <a href="../reference/international-trade-cheatsheet.html" class="resource-link">查看贸易速查表</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0010-economic-growth.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"机会成本最低"才是比较优势的核心。不是看你做得最多，而是看你放弃的最少。',
+      wrong: '那是绝对优势的思路。比较优势看的是机会成本——你为了做这件事放弃了什么。'
+    },
+    q2: {
+      correct: '甲国生产 1 台电脑的机会成本是 5 件衣服，乙国是 2 件衣服。乙国生产电脑的机会成本更低，所以乙国在电脑上有比较优势，甲国在衣服上有比较优势（5 > 2，甲国生产衣服"更划算"）。',
+      wrong: '算一下机会成本：甲国 1 台电脑 = 5 件衣服，乙国 1 台电脑 = 2 件衣服。乙国生产电脑的机会成本更低，所以甲国在衣服上有比较优势。'
+    },
+    q4: {
+      correct: '纽约联储研究发现，关税几乎全部（99%）由美国进口商和消费者承担——他们支付更高的价格。',
+      wrong: '关税在法律上由进口商支付，但最终通过涨价转嫁给了美国消费者。中国出口商几乎没有承担这部分成本。'
+    },
+    q5: {
+      correct: '动态比较优势理论认为，通过教育、基础设施投资和技术创新，一个国家可以主动创造新的比较优势。',
+      wrong: '比较优势不是固定不变的。韩国从低端制造升级到半导体就是一个经典例子。'
+    },
+    q6: {
+      correct: '如果 1 辆车 = 100 吨钢，那么 1 吨钢 = 1/100 = 0.01 辆车。机会成本是互逆的。',
+      wrong: '机会成本是互逆的：如果 1 辆车 = 100 吨钢，那么 1 吨钢 = 1/100 = 0.01 辆车。'
+    },
+    q7: {
+      correct: '这正是"动态比较优势"的核心——通过人力资本投资和产业政策，国家可以升级自己的比较优势。',
+      wrong: '这不是理论被推翻，而是理论的深化。静态比较优势说的是"当前"的比较优势，动态版本说它可以被改变。'
+    },
+    q8: {
+      correct: '贸易在整体上创造财富，但收益分布不均。工人失业、社区衰败是真实的问题。好的贸易政策需要配套的补偿和再培训机制。',
+      wrong: '贸易不会让所有人变得一样富裕——它创造赢家也创造输家。关键是如何补偿输家，而不是放弃贸易。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = '✅ ' + explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = '❌ ' + explanations[qid].wrong;
+    }
+
+    // Check if all questions answered
+    const answeredCount = Object.keys(answered).length;
+    if (answeredCount === total) {
+      const scoreBox = document.getElementById('score-box');
+      const scoreNum = document.getElementById('score-num');
+      const scoreLabel = document.getElementById('score-label');
+      scoreNum.textContent = score + '/' + total;
+      if (score === total) {
+        scoreLabel.textContent = '完美！你对比较优势的理解非常扎实 🎉';
+      } else if (score >= total * 0.75) {
+        scoreLabel.textContent = '很好！再回顾一下错题就满分了 💪';
+      } else if (score >= total * 0.5) {
+        scoreLabel.textContent = '还不错，建议重新阅读相关章节 📖';
+      } else {
+        scoreLabel.textContent = '建议回到上面的内容重新学习一遍，然后再试一次 🔄';
+      }
+      scoreBox.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

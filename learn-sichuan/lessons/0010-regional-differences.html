@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 四川话的区域差异</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #1b5e20;
+    --accent-light: #e8f5e9;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .region-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    border-left: 4px solid var(--accent);
+    background: #fafafa;
+  }
+
+  .region-card .region-title {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .region-card .region-desc {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .region-card .unique-words {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .region-card .unique-words h4 {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .word-compare {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    font-size: 0.95rem;
+  }
+
+  .word-compare .std {
+    color: var(--muted);
+    min-width: 80px;
+  }
+
+  .word-compare .sc {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .word-compare .variant {
+    color: #555;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  .tip-box {
+    background: #e3f2fd;
+    border-left: 4px solid #1565c0;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .tip-box strong { color: #1565c0; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', 'Noto Serif SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话的区域差异</h1>
+<p class="lesson-meta">第10课 · 约12分钟 · 方言地理学</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你能辨别四川话内部成渝片、川西片、川东北片的主要差异，了解四川不同地区在词汇、发音上的特点。
+</div>
+
+<h2>四川话不是"一种声音"</h2>
+<p>
+  很多人以为"四川话"就是成都话，但实际上四川省内的方言差异相当大。四川话内部至少可以分为三大片区：<strong>成渝片</strong>（成都/重庆）、<strong>川西片</strong>（雅安/西昌）、<strong>川东北片</strong>（南充/广安/达州）。每个片区都有自己的特色和口音。
+</p>
+
+<div class="tip-box">
+  <strong>🗺️ 背景知识：</strong>四川地形复杂——西部是高原山地（康藏），中部是成都平原，东部是川东丘陵。地形阻隔了人口流动，导致不同区域发展出了各自的语言特征。
+</div>
+
+<h2>一、成渝片（成都 + 重庆）</h2>
+<p>
+  这是最广为人知的"四川话"。成都话和重庆话同属西南官话成渝片，互通度超过90%，差异主要在个别词汇和语调上。重庆话整体比成都话更"硬"一些，声调也略高。
+</p>
+
+<div class="region-card">
+  <div class="region-title">🏙️ 成都话 vs 重庆话</div>
+  <div class="region-desc">成渝片是四川话的"标准音"，电影、电视剧、网络流行语中的四川话基本都以成渝片为代表。</div>
+  <div class="unique-words">
+    <h4>典型差异词汇：</h4>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">成都：</span><span class="variant">成都说"耍"，重庆也说"耍"——互通</span></div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">成都：</span><span class="variant">"好哦"（表示认可）</span></div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">重庆：</span><span class="variant">"雄起"更常用（源自川超足球）</span></div>
+  </div>
+</div>
+
+<h2>二、川西片（雅安、西昌、攀西地区）</h2>
+<p>
+  川西片保留了更多古汉语特征，同时也受到彝族等少数民族语言的影响，发音和词汇都有独特之处。
+</p>
+
+<div class="region-card">
+  <div class="region-title">🏔️ 川西话特色</div>
+  <div class="region-desc">雅安话被称为四川话中的"活化石"，保留了入声字（普通话已经消失的声调类别）。西昌话则有明显的彝语底层影响。</div>
+  <div class="unique-words">
+    <h4>雅安话独特之处：</h4>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">雅安：</span>"白"读 bái 保留入声特征</div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">雅安：</span>"吃"读 cī（比成都更平）</div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">西昌：</span>大量彝族词汇混入，如"呷谷"（吃饭）</div>
+  </div>
+</div>
+
+<h2>三、川东北片（南充、广安、达州、巴中）</h2>
+<p>
+  川东北片是四川话中"最不像四川话"的一片。它受到湖北方言（楚语）和客家话的影响较大，发音偏硬，语调更接近湖北话。
+</p>
+
+<div class="region-card">
+  <div class="region-title">⛰️ 川东北话特色</div>
+  <div class="region-desc">川东北人说话语调偏高，声调起伏更像湖北话。这是因为明清湖广填四川时，很多湖北移民带来了方言特征。</div>
+  <div class="unique-words">
+    <h4>南充/达州话独特之处：</h4>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">南充：</span>"什么"说"啥（shá）"，接近北方话</div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">南充：</span>"走"读 zǒu（接近普通话，成渝片读 zōu）</div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">达州：</span>"太阳"说"日头"（古汉语保留）</div>
+    <div class="word-compare"><span class="std">普通话</span><span class="sc">巴中：</span>语调偏硬，声调更接近北方官话</div>
+  </div>
+</div>
+
+<h2>四、四川方言地图速览</h2>
+
+<table style="width:100%; border-collapse:collapse; margin: 1.5rem 0; font-size: 0.95rem;">
+  <tr style="border-bottom: 2px solid var(--border);">
+    <th style="text-align:left; padding: 0.5rem; color: var(--accent);">片区</th>
+    <th style="text-align:left; padding: 0.5rem; color: var(--accent);">代表城市</th>
+    <th style="text-align:left; padding: 0.5rem; color: var(--accent);">核心特征</th>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem; font-weight:600;">成渝片</td>
+    <td style="padding: 0.5rem;">成都、重庆</td>
+    <td style="padding: 0.5rem;">标准四川话，声调柔和</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem; font-weight:600;">川西片</td>
+    <td style="padding: 0.5rem;">雅安、西昌</td>
+    <td style="padding: 0.5rem;">保留入声，受少数民族语言影响</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem; font-weight:600;">川东北片</td>
+    <td style="padding: 0.5rem;">南充、达州、巴中</td>
+    <td style="padding: 0.5rem;">受湖北话影响，语调偏硬</td>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem; font-weight:600;">岷江片</td>
+    <td style="padding: 0.5rem;">乐山、宜宾、泸州</td>
+    <td style="padding: 0.5rem;">入声独立，最接近古汉语</td>
+  </tr>
+</table>
+
+<h2>五、为什么了解区域差异很重要？</h2>
+<p>
+  <strong>第一，</strong>四川人自己也经常拿彼此的口音开玩笑。一个成都人到南充，可能会发现"听不懂老乡在说什么"。了解这些差异，能让你更深入地理解四川文化。
+</p>
+<p>
+  <strong>第二，</strong>四川方言的多样性反映了中国方言的丰富性。从雅安话保留入声，到川东北话受湖北影响，到西昌话融合彝语——每一种变体都是一部活着的历史。
+</p>
+<p>
+  <strong>第三，</strong>在四川生活或旅游时，知道对方来自哪个片区，能帮你更好地调整沟通方式。对成都人可以用"巴适"，对川东北人可能"走起"更合适。
+</p>
+
+<!-- ========== QUIZ SECTION ========== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+  <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">你对四川方言的地理分布了解多少？来测一测！</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="sentence">四川话中保留入声字（古汉语声调）最完整的片区是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">成渝片</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">川东北片</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', true)">川西片（雅安/西昌）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">岷江片（乐山/宜宾）</button>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="sentence">川东北话（南充/达州）的语调更接近哪个地区的方言？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">湖南话</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', true)">湖北话</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">江西话</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">贵州话</button>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="sentence">"日头"（太阳）这个说法在哪个片区最常见？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">成渝片</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">川西片</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', true)">川东北片（达州）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">全四川通用</button>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="sentence">成都话和重庆话的互通度大约是多少？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">50%</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', true)">90%以上</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">30%</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">完全不能互通</button>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="sentence">西昌话受到哪个少数民族语言的明显影响？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">藏族</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', true)">彝族</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">苗族</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">白族</button>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="sentence">"走"在成都话中通常读什么音？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">zǒu（和普通话一样）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', true)">zōu（一声）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">zòu</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">ziou</button>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="sentence">四川方言差异的主要地理原因是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">气候差异</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', true)">地形阻隔（高原/平原/丘陵）</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">经济发展不平衡</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">人口密度差异</button>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="sentence">成渝片四川话的核心代表城市是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">雅安和乐山</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', true)">成都和重庆</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">南充和达州</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">西昌和攀枝花</button>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 8;
+
+const explanations = {
+  q1: '川西片（尤其是雅安）保留了古汉语入声字的发音特征。普通话已经消失了入声，但雅安话中还能听到。西昌话也有保留，同时受彝语影响。',
+  q2: '川东北话受湖北方言影响最深，这是因为明清"湖广填四川"移民运动中，大量湖北人移民到川东北地区。达州、南充的语调更接近湖北话。',
+  q3: '"日头"是古汉语词汇的保留，在川东北（达州）片区最常见。成都人更多说"太阳"或"阳雀"。',
+  q4: '成都话和重庆话互通度超过90%，都属于西南官话成渝片。差异主要体现在个别词汇（"雄起"重庆更常用）和语调（重庆话略硬略高）。',
+  q5: '西昌位于凉山彝族自治州，彝语对当地汉语方言有深远影响。比如"呷谷"（吃饭）就是彝语词汇。西昌话中有大量彝语借词。',
+  q6: '成都话中"走"读 zōu（一声），而普通话读 zǒu（三声）。这是成渝片的一个标志性发音特征。川东北则读 zǒu（接近普通话）。',
+  q7: '四川地形复杂——西部是青藏高原东缘，中部是成都平原，东部是川东平行岭谷。地形阻隔导致不同区域语言独立发展，形成方言差异。',
+  q8: '成渝片以成都和重庆为代表城市。这两座城市是四川话的"标准音"来源，也是全国认知度最高的四川话口音。'
+};
+
+function checkAnswer(btn, qId, isCorrect) {
+  const question = document.getElementById(qId);
+  const buttons = question.querySelectorAll('.option-btn');
+  const feedback = document.getElementById('fb-' + qId);
+
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  buttons.forEach(b => {
+    b.style.pointerEvents = 'none';
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.className = 'feedback show correct-fb';
+    feedback.innerHTML = '<strong>✅ 正确！</strong> ' + explanations[qId];
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    buttons.forEach(b => {
+      if (b.onclick.toString().includes('true')) {
+        b.classList.add('reveal-correct');
+      }
+    });
+    feedback.className = 'feedback show wrong-fb';
+    feedback.innerHTML = '<strong>❌ 不对哦。</strong> ' + explanations[qId];
+  }
+
+  answered++;
+
+  if (answered === total) {
+    const scoreBox = document.getElementById('score-box');
+    const scoreNum = document.getElementById('score-num');
+    const scoreLabel = document.getElementById('score-label');
+    scoreNum.textContent = score + '/' + total;
+    if (score === total) {
+      scoreLabel.textContent = '🎉 巴适！四川方言地理学家！';
+    } else if (score >= 6) {
+      scoreLabel.textContent = '👍 雄起！对四川方言很有研究。';
+    } else if (score >= 4) {
+      scoreLabel.textContent = '😄 还行，多走几个城市就全搞懂了。';
+    } else {
+      scoreLabel.textContent = '💪 四川这么大，慢慢走慢慢学！';
+    }
+    scoreBox.classList.add('show');
+  }
+}
+</script>
+
+<div class="footer">
+  <p><a href="../index.html">← 返回课程目录</a></p>
+  <p style="margin-top: 0.5rem;">TeachHub · 四川话入门 · 第10课（完结篇）</p>
+</div>
+
+</body>
+</html>

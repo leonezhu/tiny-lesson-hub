@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 货币与银行体系</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-card ul li {
+    margin-bottom: 0.25rem;
+  }
+
+  .flow-diagram {
+    background: #f5f7fa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .flow-diagram .arrow {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.3rem;
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0.5rem 0;
+  }
+
+  .flow-box {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) { background: #fafafa; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>货币与银行体系</h1>
+<p class="lesson-meta">第7课 &middot; ~12分钟 &middot; 宏观经济学基础</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将理解货币到底是什么、银行为什么能"凭空创造"存款、中央银行如何用利率调节经济——这些概念是理解通胀、金融危机和央行决策的基础。
+</div>
+
+<h2>货币究竟是什么？</h2>
+
+<p>很多人认为货币就是"钱"，但经济学家对货币有更精确的分类。货币有三个核心职能：</p>
+
+<div class="concept-card">
+  <h3>货币的三大职能</h3>
+  <ul>
+    <li><strong>交易媒介（Medium of Exchange）：</strong>用来买东西的东西。你不需要再用物物交换——拿一只鸡换一把斧头。</li>
+    <li><strong>价值尺度（Unit of Account）：</strong>用来标价的东西。一件衣服值500元，而不是说它等于3.3只鸡。</li>
+    <li><strong>价值储藏（Store of Value）：</strong>可以把购买力保存到未来。但要注意——如果通胀很高，货币就失去了这个功能。</li>
+  </ul>
+</div>
+
+<p>在经济学中，货币按流动性分为不同层次：</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>层次</th><th>内容</th><th>例子</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>M0</strong></td><td>流通中的现金</td><td>你钱包里的纸币和硬币</td></tr>
+    <tr><td><strong>M1</strong></td><td>M0 + 活期存款</td><td>微信余额、支付宝余额、银行卡活期</td></tr>
+    <tr><td><strong>M2</strong></td><td>M1 + 定期存款 + 储蓄存款</td><td>你存了三年的定期存款也算</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="chinese-note">
+  <strong>关键洞察：</strong>现代经济中，绝大部分"货币"其实不是现金，而是银行账户里的一串数字。M2 比 M0 大几十倍。这意味着——<em>货币是由银行体系创造的</em>。
+</div>
+
+<h2>部分准备金制度：银行如何"无中生有"</h2>
+
+<p>这是货币理论中最反直觉的部分。假设央行发行了 100 元现金，存入了 A 银行。按照法律规定，银行只需要保留一部分作为准备金（比如 10%，即 10 元），剩下的 90 元可以贷出去。</p>
+
+<div class="flow-diagram">
+  <strong>货币创造过程：</strong>
+  <div class="flow-row">
+    <span class="flow-box">央行发行 100元</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">存入 A 银行</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">A 贷出 90元给甲</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-box">甲花给乙</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">乙存入 B 银行</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">B 贷出 81元给丙</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-box">...</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">最终创造存款 ≈ 100 × (1/0.1) = 1000元</span>
+  </div>
+</div>
+
+<p>公式很简单：<strong>货币乘数 = 1 / 准备金率</strong>。准备金率 10% → 乘数 10。这就是为什么央行只需要投放少量基础货币，就能通过银行体系创造出数倍的广义货币。</p>
+
+<h3>银行的资产负债表</h3>
+
+<p>理解银行的关键是看懂它的账。银行的生意模式很简单：</p>
+
+<div class="concept-card">
+  <h3>一家典型银行的资产负债表</h3>
+  <table>
+    <thead>
+      <tr><th colspan="2">资产（Assets）</th><th colspan="2">负债（Liabilities）</th></tr>
+    </thead>
+    <tbody>
+      <tr><td></td><td></td><td>储户存款</td><td>1000</td></tr>
+      <tr><td>准备金</td><td>100</td><td>股东资本</td><td>50</td></tr>
+      <tr><td>贷款</td><td>900</td><td></td><td></td></tr>
+      <tr><td><strong>总计</strong></td><td><strong>1000</strong></td><td><strong>总计</strong></td><td><strong>1050</strong></td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--muted);">记住：储户的存款对银行来说是<strong>负债</strong>——因为银行欠储户的钱。银行的利润来自贷款利息 − 存款利息的差额（净息差）。</p>
+</div>
+
+<h2>中央银行：银行的银行</h2>
+
+<p>中央银行（在中国是中国人民银行，在美国是美联储/Fed）是整个金融体系的"总开关"。它有三大职能：</p>
+
+<div class="concept-card">
+  <h3>央行的三大职能</h3>
+  <ul>
+    <li><strong>发行的银行：</strong>垄断货币发行权。只有央行可以合法印制钞票。</li>
+    <li><strong>银行的银行：</strong>商业银行把准备金存在央行。央行是最后贷款人（Lender of Last Resort），在金融危机时提供流动性。</li>
+    <li><strong>政府的银行：</strong>管理国家外汇储备、代理国库、制定和执行货币政策。</li>
+  </ul>
+</div>
+
+<h3>货币政策工具</h3>
+
+<p>央行怎么调节经济？主要有三种工具：</p>
+
+<div class="concept-card">
+  <h3>三大货币政策工具</h3>
+  <ul>
+    <li><strong>存款准备金率（RRR）：</strong>调整银行必须留存的比例。降低 RRR → 银行可贷资金增加 → 货币创造增多 → 经济升温。</li>
+    <li><strong>公开市场操作（OMO）：</strong>央行在市场上买卖国债。买入国债 = 向市场注入现金；卖出国债 = 从市场收回现金。</li>
+    <li><strong>政策利率：</strong>调整基准利率（如中国的 MLF 利率、美国的联邦基金利率）。降息 → 借贷成本下降 → 投资和消费增加。</li>
+  </ul>
+</div>
+
+<div class="chinese-note">
+  <strong>现实联系：</strong>2023年以来，中国央行多次下调 LPR（贷款市场报价利率）和存款准备金率，目的就是刺激经济、支持房地产和制造业。这就是货币政策在现实中发挥作用的方式。
+</div>
+
+<h2>货币政策的传导机制</h2>
+
+<p>央行降息之后，经济是怎么被带动起来的？这个过程叫"货币政策传导"：</p>
+
+<div class="flow-diagram">
+  <div class="flow-row">
+    <span class="flow-box">央行降息</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">商业银行贷款利率下降</span>
+    <span class="arrow">→</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-box">企业更愿意借钱投资</span>
+    <span class="arrow">+</span>
+    <span class="flow-box">居民更愿意借钱买房/消费</span>
+  </div>
+  <div class="flow-row">
+    <span class="arrow">→</span>
+    <span class="flow-box">总需求增加</span>
+    <span class="arrow">→</span>
+    <span class="flow-box">产出和就业上升</span>
+  </div>
+</div>
+
+<p>但这个传导不是完美的。如果银行不敢放贷（坏账太多）、企业没有好项目、居民想还债不想借钱——就会出现"流动性陷阱"，降息也刺激不了经济。1990年代的日本和2008年后的美国都经历过这种情况。</p>
+
+<h2>信用货币 vs 商品货币</h2>
+
+<p>人类历史上，货币经历了几个阶段：</p>
+
+<div class="concept-card">
+  <h3>货币的演进</h3>
+  <ul>
+    <li><strong>商品货币：</strong>贝壳、黄金、白银——本身有价值。</li>
+    <li><strong>代用货币：</strong>纸币，最初可以兑换成等量黄金（金本位制）。</li>
+    <li><strong>信用货币：</strong>现代法币（人民币、美元、欧元），由国家法律强制流通，本身几乎没有内在价值。它的价值来自于人们对政府和经济的信任。</li>
+  </ul>
+</div>
+
+<p>1971年，美国总统尼克松宣布美元与黄金脱钩，标志着全球正式进入纯信用货币时代。从此，货币的价值完全取决于央行能否维持物价稳定——如果央行印钞太多，货币就贬值，这就是通胀。</p>
+
+<div class="chinese-note">
+  <strong>思考题：</strong>如果货币的价值来自"信任"，那么当人们不再信任央行时，会发生什么？答案是：恶性通胀（如委内瑞拉、津巴布韦），或者转向其他储值手段（比特币、黄金、美元）。这也是为什么央行独立性如此重要。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，选出一个正确答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">考察货币的职能</div>
+    <div class="question-text">如果你用工资来衡量一套房子值多少钱，这是在执行货币的哪个职能？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">交易媒介</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">价值尺度</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">价值储藏</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">支付手段</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">考察货币层次</div>
+    <div class="question-text">以下哪项属于 M1 而不属于 M0？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你钱包里的 100 元纸币</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你银行卡的活期存款余额</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你三年定期的存款</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">黄金储备</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">考察货币乘数</div>
+    <div class="question-text">如果法定准备金率是 20%，货币乘数是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">5</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">20</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">4</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">10</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">考察银行资产负债表</div>
+    <div class="question-text">对银行来说，储户的存款属于什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">资产</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">负债</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有者权益</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">收入</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">考察央行职能</div>
+    <div class="question-text">以下哪项不属于中国人民银行的职能？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">发行人民币</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">管理国家外汇储备</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为个人发放住房贷款</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">制定和执行货币政策</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">考察货币政策工具</div>
+    <div class="question-text">当经济衰退时，央行最可能采取哪种行动？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">提高存款准备金率</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">卖出政府债券</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">降低基准利率</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">减少货币供应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">考察流动性陷阱</div>
+    <div class="question-text">什么是"流动性陷阱"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">银行没有足够的现金支付给储户</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">市场上流通的货币太多了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">即使利率降到很低，人们仍然不愿借钱和投资</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">央行无法再增发货币</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">考察现代货币本质</div>
+    <div class="question-text">现代法币（如人民币、美元）的价值主要来源于什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">背后有黄金储备支撑</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">纸币本身的材质价值</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">国家法律强制力和公众信任</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">国际组织的担保</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>随时问我——无论是货币创造的具体机制、央行操作的实际案例，还是你想深入讨论某个概念，我都在这里。不懂就问，这才是最好的学习方式。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.econlib.org/library/Yellen/yllNE.html" target="_blank">"How the Fed Creates Money"</a> — 一篇非常清晰的短文，解释美联储如何创造基础货币。
+  <br><br>
+  <a href="../reference/money-banking.html" class="resource-link">查看速查卡片</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0008-inflation-deflation.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"价值尺度"就是用货币来衡量和标价其他商品的价值。你用工资来衡量房价，就是在用货币作为价值尺度。',
+      wrong: '衡量价值 = 价值尺度。交易媒介是指用钱去买东西，价值储藏是指把钱留着以后用。'
+    },
+    q2: {
+      correct: 'M1 = M0（现金）+ 活期存款。银行卡活期存款属于 M1 但不属于 M0（M0 只有现金）。定期存款属于 M2 但不属于 M1。',
+      wrong: 'M0 是现金。活期存款 = 可以随时支取的银行存款，属于 M1。三年定期属于 M2 但不属于 M1。'
+    },
+    q3: {
+      correct: '货币乘数 = 1 / 准备金率 = 1 / 0.20 = 5。准备金率越高，乘数越小。',
+      wrong: '货币乘数 = 1 ÷ 准备金率 = 1 ÷ 0.20 = 5。注意是除法，不是乘法。'
+    },
+    q4: {
+      correct: '存款对银行来说是负债，因为银行欠储户这笔钱，随时可能要还。银行的资产是它贷出去的那些贷款。',
+      wrong: '记住一个简单方法：存款是别人存在你那里的钱，你要还给人家——所以是负债。贷款才是银行的资产。'
+    },
+    q5: {
+      correct: '央行不直接面向个人客户。个人贷款由商业银行发放。央行是"银行的银行"和"政府的银行"。',
+      wrong: '央行负责货币政策和金融稳定，不直接做零售银行业务。房贷是商业银行的业务。'
+    },
+    q6: {
+      correct: '经济衰退时需要刺激经济。降息可以降低借贷成本，鼓励企业和居民借钱投资消费，从而提振总需求。',
+      wrong: '经济衰退需要宽松货币政策：降息、降准、买入债券。提高准备金率和卖出国债都是紧缩政策，会让经济更冷。'
+    },
+    q7: {
+      correct: '流动性陷阱是指利率已经很低了（接近零），但企业和居民仍然不愿借钱和投资，货币政策失效。日本"失去的三十年"就是经典案例。',
+      wrong: '流动性陷阱不是银行没钱，而是"有钱没人借"。利率再低，大家也不愿意花钱或投资。'
+    },
+    q8: {
+      correct: '自1971年布雷顿森林体系解体后，现代货币是纯信用货币。它的价值来自国家法律强制流通（法币地位）和公众对政府的信任。',
+      wrong: '现代法币不与黄金挂钩。它的价值不是来自材质，也不是国际组织担保——而是来自国家信用和法律强制力。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对货币与银行体系的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得不错！回顾一下错题的解释，搞懂为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，然后试试理解那些你觉得模糊的概念。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

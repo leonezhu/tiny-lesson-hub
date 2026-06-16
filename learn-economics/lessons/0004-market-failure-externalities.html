@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — 市场失灵与外部性</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    background: var(--accent-light);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box {
+    background: #f7f9fb;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .diagram {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    background: var(--accent-light);
+    border-radius: 6px;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .diagram .arrow { color: var(--accent); font-weight: 700; font-size: 1.2rem; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 { margin-top: 0; }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  ul.examples-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.examples-list li {
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  ul.examples-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>市场失灵与外部性</h1>
+<p class="lesson-meta">第4课 · ~12分钟 · 微观经济学核心概念</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：理解为什么自由市场有时无法有效配置资源——外部性是什么、正负外部性的区别、科斯定理如何解决外部性问题、以及政府干预的边界在哪里。
+</div>
+
+<h2>市场并不是万能的</h2>
+<p>
+  我们之前学了供需模型，知道市场像一只"看不见的手"自动调节资源配置。但亚当·斯密自己也意识到，这只手有时候会"抽筋"。<strong>市场失灵（Market Failure）</strong>指的是自由市场无法实现资源的最优配置——生产太多或太少的东西，价格信号失真。
+</p>
+<p>
+  最常见的市场失灵原因有四种：<strong>外部性</strong>、<strong>公共物品</strong>、<strong>垄断</strong>和<strong>信息不对称</strong>。这节课我们聚焦最核心的一个：外部性。
+</p>
+
+<h2>什么是外部性？</h2>
+<p>
+  <strong>外部性（Externality）</strong>是指一个人的行为对旁观者产生了影响，但这种影响并没有通过市场价格反映出来。简单说：你做了某件事，影响了别人，但你不用为此付费，别人也不能因此向你收费。
+</p>
+
+<div class="concept-card">
+  <h3>负外部性（Negative Externality）</h3>
+  <p>你的行为给他人带来了成本，但你不需要补偿。</p>
+  <ul class="examples-list">
+    <li>工厂排放污水——污染了河流，下游居民受影响，但工厂不用付钱</li>
+    <li>你在宿舍大声放音乐——室友很痛苦，但你不需要赔偿</li>
+    <li>开车尾气——加剧空气污染，其他人承担了健康成本</li>
+  </ul>
+  <div class="formula">社会成本 = 私人成本 + 外部成本</div>
+</div>
+
+<div class="concept-card">
+  <h3>正外部性（Positive Externality）</h3>
+  <p>你的行为给他人带来了好处，但别人不需要付费给你。</p>
+  <ul class="examples-list">
+    <li>你打了疫苗——不仅保护自己，也降低了传染给他人的风险</li>
+    <li>你在花园种花——邻居欣赏美景，但不需要付你钱</li>
+    <li>你投资教育——提高了整个社会的劳动生产率</li>
+  </ul>
+  <div class="formula">社会效益 = 私人收益 + 外部收益</div>
+</div>
+
+<div class="chinese-note">
+  <strong>关键理解：</strong>外部性的本质是"产权没有明确界定"。如果工厂对河流拥有产权，或者下游居民拥有清洁水的产权，那么双方可以通过谈判解决——这就是科斯定理。
+</div>
+
+<h2>为什么外部性导致市场失灵？</h2>
+<p>
+  在完全竞争市场中，价格反映了所有成本和收益。但当存在外部性时，<strong>价格信号失真</strong>了：
+</p>
+
+<div class="diagram">
+  <p>有负外部性时：</p>
+  <p>市场价格只反映 <span style="color:var(--accent)">私人成本</span></p>
+  <span class="arrow">↓</span>
+  <p>实际社会成本 <span style="color:var(--wrong)">高于</span> 市场价格</p>
+  <span class="arrow">↓</span>
+  <p>结果：该产品被<span style="color:var(--wrong)">过度生产</span>（Overproduction）</p>
+</div>
+
+<div class="example-box">
+  <strong>案例：塑料瓶的生产</strong><br>
+  一瓶塑料饮料卖3元。这3元包含了原料、人工、运输等成本——但这些只是"私人成本"。瓶子被丢弃后变成垃圾、进入海洋、危害野生动物，这些环境成本（外部成本）没有被计入价格。如果没有人承担这部分成本，塑料瓶就被"过度生产"了——因为它的价格比真实成本低。
+</div>
+
+<h2>如何解决外部性？</h2>
+
+<h3>1. 政府干预：庇古税与补贴</h3>
+<p>
+  经济学家庇古（Arthur Pigou）提出：政府应该对产生负外部性的行为征税，税额等于外部成本。这就是<strong>庇古税（Pigouvian Tax）</strong>。反过来，对产生正外部性的行为给予补贴。
+</p>
+<ul class="examples-list">
+  <li>碳税：对碳排放收费，让企业把环境成本内部化</li>
+  <li>烟草税：吸烟有负外部性（二手烟），所以税率很高</li>
+  <li>教育补贴：教育有正外部性，所以政府提供公立学校和奖学金</li>
+</ul>
+
+<h3>2. 科斯定理（Coase Theorem）</h3>
+<p>
+  罗纳德·科斯（Ronald Coase）提出了一个颠覆性的观点：<strong>如果产权明确且交易成本为零，私人谈判就能解决外部性问题，不需要政府干预。</strong>
+</p>
+
+<div class="example-box">
+  <strong>科斯的经典案例：</strong><br>
+  假设一个养蜂人和一个苹果园相邻。蜜蜂帮苹果树授粉（正外部性），苹果花的蜜也喂饱了蜜蜂。如果两人的产权清晰，他们可以自己协商：养蜂人可以扩大蜂群，苹果园主可以多种花——双赢，不需要政府插手。
+</div>
+
+<div class="chinese-note">
+  <strong>注意：</strong>科斯定理在现实中很少完美成立，因为"交易成本"几乎总是存在的。但当交易成本较低时（比如只有两三个当事人），私人谈判往往比政府管制更有效。
+</div>
+
+<h3>3. 可交易的排污许可证</h3>
+<p>
+  政府设定总的排污上限，然后发放排污许可证，允许企业在市场上买卖这些许可证。这样既控制了总排放量，又让减排成本更低的企业多减排、成本高的企业买配额——<strong>用市场机制解决市场失灵</strong>。
+</p>
+<ul class="examples-list">
+  <li>欧盟碳排放交易体系（EU ETS）是全球最大的碳市场</li>
+  <li>中国全国碳排放权交易市场于2021年启动</li>
+</ul>
+
+<h2>外部性与公平</h2>
+<p>
+  外部性不仅是效率问题，也是<strong>公平问题</strong>。谁承担了外部成本？谁获得了外部收益？
+</p>
+<ul class="examples-list">
+  <li>化工厂通常建在低收入社区附近——环境不公（Environmental Justice）</li>
+  <li>富人可以买安静的小区、好的空气过滤器——正外部性的分配不均</li>
+  <li>气候变化对发展中国家影响更大——但他们排放最少</li>
+</ul>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共有6道题，每题选择一个答案，立即获得反馈。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">概念理解</div>
+    <div class="question-text">以下哪个属于<strong>负外部性</strong>的例子？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你在图书馆安静地学习</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">工厂向河流排放未经处理的废水</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你资助贫困学生上学</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">社区志愿者清扫公园</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">分析推理</div>
+    <div class="question-text">当存在负外部性时，自由市场通常会：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">生产不足该商品</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">过度生产该商品</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">恰好生产最优数量</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">停止生产该商品</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">政策应用</div>
+    <div class="question-text">政府对碳排放征收碳税，这属于哪种解决外部性的方法？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">科斯定理</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">庇古税</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">可交易排污许可证</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">政府直接管制</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">概念辨析</div>
+    <div class="question-text">科斯定理的核心前提是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">政府必须介入定价</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">市场永远无法自行解决问题</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">产权明确且交易成本为零</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">外部成本必须由政府承担</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">场景分析</div>
+    <div class="question-text">你住在一栋公寓楼里，楼下新开了一家酒吧，深夜噪音让你无法入睡。从经济学角度看，以下哪种方式<strong>不一定</strong>能解决这个问题？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">酒吧老板向你支付补偿金以减少营业时间和噪音</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">市政府规定酒吧必须在晚上10点后关闭</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你戴耳塞睡觉（除非交易成本极高，否则这不是经济学意义上的解决方案）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你和酒吧老板协商，他安装隔音设施</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">综合判断</div>
+    <div class="question-text">以下关于正外部性的说法，正确的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">正外部性导致市场过度生产该商品</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">正外部性导致市场生产不足该商品，因为私人收益小于社会收益</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">正外部性总是需要通过政府征税来解决</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">正外部性不影响市场效率，只是对别人好而已</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？随时问我。</strong>不理解庇古税和科斯定理的区别？不知道碳税到底怎么运作？这些正是经济学最有意思的地方——同一个问题，不同的学派有不同的解法。告诉我你的困惑，我们一起拆解。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://www.econlib.org/library/Enc/Externalities.html" target="_blank" class="resource-link">Mises Institute: Externalities</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0005-public-goods.html">下一课：公共物品与搭便车问题</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确！工厂排放废水是经典的负外部性——工厂获得利润，但下游居民承担了健康和环境成本，而工厂无需为此付费。',
+      wrong: '工厂排放废水是典型的负外部性：工厂的私人成本低于社会成本，因为它不需要为污染买单。其他选项都是产生正外部性或没有外部性的行为。'
+    },
+    q2: {
+      correct: '没错！当存在负外部性时，生产者不需要承担全部社会成本，所以产品价格偏低，导致过度生产。',
+      wrong: '负外部性意味着私人成本 < 社会成本。生产者按私人成本决策，所以会生产比社会最优水平更多的产品——这就是"过度生产"。'
+    },
+    q3: {
+      correct: '正确！庇古税的核心思想就是：让产生外部成本的主体为外部成本"定价"，把外部性内部化。',
+      wrong: '碳税是庇古税的典型应用——通过征税让排放者面对真实的社會成本。科斯定理强调私人谈判，排污许可证强调可交易配额，政府管制是直接限制。'
+    },
+    q4: {
+      correct: '完全正确！科斯定理说：只要产权清晰且交易成本为零，当事人之间可以自行协商解决外部性问题，无需政府干预。',
+      wrong: '科斯定理的两个关键前提：(1)产权必须明确界定；(2)交易成本为零或极低。在现实中交易成本几乎总存在，但科斯定理提供了一个思考框架。'
+    },
+    q5: {
+      correct: '很好！戴耳塞是个人的应对方式，但不是经济学意义上的"解决"方案——它没有改变外部性的根源，也没有重新分配成本。经济学关注的是如何通过制度设计（协商、征税、管制）来内部化外部性。',
+      wrong: '经济学意义上的解决方案包括：协商（科斯）、征税/管制（庇古）、购买隔音设施等。戴耳塞只是个人应对，没有解决外部性的根源问题。'
+    },
+    q6: {
+      correct: '正确！正外部性意味着社会收益 > 私人收益。生产者只看私人收益，所以会生产太少。这就是为什么教育、基础研究通常需要政府补贴。',
+      wrong: '正外部性导致市场"生产不足"而非"过度生产"。因为生产者只考虑自己的收益，不考虑给他人带来的额外好处，所以供给低于社会最优水平。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 6;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对市场失灵和外部性的理解很扎实。';
+      else if (score >= 4) label.textContent = '不错！回顾一下错题的解释，理解会更深入。';
+      else label.textContent = '建议重新阅读上面的概念卡片，特别是庇古税和科斯定理的区别。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

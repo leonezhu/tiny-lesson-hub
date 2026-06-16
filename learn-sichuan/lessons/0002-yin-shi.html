@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — 四川话里的饮食用语</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #c0392b;
+    --accent-light: #fdf2f2;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: white;
+  }
+
+  .vocab-card .word {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .vocab-card .pinyin {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .vocab-card .meaning {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .vocab-card .example {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f8f8;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+  }
+
+  .vocab-card .example .sc {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .comparison-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #fafafa;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Noto Serif SC', 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话里的饮食用语</h1>
+<p class="lesson-meta">第2课 &middot; ~12分钟 &middot; 饮食文化</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>学会在饭馆、茶馆、家里用四川话点菜和聊吃的。掌握12个核心词汇和3个常用句式，让你在成都街头点火锅不再靠比划。
+</div>
+
+<h2>为什么饮食用语最重要？</h2>
+<p>
+  四川人把吃看得比天大。"巴适"两个字，用在饮食上最多。成都的茶馆、火锅店、苍蝇馆子，满街都是方言词。学会了饮食用语，你就掌握了打开四川文化的一把钥匙——因为四川人交朋友，往往从一顿饭开始。
+</p>
+
+<h2>核心词汇</h2>
+
+<div class="vocab-card">
+  <div class="word">摆龙门阵</div>
+  <div class="pinyin">bǎi lóngménzhèn</div>
+  <div class="meaning">聊天、闲聊（特指悠闲地聊天）</div>
+  <div class="example">"走嘛，喝杯茶，<span class="sc">摆哈龙门阵</span>。"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">巴适</div>
+  <div class="pinyin">bā shì</div>
+  <div class="meaning">舒服、很好、正宗（万能赞美词）</div>
+  <div class="example">"这个火锅味道<span class="sc">好巴适</span>！"（这火锅太好吃了吧！）</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">安逸</div>
+  <div class="pinyin">ān yì</div>
+  <div class="meaning">舒适、享受、惬意</div>
+  <div class="example">"夏天在院子里吃碗冰粉，<span class="sc">安逸惨了</span>。"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">苍蝇馆子</div>
+  <div class="pinyin">cāngyíng guǎnzi</div>
+  <div class="meaning">环境简陋但味道极好、价格便宜的街边小餐馆</div>
+  <div class="example">"莫去大酒店，我们去<span class="sc">苍蝇馆子</span>吃，味道好得多。"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">撇脱</div>
+  <div class="pinyin">piě tuō</div>
+  <div class="meaning">简单利落、省事、方便</div>
+  <div class="example">"吃面最<span class="sc">撇脱</span>，几分钟就搞定。"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">搞快点</div>
+  <div class="pinyin">gǎo kuài diǎn</div>
+  <div class="meaning">快点、抓紧时间（催促用语）</div>
+  <div class="example">"<span class="sc">搞快点</span>，菜都凉咯！"</div>
+</div>
+
+<div class="comparison-table">
+  <table>
+    <thead>
+      <tr><th>普通话</th><th>四川话</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>很好吃</td><td>好吃惨了 / 巴适得很</td><td>"惨了""得很"都是程度副词</td></tr>
+      <tr><td>不怎么样</td><td>不咋个 / 一般般</td><td>"不咋个"偏口语</td></tr>
+      <tr><td>多少钱</td><td>好多钱</td><td>"好多"=多少，四川话标志性用法</td></tr>
+      <tr><td>不要了</td><td>算了 / 不消了</td><td>"不消"=不需要</td></tr>
+      <tr><td>先吃</td><td>先走（先请）</td><td>客套话，让对方先动筷</td></tr>
+      <tr><td>吃饱了吗</td><td>吃饱没得？</td><td>"没得"=没有，句末疑问</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>茶馆里的四川话</h2>
+<p>
+  四川茶馆是方言的活博物馆。去茶馆点茶，你会听到这些词：
+</p>
+
+<h3>点茶用语</h3>
+<div class="vocab-card">
+  <div class="word">沏茶</div>
+  <div class="pinyin">qī chá</div>
+  <div class="meaning">泡茶（四川话读作 <strong>cī chá</strong>，"沏"读成"刺"）</div>
+  <div class="example">"老板儿，<span class="sc">沏一壶碧潭飘雪</span>！"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">加汤 / 添茶</div>
+  <div class="pinyin">jiā tāng</div>
+  <div class="meaning">续水（茶馆里喊"加汤"就是叫服务员来添热水）</div>
+  <div class="example">"师傅，<span class="sc">加下汤</span>！"</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">盖碗茶</div>
+  <div class="pinyin">gàiwǎn chá</div>
+  <div class="meaning">四川传统茶具，三件套（盖、碗、托）</div>
+  <div class="example">"老四川都喝盖碗茶，<span class="sc>摆起</span>。"</div>
+</div>
+
+<div class="chinese-note">
+  <strong>小贴士：</strong>四川茶馆里，用盖碗茶的盖子刮茶叶的动作叫"刮碗碗"，是老茶客的标配动作。如果你看到有人一边喝茶一边刮碗碗，说明他是个"老成都"。
+</div>
+
+<h2>火锅社交</h2>
+<p>
+  四川人吃火锅有一套完整的"黑话"体系。学会这些，你就能融入任何一场火锅局：
+</p>
+
+<div class="vocab-card">
+  <div class="word">毛肚 / 鸭肠 / 黄喉</div>
+  <div class="pinyin">mǎodù / yǎcháng / huánghóu</div>
+  <div class="meaning">火锅三宝——涮七上八下，脆嫩爽口</div>
+  <div class="example">"<span class="sc">七上八下</span>，毛肚才好吃。"（涮7秒捞出，再放8秒，反复一次）</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">微辣 / 中辣 / 特辣</div>
+  <div class="pinyin">wēi là / zhōng là / tè là</div>
+  <div class="meaning">辣度选择——注意：四川人说"微辣"，外地人吃了可能还是觉得辣</div>
+  <div class="example">"来个<span class="sc">微辣</span>就行……"（然后外地朋友被辣到怀疑人生）</div>
+</div>
+
+<div class="vocab-card">
+  <div class="word">蘸碟</div>
+  <div class="pinyin">zhàn dié</div>
+  <div class="meaning">个人调料碗（香油+蒜泥是经典搭配）</div>
+  <div class="example">"油碟<span class="sc">多放点蒜泥</span>，解辣。"</div>
+</div>
+
+<div class="chinese-note">
+  <strong>文化常识：</strong>四川火锅的蘸碟有两种流派——<strong>油碟</strong>（香油+蒜泥，保护肠胃、降温）和<strong>干碟</strong>（辣椒面+花椒面+盐，重口味）。外地朋友建议选油碟，干碟是"勇士专属"。
+</div>
+
+<h2>常用句式</h2>
+
+<h3>1. 邀请吃饭</h3>
+<p>
+  "<strong>走嘛，吃火锅去。</strong>"——"走嘛"是最常见的邀请开头，带有一种不容拒绝的热情。<br>
+  "<strong>今天你请嘛。</strong>"——撒娇式让对方买单，朋友间玩笑。<br>
+  "<strong>我请客，你出脑壳。</strong>"——我付钱，你想地方。（幽默说法）
+</p>
+
+<h3>2. 点菜</h3>
+<p>
+  "<strong>老板儿，来桌火锅，微辣哈。</strong>"——"老板儿"是对店家的称呼。<br>
+  "<strong>加份脑花、一份肥肠。</strong>"——直接报菜名，干脆利落。<br>
+  "<strong>有啥子推荐的嘛？</strong>"——问推荐，"啥子"=什么。
+</p>
+
+<h3>3. 评价食物</h3>
+<p>
+  "<strong>好巴适哦！</strong>"——好吃！（万能赞美）<br>
+  "<strong>味道不戳。</strong>"——不错（"不戳"=不坏，反话正说）<br>
+  "<strong>太辣了，喝水喝水。</strong>"——"喝水"指喝甜饮料解辣，四川人管所有解辣饮料叫"喝水"。
+</p>
+
+<div class="quiz-section">
+  <h2>练习：选对四川话</h2>
+  <p>下面有7道题，看看你能不能选出正确的四川话表达。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">朋友请你吃饭，你想说"多少钱"，用四川话怎么说？</div>
+    <div class="sentence">______ 钱？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">啥子</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">好多</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">你在火锅店，想说"这个太好吃了"。</div>
+    <div class="sentence">这个味道好______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">巴适</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">安逸</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">你想邀请朋友去喝茶聊天，怎么说最合适？</div>
+    <div class="sentence">走嘛，喝茶______。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">摆龙门阵</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">摆哈龙门阵</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">服务员问你辣度，你说"微辣"。在四川，"微辣"对外地人来说意味着什么？</div>
+    <div class="sentence"></div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">真的不太辣</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">还是辣，但能接受</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">你想让朋友快点上菜，怎么说？</div>
+    <div class="sentence">老板儿，______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">搞快点</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">撇脱点</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">你想知道这家店好不好，问本地朋友："有啥子推荐的嘛？" 这里的"啥子"是什么意思？</div>
+    <div class="sentence"></div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">谁</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">什么</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">在茶馆里，你想让服务员续水，应该怎么说？</div>
+    <div class="sentence">师傅，______！</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">添杯水</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">加下汤</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——哪个词怎么用、什么场合说啥话，我都帮你理清楚。不懂就问，这才是学方言最好的方式。<br><br>
+  <strong>下一步：</strong>学完这课，下次去成都吃火锅的时候，试着用四川话说一句"好巴适"！<br><br>
+  <a href="../reference/yin-shi-glossary.html" class="resource-link">查看完整饮食词汇表</a>
+</div>
+
+<div class="footer">
+  <a href="0001-da-zhao-hu.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0003-chu-xing.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '"好多"=多少，四川话标志性用法。"好多钱"就是"多少钱"。', wrong: '"啥子"是"什么"的意思，不是"多少"。问数量用"好多"：好多钱、好多个人。' },
+    q2: { correct: '"巴适"形容味道好、舒服、正宗，是美食的最高评价。"好巴适"=很好吃。', wrong: '"安逸"更多指身体或心情上的舒适，虽然也可以形容食物，但夸味道最好用"巴适"。' },
+    q3: { correct: '"摆哈龙门阵"=聊一会儿天。"哈"是量词，表示短暂的动作。', wrong: '"摆龙门阵"少了"哈"，听起来不像在邀请，更像在陈述一个事实。四川话邀请时习惯加"哈"表示轻松随意。' },
+    q4: { correct: '四川人的"微辣"对外地人来说通常还是很辣。这是火锅文化的经典梗。', wrong: '别被"微"字骗了！四川人从小吃辣，他们的"微辣"标准比外地人高很多。' },
+    q5: { correct: '"搞快点"=快点、抓紧，是催促的常用说法。', wrong: '"撇脱"意思是简单利落、省事，不能用来催促。"搞快点"才是催人的。' },
+    q6: { correct: '"啥子"=什么，是四川话最常用的疑问词之一。"有啥子"=有什么。', wrong: '"啥子"在这里不是"谁"的意思。"啥子"=什么，"哪个"=谁/哪一个。' },
+    q7: { correct: '"加下汤"=续水，茶馆专用说法。"师傅"是对服务员的称呼。', wrong: '"添杯水"普通话也能听懂，但在四川茶馆里，地道的说法是"加下汤"。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 7;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '太棒了！你是个四川话小天才！';
+      else if (score >= 5) label.textContent = '不错嘛！这些词慢慢就熟了。';
+      else label.textContent = '多听多说，慢慢就开窍了。回去再看一遍词汇表！';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

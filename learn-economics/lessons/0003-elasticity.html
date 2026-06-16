@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 — 弹性：价格变动如何影响需求</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    background: var(--accent-light);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  .example-box {
+    background: #f5f7fa;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  .chart-placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .chart-placeholder svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .comparison-table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #f8f9fb;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', 'Noto Serif SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>弹性：价格变动如何影响需求</h1>
+<p class="lesson-meta">第3课 · ~12分钟 · 微观经济学核心概念</p>
+
+<div class="goal-box">
+  <strong>本课结束时，你将能够：</strong>理解什么是需求弹性、为什么有些商品涨价大家照买、有些商品一涨就卖不动，以及企业定价时如何利用弹性做决策。
+</div>
+
+<h2>核心直觉</h2>
+<p>
+  想象一下：如果油价翻倍，你依然要开车上班；但如果奶茶价格翻倍，你可能就少喝了。同样的价格上涨，不同商品的需求反应截然不同。<strong>弹性（Elasticity）</strong>就是衡量这种反应程度的工具。
+</p>
+<p>
+  在供需模型之后，弹性是经济学中最实用的概念之一——它不仅解释了市场行为，还直接指导企业的定价策略和政府政策设计。
+</p>
+
+<h2>需求价格弹性（Price Elasticity of Demand）</h2>
+<p>
+  需求价格弹性衡量的是：<strong>当价格变动1%时，需求量变动百分之多少？</strong>
+</p>
+
+<div class="formula">
+  需求价格弹性 = 需求量变动百分比 ÷ 价格变动百分比
+</div>
+
+<p>
+  因为价格和需求量通常反向变动（价格涨、需求降），所以弹性值一般为负数。但经济学家习惯取绝对值来讨论。
+</p>
+
+<div class="concept-card">
+  <h3>三种情况</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr><th>类型</th><th>弹性值</th><th>含义</th><th>例子</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>富有弹性</strong></td><td>&gt; 1</td><td>需求量变动幅度大于价格变动</td><td>奶茶、电影票、非必需品</td></tr>
+      <tr><td><strong>缺乏弹性</strong></td><td>&lt; 1</td><td>需求量变动幅度小于价格变动</td><td>食盐、药品、汽油</td></tr>
+      <tr><td><strong>单位弹性</strong></td><td>= 1</td><td>需求量与价格同比例变动</td><td>理论上的中间状态</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>为什么弹性会不同？</h2>
+<p>
+  一个商品的需求是否有弹性，取决于几个关键因素：
+</p>
+
+<div class="concept-card">
+  <h3>决定弹性的五个因素</h3>
+
+  <p><strong>1. 替代品的可获得性</strong></p>
+  <p>替代品越多，弹性越大。如果你家的咖啡涨价了，你可以改喝茶。但如果某种救命药涨价了，几乎没有替代品，你就只能继续买。</p>
+
+  <p><strong>2. 必需品 vs 奢侈品</strong></p>
+  <p>大米是必需品，价格涨了也得吃——缺乏弹性。度假旅游是奢侈品，价格一涨就可以取消——富有弹性。</p>
+
+  <p><strong>3. 支出占收入的比例</strong></p>
+  <p>盐的价格翻十倍，你可能都注意不到。但汽车价格涨10%，你会认真考虑要不要换车。占比越大，弹性越高。</p>
+
+  <p><strong>4. 时间跨度</strong></p>
+  <p>汽油突然涨价，你今天还是得开车上班（缺乏弹性）。但一年后，你可能会搬得更近、买电动车，或者改用公共交通（变得更富有弹性）。</p>
+
+  <p><strong>5. 市场的定义范围</strong></p>
+  <p>"食物"整体缺乏弹性——你不能不吃东西。但"冰淇淋"富有弹性——你不吃冰淇淋还可以吃蛋糕。</p>
+</div>
+
+<div class="example-box">
+  <strong>📊 经典案例：石油危机</strong><br>
+  1973年石油禁运导致油价暴涨4倍。短期内，司机们别无选择——必须开车、飞机必须飞。需求几乎没变（缺乏弹性）。但长期来看，人们开始购买省油车、发展公共交通、开发替代能源。几年后，石油需求明显下降（变得更有弹性）。
+</div>
+
+<h2>弹性与总收入的关系</h2>
+<p>
+  这是弹性最实用的应用：<strong>企业涨价时，总收益（价格×销量）是增加还是减少？</strong>答案完全取决于需求弹性。
+</p>
+
+<div class="concept-card">
+  <h3>定价决策的弹性法则</h3>
+
+  <p><strong>如果需求富有弹性（&gt; 1）：</strong></p>
+  <p>降价能显著增加销量 → 总收入上升。<br>涨价会导致销量大幅下滑 → 总收入下降。</p>
+  <p><em>航空公司经常这样操作：打折促销能吸引更多乘客，总收入反而增加。</em></p>
+
+  <p style="margin-top:1rem"><strong>如果需求缺乏弹性（&lt; 1）：</strong></p>
+  <p>涨价不会大幅减少销量 → 总收入上升。<br>降价带来的销量增长有限 → 总收入下降。</p>
+  <p><em>烟草税就是典型：政府知道吸烟者对价格不敏感，所以通过加税提高收入。</em></p>
+</div>
+
+<div class="chart-placeholder">
+  <svg viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- 富有弹性 -->
+    <text x="125" y="20" text-anchor="middle" font-size="12" fill="#2a6496" font-weight="700">富有弹性（平坦曲线）</text>
+    <line x1="40" y1="220" x2="220" y2="220" stroke="#ccc" stroke-width="1"/>
+    <line x1="40" y1="40" x2="40" y2="220" stroke="#ccc" stroke-width="1"/>
+    <text x="130" y="238" text-anchor="middle" font-size="10" fill="#666">数量 Q</text>
+    <text x="20" y="130" text-anchor="middle" font-size="10" fill="#666" transform="rotate(-90,20,130)">价格 P</text>
+    <line x1="60" y1="60" x2="200" y2="200" stroke="#2a6496" stroke-width="2.5" fill="none"/>
+    
+    <!-- 缺乏弹性 -->
+    <text x="375" y="20" text-anchor="middle" font-size="12" fill="#2a6496" font-weight="700">缺乏弹性（陡峭曲线）</text>
+    <line x1="290" y1="220" x2="470" y2="220" stroke="#ccc" stroke-width="1"/>
+    <line x1="290" y1="40" x2="290" y2="220" stroke="#ccc" stroke-width="1"/>
+    <line x1="310" y1="50" x2="450" y2="210" stroke="#2a6496" stroke-width="2.5" fill="none"/>
+  </svg>
+  <p style="margin-top:0.5rem">左图：价格小幅上涨 → 需求量大幅下降（弹性大）<br>右图：价格大幅上涨 → 需求量变化很小（弹性小）</p>
+</div>
+
+<h2>供给弹性</h2>
+<p>
+  弹性不只适用于需求。<strong>供给弹性</strong>衡量的是生产者对价格变化的反应速度。
+</p>
+
+<div class="concept-card">
+  <h3>供给弹性的直觉</h3>
+  <p><strong>富有弹性的供给：</strong>生产者能快速增加产量。比如T恤衫——工厂看到价格上涨，可以加班生产更多。</p>
+  <p><strong>缺乏弹性的供给：</strong>生产者无法快速增加产量。比如市中心的地皮、梵高的画作——不管价格多高，供应量就是那么多。</p>
+</div>
+
+<div class="chinese-note">
+  <strong>中文思维对照：</strong>在中文里我们常说"物以稀为贵"——这其实就是在描述供给缺乏弹性的情况。供应固定不变时，需求增加只会推高价格，而不会增加数量。
+</div>
+
+<h2>课堂小结</h2>
+<p>
+  <strong>弹性</strong>告诉我们价格变动如何影响买卖双方的行为。它是连接理论与现实的关键桥梁：
+</p>
+<ul style="margin: 1rem 0 1rem 1.5rem;">
+  <li>需求弹性 &gt; 1：富有弹性，降价增收</li>
+  <li>需求弹性 &lt; 1：缺乏弹性，涨价增收</li>
+  <li>替代品越多、越奢侈、占比越大 → 弹性越高</li>
+  <li>时间越长，弹性越高</li>
+  <li>供给也有弹性，取决于调整产能的难易程度</li>
+</ul>
+
+<!-- ==================== QUIZ SECTION ==================== -->
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共有6道题，每题选择一个最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">场景：某城市地铁票价拟涨价20%</div>
+    <div class="question-text">如果地铁需求缺乏弹性，涨价后会发生什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">地铁公司总收入下降</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">地铁公司总收入上升</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">乘客数量大幅增加</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">乘客数量不变</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">概念理解</div>
+    <div class="question-text">以下哪种商品的需求最可能富有弹性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">某个品牌的矿泉水</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">胰岛素（糖尿病用药）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">食盐</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">自来水</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">计算题</div>
+    <div class="question-text">某商品价格上涨10%，需求量下降25%。需求弹性是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">0.4（缺乏弹性）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">2.5（富有弹性）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">1.5（富有弹性）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">3.5（富有弹性）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">时间跨度的影响</div>
+    <div class="question-text">汽油价格突然翻倍。在短期内，需求弹性通常比长期……</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">更小（更缺乏弹性）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">更大（更富有弹性）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">一样</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不确定</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">供给弹性</div>
+    <div class="question-text">下列哪种商品的供给最缺乏弹性？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">智能手机</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">服装</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">市中心学区房</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">面包</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">商业决策</div>
+    <div class="question-text">一家奢侈品品牌想要增加总收入，已知其需求富有弹性。它应该……</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">提高价格</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">降低价格（如推出折扣季）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">维持价格不变</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">增加广告投入但不改变价格</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong>弹性是经济学中最直观也最有用的概念之一。如果你对某个例题不理解、想知道生活中更多弹性的例子，或者想深入探讨供给弹性——随时问我。<br><br>
+  <strong>推荐资源：</strong><a href="https://www.khanacademy.org/economics-finance-domain/microeconomics/supply-demand-curves/price-elasticity-of-demand-and-supply-demystified/v/price-elasticity-of-demand-and-supply-introduction" target="_blank">可汗学院 — 需求弹性入门</a>（英文视频，有字幕）
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0004-market-failure-externalities.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '缺乏弹性意味着涨价不会大幅减少乘客量，因此总收入（价格×数量）会上升。',
+      wrong: '缺乏弹性 = 需求量变化幅度小于价格变化。涨价20%带来的收入增长，超过了乘客流失造成的收入损失，所以总收入上升。'
+    },
+    q2: {
+      correct: '某个品牌的矿泉水有大量替代品（其他品牌），消费者很容易转换，因此需求富有弹性。',
+      wrong: '胰岛素、食盐、自来水都是缺乏弹性的——它们要么没有替代品，要么是生活必需品。只有"某个品牌"的矿泉水有众多替代选择。'
+    },
+    q3: {
+      correct: '弹性 = 25% ÷ 10% = 2.5 > 1，属于富有弹性。',
+      wrong: '弹性 = 需求量变动百分比 ÷ 价格变动百分比 = 25% ÷ 10% = 2.5。2.5 > 1，说明富有弹性。'
+    },
+    q4: {
+      correct: '短期内人们很难改变出行方式（没有替代交通、不能立刻换电动车），所以需求缺乏弹性。长期来看可以调整，弹性变大。',
+      wrong: '短期：你必须开车上班，没别的办法 → 缺乏弹性。长期：你可以搬家、买车、改用公交 → 弹性变大。所以短期弹性比长期更小。'
+    },
+    q5: {
+      correct: '市中心学区房的土地供应是固定的——不管价格多高，不可能凭空变出更多土地，因此供给极度缺乏弹性。',
+      wrong: '手机、服装、面包都可以快速增加生产。但市中心的地皮是有限的，供给无法随价格增加而扩大，所以最缺乏弹性。'
+    },
+    q6: {
+      correct: '需求富有弹性时，降价能带来更大的销量增长 → 总收入上升。这就是为什么奢侈品品牌偶尔会打折清库存。',
+      wrong: '富有弹性意味着消费者对价格敏感。降价会带来大量新增顾客，总收入增加。涨价则会导致大量客户流失，总收入下降。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 6;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = '✓ ' + explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = '✗ ' + explanations[qid].wrong;
+    }
+
+    // Show score if all answered
+    if (Object.keys(answered).length === total) {
+      const scoreBox = document.getElementById('score-box');
+      const scoreNum = document.getElementById('score-num');
+      const scoreLabel = document.getElementById('score-label');
+      scoreNum.textContent = score + ' / ' + total;
+      const pct = Math.round(score / total * 100);
+      scoreLabel.textContent = pct >= 80 ? '太棒了！你对弹性已经有了扎实的理解。' : pct >= 60 ? '还不错！回顾一下错题，巩固理解。' : '建议重新阅读课程内容，尤其是错题对应的部分。';
+      scoreBox.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

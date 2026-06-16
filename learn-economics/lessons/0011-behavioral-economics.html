@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 行为经济学：人是理性的吗？</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .concept-card .formula {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    background: var(--accent-light);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box {
+    background: #f7f9fb;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 { margin-top: 0; }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  ul.examples-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.examples-list li {
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  ul.examples-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>行为经济学：人是理性的吗？</h1>
+<p class="lesson-meta">第11课 · ~12分钟 · 行为经济学入门</p>
+
+<div class="goal-box">
+  <strong>本课目标</strong>：了解传统经济学的"理性人"假设及其局限性；掌握几个最重要的行为经济学概念——前景理论、锚定效应、损失厌恶、心理账户；理解这些发现如何改变了我们对经济决策的理解。
+</div>
+
+<h2>传统经济学的"理性人"假设</h2>
+<p>
+  在标准经济学模型中，有一个核心假设：<strong>人是理性的（Rational Agent）</strong>。这意味着：
+</p>
+<ul class="examples-list">
+  <li>你有明确的偏好，并且始终如一</li>
+  <li>你会收集所有可用信息</li>
+  <li>你会计算每种选择的成本和收益</li>
+  <li>你会做出最大化自身利益的决定</li>
+</ul>
+
+<p>
+  这个假设让经济学模型变得简洁优雅。但问题是：<strong>它和现实不符。</strong>
+</p>
+
+<div class="chinese-note">
+  <strong>想一想：</strong>你有没有冲动消费过？有没有因为"差一点就中了"而继续赌博？有没有因为别人都买了某只股票你也跟着买？如果你有过这些经历——恭喜你，你不是"理性人"，而行为经济学就是研究真实人类的。
+</div>
+
+<h2>丹尼尔·卡尼曼与前景理论</h2>
+<p>
+  丹尼尔·卡尼曼（Daniel Kahneman）是一位心理学家，他在1979年和阿莫斯·特沃斯基（Amos Tversky）共同提出了<strong>前景理论（Prospect Theory）</strong>，彻底颠覆了传统经济学的理性人假设。卡尼曼因此获得了2002年诺贝尔经济学奖。
+</p>
+
+<h3>前景理论的核心发现</h3>
+
+<div class="concept-card">
+  <h3>1. 损失厌恶（Loss Aversion）</h3>
+  <p>失去100元的痛苦，远大于得到100元的快乐。研究表明，损失的痛苦大约是同等收益快乐的<strong>2倍</strong>。</p>
+  <div class="example-box">
+    <strong>实验：</strong>有人给你一张彩票，中奖概率50%、奖金200元。你会接受吗？大概率会。但如果反过来——有人给你200元，然后问你愿不愿意掷硬币：正面你给他200元，反面你不用还——你可能就不愿意了。同样的风险，方向不同，选择就不同。
+  </div>
+</div>
+
+<div class="concept-card">
+  <h3>2. 参照点依赖（Reference Dependence）</h3>
+  <p>人们对得失的判断不是绝对的，而是取决于一个<strong>参照点</strong>。同样获得1000元，如果你的月薪是5000元你会很开心，如果月薪是5万元你可能无感。</p>
+  <div class="example-box">
+    <strong>例子：</strong>一件衣服原价1000元，打折到800元。你觉得"赚了200"。但如果这件衣服一直卖800元，你反而不会觉得划算。价格锚定在原价上。
+  </div>
+</div>
+
+<div class="concept-card">
+  <h3>3. 边际效用递减的非对称性</h3>
+  <p>传统经济学认为收益和损失的效用曲线是对称的。前景理论证明：在收益区，人们倾向于规避风险；在损失区，人们倾向于追求风险。</p>
+  <div class="example-box">
+    <strong>现实表现：</strong>赚钱时赶紧止盈（怕利润飞走），亏钱时死扛不放（希望回本）——这在股市中极其常见。
+  </div>
+</div>
+
+<h2>更多行为经济学概念</h2>
+
+<h3>锚定效应（Anchoring Effect）</h3>
+<p>
+  人们在做判断时，会受到最初接触到的数字（"锚"）的影响，即使这个数字完全无关。
+</p>
+<div class="example-box">
+  <strong>经典实验：</strong>先让受试者转轮盘（随机停在0-100之间的某个数），然后问他们：非洲联合国有多少成员国？转到大数字的那组给出的答案平均是45%，转到小数字的那组平均是25%。轮盘是完全随机的，但人们的判断被"锚定"了。
+</div>
+
+<h3>心理账户（Mental Accounting）</h3>
+<p>
+  理查德·塞勒（Richard Thaler）发现：人们会把钱分门别类放在不同的"心理账户"里，对不同类型的钱有不同的消费态度。但理性人应该把所有钱看作一样的——100元就是100元。
+</p>
+<ul class="examples-list">
+  <li>年终奖花起来特别痛快，工资却省着花——明明都是你的钱</li>
+  <li>中了彩票的人更可能去赌博——"白来的钱"花得不心疼</li>
+  <li>商家设"运费"让你不爽，但把运费含进价格你就接受了——钱没变，心理账户变了</li>
+</ul>
+
+<h3>现状偏见（Status Quo Bias）</h3>
+<p>
+  人们倾向于维持现状，即使改变会更好。
+</p>
+<ul class="examples-list">
+  <li>养老金计划默认选择"参加"比默认选择"不参加"的参与率高出50倍以上——因为大多数人懒得改默认设置</li>
+  <li>很多人不换工作、不换手机套餐、不换银行——不是因为当前选择最好，而是因为改变的"摩擦力"</li>
+</ul>
+
+<h2>行为经济学的现实意义</h2>
+<p>
+  行为经济学不只是学术研究——它正在改变政府和企业的决策方式：</p>
+<ul class="examples-list">
+  <li><strong>助推（Nudge）：</strong>通过改变选择架构（choice architecture）来引导人们做出更好的决定，而不是强制。比如把健康食品放在食堂更显眼的位置。</li>
+  <li><strong>默认选项：</strong>器官捐献的国家如果把默认设为"同意捐献"，捐献率接近100%；如果默认是"不同意"，捐献率不到20%。</li>
+  <li><strong>营销策略：</strong>限时折扣、原价对比、免费试用——这些都在利用行为经济学原理。</li>
+</ul>
+
+<div class="chinese-note">
+  <strong>关键思考：</strong>行为经济学并不意味着人是非理性的。它告诉我们：人在特定情境下会使用"启发式"（捷径）做决策，这些捷径在大多数情况下有效，但在某些情况下会导致系统性错误。理解这些偏差，可以帮助我们做出更好的决策。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共有6道题，每题选择一个答案，立即获得反馈。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">前景理论</div>
+    <div class="question-text">根据前景理论，以下哪种情况最可能发生？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们在面对收益时倾向于冒险</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人们面对损失时倾向于冒险，面对收益时倾向于规避风险</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们对收益和损失的感受是对称的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们总是做出最大化自身利益的理性选择</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">损失厌恶</div>
+    <div class="question-text">你买了一部手机，用了两天发现有个小瑕疵。你决定继续使用而不是退货。这最可能反映了哪种心理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">损失厌恶——退货意味着承认自己犯了错，这种"损失感"比瑕疵更让人难受</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">边际效用递增</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">理性人假设</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">锚定效应</div>
+    <div class="question-text">商场里一件衣服标价"原价2000元，现价800元"。这种定价策略利用了：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">边际效用递减</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">锚定效应——原价2000元是你的参照点</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">规模经济</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">比较优势</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">心理账户</div>
+    <div class="question-text">以下哪个行为最符合"心理账户"的概念？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你每月固定存工资的10%到储蓄账户</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你比较三家银行的贷款利率后选择了最低的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">你把工资存起来省着用，但把奖金全部拿去旅游消费</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">你根据天气预报决定今天是否带伞</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">政策应用</div>
+    <div class="question-text">如果一个国家把器官捐献的默认选项设为"同意"，捐献率大幅上升。这说明了：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们本质上都想捐献器官</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">现状偏见和默认选项的强大影响力</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">器官捐献的收益大于成本</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们的偏好是固定不变的</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">综合理解</div>
+    <div class="question-text">行为经济学与传统经济学的最大区别在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">行为经济学认为人完全不理性</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">行为经济学用真实的人类行为替代了"理性人"假设</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">行为经济学只研究金融市场</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">行为经济学不需要数学模型</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？随时问我。</strong>前景理论听起来反直觉？这正是它的力量所在——它揭示了人类决策中那些隐藏的、系统性的偏差。想想你自己最近做的一个消费决定，看看能不能识别出其中有哪些行为经济学效应在起作用。
+  <br><br>
+  <strong>推荐阅读：</strong>
+  <a href="https://www.amazon.cn/dp/7508645046" target="_blank" class="resource-link">《思考，快与慢》— 丹尼尔·卡尼曼</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0012-institutional-economics.html">下一课：制度经济学</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确！前景理论的核心发现：在收益区人们规避风险（"落袋为安"），在损失区人们追求风险（"赌一把回本"）。',
+      wrong: '前景理论的发现恰恰相反：面对收益时人们规避风险，面对损失时人们追求风险。这就是为什么赚钱时赶紧止盈、亏钱时死扛不放。'
+    },
+    q2: {
+      correct: '正确！损失厌恶解释了"沉没成本谬误"——我们已经投入了金钱和时间，放弃意味着承认损失，这种痛苦让我们选择继续持有。',
+      wrong: '退货意味着承认自己犯了错误，这种"心理损失"比手机的小瑕疵更让人难受。这就是损失厌恶：我们对损失的敏感度远高于对收益的敏感度。'
+    },
+    q3: {
+      correct: '正确！"原价2000元"就是一个锚——你的判断被这个初始数字影响了。如果没有这个锚，800元可能看起来并不便宜。',
+      wrong: '原价2000元就是你的"锚"。即使你知道这个原价可能是虚标的，你的大脑仍然会被这个数字影响，觉得800元是"划算"的。'
+    },
+    q4: {
+      correct: '正确！心理账户就是：同样是你的钱，放在不同的"账户"里就有不同的消费倾向。工资是"辛苦钱"要省着花，奖金是"意外之财"可以随便花。',
+      wrong: '理性人应该把所有钱看作一样的。但现实中我们把钱分门别类——工资存起来，奖金花掉。这就是心理账户：钱本身没有区别，但"来源"影响了我们的消费决策。'
+    },
+    q5: {
+      correct: '正确！这就是"助推"的经典案例。绝大多数人不会主动去改默认设置——不是因为他们的偏好变了，而是因为改变现状有"摩擦力"。',
+      wrong: '捐献率的变化不是因为人们突然更愿意捐献器官了，而是因为默认选项触发了现状偏见。人们懒得改，所以默认成了选择。'
+    },
+    q6: {
+      correct: '正确！行为经济学不是要说人"不理性"，而是要用真实的人类行为（包括系统性偏差）来替代"理性人"这个过于简化的假设。',
+      wrong: '行为经济学承认人有一定的理性，但指出人的理性是有限的、受情境影响的。它用实验和心理学证据来补充和改进传统经济学的假设，而不是全盘否定。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 6;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对行为经济学的核心概念掌握得很好。';
+      else if (score >= 4) label.textContent = '不错！回顾一下错题的解释，你会发现行为经济学无处不在。';
+      else label.textContent = '建议重读前景理论和心理账户部分——这些是行为经济学最核心的概念。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

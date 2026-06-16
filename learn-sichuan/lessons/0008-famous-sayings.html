@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 四川话经典俗语与歇后语</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #b71c1c;
+    --accent-light: #fce4ec;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .saying-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .saying-card .sichuan {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .saying-card .pinyin {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 0.4rem;
+  }
+
+  .saying-card .meaning {
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .saying-card .usage {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .xiehouyu {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .xiehouyu .riddle {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #e65100;
+  }
+
+  .xiehouyu .answer {
+    font-weight: 600;
+    color: var(--correct);
+    font-size: 1.05rem;
+  }
+
+  .xiehouyu .explanation {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Noto Serif SC', Georgia, serif;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', 'Noto Serif SC', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .tip-box {
+    background: #e3f2fd;
+    border-left: 4px solid #1565c0;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+  }
+
+  .tip-box strong { color: #1565c0; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>四川话经典俗语与歇后语</h1>
+<p class="lesson-meta">第8课 · 约12分钟 · 文化与语言精髓</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你能听懂并恰当使用至少8条四川经典俗语和歇后语，理解它们背后的文化含义，在聊天中用得地道、说得有趣。
+</div>
+
+<h2>为什么学这个？</h2>
+<p>
+  普通话让你能沟通，但四川话的俗语和歇后语让你有<strong>"味儿"</strong>。一个会说"瓜娃子"、"巴适得板"的外地人，和在茶馆里跟大爷们用歇后语对答如流的老四川，完全是两种存在感。这些表达是四川文化的灵魂——幽默、直率、带点自嘲，但又特别温暖。
+</p>
+
+<div class="tip-box">
+  <strong>💡 提示：</strong>四川俗语很多来自农耕生活、市井烟火和民间智慧。理解它们的文化背景，比死记硬背更重要。
+</div>
+
+<h2>一、高频俗语（日常必用）</h2>
+
+<div class="saying-card">
+  <div class="sichuan">巴适得板</div>
+  <div class="pinyin">bā shì dé bǎn</div>
+  <div class="meaning"><strong>意思：</strong>舒服极了、好极了、非常满意。</div>
+  <div class="usage"><strong>例句：</strong>"这家火锅味道巴适得板！" / "躺在沙发上吃瓜子，巴适得板。"</div>
+</div>
+
+<div class="saying-card">
+  <div class="sichuan">瓜娃子</div>
+  <div class="pinyin">guā wá zǐ</div>
+  <div class="meaning"><strong>意思：</strong>傻瓜、憨憨儿。语气可轻可重——朋友间开玩笑是昵称，认真骂人时就是"你个瓜娃子"。</div>
+  <div class="usage"><strong>例句：</strong>"你又把钥匙搞丢了，瓜娃子！"（带着笑的那种）</div>
+</div>
+
+<div class="saying-card">
+  <div class="sichuan">雄起！</div>
+  <div class="pinyin">xióng qǐ!</div>
+  <div class="meaning"><strong>意思：</strong>加油！振奋起来！四川球迷最著名的口号，也用于日常生活中鼓励别人。</div>
+  <div class="usage"><strong>例句：</strong>"考试莫慌，雄起！" / 足球场上全场齐喊："四川队，雄起！"</div>
+</div>
+
+<div class="saying-card">
+  <div class="sichuan">摆龙门阵</div>
+  <div class="pinyin">bǎi lóng mén zhèn</div>
+  <div class="meaning"><strong>意思：</strong>聊天、闲扯。四川人最擅长的社交活动，从国家大事聊到今晚吃啥。</div>
+  <div class="usage"><strong>例句：</strong>"走嘛，去茶馆摆龙门阵！" / "两个老哥坐在门口摆了一下午。"</div>
+</div>
+
+<div class="saying-card">
+  <div class="sichuan">莫得事</div>
+  <div class="pinyin">mó dé shì</div>
+  <div class="meaning"><strong>意思：</strong>没关系、没事。四川人的万能安慰词，类似普通话的"没事没事"。</div>
+  <div class="usage"><strong>例句：</strong>"对不起哈，我迟到了。" —— "莫得事莫得事，路上塞噻？"</div>
+</div>
+
+<h2>二、趣味歇后语</h2>
+<p>
+  歇后语是汉语的一种特殊表达方式：前半句是比喻或情境（"谜面"），后半句是答案（"谜底"）。四川歇后语尤其生动、接地气，常常让人一拍大腿："哎哟，太形象了！"
+</p>
+
+<div class="xiehouyu">
+  <div class="riddle">竹篮打水</div>
+  <div class="answer">—— 一场空</div>
+  <div class="explanation">比喻白费力气，什么也没得到。四川人常说："你搞半天竹篮打水，图啥子嘛！"</div>
+</div>
+
+<div class="xiehouyu">
+  <div class="riddle">癞蛤蟆等天鹅肉</div>
+  <div class="answer">—— 痴心妄想</div>
+  <div class="explanation">形容不切实际的幻想。语气偏调侃，不要对陌生人说哦。</div>
+</div>
+
+<div class="xiehouyu">
+  <div class="riddle">茶馆里的瓜子</div>
+  <div class="answer">—— 越嗑越多</div>
+  <div class="explanation">形容事情越做越多，或者话越说越多。四川茶馆里嗑瓜子是门学问。</div>
+</div>
+
+<div class="xiehouyu">
+  <div class="riddle">火锅底料炒年糕</div>
+  <div class="answer">—— 又辣又粘</div>
+  <div class="explanation">形容一个人又厉害又难缠。也可用来形容局面复杂。</div>
+</div>
+
+<div class="xiehouyu">
+  <div class="riddle">川剧变脸</div>
+  <div class="answer">—— 说变就变</div>
+  <div class="explanation">形容变化快、翻脸快。四川人拿自己的传统文化开玩笑，特别有意思。</div>
+</div>
+
+<div class="xiehouyu">
+  <div class="riddle">熊猫啃竹子</div>
+  <div class="answer">—— 吃得开</div>
+  <div class="explanation">双关语！"吃得开"既指熊猫真的能吃，也指人在社会上混得开、有人缘。</div>
+</div>
+
+<h2>三、四川话 vs 普通话对照速查</h2>
+<table style="width:100%; border-collapse:collapse; margin: 1.5rem 0; font-size: 0.95rem;">
+  <tr style="border-bottom: 2px solid var(--border);">
+    <th style="text-align:left; padding: 0.5rem; color: var(--accent);">四川话</th>
+    <th style="text-align:left; padding: 0.5rem; color: var(--accent);">普通话</th>
+    <th style="text-align:left; padding: 0.5rem; color: var(--accent);">场景</th>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem;">咋个</td>
+    <td style="padding: 0.5rem;">怎么</td>
+    <td style="padding: 0.5rem;">咋个办？咋个去？</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem;">啥子</td>
+    <td style="padding: 0.5rem;">什么</td>
+    <td style="padding: 0.5rem;">啥子东西？啥子意思？</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem;">莫</td>
+    <td style="padding: 0.5rem;">不要</td>
+    <td style="padding: 0.5rem;">莫慌！莫来！</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem;">晓得</td>
+    <td style="padding: 0.5rem;">知道</td>
+    <td style="padding: 0.5rem;">我晓得了。</td>
+  </tr>
+  <tr style="border-bottom: 1px solid var(--border);">
+    <td style="padding: 0.5rem;">耍</td>
+    <td style="padding: 0.5rem;">玩</td>
+    <td style="padding: 0.5rem;">出去耍嘛。</td>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem;">要得</td>
+    <td style="padding: 0.5rem;">好的 / 行</td>
+    <td style="padding: 0.5rem;">要得，走起！</td>
+  </tr>
+</table>
+
+<h2>四、文化小贴士</h2>
+<p>
+  <strong>茶馆文化：</strong>四川人"宁可三日无盐，不可一日无茶"。茶馆不只是喝茶的地方——它是社区中心、信息交换站、相亲角、甚至民间调解庭。在茶馆里嗑瓜子、摆龙门阵、搓麻将，构成了四川人最日常的幸福。
+</p>
+<p>
+  <strong>幽默感：</strong>四川话的一大特点是"苦中作乐"。歇后语里大量自嘲和调侃，反映了四川人豁达、乐观的生活态度。遇到不顺心的事，一句"瓜娃子"自嘲一下，烦恼就少了一半。
+</p>
+
+<!-- ========== QUIZ SECTION ========== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+  <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">选你认为正确的答案，看看你对四川俗语掌握得怎么样！</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="sentence">"这家串串香味道巴适得板！" 这句话的意思是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">这家店很便宜</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', true)">味道好极了</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">服务很热情</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q1', false)">装修很漂亮</button>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="sentence">"竹篮打水" 的歇后语后半句是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">白忙一场</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">空空如也</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', true)">一场空</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q2', false)">打水漂</button>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="sentence">朋友考试前紧张，你想鼓励他，应该说：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">莫得事莫得事</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', true)">雄起！</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">巴适得板</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q3', false)">瓜娃子</button>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="sentence">"啥子" 在四川话中对应的普通话是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">哪里</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">什么时候</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', false)">怎么</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q4', true)">什么</button>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="sentence">"熊猫啃竹子 —— 吃得开" 这个歇后语用了什么修辞手法？</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">夸张</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', true)">双关</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">比喻</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q5', false)">拟人</button>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="sentence">"摆龙门阵" 指的是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">打麻将</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">喝茶</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', true)">聊天、闲谈</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q6', false)">散步</button>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="sentence">别人不小心撞了你一下，说了"对不起"，你最可能的四川话回应是：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">雄起！</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">瓜娃子</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', true)">莫得事莫得事</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q7', false)">巴适得板</button>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="sentence">"川剧变脸 —— 说变就变" 用来形容：</div>
+    <div class="options">
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">天气变化快</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', true)">人的情绪或态度变化快</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">魔术表演精彩</button>
+      <button class="option-btn" onclick="checkAnswer(this, 'q8', false)">四川菜口味多变</button>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 8;
+
+const explanations = {
+  q1: '"巴适"是四川话中最常用的赞美词之一，"得板"是程度补语，相当于"极了"。合起来就是"舒服极了/好极了"。',
+  q2: '"竹篮打水——一场空"是经典歇后语。竹篮有洞，装不住水，比喻白费力气。',
+  q3: '"雄起！"是四川人最常用的鼓励语，源自川超球迷口号，意思是"站起来/振作起来/加油！"',
+  q4: '"啥子"=普通话"什么"。这是四川话最高频的词之一，"啥子意思？""啥子东西？""你搞啥子？"',
+  q5: '双关！"吃得开"字面意思是"能吃得很开（大量吃）"，实际意思是"在社会上人缘好、混得开"。',
+  q6: '"摆龙门阵"就是聊天闲谈的意思。"龙门阵"原指唐代军队布阵的故事，后来演变为泛指各种话题的闲聊。',
+  q7: '"莫得事"=普通话"没关系"。四川人的万能道歉接受语，比"没关系"更有亲切感。',
+  q8: '用川剧变脸比喻人翻脸快、情绪变化快。四川人喜欢拿本地文化开玩笑，这是典型的自嘲式幽默。'
+};
+
+function checkAnswer(btn, qId, isCorrect) {
+  const question = document.getElementById(qId);
+  const buttons = question.querySelectorAll('.option-btn');
+  const feedback = document.getElementById('fb-' + qId);
+
+  // Prevent re-answering
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+
+  buttons.forEach(b => {
+    b.style.pointerEvents = 'none';
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.className = 'feedback show correct-fb';
+    feedback.innerHTML = '<strong>✅ 正确！</strong> ' + explanations[qId];
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    // Highlight correct answer
+    buttons.forEach(b => {
+      if (b.onclick.toString().includes('true')) {
+        b.classList.add('reveal-correct');
+      }
+    });
+    feedback.className = 'feedback show wrong-fb';
+    feedback.innerHTML = '<strong>❌ 不对哦。</strong> ' + explanations[qId];
+  }
+
+  answered++;
+
+  if (answered === total) {
+    const scoreBox = document.getElementById('score-box');
+    const scoreNum = document.getElementById('score-num');
+    const scoreLabel = document.getElementById('score-label');
+    scoreNum.textContent = score + '/' + total;
+    if (score === total) {
+      scoreLabel.textContent = '🎉 太巴适了！满分！';
+    } else if (score >= 6) {
+      scoreLabel.textContent = '👍 不错嘛，够雄起！';
+    } else if (score >= 4) {
+      scoreLabel.textContent = '😄 还行，多摆几次龙门阵就熟了。';
+    } else {
+      scoreLabel.textContent = '💪 继续学，瓜娃子也能变老师！';
+    }
+    scoreBox.classList.add('show');
+  }
+}
+</script>
+
+<div class="footer">
+  <p><a href="../index.html">← 返回课程目录</a></p>
+  <p style="margin-top: 0.5rem;">TeachHub · 四川话入门 · 第8课</p>
+</div>
+
+</body>
+</html>
