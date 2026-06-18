@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 什么是系统：整体大于部分</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>什么是系统：整体大于部分</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第1课 / 共10课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解「系统」的核心定义与三大要素（要素、连接、目标），掌握「涌现」这一关键思想，学会用系统视角而非还原论视角看待复杂问题，区分系统与一堆东西的差别。
+</div>
+
+<h2>一、为什么不能只看零件？</h2>
+
+<p>想象你把一辆汽车拆成几百个零件：发动机、轮胎、方向盘、座椅……把它们堆在一起。问自己一个问题：这堆零件能开吗？</p>
+
+<p>答案显然是不能。为什么？因为<strong>汽车不是零件的总和，而是零件之间按特定方式连接、协作所形成的整体</strong>。把零件之间的连接（关系）破坏掉，再好的零件也只是废铁。</p>
+
+<p>这个朴素的事实，就是系统思维的起点。</p>
+
+<div class="key-idea">
+  「系统是一个由相互连接的要素构成、能够产生某种整体行为或功能的有机体。」—— Donella Meadows,《系统之美》
+</div>
+
+<p>系统思维（Systems Thinking）的核心洞察是：<strong>整体的行为无法仅通过研究个别部分来理解</strong>。你必须理解部分之间的关系、部分如何组成整体、整体又如何反过来影响部分。</p>
+
+<h2>二、系统的三大要素</h2>
+
+<p>任何一个系统，无论多简单或多复杂，都由三个基本要素构成：</p>
+
+<div class="vocab-card">
+  <span class="term">要素 (Elements)</span><br>
+  系统中可见的、具体的组成部分。在人体系统中是细胞；在经济系统中是企业、消费者、政府；在气候系统中是大气、海洋、陆地、冰川。
+</div>
+
+<div class="vocab-card">
+  <span class="term">连接 (Interconnections)</span><br>
+  要素之间的关系、信息流、物质流和规则。要素是"看得见的"，而连接往往是"看不见的"。连接才是真正决定系统行为的关键。交通系统中车辆是要素，但红绿灯规则、道路网络、驾驶心理才是连接。
+</div>
+
+<div class="vocab-card">
+  <span class="term">功能/目的 (Function/Purpose)</span><br>
+  系统运行所产生的结果或倾向。注意：系统的"目的"不是设计者声称的目的，而是<strong>系统实际表现出来的行为</strong>。一个声称目标是"教育学生"的学校系统，如果实际行为是筛选和淘汰，那它的真实目的就是筛选。
+</div>
+
+<div class="example-box">
+  <strong>经典案例——人体免疫系统：</strong>要素是各种免疫细胞（T 细胞、B 细胞、巨噬细胞等）；连接是细胞间的化学信号传递、抗原识别机制、淋巴结网络；功能是识别并清除外来病原体，维持机体稳态。任何一个要素单独拿出来都无法"免疫"——免疫是<strong>涌现</strong>出来的整体能力。
+</div>
+
+<h2>三、涌现：整体大于部分之和</h2>
+
+<p>系统的最神奇之处，在于它能表现出<strong>单个要素完全不具备</strong>的行为和属性。这种现象叫做<strong>涌现</strong>（Emergence）。</p>
+
+<div class="key-idea">
+  涌现 = 整体具有而任何部分都不具备的属性。1+1≠2，而是 1+1=N（N 可以大于或小于 2）。
+</div>
+
+<p>涌现的例子无处不在：</p>
+<ul>
+  <li><strong>水</strong>：单个 H₂O 分子没有"湿润"的属性，但大量水分子聚集后涌现出"液体"的特性——流动、表面张力、溶解能力。</li>
+  <li><strong>意识</strong>：单个神经元没有意识，但 860 亿个神经元以特定方式连接后，涌现出了思维、情感、自我认知。</li>
+  <li><strong>交通拥堵</strong>：单辆车不会"拥堵"，但大量车辆在同一道路上、按相同规则行驶，就会涌现出走走停停的"冲击波"——即使没有事故。</li>
+  <li><strong>市场</strong>：单个消费者和生产者不会产生"价格波动"或"经济周期"，但大量经济主体相互作用后，涌现出通货膨胀、衰退、泡沫。</li>
+</ul>
+
+<div class="example-box">
+  <strong>真实案例——城市：</strong>一座城市不是"很多房子 + 很多人"的简单加总。城市涌现出交通模式、犯罪热点、文化氛围、创新集群。研究发现，城市的人口每翻一倍，人均创新产出增加约 15%——这是典型的<strong>超线性涌现</strong>。
+</div>
+
+<h2>四、系统思维 vs. 还原论思维</h2>
+
+<p>过去 400 年，科学的主流方法是<strong>还原论</strong>（Reductionism）：把复杂问题拆解成越来越小的部分，研究每个部分的规律，再拼回整体。这种方法在物理学、化学领域极为成功。</p>
+
+<p>但还原论有一个致命的盲区：<strong>它假设整体等于部分之和</strong>。当系统存在涌现现象时，这个假设就崩溃了。</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+  <tr style="background: var(--accent-light);">
+    <th style="padding: 0.5rem; border: 1px solid var(--border); text-align: left;">还原论思维</th>
+    <th style="padding: 0.5rem; border: 1px solid var(--border); text-align: left;">系统思维</th>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">关注<strong>要素</strong></td>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">关注<strong>连接和关系</strong></td>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">拆解成部分研究</td>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">在整体中观察行为</td>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">线性因果：A → B</td>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">循环因果：A ↔ B ↔ C</td>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">静态快照</td>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">动态过程</td>
+  </tr>
+  <tr>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">寻找"那个原因"</td>
+    <td style="padding: 0.5rem; border: 1px solid var(--border);">寻找"行为模式"</td>
+  </tr>
+</table>
+
+<div class="example-box">
+  <strong>案例对比——气候变化：</strong>还原论思维问"是什么导致了全球变暖？"然后找到 CO₂ 这个单一变量。系统思维问"大气-海洋-生物圈-人类经济如何相互作用产生温度变化？"前者可能让你只盯着碳排放；后者会让你理解为什么单纯的碳减排可能不够——因为存在反馈回路（下节课详述）。
+</div>
+
+<h2>五、如何判断"这到底是不是一个系统？"</h2>
+
+<p>不是所有的事物集合都是系统。一堆沙子不是系统，但一个沙丘生态系统是。判断标准有三个：</p>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>是否有相互连接？</strong>各部分之间是否存在物质、能量或信息的交换？</li>
+  <li><strong>是否有共同功能？</strong>整体是否表现出某种可识别的行为或目的？</li>
+  <li><strong>移除一部分是否影响整体？</strong>系统对部分有依赖性——移除关键节点会改变系统行为。</li>
+</ol>
+
+<div class="vocab-card">
+  <span class="term">系统识别三问</span><br>
+  要素是什么？连接是什么？功能是什么？能清晰回答这三个问题的，才是一个真正的系统。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>系统 = 要素 + 连接 + 功能；其中连接是最容易被忽视却最关键的部分</li>
+    <li>涌现是系统的灵魂——整体具有部分不具备的属性，1+1≠2</li>
+    <li>还原论擅长研究"是什么"，系统思维擅长回答"为什么这样运作"</li>
+    <li>判断系统的三问：要素、连接、功能——三者缺一不可</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 一辆汽车被拆成几百个零件堆在地上，为什么不能开了？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 零件坏了</label>
+      <label><input type="radio" name="q1" value="b"> B. 零件之间的连接被破坏了，整体功能消失了</label>
+      <label><input type="radio" name="q1" value="c"> C. 零件太多了</label>
+      <label><input type="radio" name="q1" value="d"> D. 汽油没了</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 系统的三大要素是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 输入、处理、输出</label>
+      <label><input type="radio" name="q2" value="b"> B. 硬件、软件、数据</label>
+      <label><input type="radio" name="q2" value="c"> C. 要素、连接、功能/目的</label>
+      <label><input type="radio" name="q2" value="d"> D. 结构、过程、结果</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q3.</span> 在系统中，哪个要素最容易被忽视却最关键？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 要素</label>
+      <label><input type="radio" name="q3" value="b"> B. 连接</label>
+      <label><input type="radio" name="q3" value="c"> C. 功能</label>
+      <label><input type="radio" name="q3" value="d"> D. 三者同等重要</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q4.</span> 以下哪个是"涌现"的例子？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 单个神经元无意识，但大量神经元连接后产生意识</label>
+      <label><input type="radio" name="q4" value="b"> B. 一块砖的重量等于两块砖的一半</label>
+      <label><input type="radio" name="q4" value="c"> C. 一杯水的温度等于各分子温度的平均值</label>
+      <label><input type="radio" name="q4" value="d"> D. 一个班级的成绩等于个人成绩之和除以人数</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q5.</span> 还原论思维和系统思维的核心区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 还原论只研究物理，系统思维只研究生物</label>
+      <label><input type="radio" name="q5" value="b"> B. 还原论是错的，系统思维是对的</label>
+      <label><input type="radio" name="q5" value="c"> C. 还原论更精确，系统思维更模糊</label>
+      <label><input type="radio" name="q5" value="d"> D. 还原论假设整体=部分之和，系统思维承认涌现的存在</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 如何判断一个事物的集合是不是"系统"？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 只要数量足够多就是系统</label>
+      <label><input type="radio" name="q6" value="b"> B. 只要看起来复杂就是系统</label>
+      <label><input type="radio" name="q6" value="c"> C. 看是否有相互连接、共同功能、以及对部分移除的敏感性</label>
+      <label><input type="radio" name="q6" value="d"> D. 看是否有人造的</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q7.</span> 一个学校声称目标是"教育学生"，但实际行为是淘汰和筛选。它的真实"功能"是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 教育学生——因为这是声称的目标</label>
+      <label><input type="radio" name="q7" value="b"> B. 淘汰和筛选——因为系统的功能由实际行为决定，不由声称决定</label>
+      <label><input type="radio" name="q7" value="c"> C. 两者都对</label>
+      <label><input type="radio" name="q7" value="d"> D. 无法判断</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q8.</span> 交通拥堵为什么是涌现现象？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 单辆车不拥堵，但大量车辆按相同规则行驶后涌现出走走停停的行为</label>
+      <label><input type="radio" name="q8" value="b"> B. 因为有事故发生</label>
+      <label><input type="radio" name="q8" value="c"> C. 因为道路设计不好</label>
+      <label><input type="radio" name="q8" value="d"> D. 因为司机技术差</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q9.</span> 以下哪一项<strong>不是</strong>系统？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 人体免疫系统</label>
+      <label><input type="radio" name="q9" value="b"> B. 全球气候系统</label>
+      <label><input type="radio" name="q9" value="c"> C. 一个城市</label>
+      <label><input type="radio" name="q9" value="d"> D. 一堆随意散落的石子</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q10.</span> 为什么说"连接"比"要素"更能决定系统行为？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 因为要素不重要</label>
+      <label><input type="radio" name="q10" value="b"> B. 因为同样的要素以不同方式连接会产生完全不同的系统（如碳可以组成石墨或金刚石）</label>
+      <label><input type="radio" name="q10" value="c"> C. 因为连接总是看得见的</label>
+      <label><input type="radio" name="q10" value="d"> D. 因为要素可以被替换</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 系统思维对待因果关系的态度与还原论有何不同？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 系统思维否认因果关系的存在</label>
+      <label><input type="radio" name="q11" value="b"> B. 系统思维认为因果是单向的</label>
+      <label><input type="radio" name="q11" value="c"> C. 系统思维承认循环因果（A影响B，B也影响A），而非单向因果</label>
+      <label><input type="radio" name="q11" value="d"> D. 两者没有区别</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 跨学科思考：经济学中的"市场"为什么是一个系统而非简单集合？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 因为消费者、生产者、价格之间存在反馈连接，涌现出供需均衡和周期波动</label>
+      <label><input type="radio" name="q12" value="b"> B. 因为市场里有很多人</label>
+      <label><input type="radio" name="q12" value="c"> C. 因为市场需要政府管理</label>
+      <label><input type="radio" name="q12" value="d"> D. 因为市场很复杂</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="../index.html">← 系统思维目录</a>
+  <span>第 1 课 / 共 10 课</span>
+  <a href="0002-feedback-loops.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '汽车的整体功能依赖于零件之间的连接方式。连接被破坏后，即使零件完好，整体功能也消失了——这正是"整体不等于部分之和"的体现。' },
+  q2: { correct: 'c', explanation: '任何系统都由要素（可见的组成部分）、连接（要素之间的关系）和功能/目的（系统实际表现出的行为）三部分构成。' },
+  q3: { correct: 'b', explanation: '连接最容易被忽视，因为要素是"看得见的"，而连接（规则、信息流、关系）往往是"看不见的"。但连接才是真正决定系统行为的关键——同样的要素以不同方式连接会产生完全不同的系统。' },
+  q4: { correct: 'a', explanation: '意识是典型的涌现现象：单个神经元没有意识，但大量神经元以特定方式连接后涌现出了意识。其他选项都是简单的线性叠加，没有涌现。' },
+  q5: { correct: 'd', explanation: '还原论假设整体等于部分之和，适合研究可叠加的属性；系统思维承认涌现的存在，整体可以具有部分不具备的属性。两者不是对错关系，而是适用的范围不同。' },
+  q6: { correct: 'c', explanation: '判断系统要看三个标准：要素之间是否有相互连接（物质/能量/信息交换）、是否有共同功能、移除一部分是否影响整体。一堆石子没有这些特征，不是系统。' },
+  q7: { correct: 'b', explanation: '系统的"功能"由它实际表现出的行为决定，而不是由声称的目标决定。如果一所学校的实际行为是筛选淘汰，那它的真实功能就是筛选——无论它声称什么。' },
+  q8: { correct: 'a', explanation: '交通拥堵是典型的涌现现象：单辆车不会拥堵，但大量车辆在同一道路上按相同规则行驶，即使没有事故，也会自发产生走走停停的"幽灵堵车"。这是整体行为，不是任何单辆车的属性。' },
+  q9: { correct: 'd', explanation: '一堆随意散落的石子没有相互连接、没有共同功能、移除一个也不影响其他——它不是系统。其他三项都有要素、连接和功能，是真正的系统。' },
+  q10: { correct: 'b', explanation: '最经典的例子是碳元素：同样的碳原子，以不同方式连接，可以形成柔软的石墨，也可以形成最硬的金刚石。要素相同，连接不同，系统完全不同。' },
+  q11: { correct: 'c', explanation: '系统思维承认"循环因果"——A影响B，B反过来也影响A，形成回路。而还原论倾向于线性因果：A→B→C。现实中大多数复杂现象是循环因果驱动的。' },
+  q12: { correct: 'a', explanation: '市场是系统，因为消费者需求影响价格，价格影响生产者供给，供给又影响消费者需求——形成反馈回路。这种相互作用涌现出均衡价格、经济周期等整体行为，不是简单的人数加总。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了系统的核心概念。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了核心思想。再看一遍错题就彻底掌握了。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读课程中的"涌现"和"三大要素"部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重读课程内容，重点理解"整体大于部分"的含义。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

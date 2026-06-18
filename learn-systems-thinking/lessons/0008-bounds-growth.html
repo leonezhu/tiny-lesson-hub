@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 增长的极限</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>增长的极限</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第8课 / 共10课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解为什么没有任何系统能无限增长；掌握 S 型增长曲线和「过冲-崩溃」两种增长结局的区别；认识「承载力」概念和限制性因素的作用；学会识别现实中的增长极限，并在触及极限前主动转型，而非等到崩溃。
+</div>
+
+<h2>一、为什么「永远增长」是幻想？</h2>
+
+<p>我们都喜欢增长——公司要增长、经济要增长、粉丝要增长、工资要增长。但系统思维告诉我们一个冷酷的事实：<strong>在任何有限的环境中，没有任何系统能永远指数增长</strong>。</p>
+
+<p>这不是悲观主义，而是物理定律。一个培养皿里的细菌，最初每 20 分钟数量翻倍，指数增长惊人——但几天后，要么耗尽营养，要么被自身废物毒死。地球也是一个巨大的「培养皿」。</p>
+
+<div class="key-idea">
+  指数增长是世界上最危险的错觉——它前期温和得不像威胁，后期凶猛得来不及反应。
+</div>
+
+<p>理解增长的极限，不是为了唱衰，而是为了<strong>在触及极限之前主动转型</strong>，而不是等到被动崩溃。这正是系统思维最有现实意义的洞察之一。</p>
+
+<h2>二、指数增长的陷阱</h2>
+
+<p>人类大脑天生不擅长理解指数增长。我们习惯线性思维：「每年涨一点」。但指数增长是「每年涨的量本身也在涨」。</p>
+
+<div class="vocab-card">
+  <span class="term">指数增长 (Exponential Growth)</span><br>
+  增长率与当前存量成正比——存量越大，增长越快。经典公式：N(t) = N₀ × e^(rt)。特点是前期看似缓慢，一旦越过拐点就呈爆发式增长，往往在人们反应过来之前就已失控。
+</div>
+
+<div class="example-box">
+  <strong>经典心智实验——荷花池：</strong>一个池塘里的荷花每天面积翻倍，30 天铺满整个池塘。第 29 天时，荷花只覆盖了池塘的一半——看起来还有 plenty of room。但只需再过 1 天，池塘就被完全铺满。在「铺满」前的一半时间里，池塘看起来都很空旷。这就是指数增长的危险：它在你觉得「还很远」的时候，其实已经迫在眉睫。
+</div>
+
+<p>这个实验揭示了一个关键：<strong>指数增长的问题是，等你意识到危险时，往往已经来不及了</strong>。气候变化、债务危机、传染病扩散（如 COVID-19 早期）、人口增长，都遵循类似规律。</p>
+
+<h2>三、增长的两种结局</h2>
+
+<p>当一个指数增长的系统遇到环境的限制（承载力），会出现两种截然不同的结局：</p>
+
+<h3>结局一：S 型增长（优雅转型）</h3>
+
+<div class="vocab-card">
+  <span class="term">S 型曲线 / 逻辑斯蒂增长 (Logistic Growth)</span><br>
+  增长初期是指数式的，但随着接近环境的「承载力」（Carrying Capacity），增长逐渐放缓，最终稳定在一个均衡水平。整体形状像字母 S。这是<strong>理想</strong>的结局——系统平滑地过渡到稳态，没有崩溃。
+</div>
+
+<p>S 型增长的关键在于：<strong>系统在接近极限时能及时「感知」到限制，并主动放缓</strong>。负反馈（限制因素）在增长过程中持续发挥作用，避免了过冲。</p>
+
+<h3>结局二：过冲与崩溃（灾难结局）</h3>
+
+<div class="vocab-card">
+  <span class="term">过冲与崩溃 (Overshoot and Collapse)</span><br>
+  如果系统对限制的感知有<strong>延迟</strong>（信息滞后），增长会越过承载力，然后因为资源耗尽或环境恶化而<strong>急剧崩溃</strong>，最终稳定的水平往往远低于原本的承载力。这是<strong>最坏</strong>的结局。
+</div>
+
+<div class="example-box">
+  <strong>经典案例——复活节岛：</strong>波利尼西亚人定居复活节岛后，人口和文明一度繁荣增长。但他们过度砍伐森林（核心资源），当意识到问题时已经太晚。森林消失导致无法造船捕鱼、土壤流失、食物短缺，人口从约 1.5 万暴跌到不足 2000，文明崩溃。这是过冲与崩溃的人类学缩影。
+</div>
+
+<h2>四、承载力与限制性因素</h2>
+
+<p>每个增长系统都有一个或多个<strong>限制性因素</strong>（Limiting Factor）——也就是最先耗尽的资源。系统的增长不会平均地受到所有资源的约束，而是被<strong>最稀缺的那个</strong>卡住。这就是「李比希最小因子定律」。</p>
+
+<div class="vocab-card">
+  <span class="term">承载力 (Carrying Capacity)</span><br>
+  环境能长期支撑的最大种群/活动规模。超过承载力，系统要么被动崩溃，要么需要技术创新来「提升」承载力（但这往往只是推迟问题，而非解决）。
+</div>
+
+<div class="example-box">
+  <strong>限制性因素的转移：</strong>一家创业公司最初受限于「客户获取」（没人知道它）；获客解决了又受限于「产品交付」（做不出来）；交付解决了又受限于「团队管理」（人多了管不好）；管理解决了又受限于「资金」……每个阶段都有不同的「卡脖子」因素。聪明的管理者会提前预测下一个限制因素，而不是等被卡住才反应。
+</div>
+
+<p>关键洞察：<strong>当限制性因素从一种资源转向另一种时，旧的增长策略会突然失效</strong>。继续加大旧策略的投入（如已不是瓶颈的资源）是浪费——这正是系统思维提醒我们警惕的。</p>
+
+<h2>五、跨学科：增长极限的普遍性</h2>
+
+<ul>
+  <li><strong>生态学</strong>：种群动力学（捕食者-猎物模型的振荡）、岛屿生物地理学、生态系统承载力。</li>
+  <li><strong>经济学</strong>：罗马俱乐部《增长的极限》（1972）用系统动力学模拟了全球经济、人口、资源的相互作用，预测了过冲风险；债务的复利增长本质上是指数增长，主权债务危机就是过冲。</li>
+  <li><strong>流行病学</strong>：传染病初期的指数扩散；「拉平曲线」本质上是在主动制造 S 型增长而非过冲崩溃。</li>
+  <li><strong>技术/商业</strong>：技术采用曲线（创新扩散的 S 型）；摩尔定律的物理极限（芯片制程逼近原子尺度）；用户增长的获客成本曲线。</li>
+  <li><strong>个人成长</strong>：学习曲线的 S 型；「舒适区」的承载力——一直做同样的事，成长会停滞，需要主动跳出舒适区来「提升承载力」。</li>
+</ul>
+
+<div class="example-box">
+  <strong>现实应用——COVID-19 的「拉平曲线」：</strong>如果不加干预，病毒在易感人群中指数扩散，会迅速过冲医疗系统的承载力，导致崩溃（大量死亡）。「拉平曲线」就是通过社交距离、口罩、封控等手段，人为制造负反馈，让感染增长从过冲崩溃变成 S 型——给医疗系统留出空间，争取疫苗研发时间。这是系统思维在公共卫生领域的经典应用。
+</div>
+
+<h2>六、面对极限的智慧</h2>
+
+<p>系统思维不主张「停止增长」，而是主张<strong>智慧地对待增长</strong>：</p>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>识别真正的限制因素</strong>：别在已经不是瓶颈的资源上浪费精力。</li>
+  <li><strong>提前转型而非被动崩溃</strong>：在 S 型曲线的「放缓段」主动寻找新的增长维度（如从「量」的增长转向「质」的增长），而不是死守旧模式直到过冲。</li>
+  <li><strong>警惕「技术乐观主义」陷阱</strong>：技术创新确实能提升承载力（如绿色能源缓解碳排放极限），但如果把所有希望寄托在「未来一定有技术突破」上，而不限制当下的过冲行为，就是在赌上整个系统。</li>
+  <li><strong>区分「增长」与「发展」</strong>：增长是「变大」（量的扩张），发展是「变好」（质的提升）。有限的世界里，增长有极限，但发展没有——这是可持续发展理念的系统思维根基。</li>
+</ol>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>任何有限环境中，指数增长都不可能永远持续——这不是悲观，是物理定律</li>
+    <li>指数增长的陷阱：前期温和后期凶猛，等意识到危险往往已来不及</li>
+    <li>两种结局：S 型增长（及时感知限制，优雅转型）vs 过冲崩溃（感知延迟，灾难收场）</li>
+    <li>限制性因素（李比希定律）：系统被最稀缺的资源卡住，因素会随阶段转移</li>
+    <li>智慧之道：提前转型、警惕技术乐观主义、区分「增长」（量）与「发展」（质）</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 系统思维对「永远增长」的态度是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 只要努力，任何系统都能永远增长</label>
+      <label><input type="radio" name="q1" value="b"> B. 增长是坏事，应该完全停止</label>
+      <label><input type="radio" name="q1" value="c"> C. 在任何有限环境中，没有任何系统能永远指数增长；应在触及极限前主动转型</label>
+      <label><input type="radio" name="q1" value="d"> D. 只有经济系统能永远增长</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 「荷花池」实验（每天面积翻倍，30天铺满）揭示的关键教训是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 荷花长得太慢了</label>
+      <label><input type="radio" name="q2" value="b"> B. 指数增长前期看似温和，第29天还只覆盖一半，但第30天就铺满——等你意识到危险时往往已来不及</label>
+      <label><input type="radio" name="q2" value="c"> C. 池塘太小了</label>
+      <label><input type="radio" name="q2" value="d"> D. 荷花是坏植物</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 指数增长的核心特征是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 增长率与当前存量成正比——存量越大增长越快，前期温和后期爆发</label>
+      <label><input type="radio" name="q3" value="b"> B. 每年固定增长一个相同的量</label>
+      <label><input type="radio" name="q3" value="c"> C. 增长率随时间递减</label>
+      <label><input type="radio" name="q3" value="d"> D. 增长完全随机</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> S 型增长（逻辑斯蒂增长）的理想之处在于？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 它可以永远增长</label>
+      <label><input type="radio" name="q4" value="b"> B. 它增长速度最快</label>
+      <label><input type="radio" name="q4" value="c"> C. 它不需要任何限制</label>
+      <label><input type="radio" name="q4" value="d"> D. 系统在接近承载力时能及时感知限制并主动放缓，平滑过渡到稳态，没有崩溃</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 「过冲与崩溃」发生的根本原因是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 系统增长太慢</label>
+      <label><input type="radio" name="q5" value="b"> B. 系统对限制的感知有延迟（信息滞后），增长越过承载力后才反应，导致资源耗尽、急剧崩溃</label>
+      <label><input type="radio" name="q5" value="c"> C. 承载力太大</label>
+      <label><input type="radio" name="q5" value="d"> D. 系统没有正反馈</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 复活节岛文明崩溃是哪种增长结局的典型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. S 型增长——平稳过渡</label>
+      <label><input type="radio" name="q6" value="b"> B. 永久增长</label>
+      <label><input type="radio" name="q6" value="c"> C. 过冲与崩溃——过度砍伐森林导致资源耗尽，人口从1.5万暴跌到不足2000</label>
+      <label><input type="radio" name="q6" value="d"> D. 没有增长</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 「李比希最小因子定律」在系统增长中的含义是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 系统的增长被最稀缺的那个限制性因素卡住，而非平均受所有资源约束</label>
+      <label><input type="radio" name="q7" value="b"> B. 所有资源同等重要</label>
+      <label><input type="radio" name="q7" value="c"> C. 资源越多增长越快</label>
+      <label><input type="radio" name="q7" value="d"> D. 最小因素不重要</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 当限制性因素从一种资源转向另一种时，会发生什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 旧的增长策略会变得更有效</label>
+      <label><input type="radio" name="q8" value="b"> B. 系统会自动适应</label>
+      <label><input type="radio" name="q8" value="c"> C. 所有策略都失效</label>
+      <label><input type="radio" name="q8" value="d"> D. 旧的增长策略会突然失效，继续在已不是瓶颈的资源上加大投入是浪费</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 跨学科思考：COVID-19 的「拉平曲线」本质上在做什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 让病毒完全消失</label>
+      <label><input type="radio" name="q9" value="b"> B. 通过人为制造负反馈（社交距离、封控），让感染增长从过冲崩溃变成 S 型，给医疗系统留空间</label>
+      <label><input type="radio" name="q9" value="c"> C. 加快病毒传播以获得群体免疫</label>
+      <label><input type="radio" name="q9" value="d"> D. 提高医疗系统的承载力但不改变感染曲线</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 罗马俱乐部的《增长的极限》（1972）用什么方法研究全球经济？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 纯粹的定性分析</label>
+      <label><input type="radio" name="q10" value="b"> B. 线性回归</label>
+      <label><input type="radio" name="q10" value="c"> C. 系统动力学模拟——建模经济、人口、资源、污染的相互作用，预测过冲风险</label>
+      <label><input type="radio" name="q10" value="d"> D. 问卷调查</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q11.</span> 关于「技术乐观主义」的陷阱，下列哪个说法正确？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 技术创新能提升承载力，但如果把所有希望寄托在「未来一定有突破」上而不限制当下过冲，就是在赌整个系统</label>
+      <label><input type="radio" name="q11" value="b"> B. 技术创新毫无用处</label>
+      <label><input type="radio" name="q11" value="c"> C. 技术一定能解决所有增长极限</label>
+      <label><input type="radio" name="q11" value="d"> D. 不需要任何技术，靠减少增长就够了</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 系统思维对「增长」与「发展」的区分是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 两者完全相同</label>
+      <label><input type="radio" name="q12" value="b"> B. 增长是变好，发展是变大</label>
+      <label><input type="radio" name="q12" value="c"> C. 发展有极限，增长没有</label>
+      <label><input type="radio" name="q12" value="d"> D. 增长是「变大」（量的扩张，有限世界里有极限），发展是「变好」（质的提升，没有极限）——这是可持续发展的根基</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q13.</span> 现实应用：摩尔定律（芯片性能每18-24月翻倍）正面临什么系统问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 它从来没有成立过</label>
+      <label><input type="radio" name="q13" value="b"> B. 芯片制程正逼近原子尺度的物理极限（限制性因素），指数增长无法永远持续，行业需从「制程微缩」转向「架构创新/3D封装」等新的增长维度</label>
+      <label><input type="radio" name="q13" value="c"> C. 它可以无限持续</label>
+      <label><input type="radio" name="q13" value="d"> D. 它与系统思维无关</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0007-system-archetypes.html">← 上一课</a>
+  <span>第 8 课 / 共 10 课</span>
+  <a href="0009-resilience.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '系统思维的核心立场：在任何有限环境中，没有任何系统能永远指数增长——这不是悲观主义，而是物理定律。理解这一点是为了在触及极限前主动转型，而非等到被动崩溃。' },
+  q2: { correct: 'b', explanation: '荷花池实验是理解指数增长陷阱的经典：第29天荷花只覆盖池塘一半，看起来还有空间，但第30天就铺满了。这揭示指数增长「前期温和后期凶猛」的特点——等你意识到危险时往往已经来不及。' },
+  q3: { correct: 'a', explanation: '指数增长的核心是增长率与当前存量成正比：存量越大，单位时间增长的量越大。公式 N(t)=N₀×e^(rt)。这导致前期看似缓慢（基数小），一旦越过拐点就爆发式增长，往往在反应过来前已失控。' },
+  q4: { correct: 'd', explanation: 'S 型增长的理想之处在于：系统在接近承载力时能及时「感知」到限制并主动放缓，负反馈在增长过程中持续作用，避免了过冲。最终平滑过渡到稳态，没有崩溃。这是「优雅转型」的结局。' },
+  q5: { correct: 'b', explanation: '过冲与崩溃的根本原因是「感知延迟」：系统对限制的信息反馈滞后，导致增长越过承载力后才反应。此时资源已耗尽或环境已恶化，系统急剧崩溃，最终稳定的水平往往远低于原本的承载力。' },
+  q6: { correct: 'c', explanation: '复活节岛是过冲与崩溃的人类学典型：波利尼西亚人繁荣增长但过度砍伐森林，当意识到问题时已太晚。森林消失导致无法造船捕鱼、土壤流失，人口从约1.5万暴跌到不足2000，文明崩溃。这是延迟感知导致过冲的经典案例。' },
+  q7: { correct: 'a', explanation: '李比希最小因子定律：系统的增长不会平均受所有资源约束，而是被最稀缺的那个限制性因素卡住。就像木桶的最短板决定容量。因此解决问题要瞄准当前的「卡脖子」因素，而非平均用力。' },
+  q8: { correct: 'd', explanation: '当限制性因素转移时（如从获客转向交付、从资金转向管理），旧的增长策略（加大已不是瓶颈的资源投入）会突然失效，继续这么做是浪费。聪明的做法是提前预测下一个限制因素并做准备。' },
+  q9: { correct: 'b', explanation: '「拉平曲线」本质上是人为制造负反馈（社交距离、口罩、封控），让感染增长从过冲崩溃（迅速越过医疗承载力导致崩溃）变成 S 型（放缓增长，给医疗系统留空间，争取疫苗时间）。这是系统思维在公共卫生的经典应用。' },
+  q10: { correct: 'c', explanation: '《增长的极限》用系统动力学方法（由 Jay Forrester 开发，Meadows 团队运用），建模全球经济、人口、资源消耗、污染的相互作用，模拟不同情景，预测了过冲与崩溃的风险。这是系统动力学最具影响力的应用之一。' },
+  q11: { correct: 'a', explanation: '技术乐观主义陷阱：技术创新确实能提升承载力（如绿色能源缓解碳排放极限），但如果把所有希望寄托在「未来一定有突破」上，而不限制当下的过冲行为，就是在赌整个系统的存亡。理性做法是「两手抓」：既投资创新，又限制过冲。' },
+  q12: { correct: 'd', explanation: '系统思维区分「增长」（变大，量的扩张）和「发展」（变好，质的提升）。有限世界里增长有物理极限，但发展没有——一个经济体可以停止变大但持续变好（更高效、更公平、更幸福）。这是可持续发展理念的系统思维根基。' },
+  q13: { correct: 'b', explanation: '摩尔定律正面临物理极限：芯片制程逼近原子尺度（量子效应限制），这是典型的「限制性因素」。指数增长无法永远持续。行业的智慧反应是从「制程微缩」这一旧维度，转向架构创新、3D封装、专用芯片等新增长维度——这正是「提前转型」而非死守旧模式。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+    fb.className = 'feedback';
+    if (!selected) { fb.className = 'feedback wrong'; fb.textContent = '⚠ 你还没有选择答案。'; continue; }
+    if (selected.value === data.correct) {
+      score++; fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`; questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  scoreNum.textContent = `${score} / ${total}`;
+  const pct = score / total;
+  if (pct === 1) { scoreMsg.textContent = '🎉 完美！你完全掌握了增长的极限这一关键洞察。'; }
+  else if (pct >= 0.7) { scoreMsg.textContent = '👍 很棒！你理解了增长极限的核心。再复习一下 S 型 vs 过冲崩溃的区别。'; }
+  else if (pct >= 0.4) { scoreMsg.textContent = '📖 还行。建议重读「两种结局」和「限制性因素」部分，注意荷花池实验的教训。'; }
+  else { scoreMsg.textContent = '💪 别灰心。重读课程，重点理解「为什么永远增长是幻想」和指数增长的陷阱。'; }
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

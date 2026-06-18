@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — 反馈回路：正反馈与负反馈</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>反馈回路：正反馈与负反馈</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第2课 / 共10课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解反馈回路的本质，区分正反馈（放大）和负反馈（稳定），掌握它们在自然界和社会中的运作方式，学会识别隐藏在现象背后的反馈结构。
+</div>
+
+<h2>一、什么是反馈回路？</h2>
+
+<p>想象你在一个房间里，空调设定为 25°C。温度传感器检测到室温——如果高于 25°C，空调启动制冷；如果低于 25°C，空调停止。温度变化→空调响应→温度再变化→空调再响应……这是一个不断循环的过程。</p>
+
+<p>这就是<strong>反馈回路</strong>（Feedback Loop）：系统的输出结果反过来影响系统的输入，形成一个闭合的因果链条。</p>
+
+<div class="key-idea">
+  反馈回路 = 系统的输出 → 反过来作为输入 → 影响后续输出。这是所有动态系统的核心运作机制。
+</div>
+
+<div class="vocab-card">
+  <span class="term">反馈回路 (Feedback Loop)</span><br>
+  系统中一条闭合的因果链条：某个变量的变化通过一系列中间步骤，最终反过来影响该变量自身。反馈回路是系统行为模式的"发动机"。
+</div>
+
+<p>反馈回路只有两种基本类型：<strong>正反馈</strong>（放大）和<strong>负反馈</strong>（稳定）。理解这两种回路，你就掌握了系统动力学的一半。</p>
+
+<h2>二、正反馈：自我放大的螺旋</h2>
+
+<p>正反馈（Reinforcing Loop）的运作逻辑是：<strong>变化自我放大</strong>。A 增加 → 导致 B 增加 → B 又导致 A 进一步增加 → ……形成指数级增长或崩溃。</p>
+
+<div class="key-idea">
+  正反馈 = 变化方向被强化。"越多越多，越少越少。"
+</div>
+
+<p>正反馈的典型模式：</p>
+<ul>
+  <li><strong>增长螺旋</strong>：存款 → 利息 → 更多存款 → 更多利息（复利效应）</li>
+  <li><strong>崩溃螺旋</strong>：恐慌 → 抛售 → 价格下跌 → 更多恐慌（银行挤兑）</li>
+  <li><strong>良性循环</strong>：学习 → 技能提升 → 更好的机会 → 更多学习</li>
+  <li><strong>恶性循环</strong>：贫困 → 教育不足 → 收入低 → 更贫困</li>
+</ul>
+
+<div class="example-box">
+  <strong>真实案例——疫情传播：</strong>2020 年新冠疫情初期，感染者越多 → 病毒传播越广 → 感染者更多 → ……这是一个典型的正反馈回路。在不受干预的情况下，感染人数呈<strong>指数增长</strong>——这是正反馈的数学标志。R₀（基本传染数）> 1 时，正反馈主导；R₀ < 1 时，负反馈开始主导。
+</div>
+
+<div class="example-box">
+  <strong>真实案例——经济泡沫与危机：</strong>2008 年金融危机：房价上涨 → 投资者涌入 → 需求增加 → 房价进一步上涨（正反馈，泡沫膨胀）。泡沫破裂后：房价下跌 → 抵押贷款违约 → 银行抛售资产 → 价格进一步下跌（正反馈，崩溃）。<strong>同一种回路结构，方向相反</strong>。
+</div>
+
+<h2>三、负反馈：自我稳定的机制</h2>
+
+<p>负反馈（Balancing Loop）的运作逻辑是：<strong>变化被抵消</strong>。系统偏离目标值 → 触发纠正力量 → 将系统拉回目标值 → 纠正力量减弱 → 系统稳定。</p>
+
+<div class="key-idea">
+  负反馈 = 变化被抵消。"偏多了就减少，偏少了就增加。"负反馈让系统趋向稳定。
+</div>
+
+<p>负反馈是<strong>稳态</strong>（Homeostasis）的基础。生命体之所以能存活，正是因为无数负反馈回路的协作：</p>
+<ul>
+  <li><strong>体温调节</strong>：体温升高 → 出汗散热 → 体温回落 → 停止出汗</li>
+  <li><strong>血糖控制</strong>：血糖升高 → 胰岛素分泌 → 细胞吸收葡萄糖 → 血糖回落</li>
+  <li><strong>捕食者-猎物平衡</strong>：猎物增多 → 捕食者繁殖 → 猎物减少 → 捕食者饥饿死亡 → 猎物恢复</li>
+</ul>
+
+<div class="example-box">
+  <strong>真实案例——人体免疫系统：</strong>病原体入侵 → 免疫细胞被激活 → 产生抗体清除病原体 → 病原体减少 → 免疫反应减弱（避免过度反应伤害自身）。这是一个精确的负反馈回路。如果这个回路失灵——要么反应不足（免疫缺陷），要么反应过度（自身免疫病）——系统就会崩溃。
+</div>
+
+<div class="vocab-card">
+  <span class="term">稳态 (Homeostasis)</span><br>
+  系统通过负反馈维持某个变量在目标值附近的能力。稳态不是"静止不动"，而是"动态平衡"——系统在不断波动，但波动被限制在可控范围内。
+</div>
+
+<h2>四、正负反馈的协同与博弈</h2>
+
+<p>现实中的系统几乎总是<strong>正反馈和负反馈同时存在</strong>。理解一个系统，就是理解这两种力量的博弈。</p>
+
+<h3>案例：人口增长</h3>
+<p><strong>正反馈</strong>：人口越多 → 生育基数越大 → 人口增长越快（指数增长）。<br>
+<strong>负反馈</strong>：人口增长 → 资源紧张、竞争加剧、疾病传播 → 死亡率上升、生育率下降 → 增长放缓。</p>
+<p>当正反馈占主导时，人口爆发式增长；当负反馈赶上时，增长趋于稳定或波动。全球人口曲线的"S 形"正是这两种力量博弈的结果。</p>
+
+<h3>案例：气候变化</h3>
+<p><strong>正反馈</strong>（令变暖加速）：北极冰盖融化 → 地表反照率降低 → 吸收更多热量 → 更多冰融化。<br>
+<strong>负反馈</strong>（令变暖减缓）：CO₂ 增加 → 植物光合作用增强 → 吸收更多 CO₂。</p>
+<p>关键问题是：正反馈和负反馈哪个更强？目前科学共识是<strong>正反馈占主导</strong>——这就是为什么气候变化如此危险。 tipping point（临界点）一旦越过，正反馈将不可逆转地主导。</p>
+
+<div class="key-idea">
+  系统的命运取决于正反馈和负反馈的相对强弱。当正反馈持续超过负反馈时，系统会指数增长直至崩溃；当负反馈能跟上正反馈时，系统趋于稳定。
+</div>
+
+<h2>五、为什么人们总是忽视反馈？</h2>
+
+<p>人类大脑天生不擅长理解反馈回路。我们习惯的是<strong>线性思维</strong>：A 导致 B。但反馈回路是<strong>循环的</strong>：A 导致 B，B 又导致 A。这让我们困惑。</p>
+
+<p>线性思维者看到"穷人越来越穷"，会归因于"他们不够努力"。系统思维者看到的是一个正反馈回路："贫困→教育不足→技能差→收入低→贫困"，<strong>努力与否只是回路中的一个环节</strong>。要打破这个回路，需要从结构上干预，而非指责个体。</p>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>反馈回路是动态系统的核心发动机：输出反过来影响输入</li>
+    <li>正反馈放大变化（增长或崩溃），负反馈抵消变化（趋于稳定）</li>
+    <li>正反馈产生指数增长/崩溃，负反馈产生稳态/动态平衡</li>
+    <li>真实系统是正负反馈的博弈场——系统行为由两者的相对强弱决定</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 反馈回路的本质是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 信息的单向传递</label>
+      <label><input type="radio" name="q1" value="b"> B. 系统的输出反过来作为输入，形成闭合因果链</label>
+      <label><input type="radio" name="q1" value="c"> C. 对错误的纠正</label>
+      <label><input type="radio" name="q1" value="d"> D. 系统之间的信息交换</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> 正反馈回路的特点是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 变化被自我放大——"越多越多，越少越少"</label>
+      <label><input type="radio" name="q2" value="b"> B. 变化被抵消，系统趋于稳定</label>
+      <label><input type="radio" name="q2" value="c"> C. 系统永远保持不变</label>
+      <label><input type="radio" name="q2" value="d"> D. 系统会周期性振荡</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q3.</span> 银行挤兑属于哪种反馈回路？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 负反馈——系统自我稳定</label>
+      <label><input type="radio" name="q3" value="b"> B. 没有反馈</label>
+      <label><input type="radio" name="q3" value="c"> C. 正反馈——恐慌导致更多恐慌，指数级恶化</label>
+      <label><input type="radio" name="q3" value="d"> D. 先正后负</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q4.</span> 负反馈回路的作用是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 让系统指数增长</label>
+      <label><input type="radio" name="q4" value="b"> B. 抵消偏离，让系统趋向目标值（稳态）</label>
+      <label><input type="radio" name="q4" value="c"> C. 让系统加速崩溃</label>
+      <label><input type="radio" name="q4" value="d"> D. 让系统振荡不息</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q5.</span> 人体出汗散热来维持体温，属于哪种反馈？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 负反馈——体温升高触发散热，将温度拉回目标值</label>
+      <label><input type="radio" name="q5" value="b"> B. 正反馈——越出汗越多出汗</label>
+      <label><input type="radio" name="q5" value="c"> C. 无反馈</label>
+      <label><input type="radio" name="q5" value="d"> D. 先负后正</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q6.</span> 新冠疫情初期感染人数呈指数增长，这是因为什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 负反馈占主导</label>
+      <label><input type="radio" name="q6" value="b"> B. 正反馈占主导——感染者越多，传播越广，感染者更多</label>
+      <label><input type="radio" name="q6" value="c"> C. 没有反馈回路</label>
+      <label><input type="radio" name="q6" value="d"> D. 病毒在进化</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q7.</span> 北极冰盖融化导致更多融化，这是哪种反馈？为什么危险？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 负反馈——会自我稳定，不危险</label>
+      <label><input type="radio" name="q7" value="b"> B. 负反馈——会让地球变冷</label>
+      <label><input type="radio" name="q7" value="c"> C. 正反馈——冰融化→反照率降低→吸热更多→更多冰融化，可能越过临界点不可逆</label>
+      <label><input type="radio" name="q7" value="d"> D. 无反馈——与气候变化无关</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 复利（利滚利）是哪种反馈的体现？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 负反馈</label>
+      <label><input type="radio" name="q8" value="b"> B. 无反馈</label>
+      <label><input type="radio" name="q8" value="c"> C. 先正后负</label>
+      <label><input type="radio" name="q8" value="d"> D. 正反馈——本金产生利息，利息加入本金产生更多利息</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q9.</span> 一个系统的行为由什么决定？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 正反馈和负反馈的相对强弱</label>
+      <label><input type="radio" name="q9" value="b"> B. 只由正反馈决定</label>
+      <label><input type="radio" name="q9" value="c"> C. 只由负反馈决定</label>
+      <label><input type="radio" name="q9" value="d"> D. 与反馈无关，由要素决定</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q10.</span> "贫困→教育不足→收入低→贫困"这个循环说明了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 贫困是个人不努力的结果</label>
+      <label><input type="radio" name="q10" value="b"> B. 贫困是一个正反馈回路——需要从结构上干预才能打破，而非指责个体</label>
+      <label><input type="radio" name="q10" value="c"> C. 贫困无法解决</label>
+      <label><input type="radio" name="q10" value="d"> D. 教育不是关键</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 稳态（Homeostasis）和静止不动有什么区别？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 完全一样</label>
+      <label><input type="radio" name="q11" value="b"> B. 稳态就是静止不动</label>
+      <label><input type="radio" name="q11" value="c"> C. 稳态是动态平衡——系统在不断波动，但波动被负反馈限制在可控范围内</label>
+      <label><input type="radio" name="q11" value="d"> D. 稳态是正反馈的结果</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 跨学科：经济学中的"供需均衡"背后是什么系统机制？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 正反馈——价格越高需求越大</label>
+      <label><input type="radio" name="q12" value="b"> B. 无反馈</label>
+      <label><input type="radio" name="q12" value="c"> C. 正反馈导致泡沫</label>
+      <label><input type="radio" name="q12" value="d"> D. 负反馈——价格偏离均衡时，供需变化将价格拉回均衡点</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0001-what-is-system.html">← 上一课</a>
+  <span>第 2 课 / 共 10 课</span>
+  <a href="0003-stock-flow.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '反馈回路的本质是闭合的因果链条：系统的输出反过来作为输入影响后续输出。这是所有动态系统的核心运作机制。' },
+  q2: { correct: 'a', explanation: '正反馈的核心特征是变化被自我放大——"越多越多，越少越少"。它产生指数增长或崩溃，而非稳定。' },
+  q3: { correct: 'c', explanation: '银行挤兑是典型的正反馈：恐慌→取款→银行流动性紧张→更多恐慌→更多取款。如果不加干预（如存款保险），会指数级恶化直至崩溃。' },
+  q4: { correct: 'b', explanation: '负反馈的作用是抵消偏离：当系统偏离目标值时，负反馈产生纠正力量将其拉回。它是稳态的基础，让系统趋于稳定而非增长或崩溃。' },
+  q5: { correct: 'a', explanation: '出汗散热是典型的负反馈：体温升高→出汗→散热→体温回落→停止出汗。系统检测到偏离（体温过高）后产生纠正力量（出汗），将变量拉回目标值。' },
+  q6: { correct: 'b', explanation: '疫情初期的指数增长是正反馈的数学标志：感染者越多→传播越广→感染者更多。R₀ > 1 时正反馈主导。只有通过干预（隔离、疫苗）引入负反馈，才能扭转趋势。' },
+  q7: { correct: 'c', explanation: '北极冰盖融化是危险的气候正反馈：冰融化→地表反照率降低（白色冰变深色水）→吸收更多太阳热量→更多冰融化。这种正反馈一旦越过临界点（tipping point），将不可逆转。' },
+  q8: { correct: 'd', explanation: '复利是经典的正反馈：本金产生利息→利息加入本金→更大本金产生更多利息→……这种自我放大机制使长期复利的效果惊人。爱因斯坦称之为"世界第八大奇迹"。' },
+  q9: { correct: 'a', explanation: '真实系统中正反馈和负反馈总是同时存在。系统的行为模式——增长、稳定、崩溃还是振荡——取决于两种力量的相对强弱。当正反馈持续超过负反馈时，系统会指数增长或崩溃。' },
+  q10: { correct: 'b', explanation: '"贫困陷阱"是一个正反馈回路。系统思维告诉我们，要打破它需要从结构上干预（如教育投资、基础设施建设），而非简单地指责个体"不努力"——因为努力与否只是回路中的一个环节。' },
+  q11: { correct: 'c', explanation: '稳态是动态平衡，不是静止不动。以体温为例，你的体温在 36.5°C 附近不断微小波动——出汗、颤抖、血管舒缩——这些过程持续运作，但整体保持在可控范围内。这就是负反馈的成果。' },
+  q12: { correct: 'd', explanation: '供需均衡背后是负反馈机制：价格高于均衡→供过于求→卖家降价；价格低于均衡→供不应求→买家加价。价格偏离时，供需变化将其拉回均衡点——这是典型的自我稳定过程。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了反馈回路的核心概念。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了正反馈和负反馈的区别。再复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读"正反馈"和"负反馈"两个部分，重点区分两者的特征。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重新阅读课程，特别注意"越多越多"和"偏多就减少"的区别。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

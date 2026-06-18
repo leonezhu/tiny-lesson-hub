@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — 延迟效应</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>延迟效应</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第4课 / 共10课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解延迟（Delay）在系统中的作用，掌握延迟如何导致振荡和过度反应，学会识别真实系统中的延迟并预测其后果。
+</div>
+
+<h2>一、为什么世界不会立刻响应？</h2>
+
+<p>你调高了淋浴的水温旋钮，但水温没有立刻变化——你等了几秒，觉得还是凉的，又调高了一点。突然，水变得滚烫。你赶紧调低，但几秒后水又变得冰凉。</p>
+
+<p>这个令人沮丧的日常场景，揭示了系统思维中一个极其重要的概念：<strong>延迟</strong>（Delay）。</p>
+
+<div class="key-idea">
+  延迟 = 系统中原因和结果之间的时间差。输入发生变化后，输出需要经过一段时间才会响应。延迟是导致系统振荡和过度反应的主要原因。
+</div>
+
+<div class="vocab-card">
+  <span class="term">延迟 (Delay)</span><br>
+  系统中信息或物质从一点传递到另一点所需的时间。延迟可以发生在感知（检测到变化需要时间）、响应（采取行动需要时间）、传输（行动产生效果需要时间）等环节。
+</div>
+
+<h2>二、延迟的三种类型</h2>
+
+<h3>1. 感知延迟</h3>
+<p>系统检测到自身状态变化所需的时间。例如，体温升高后，身体需要几分钟才能感知到并启动散热机制。</p>
+
+<h3>2. 响应延迟</h3>
+<p>检测到变化后，采取行动所需的时间。例如，政府发现经济衰退到出台刺激政策，中间需要数月乃至数年。</p>
+
+<h3>3. 传输延迟（效果延迟）</h3>
+<p>行动采取后，产生效果所需的时间。例如，降息政策出台后，资金流入实体经济、创造就业需要 6-18 个月才能见效。</p>
+
+<div class="example-box">
+  <strong>真实案例——疫情传播中的延迟：</strong>从感染病毒到出现症状（潜伏期）有 3-14 天的感知延迟；从症状出现到检测确认有 1-3 天的响应延迟；从实施封控到感染率下降有 2-4 周的效果延迟。<strong>这三种延迟叠加，使得疫情数据总是"滞后于"真实情况</strong>——你今天看到的确诊数，反映的是 2-3 周前的感染状况。
+</div>
+
+<h2>三、延迟导致振荡：为什么系统会"过冲"</h2>
+
+<p>延迟最危险的后果是<strong>振荡</strong>（Oscillation）。当系统存在延迟时，人们往往在错误的时间做出过度的反应。</p>
+
+<div class="key-idea">
+  延迟 + 负反馈 = 振荡。<br>当延迟足够大时，系统会在目标值附近反复超调和回调，永远无法精确到达目标。
+</div>
+
+<p>回忆淋浴的例子：你调高温度 → 延迟让你以为"还不够" → 你又调高 → 效果到达时已经过烫 → 你赶紧调低 → 延迟让你以为"还不够低" → 你又调低 → 效果到达时已经过冷……这就是<strong>延迟导致的振荡</strong>。</p>
+
+<div class="example-box">
+  <strong>真实案例——经济周期与货币政策：</strong>央行发现通胀上升 → 加息（响应）→ 但加息对经济的效果有 12-18 个月的延迟 → 央行以为"力度不够"继续加息 → 当效果真正显现时，经济已经被过度紧缩推向衰退。2008 年金融危机前，美联储连续加息的滞后效应在泡沫破裂后才完全显现。这种"猛踩刹车"和"猛踩油门"的交替，正是延迟导致振荡的经典案例。
+</div>
+
+<h2>四、延迟在真实系统中的表现</h2>
+
+<h3>案例 1：交通拥堵</h3>
+<p>你看到前方堵车 → 刹车 → 但刹车有 0.5-2 秒的反应延迟 → 你减速过度 → 后面的车也跟着减速过度 → 形成走走停停的"冲击波"。即使没有任何事故，高速公路上也会自发出现这种<strong>"幽灵堵车"</strong>——纯粹由延迟和过度反应引起。</p>
+
+<h3>案例 2：供应链的"牛鞭效应"</h3>
+<p>消费者需求小幅增加 → 零售商感知延迟 → 订货时过度补偿 → 批发商进一步放大订单 → 制造商看到巨大需求 → 大幅扩产。等产品生产出来，真实需求早已回落。整个链条上每一环的延迟和过度反应，导致库存剧烈波动。这就是著名的<strong>"牛鞭效应"</strong>（Bullwhip Effect）。</p>
+
+<h3>案例 3：气候变化</h3>
+<p>CO₂ 排放到全球平均气温显著变化，有<strong>30-50 年的延迟</strong>。这意味着我们今天经历的气候，是上世纪 70-90 年代排放的结果；而我们今天的排放，将在 2050-2070 年才完全显现。这种巨大的延迟让人类很难及时行动——因为"现在看起来还好"，但系统已经在通向不可逆的变化。</p>
+
+<div class="key-idea">
+  延迟越大，系统越难控制。当延迟超过系统的自然调节周期时，几乎必然出现振荡、过冲和崩溃。气候变化之所以如此棘手，正是因为其延迟长达数十年——远超政治选举周期和人类注意力跨度。
+</div>
+
+<h2>五、如何应对延迟？</h2>
+
+<p>系统思维者面对延迟的三个策略：</p>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>预判而非反应</strong>：不要等到问题显现才行动，而要根据趋势提前干预。如同开车——你不看车头，而要看前方 100 米。</li>
+  <li><strong>小幅多次调整</strong>：每次只做小幅度改变，等待效果显现后再决定下一步。避免"猛踩油门/刹车"。</li>
+  <li><strong>缩短延迟</strong>：通过技术和管理手段减少感知、响应和传输延迟。实时数据、快速决策机制、敏捷开发都是缩短延迟的方法。</li>
+</ol>
+
+<div class="vocab-card">
+  <span class="term">过冲 (Overshoot)</span><br>
+  由于延迟导致系统的反应超过了目标值。过冲是振荡的前兆。如果过冲严重到越过系统的承载极限，可能导致崩溃——这就是"增长的极限"（第8课详述）。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>延迟 = 原因与结果之间的时间差，分为感知延迟、响应延迟和效果延迟</li>
+    <li>延迟 + 负反馈 = 振荡：人们往往在错误的时间做出过度反应，导致系统在目标值附近反复超调</li>
+    <li>真实系统中延迟无处不在：货币政策、疫情传播、气候变化、供应链管理</li>
+    <li>应对延迟的关键是预判而非反应、小幅多次调整、尽可能缩短延迟</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 调高淋浴水温后水变烫，是因为什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 水温旋钮坏了</label>
+      <label><input type="radio" name="q1" value="b"> B. 你调得太多了</label>
+      <label><input type="radio" name="q1" value="c"> C. 延迟——从调节到效果显现有时间差，你在等待期间又调高了</label>
+      <label><input type="radio" name="q1" value="d"> D. 水压不稳定</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 延迟主要分为哪三种类型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 开始延迟、中间延迟、结束延迟</label>
+      <label><input type="radio" name="q2" value="b"> B. 感知延迟、响应延迟、效果延迟</label>
+      <label><input type="radio" name="q2" value="c"> C. 短延迟、中延迟、长延迟</label>
+      <label><input type="radio" name="q2" value="d"> D. 自然延迟、人为延迟、技术延迟</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 延迟加上负反馈通常会导致什么结果？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 振荡——系统在目标值附近反复超调和回调</label>
+      <label><input type="radio" name="q3" value="b"> B. 快速稳定</label>
+      <label><input type="radio" name="q3" value="c"> C. 指数增长</label>
+      <label><input type="radio" name="q3" value="d"> D. 无影响</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 央行加息后通常需要多久才能对经济产生效果？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 立刻</label>
+      <label><input type="radio" name="q4" value="b"> B. 几小时</label>
+      <label><input type="radio" name="q4" value="c"> C. 几天</label>
+      <label><input type="radio" name="q4" value="d"> D. 12-18 个月——这是典型的效果延迟</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> "牛鞭效应"是什么导致的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 运输工具不够</label>
+      <label><input type="radio" name="q5" value="b"> B. 供应链各环节的延迟和过度反应，导致订单逐级放大</label>
+      <label><input type="radio" name="q5" value="c"> C. 消费者需求波动太大</label>
+      <label><input type="radio" name="q5" value="d"> D. 制造商产能不足</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 高速公路上的"幽灵堵车"（无事故却走走停停）是怎么产生的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 因为道路设计不好</label>
+      <label><input type="radio" name="q6" value="b"> B. 因为车流量太大</label>
+      <label><input type="radio" name="q6" value="c"> C. 驾驶员的反应延迟和过度刹车，形成向后传播的冲击波</label>
+      <label><input type="radio" name="q6" value="d"> D. 因为天气不好</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 气候变化的延迟大约有多长？这意味着什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 30-50 年——今天的排放要到 2050-2070 年才完全显现，让人难以及时行动</label>
+      <label><input type="radio" name="q7" value="b"> B. 几天——所以不用担心</label>
+      <label><input type="radio" name="q7" value="c"> C. 几百年——所以现在做什么都来不及</label>
+      <label><input type="radio" name="q7" value="d"> D. 没有延迟——排放立刻影响气温</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 为什么疫情数据总是"滞后于"真实情况？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 因为检测不准确</label>
+      <label><input type="radio" name="q8" value="b"> B. 潜伏期延迟 + 检测延迟 + 报告延迟叠加，使今天的确诊数反映的是 2-3 周前的感染状况</label>
+      <label><input type="radio" name="q8" value="c"> C. 因为政府在隐瞒</label>
+      <label><input type="radio" name="q8" value="d"> D. 因为病毒变异</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q9.</span> 应对延迟的最佳策略是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 等问题出现后再快速反应</label>
+      <label><input type="radio" name="q9" value="b"> B. 做大幅度调整以弥补延迟</label>
+      <label><input type="radio" name="q9" value="c"> C. 预判而非反应、小幅多次调整、尽可能缩短延迟</label>
+      <label><input type="radio" name="q9" value="d"> D. 完全忽略延迟</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> "过冲"（Overshoot）是什么意思？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 由于延迟，系统的反应超过了目标值</label>
+      <label><input type="radio" name="q10" value="b"> B. 系统永远无法达到目标</label>
+      <label><input type="radio" name="q10" value="c"> C. 系统的目标值改变了</label>
+      <label><input type="radio" name="q10" value="d"> D. 系统停止运作</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q11.</span> 为什么延迟让系统"难以控制"？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 因为延迟让系统停止运作</label>
+      <label><input type="radio" name="q11" value="b"> B. 因为延迟改变了系统的功能</label>
+      <label><input type="radio" name="q11" value="c"> C. 因为延迟只存在于人工系统中</label>
+      <label><input type="radio" name="q11" value="d"> D. 因为你看到的反馈信息是"过时的"，据此做出的决策往往已经不适用于当前情况</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 跨学科：人体血糖调节中，胰岛素分泌存在延迟。这对糖尿病患者有什么启示？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 糖尿病患者应该大量运动</label>
+      <label><input type="radio" name="q12" value="b"> B. 由于胰岛素响应延迟，进食后血糖会先飙升再回落；患者需要预判性给药（餐前注射），而非等到血糖升高后再补救</label>
+      <label><input type="radio" name="q12" value="c"> C. 糖尿病患者应该完全不吃糖</label>
+      <label><input type="radio" name="q12" value="d"> D. 胰岛素延迟与糖尿病无关</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0003-stock-flow.html">← 上一课</a>
+  <span>第 4 课 / 共 10 课</span>
+  <a href="0005-emergence.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '淋浴变烫是延迟的经典案例。从调节旋钮到热水到达花洒有时间差。在等待期间你以为"还不够热"又调高了，结果两次调节的效果叠加，水变得过烫。' },
+  q2: { correct: 'b', explanation: '延迟分为三种：感知延迟（检测到变化的时间）、响应延迟（采取行动的时间）、效果延迟（行动产生效果的时间）。三者叠加构成系统的总延迟。' },
+  q3: { correct: 'a', explanation: '延迟 + 负反馈 = 振荡。当你根据"过时"的信息做决策，你的纠正动作往往已经不再适用，导致系统在目标值附近反复超调。延迟越大，振荡越剧烈。' },
+  q4: { correct: 'd', explanation: '货币政策的传导机制涉及银行、企业、消费者等多个环节，效果延迟通常为 12-18 个月。这就是为什么央行不能频繁大幅调整利率——你需要等待之前政策的效果完全显现。' },
+  q5: { correct: 'b', explanation: '牛鞭效应是供应链中延迟和过度反应的典型表现。消费者需求小幅波动，经过零售商、批发商、制造商各环节的延迟和信息失真，订单被逐级放大，最终导致严重的库存过剩或短缺。' },
+  q6: { correct: 'c', explanation: '幽灵堵车纯粹由驾驶员的反应延迟和过度刹车引起。前车轻微减速→后车因反应延迟刹车更重→再后车刹车更重→形成向后传播的"冲击波"。即使没有事故，这种波动也会导致走走停停。' },
+  q7: { correct: 'a', explanation: '气候系统的延迟约 30-50 年——海洋的热惯性极大，吸收和释放热量都极其缓慢。今天经历的气候反映的是上世纪排放；今天的排放要到 2050-2070 年才完全显现。这种长延迟让人类难以产生紧迫感。' },
+  q8: { correct: 'b', explanation: '疫情中三种延迟叠加：潜伏期（感染到症状，3-14天）、检测延迟（症状到确诊，1-3天）、报告延迟（确诊到公布，1-2天）。所以你今天看到的确诊数反映的是 2-3 周前的感染状况。据此决策可能"慢了半拍"。' },
+  q9: { correct: 'c', explanation: '应对延迟的最佳策略是预判（提前行动而非事后补救）、小步调整（避免过冲）、缩短延迟（技术和管理优化）。"等问题出现再快速反应"恰恰是最差的策略，因为你看到的信息已经过时了。' },
+  q10: { correct: 'a', explanation: '过冲是延迟的直接后果：由于反馈信息滞后，系统的纠正动作来得太晚或太猛，导致变量超过目标值。过冲是振荡的前兆；如果过冲严重到越过承载极限，可能导致系统崩溃。' },
+  q11: { correct: 'd', explanation: '延迟让你看到的反馈信息是"过时的"——你基于昨天的情况做今天的决策，但今天的情况可能已经变了。这就像看着后视镜开车。延迟越大，决策与现实的脱节越严重，系统越难精确控制。' },
+  q12: { correct: 'b', explanation: '胰岛素从注射到发挥效果有 15-30 分钟延迟。如果患者等到血糖升高再注射，血糖会先飙升（过冲）才回落。所以糖尿病患者需要在餐前预判性给药——这正是"预判而非反应"策略在医学中的应用。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+    fb.className = 'feedback';
+    if (!selected) { fb.className = 'feedback wrong'; fb.textContent = '⚠ 你还没有选择答案。'; continue; }
+    if (selected.value === data.correct) {
+      score++; fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`; questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  scoreNum.textContent = `${score} / ${total}`;
+  const pct = score / total;
+  if (pct === 1) { scoreMsg.textContent = '🎉 完美！你已经掌握了延迟效应的核心概念。'; }
+  else if (pct >= 0.7) { scoreMsg.textContent = '👍 很棒！你理解了延迟如何导致振荡。再看看错题。'; }
+  else if (pct >= 0.4) { scoreMsg.textContent = '📖 还行。建议重读"延迟导致振荡"部分，想象淋浴的场景。'; }
+  else { scoreMsg.textContent = '💪 别灰心。重读课程，特别注意"原因和结果之间的时间差"这个概念。'; }
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

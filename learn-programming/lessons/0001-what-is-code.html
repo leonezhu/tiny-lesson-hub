@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 什么是代码：从逻辑到程序</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>什么是代码：从逻辑到程序</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第1课 / 共12课 · 约18分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解代码的本质——它不是「打字」，而是把人类的逻辑思维翻译成机器能精确执行的指令。掌握「算法 = 逻辑步骤」「程序 = 算法 + 数据」两个核心公式，区分语法与语义，建立「计算机是确定性机器」的底层心智模型。
+</div>
+
+<h2>一、代码到底是什么？</h2>
+
+<p>很多人第一次接触编程，会以为「写代码」就是熟练地敲打一种外语。这是一种危险的误解。代码的本质，是<strong>用一种无歧义的方式，把你想解决的问题拆解成步骤</strong>，然后让一台不会思考的机器去执行。</p>
+
+<div class="key-idea">
+  代码 = 把模糊的人类意图，翻译成机器能精确、可重复执行的步骤序列。
+</div>
+
+<p>关键在「精确」和「可重复」。当你告诉同事「帮我把这份报告整理一下」，他会根据经验推断你的意思。但当你告诉计算机「整理报告」，它什么都不做——因为它不知道「整理」是什么意思。你必须告诉它：先读取文件、按日期排序、把每段首字母大写、保存为新文件。每一个动作都必须明确无误。</p>
+
+<div class="vocab-card">
+  <span class="term">程序 (Program)</span><br>
+  一组按顺序排列的指令，能够被计算机执行以完成特定任务。程序 = 算法（步骤） + 数据（被处理的对象）。
+</div>
+
+<div class="example-box">
+  <strong>日常类比：</strong>做菜食谱就是一份给厨师看的「程序」。食材是数据，步骤是算法。但食谱里有「盐适量」「煮到入味」这种模糊指令——给计算机写代码时，这种模糊是不被允许的。你必须写「加盐 3 克」「煮 8 分钟」。
+</div>
+
+<h2>二、算法：逻辑的骨架</h2>
+
+<p>任何程序的核心都是<strong>算法</strong>——一组解决特定问题的明确步骤。算法与具体的编程语言无关：你可以用 Python、JavaScript、C 描述同一个算法，它们解决的是同一个问题，只是表达方式不同。</p>
+
+<p>一个好的算法必须满足五个性质：</p>
+<ul>
+  <li><strong>有限性</strong>：必须在有限步骤后终止</li>
+  <li><strong>确定性</strong>：每一步的指令清晰无歧义</li>
+  <li><strong>可行性</strong>：每一步都能被执行（不能要求「找出最大的整数」）</li>
+  <li><strong>输入</strong>：有零个或多个输入</li>
+  <li><strong>输出</strong>：至少产生一个输出</li>
+</ul>
+
+<div class="key-idea">
+  算法 ≠ 代码。算法是「怎么解决问题」的思路；代码是「用某种语言把思路写下来」的具体实现。同一算法可以用十种语言写。
+</div>
+
+<h3>第一个算法：找出列表中的最大值</h3>
+
+<p>问题：给定一串数字 [3, 7, 2, 9, 5]，找出其中最大的。</p>
+
+<p>人类的做法是「一眼看过去」，但计算机不会「一眼看」。我们要把思路拆成步骤：</p>
+<ol>
+  <li>假设第一个数是「当前最大值」</li>
+  <li>看下一个数</li>
+  <li>如果它比当前最大值大，就更新当前最大值</li>
+  <li>重复 2-3 步，直到看完所有数</li>
+  <li>当前最大值就是答案</li>
+</ol>
+
+<p>这就是一个算法。用 Python 写出来：</p>
+
+<pre><code>def find_max(numbers):
+    if len(numbers) == 0:
+        return None
+    current_max = numbers[0]
+    for n in numbers[1:]:
+        if n > current_max:
+            current_max = n
+    return current_max
+
+print(find_max([3, 7, 2, 9, 5]))  # 输出 9</code></pre>
+
+<div class="vocab-card">
+  <span class="term">算法 (Algorithm)</span><br>
+  解决某一类问题的一组明确、有限、可执行的步骤。算法关注的是「怎么做」，与具体的编程语言无关。
+</div>
+
+<h2>三、数据：程序处理的原料</h2>
+
+<p>程序处理的对象是<strong>数据</strong>。数据有不同的类型，类型决定了数据能做什么操作。理解数据类型，是理解一切代码的起点。</p>
+
+<div class="vocab-card">
+  <span class="term">数据类型 (Data Type)</span><br>
+  一组值的集合，以及可以对这些值执行的操作的集合。例如「整数」可以做加减乘除，「文本」可以拼接和查找。
+</div>
+
+<p>常见的基础数据类型：</p>
+<ul>
+  <li><strong>整数 (Integer)</strong>：1, 42, -7。可以加减乘除。</li>
+  <li><strong>浮点数 (Float)</strong>：3.14, -0.5。表示小数。</li>
+  <li><strong>布尔值 (Boolean)</strong>：True / False。用于条件判断。</li>
+  <li><strong>字符串 (String)</strong>："hello"。一段文本。</li>
+  <li><strong>列表/数组 (List)</strong>：[1, 2, 3]。一组有序的数据。</li>
+</ul>
+
+<pre><code>age = 25                    # 整数
+price = 19.99               # 浮点数
+is_student = True           # 布尔值
+name = "Alice"              # 字符串
+scores = [90, 85, 78]       # 列表</code></pre>
+
+<div class="example-box">
+  <strong>为什么类型重要？</strong>因为 <code>"3" + "5"</code> 得到的是 <code>"35"</code>（字符串拼接），而 <code>3 + 5</code> 得到的是 <code>8</code>（数值相加）。同样是加号，作用在什么类型的数据上，结果完全不同。许多初学者的 bug 都源于类型混淆。
+</div>
+
+<h2>四、控制流：让程序学会做选择</h2>
+
+<p>如果一个程序只能从头到尾顺序执行，它的能力会非常有限。真正让程序强大的，是<strong>控制流</strong>——让程序根据条件做不同的选择，或者重复执行某些步骤。</p>
+
+<p>控制流有三种基本结构：</p>
+
+<h3>1. 顺序执行</h3>
+<p>一条指令接着一条执行。这是最简单的结构。</p>
+
+<h3>2. 条件分支 (if / else)</h3>
+<p>根据某个条件是否成立，选择不同的执行路径。</p>
+
+<pre><code>score = 75
+if score >= 90:
+    grade = "A"
+elif score >= 60:
+    grade = "B"
+else:
+    grade = "C"
+# grade = "B"</code></pre>
+
+<h3>3. 循环 (for / while)</h3>
+<p>重复执行一段代码，直到满足退出条件。</p>
+
+<pre><code># 打印 1 到 5
+for i in range(1, 6):
+    print(i)
+# 输出：1 2 3 4 5
+
+# 只要 i < 3 就继续
+i = 0
+while i < 3:
+    print(i)
+    i += 1
+# 输出：0 1 2</code></pre>
+
+<div class="key-idea">
+  这三种结构——顺序、分支、循环——构成了所有程序的骨架。无论多么复杂的软件，本质上都是这三种结构的组合。1966 年，Böhm 和 Jacopini 证明了这一点。
+</div>
+
+<div class="example-box">
+  <strong>现实类比：</strong>一个红绿灯控制系统就是典型的控制流。绿灯亮 30 秒（顺序），如果检测到行人按钮就切换到红灯（条件分支），红灯期间每秒检测一次倒计时（循环）。整个城市的交通灯，本质就是这三种结构的嵌套。
+</div>
+
+<h2>五、抽象：让复杂变简单的魔法</h2>
+
+<p>当代码越来越多，你会发现自己反复写同样的逻辑。这时就需要<strong>抽象</strong>——把一段常用的逻辑封装起来，给它起个名字，以后直接调用。</p>
+
+<div class="vocab-card">
+  <span class="term">函数 (Function)</span><br>
+  一段被命名的、可重复使用的代码块。函数接收输入（参数），经过处理后返回输出（返回值）。函数是编程中最基础的抽象工具。
+</div>
+
+<pre><code># 定义一个函数：计算圆的面积
+def circle_area(radius):
+    pi = 3.14159
+    return pi * radius * radius
+
+# 调用：不必每次都重写公式
+print(circle_area(5))   # 78.54
+print(circle_area(10))  # 314.16</code></pre>
+
+<p>函数的真正威力在于<strong>隐藏复杂度</strong>。使用者只需要知道「调用 <code>circle_area(5)</code> 能得到面积」，而不需要关心内部 π 取几位、用什么公式。这是「抽象」的核心思想——关注「做什么」，隐藏「怎么做」。</p>
+
+<div class="key-idea">
+  抽象是编程从「写脚本」走向「工程」的分水岭。没有抽象，软件的复杂度会爆炸性增长。后面几课你会学到对象、模块、设计模式——它们都是更高层次的抽象工具。
+</div>
+
+<div class="example-box">
+  <strong>工程案例：</strong>Python 的 <code>print()</code> 函数。你写 <code>print("hello")</code> 就能在屏幕上看到文字，但它的底层涉及操作系统的系统调用、图形驱动、字体渲染等成千上万行代码。函数把这些复杂度全部隐藏了起来——这就是抽象的力量。
+</div>
+
+<h2>六、计算机是确定性的机器</h2>
+
+<p>这是理解一切代码的<strong>底层心智模型</strong>，请务必刻在脑子里。</p>
+
+<div class="key-idea">
+  计算机本身没有「想法」「直觉」「灵感」。给定相同的输入和状态，它<strong>每次都执行完全相同的操作</strong>，产生完全相同的结果。计算机是一台确定性机器。
+</div>
+
+<p>这意味着：</p>
+<ul>
+  <li><strong>程序出错，一定是你的逻辑错了</strong>，不是计算机「心情不好」。它只是忠实地执行了你写的（可能有 bug 的）指令。</li>
+  <li>所谓「人工智能」「随机数」，底层仍是确定性算法——只是复杂度极高，看起来像智能或随机。</li>
+  <li><strong>调试 (Debug)</strong> 的本质，是找出你的逻辑与计算机实际执行之间的差距。</li>
+</ul>
+
+<div class="example-box">
+  <strong>关于「随机数」：</strong>大多数编程语言的随机数其实是<strong>伪随机数</strong>——用一个数学公式从一个种子 (seed) 推算出来的。如果你给同样的种子，每次得到的「随机」序列完全一样。真正的随机需要硬件支持（比如测量量子噪声）。
+</div>
+
+<p>理解了「确定性」这一点，你就理解了为什么编程需要那么严谨——一个标点符号的错误，都可能让程序的行为完全偏离预期。这不是机器脆弱，而是机器精确。</p>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>代码的本质：把模糊的人类意图翻译成机器能精确执行的步骤序列</li>
+    <li>程序 = 算法（步骤） + 数据（被处理对象）。算法与语言无关。</li>
+    <li>所有程序的骨架都是三种控制流：顺序、分支、循环</li>
+    <li>函数是基础抽象工具——封装逻辑、隐藏复杂度、关注「做什么」</li>
+    <li>计算机是确定性机器：程序出错永远是逻辑错，不是机器错</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 心理学</strong>：人类大脑擅长模糊推理和模式识别，这正是编程难以入门的根源——你必须训练自己用「无歧义、显式、可分解」的方式思考，这违背直觉。</li>
+  <li><strong>→ 数学</strong>：算法本质是离散数学（图论、组合、逻辑）。本课的「确定性机器」模型，与数学的「函数定义」一脉相承——相同的输入必然产生相同的输出。</li>
+  <li><strong>→ AI / 机器学习</strong>：现代 AI 的「智能」仍是确定性算法——只是参数太多、层级太深，人无法直接理解。但它依然是「算法 + 数据」的组合。</li>
+  <li><strong>→ 经济学</strong>：「抽象」与经济学的「分工」异曲同工。函数封装让程序员专注高层逻辑，正如分工让每个人专注自己擅长的事，提升整体效率。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：Excel 公式就是代码。</strong>当你在 Excel 写 <code>=SUM(A1:A10)</code>，你实际上在调用一个叫 <code>SUM</code> 的函数，输入是 A1 到 A10 这段数据，输出是它们的总和。整个 Excel 就是一个被图形化封装的编程环境——这就是为什么财务、运营人员不需要学 Python 也能「编程」。
+</div>
+<div class="example-box">
+  <strong>案例 2：微波炉的加热程序。</strong>当你按下「爆米花」按钮，微波炉执行的是一段固化的控制流：检测湿度、调整功率、计时、停止。这套逻辑被烧录在芯片里。任何嵌入式设备——电梯、洗衣机、汽车 ECU——内部都是这样的「程序」，只是没有屏幕显示代码而已。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 代码的本质是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 一种特殊的打字技能</label>
+      <label><input type="radio" name="q1" value="b"> B. 用外语和外国人交流</label>
+      <label><input type="radio" name="q1" value="c"> C. 把人类意图翻译成机器能精确执行的步骤</label>
+      <label><input type="radio" name="q1" value="d"> D. 让计算机变聪明的咒语</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 「程序 = 算法 + 数据」中，「算法」指的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 使用的编程语言</label>
+      <label><input type="radio" name="q2" value="b"> B. 解决问题的明确步骤</label>
+      <label><input type="radio" name="q2" value="c"> C. 计算机的硬件配置</label>
+      <label><input type="radio" name="q2" value="d"> D. 程序运行的速度</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 下列哪一项<strong>不是</strong>算法的必要性质？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 必须使用 Python 实现</label>
+      <label><input type="radio" name="q3" value="b"> B. 必须在有限步骤后终止</label>
+      <label><input type="radio" name="q3" value="c"> C. 每一步必须明确无歧义</label>
+      <label><input type="radio" name="q3" value="d"> D. 至少产生一个输出</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> <code>"3" + "5"</code> 的结果是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 8</label>
+      <label><input type="radio" name="q4" value="b"> B. 报错</label>
+      <label><input type="radio" name="q4" value="c"> C. 3.5</label>
+      <label><input type="radio" name="q4" value="d"> D. "35"</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 所有程序的控制流，本质上由几种基本结构组合而成？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 两种：顺序和循环</label>
+      <label><input type="radio" name="q5" value="b"> B. 三种：顺序、分支、循环</label>
+      <label><input type="radio" name="q5" value="c"> C. 五种：顺序、分支、循环、跳转、递归</label>
+      <label><input type="radio" name="q5" value="d"> D. 无数种</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 关于函数（Function），下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 函数必须返回一个值</label>
+      <label><input type="radio" name="q6" value="b"> B. 函数只能被调用一次</label>
+      <label><input type="radio" name="q6" value="c"> C. 函数是封装逻辑、隐藏复杂度的抽象工具</label>
+      <label><input type="radio" name="q6" value="d"> D. 函数让程序运行得更慢，应尽量少用</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q7.</span> 程序运行结果与预期不符，最可能的原因是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 计算机心情不好</label>
+      <label><input type="radio" name="q7" value="b"> B. Python 版本太低</label>
+      <label><input type="radio" name="q7" value="c"> C. 硬件故障</label>
+      <label><input type="radio" name="q7" value="d"> D. 你的逻辑（算法）有 bug，机器忠实执行了错误的指令</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q8.</span> 「抽象」在编程中的核心目的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 隐藏复杂度，让人专注于「做什么」而非「怎么做」</label>
+      <label><input type="radio" name="q8" value="b"> B. 让代码看起来更高级</label>
+      <label><input type="radio" name="q8" value="c"> C. 减少代码行数以节省存储空间</label>
+      <label><input type="radio" name="q8" value="d"> D. 防止别人看懂你的代码</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 「算法与具体的编程语言无关」这句话的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 一个算法只能用一种语言实现</label>
+      <label><input type="radio" name="q9" value="b"> B. 同一个解决问题的思路，可以用多种不同的语言表达</label>
+      <label><input type="radio" name="q9" value="c"> C. 编程语言不重要，随便选</label>
+      <label><input type="radio" name="q9" value="d"> D. 算法不需要写代码就能运行</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 大多数编程语言中的「随机数」其实是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 真正的物理随机</label>
+      <label><input type="radio" name="q10" value="b"> B. 操作系统提供的真随机源</label>
+      <label><input type="radio" name="q10" value="c"> C. 由数学公式和种子推算出的伪随机数</label>
+      <label><input type="radio" name="q10" value="d"> D. 来自互联网的随机数据</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q11.</span> 「计算机是确定性机器」意味着？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 计算机永远不会出错</label>
+      <label><input type="radio" name="q11" value="b"> B. 相同的程序在不同电脑上结果不同</label>
+      <label><input type="radio" name="q11" value="c"> C. 计算机有自主意识</label>
+      <label><input type="radio" name="q11" value="d"> D. 相同的输入和状态，每次都产生相同的结果</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 做菜食谱和计算机程序最大的区别是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 食谱允许「盐适量」这种模糊指令，程序不允许任何模糊</label>
+      <label><input type="radio" name="q12" value="b"> B. 食谱比程序复杂</label>
+      <label><input type="radio" name="q12" value="c"> C. 程序不需要步骤</label>
+      <label><input type="radio" name="q12" value="d"> D. 它们本质上完全不同，没有相似性</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="../index.html">← 编程与计算机科学目录</a>
+  <span>第 1 课 / 共 12 课</span>
+  <a href="0002-data-structures.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '代码的核心是「翻译意图为可执行步骤」。打字、外语、咒语都是表象，本质是让无思考能力的机器精确执行你的逻辑。' },
+  q2: { correct: 'b', explanation: '算法是「解决问题的明确步骤」，与具体语言无关。语言只是表达算法的工具，数据是被算法处理的对象。' },
+  q3: { correct: 'a', explanation: '算法与语言无关，不一定要用 Python 实现。有限性、确定性、可行性、有输入输出才是算法的必要性质。' },
+  q4: { correct: 'd', explanation: '"3" 和 "5" 是字符串，加号对字符串是「拼接」操作，结果是 "35"。类型决定操作的含义——这是初学者最常踩的坑。' },
+  q5: { correct: 'b', explanation: 'Böhm-Jacopini 定理证明：任何程序都可用顺序、分支、循环三种结构表达。这是结构化编程的理论基础。' },
+  q6: { correct: 'c', explanation: '函数的核心价值是抽象——封装逻辑、可复用、隐藏实现细节。函数可以没有返回值（如打印），可以被调用无数次。' },
+  q7: { correct: 'd', explanation: '计算机是确定性机器，它忠实执行你写的指令。结果不对，几乎一定是你的逻辑（算法）有 bug，而不是机器出问题。' },
+  q8: { correct: 'a', explanation: '抽象的本质是「隐藏复杂度，关注做什么」。它让人能驾驭超大规模的软件，是工程化的核心。' },
+  q9: { correct: 'b', explanation: '算法是「解决问题的思路」，与语言无关。同一思路可以用 Python、Java、C 等多种语言实现，只是表达方式不同。' },
+  q10: { correct: 'c', explanation: '大多数语言的 random 是伪随机——由确定性公式从种子推算。给同样的种子会得到同样的序列。真随机需要硬件熵源。' },
+  q11: { correct: 'd', explanation: '确定性 = 相同输入和状态必然产生相同结果。这是调试的基础：bug 可复现，就一定能定位。' },
+  q12: { correct: 'a', explanation: '食谱允许模糊指令（「适量」「入味」），靠厨师的经验填补；程序不允许任何模糊，每个操作都必须明确。这是人机协作的根本差异。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经建立了编程的底层心智模型。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了核心概念。再看一遍错题就彻底掌握了。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「确定性机器」和「抽象」部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重读课程内容，尤其是「代码的本质」一节。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

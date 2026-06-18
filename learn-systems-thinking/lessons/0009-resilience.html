@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 韧性与鲁棒性：系统如何在冲击中存活</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  ol { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ol li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--accent-light); }
+</style>
+</head>
+<body>
+
+<h1>韧性与鲁棒性：系统如何在冲击中存活</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第9课 / 共10课 · 约18分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>区分「韧性」（Resilience）与「鲁棒性」（Robustness）这两个常被混淆的概念；理解系统维持稳定的多种机制——反馈、冗余、模块化与多样性；认识韧性陷阱与临界点；学会在「效率」与「韧性」之间做出有意识的权衡，设计更经得起冲击的系统。
+</div>
+
+<h2>一、两个常被混为一谈的概念</h2>
+
+<p>一个系统在受到外部冲击（地震、金融危机、疫情、服务器宕机）时，会有不同的表现。我们经常笼统地说\"这个系统很稳定\"，但实际上存在两种截然不同的\"稳定\"：</p>
+
+<div class="vocab-card">
+  <span class="term">鲁棒性 (Robustness)</span><br>
+  系统在<strong>承受冲击的同时保持不变</strong>的能力。鲁棒的系统像一块坚硬的岩石——你用力砸它，它纹丝不动。关键词是「抵抗」。一座抗震等级 9 级的大楼、一个能承受 10 倍流量峰值的服务器，都是鲁棒的。
+</div>
+
+<div class="vocab-card">
+  <span class="term">韧性 (Resilience)</span><br>
+  系统在<strong>受到冲击后恢复到正常状态（或找到新的稳定状态）</strong>的能力。韧性的系统像一片森林——野火烧过它，它被改变了，但能在若干年后重新长起来。关键词是「恢复」和「适应」。人体的伤口愈合、生态系统的灾后重建、企业破产后行业重组，都是韧性的体现。
+</div>
+
+<div class="key-idea">
+  鲁棒性问的是\"你能不能扛住？\"韧性问的是\"你扛不住之后，能不能回来？\"——前者关心冲击当下，后者关心冲击之后。
+</div>
+
+<table>
+  <tr><th>维度</th><th>鲁棒性</th><th>韧性</th></tr>
+  <tr><td>核心策略</td><td>加固、加厚、加备份</td><td>适应、重组、学习</td></tr>
+  <tr><td>面对未知冲击</td><td>可能突然崩溃（超出设计上限）</td><td>能变形吸收冲击</td></tr>
+  <tr><td>代价</td><td>昂贵、笨重、过度设计</td><td>允许短期损失，换取长期存活</td></tr>
+  <tr><td>典型隐喻</td><td>城墙、保险柜</td><td>竹林、免疫系统</td></tr>
+</table>
+
+<h2>二、韧性的四个来源</h2>
+
+<p>为什么有些系统能从灾难中恢复，有些却一蹶不振？Donella Meadows 指出，系统的韧性来自几个可识别的结构特征：</p>
+
+<h3>1. 反馈回路（Feedback Loops）</h3>
+<p>健康的负反馈回路是韧性的基石。体温过高就出汗散热、血糖升高就分泌胰岛素——这些自我纠正机制让系统在扰动后自动回到平衡点。反馈回路越灵敏、越多层，系统恢复得越快。</p>
+
+<div class="example-box">
+  <strong>案例——人体体温调节：</strong>人体有至少三层反馈机制维持 37°C：皮肤血管扩张散热、汗腺排汗蒸发、行为上寻找阴凉。任何一层失效，其他层仍能补偿。这种\"多层反馈\"就是极高韧性的来源。
+</div>
+
+<h3>2. 冗余（Redundancy）</h3>
+<p>冗余意味着系统拥有\"多余\"的容量或重复的功能模块——平时看似浪费，冲击来临时却是救命稻草。人有<strong>两个肾脏</strong>、飞机有<strong>多套液压系统</strong>、互联网有<strong>多条路由</strong>——失去一个，系统仍能运行。</p>
+
+<div class="vocab-card">
+  <span class="term">冗余 vs. 重复</span><br>
+  冗余（Redundancy）不是无意义的重复（Duplication）。冗余是有目的地保留备用功能模块，每个模块能在其他模块失效时接管功能。重复则是简单地复制相同的东西——如果复制件和原件有相同的弱点，重复并不能增加韧性。
+</div>
+
+<h3>3. 模块化（Modularity）</h3>
+<p>模块化的系统由相对独立的子模块组成，模块之间通过清晰接口连接。一个模块出问题，可以被隔离，不会蔓延到整个系统——就像船的<strong>水密舱</strong>：一个舱进水，关上舱门，船不会沉。</p>
+
+<div class="example-box">
+  <strong>反例——2008 年金融危机：</strong>金融机构之间高度耦合，A 持有 B 的债务，B 持有 C 的……雷曼兄弟倒闭后，损失像多米诺骨牌一样迅速传导全球。这就是<strong>缺乏模块化</strong>导致的系统性崩溃。相比之下，分散的地方性银行系统（如德国 Sparkassen）在危机中反而更稳定。
+</div>
+
+<h3>4. 多样性（Diversity）</h3>
+<p>多样性意味着系统中存在不同类型的要素和策略。生物多样性让生态系统面对新型病虫害时，总有某些物种能抵抗；投资组合的多样性让某类资产暴跌时，其他资产可以对冲。<strong>单一化的系统往往高效却脆弱</strong>。</p>
+
+<div class="key-idea">
+  韧性 = 反馈 × 冗余 × 模块化 × 多样性。这四个来源是\"乘法关系\"——任何一个为零，整体韧性就趋近于零。
+</div>
+
+<h2>三、韧性陷阱：稳定的假象</h2>
+
+<p>这里有一个反直觉的陷阱：<strong>看起来最稳定的系统，往往最脆弱</strong>。</p>
+
+<p>当系统长期处于稳定状态时，人们会倾向于优化——移除冗余、减少多样性、压缩反馈、加强耦合——以提高效率。这种优化在正常时期看起来非常成功，但它<strong>悄悄削弱了系统的韧性</strong>，直到某一次冲击彻底击穿它。</p>
+
+<div class="example-box">
+  <strong>经典案例——1980 年埃尔尼诺与秘鲁鳀鱼：</strong>秘鲁鳀鱼渔业曾是世界最大的单种鱼类渔业。为了\"高效\"，渔民大规模捕捞，几乎消灭了鳀鱼的天敌和竞争物种——生态系统变得极度单一化。表面上产量年年创新高。1980 年一场埃尔尼诺暖流袭来，水温骤升，<strong>整个鳀鱼种群在两年内崩溃了 99%</strong>，至今未恢复。长期的\"稳定高产\"掩盖了韧性的丧失。
+</div>
+
+<div class="vocab-card">
+  <span class="term">韧性陷阱 (Resilience Trap)</span><br>
+  系统的反馈机制持续抑制波动，使系统表面极度稳定，但实际上<strong>不断消耗自身的韧性储备</strong>。一旦反馈失效，积压的张力会一次性释放，造成远比自然波动更严重的崩溃。森林的\"长期扑灭小火灾\"反而会导致超大火灾，就是典型例子。
+</div>
+
+<h2>四、临界点与制度性崩溃</h2>
+
+<p>韧性不是一个连续渐变的过程——它有<strong>临界点</strong>（Tipping Point）。系统在临界点之前可能看起来完全正常，但一旦越过，就会发生不可逆的状态转变。</p>
+
+<ul>
+  <li><strong>湖泊富营养化：</strong>磷污染积累到某个阈值，藻类突然爆发，湖泊从清澈变为浑浊——即使停止排污也难以逆转。</li>
+  <li><strong>珊瑚白化：</strong>水温升高 1-2°C 持续数周，珊瑚大面积死亡，整个珊瑚礁生态系统崩溃。</li>
+  <li><strong>社会信任：</strong>信任的建立需要多年，但一次大规模丑闻可以在数日内摧毁——而且一旦摧毁，重建的难度远超想象。</li>
+</ul>
+
+<div class="key-idea">
+  临界点的危险在于：你不能从系统的当前状态判断它离崩溃有多近。一个看起来平静的火山可能已经接近喷发阈值——而我们感知不到。
+</div>
+
+<h2>五、跨学科应用：如何设计韧性系统</h2>
+
+<h3>软件工程：混沌工程</h3>
+<p>Netflix 发明了\"混沌猴子\"（Chaos Monkey）——主动在白天随机关闭生产服务器，以测试系统的自动恢复能力。这不是疯狂，而是<strong>用可控的小冲击来维持和锻炼系统的韧性</strong>，避免在真正的灾难来临时措手不及。</p>
+
+<h3>供应链管理：冗余 vs. 准时制</h3>
+<p>\"准时制\"（Just-in-Time）生产追求零库存、零浪费，效率极高。但 COVID-19 疫情暴露了它的脆弱——一个港口封锁，整条供应链停摆。越来越多企业开始转向\"以防万一\"（Just-in-Case）策略，重新引入战略库存这个\"冗余\"。</p>
+
+<h3>生态保护：预防原则</h3>
+<p>面对可能引发不可逆临界点的行为（如大规模森林砍伐），生态学奉行\"预防原则\"——不确定时优先保护韧性。因为我们<strong>无法精确知道临界点在哪里</strong>，唯一安全的做法是远离它。</p>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol>
+    <li>鲁棒性 = 扛住冲击不变；韧性 = 受冲击后恢复或重组。两者互补，不能混淆。</li>
+    <li>韧性来自四个乘法因子：反馈、冗余、模块化、多样性。任何一个为零，系统就脆弱。</li>
+    <li>韧性陷阱：表面的稳定往往在悄悄消耗韧性储备，导致更剧烈的崩溃。</li>
+    <li>临界点不可观测——设计系统时，应在\"效率\"与\"韧性\"之间主动留出安全余量。</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 鲁棒性和韧性的核心区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 两者是同义词，没有区别</label>
+      <label><input type="radio" name="q1" value="b"> B. 鲁棒性强调\"扛住冲击保持不变\"，韧性强调\"受冲击后恢复或适应\"</label>
+      <label><input type="radio" name="q1" value="c"> C. 鲁棒性适用于物理系统，韧性适用于生物系统</label>
+      <label><input type="radio" name="q1" value="d"> D. 鲁棒性比韧性更高级</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> 以下哪个是\"韧性\"的典型例子？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 森林被野火烧毁后，多年后重新长出新的植被</label>
+      <label><input type="radio" name="q2" value="b"> B. 一座钢筋混凝土大楼在地震中毫发无损</label>
+      <label><input type="radio" name="q2" value="c"> C. 一块钢板承受了重击没有变形</label>
+      <label><input type="radio" name="q2" value="d"> D. 防弹玻璃挡住了子弹</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q3.</span> 系统韧性的四个主要来源是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 资金、人力、技术、时间</label>
+      <label><input type="radio" name="q3" value="b"> B. 规模、速度、精度、成本</label>
+      <label><input type="radio" name="q3" value="c"> C. 反馈、冗余、模块化、多样性</label>
+      <label><input type="radio" name="q3" value="d"> D. 规则、监督、惩罚、激励</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 为什么说韧性的四个来源是\"乘法关系\"而非\"加法关系\"？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 因为它们可以叠加</label>
+      <label><input type="radio" name="q4" value="b"> B. 因为每个来源都能独立提供韧性</label>
+      <label><input type="radio" name="q4" value="c"> C. 因为它们互相增强，效果更好</label>
+      <label><input type="radio" name="q4" value="d"> D. 因为任何一个来源为零，整体韧性就趋近于零——不能互相替代</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 冗余（Redundancy）和无意义重复（Duplication）的区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 没有区别，都是浪费资源</label>
+      <label><input type="radio" name="q5" value="b"> B. 冗余是有目的的备用模块，能在其他模块失效时接管功能；简单重复如果弱点相同则不增加韧性</label>
+      <label><input type="radio" name="q5" value="c"> C. 冗余更便宜，重复更昂贵</label>
+      <label><input type="radio" name="q5" value="d"> D. 冗余是好的，重复是坏的——但原因不明</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 2008 年金融危机为何能迅速传导全球？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 因为全球贸易额太大</label>
+      <label><input type="radio" name="q6" value="b"> B. 因为政府监管不力</label>
+      <label><input type="radio" name="q6" value="c"> C. 因为金融机构之间高度耦合，缺乏模块化隔离——一个节点失效迅速蔓延到整个网络</label>
+      <label><input type="radio" name="q6" value="d"> D. 因为投资者心理恐慌</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 什么是\"韧性陷阱\"？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 系统表面极度稳定，但实际上在悄悄消耗韧性储备，一旦被击穿会崩溃得更剧烈</label>
+      <label><input type="radio" name="q7" value="b"> B. 系统太有韧性导致无法被优化</label>
+      <label><input type="radio" name="q7" value="c"> C. 韧性越高，系统越不稳定</label>
+      <label><input type="radio" name="q7" value="d"> D. 系统韧性达到上限后无法再增加</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 秘鲁鳀鱼种群崩溃的故事说明了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 过度捕捞会直接消灭一个物种</label>
+      <label><input type="radio" name="q8" value="b"> B. 埃尔尼诺现象是毁灭性的</label>
+      <label><input type="radio" name="q8" value="c"> C. 单一物种渔业注定失败</label>
+      <label><input type="radio" name="q8" value="d"> D. 长期追求高产导致生态多样性丧失，表面稳定掩盖了韧性耗尽，一次冲击就导致不可逆崩溃</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> \"临界点\"（Tipping Point）最危险的特征是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 它总是突然发生，没有预兆</label>
+      <label><input type="radio" name="q9" value="b"> B. 你无法从系统当前状态判断它离临界点有多近——一个平静的系统可能已经接近崩溃</label>
+      <label><input type="radio" name="q9" value="c"> C. 一旦越过临界点就无法恢复</label>
+      <label><input type="radio" name="q9" value="d"> D. 临界点只存在于自然系统</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> Netflix 的\"混沌猴子\"（Chaos Monkey）为何能提升系统韧性？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 用可控的小冲击持续锻炼系统的恢复能力，防止韧性在稳定期退化</label>
+      <label><input type="radio" name="q10" value="b"> B. 通过破坏服务器来省钱</label>
+      <label><input type="radio" name="q10" value="c"> C. 为了让工程师保持忙碌</label>
+      <label><input type="radio" name="q10" value="d"> D. 为了测试用户对故障的容忍度</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> \"准时制\"（Just-in-Time）生产为何在 COVID-19 中暴露了脆弱性？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 因为它依赖外国供应商</label>
+      <label><input type="radio" name="q11" value="b"> B. 因为它成本太高</label>
+      <label><input type="radio" name="q11" value="c"> C. 因为它追求零库存，移除了\"冗余\"——一个环节中断，整条供应链立即停摆</label>
+      <label><input type="radio" name="q11" value="d"> D. 因为它不使用自动化</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 跨学科思考：为什么\"预防原则\"在面对临界点时特别重要？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 因为临界点可以通过实验精确测量</label>
+      <label><input type="radio" name="q12" value="b"> B. 因为我们无法精确知道临界点在哪里，且越过后的后果不可逆——不确定时应优先保护韧性，远离危险区域</label>
+      <label><input type="radio" name="q12" value="c"> C. 因为预防比治理更便宜</label>
+      <label><input type="radio" name="q12" value="d"> D. 因为所有系统都有临界点</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0008-bounds-growth.html">← 上一课</a>
+  <span>第 9 课 / 共 10 课</span>
+  <a href="0010-systems-in-practice.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '鲁棒性关注冲击当下系统能否保持不变（像岩石），韧性关注冲击之后系统能否恢复或适应（像森林再生）。两者是互补的不同概念，不是高低之分。' },
+  q2: { correct: 'a', explanation: '森林被烧毁后重新生长，是典型的韧性——系统被改变了但能恢复。其他选项（大楼、钢板、防弹玻璃）都是鲁棒性——在冲击中保持不变。' },
+  q3: { correct: 'c', explanation: 'Donella Meadows 指出韧性来自四个结构特征：反馈（自我纠正）、冗余（备用容量）、模块化（隔离故障）、多样性（多种策略应对）。资金、人力等是资源，不是韧性来源。' },
+  q4: { correct: 'd', explanation: '乘法关系意味着任何一个因子为零，整体韧性就趋近于零。比如一个系统即使有完美的反馈和多样性，但完全没有模块化（高度耦合），一个节点失效就会像多米诺骨牌一样传导，韧性归零。它们不能互相替代。' },
+  q5: { correct: 'b', explanation: '冗余是有目的的设计——备用模块能在主模块失效时接管。简单重复如果复制件和原件有相同的弱点（如两台同一型号、同一软件的服务器遇到同一个 bug），重复并不能增加韧性。真正的冗余需要多样化的备份。' },
+  q6: { correct: 'c', explanation: '金融机构之间通过债务相互持有形成高度耦合的网络，缺乏模块化隔离。雷曼倒闭后，损失沿着债务链条迅速传导全球——这是典型的缺乏模块化导致的系统性崩溃。相比之下，分散的地方银行系统更稳定。' },
+  q7: { correct: 'a', explanation: '韧性陷阱的核心悖论：系统的反馈机制持续抑制波动，让表面看起来极其稳定，但这种稳定在悄悄消耗韧性储备（移除冗余、减少多样性）。一旦反馈失效，积压的张力一次性释放，崩溃比自然波动更严重。' },
+  q8: { correct: 'd', explanation: '鳀鱼渔业的教训不在于单一原因，而在于系统视角：长期追求高产导致生态系统单一化（丧失多样性韧性），表面稳定高产掩盖了韧性耗尽，当埃尔尼诺暖流来袭时，整个种群在两年内崩溃 99% 且至今未恢复——越过临界点后的不可逆转变。' },
+  q9: { correct: 'b', explanation: '临界点最危险的特征是\"不可观测性\"——你无法从当前状态判断距离临界点有多远。一个看起来平静的火山可能已接近喷发。一个清澈的湖泊可能再添加一点磷就突然富营养化。正因如此，预防原则才如此重要。' },
+  q10: { correct: 'a', explanation: '混沌工程的核心洞察：系统的恢复能力需要持续\"锻炼\"才能保持。如果系统长期不经历故障，自动恢复机制会退化、运维人员会忘记如何应对。主动注入可控的小故障，能在真正的灾难来临时确保系统有韧性。' },
+  q11: { correct: 'c', explanation: '准时制生产追求零库存以最大化效率，但库存本身就是一种\"冗余\"。COVID-19 封锁港口时，零库存意味着没有缓冲——一个环节中断，整条供应链立即停摆。这正是为效率牺牲韧性的典型代价。' },
+  q12: { correct: 'b', explanation: '预防原则的逻辑：临界点不可精确观测，越过后的后果往往不可逆（如物种灭绝、生态系统崩溃）。在不确定性面前，理性的策略是优先保护韧性、远离潜在危险区域，而不是冒险逼近临界点后再试图修复——因为修复可能已经不可能了。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经深入理解了韧性与鲁棒性的精髓。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你掌握了核心概念。复习一下错题就彻底通透了。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读\"韧性四个来源\"和\"韧性陷阱\"部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重点理解鲁棒性与韧性的区别，以及韧性来自哪里。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

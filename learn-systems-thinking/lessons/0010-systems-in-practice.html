@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 系统思维实践：从理论到日常</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  ol { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ol li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--accent-light); }
+  .finale-box { background: linear-gradient(135deg, #e8f0fa, #e8f5e9); border: 2px solid var(--accent); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; text-align: center; }
+  .finale-box h3 { color: var(--accent); margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<h1>系统思维实践：从理论到日常</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第10课 / 共10课 · 约20分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>将前九课的概念整合为一套可操作的方法论；掌握系统思维的实用工具箱——冰山模型、因果回路图、系统基模；识别实践中最常见的认知陷阱；通过跨学科大师案例理解系统思维如何改变决策；建立持续练习系统思维的习惯路径。
+</div>
+
+<h2>一、回顾：系统思维的完整地图</h2>
+
+<p>在我们进入实践之前，让我们先回顾这十课构建的知识体系。系统思维不是一堆零散的概念，而是一套层层递进的思维工具：</p>
+
+<table>
+  <tr><th>课程</th><th>核心概念</th><th>解决什么问题</th></tr>
+  <tr><td>第1课</td><td>系统、涌现、三大要素</td><td>从\"零件\"转向\"整体\"</td></tr>
+  <tr><td>第2课</td><td>反馈回路（正/负）</td><td>理解自我增强与自我纠正</td></tr>
+  <tr><td>第3课</td><td>存量与流量</td><td>看到\"积累\"与\"变化\"的区别</td></tr>
+  <tr><td>第4课</td><td>延迟</td><td>解释为何干预往往\"过犹不及\"</td></tr>
+  <tr><td>第5课</td><td>涌现与自组织</td><td>理解无中心控制下的秩序</td></tr>
+  <tr><td>第6课</td><td>杠杆点</td><td>找到\"小拨动大改变\"的关键</td></tr>
+  <tr><td>第7课</td><td>系统基模</td><td>识别反复出现的系统性困境</td></tr>
+  <tr><td>第8课</td><td>增长的极限</td><td>理解S型曲线与过冲崩溃</td></tr>
+  <tr><td>第9课</td><td>韧性与鲁棒性</td><td>设计能抗冲击的系统</td></tr>
+  <tr><td>第10课</td><td>系统思维实践</td><td>将以上工具应用于现实</td></tr>
+</table>
+
+<div class="key-idea">
+  系统思维的终极目的不是\"理解系统\"，而是<strong>做出更好的决策</strong>——避免好心办坏事，避免治标不治本，避免在错误的地方使劲。
+</div>
+
+<h2>二、冰山模型：三层看世界</h2>
+
+<p>系统思维最实用的入门工具之一是\"冰山模型\"。它帮助我们从只看表面事件，深入到结构层面和心智模式层面：</p>
+
+<div class="vocab-card">
+  <span class="term">第一层：事件 (Events) — \"发生了什么？\"</span><br>
+  冰山露出水面的尖端。比如\"今天堵车了\"\"这个月销售额下降了\"\"孩子考试没考好\"。大多数人只在这一层反应——堵车就按喇叭、业绩差就催促团队、成绩差就补课。
+</div>
+
+<div class="vocab-card">
+  <span class="term">第二层：模式 (Patterns) — \"一直在发生什么？\"</span><br>
+  水面下不远。观察一段时间内的趋势和重复。\"每周一早上都堵车\"\"销售额已经连续三个季度下滑\"\"孩子最近几次考试都不好\"。能看到模式的人开始做趋势预判，但还不一定触及根因。
+</div>
+
+<div class="vocab-card">
+  <span class="term">第三层：结构 (Structure) — \"是什么导致了这种模式？\"</span><br>
+  更深处。物理的、制度的、规则的、反馈的结构。\"周一早上通勤车流集中，道路容量不足\"\"市场进入饱和期，竞争对手增加了\"\"孩子对新换的教学方式不适应，且睡眠不足\"。改变结构才能改变模式。
+</div>
+
+<div class="vocab-card">
+  <span class="term">第四层：心智模式 (Mental Models) — \"什么信念维持了这种结构？\"</span><br>
+  冰山的最深处。我们的价值观、假设、信念。\"每个人都应该开车上班\"\"增长是唯一目标\"\"成绩等于能力\"。心智模式塑造结构，结构产生模式，模式表现为事件。<strong>真正的系统性变革，必须触及心智模式层。</strong>
+</div>
+
+<div class="example-box">
+  <strong>案例——公司员工离职率高：</strong>事件层：\"这个月又有三个核心员工离职了\"，反应是加薪。模式层：\"过去一年离职率从 10% 升到 25%\"，反应是做满意度调查。结构层：\"晋升通道狭窄、跨部门协作流程繁琐、加班文化制度化\"——需要改结构。心智模式层：\"员工是资源不是资产，可以随时替换\"——这才是根因，如果不改变这个信念，任何结构调整都会被打回原形。
+</div>
+
+<h2>三、实践工具箱：三个核心方法</h2>
+
+<h3>工具一：因果回路图（Causal Loop Diagram）</h3>
+<p>用箭头画出变量之间的因果关系，标注是正关联（同向变化）还是负关联（反向变化），然后找出回路是增强回路（R）还是调节回路（B）。这是将\"系统\"从抽象概念变成可分析图形的第一步。</p>
+
+<div class="example-box">
+  <strong>练习——画一个\"工作压力回路\"：</strong>工作量增加 →（+）压力增加 →（+）睡眠减少 →（−）工作效率下降 →（+）积压工作增加 →（+）工作量增加……这是一个增强回路（恶性循环）。找到回路后，你就能看到：直接减少工作量只是临时方案，<strong>改善睡眠</strong>才是打断回路的杠杆点。
+</div>
+
+<h3>工具二：系统基模速查</h3>
+<p>第7课学过的系统基模在实践中极为有用。当你遇到困境时，先问自己：\"这是哪种基模？\"</p>
+<ul>
+  <li><strong>转移负担：</strong>短期方案见效快但削弱了长期解决能力（喝咖啡提神 vs. 补充睡眠）。</li>
+  <li><strong>公地悲剧：</strong>个体理性追求共同资源，集体结果却是毁灭（过度捕捞、交通拥堵）。</li>
+  <li><strong>增长极限：</strong>增长触碰到承载力上限，开始减速甚至逆转。</li>
+  <li><strong>温水青蛙：</strong>缓慢恶化未被察觉，直到为时已晚。</li>
+</ul>
+
+<h3>工具三：十问检查清单</h3>
+<p>面对任何复杂问题，用以下十个问题进行系统检查：</p>
+<ol>
+  <li>这个系统的<strong>要素、连接、功能</strong>分别是什么？</li>
+  <li>有哪些<strong>反馈回路</strong>？哪些是增强的，哪些是调节的？</li>
+  <li>有没有被忽视的<strong>延迟</strong>？</li>
+  <li>当前的<strong>存量</strong>是什么状态？流入和流出的速率如何？</li>
+  <li>系统的<strong>边界</strong>在哪里？我是否遗漏了重要的外部因素？</li>
+  <li>有没有<strong>涌现</strong>行为是单看要素无法预测的？</li>
+  <li>可能的<strong>杠杆点</strong>在哪里？我是否在低杠杆点使劲？</li>
+  <li>这符合哪个<strong>系统基模</strong>？</li>
+  <li>系统的<strong>韧性</strong>如何？有没有在追求效率时悄悄破坏它？</li>
+  <li>维持当前结构的<strong>心智模式</strong>是什么？它是否需要被挑战？</li>
+</ol>
+
+<h2>四、常见误区与陷阱</h2>
+
+<div class="vocab-card">
+  <span class="term">陷阱一：\"系统思维 = 看大局 = 什么都考虑\"</span><br>
+  系统思维不是\"考虑所有因素\"，而是<strong>识别关键回路和杠杆点</strong>。试图考虑所有变量会让你陷入分析瘫痪。好的系统思考者是\"有选择地深入\"，而非\"面面俱到\"。
+</div>
+
+<div class="vocab-card">
+  <span class="term">陷阱二：把\"线性思维\"披上系统外衣</span><br>
+  许多人画了因果图，但骨子里仍在做 A→B 的线性推理。真正的系统思维要求你追踪<strong>回路</strong>——B 如何反过来影响 A。如果你的因果图没有形成任何闭合回路，你可能还没在做系统思维。
+</div>
+
+<div class="vocab-card">
+  <span class="term">陷阱三：迷信\"找到唯一的杠杆点\"</span><br>
+  杠杆点是强大的，但很少有\"一击必杀\"的单一干预。大多数现实系统需要<strong>多杠杆点的组合干预</strong>，而且不同杠杆点之间会相互作用。寻找杠杆点是思维方式，不是寻找银弹。
+</div>
+
+<div class="vocab-card">
+  <span class="term">陷阱四：忽视心智模式层</span><br>
+  最常见的失败是：分析了结构、画了回路图、找到了杠杆点——但<strong>没有人愿意改变自己的信念</strong>。一个相信\"增长永远是对的\"的管理者，即使理解了\"增长极限\"基模，仍会推动公司过冲崩溃。心智模式是系统的操作系统，不改它，其他改动都是表面的。
+</div>
+
+<h2>五、大师案例：系统思维改变世界</h2>
+
+<h3>案例一：杰伊·福雷斯特与城市动力学</h3>
+<p>1960 年代，MIT 的福雷斯特用系统动力学建模美国城市的衰退。他的反直觉发现：<strong>在衰退的内城建造更多低收入住房，反而加速了衰退</strong>——因为新住房吸引了更多人口，但商业和就业没有同步增长，导致人均资源更少，进一步驱离企业，形成恶性增强回路。真正的杠杆点是<strong>刺激企业入驻</strong>，而非建更多住房。这个洞见改变了美国城市更新政策的方向。</p>
+
+<h3>案例二：疫苗犹豫的系统性根因</h3>
+<p>线性思维认为\"疫苗犹豫是因为人们不了解科学\"，所以方案是\"加强科普\"。但系统思维揭示了一个更深的回路：社交媒体算法（增强回路）放大极端案例 → 信任下降 → 接种率下降 → 疫苗可预防疾病爆发 → 更多负面案例 → 信任进一步下降。真正的杠杆点不在\"科普\"（低杠杆），而在<strong>算法监管和信任重建</strong>（高杠杆）。线性方案打在了错误的地方。</p>
+
+<h3>案例三：美国\"反恐战争\"的系统教训</h3>
+<p>用军事力量消灭恐怖组织（线性思维），结果制造了权力真空，催生了更极端的组织（增强回路）。系统视角下的反恐需要理解：贫困、教育缺失、地缘政治不公是\"存量\"，恐怖组织是\"流量\"，打击流量而不改变存量，问题只会换一种形式延续。</p>
+
+<div class="key-idea">
+  这三个案例的共同教训：<strong>线性思维在复杂系统中几乎必然产生意想不到的后果</strong>。系统思维不能保证你\"做对\"，但它能帮你避免\"好心办坏事\"——避免在错误的地方、用错误的方式使劲。
+</div>
+
+<h2>六、跨学科链接：系统思维无处不在</h2>
+
+<table>
+  <tr><th>领域</th><th>系统思维的应用</th></tr>
+  <tr><td>医学</td><td>从\"治症状\"转向\"治系统\"——功能医学关注整个身体网络而非单一器官</td></tr>
+  <tr><td>教育</td><td>理解学生成绩是多个系统（家庭、同伴、健康、教学）交互的结果，而非仅靠\"更努力\"</td></tr>
+  <tr><td>环境</td><td>气候变化需要系统性方案——不能只盯碳排放，还要考虑经济结构、政治博弈、行为习惯</td></tr>
+  <tr><td>商业</td><td>平台型企业（如淘宝、Uber）的本质是设计一个自我增强的双边网络系统</td></tr>
+  <tr><td>个人成长</td><td>把\"习惯\"看作反馈回路——触发→行为→奖励→强化，改习惯就是改回路</td></tr>
+  <tr><td>公共政策</td><td>\"用税养路\"看似简单，实际涉及经济激励、行为心理、公平性等多回路交互</td></tr>
+</table>
+
+<h2>七、成为系统思考者的练习路径</h2>
+
+<p>系统思维是一种<strong>技能</strong>，不是读完就懂的知识。它需要刻意练习。以下是一个循序渐进的路径：</p>
+
+<ol>
+  <li><strong>第一周：观察回路。</strong>每天找一个你生活中的现象，尝试识别背后的反馈回路。比如\"刷手机越多越焦虑，越焦虑越刷手机\"——这是增强回路还是调节回路？</li>
+  <li><strong>第二周：画因果图。</strong>选一个工作中的问题，画出变量和箭头，标注正负关联，找出闭合回路。</li>
+  <li><strong>第三周：找延迟。</strong>在你画的回路中，标出哪些环节有延迟。思考：这些延迟如何导致过度反应或反应不足？</li>
+  <li><strong>第四周：识别基模。</strong>用第7课的基模\"模板\"去匹配你遇到的问题。你会发现 80% 的困境都能对号入座。</li>
+  <li><strong>持续：挑战心智模式。</strong>每当一个方案\"明明对却推不动\"时，问自己：维持现状的心智模式是什么？谁在捍卫它？为什么？</li>
+</ol>
+
+<div class="finale-box">
+  <h3>🎓 恭喜你完成了系统思维十课！</h3>
+  <p>你已经拥有了看待世界的全新透镜。系统思维不会让复杂问题变简单，但它会让你在复杂中<strong>看到结构、找到方向、避免陷阱</strong>。真正的掌握来自持续的实践——从今天开始，试着用\"回路\"和\"杠杆点\"的语言来重新审视你身边的一个问题。</p>
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol>
+    <li>冰山模型——从事件→模式→结构→心智模式，层层深入才能触及根因。</li>
+    <li>三个核心工具：因果回路图、系统基模速查、十问检查清单。</li>
+    <li>四个常见陷阱：什么都考虑、线性披系统外衣、迷信单一银弹、忽视心智模式。</li>
+    <li>系统思维是技能不是知识——持续练习才能内化为直觉。</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 冰山模型的四个层次，从浅到深的正确顺序是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 事件 → 结构 → 模式 → 心智模式</label>
+      <label><input type="radio" name="q1" value="b"> B. 心智模式 → 结构 → 模式 → 事件</label>
+      <label><input type="radio" name="q1" value="c"> C. 事件 → 模式 → 结构 → 心智模式</label>
+      <label><input type="radio" name="q1" value="d"> D. 模式 → 事件 → 心智模式 → 结构</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q2.</span> 在冰山模型中，\"真正的系统性变革必须触及哪一层？\"</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 事件层——解决了眼前问题就够了</label>
+      <label><input type="radio" name="q2" value="b"> B. 模式层——看懂趋势就能预判</label>
+      <label><input type="radio" name="q2" value="c"> C. 结构层——改了规则就够了</label>
+      <label><input type="radio" name="q2" value="d"> D. 心智模式层——信念塑造结构、结构产生模式、模式表现为事件，根在信念</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q3.</span> 画因果回路图时，如何判断一个回路是增强回路还是调节回路？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 看箭头数量是奇数还是偶数</label>
+      <label><input type="radio" name="q3" value="b"> B. 数回路中负关联箭头的数量——偶数个（含零）是增强回路，奇数个是调节回路</label>
+      <label><input type="radio" name="q3" value="c"> C. 看变量是增加还是减少</label>
+      <label><input type="radio" name="q3" value="d"> D. 看箭头是粗还是细</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q4.</span> \"工作压力回路\"案例中，打断恶性循环的杠杆点是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 改善睡眠——它连接着\"压力\"和\"效率\"两个关键变量</label>
+      <label><input type="radio" name="q4" value="b"> B. 直接减少工作量——虽然只是临时方案</label>
+      <label><input type="radio" name="q4" value="c"> C. 请更多假——彻底脱离工作</label>
+      <label><input type="radio" name="q4" value="d"> D. 喝更多咖啡——提高短期效率</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q5.</span> 以下哪个是\"系统思维\"最常见的误区？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 系统思维太复杂，不适合日常使用</label>
+      <label><input type="radio" name="q5" value="b"> B. 系统思维只适用于科学家</label>
+      <label><input type="radio" name="q5" value="c"> C. 把\"考虑所有因素\"等同于系统思维——实际上系统思维是识别关键回路和杠杆点，而非面面俱到</label>
+      <label><input type="radio" name="q5" value="d"> D. 系统思维就是画图</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q6.</span> 为什么\"加强科普\"往往无法有效解决疫苗犹豫？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 因为人们不识字</label>
+      <label><input type="radio" name="q6" value="b"> B. 因为疫苗犹豫的根因是社交媒体算法放大极端案例 + 信任崩塌形成的增强回路，科普（低杠杆点）打不中要害</label>
+      <label><input type="radio" name="q6" value="c"> C. 因为科普内容不够多</label>
+      <label><input type="radio" name="q6" value="d"> D. 因为疫苗本身有问题</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q7.</span> 杰伊·福雷斯特的城市动力学研究发现，在衰退的内城建更多低收入住房为何反而加速衰退？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 因为低收入住房质量不好</label>
+      <label><input type="radio" name="q7" value="b"> B. 因为建筑扰民</label>
+      <label><input type="radio" name="q7" value="c"> C. 因为政府浪费了钱</label>
+      <label><input type="radio" name="q7" value="d"> D. 因为新住房吸引更多人口但商业就业未同步增长，人均资源更少，进一步驱离企业——形成恶性增强回路</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q8.</span> \"把线性思维披上系统外衣\"是什么意思？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 画了因果图但骨子里仍做 A→B 的单向推理，没有追踪 B 如何反过来影响 A 形成闭合回路</label>
+      <label><input type="radio" name="q8" value="b"> B. 用了系统术语但画得很漂亮</label>
+      <label><input type="radio" name="q8" value="c"> C. 把线性图表涂上了颜色</label>
+      <label><input type="radio" name="q8" value="d"> D. 只考虑了一个变量</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 美国\"反恐战争\"的系统教训是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 军事力量是解决恐怖主义的最佳手段</label>
+      <label><input type="radio" name="q9" value="b"> B. 用军事打击消灭组织（流量）而不改变贫困和教育等根因（存量），问题只会换一种形式延续——甚至催生更极端的组织</label>
+      <label><input type="radio" name="q9" value="c"> C. 恐怖主义无法被消灭</label>
+      <label><input type="radio" name="q9" value="d"> D. 应该完全撤军不管</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 十问检查清单中，\"系统的边界在哪里？\"这个问题解决什么盲区？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 帮助画更漂亮的图</label>
+      <label><input type="radio" name="q10" value="b"> B. 决定系统的大小</label>
+      <label><input type="radio" name="q10" value="c"> C. 防止遗漏重要的外部因素——系统分析的结果高度依赖于你画的边界，画错了边界就会得出错误结论</label>
+      <label><input type="radio" name="q10" value="d"> D. 让分析更复杂</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q11.</span> 跨学科思考：为什么\"平台型企业\"（如淘宝、Uber）的成功本质上是一个系统设计问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 因为平台的核心是设计一个自我增强的双边网络系统——买家越多吸引卖家，卖家越多吸引买家，形成增强回路</label>
+      <label><input type="radio" name="q11" value="b"> B. 因为平台需要很多程序员</label>
+      <label><input type="radio" name="q11" value="c"> C. 因为平台只在网上运行</label>
+      <label><input type="radio" name="q11" value="d"> D. 因为平台需要大量广告</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 系统思维与线性思维的关系，最准确的描述是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 系统思维是线性思维的升级版，应该完全取代它</label>
+      <label><input type="radio" name="q12" value="b"> B. 线性思维是错的，系统思维是对的</label>
+      <label><input type="radio" name="q12" value="c"> C. 系统思维只用于科研，线性思维用于日常</label>
+      <label><input type="radio" name="q12" value="d"> D. 两者互补——简单、可分解的问题用线性思维高效解决；存在反馈、涌现、延迟的复杂问题需要系统思维。关键是有意识地选择合适的工具</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q13.</span> 成为系统思考者的练习路径中，最关键的第一步是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 读完所有系统思维的书籍</label>
+      <label><input type="radio" name="q13" value="b"> B. 从观察日常生活中的反馈回路开始——系统思维是技能不是知识，只有通过持续刻意练习才能内化为直觉</label>
+      <label><input type="radio" name="q13" value="c"> C. 学会复杂的数学建模</label>
+      <label><input type="radio" name="q13" value="d"> D. 购买专业的系统动力学软件</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0009-resilience.html">← 上一课</a>
+  <span>第 10 课 / 共 10 课 · 课程完结</span>
+  <a href="../index.html">返回目录 ↑</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '冰山模型从浅到深是：事件（发生了什么）→ 模式（一直在发生什么）→ 结构（什么导致这种模式）→ 心智模式（什么信念维持了这种结构）。越深层越接近根因，也越难改变。' },
+  q2: { correct: 'd', explanation: '心智模式是系统的\"操作系统\"——它塑造结构、结构产生模式、模式表现为事件。即使你分析了结构、找到了杠杆点，如果不改变维持现状的心智模式，任何调整都会被打回原形。这就是为什么真正的系统性变革最难。' },
+  q3: { correct: 'b', explanation: '判断回路类型的方法是数回路中负关联（反向变化）箭头的数量：偶数个（包括零个）是增强回路（自我放大），奇数个是调节回路（自我纠正）。这是系统动力学的基本规则，帮助你快速识别回路性质。' },
+  q4: { correct: 'a', explanation: '改善睡眠连接着\"压力\"和\"效率\"两个关键变量——压力→睡眠减少→效率下降→积压增加→压力更大。改善睡眠能同时减少压力的影响并提升效率，是同时影响两个关键节点的高杠杆干预。直接减工作量只是临时缓解。' },
+  q5: { correct: 'c', explanation: '系统思维不是\"考虑所有因素\"——那会让你陷入分析瘫痪。真正的系统思维是识别关键回路和杠杆点，有选择地深入。考虑所有因素反而是系统思维的常见误区。' },
+  q6: { correct: 'b', explanation: '疫苗犹豫不是\"不了解科学\"那么简单——它的根因是社交媒体算法放大极端案例 + 信任崩塌形成的增强回路。科普只是在\"事件层\"使劲（低杠杆），而真正的杠杆点在算法监管和信任重建（结构层、高杠杆）。这就是线性方案打在错误地方的典型例子。' },
+  q7: { correct: 'd', explanation: '福雷斯特的系统动力学模型揭示了一个反直觉的增强回路：建更多住房→吸引更多人口→但商业就业未同步增长→人均资源更少→企业进一步撤离→税收下降→公共服务恶化→更多人口离开……真正的杠杆点是刺激企业入驻，而非建更多住房。这就是系统思维的价值——发现线性思维看不到的回路。' },
+  q8: { correct: 'a', explanation: '\"披着系统外衣的线性思维\"是最常见的伪系统思维：画了因果图、用了系统术语，但分析时仍在做 A→B→C 的单向推理，没有追踪 B 如何反过来影响 A、C 如何影响 A 形成闭合回路。判断标准很简单：你的因果图里有没有至少一个闭合回路？' },
+  q9: { correct: 'b', explanation: '反恐战争的系统教训：恐怖组织是\"流量\"，而贫困、教育缺失、地缘不公是\"存量\"。只打击流量而不改变存量，就像只捞水面上的浮渣而不清洁水池——问题只会换一种形式延续。军事打击消灭一个组织后制造的权力真空，反而催生了更极端的继任者，形成增强回路。' },
+  q10: { correct: 'c', explanation: '系统分析的结论高度依赖于你画的边界。比如分析\"交通拥堵\"，如果把边界只画在\"道路和车辆\"，你会得出\"修更多路\"的结论；如果把边界扩大到\"城市规划和土地利用\"，你会发现真正的杠杆在功能分区和公共交通。画错了边界就会得出错误结论。' },
+  q11: { correct: 'a', explanation: '平台企业的本质是系统设计——它们的核心竞争力不是技术本身，而是设计了一个自我增强的双边网络：买家越多→对卖家越有吸引力→卖家越多→商品越丰富→对买家越有吸引力→……这是经典的增强回路。理解这个回路，就能理解为什么平台竞争往往是\"赢家通吃\"——谁先达到临界规模，增强回路就会帮它碾压对手。' },
+  q12: { correct: 'd', explanation: '系统思维和线性思维不是对错关系，而是适用范围不同。简单的、可分解的、因果关系清晰的问题（如修理一台坏了的机器），线性思维高效且足够。但面对存在反馈、涌现、延迟的复杂问题（如组织变革、公共政策、生态系统），线性思维几乎必然产生意想不到的后果，这时就需要系统思维。关键是有意识地选择合适的工具。' },
+  q13: { correct: 'b', explanation: '系统思维是技能不是知识——读完所有书也无法让你成为系统思考者，就像读完所有游泳书也无法让你会游泳。最关键的第一步是从观察日常生活中的反馈回路开始——\"刷手机越多越焦虑，越焦虑越刷手机\"——通过持续的刻意练习，系统思维才能从\"概念\"变成\"直觉\"。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了系统思维实践的核心方法论——恭喜完成全部十课！';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了实践方法。复习错题，回顾对应课程内容就彻底融会贯通了。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读\"冰山模型\"和\"工具箱\"部分，并回顾前几课的核心概念。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。系统思维实践需要时间——从冰山模型开始，每天找一个生活中的问题来练习。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

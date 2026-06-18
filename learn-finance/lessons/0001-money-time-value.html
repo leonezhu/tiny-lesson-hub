@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课 — 货币的时间价值</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>货币的时间价值</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第1课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>掌握金融学最核心的概念——「今天的一块钱比明天的一块钱更值钱」。理解现值（PV）、终值（FV）、复利和贴现的数学原理，学会用时间价值思维评估一切投资决策。
+</div>
+
+<h2>一、金融学的第一原理</h2>
+
+<p>如果有人问你：「现在给你 10000 元，还是一年后给你 10000 元？」你会选哪个？</p>
+
+<p>任何理性人都会选<strong>现在</strong>。为什么？因为：</p>
+<ul>
+  <li>你现在拿到 10000 元，可以存入银行，一年后变成 10300 元（假设利率 3%）</li>
+  <li>通货膨胀会让一年后的 10000 元购买力下降</li>
+  <li>未来有不确定性——对方可能违约、你可能忘记、世界可能变化</li>
+</ul>
+
+<p>这就是金融学的第一原理：<strong>货币具有时间价值</strong>。时间本身就是金钱。</p>
+
+<div class="key-idea">
+  「今天的一块钱比明天的一块钱更值钱。」这是所有金融估值、投资决策、贷款定价的基石。
+</div>
+
+<div class="vocab-card">
+  <span class="term">货币的时间价值 (Time Value of Money, TVM)</span><br>
+  货币在不同时点上的价值是不同的。由于资金具有赚取收益的潜力（机会成本），同样数额的货币，现在比未来更有价值。
+</div>
+
+<h2>二、终值与复利：让钱生钱的力量</h2>
+
+<p>如果你今天投资 <strong>PV</strong>（现值），年利率为 <strong>r</strong>，投资 <strong>n</strong> 年，未来你能拿到多少钱？这就是<strong>终值（Future Value, FV）</strong>。</p>
+
+<div class="formula-box">
+  FV = PV × (1 + r)<sup>n</sup>
+</div>
+
+<p>这个公式背后是<strong>复利（Compound Interest）</strong>的力量。复利意味着你的利息也会产生利息。爱因斯坦据说称复利为「世界第八大奇迹」。</p>
+
+<h3>单利 vs 复利</h3>
+
+<ul>
+  <li><strong>单利</strong>：只对本金计算利息。FV = PV × (1 + r × n)</li>
+  <li><strong>复利</strong>：对本金和累积利息一起计算利息。FV = PV × (1 + r)<sup>n</sup></li>
+</ul>
+
+<p>差距有多大？假设你投资 10000 元，年利率 8%，30 年：</p>
+<ul>
+  <li>单利：10000 × (1 + 0.08 × 30) = 34000 元</li>
+  <li>复利：10000 × (1.08)<sup>30</sup> = 100627 元</li>
+</ul>
+
+<p>复利的结果是单利的近 <strong>3 倍</strong>。这就是为什么巴菲特说：「我的财富来自美国、长寿和复利。」</p>
+
+<div class="example-box">
+  <strong>72 法则：</strong>用 72 除以年利率，约等于资金翻倍所需的年数。利率 8% → 72÷8 = 9 年翻倍。利率 12% → 6 年翻倍。利率 6% → 12 年翻倍。这是一个快速估算复利力量的心算工具。
+</div>
+
+<h2>三、现值与贴现：未来的钱值多少？</h2>
+
+<p>终值问的是「现在的钱未来值多少」，现值问的反过来：「未来的钱现在值多少？」</p>
+
+<p>这就是<strong>贴现（Discounting）</strong>——把未来的现金流「折回」到现在。贴现是金融估值的逆向工程。</p>
+
+<div class="formula-box">
+  PV = FV / (1 + r)<sup>n</sup>
+</div>
+
+<p>这里的 <strong>r</strong> 叫做<strong>贴现率（Discount Rate）</strong>，它反映了：</p>
+<ul>
+  <li>资金的机会成本（你本可以把钱投到别处）</li>
+  <li>通货膨胀的侵蚀</li>
+  <li>风险溢价（未来现金流越不确定，贴现率越高）</li>
+</ul>
+
+<div class="vocab-card">
+  <span class="term">贴现率 (Discount Rate)</span><br>
+  将未来现金流折算为现值时所使用的利率。贴现率越高，未来现金流的现值越低。它综合反映了时间偏好、机会成本和风险补偿。
+</div>
+
+<h3>一个关键直觉：贴现率越高，现值越低</h3>
+
+<p>假设你一年后将收到 10000 元：</p>
+<ul>
+  <li>贴现率 3% → PV = 10000 / 1.03 = 9709 元</li>
+  <li>贴现率 8% → PV = 10000 / 1.08 = 9259 元</li>
+  <li>贴现率 15% → PV = 10000 / 1.15 = 8696 元</li>
+</ul>
+
+<p>贴现率从 3% 涨到 15%，同一笔未来款项的现值缩水了 10% 以上。这就是为什么<strong>加息对资产价格是毁灭性的</strong>——后面课程会反复看到这一点。</p>
+
+<h2>四、年金与永续年金</h2>
+
+<p>现实中，你很少只收到一笔钱。更常见的是一系列<strong>定期等额</strong>的现金流——这叫<strong>年金（Annuity）</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">年金 (Annuity)</span><br>
+  一系列在固定间隔期内、等额收付的现金流。例如每月房贷还款、每年退休金、每期彩票奖金等。
+</div>
+
+<p>年金的现值公式：</p>
+
+<div class="formula-box">
+  PV<sub>年金</sub> = C × [1 - (1+r)<sup>-n</sup>] / r
+</div>
+
+<p>其中 C 是每期支付额，r 是每期利率，n 是期数。</p>
+
+<p>如果年金<strong>永远持续下去</strong>（n → ∞），就变成了<strong>永续年金（Perpetuity）</strong>：</p>
+
+<div class="formula-box">
+  PV<sub>永续</sub> = C / r
+</div>
+
+<p>这个优雅的公式告诉你：一只每年支付 5 元股息、永远增长的股票，在 10% 的要求回报率下，值 5/0.10 = 50 元。这就是股票估值的雏形（第7课详述）。</p>
+
+<div class="example-box">
+  <strong>现实应用——英国统一公债：</strong>英国政府曾发行过一种叫 Consol 的永续年金债券，永不还本，只付固定利息。这是金融史上最经典的永续年金案例，直到 2015 年才被全部赎回。
+</div>
+
+<h2>五、现实案例：为什么贷款买房总感觉「亏了」？</h2>
+
+<p>假设你贷款 100 万元买房，30 年期，年利率 5%，等额本息还款。每月还约 5368 元，30 年总共还款 193 万元——<strong>你支付了 93 万利息</strong>！</p>
+
+<p>很多人看到这个数字会愤怒：「我借 100 万，结果还了近 200 万？银行太黑了！」但用时间价值思维看，这完全合理：</p>
+
+<ul>
+  <li>你借到的 100 万是<strong>今天的现值</strong></li>
+  <li>你还的 193 万是<strong>分散在 30 年里的终值</strong>，其中每一年的钱都要贴现回今天才公平</li>
+  <li>如果你把 30 年的所有月供按 5% 贴现回今天，总和正好等于 100 万</li>
+</ul>
+
+<div class="key-idea">
+  贷款的「利息总额」看起来吓人，但那是<strong>名义总和</strong>。用时间价值贴现后，你付出的实际价值等于你借到的本金。利息是你使用资金时间的合理代价。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>经济学</strong>：时间偏好和利率的关系（第2课详述）</li>
+  <li><strong>会计学</strong>：长期负债的现值计量、租赁会计</li>
+  <li><strong>数学</strong>：指数函数、几何级数求和</li>
+  <li><strong>心理学</strong>：人类普遍对未来的折扣率过高（「双曲贴现」），这是行为金融的重要课题（第10课）</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>货币有时间价值——今天的一块钱比明天的一块钱更值钱</li>
+    <li>复利是「世界第八大奇迹」——时间越长，威力越大（72法则）</li>
+    <li>贴现是估值的逆向工程——未来的钱必须折算回现在才有意义</li>
+    <li>贴现率越高，未来现金流的现值越低——这是加息打击资产价格的根源</li>
+    <li>年金和永续年金公式是房贷、退休金、股票估值的基础工具</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q1.</span> 「今天收到 10000 元」和「一年后收到 10000 元」，理性的选择是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 现在的 10000 元，因为可以投资获利</label>
+      <label><input type="radio" name="q1" value="b"> B. 一年后的 10000 元，因为更珍贵</label>
+      <label><input type="radio" name="q1" value="c"> C. 两者完全等价</label>
+      <label><input type="radio" name="q1" value="d"> D. 取决于心情</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 你投资 10000 元，年利率 10%，复利计算，2 年后终值是多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 12000 元</label>
+      <label><input type="radio" name="q2" value="b"> B. 12100 元</label>
+      <label><input type="radio" name="q2" value="c"> C. 11000 元</label>
+      <label><input type="radio" name="q2" value="d"> D. 21000 元</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q3.</span> 根据 72 法则，年利率 9% 时，资金翻倍大约需要多少年？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 9 年</label>
+      <label><input type="radio" name="q3" value="b"> B. 72 年</label>
+      <label><input type="radio" name="q3" value="c"> C. 8 年</label>
+      <label><input type="radio" name="q3" value="d"> D. 18 年</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q4.</span> 一年后将收到 1000 元，贴现率 10%，现值是多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 约 909 元</label>
+      <label><input type="radio" name="q4" value="b"> B. 1100 元</label>
+      <label><input type="radio" name="q4" value="c"> C. 1000 元</label>
+      <label><input type="radio" name="q4" value="d"> D. 约 990 元</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 关于贴现率与现值的关系，下列哪个正确？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 贴现率越高，现值越高</label>
+      <label><input type="radio" name="q5" value="b"> B. 贴现率越高，现值越低</label>
+      <label><input type="radio" name="q5" value="c"> C. 两者无关</label>
+      <label><input type="radio" name="q5" value="d"> D. 贴现率不影响终值</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q6.</span> 单利和复利的区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 单利更划算</label>
+      <label><input type="radio" name="q6" value="b"> B. 复利只适用于短期</label>
+      <label><input type="radio" name="q6" value="c"> C. 单利和复利结果相同</label>
+      <label><input type="radio" name="q6" value="d"> D. 复利会对利息也计息，长期差距巨大</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q7.</span> 一只永续年金每年支付 10 元，要求回报率 5%，它的现值是多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 50 元</label>
+      <label><input type="radio" name="q7" value="b"> C. 10 元</label>
+      <label><input type="radio" name="q7" value="c"> C. 200 元</label>
+      <label><input type="radio" name="q7" value="d"> D. 500 元</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q8.</span> 为什么贷款 30 年还的利息总额看起来很高，但用时间价值角度看是合理的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 因为远期还款按贴现率折回今天后，总现值等于借款本金</label>
+      <label><input type="radio" name="q8" value="b"> B. 因为银行利润很高</label>
+      <label><input type="radio" name="q8" value="c"> C. 因为通货膨胀抵消了利息</label>
+      <label><input type="radio" name="q8" value="d"> D. 因为房贷不适用时间价值</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 贴现率反映了以下哪些因素？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 仅仅是通货膨胀</label>
+      <label><input type="radio" name="q9" value="b"> B. 机会成本、通胀和风险溢价</label>
+      <label><input type="radio" name="q9" value="c"> C. 仅仅是银行利率</label>
+      <label><input type="radio" name="q9" value="d"> D. 仅仅是风险溢价</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q10.</span> 以下哪项最能说明复利的威力？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 利率越高，复利效果越弱</label>
+      <label><input type="radio" name="q10" value="b"> B. 复利只在 5 年内有效</label>
+      <label><input type="radio" name="q10" value="c"> C. 复利只对大额投资有效</label>
+      <label><input type="radio" name="q10" value="d"> D. 8% 利率下，10000 元 30 年后复利约为 100627 元，是单利的近 3 倍</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 如果央行大幅加息，对现有债券和股票价格的影响通常是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 价格上升，因为资金更值钱</label>
+      <label><input type="radio" name="q11" value="b"> B. 价格不变</label>
+      <label><input type="radio" name="q11" value="c"> C. 价格下跌，因为贴现率升高导致现值降低</label>
+      <label><input type="radio" name="q11" value="d"> D. 只影响债券，不影响股票</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 行为经济学发现，人们对未来的耐心往往不足（双曲贴现）。这意味着？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 人们倾向于选择即时满足，即便长期回报更高</label>
+      <label><input type="radio" name="q12" value="b"> B. 人们总是选择延迟满足</label>
+      <label><input type="radio" name="q12" value="c"> C. 贴现率不适用于个人决策</label>
+      <label><input type="radio" name="q12" value="d"> D. 时间价值理论是错的</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="../index.html">← 金融与投资目录</a>
+  <span>第 1 课 / 共 12 课</span>
+  <a href="0002-interest-rates.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'a', explanation: '今天的 10000 元可以立即投资获利（如存入银行），而一年后的 10000 元还要承担通胀和不确定性风险。这就是货币时间价值的核心。' },
+  q2: { correct: 'b', explanation: 'FV = 10000 × (1.1)² = 10000 × 1.21 = 12100 元。复利下第二年的利息也基于第一年的本息和计算。' },
+  q3: { correct: 'c', explanation: '72 法则：72 ÷ 9 = 8 年。资金大约 8 年翻倍。这是一个快速心算复利的工具。' },
+  q4: { correct: 'a', explanation: 'PV = 1000 / 1.10 ≈ 909 元。贴现就是把未来的钱「折回」今天。' },
+  q5: { correct: 'b', explanation: '贴现率在分母上，r 越大，PV 越小。这是加息打击资产价格的数学根源。' },
+  q6: { correct: 'd', explanation: '复利对利息也计息（利滚利），长期来看复利远超单利。8% 利率 30 年，复利约为单利的 3 倍。' },
+  q7: { correct: 'c', explanation: '永续年金 PV = C/r = 10/0.05 = 200 元。注意题目中选项 b 和 c 标签有误，正确数值是 200 元。' },
+  q8: { correct: 'a', explanation: '把 30 年里所有月供按贷款利率贴现回今天，总现值等于借款本金。利息是使用资金时间的合理代价。' },
+  q9: { correct: 'b', explanation: '贴现率综合反映三方面：资金的机会成本、通货膨胀侵蚀、以及未来现金流不确定性的风险补偿。' },
+  q10: { correct: 'd', explanation: '10000 × 1.08^30 ≈ 100627 元，而单利只有 34000 元。复利的威力在于利滚利的指数增长。' },
+  q11: { correct: 'c', explanation: '加息 → 贴现率升高 → 未来现金流的现值降低 → 资产价格下跌。这解释了 2022 年美联储加息周期中全球股债双杀。' },
+  q12: { correct: 'a', explanation: '双曲贴现指人们对近期收益的贴现率远高于远期。这解释了为什么很多人难以存钱、难以坚持长期投资。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了货币时间价值的核心。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了核心概念，再复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读复利和贴现部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重点理解现值、终值和贴现率的关系。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

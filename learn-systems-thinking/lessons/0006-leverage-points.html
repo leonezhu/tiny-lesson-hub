@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 杠杆点：系统的关键干预点</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>杠杆点：系统的关键干预点</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第6课 / 共10课 · 约16分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解「杠杆点」的概念——系统中哪些地方投入小努力能产生大改变；掌握 Donella Meadows 的杠杆点层级（从低效到高效）；学会识别现实系统中的高杠杆与低杠杆干预；理解为什么最强大的杠杆点往往最反直觉、最难推动。
+</div>
+
+<h2>一、为什么有些努力白费，有些四两拨千斤？</h2>
+
+<p>想象你要让一辆高速行驶的火车停下来。你可以站在铁轨上用手推（低杠杆，几乎无效）；可以拉紧急制动闸（中杠杆，有效但粗暴）；也可以在几十公里外发信号让司机减速（高杠杆，优雅且根本）。</p>
+
+<p>系统也是如此。<strong>并非系统中所有位置都同等重要</strong>。有些地方你投入巨大精力却收效甚微；有些地方轻轻一推，整个系统的行为就彻底改变。这些关键位置，就是<strong>杠杆点</strong>（Leverage Points）。</p>
+
+<div class="key-idea">
+  杠杆点 = 系统中「小改变 → 大影响」的关键位置。找到它，你的干预事半功倍；找错它，你的努力可能不仅无效，还会适得其反。
+</div>
+
+<p>系统科学家 Donella Meadows 在其经典论文《系统中的杠杆点》中，把系统的干预点从低效到高效排成了 12 个层级。这份「地图」是任何想真正改变系统的人的必读指南。</p>
+
+<h2>二、杠杆点层级：从低效到高效</h2>
+
+<p>Meadows 把杠杆点按效力从低到高排列（数字越小越无效，越大越强大）。我们重点讲解最关键的几层。</p>
+
+<h3>低杠杆区（12—9）：常被高估，效果有限</h3>
+
+<div class="vocab-card">
+  <span class="term">12. 常数与参数（数字、税率、预算）</span><br>
+  调整数字（如把税率从 20% 调到 22%、把预算增加 10%）是人们最直觉的干预，但通常是<strong>最低效</strong>的。参数调整很少能改变系统的根本行为模式。
+</div>
+
+<div class="vocab-card">
+  <span class="term">11. 缓冲区的大小（存量的大小）</span><br>
+  增大系统的缓冲存量（如战略石油储备）能增加稳定性，但往往代价高昂且见效慢。
+</div>
+
+<div class="vocab-card">
+  <span class="term">10. 物料存量/流量的结构（管道与网络）</span><br>
+  改变物质流动的物理结构（如修建新道路、重新设计供应链）。改动成本高，且一旦建成很难改变。
+</div>
+
+<h3>中杠杆区（8—5）：开始触及系统的「软件」</h3>
+
+<div class="vocab-card">
+  <span class="term">9. 延迟的长度（反馈的时滞）</span><br>
+  缩短关键反馈的延迟（如实时数据 vs. 季度报告）能让系统响应更快、振荡更小。但延迟太短也可能导致过度反应。
+</div>
+
+<div class="vocab-card">
+  <span class="term">8. 负反馈回路的强度（自我纠正机制）</span><br>
+  加强系统的负反馈（如更严格的监管、更灵敏的纠错机制）能让系统更稳定。这是相当有效的杠杆点。
+</div>
+
+<div class="vocab-card">
+  <span class="term">7. 正反馈回路的强度（增长引擎）</span><br>
+  控制正反馈的强度（如限制复利、抑制恶性通胀螺旋）能防止系统失控。调节正反馈比调节负反馈更难，但也更关键。
+</div>
+
+<div class="vocab-card">
+  <span class="term">6. 信息流（谁有什么信息）</span><br>
+  改变信息的流向和透明度——让原本看不到后果的人看到后果。这是非常高效的杠杆点，因为信息几乎零成本，却能彻底改变行为。
+</div>
+
+<h3>高杠杆区（5—1）：最强大，也最反直觉</h3>
+
+<div class="vocab-card">
+  <span class="term">5. 系统的规则（激励、惩罚、约束）</span><br>
+  改变游戏规则本身——谁有什么权力、奖惩如何分配、准入门槛是什么。规则一变，所有人的行为都跟着变。
+</div>
+
+<div class="vocab-card">
+  <span class="term">4. 自组织的能力（系统进化、学习、多元化的能力）</span><br>
+  让系统具备自我进化的能力——多样性、变异、选择机制。这是生物演化、市场经济、科学共同体之所以强大的根源。
+</div>
+
+<div class="vocab-card">
+  <span class="term">3. 系统的目标（系统真正追求什么）</span><br>
+  改变系统追求的目标本身。从「追求 GDP 增长」到「追求幸福指数」，从「追求考试分数」到「追求真实能力」——目标一变，整个系统的优化方向都变了。
+</div>
+
+<div class="vocab-card">
+  <span class="term">2. 世界观/范式（如何看待世界）</span><br>
+  改变人们看待世界的基本假设。从「地球是宇宙中心」到「地球绕太阳转」；从「人是理性的」到「人是有限理性的」——范式转变会自动重塑下面所有层级。
+</div>
+
+<div class="vocab-card">
+  <span class="term">1. 超越范式（放下一切固有观念）</span><br>
+  最高的杠杆点：不被任何单一范式束缚，保持开放和灵活。这听起来玄妙，但本质上是指<strong>能够灵活地在不同范式间切换</strong>，不被任何一种「理所当然」困住。
+</div>
+
+<h2>三、关键洞察：高杠杆点为何反直觉？</h2>
+
+<p>你会发现一个规律：<strong>越高效的杠杆点，越少有人去推动，也越难推动</strong>。为什么？</p>
+
+<ul>
+  <li><strong>参数调整容易，规则改变难</strong>：改个数字只需一道行政命令；改规则意味着重新分配权力和利益，会遇到激烈抵抗。</li>
+  <li><strong>改目标意味着承认之前的目标错了</strong>：这需要极大的勇气和认知重构。</li>
+  <li><strong>范式转变最痛苦</strong>：因为它动摇的是人们「理所当然」的世界观。哥白尼说地球不是中心，伽利略支持他，结果是被软禁。</li>
+</ul>
+
+<div class="example-box">
+  <strong>经典对比——治理交通拥堵：</strong>低杠杆：多修路、调限速（参数）。结果往往「诱导需求」——路越修越堵。中杠杆：拥堵收费、信息公开（信息流）。效果更好但遇阻力。高杠杆：改变城市规划规则（规则）、重新定义「出行」的目标（目标）、甚至改变「拥有私家车是成功标志」的范式（世界观）。真正解决拥堵的，往往是高杠杆的改变。
+</div>
+
+<h2>四、跨学科：杠杆点在各领域的体现</h2>
+
+<ul>
+  <li><strong>经济学</strong>：调整利率是参数（低杠杆）；改变金融监管规则是规则层（中高杠杆）；从「GDP 优先」转向「可持续发展」是目标层（高杠杆）。</li>
+  <li><strong>医学</strong>：开药控制症状是参数（低杠杆）；改变生活方式是规则层；医学范式从「治病」转向「健康促进」是高杠杆。</li>
+  <li><strong>教育</strong>：改教材内容是参数；改考试制度是规则；从「分数导向」转向「能力导向」是目标层；从「知识灌输」转向「终身学习」是范式层。</li>
+  <li><strong>环境</strong>：碳税是参数/规则；循环经济是结构；从「征服自然」到「与自然共生」是范式转变——这才是应对气候变化最根本的杠杆。</li>
+  <li><strong>AI/软件</strong>：调超参数是低杠杆；改架构是结构层；从「监督学习」到「自监督/强化学习」的范式转变是高杠杆。</li>
+</ul>
+
+<div class="example-box">
+  <strong>现实应用——公共场所禁烟：</strong>单纯提高烟草税（参数）效果有限。真正的突破来自信息流杠杆（强制在烟盒上印警示图）和规则杠杆（室内公共场所全面禁烟）。规则改变后，吸烟的「社会范式」从「正常甚至时髦」转变为「不健康且不礼貌」，从根本上重塑了行为。这是高杠杆干预的典范。
+</div>
+
+<h2>五、警惕：杠杆点的「陷阱」</h2>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>高杠杆 ≠ 容易推动</strong>：恰恰相反。最高效的杠杆点往往最难推动，因为它们触及既得利益和根深蒂固的世界观。</li>
+  <li><strong>低杠杆努力也有价值</strong>：参数调整虽然效力低，但它是渐进改革的起点，且积累起来也可能触发更高层的变化。</li>
+  <li><strong>误判杠杆点是灾难</strong>：在错误的位置使劲，不仅无效，还可能消耗本该用于高杠杆点的资源，甚至因「修修补补」而掩盖根本问题。</li>
+  <li><strong>杠杆点会迁移</strong>：随着系统演化，曾经有效的杠杆点可能失效。需要持续地重新识别。</li>
+</ol>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>杠杆点 = 「小改变 → 大影响」的关键位置；找对事半功倍，找错事倍功半</li>
+    <li>Meadows 的 12 层级：参数（低效）→ 规则 → 目标 → 范式（高效）</li>
+    <li>越高效的杠杆点越反直觉、越难推动——因为它触及权力和世界观</li>
+    <li>信息流是性价比极高的杠杆点：几乎零成本，却能彻底改变行为</li>
+    <li>最高杠杆是范式转变：改变人们「理所当然」的基本假设</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 「杠杆点」的核心含义是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 系统中最贵的部分</label>
+      <label><input type="radio" name="q1" value="b"> B. 系统中最大的部分</label>
+      <label><input type="radio" name="q1" value="c"> C. 系统中「小改变 → 大影响」的关键位置</label>
+      <label><input type="radio" name="q1" value="d"> D. 系统中最容易修改的部分</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> 在 Meadows 的杠杆点层级中，调整「数字/参数」（如税率、预算）属于？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 最低效的杠杆点之一</label>
+      <label><input type="radio" name="q2" value="b"> B. 中等效率的杠杆点</label>
+      <label><input type="radio" name="q2" value="c"> C. 最高效的杠杆点</label>
+      <label><input type="radio" name="q2" value="d"> D. 不算杠杆点</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q3.</span> 以下哪个属于「信息流」这一杠杆点的应用？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 提高罚款金额</label>
+      <label><input type="radio" name="q3" value="b"> B. 增加警察数量</label>
+      <label><input type="radio" name="q3" value="c"> C. 修建更多监狱</label>
+      <label><input type="radio" name="q3" value="d"> D. 让工厂排污数据实时公开，让受影响的社区居民看到</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q4.</span> 为什么「改变系统规则」比「调整参数」更有效？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 因为规则总是对的</label>
+      <label><input type="radio" name="q4" value="b"> B. 因为规则定义了权力分配、奖惩机制和准入门槛，规则一变所有人的行为都跟着变</label>
+      <label><input type="radio" name="q4" value="c"> C. 因为改规则更容易</label>
+      <label><input type="radio" name="q4" value="d"> D. 因为参数不重要</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q5.</span> 在 Meadows 的层级中，最高效的两个杠杆点是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 调参数和改缓冲区</label>
+      <label><input type="radio" name="q5" value="b"> B. 修管道和缩短延迟</label>
+      <label><input type="radio" name="q5" value="c"> C. 改变世界观/范式，以及超越范式（不被任何单一观念束缚）</label>
+      <label><input type="radio" name="q5" value="d"> D. 加强正反馈和负反馈</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q6.</span> 为什么最高效的杠杆点往往最难推动？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 因为它们触及既得利益的权力分配和根深蒂固的世界观，会遇到激烈抵抗</label>
+      <label><input type="radio" name="q6" value="b"> B. 因为它们技术上不可能实现</label>
+      <label><input type="radio" name="q6" value="c"> C. 因为没有人知道它们是什么</label>
+      <label><input type="radio" name="q6" value="d"> D. 因为高杠杆点其实是错的</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q7.</span> 治理交通拥堵，以下哪种干预属于高杠杆？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 把限速从 60 调到 80（参数）</label>
+      <label><input type="radio" name="q7" value="b"> B. 改变城市规划规则、重新定义「出行」的目标、甚至改变「拥有私家车等于成功」的范式</label>
+      <label><input type="radio" name="q7" value="c"> C. 多修一条车道（参数/结构）</label>
+      <label><input type="radio" name="q7" value="d"> D. 给司机发补贴</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 「信息流」作为杠杆点为什么性价比极高？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 因为信息总是正确的</label>
+      <label><input type="radio" name="q8" value="b"> B. 因为信息可以赚钱</label>
+      <label><input type="radio" name="q8" value="c"> C. 因为信息流越大越好</label>
+      <label><input type="radio" name="q8" value="d"> D. 因为改变信息流向几乎零成本，却能让原本看不到后果的人看到后果，从而彻底改变行为</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q9.</span> 「自组织能力」作为杠杆点（第4层）的含义是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 让系统更听话地执行命令</label>
+      <label><input type="radio" name="q9" value="b"> B. 让系统完全混乱以激发创造力</label>
+      <label><input type="radio" name="q9" value="c"> C. 让系统具备自我进化、学习、多元化的能力——多样性、变异、选择机制，这是演化、市场、科学强大的根源</label>
+      <label><input type="radio" name="q9" value="d"> D. 把系统拆成更小的部分</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 跨学科思考：医学中，从「治病」转向「健康促进」属于哪个杠杆层级？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 改变系统的目标（第3层，高杠杆）</label>
+      <label><input type="radio" name="q10" value="b"> B. 调整参数（第12层，低杠杆）</label>
+      <label><input type="radio" name="q10" value="c"> C. 改变缓冲区（第11层）</label>
+      <label><input type="radio" name="q10" value="d"> D. 改变物料结构（第10层）</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 关于杠杆点的「陷阱」，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 高杠杆点一定容易推动</label>
+      <label><input type="radio" name="q11" value="b"> B. 在错误的位置使劲不仅无效，还可能消耗资源、掩盖根本问题，甚至适得其反</label>
+      <label><input type="radio" name="q11" value="c"> C. 低杠杆努力完全无用，应该避免</label>
+      <label><input type="radio" name="q11" value="d"> D. 杠杆点一旦找到就永远不变</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 现实应用：公共场所禁烟之所以成功，主要利用了哪些杠杆点？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 只靠提高烟草税（参数）</label>
+      <label><input type="radio" name="q12" value="b"> B. 只靠警察执法</label>
+      <label><input type="radio" name="q12" value="c"> C. 只靠医生劝告</label>
+      <label><input type="radio" name="q12" value="d"> D. 信息流（烟盒警示图）+ 规则（室内全面禁烟）+ 范式转变（吸烟从「时髦」变「不健康」）</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0005-emergence.html">← 上一课</a>
+  <span>第 6 课 / 共 10 课</span>
+  <a href="0007-system-archetypes.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '杠杆点是系统中「小改变 → 大影响」的关键位置。它不一定是最贵、最大或最容易改的部分，而是改变它能撬动整个系统行为的点——正如阿基米德说的「给我一个支点，我能撬动地球」。' },
+  q2: { correct: 'a', explanation: '调整数字/参数（如税率、预算、限速）在 Meadows 的层级中是最底层的杠杆点（第12层），效力最低。虽然这是人们最直觉的干预方式，但参数调整很少能改变系统的根本行为模式。' },
+  q3: { correct: 'd', explanation: '让工厂排污数据实时公开，让受影响的社区居民看到后果，这是典型的「信息流」杠杆点（第6层）。它几乎零成本，却能让原本看不到后果的人（居民）施加压力，从而改变工厂行为。' },
+  q4: { correct: 'b', explanation: '规则定义了谁有什么权力、奖惩如何分配、准入门槛是什么。规则一变，所有人的激励和行为都跟着变——这比单纯调参数强大得多。这也是为什么改规则会遭到既得利益者的激烈抵抗。' },
+  q5: { correct: 'c', explanation: 'Meadows 层级中最高效的两个杠杆点是：改变世界观/范式（第2层）和超越范式（第1层）。范式转变会自动重塑下面所有层级——目标、规则、参数都会随之改变。' },
+  q6: { correct: 'a', explanation: '最高效的杠杆点（改变规则、目标、范式）触及既得利益的权力分配和根深蒂固的世界观，因此会遇到最激烈的抵抗。这就是为什么真正的系统性变革如此困难——不是因为技术上不可能，而是政治和认知上的阻力。' },
+  q7: { correct: 'b', explanation: '多修车道、调限速都是低杠杆参数调整，往往因「诱导需求」而无效。真正的高杠杆是改变城市规划规则、重新定义出行目标、甚至改变「拥有私家车等于成功」的社会范式——这些触及根本，也最难推动。' },
+  q8: { correct: 'd', explanation: '信息流杠杆点性价比极高，因为改变信息流向几乎零成本（不需要建基础设施），却能让原本看不到后果的人（如污染受害者）看到后果，从而自发改变行为或施加压力。信息的透明化本身就是强大的干预。' },
+  q9: { correct: 'c', explanation: '自组织能力指系统具备自我进化、学习、多元化的能力——多样性、变异、选择机制。生物演化、市场经济、科学共同体之所以强大，正是因为它们有强大的自组织能力。提升系统的自组织能力是极高杠杆的干预。' },
+  q10: { correct: 'a', explanation: '从「治病」到「健康促进」是改变医学系统的目标（第3层，高杠杆）。目标从「治疗已发生的疾病」转向「预防疾病、提升整体健康」，整个系统的资源分配、评价标准、人员培训都会随之重构。这比单纯调整药费报销比例（参数）有效得多。' },
+  q11: { correct: 'b', explanation: '在错误的位置使劲（误判杠杆点）是灾难性的：不仅无效，还会消耗本该用于高杠杆点的资源，甚至因「修修补补」而掩盖根本问题，让情况恶化。同时，低杠杆努力也有渐进价值，杠杆点也会随系统演化而迁移，需持续重新识别。' },
+  q12: { correct: 'd', explanation: '公共场所禁烟的成功是多杠杆组合：信息流（烟盒警示图让危害可见）、规则（室内全面禁烟重新定义了行为边界）、范式转变（吸烟的社会意义从「时髦」变为「不健康不礼貌」）。单一杠杆（如只加税）效果有限，多杠杆协同才实现了根本性行为改变。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+    fb.className = 'feedback';
+    if (!selected) { fb.className = 'feedback wrong'; fb.textContent = '⚠ 你还没有选择答案。'; continue; }
+    if (selected.value === data.correct) {
+      score++; fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`; questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  scoreNum.textContent = `${score} / ${total}`;
+  const pct = score / total;
+  if (pct === 1) { scoreMsg.textContent = '🎉 完美！你已经掌握了杠杆点的核心思想，能识别高低杠杆了。'; }
+  else if (pct >= 0.7) { scoreMsg.textContent = '👍 很棒！你理解了杠杆点层级。再复习一下「高杠杆为何反直觉」。'; }
+  else if (pct >= 0.4) { scoreMsg.textContent = '📖 还行。建议重读 Meadows 的 12 层级，特别注意从参数到范式的跃迁。'; }
+  else { scoreMsg.textContent = '💪 别灰心。重读课程，重点理解「小改变→大影响」和层级排列的逻辑。'; }
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

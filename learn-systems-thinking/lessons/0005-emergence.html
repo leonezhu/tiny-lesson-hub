@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 涌现：简单规则产生复杂行为</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>涌现：简单规则产生复杂行为</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第5课 / 共10课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>深入理解「涌现」的本质——为什么简单的局部规则能产生出人意料的整体行为；区分「弱涌现」与「强涌现」；认识涌现的两大类型（自组织与模式涌现）；学会用「自下而上」的视角预测和解释复杂现象，警惕对涌现行为的过度简化归因。
+</div>
+
+<h2>一、从一只鸟到一个群落</h2>
+
+<p>站在湖边，你可能见过椋鸟群的「飞舞」：成千上万只鸟在空中旋转、扭动、形成巨大的形状，像一个会呼吸的生命体。它们没有指挥官，没有导航员，没有任何一只鸟「知道」整个群体的形状。</p>
+
+<p>这种令人惊叹的集体行为是怎么产生的？20世纪80年代，计算机科学家 Craig Reynolds 用三条极简规则在电脑里模拟出了几乎一模一样的鸟群：</p>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>分离</strong>：不要和邻居靠得太近（避免碰撞）。</li>
+  <li><strong>对齐</strong>：朝邻居们平均的飞行方向飞。</li>
+  <li><strong>聚合</strong>：朝邻居们的平均位置靠拢（不要掉队）。</li>
+</ol>
+
+<p>就这三条。每只「鸟」只看身边几只邻居，根本不知道全群的情况。结果却涌现出了复杂、优美、看似有统一意志的群体飞舞。</p>
+
+<div class="key-idea">
+  涌现的精髓：全局的复杂行为，可以由局部的简单规则 + 大量个体的相互作用自然产生——无需中央控制。
+</div>
+
+<p>这正是「涌现」（Emergence）最迷人的地方：<strong>复杂不必然来自复杂</strong>。看似需要「总设计师」的现象，往往只是大量简单个体按简单规则互动的结果。</p>
+
+<h2>二、涌现的两种类型</h2>
+
+<p>并非所有涌现都一样。系统科学家把涌现分为两大类，理解它们的区别对实际分析至关重要。</p>
+
+<div class="vocab-card">
+  <span class="term">弱涌现 (Weak Emergence)</span><br>
+  整体行为虽然无法从单个部分预测，但<strong>原则上可以通过模拟个体规则推导出来</strong>。鸟群、交通流、市场均衡都属于弱涌现——我们知道每条规则，只是计算量太大。弱涌现是「可还原但难以预测」的。
+</div>
+
+<div class="vocab-card">
+  <span class="term">强涌现 (Strong Emergence)</span><br>
+  整体产生了<strong>全新的、不可还原的属性</strong>，即使你完全知道每个部分和每条规则，也无法从底层推导出来。意识是否属于强涌现，是哲学和神经科学至今争论不休的问题。强涌现意味着「整体真的大于部分之和」，而不仅仅是「加起来太复杂」。
+</div>
+
+<div class="example-box">
+  <strong>区分示例：</strong>水的「湿润」是弱涌现——理论上可以由水分子的氢键相互作用模拟出来。但「痛觉」是否是强涌现？即使我们知道每一个神经元如何放电，是否就能解释「痛」这种主观体验？这正是哲学家所说的「意识的难问题」。
+</div>
+
+<h2>三、涌现的两大机制</h2>
+
+<p>涌现通常通过两种机制产生：</p>
+
+<h3>1. 自组织（Self-organization）</h3>
+
+<p>系统在没有外部控制的情况下，<strong>自发地从无序走向有序</strong>。关键在于「正反馈」和「负反馈」的巧妙配合：正反馈放大微小的初始差异，负反馈防止系统失控。</p>
+
+<div class="example-box">
+  <strong>经典案例——蚂蚁觅食：</strong>一只蚂蚁找到食物后，回巢路上留下信息素。其他蚂蚁倾向于跟随信息素浓度高的路径，找到食物后又加强这条路径的信息素——这是正反馈。同时，短路径上信息素积累更快（蚂蚁往返更快），长路径信息素逐渐蒸发——最终整个蚁群「自发」收敛到最短路径。没有蚂蚁在做优化计算，但整体行为像一支高效的运筹团队。
+</div>
+
+<h3>2. 模式涌现（Pattern Emergence）</h3>
+
+<p>大量个体按相同规则行动时，空间或时间上自发形成<strong>可识别的规律性模式</strong>，即使没有任何个体「设计」了这个模式。</p>
+
+<ul>
+  <li><strong>条纹与斑点</strong>：动物皮肤上的花纹（斑马纹、豹斑）由胚胎发育中两种化学物质（激活子/抑制子）的相互作用（图灵反应扩散）涌现出来。</li>
+  <li><strong>沙波纹</strong>：风吹过沙地，沙粒各自按物理规律运动，却自发形成均匀的波纹。</li>
+  <li><strong>城市的扇形结构</strong>：没有人规划，但城市自发涌现出商业区、住宅区、工业区的分化。</li>
+</ul>
+
+<h2>四、涌现的关键特征</h2>
+
+<p>涌现现象有几个识别特征，掌握它们能帮你在现实中快速辨认涌现：</p>
+
+<div class="vocab-card">
+  <span class="term">特征一：非加性 (Non-additivity)</span><br>
+  整体的属性不能通过简单相加各部分的属性得到。一块砖的重量=两块砖的一半，这是可加的；但一只蚂蚁的「智能」≠100万只蚂蚁智能的百万分之一——蚁群的集体智能是涌现出来的，单只蚂蚁几乎没有智能。
+</div>
+
+<div class="vocab-card">
+  <span class="term">特征二：不可预测性 (Unpredictability)</span><br>
+  即使你知道所有局部规则，也往往无法预测整体的具体行为。天气预报就是典型的弱涌现难题：我们完全知道大气物理方程，但因为系统对初始条件极度敏感（蝴蝶效应），长期预测几乎不可能。
+</div>
+
+<div class="vocab-card">
+  <span class="term">特征三：去中心化 (Decentralization)</span><br>
+  涌现行为通常没有中央指挥者。互联网的拓扑结构、语言的演化、市场的价格机制，都是亿万个体相互作用的结果，没有任何人在「设计」全局。
+</div>
+
+<h2>五、跨学科：涌现无处不在</h2>
+
+<p>涌现是连接所有复杂系统科学的通用语言：</p>
+
+<ul>
+  <li><strong>物理学</strong>：超导、超流是大量粒子在低温下涌现出的宏观量子现象，单个粒子不具备这些性质。</li>
+  <li><strong>生物学</strong>：生命本身就是涌现——一堆碳氢氧氮分子本身不是「活的」，但按特定方式组织后涌现出了新陈代谢、自我复制、对刺激的反应。</li>
+  <li><strong>经济学</strong>：「看不见的手」就是亚当·斯密对市场涌现现象的诗意描述——价格机制涌现于供需的相互作用。</li>
+  <li><strong>心理学/神经科学</strong>：记忆、情感、决策都涌现于神经元网络的集体活动。</li>
+  <li><strong>人工智能</strong>：大语言模型（如 GPT）的「涌现能力」是近年最受关注的现象——模型规模超过某个阈值后，突然展现出小模型完全没有的能力（如做数学、写代码），这种能力的出现无法仅从训练数据线性外推。</li>
+</ul>
+
+<div class="example-box">
+  <strong>现实应用——维基百科：</strong>没有总编辑，没有中央规划，数百万志愿者各自编辑一小块，却涌现出了人类历史上最大、最及时、质量惊人的百科全书。这是自组织 + 模式涌现的经典案例：简单的编辑规则（任何人可编辑、有版本回溯机制）+ 大量个体协作 = 高质量知识库。
+</div>
+
+<h2>六、警惕：对涌现的常见误解</h2>
+
+<p>理解涌现，也要避开几个陷阱：</p>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>「涌现 = 神秘」</strong>：错。弱涌现完全可以用已知规则解释，只是计算复杂。不要把「难以预测」等同于「无法理解」。</li>
+  <li><strong>「涌现行为一定更好」</strong>：错。涌现也能产生灾难——金融危机、谣言传播、交通拥堵都是涌现，但不一定是好事。涌现是中性的，它只是「整体行为的来源」。</li>
+  <li><strong>「找到底层规则就够了」</strong>：错。即使知道所有蚂蚁的规则，你仍可能预测错整体行为。理解涌现意味着要同时关注微观规则和宏观模式，两者缺一不可。</li>
+</ol>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>涌现 = 简单局部规则 + 大量互动 → 复杂整体行为，无需中央控制</li>
+    <li>区分弱涌现（可模拟推导）与强涌现（不可还原），两者对解释和干预的含义不同</li>
+    <li>自组织（正负反馈配合）和模式涌现（规则一致性）是两大机制</li>
+    <li>涌现的特征：非加性、不可预测、去中心化——用这三条识别现实中的涌现</li>
+    <li>涌现是中性的：既能产生智慧和秩序，也能产生危机和混乱</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 椋鸟群飞舞出复杂形状，最关键的发现是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 有一只「领头鸟」在指挥整个群体</label>
+      <label><input type="radio" name="q1" value="b"> B. 鸟群的行为无法用任何规则解释</label>
+      <label><input type="radio" name="q1" value="c"> C. 每只鸟只遵循几条简单局部规则，复杂群体行为是涌现出来的</label>
+      <label><input type="radio" name="q1" value="d"> D. 鸟群必须经过训练才能飞出复杂形状</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> Craig Reynolds 的鸟群模拟（Boids）使用了哪三条规则？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 飞行、降落、休息</label>
+      <label><input type="radio" name="q2" value="b"> B. 分离（不碰撞）、对齐（朝邻居平均方向）、聚合（向邻居靠拢）</label>
+      <label><input type="radio" name="q2" value="c"> C. 进食、繁殖、迁徙</label>
+      <label><input type="radio" name="q2" value="d"> D. 服从首领、保持队形、定期轮换</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 「涌现」最核心的思想是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 全局的复杂行为可由局部简单规则 + 大量个体互动自然产生，无需中央控制</label>
+      <label><input type="radio" name="q3" value="b"> B. 复杂现象必须由复杂原因导致</label>
+      <label><input type="radio" name="q3" value="c"> C. 只有生物系统才会涌现</label>
+      <label><input type="radio" name="q3" value="d"> D. 涌现行为总是比个体行为更优越</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q4.</span> 弱涌现与强涌现的关键区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 弱涌现发生在小系统，强涌现发生在大系统</label>
+      <label><input type="radio" name="q4" value="b"> B. 弱涌现是物理现象，强涌现是生物现象</label>
+      <label><input type="radio" name="q4" value="c"> C. 弱涌现原则上可由模拟推导，强涌现产生不可还原的新属性</label>
+      <label><input type="radio" name="q4" value="d"> D. 两者没有实质区别</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 蚂蚁找到食物后能收敛到最短路径，依赖的关键机制是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 有一只聪明的蚁后在计算最短路径</label>
+      <label><input type="radio" name="q5" value="b"> B. 信息素的正反馈（强化好路径）和信息素蒸发的「负反馈」（淘汰差路径）配合</label>
+      <label><input type="radio" name="q5" value="c"> C. 蚂蚁会互相口头交流路径信息</label>
+      <label><input type="radio" name="q5" value="d"> D. 纯属偶然</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q6.</span> 以下哪一项是「非加性」涌现的体现？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 两块砖的重量等于一块砖的两倍</label>
+      <label><input type="radio" name="q6" value="b"> B. 房间的温度等于各物体温度的平均</label>
+      <label><input type="radio" name="q6" value="c"> C. 班级的总分等于个人分数之和</label>
+      <label><input type="radio" name="q6" value="d"> D. 单只蚂蚁几乎没有智能，但百万只蚂蚁的蚁群展现出集体智能</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 为什么天气预报即使完全掌握了大气方程仍难以长期准确预测？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 因为大气是弱涌现系统，对初始条件极度敏感（蝴蝶效应），微小的测量误差会被放大</label>
+      <label><input type="radio" name="q7" value="b"> B. 因为气象学家不懂物理</label>
+      <label><input type="radio" name="q7" value="c"> C. 因为天气根本没有规律</label>
+      <label><input type="radio" name="q7" value="d"> D. 因为超级计算机不够快</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 「去中心化」在涌现中意味着什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 系统必须远离地理中心才能运作</label>
+      <label><input type="radio" name="q8" value="b"> B. 复杂的整体行为通常没有中央指挥者，由个体互动自发产生</label>
+      <label><input type="radio" name="q8" value="c"> C. 系统越小越好</label>
+      <label><input type="radio" name="q8" value="d"> D. 所有决策都应由基层做出</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q9.</span> 关于涌现的「自组织」，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 自组织必须有外部设计者安排</label>
+      <label><input type="radio" name="q9" value="b"> B. 自组织只靠正反馈就够了</label>
+      <label><input type="radio" name="q9" value="c"> C. 自组织是正反馈（放大差异）和负反馈（防止失控）的巧妙配合，使系统自发从无序到有序</label>
+      <label><input type="radio" name="q9" value="d"> D. 自组织只发生在生物系统中</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q10.</span> 跨学科思考：亚当·斯密的「看不见的手」描述的是哪种现象？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 政府对市场的强力干预</label>
+      <label><input type="radio" name="q10" value="b"> B. 某个超级企业家对价格的操控</label>
+      <label><input type="radio" name="q10" value="c"> C. 一种超自然力量</label>
+      <label><input type="radio" name="q10" value="d"> D. 市场价格机制涌现于大量供需主体的相互作用，没有中央设计者</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 以下关于涌现的常见误解，哪个是<strong>错误</strong>的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 「涌现等于神秘」是误解——弱涌现可以用已知规则解释，只是计算复杂</label>
+      <label><input type="radio" name="q11" value="b"> B. 「涌现行为一定更好」是正确的——涌现总是带来智慧和秩序</label>
+      <label><input type="radio" name="q11" value="c"> C. 「找到底层规则就够了」是误解——还需关注宏观模式</label>
+      <label><input type="radio" name="q11" value="d"> D. 涌现是中性的，既能产生智慧也能产生危机</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 现实应用：维基百科能在没有总编辑的情况下成为高质量知识库，最符合哪种涌现机制？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 自组织——简单的编辑规则 + 大量志愿者的协作，自发涌现出有序的知识库</label>
+      <label><input type="radio" name="q12" value="b"> B. 中央控制——由维基百科基金会统一审核所有内容</label>
+      <label><input type="radio" name="q12" value="c"> C. 随机过程——内容质量靠运气</label>
+      <label><input type="radio" name="q12" value="d"> D. AI 生成——所有词条由算法自动撰写</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q13.</span> AI 领域的「大模型涌现能力」是指什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 模型越大越笨</label>
+      <label><input type="radio" name="q13" value="b"> B. 所有能力都与模型规模成正比线性增长</label>
+      <label><input type="radio" name="q13" value="c"> C. 模型规模超过某阈值后，突然展现出小模型完全没有的能力，无法仅从训练数据线性外推</label>
+      <label><input type="radio" name="q13" value="d"> D. 大模型的能力完全可预测，没有意外</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0004-delays.html">← 上一课</a>
+  <span>第 5 课 / 共 10 课</span>
+  <a href="0006-leverage-points.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '椋鸟群的关键发现是：每只鸟只遵循几条简单的局部规则（看身边邻居），整个群体就涌现出了复杂、统一、看似有意志的飞舞。不需要领头鸟或中央指挥。' },
+  q2: { correct: 'b', explanation: 'Boids 模拟的三条规则是：分离（避免与邻居碰撞）、对齐（朝邻居平均方向飞）、聚合（向邻居平均位置靠拢）。这三条极简规则就能模拟出逼真的鸟群。' },
+  q3: { correct: 'a', explanation: '涌现的核心是：全局的复杂行为可以由局部简单规则 + 大量个体互动自然产生，无需中央控制。复杂不必然来自复杂，这是涌现最反直觉、最迷人的地方。' },
+  q4: { correct: 'c', explanation: '弱涌现原则上可通过模拟个体规则推导出来（如鸟群、市场），只是计算复杂；强涌现产生全新的、不可还原的属性（如意识是否是强涌现仍有争议），即使知道所有底层规则也无法从底层推导。' },
+  q5: { correct: 'b', explanation: '蚂蚁找到最短路径依赖信息素的正反馈（短路径上蚂蚁往返快，信息素积累更多，吸引更多蚂蚁）和信息素蒸发的负反馈（长路径信息素逐渐消失）。两者配合使蚁群自发收敛到最优路径，没有蚂蚁在做优化计算。' },
+  q6: { correct: 'd', explanation: '非加性意味着整体属性不能通过简单相加各部分得到。单只蚂蚁几乎没有智能，但蚁群展现出集体智能——这是典型的非加性涌现。其他选项都是简单的线性相加，不涉及涌现。' },
+  q7: { correct: 'a', explanation: '天气预报是弱涌现的典型难题：我们完全知道大气物理方程，但系统对初始条件极度敏感（蝴蝶效应），微小的测量误差会被指数级放大，导致长期预测几乎不可能。这是「不可预测性」特征的体现。' },
+  q8: { correct: 'b', explanation: '去中心化指复杂的整体行为通常没有中央指挥者，由大量个体的相互作用自发产生。互联网拓扑、语言演化、市场价格机制都是去中心化的涌现，没有任何人在「设计」全局。' },
+  q9: { correct: 'c', explanation: '自组织是系统在没有外部控制下自发从无序走向有序的过程，依赖正反馈（放大初始差异）和负反馈（防止失控）的巧妙配合。光有正反馈会导致爆炸式增长，光有负反馈会导致僵化，两者缺一不可。' },
+  q10: { correct: 'd', explanation: '「看不见的手」描述的正是市场涌现现象：价格机制涌现于大量供需主体的相互作用，没有中央设计者。这与鸟群、蚁群一样，是去中心化的自组织涌现。' },
+  q11: { correct: 'b', explanation: '「涌现行为一定更好」是错误的误解。涌现是中性的——既能产生智慧和秩序（如维基百科、免疫系统），也能产生危机和混乱（如金融危机、谣言传播、交通拥堵）。涌现只是「整体行为的来源」，不保证好坏。' },
+  q12: { correct: 'a', explanation: '维基百科没有总编辑，靠简单的编辑规则（任何人可编辑、版本回溯、社区讨论）+ 大量志愿者协作，自发涌现出有序、高质量的知识库。这是自组织的经典案例：正反馈（好内容被保留和扩展）和负反馈（破坏被回退）的配合。' },
+  q13: { correct: 'c', explanation: '大模型的「涌现能力」指模型规模超过某个阈值后，突然展现出小模型完全没有的能力（如做数学、写代码、推理），这种能力的出现无法仅从训练数据线性外推。这是 AI 领域近年来最受关注的涌现现象之一。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+    fb.className = 'feedback';
+    if (!selected) { fb.className = 'feedback wrong'; fb.textContent = '⚠ 你还没有选择答案。'; continue; }
+    if (selected.value === data.correct) {
+      score++; fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`; questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  scoreNum.textContent = `${score} / ${total}`;
+  const pct = score / total;
+  if (pct === 1) { scoreMsg.textContent = '🎉 完美！你完全掌握了涌现的核心思想。'; }
+  else if (pct >= 0.7) { scoreMsg.textContent = '👍 很棒！你理解了涌现的关键。再看看错题中弱涌现/强涌现的区别。'; }
+  else if (pct >= 0.4) { scoreMsg.textContent = '📖 还行。建议重读「涌现的两大机制」和「弱涌现 vs 强涌现」部分。'; }
+  else { scoreMsg.textContent = '💪 别灰心。重读课程，重点理解「简单规则产生复杂行为」这个核心。'; }
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

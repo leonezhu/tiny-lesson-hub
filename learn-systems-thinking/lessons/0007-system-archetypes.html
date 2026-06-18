@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 系统原型：常见模式</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>系统原型：常见模式</h1>
+<p class="lesson-meta">TeachHub · 系统思维 · 第7课 / 共10课 · 约16分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>掌握最经典的几种「系统原型」（System Archetypes）——反复出现在不同领域的系统行为模式；学会识别「公地悲剧」「转移负担」「成功致败」「增长与投资不足」「侵蚀目标」等模式；理解每种原型背后的反馈结构，以及对应的破解策略。
+</div>
+
+<h2>一、什么是系统原型？</h2>
+
+<p>你有没有发现，很多看似毫不相关的问题，表现出的行为模式却惊人地相似？城市交通拥堵、海洋渔业枯竭、公司邮件过载、健身房人满为患……它们的「剧情」几乎一样：资源共享受欢迎 → 过度使用 → 崩溃。</p>
+
+<p>这种<strong>跨领域反复出现的系统行为模式</strong>，就叫<strong>系统原型</strong>（System Archetype）。系统科学家 Peter Senge 在《第五项修炼》中系统地总结了一系列经典原型。掌握它们就像掌握了一套「诊断模板」——一旦认出某种模式，你就能预测它的走向，并套用已验证的破解策略。</p>
+
+<div class="key-idea">
+  系统原型 = 跨领域反复出现的「系统剧情模板」。认出它，就能预测走向、对症下药。
+</div>
+
+<h2>二、原型一：公地悲剧（Tragedy of the Commons）</h2>
+
+<div class="vocab-card">
+  <span class="term">公地悲剧</span><br>
+  多个参与者共享一个有限的公共资源。每个人从自身利益出发多占一点，个体收益大而整体成本被分摊。结果所有人都过度使用，资源崩溃，所有人都受损。
+</div>
+
+<p><strong>反馈结构</strong>：每个参与者有一个「正反馈」（多用一点，自己多得）和整个系统有一个「负反馈」（资源总量有限，越用越少）。当参与者数量或使用强度超过资源的再生速度，负反馈滞后失效，正反馈把系统推向崩溃。</p>
+
+<div class="example-box">
+  <strong>现实案例：</strong>海洋渔业——每个渔船多捕一点鱼，短期收入增加；但所有渔船都这么做，鱼群来不及繁殖，最终渔业崩溃，所有渔船破产。还有：草原过度放牧、大气碳排放、共享文档同时编辑导致冲突、免费 Wi-Fi 被挤爆。
+</div>
+
+<p><strong>破解策略</strong>：把共享资源私有化或建立集体治理规则（明确产权 / 配额 / 互监督）；让使用者直接承担资源枯竭的后果（信息流杠杆）；Elinor Ostrom 因研究社区如何成功治理公地而获诺贝尔经济学奖。</p>
+
+<h2>三、原型二：转移负担（Shifting the Burden）</h2>
+
+<div class="vocab-card">
+  <span class="term">转移负担</span><br>
+  面对问题时，人们选择了一个「症状解」（短期缓解但治标不治本），而不是「根本解」（长期有效但更难）。症状解用得越多，根本解的能力越退化，最终对症状解产生依赖，问题持续恶化。
+</div>
+
+<p><strong>反馈结构</strong>：症状解产生正反馈（用了就缓解，越用越依赖），同时压抑了根本解的负反馈（既然症状缓解了，就没动力去解决根本问题）。长期看，根本问题持续恶化。</p>
+
+<div class="example-box">
+  <strong>现实案例：</strong>用止痛药掩盖头痛而不去看病因；用信用卡还债（借新还旧）而不是控制消费；公司用加班应对交付压力而不是改进流程；用刷手机缓解焦虑而不是解决焦虑的根源；依赖外援而非培养自身能力。
+</div>
+
+<p><strong>破解策略</strong>：区分「症状」和「根本原因」；即使症状解能短期缓解，也必须同时投资根本解；警惕对症状解的「上瘾」——越用越依赖，越依赖越退化。</p>
+
+<h2>四、原型三：成功致败 / 成功者的傲慢（Success to the Successful）</h2>
+
+<div class="vocab-card">
+  <span class="term">成功致败</span><br>
+  两个或多个参与者竞争有限资源。早期稍微占优的一方获得更多资源，因此表现更好，从而获得更多资源……正反馈让强者愈强、弱者愈弱，最终赢者通吃，多样性消失，系统脆弱化。
+</div>
+
+<div class="example-box">
+  <strong>现实案例：</strong>名校效应——好学校吸引好老师和好学生，变得更好，吸引更多资源，普通学校越来越弱；大公司垄断——巨头用资源碾压初创；富家孩子 vs 寒门子弟的教育资源差距；头部主播吸走大部分流量；「马太效应」就是这个名字的来源。
+</div>
+
+<p><strong>破解策略</strong>：主动限制正反馈（反垄断、财富再分配）；保护多样性（扶持弱者、保留「种子」）；定期「重置」竞争（如体育联赛的选秀制度把好新秀给弱队）。</p>
+
+<h2>五、原型四：增长与投资不足（Growth and Underinvestment）</h2>
+
+<div class="vocab-card">
+  <span class="term">增长与投资不足</span><br>
+  企业/系统增长时，如果产能投资跟不上增长，质量会下降；质量下降导致需求减少，增长放缓，于是更没有资金投资产能——形成恶性循环，最终增长停滞甚至衰退。
+</div>
+
+<div class="example-box">
+  <strong>现实案例：</strong>一家餐厅火了，但老板不舍得扩厨房、培训厨师，结果等位太久、菜品质量下降，口碑变差，客流减少，更没钱扩张。还有：城市基础设施跟不上人口涌入；学校扩招但不增加师资；创业公司用户激增但服务器不扩容导致频繁宕机。
+</div>
+
+<p><strong>破解策略</strong>：在增长压力出现<strong>之前</strong>就提前投资产能（而非等到出问题）；把质量指标纳入决策；理解「短期省钱 = 长期亏本」的系统性逻辑。</p>
+
+<h2>六、原型五：侵蚀目标（Eroding Goals）</h2>
+
+<div class="vocab-card">
+  <span class="term">侵蚀目标</span><br>
+  当现实与理想目标有差距时，与其努力缩小差距，人们倾向于<strong>降低目标</strong>来消除差距带来的不适。目标一再下调，标准持续滑坡，系统逐步退化却无人察觉。
+</div>
+
+<div class="example-box">
+  <strong>现实案例：</strong>「这季度业绩差，把目标从 100 万调到 80 万吧」——目标一旦可随意下调，就失去了牵引作用。还有：减肥失败就把「理想体重」往上调；学生水平下降就降低考试难度（「分数通胀」）；公司交付延期就把工期标准放宽。每次都是「温水煮青蛙」式的退化。
+</div>
+
+<p><strong>破解策略</strong>：把目标与外部基准或长期愿景绑定，而非与近期表现比较；区分「真实目标」和「期望调整」；建立不让目标轻易下调的制度（如承诺制、外部审计）。</p>
+
+<h2>七、跨学科与综合应用</h2>
+
+<p>系统原型的威力在于其<strong>跨领域通用性</strong>。同一个原型能在完全不同的领域被识别：</p>
+
+<ul>
+  <li><strong>公地悲剧</strong>：环境科学（渔业/排放）、经济学（公共物品）、计算机（共享资源争用）、心理学（集体行动困境）。</li>
+  <li><strong>转移负担</strong>：医学（对症治疗 vs. 治本）、管理学（救火 vs. 改进流程）、个人成长（速成 vs. 深度积累）。</li>
+  <li><strong>成功致败</strong>：经济学（垄断/不平等）、教育（资源集中）、互联网（平台效应）、生物学（优势物种侵占生态位）。</li>
+  <li><strong>侵蚀目标</strong>：组织管理（KPI 注水）、教育（标准下降）、个人（自我要求滑坡）。</li>
+</ul>
+
+<div class="example-box">
+  <strong>综合诊断——一家衰退中的公司：</strong>它可能同时陷入多个原型：质量下降（增长与投资不足）→ 客户流失 → 用打折促销救业绩（转移负担）→ 利润下滑 → 削减研发 → 竞争力进一步下降。同时，市场份额被头部对手蚕食（成功致败），内部为了「完成」任务不断下调目标（侵蚀目标）。识别这些叠加的原型，才能找到真正的破解路径。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>系统原型 = 跨领域反复出现的「剧情模板」，认出它就能预测走向、对症下药</li>
+    <li>五大经典原型：公地悲剧、转移负担、成功致败、增长与投资不足、侵蚀目标</li>
+    <li>每种原型背后都是特定的反馈结构（正/负反馈的组合）</li>
+    <li>现实问题常多个原型叠加，需综合诊断</li>
+    <li>破解策略的关键：投资根本解、限制恶性正反馈、保护目标不被侵蚀</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 「系统原型」是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 一种特定的软件架构</label>
+      <label><input type="radio" name="q1" value="b"> B. 跨领域反复出现的系统行为模式，像一套「诊断模板」</label>
+      <label><input type="radio" name="q1" value="c"> C. 系统的物理原型机</label>
+      <label><input type="radio" name="q1" value="d"> D. 只存在于理论中的抽象概念</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> 海洋渔业枯竭最符合哪个系统原型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 公地悲剧——共享资源被过度使用直至崩溃</label>
+      <label><input type="radio" name="q2" value="b"> B. 转移负担</label>
+      <label><input type="radio" name="q2" value="c"> C. 成功致败</label>
+      <label><input type="radio" name="q2" value="d"> D. 侵蚀目标</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q3.</span> 公地悲剧的核心反馈结构是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 只有正反馈</label>
+      <label><input type="radio" name="q3" value="b"> B. 只有负反馈</label>
+      <label><input type="radio" name="q3" value="c"> C. 个体层面的正反馈（多用多占）压过了系统层面的负反馈（资源有限），导致过度使用</label>
+      <label><input type="radio" name="q3" value="d"> D. 没有反馈回路</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 用止痛药掩盖头痛而不查病因，属于哪个原型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 公地悲剧</label>
+      <label><input type="radio" name="q4" value="b"> B. 成功致败</label>
+      <label><input type="radio" name="q4" value="c"> C. 增长与投资不足</label>
+      <label><input type="radio" name="q4" value="d"> D. 转移负担——用症状解替代根本解，越用越依赖</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 「转移负担」原型中，为什么症状解会越来越被依赖？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 因为症状解总是免费的</label>
+      <label><input type="radio" name="q5" value="b"> B. 因为症状解产生正反馈（用了就缓解，越用越依赖），同时压抑了根本解的动力（既然缓解了就不去治本），长期问题持续恶化</label>
+      <label><input type="radio" name="q5" value="c"> C. 因为根本解不存在</label>
+      <label><input type="radio" name="q5" value="d"> D. 因为所有人都喜欢症状解</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 「马太效应」（强者愈强、弱者愈弱）对应哪个系统原型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 公地悲剧</label>
+      <label><input type="radio" name="q6" value="b"> B. 转移负担</label>
+      <label><input type="radio" name="q6" value="c"> C. 成功致败——早期优势被正反馈放大，赢者通吃</label>
+      <label><input type="radio" name="q6" value="d"> D. 侵蚀目标</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 一家餐厅火了但不扩厨房，导致等位久、质量降、客流减，属于哪个原型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 增长与投资不足——增长时产能投资跟不上，质量下降导致需求减少，恶性循环</label>
+      <label><input type="radio" name="q7" value="b"> B. 公地悲剧</label>
+      <label><input type="radio" name="q7" value="c"> C. 成功致败</label>
+      <label><input type="radio" name="q7" value="d"> D. 转移负担</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 「这季度业绩差，把目标从 100 万调到 80 万吧」体现了哪个原型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 公地悲剧</label>
+      <label><input type="radio" name="q8" value="b"> B. 成功致败</label>
+      <label><input type="radio" name="q8" value="c"> C. 增长与投资不足</label>
+      <label><input type="radio" name="q8" value="d"> D. 侵蚀目标——为了消除差距带来的不适，不断下调标准，温水煮青蛙式退化</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 破解「公地悲剧」最有效的策略是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 让每个人都凭良心自觉</label>
+      <label><input type="radio" name="q9" value="b"> B. 私有化或建立集体治理规则（明确产权/配额/互监督），让使用者承担资源枯竭的后果</label>
+      <label><input type="radio" name="q9" value="c"> C. 增加更多的参与者</label>
+      <label><input type="radio" name="q9" value="d"> D. 完全取消资源限制</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 破解「转移负担」的关键是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 区分症状和根本原因，即使症状解能短期缓解，也必须同时投资根本解，警惕对症状解的依赖</label>
+      <label><input type="radio" name="q10" value="b"> B. 完全不用症状解</label>
+      <label><input type="radio" name="q10" value="c"> C. 只用症状解，不管根本</label>
+      <label><input type="radio" name="q10" value="d"> D. 增加症状解的用量</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 跨学科思考：「平台效应」（大平台吸走大部分流量和商家）最符合哪个原型？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 公地悲剧</label>
+      <label><input type="radio" name="q11" value="b"> B. 转移负担</label>
+      <label><input type="radio" name="q11" value="c"> C. 成功致败——网络效应正反馈让头部平台赢者通吃</label>
+      <label><input type="radio" name="q11" value="d"> D. 侵蚀目标</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 关于系统原型的综合应用，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 一个系统一次只会有一个原型</label>
+      <label><input type="radio" name="q12" value="b"> B. 原型只适用于商业领域</label>
+      <label><input type="radio" name="q12" value="c"> C. 原型一旦识别就无法破解</label>
+      <label><input type="radio" name="q12" value="d"> D. 现实问题常多个原型叠加（如一家衰退公司可能同时有投资不足、转移负担、侵蚀目标），需综合诊断</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q13.</span> 破解「侵蚀目标」最有效的策略是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 经常下调目标以保持「达标」</label>
+      <label><input type="radio" name="q13" value="b"> B. 把目标与外部基准或长期愿景绑定，建立不让目标轻易下调的制度</label>
+      <label><input type="radio" name="q13" value="c"> C. 取消所有目标</label>
+      <label><input type="radio" name="q13" value="d"> D. 把目标定得越高越好</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0006-leverage-points.html">← 上一课</a>
+  <span>第 7 课 / 共 10 课</span>
+  <a href="0008-bounds-growth.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '系统原型是跨领域反复出现的系统行为模式，像一套「诊断模板」。一旦认出某种模式，就能预测走向并套用已验证的破解策略。这是 Peter Senge 在《第五项修炼》中系统总结的工具。' },
+  q2: { correct: 'a', explanation: '海洋渔业是公地悲剧的典型：每艘渔船多捕一点短期收入增加，但所有渔船都这么做，鱼群来不及繁殖，最终渔业崩溃，所有渔船破产。这是共享有限资源被过度使用的经典模式。' },
+  q3: { correct: 'c', explanation: '公地悲剧的核心是：个体层面的正反馈（多用多占，自己多得）压过了系统层面的负反馈（资源总量有限）。当使用强度超过资源再生速度，负反馈滞后失效，正反馈把系统推向崩溃。' },
+  q4: { correct: 'd', explanation: '用止痛药掩盖头痛而不查病因是转移负担的经典：症状解（止痛药）短期缓解，但越用越依赖，同时压抑了根本解（查病因）的动力，长期头痛可能恶化。还有信用卡还债、加班应对交付压力等都属此原型。' },
+  q5: { correct: 'b', explanation: '症状解产生正反馈（用了就缓解，形成依赖），同时压抑了根本解的动力（既然缓解了就不去治本）。结果根本问题持续恶化，对症状解的依赖越来越深，形成恶性循环。这就是为什么治标不治本最终会更糟。' },
+  q6: { correct: 'c', explanation: '马太效应（强者愈强、弱者愈弱）就是成功致败原型：早期优势通过正反馈（更多资源→更好表现→更多资源）被不断放大，最终赢者通吃，多样性消失。名校效应、巨头垄断、贫富差距都是这个模式。' },
+  q7: { correct: 'a', explanation: '这是增长与投资不足的典型：餐厅火了但老板不舍得扩厨房、培训厨师（投资不足），导致等位久、菜品质量降（质量下降），口碑变差客流减少（需求减少），更没钱扩张——恶性循环，增长停滞。' },
+  q8: { correct: 'd', explanation: '把目标从 100 万调到 80 万是侵蚀目标的典型：为了消除「现实与目标的差距」带来的不适，选择降低目标而非努力缩小差距。目标一旦可随意下调就失去牵引力，标准持续滑坡，温水煮青蛙。' },
+  q9: { correct: 'b', explanation: '破解公地悲剧最有效的是私有化或建立集体治理规则（明确产权/配额/互监督），让使用者直接承担资源枯竭的后果。Elinor Ostrom 正是研究社区如何成功治理公地而获诺贝尔经济学奖。单靠良心自觉通常无效。' },
+  q10: { correct: 'a', explanation: '破解转移负担的关键是区分症状和根本原因，即使症状解能短期缓解，也必须同时投资根本解，并警惕对症状解的「上瘾」。完全不用症状解有时也不现实（急性疼痛需要止痛），但绝不能让它替代根本解。' },
+  q11: { correct: 'c', explanation: '平台效应是成功致败的典型：网络效应（用户越多越有价值）形成正反馈，让头部平台不断吸引更多用户和商家，赢者通吃。这是互联网经济中马太效应的体现，也是反垄断关注的焦点。' },
+  q12: { correct: 'd', explanation: '现实问题常多个原型叠加。一家衰退公司可能同时有增长与投资不足（不扩产能）、转移负担（用促销救业绩）、侵蚀目标（下调KPI）、成功致败（被对手蚕食）。识别这些叠加的原型，才能找到真正的破解路径。' },
+  q13: { correct: 'b', explanation: '破解侵蚀目标的关键是把目标与外部基准或长期愿景绑定（而非与近期表现比较），并建立不让目标轻易下调的制度（如承诺制、外部审计）。这样能防止「为了消除不适而降标准」的滑坡。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+    fb.className = 'feedback';
+    if (!selected) { fb.className = 'feedback wrong'; fb.textContent = '⚠ 你还没有选择答案。'; continue; }
+    if (selected.value === data.correct) {
+      score++; fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`; questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 答案不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  scoreNum.textContent = `${score} / ${total}`;
+  const pct = score / total;
+  if (pct === 1) { scoreMsg.textContent = '🎉 完美！你已经能熟练识别和应用系统原型了。'; }
+  else if (pct >= 0.7) { scoreMsg.textContent = '👍 很棒！你掌握了主要原型。再复习一下它们的反馈结构和破解策略。'; }
+  else if (pct >= 0.4) { scoreMsg.textContent = '📖 还行。建议重读五大原型的定义和案例，特别注意它们如何区分。'; }
+  else { scoreMsg.textContent = '💪 别灰心。重读课程，重点理解「剧情模板」的概念和每个原型的典型场景。'; }
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

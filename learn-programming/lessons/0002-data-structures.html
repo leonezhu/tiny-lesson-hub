@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — 数据结构：数组、链表、树、图</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 1rem 1.25rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.5; font-family: 'SF Mono', 'Fira Code', Consolas, monospace; }
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>数据结构：数组、链表、树、图</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第2课 / 共12课 · 约20分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解数据结构为何是算法的「容器」——同样的算法，搭配合适的数据结构能让效率天差地别。掌握数组、链表、栈、队列、树、图、哈希表七大核心结构，学会用「时间/空间权衡」的思维评估它们的优劣。
+</div>
+
+<h2>一、为什么数据结构如此重要</h2>
+
+<p>第 1 课我们说「程序 = 算法 + 数据」。但数据不是散乱堆在一起的——<strong>数据如何组织，直接决定了算法能跑多快</strong>。这就是数据结构要解决的问题。</p>
+
+<div class="key-idea">
+  数据结构 = 组织和存储数据的方式。同一段数据，用不同结构存储，查找、插入、删除的效率可能相差百万倍。
+</div>
+
+<p>经典对比：要在 10 亿个用户里查找「张三」是否存在。</p>
+<ul>
+  <li>用<strong>无序数组</strong>：从头逐个比对，最坏要看 10 亿次 → 极慢</li>
+  <li>用<strong>哈希表</strong>：直接计算「张三」的位置，一步到位 → 极快（约 1 次）</li>
+  <li>用<strong>有序数组 + 二分查找</strong>：每次砍一半，约 30 次 → 很快</li>
+</ul>
+
+<p>同样的数据，结构选对了，效率提升数千万倍。这就是为什么 Google、微信这样的系统必须精心设计数据结构。</p>
+
+<div class="vocab-card">
+  <span class="term">数据结构 (Data Structure)</span><br>
+  数据元素之间的特定关系（组织方式）的集合。它定义了数据如何存储、访问、修改，从而决定了基于它实现的算法的效率。
+</div>
+
+<h2>二、线性结构：数组与链表</h2>
+
+<p>最基础的数据结构是<strong>线性结构</strong>——元素一个接一个排列。其中最重要的两种是<strong>数组</strong>和<strong>链表</strong>，它们代表了两种截然不同的内存组织哲学。</p>
+
+<h3>数组 (Array)：连续的内存</h3>
+<p>数组把所有元素<strong>紧密排列</strong>在一块连续的内存里。每个元素紧挨着下一个，像一排连号储物柜。</p>
+
+<pre><code># Python 列表（动态数组）
+arr = [10, 20, 30, 40, 50]
+print(arr[0])  # 10 —— 按索引访问，O(1)
+print(arr[2])  # 30</code></pre>
+
+<p>数组的优势是<strong>随机访问极快</strong>——知道索引就能瞬间定位（O(1)）。代价是<strong>插入和删除慢</strong>：在中间插入一个元素，后面所有元素都要往后挪（O(n)）。</p>
+
+<h3>链表 (Linked List)：分散的节点</h3>
+<p>链表的元素（节点）分散在内存各处，每个节点除了存数据，还存一个<strong>指向下一个节点的指针</strong>，像寻宝游戏的线索：每个地点告诉你下个地点在哪。</p>
+
+<pre><code># 链表节点的概念
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None  # 指向下一个节点
+
+# a → b → c → None
+a = Node("A")
+b = Node("B")
+c = Node("C")
+a.next = b
+b.next = c</code></pre>
+
+<p>链表的优势是<strong>插入和删除快</strong>——只需改几个指针，不必挪动其他元素（O(1)，前提是已找到位置）。代价是<strong>不能随机访问</strong>——想看第 1000 个元素，必须从头顺着指针走 1000 步（O(n)）。</p>
+
+<div class="key-idea">
+  数组 vs 链表，是「空间换时间」的经典权衡。数组用连续空间换取快速访问；链表用额外指针空间换取灵活增删。没有「更好」，只有「更适合场景」。
+</div>
+
+<div class="example-box">
+  <strong>现实类比：</strong>数组像一栋公寓——门牌号连续，按号找房一秒到位，但中间加塞一间房要全楼重排。链表像寻宝游戏——每个地点藏一条线索指向下个地点，插入新地点很容易（只改两条线索），但找第 100 个地点必须走完前 99 个。
+</div>
+
+<h2>三、受限的线性结构：栈与队列</h2>
+
+<p>栈和队列是「加了规则的线性结构」——它们限制了数据的进出方式，从而成为许多算法的核心工具。</p>
+
+<h3>栈 (Stack)：后进先出 LIFO</h3>
+<p>栈像一摞盘子——只能从顶部放进去、从顶部拿走。<strong>最后放进去的最先拿出来</strong>（Last In, First Out）。</p>
+
+<pre><code>stack = []
+stack.append("A")  # 压入
+stack.append("B")
+stack.append("C")
+print(stack.pop())  # C —— 最后进的先出
+print(stack.pop())  # B</code></pre>
+
+<p>栈的应用：函数调用（每个函数的局部变量存在栈帧里）、撤销操作 (Undo)、括号匹配、表达式求值。当你调用一个函数，它的「执行上下文」就被压入栈；函数返回时弹出。</p>
+
+<h3>队列 (Queue)：先进先出 FIFO</h3>
+<p>队列像排队买票——<strong>先来的先服务</strong>（First In, First Out）。从一端进，从另一端出。</p>
+
+<pre><code>from collections import deque
+q = deque()
+q.append("task1")
+q.append("task2")
+print(q.popleft())  # task1 —— 先进先出
+print(q.popleft())  # task2</code></pre>
+
+<p>队列的应用：任务调度（操作系统的进程队列）、消息队列（Kafka、RabbitMQ）、广度优先搜索 (BFS)、打印机任务。</p>
+
+<div class="example-box">
+  <strong>工程案例：</strong>浏览器的「后退」按钮用栈实现——每访问一个页面就压栈，点后退就弹栈。而「打印机任务」用队列——先提交的文档先打印。理解 LIFO 和 FIFO 的区别，就理解了一大类系统设计。
+</div>
+
+<h2>四、树：层级化的组织</h2>
+
+<p>当数据有<strong>层级关系</strong>时，线性结构就力不从心了。这时需要<strong>树</strong>——一种层级化的数据结构，像家谱、公司组织架构、文件系统的目录。</p>
+
+<div class="vocab-card">
+  <span class="term">树 (Tree)</span><br>
+  由节点和边组成的层级结构。有一个根节点，每个节点有零个或多个子节点，没有环。树天然适合表达「一对多」的关系。
+</div>
+
+<p>最重要的树是<strong>二叉搜索树 (Binary Search Tree, BST)</strong>——它有一个神奇的性质：左子树所有值 < 根节点 < 右子树所有值。这使得查找、插入、删除都能在 O(log n) 完成（如果树是平衡的）。</p>
+
+<pre><code># 二叉搜索树的查找
+#         8
+#        / \
+#       3   10
+#      / \    \
+#     1   6    14
+
+def search(node, target):
+    if node is None:
+        return False
+    if target == node.value:
+        return True
+    elif target < node.value:
+        return search(node.left, target)   # 往左找
+    else:
+        return search(node.right, target)  # 往右找
+
+# 查找 6：8→3→6，3 步找到（数组要顺序比对）</code></pre>
+
+<p>树的变种极其丰富：</p>
+<ul>
+  <li><strong>平衡树 (AVL, 红黑树)</strong>：自动保持平衡，保证 O(log n)。Linux 内核、C++ STL 大量使用红黑树。</li>
+  <li><strong>堆 (Heap)</strong>：用于优先队列、堆排序。Python 的 <code>heapq</code>。</li>
+  <li><strong>字典树 (Trie)</strong>：用于字符串前缀匹配，搜索引擎自动补全的核心。</li>
+  <li><strong>B 树 / B+ 树</strong>：数据库索引的基石（MySQL、PostgreSQL）。</li>
+</ul>
+
+<div class="example-box">
+  <strong>现实案例：</strong>你电脑的文件系统就是一棵树——根目录 <code>/</code> 下有 <code>home</code>、<code>etc</code>，每个目录下又有子目录和文件。这种层级结构让你能用路径（<code>/home/user/docs/report.pdf</code>）精确定位任何文件，无论磁盘上有多少亿个文件。
+</div>
+
+<h2>五、图：最通用的关系表达</h2>
+
+<p><strong>图 (Graph)</strong> 是最通用的数据结构——它用<strong>顶点 (Vertex)</strong> 表示事物，用<strong>边 (Edge)</strong> 表示事物之间的关系。如果树是「一对多」的层级，图就是「多对多」的网络。</p>
+
+<div class="vocab-card">
+  <span class="term">图 (Graph)</span><br>
+  由顶点集和边集组成。边可以有方向（有向图）或无方向（无向图），可以带权重（如距离、成本）。图能表达任何关系网络：社交关系、道路网、网页链接。
+</div>
+
+<pre><code># 用邻接表表示图
+graph = {
+    "北京": ["上海", "广州"],
+    "上海": ["北京", "广州", "深圳"],
+    "广州": ["北京", "上海"],
+    "深圳": ["上海"]
+}
+
+# 图的遍历：广度优先 (BFS) 找最短路径
+from collections import deque
+def bfs(graph, start):
+    visited = set([start])
+    queue = deque([start])
+    while queue:
+        node = queue.popleft()
+        print(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)</code></pre>
+
+<p>图的应用无处不在：</p>
+<ul>
+  <li><strong>社交网络</strong>：微信好友关系是无向图，微博关注是有向图。</li>
+  <li><strong>地图导航</strong>：高德、Google Maps 用加权图 + Dijkstra 算法算最短路径。</li>
+  <li><strong>网页</strong>：整个互联网是有向图，PageRank 算法基于此给网页排序。</li>
+  <li><strong>推荐系统</strong>：用户-商品二部图是协同过滤的基础。</li>
+</ul>
+
+<div class="key-idea">
+  树是图的特例（无环连通图），链表是树的特例（每个节点最多一个子节点）。理解了图，你就理解了所有关系型数据的本质。
+</div>
+
+<h2>六、哈希表：用数学换速度</h2>
+
+<p><strong>哈希表 (Hash Table)</strong> 是工程中最常用的数据结构之一，它用一个小技巧实现了近乎「瞬间」的查找。</p>
+
+<p>核心思想：用一个<strong>哈希函数</strong>把键（如 "张三"）映射到一个数字（数组下标），然后直接把数据存在那个位置。查找时，再用同一个函数算出位置，一步到位。</p>
+
+<pre><code># Python 字典就是哈希表
+user_db = {}
+user_db["张三"] = {"age": 25, "city": "北京"}
+user_db["李四"] = {"age": 30, "city": "上海"}
+
+print(user_db["张三"])  # O(1) 查找，几乎瞬间
+# {'age': 25, 'city': '北京'}</code></pre>
+
+<p>哈希表的<strong>平均</strong>查找、插入、删除都是 O(1)——这是数据结构里的「圣杯」。但代价是：</p>
+<ul>
+  <li><strong>哈希冲突</strong>：两个不同的键算出同一个位置。需要用链地址法或开放寻址解决。</li>
+  <li><strong>无序</strong>：不能按顺序遍历（除非用 LinkedHashMap）。</li>
+  <li><strong>最坏情况</strong>：如果哈希函数很差，所有键都冲突，退化成 O(n)。</li>
+</ul>
+
+<div class="example-box">
+  <strong>工程现实：</strong>Python 的 <code>dict</code>、Java 的 <code>HashMap</code>、Redis、Memcached、区块链的状态存储——底层都是哈希表。互联网基础设施几乎有一半建立在哈希表之上，因为它把「用名字找东西」这件事做到了极致速度。
+</div>
+
+<h2>七、如何选择数据结构：权衡的艺术</h2>
+
+<p>没有「最好」的数据结构，只有「最适合当前场景」的。选择的依据是<strong>你最常做的操作</strong>：</p>
+
+<ul>
+  <li>频繁<strong>按索引访问</strong>？→ 数组</li>
+  <li>频繁<strong>头尾增删</strong>？→ 链表 / 双端队列</li>
+  <li>需要<strong>后进先出</strong>？→ 栈（撤销、递归）</li>
+  <li>需要<strong>先进先出</strong>？→ 队列（任务调度）</li>
+  <li>需要<strong>按键瞬间查找</strong>？→ 哈希表</li>
+  <li>需要<strong>保持有序 + 快速查找</strong>？→ 平衡二叉搜索树</li>
+  <li>需要表达<strong>层级关系</strong>？→ 树</li>
+  <li>需要表达<strong>任意关系网络</strong>？→ 图</li>
+</ul>
+
+<div class="key-idea">
+  数据结构的选择本质是<strong>权衡</strong>：时间 vs 空间，读取 vs 写入，有序 vs 无序。成熟的工程师不追求「最优」，而是追求「在当前约束下最合适」。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>数据结构决定了算法的效率——同样的数据，结构选对，效率可能差百万倍</li>
+    <li>线性结构（数组/链表）是基础，栈和队列是加了规则的线性结构</li>
+    <li>树表达层级关系，图表达任意网络关系——图是最通用的结构</li>
+    <li>哈希表用数学换速度，平均 O(1)，是工程界的「圣杯」</li>
+    <li>选择数据结构的本质是权衡：根据最常做的操作来选</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 数学</strong>：图论是离散数学的核心分支，欧拉 1736 年解决「哥尼斯堡七桥问题」开创了图论。树和图的性质都用数学严格证明。</li>
+  <li><strong>→ 经济学</strong>：「权衡」思维与经济学的「机会成本」完全一致——选了数组的高效访问，就放弃了链表的灵活增删，没有免费的午餐。</li>
+  <li><strong>→ 心理学</strong>：人类大脑天然用「树状分类」组织知识（动物→哺乳动物→猫科）。数据结构的「树」正是对人类认知结构的工程化模拟。</li>
+  <li><strong>→ AI</strong>：决策树、随机森林、图神经网络 (GNN) 都是建立在树和图结构之上的机器学习模型。理解数据结构是理解现代 AI 的前提。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：Git 的底层是树和图。</strong>Git 的每个 commit 是一个节点，commit 之间通过 parent 指针连成有向无环图 (DAG)。分支只是指向某个 commit 的指针。整个版本历史就是一棵不断生长的树——这就是为什么 Git 能高效地管理分支、合并、回溯。理解了 DAG，你就理解了 Git 的灵魂。
+</div>
+<div class="example-box">
+  <strong>案例 2：社交网络的好友推荐。</strong>微信「可能认识的人」功能，底层是图算法：你的好友和 X 的共同好友越多（图上你们和 X 之间路径越短、越多），系统越可能推荐 X。这种「图上的相似度」计算，正是 LinkedIn、Facebook 推荐系统的核心。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 数据结构的核心作用是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 让代码更好看</label>
+      <label><input type="radio" name="q1" value="b"> B. 减少代码行数</label>
+      <label><input type="radio" name="q1" value="c"> C. 组织数据的方式，决定了算法的效率</label>
+      <label><input type="radio" name="q1" value="d"> D. 防止数据丢失</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> 数组相比于链表，主要优势是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 按索引随机访问快 O(1)</label>
+      <label><input type="radio" name="q2" value="b"> B. 中间插入快</label>
+      <label><input type="radio" name="q2" value="c"> C. 内存占用更小</label>
+      <label><input type="radio" name="q2" value="d"> D. 不需要连续内存</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q3.</span> 链表相比于数组，主要优势是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 随机访问快</label>
+      <label><input type="radio" name="q3" value="b"> B. 已知位置时插入和删除快 O(1)</label>
+      <label><input type="radio" name="q3" value="c"> C. 内存连续，缓存友好</label>
+      <label><input type="radio" name="q3" value="d"> D. 不需要额外指针</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q4.</span> 栈的核心特征是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 先进先出 FIFO</label>
+      <label><input type="radio" name="q4" value="b"> B. 后进先出 LIFO</label>
+      <label><input type="radio" name="q4" value="c"> C. 随机访问</label>
+      <label><input type="radio" name="q4" value="d"> D. 自动排序</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q5.</span> 浏览器的「后退」按钮，最适合用哪种数据结构实现？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 栈（最后访问的最先后退到）</label>
+      <label><input type="radio" name="q5" value="b"> B. 队列</label>
+      <label><input type="radio" name="q5" value="c"> C. 哈希表</label>
+      <label><input type="radio" name="q5" value="d"> D. 二叉树</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 二叉搜索树 (BST) 的核心性质是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 每个节点恰好有两个子节点</label>
+      <label><input type="radio" name="q6" value="b"> B. 左子树值 > 根 > 右子树值</label>
+      <label><input type="radio" name="q6" value="c"> C. 左子树所有值 < 根 < 右子树所有值</label>
+      <label><input type="radio" name="q6" value="d"> D. 所有叶子节点在同一层</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q7.</span> 哈希表的平均查找时间复杂度是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. O(n)</label>
+      <label><input type="radio" name="q7" value="b"> B. O(log n)</label>
+      <label><input type="radio" name="q7" value="c"> C. O(n²)</label>
+      <label><input type="radio" name="q7" value="d"> D. O(1)</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 微信好友关系网络，最适合用哪种数据结构表达？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 数组</label>
+      <label><input type="radio" name="q8" value="b"> B. 图（无向图）</label>
+      <label><input type="radio" name="q8" value="c"> C. 栈</label>
+      <label><input type="radio" name="q8" value="d"> D. 哈希表</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q9.</span> 「树是图的特例」这个说法对吗？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 对——树是无环的连通图</label>
+      <label><input type="radio" name="q9" value="b"> B. 错——树和图是完全不同的东西</label>
+      <label><input type="radio" name="q9" value="c"> C. 对——图是树的特例</label>
+      <label><input type="radio" name="q9" value="d"> D. 只有二叉树才是图的特例</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 如果你需要「按键瞬间查找」且不关心顺序，首选哪种结构？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 数组</label>
+      <label><input type="radio" name="q10" value="b"> B. 链表</label>
+      <label><input type="radio" name="q10" value="c"> C. 哈希表</label>
+      <label><input type="radio" name="q10" value="d"> D. 栈</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 哈希表遇到「两个键算出同一个位置」时，这种现象叫？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 死锁</label>
+      <label><input type="radio" name="q11" value="b"> B. 哈希冲突</label>
+      <label><input type="radio" name="q11" value="c"> C. 内存泄漏</label>
+      <label><input type="radio" name="q11" value="d"> D. 缓存穿透</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 操作系统的进程调度（先提交的任务先执行），最适合用？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 栈</label>
+      <label><input type="radio" name="q12" value="b"> B. 哈希表</label>
+      <label><input type="radio" name="q12" value="c"> C. 二叉搜索树</label>
+      <label><input type="radio" name="q12" value="d"> D. 队列</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q13.</span> 「选择数据结构的本质是权衡」——这句话的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 没有最优结构，只有根据最常做的操作选最合适的</label>
+      <label><input type="radio" name="q13" value="b"> B. 越复杂的结构越好</label>
+      <label><input type="radio" name="q13" value="c"> C. 内存小的结构总是更好</label>
+      <label><input type="radio" name="q13" value="d"> D. 应该同时用多种结构</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0001-what-is-code.html">← 上一课</a>
+  <span>第 2 课 / 共 12 课</span>
+  <a href="0003-algorithms.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '数据结构定义了数据的组织方式，从而决定了基于它的算法效率。同一段数据用不同结构，查找效率可能差百万倍。' },
+  q2: { correct: 'a', explanation: '数组内存连续，按索引访问是 O(1)——直接算地址。但中间插入需挪动元素，是 O(n)，这正是它的劣势。' },
+  q3: { correct: 'b', explanation: '链表插入/删除只需改指针，O(1)。但随机访问要从头遍历，O(n)。空间上还要额外存指针。' },
+  q4: { correct: 'b', explanation: '栈是 LIFO（后进先出），像一摞盘子。FIFO 是队列的特征。' },
+  q5: { correct: 'a', explanation: '后退是「最后访问的最先回去」——典型 LIFO，用栈。每访问一个页面压栈，后退就弹栈。' },
+  q6: { correct: 'c', explanation: 'BST 的性质是左子树所有值 < 根 < 右子树所有值（递归定义）。这使得查找能像二分一样每次砍一半。' },
+  q7: { correct: 'd', explanation: '哈希表平均查找是 O(1)——哈希函数直接算出位置。这是它被称为「圣杯」的原因。最坏情况（全冲突）退化为 O(n)。' },
+  q8: { correct: 'b', explanation: '好友关系是多对多的网络（A 和 B 互为好友，B 和 C 互为好友），且无方向，最适合无向图。' },
+  q9: { correct: 'a', explanation: '树 = 无环的连通图。它是图的特例。反过来，链表又是树的特例（每个节点最多一个子节点）。' },
+  q10: { correct: 'c', explanation: '哈希表平均 O(1) 查找，是按键查找的首选。如果需要有序，才考虑平衡树。' },
+  q11: { correct: 'b', explanation: '两个不同键映射到同一位置叫哈希冲突，是哈希表的固有问题，需用链地址法或开放寻址解决。' },
+  q12: { correct: 'd', explanation: '进程调度是「先来先服务」，FIFO，用队列。如果按优先级则用优先队列（堆）。' },
+  q13: { correct: 'a', explanation: '权衡 = 根据最常做的操作选最合适的结构。没有「最优」，只有「最适合场景」。这是成熟工程师的标志。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+    fb.className = 'feedback';
+    if (!selected) { fb.className = 'feedback wrong'; fb.textContent = '⚠ 你还没有选择答案。'; continue; }
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+  scoreNum.textContent = `${score} / ${total}`;
+  const pct = score / total;
+  if (pct === 1) scoreMsg.textContent = '🎉 完美！你已经掌握了数据结构的核心权衡思维。';
+  else if (pct >= 0.7) scoreMsg.textContent = '👍 很棒！你理解了核心结构。再看一遍错题就彻底掌握了。';
+  else if (pct >= 0.4) scoreMsg.textContent = '📖 还行。建议重读「权衡」一节，加深对结构选择的理解。';
+  else scoreMsg.textContent = '💪 别灰心。重读课程，尤其是数组 vs 链表和哈希表部分。';
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>
