@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 股票市场</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>股票市场</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第6课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解股票的本质和股票市场的运作机制。掌握普通股与优先股的区别、市场结构、主要指数、基本面与技术面分析，以及有效市场假说。通过 GameStop 逼空事件等真实案例，看懂股市的狂欢与陷阱。
+</div>
+
+<h2>一、股票：拥有一家公司的凭证</h2>
+
+<p>如果说债券是「借条」，那股票就是「<strong>所有权凭证</strong>」。当你买入苹果公司的股票，你就成为了苹果的股东（哪怕只持有 1 股），有权分享公司的利润（分红）和增长（股价上涨），也有投票权。</p>
+
+<p>这是股票与债券最根本的区别：</p>
+<ul>
+  <li><strong>债券</strong>：你是债权人，拿固定利息，破产时优先受偿，但不分享额外收益</li>
+  <li><strong>股票</strong>：你是所有者（股东），收益不封顶（公司越赚越多），但风险也最高——公司破产时，股东是<strong>最后</strong>拿到钱的</li>
+</ul>
+
+<div class="vocab-card">
+  <span class="term">股票 (Stock / Share)</span><br>
+  代表对公司部分所有权的证券。股东有权按持股比例分享公司利润（分红），并享有投票权。股票没有到期日，价格随市场波动。
+</div>
+
+<h2>二、普通股 vs 优先股</h2>
+
+<ul>
+  <li><strong>普通股（Common Stock）</strong>：最常见，有投票权，分红不固定，股价涨跌由市场决定。巴菲特、马斯克持有的大部分都是普通股。</li>
+  <li><strong>优先股（Preferred Stock）</strong>：没有投票权，但分红固定且优先于普通股。破产清算时也排在普通股前面。介于债券和普通股之间。</li>
+</ul>
+
+<p>大多数散户买的指数基金、个股，都是普通股。</p>
+
+<h2>三、股票市场结构：一级与二级</h2>
+
+<p>股票市场的运作分两层：</p>
+
+<ul>
+  <li><strong>一级市场（Primary Market）</strong>：公司第一次向公众出售股票，叫做<strong>IPO（首次公开募股）</strong>。公司拿到融资，投行（承销商）赚手续费。例如阿里巴巴 2014 年在纽交所 IPO 募资 250 亿美元，创当时历史纪录。</li>
+  <li><strong>二级市场（Secondary Market）</strong>：投资者之间互相买卖已发行的股票。这就是我们日常说的「炒股」。纽约证交所（NYSE）、纳斯达克（NASDAQ）、上海证券交易所、香港联交所都是二级市场。</li>
+</ul>
+
+<div class="key-idea">
+  在一级市场，钱流向公司（融资）；在二级市场，钱只在投资者之间流转。但二级市场的价格决定了公司的市值和再融资能力——所以二级市场对经济至关重要。
+</div>
+
+<h2>四、股票指数：市场的温度计</h2>
+
+<p>指数用一个数字概括整个市场的涨跌：</p>
+<ul>
+  <li><strong>道琼斯工业平均指数（DJIA）</strong>：30 家大型蓝筹股，历史最悠久</li>
+  <li><strong>标普 500 指数（S&P 500）</strong>：500 家大公司，覆盖美国股市约 80% 市值，最被广泛引用</li>
+  <li><strong>纳斯达克综合指数</strong>：科技股为主，苹果、微软、英伟达都在其中</li>
+  <li><strong>上证综合指数 / 沪深 300</strong>：中国 A 股的代表性指数</li>
+  <li><strong>恒生指数</strong>：香港股市的旗舰指数</li>
+</ul>
+
+<p>长期来看，标普 500 的年化名义回报约 10%（含分红），实际约 7%。这就是为什么巴菲特不断建议普通人定投标普 500 指数基金——这是最简单、也最可能战胜大多数专业基金经理的策略。</p>
+
+<h2>五、分析股票的两大流派</h2>
+
+<h3>1. 基本面分析（Fundamental Analysis）</h3>
+<p>研究公司的内在价值：盈利能力、行业前景、管理层素质、财务报表。代表人物：沃伦·巴菲特、本杰明·格雷厄姆。他们关心「这家公司值多少钱」，在价格低于价值时买入（安全边际）。</p>
+
+<h3>2. 技术面分析（Technical Analysis）</h3>
+<p>研究价格和成交量的图表形态、技术指标（均线、MACD、RSI），认为价格走势会重复。技术分析师不关心公司做什么，只关心图表信号。这套方法争议很大，学术界普遍持怀疑态度。</p>
+
+<div class="vocab-card">
+  <span class="term">市盈率 (P/E Ratio)</span><br>
+  股价 ÷ 每股收益（Price / EPS）。是最常用的估值指标。P/E 高可能意味着市场预期高增长，也可能意味着股票被高估。不同行业的合理 P/E 差异很大。
+</div>
+
+<h2>六、有效市场假说（EMH）</h2>
+
+<p>尤金·法玛提出的<strong>有效市场假说</strong>认为：股价已经反映了所有可获得的信息，因此你<strong>无法持续跑赢市场</strong>。</p>
+
+<ul>
+  <li><strong>弱式有效</strong>：价格已反映所有历史价格信息，技术分析无效</li>
+  <li><strong>半强式有效</strong>：价格已反映所有公开信息，基本面分析也无效</li>
+  <li><strong>强式有效</strong>：价格已反映所有信息（含内幕），无人能持续获利</li>
+</ul>
+
+<p>现实中，市场大部分时候接近有效，但偶尔会出现明显错误定价（泡沫、恐慌）。第 10 课的行为金融学会详细挑战这个假说。</p>
+
+<div class="example-box">
+  <strong>真实案例——GameStop 逼空事件（2021）：</strong>2021 年 1 月，游戏零售商 GameStop（GME）被华尔街对冲基金大量做空（做空比例超过流通股的 100%）。Reddit 论坛 WallStreetBets 的散户们集体买入，把股价从不到 20 美元推到 483 美元，迫使做空机构巨亏止损（Melvin Capital 损失数十亿）。这场「散户大战华尔街」既是对有效市场假说的嘲讽（基本面完全支撑不了这个价格），也是行为金融学中羊群效应的教科书案例。
+</div>
+
+<h2>七、分红与回购：公司怎么把钱还给股东</h2>
+
+<ul>
+  <li><strong>现金分红（Dividend）</strong>：公司把利润以现金形式发给股东。成熟公司（如可口可乐、公用事业）分红稳定</li>
+  <li><strong>股票回购（Buyback）</strong>：公司用现金在市场上买回自家股票，减少流通股数量，提升每股价值。苹果每年回购数百亿美元</li>
+</ul>
+
+<p>不分红的公司（如早期的亚马逊、特斯拉）把利润全部用于再投资，赌的是未来增长能带来更高的股价回报。</p>
+
+<h2>八、股市周期：牛市与熊市</h2>
+
+<ul>
+  <li><strong>牛市（Bull Market）</strong>：持续上涨，投资者乐观，资金涌入</li>
+  <li><strong>熊市（Bear Market）</strong>：从高点下跌 20% 以上，恐慌蔓延</li>
+</ul>
+
+<p>历史上美股大约每 5-7 年经历一次熊市，但长期趋势向上。<strong>股市短期是投票机，长期是称重机</strong>——这是格雷厄姆的名言。</p>
+
+<div class="example-box">
+  <strong>真实案例——2008 雷曼倒闭：</strong>2008 年 9 月 15 日，拥有 158 年历史的投资银行雷曼兄弟宣布破产，引发全球恐慌。道琼斯指数从 2007 年高点到 2009 年低点下跌了约 54%。这次危机暴露了金融体系的脆弱性，也催生了更严格的监管（多德-弗兰克法案）。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>法律</strong>：公司法、证券法规定了股东权利、信息披露义务和内幕交易禁令</li>
+  <li><strong>会计学</strong>：财务报表（利润表、资产负债表、现金流量表）是基本面分析的基础</li>
+  <li><strong>心理学</strong>：行为金融学研究投资者情绪、羊群效应（第10课）</li>
+  <li><strong>新闻传播</strong>：媒体情绪、社交网络（如 Reddit、Twitter）对股价的影响越来越大</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>股票是公司所有权凭证，风险高于债券，但潜在回报也更高</li>
+    <li>一级市场（IPO）融资，二级市场投资者之间交易</li>
+    <li>标普 500 等指数长期年化约 10%，指数定投是普通人最优策略</li>
+    <li>基本面分析看价值，技术分析看图表，有效市场假说认为两者都难以持续跑赢市场</li>
+    <li>GameStop 事件证明：市场有时极度非有效，情绪能扭曲价格</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q1.</span> 股票的本质是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 公司的所有权凭证</label>
+      <label><input type="radio" name="q1" value="b"> B. 公司的借条</label>
+      <label><input type="radio" name="q1" value="c"> C. 银行存款证明</label>
+      <label><input type="radio" name="q1" value="d"> D. 保险合同</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 当公司破产清算时，受偿顺序排在最后的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 债券持有人</label>
+      <label><input type="radio" name="q2" value="b"> B. 普通股股东</label>
+      <label><input type="radio" name="q2" value="c"> C. 银行贷款人</label>
+      <label><input type="radio" name="q2" value="d"> D. 优先股股东</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q3.</span> 公司第一次向公众出售股票叫做？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 回购</label>
+      <label><input type="radio" name="q3" value="b"> B. 分红</label>
+      <label><input type="radio" name="q3" value="c"> C. IPO（首次公开募股）</label>
+      <label><input type="radio" name="q3" value="d"> D. 做空</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q4.</span> 一级市场和二级市场的根本区别是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 一级市场在纽约，二级市场在上海</label>
+      <label><input type="radio" name="q4" value="b"> B. 一级市场钱流向公司（融资），二级市场是投资者之间交易</label>
+      <label><input type="radio" name="q4" value="c"> C. 一级市场买股票更便宜</label>
+      <label><input type="radio" name="q4" value="d"> D. 两者完全相同</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q5.</span> 标普 500 指数长期（含分红）的年化名义回报大约是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 约 10%</label>
+      <label><input type="radio" name="q5" value="b"> B. 约 2%</label>
+      <label><input type="radio" name="q5" value="c"> C. 约 50%</label>
+      <label><input type="radio" name="q5" value="d"> D. 约 0%</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 市盈率（P/E）的计算公式是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 市值 ÷ 股价</label>
+      <label><input type="radio" name="q6" value="b"> B. 每股收益 ÷ 股价</label>
+      <label><input type="radio" name="q6" value="c"> C. 股价 ÷ 每股收益</label>
+      <label><input type="radio" name="q6" value="d"> D. 股价 × 总股数</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q7.</span> 有效市场假说的核心观点是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 技术分析一定有效</label>
+      <label><input type="radio" name="q7" value="b"> B. 市场总是错的</label>
+      <label><input type="radio" name="q7" value="c"> C. 内幕交易合法</label>
+      <label><input type="radio" name="q7" value="d"> D. 股价已反映所有可获得的信息，难以持续跑赢市场</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 2021 年 GameStop 事件说明了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 有效市场假说完全正确</label>
+      <label><input type="radio" name="q8" value="b"> B. 散户集体行动和羊群效应能严重扭曲股价，市场并非总是有效</label>
+      <label><input type="radio" name="q8" value="c"> C. 做空总是亏钱</label>
+      <label><input type="radio" name="q8" value="d"> D. 基本面分析无用</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q9.</span> 普通股股东享有的权利包括？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 投票权和分红权，但分红不固定</label>
+      <label><input type="radio" name="q9" value="b"> B. 固定利息</label>
+      <label><input type="radio" name="q9" value="c"> C. 优先于债券持有人受偿</label>
+      <label><input type="radio" name="q9" value="d"> D. 保证的本金返还</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 股票回购（Buyback）的作用是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 增加流通股数量</label>
+      <label><input type="radio" name="q10" value="b"> B. 减少公司利润</label>
+      <label><input type="radio" name="q10" value="c"> C. 减少流通股数量，提升每股价值，把钱返还给股东</label>
+      <label><input type="radio" name="q10" value="d"> D. 等同于发行新股</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 「股市短期是投票机，长期是称重机」这句话的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 短期看基本面，长期看情绪</label>
+      <label><input type="radio" name="q11" value="b"> B. 短期受情绪驱动，长期股价最终回归公司真实价值</label>
+      <label><input type="radio" name="q11" value="c"> C. 股市与基本面无关</label>
+      <label><input type="radio" name="q11" value="d"> D. 长期投资一定亏钱</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 基本面分析的代表人物是谁？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 沃伦·巴菲特和本杰明·格雷厄姆</label>
+      <label><input type="radio" name="q12" value="b"> B. 尤金·法玛</label>
+      <label><input type="radio" name="q12" value="c"> C. 保罗·沃尔克</label>
+      <label><input type="radio" name="q12" value="d"> D. 欧文·费雪</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0005-bonds.html">← 第5课 债券市场</a>
+  <span>第 6 课 / 共 12 课</span>
+  <a href="0007-valuation.html">第7课 估值方法 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'a', explanation: '股票是公司的所有权凭证，股东分享利润和增长，承担经营风险。' },
+  q2: { correct: 'b', explanation: '破产清算顺序：债权人 → 优先股股东 → 普通股股东。普通股股东排在最后，风险最高。' },
+  q3: { correct: 'c', explanation: 'IPO（Initial Public Offering）是公司首次向公众发行股票，在一级市场融资。' },
+  q4: { correct: 'b', explanation: '一级市场是公司发行新股融资，钱进入公司；二级市场是投资者之间买卖已发行的股票。' },
+  q5: { correct: 'a', explanation: '标普 500 含分红的长期年化名义回报约 10%，实际约 7%，是长期投资的黄金参考。' },
+  q6: { correct: 'c', explanation: 'P/E = 股价 ÷ 每股收益（EPS），是最常用的相对估值指标。' },
+  q7: { correct: 'd', explanation: 'EMH 认为股价已反映所有可得信息，因此难以持续跑赢市场。不过现实中市场并非总是有效。' },
+  q8: { correct: 'b', explanation: 'GameStop 股价远超基本面支撑，说明散户集体行动和羊群效应能严重扭曲价格，挑战了 EMH。' },
+  q9: { correct: 'a', explanation: '普通股股东有投票权和分红权，但分红不固定，破产时受偿顺序最低，无保证本金。' },
+  q10: { correct: 'c', explanation: '回购减少流通股数量，提升每股收益和价值，是回馈股东的方式之一（与分红效果类似）。' },
+  q11: { correct: 'b', explanation: '格雷厄姆名言：短期价格受情绪（投票机）驱动，长期终将反映真实价值（称重机）。' },
+  q12: { correct: 'a', explanation: '巴菲特和格雷厄姆是基本面分析（价值投资）的代表人物，强调以低于内在价值的价格买入。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经看懂了股市运作的全貌。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！股票知识扎实，复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。重点重读市场结构和有效市场假说。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先弄清股票与债券的本质区别。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 公司金融</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>公司金融</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第8课 / 共12课 · 约16分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>从公司管理者的视角理解金融。掌握公司金融的三大核心决策（投资、融资、分红）、资本结构与 MM 定理、加权平均资本成本（WACC）、净现值法则和资本资产定价模型（CAPM），以及公司治理中的委托代理问题。
+</div>
+
+<h2>一、公司金融的三大决策</h2>
+
+<p>如果你是一家公司的 CEO，你每天要回答三个核心问题：</p>
+<ul>
+  <li><strong>投资决策</strong>：把钱投到哪个项目？（造新工厂？研发新产品？收购竞争对手？）</li>
+  <li><strong>融资决策</strong>：钱从哪来？（发股票？借债？用留存利润？）</li>
+  <li><strong>分红决策</strong>：赚到的钱怎么分？（分给股东？留存再投资？回购股票？）</li>
+</ul>
+
+<div class="key-idea">
+  公司金融的全部核心，就是围绕这三大决策，最大化公司的价值——也就是最大化股东财富。这三个决策环环相扣，构成了企业财务管理的全部内容。
+</div>
+
+<h2>二、投资决策：NPV 净现值法则</h2>
+
+<p>面对一堆投资项目，该选哪个？答案来自第1课：<strong>净现值法则（NPV Rule）</strong>。</p>
+
+<div class="formula-box">
+  NPV = Σ CF<sub>t</sub> / (1+r)<sup>t</sup> − 初始投资
+</div>
+
+<ul>
+  <li><strong>NPV > 0</strong>：项目创造价值，应该投</li>
+  <li><strong>NPV < 0</strong>：项目毁灭价值，应该放弃</li>
+  <li><strong>NPV = 0</strong>：刚好不赚不亏</li>
+</ul>
+
+<p>NPV 法则是公司投资的黄金标准。但现实中，很多管理者也用更简单的指标辅助决策：</p>
+<ul>
+  <li><strong>内部收益率（IRR）</strong>：让 NPV = 0 的贴现率。IRR > 资本成本则投</li>
+  <li><strong>回收期</strong>：多少年能收回初始投资（简单但忽略了回收期后的现金流和货币时间价值）</li>
+  <li><strong>会计收益率</strong>：基于会计利润而非现金流</li>
+</ul>
+
+<div class="vocab-card">
+  <span class="term">资本预算 (Capital Budgeting)</span><br>
+  企业评估和选择长期投资项目的过程。本质就是用 NPV 等工具，在有限的资金下选择价值最大化的项目组合。
+</div>
+
+<h2>三、融资决策：资本结构与 MM 定理</h2>
+
+<p>公司融资的两大来源：<strong>股权</strong>（发股票）和<strong>债务</strong>（借钱）。两者的混合比例叫做<strong>资本结构（Capital Structure）</strong>。负债多了好还是少了好？</p>
+
+<h3>MM 定理（Modigliani-Miller）</h3>
+<p>莫迪利亚尼和米勒（均为诺奖得主）提出一个革命性观点：在<strong>完美市场</strong>（无税、无破产成本、无信息不对称）中，<strong>资本结构不影响公司价值</strong>——你把一块披萨切成几块，披萨还是那么大。</p>
+
+<div class="key-idea">
+  MM 定理的洞见：资本结构的<strong>本质不影响价值</strong>，现实中影响价值的是税收、破产成本等「不完美」因素。
+</div>
+
+<h3>现实修正：税盾与权衡理论</h3>
+<ul>
+  <li><strong>税盾（Tax Shield）</strong>：利息可以税前扣除，所以借债能省税，债务有「税收优惠」</li>
+  <li><strong>破产成本</strong>：负债越多，破产风险越高，破产的代价（法律费用、信誉损失、清算折价）也越大</li>
+</ul>
+
+<p><strong>权衡理论（Trade-off Theory）</strong>：最优资本结构是税盾收益与破产成本的平衡点——适度负债，不是越多越好。</p>
+
+<h2>四、加权平均资本成本（WACC）</h2>
+
+<p>公司同时使用股权和债务融资，整体资金成本是多少？这就是<strong>WACC</strong>：</p>
+
+<div class="formula-box">
+  WACC = E/V × R<sub>e</sub> + D/V × R<sub>d</sub> × (1 − T)
+</div>
+
+<p>其中 E 是股权价值，D 是债务价值，V = E + D，R<sub>e</sub> 是股权成本，R<sub>d</sub> 是债务成本，T 是税率。注意债务成本乘以 (1−T)，因为利息可抵税。</p>
+
+<p>WACC 就是第7课 DCF 估值中使用的贴现率 r。WACC 越低，公司越值钱。</p>
+
+<h2>五、CAPM：如何计算股权成本</h2>
+
+<p><strong>资本资产定价模型（CAPM）</strong>由夏普等人提出，用于计算股权的要求回报率（股权成本）：</p>
+
+<div class="formula-box">
+  R<sub>e</sub> = R<sub>f</sub> + β × (R<sub>m</sub> − R<sub>f</sub>)
+</div>
+
+<ul>
+  <li>R<sub>f</sub>：无风险利率（如国债利率）</li>
+  <li>β（贝塔）：股票相对市场的波动度。β = 1 表示与大盘同步，β > 1 更激进，β < 1 更稳定</li>
+  <li>(R<sub>m</sub> − R<sub>f</sub>)：市场风险溢价，承担市场风险的额外回报</li>
+</ul>
+
+<p>这与第2课的风险-回报权衡一脉相承：<strong>只有系统性风险（不可分散的市场风险）才需要补偿</strong>，公司特有风险可以通过分散投资消除。</p>
+
+<div class="vocab-card">
+  <span class="term">贝塔 (β)</span><br>
+  衡量一只股票相对整个市场的系统性风险。β=1 与大盘同涨同跌；β=1.5 大盘涨1%它涨1.5%；β=0.5 比大盘更稳。科技股 β 通常较高，公用事业 β 较低。
+</div>
+
+<h2>六、分红决策：分红 vs 回购</h2>
+
+<p>赚到的钱怎么分给股东？两种主要方式：</p>
+<ul>
+  <li><strong>现金分红</strong>：直接发现金。稳定但税率可能较高</li>
+  <li><strong>股票回购</strong>：公司买回自家股票，减少流通股，提升每股价值。税率通常更低，且更灵活</li>
+</ul>
+
+<p>有利润但不分红的「<strong>现金囤积</strong>」也常见。苹果长期囤积上千亿美元现金，引发股东要求回购的压力。</p>
+
+<h2>七、公司治理：委托代理问题</h2>
+
+<p>股东拥有公司，但管理者（CEO、高管）负责经营。两者的利益并不总一致——管理者可能追求自身利益（高薪酬、豪华办公室、盲目扩张帝国），而非股东价值最大化。这就是<strong>委托代理问题（Principal-Agent Problem）</strong>。</p>
+
+<p>解决方式：</p>
+<ul>
+  <li><strong>股权激励</strong>：给高管股票期权，让他们的利益与股东绑定</li>
+  <li><strong>董事会监督</strong>：代表股东监督管理层</li>
+  <li><strong>外部审计</strong>：独立审计确保财务数据真实</li>
+  <li><strong>敌意收购威胁</strong>：如果管理层太差，公司可能被收购、管理层被换掉</li>
+</ul>
+
+<div class="example-box">
+  <strong>真实案例——安然造假丑闻（2001）：</strong>安然曾是美国第七大公司，管理层通过复杂的特殊目的实体（SPE）隐藏债务、虚增利润。审计机构安达信（曾是五大之一）为其配合做假账。2001 年骗局败露，安然破产，安达信解体，580 亿美元市值蒸发，员工养老金归零。这催生了《萨班斯-奥克斯利法案》（SOX），大幅加强了公司治理和审计监管。
+</div>
+
+<div class="example-box">
+  <strong>真实案例——马斯克收购推特（2022）：</strong>2022 年，马斯克以 440 亿美元收购推特（后改名 X），部分资金来自以特斯拉股票为抵押的个人贷款。这展示了融资决策的复杂性——杠杆收购如何利用债务结构完成巨型交易，也引发了关于公司治理和控制权的高度争议。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>管理学</strong>：公司治理、激励设计、战略管理</li>
+  <li><strong>法律</strong>：公司法、证券监管、合同法、审计法规</li>
+  <li><strong>会计学</strong>：财务报表是投资决策和估值的基础数据</li>
+  <li><strong>经济学</strong>：委托代理理论、信息不对称、博弈论</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>公司金融围绕三大决策：投资（NPV）、融资（资本结构）、分红</li>
+    <li>NPV 法则是投资决策的黄金标准——NPV > 0 才投</li>
+    <li>MM 定理：完美市场中资本结构不影响价值；现实中税盾与破产成本的权衡决定最优负债率</li>
+    <li>WACC 是 DCF 估值使用的贴现率，CAPM 用于计算股权成本</li>
+    <li>委托代理问题是公司治理的核心——安然事件警示我们制度约束的重要性</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 公司金融的三大核心决策是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 招聘、培训、裁员</label>
+      <label><input type="radio" name="q1" value="b"> B. 广告、定价、渠道</label>
+      <label><input type="radio" name="q1" value="c"> C. 投资决策、融资决策、分红决策</label>
+      <label><input type="radio" name="q1" value="d"> D. 研发、生产、销售</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 根据 NPV 法则，什么时候应该投资一个项目？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. NPV < 0</label>
+      <label><input type="radio" name="q2" value="b"> B. NPV > 0</label>
+      <label><input type="radio" name="q2" value="c"> C. NPV = 0</label>
+      <label><input type="radio" name="q2" value="d"> D. 只看回收期</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> MM 定理的核心结论是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 在完美市场中，资本结构不影响公司价值</label>
+      <label><input type="radio" name="q3" value="b"> B. 债务越多越好</label>
+      <label><input type="radio" name="q3" value="c"> C. 股权融资总是最优</label>
+      <label><input type="radio" name="q3" value="d"> D. 公司价值与现金流无关</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q4.</span> 权衡理论认为最优资本结构是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 100% 股权</label>
+      <label><input type="radio" name="q4" value="b"> B. 100% 债务</label>
+      <label><input type="radio" name="q4" value="c"> C. 税盾收益与破产成本的平衡点</label>
+      <label><input type="radio" name="q4" value="d"> D. 取决于 CEO 心情</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 在 WACC 公式中，为什么债务成本要乘以 (1 − T)？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 因为债务没有成本</label>
+      <label><input type="radio" name="q5" value="b"> B. 因为利息可以税前扣除，产生税盾，降低了债务的实际成本</label>
+      <label><input type="radio" name="q5" value="c"> C. 因为税率总是 100%</label>
+      <label><input type="radio" name="q5" value="d"> D. 没有特别原因</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q6.</span> CAPM 公式 R<sub>e</sub> = R<sub>f</sub> + β × (R<sub>m</sub> − R<sub>f</sub>) 中，β 衡量的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 无风险利率</label>
+      <label><input type="radio" name="q6" value="b"> B. 公司的盈利能力</label>
+      <label><input type="radio" name="q6" value="c"> C. 通胀率</label>
+      <label><input type="radio" name="q6" value="d"> D. 股票相对市场的系统性风险（波动度）</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 一只 β = 1.5 的股票，相比 β = 0.5 的股票，其特点是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 系统性风险更高，要求回报率也更高</label>
+      <label><input type="radio" name="q7" value="b"> B. 更稳定，回报更低</label>
+      <label><input type="radio" name="q7" value="c"> C. 没有风险</label>
+      <label><input type="radio" name="q7" value="d"> D. β 与风险无关</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q8.</span> 委托代理问题指的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 股东之间的纠纷</label>
+      <label><input type="radio" name="q8" value="b"> B. 银行与客户的关系</label>
+      <label><input type="radio" name="q8" value="c"> C. 管理者（代理人）可能追求自身利益而非股东（委托人）价值最大化</label>
+      <label><input type="radio" name="q8" value="d"> D. 员工工资太低</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 2001 年安然丑闻暴露了什么核心问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 利率太低</label>
+      <label><input type="radio" name="q9" value="b"> B. 管理层造假、审计失职、公司治理崩塌，催生 SOX 法案</label>
+      <label><input type="radio" name="q9" value="c"> C. 股票市场无效</label>
+      <label><input type="radio" name="q9" value="d"> D. 国债违约</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 税盾（Tax Shield）的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 利息可税前扣除，借债能减少应纳税额，相当于政府补贴了部分债务成本</label>
+      <label><input type="radio" name="q10" value="b"> B. 分红不用交税</label>
+      <label><input type="radio" name="q10" value="c"> C. 股票回购违法</label>
+      <label><input type="radio" name="q10" value="d"> D. 公司可以不交税</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 内部收益率（IRR）的定义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 公司的净利润率</label>
+      <label><input type="radio" name="q11" value="b"> B. 银行的贷款利率</label>
+      <label><input type="radio" name="q11" value="c"> C. 让项目 NPV = 0 的贴现率，IRR > 资本成本则值得投</label>
+      <label><input type="radio" name="q11" value="d"> D. 股息率</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 解决委托代理问题的常见机制包括？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 提高利率</label>
+      <label><input type="radio" name="q12" value="b"> B. 股权激励、董事会监督、外部审计、敌意收购威胁</label>
+      <label><input type="radio" name="q12" value="c"> C. 只靠自律</label>
+      <label><input type="radio" name="q12" value="d"> D. 取消所有分红</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0007-valuation.html">← 第7课 估值方法</a>
+  <span>第 8 课 / 共 12 课</span>
+  <a href="0009-derivatives.html">第9课 衍生品 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '公司金融的三大决策：投资（投什么项目）、融资（钱从哪来）、分红（利润怎么分），目标是最大化公司价值。' },
+  q2: { correct: 'b', explanation: 'NPV > 0 意味着项目创造价值，应该投资；NPV < 0 则毁灭价值。这是 NPV 法则。' },
+  q3: { correct: 'a', explanation: 'MM 定理：在完美市场（无税、无破产成本）中，资本结构不影响公司价值。就像切披萨，怎么切不影响总量。' },
+  q4: { correct: 'c', explanation: '权衡理论：负债带来税盾收益但也增加破产成本，最优负债率是两者平衡点。' },
+  q5: { correct: 'b', explanation: '利息可税前扣除形成税盾，降低了债务的实际资本成本，所以乘以 (1−T)。' },
+  q6: { correct: 'd', explanation: 'β 衡量股票相对市场组合的系统性风险。β>1 比大盘更激进，β<1 更稳定。' },
+  q7: { correct: 'a', explanation: 'β=1.5 的股票系统性风险是 β=0.5 的 3 倍，根据 CAPM，要求回报率也更高。' },
+  q8: { correct: 'c', explanation: '委托代理问题：股东（委托人）与管理层（代理人）利益不一致，管理层可能追求私利。' },
+  q9: { correct: 'b', explanation: '安然管理层造假、安达信审计失职，暴露公司治理崩塌，催生了 SOX 法案加强监管。' },
+  q10: { correct: 'a', explanation: '税盾：利息税前扣除减少了应纳税额，相当于政府补贴了部分债务成本，是负债的优势。' },
+  q11: { correct: 'c', explanation: 'IRR 是让 NPV = 0 的贴现率，代表项目的隐含回报率。IRR 大于资本成本则值得投资。' },
+  q12: { correct: 'b', explanation: '股权激励让管理层与股东利益绑定；董事会、审计、收购威胁构成多重监督约束。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了公司金融的核心框架。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！公司金融知识扎实，复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。重点重读 NPV、WACC 和资本结构。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先理解公司金融三大决策。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

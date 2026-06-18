@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 — 衍生品</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
+  table.payoff-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  table.payoff-table th, table.payoff-table td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+  }
+
+  table.payoff-table th {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  table.payoff-table .pos { color: var(--correct); font-weight: 600; }
+  table.payoff-table .neg { color: var(--wrong); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>衍生品：期权、期货与互换</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第9课 / 共12课 · 约18分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解金融衍生品的核心逻辑——它们的价值「衍生」自底层资产。掌握四大类衍生品（远期、期货、期权、互换）的运作机制、定价直觉和风险管理用途，并认识衍生品的双刃剑特性：既是避险工具，也是投机利器。
+</div>
+
+<h2>一、什么是衍生品？</h2>
+
+<p>到目前为止，我们学习的股票、债券都是「原生」金融工具——它们的价值直接来自发行人的资产或现金流。而<strong>衍生品（Derivatives）</strong>则完全不同：它们的价值<strong>衍生自</strong>某种底层资产（underlying asset）的价格。</p>
+
+<div class="vocab-card">
+  <span class="term">衍生品 (Derivative)</span><br>
+  一种金融合约，其价值取决于（衍生自）一种或多种底层资产的价格、利率、汇率或指数。底层资产可以是股票、债券、商品、外汇、利率，甚至天气或碳排放额度。
+</div>
+
+<p>衍生品的本质是一份<strong>关于未来的合约</strong>。你今天签下合约，约定在未来某个日期、以某个价格、交易某种资产。衍生品的「魔法」在于：你不需要现在持有底层资产，就能获得（或规避）其价格变动的风险敞口。</p>
+
+<h3>衍生品的四大基本类型</h3>
+<ul>
+  <li><strong>远期合约（Forwards）</strong>：场外交易的定制化合约，约定未来以固定价格买卖资产</li>
+  <li><strong>期货合约（Futures）</strong>：交易所交易的标准化远期合约</li>
+  <li><strong>期权合约（Options）</strong>：赋予买方在未来以固定价格买卖资产的权利（但非义务）</li>
+  <li><strong>互换合约（Swaps）</strong>：双方约定在未来交换一系列现金流的合约</li>
+</ul>
+
+<div class="key-idea">
+  衍生品不创造新价值，而是<strong>重新分配风险</strong>。农民怕跌价、面包商怕涨价，期货让他们各自锁定价格——风险被转移到了愿意承担投机者的身上。
+</div>
+
+<h2>二、远期与期货：锁定未来价格</h2>
+
+<h3>远期合约</h3>
+<p>最简单的衍生品。假设你是一家航空公司，6 个月后需要购买 10000 桶航空燃油。你担心油价上涨，于是和石油公司签一份远期合约：<strong>6 个月后以每桶 80 美元的价格购买 10000 桶</strong>。</p>
+
+<p>无论 6 个月后油价涨到 100 美元还是跌到 60 美元，你们都按 80 美元成交。如果油价涨到 100 美元，你赚了（省了 20 万）；如果跌到 60 美元，你亏了（多付了 20 万）。但你获得了<strong>确定性</strong>——这对企业经营至关重要。</p>
+
+<div class="vocab-card">
+  <span class="term">远期合约 (Forward Contract)</span><br>
+  双方约定在未来的特定日期，以事先商定的价格，买卖特定数量的资产。在场外市场（OTC）交易，合约条款可完全定制，但存在对手方违约风险。
+</div>
+
+<h3>期货合约：标准化 + 交易所 + 保证金</h3>
+
+<p>远期合约的问题是：合约不标准、流动性差、有违约风险。期货合约解决了这些问题：</p>
+<ul>
+  <li><strong>标准化</strong>：数量、质量、交割日期全部由交易所统一规定</li>
+  <li><strong>交易所交易</strong>：通过清算所撮合，消灭了对手方风险</li>
+  <li><strong>保证金制度</strong>：双方必须缴纳保证金，每日结算盈亏（盯市制度，Mark-to-Market）</li>
+  <li><strong>流动性</strong>：可以随时平仓（反向交易），不需要等到到期</li>
+</ul>
+
+<div class="example-box">
+  <strong>保证金与杠杆：</strong>假设原油期货合约面值 80000 美元（1000 桶 × 80 美元），交易所要求 8% 保证金，你只需存入 6400 美元。如果油价涨 1%，你赚 800 美元——相对保证金的收益率是 12.5%。这就是衍生品的<strong>杠杆效应</strong>：小资金撬动大敞口。当然，亏起来也一样快。
+</div>
+
+<h2>三、期权：权利而非义务</h2>
+
+<p>期货和远期都是<strong>对称的</strong>——双方都有义务履约。而期权则引入了一种根本性的不对称：<strong>买方有权利，卖方有义务</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">期权 (Option)</span><br>
+  一种合约，赋予持有者在特定时间内、以特定价格（行权价，Strike Price）买入或卖出底层资产的权利，但没有义务。买方支付一笔费用（期权费，Premium）来获得这个权利。
+</div>
+
+<h3>看涨期权 vs 看跌期权</h3>
+<ul>
+  <li><strong>看涨期权（Call Option）</strong>：赋予买方以行权价<strong>买入</strong>资产的权利。你看好股票会涨，就买看涨期权</li>
+  <li><strong>看跌期权（Put Option）</strong>：赋予买方以行权价<strong>卖出</strong>资产的权利。你看空或想给持仓买「保险」，就买看跌期权</li>
+</ul>
+
+<h3>期权的到期收益</h3>
+
+<p>假设你买入一只股票的看涨期权，行权价 100 元，期权费 5 元。到期时不同股价下你的盈亏：</p>
+
+<table class="payoff-table">
+  <tr><th>到期股价</th><th>行权？</th><th>毛收益</th><th>减期权费</th><th>净收益</th></tr>
+  <tr><td>80 元</td><td>不行权</td><td>0 元</td><td>-5 元</td><td class="neg">-5 元</td></tr>
+  <tr><td>100 元</td><td>无所谓</td><td>0 元</td><td>-5 元</td><td class="neg">-5 元</td></tr>
+  <tr><td>105 元</td><td>行权</td><td>+5 元</td><td>-5 元</td><td>0 元</td></tr>
+  <tr><td>120 元</td><td>行权</td><td>+20 元</td><td>-5 元</td><td class="pos">+15 元</td></tr>
+</table>
+
+<p>关键洞察：<strong>期权买方的最大亏损就是期权费</strong>（本例中 5 元），但上行收益理论上是无限的。反过来，期权卖方（收取期权费）的最大收益是期权费，但理论上可能亏损无限。</p>
+
+<div class="key-idea">
+  期权本质上是一种<strong>保险</strong>。看跌期权就是给股票买「跌价险」——付出保费（期权费），锁定下跌风险，保留上涨收益。这与期货不同——期货锁定了双向价格。
+</div>
+
+<h3>期权定价：Black-Scholes 模型的直觉</h3>
+
+<p>期权值多少钱？这曾是一个困扰金融界几十年的难题，直到 1973 年 Black、Scholes 和 Merton 提出了著名的 Black-Scholes 期权定价模型（1997 年诺贝尔经济学奖）。模型的核心结论是，期权价值主要受以下因素驱动：</p>
+<ul>
+  <li><strong>底层资产价格</strong>：看涨期权，股价越高越值钱</li>
+  <li><strong>行权价</strong>：看涨期权，行权价越低越值钱</li>
+  <li><strong>剩余时间</strong>：时间越长越值钱（有更多机会变得有价值）</li>
+  <li><strong>波动率（Volatility）</strong>：<strong>波动越大越值钱</strong>——因为期权收益是不对称的（上行无限，下行有限）</li>
+  <li><strong>无风险利率</strong>：利率上升，看涨期权价值略升</li>
+</ul>
+
+<div class="example-box">
+  <strong>为什么波动率越高层权越贵？</strong>假设股票当前 100 元，看涨期权行权价 100 元。如果股价几乎不动，到期时大概率还在 100 附近，期权几乎没价值。但如果股价可能暴涨到 200 或暴跌到 0，那暴涨到 200 时你的期权就赚了 100；而暴跌到 0 时你只亏期权费。波动给了你上行机会却没有增加下行损失——所以波动越大，期权越贵。这就是金融中的「波动率溢价」。
+</div>
+
+<h2>四、互换：现金流的交换</h2>
+
+<p><strong>互换（Swap）</strong>是双方约定在未来一段时间内、按固定周期交换现金流的合约。最常见的两种：</p>
+
+<h3>利率互换（Interest Rate Swap）</h3>
+
+<p>一方支付<strong>固定利率</strong>，另一方支付<strong>浮动利率</strong>（如 LIBOR 或 SOFR），名义本金不交换（只交换利息差额）。</p>
+
+<div class="example-box">
+  <strong>典型案例：</strong>一家企业发行了浮动利率债券（利率 = SOFR + 2%），但它偏好确定性的固定利率支出。于是它和银行做利率互换：企业向银行付固定利率 5%，银行向企业付浮动利率 SOFR。净效果：企业的综合融资成本变成了固定的 5% + 2% = 7%，不再受利率波动影响。这就是<strong>用衍生品将浮动利率转为固定利率</strong>的典型案例。
+</div>
+
+<h3>货币互换（Currency Swap）</h3>
+
+<p>双方交换不同货币的本金和利息。常用于跨国企业规避汇率风险，或利用不同国家的利率差异进行融资。</p>
+
+<div class="vocab-card">
+  <span class="term">信用违约互换 (CDS, Credit Default Swap)</span><br>
+  一种类似「债券违约保险」的衍生品。买方定期向卖方支付保费；如果底层债券违约，卖方向买方赔付。2008 年金融危机中，CDS 被大量用于做空次贷，AIG 因卖出海量 CDS 而濒临破产，是危机的重要放大器。
+</div>
+
+<h2>五、衍生品的双面性：天使还是魔鬼？</h2>
+
+<h3>正用途：套期保值（Hedging）</h3>
+<ul>
+  <li>航空公司用原油期货锁定燃料成本</li>
+  <li>出口企业用外汇远期规避汇率风险</li>
+  <li>基金经理用看跌期权为投资组合买「保险」</li>
+  <li>企业用利率互换管理浮动利率风险</li>
+</ul>
+
+<h3>危险用途：投机与杠杆</h3>
+<ul>
+  <li>1995 年巴林银行倒闭——交易员尼克·里森用日经期货投机亏损 14 亿美元</li>
+  <li>2008 年金融危机——CDS 和 CDO（担保债务凭证）放大了次贷风险</li>
+  <li>2021 年 Archegos 资本爆仓——通过总收益互换获得巨大杠杆，亏损超 100 亿美元</li>
+</ul>
+
+<p>沃伦·巴菲特称衍生品为「大规模杀伤性金融武器」。但这话只说对了一半——衍生品本身是中性的工具。正确使用时，它们是卓越的风险管理利器；滥用杠杆和投机时，它们可以摧毁一切。</p>
+
+<div class="key-idea">
+  衍生品不增加风险，它们<strong>转移和重组风险</strong>。风险从不愿承担的人转移到了愿意承担的人。问题在于：当投机者过度使用杠杆、或监管不透明时，系统性风险便可能被放大而非分散。
+</div>
+
+<h2>六、衍生品市场规模</h2>
+
+<p>衍生品市场的名义本金（Notional Amount）极其庞大。根据国际清算银行（BIS）的数据，全球场外衍生品名义本金超过 <strong>600 万亿美元</strong>，是全球 GDP 的数倍。但名义本金不代表实际风险——实际的市场价值（Gross Market Value）要小得多，因为大部分合约的盈亏互相对冲了。</p>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>概率论</strong>：期权定价依赖随机微积分和布朗运动（Black-Scholes）</li>
+  <li><strong>会计学</strong>：套期保值会计（Hedge Accounting）、衍生品的资产负债表披露</li>
+  <li><strong>法律</strong>：ISDA 主协议是全球衍生品交易的法律基础</li>
+  <li><strong>宏观经济学</strong>：衍生品在系统性风险传导中的角色（第11课）</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>衍生品的价值衍生自底层资产——本质是关于未来的合约</li>
+    <li>远期/期货锁定价格、消除不确定性；期权提供非对称保护（买方亏损有限）</li>
+    <li>期权定价的核心驱动因素：底层价格、行权价、时间、波动率、利率</li>
+    <li>波动率越高层权越贵——源于期权收益的不对称性</li>
+    <li>互换可以转换利率或货币类型，是企业风险管理的常用工具</li>
+    <li>衍生品是中性的：套期保值时是天使，过度杠杆投机时是魔鬼</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 金融衍生品的价值主要取决于什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 发行人的信用评级</label>
+      <label><input type="radio" name="q1" value="b"> B. 合约本身的纸张价值</label>
+      <label><input type="radio" name="q1" value="c"> C. 底层资产的价格或指数</label>
+      <label><input type="radio" name="q1" value="d"> D. 交易所收取的手续费</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 远期合约和期货合约的主要区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 远期合约只能在交易所交易</label>
+      <label><input type="radio" name="q2" value="b"> B. 期货合约是标准化、在交易所交易且有保证金制度</label>
+      <label><input type="radio" name="q2" value="c"> C. 两者完全相同</label>
+      <label><input type="radio" name="q2" value="d"> D. 远期合约没有对手方风险</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 你买入行权价 50 元的看涨期权，期权费 3 元。到期股价 60 元时，你的净收益是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. +7 元</label>
+      <label><input type="radio" name="q3" value="b"> B. +10 元</label>
+      <label><input type="radio" name="q3" value="c"> C. -3 元</label>
+      <label><input type="radio" name="q3" value="d"> D. +3 元</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 期权买方的最大亏损是多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 底层资产的全部价值</label>
+      <label><input type="radio" name="q4" value="b"> B. 没有上限</label>
+      <label><input type="radio" name="q4" value="c"> C. 行权价</label>
+      <label><input type="radio" name="q4" value="d"> D. 支付的期权费</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q5.</span> 根据期权定价理论，以下哪个因素会提高看涨期权的价值？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 底层资产波动率下降</label>
+      <label><input type="radio" name="q5" value="b"> B. 剩余时间缩短</label>
+      <label><input type="radio" name="q5" value="c"> C. 底层资产波动率上升</label>
+      <label><input type="radio" name="q5" value="d"> D. 行权价上升</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q6.</span> 为什么波动率越高层权越贵？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 波动率不影响期权价值</label>
+      <label><input type="radio" name="q6" value="b"> B. 期权收益不对称——波动带来上行机会但不增加下行损失</label>
+      <label><input type="radio" name="q6" value="c"> C. 波动率越高，行权价越高</label>
+      <label><input type="radio" name="q6" value="d"> D. 高波动意味着底层资产一定下跌</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 一家企业持有浮动利率债务，想要锁定固定利率支出，应该使用哪种衍生品？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 利率互换（支付固定、收取浮动）</label>
+      <label><input type="radio" name="q7" value="b"> B. 看涨期权</label>
+      <label><input type="radio" name="q7" value="c"> C. 股票期货</label>
+      <label><input type="radio" name="q7" value="d"> D. 货币互换</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 信用违约互换（CDS）本质上是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 一种外汇远期</label>
+      <label><input type="radio" name="q8" value="b"> B. 一种利率期货</label>
+      <label><input type="radio" name="q8" value="c"> C. 一种股票期权</label>
+      <label><input type="radio" name="q8" value="d"> D. 类似于债券违约的保险</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 期货保证金制度下的杠杆效应意味着什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 投资者不会亏损</label>
+      <label><input type="radio" name="q9" value="b"> B. 少量保证金可以控制大额头寸，盈亏都会被放大</label>
+      <label><input type="radio" name="q9" value="c"> C. 保证金就是合约的全款</label>
+      <label><input type="radio" name="q9" value="d"> D. 杠杆只放大收益，不放大亏损</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 看跌期权（Put Option）赋予持有者什么权利？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 以行权价卖出底层资产</label>
+      <label><input type="radio" name="q10" value="b"> B. 以行权价买入底层资产</label>
+      <label><input type="radio" name="q10" value="c"> C. 强制卖方买入底层资产</label>
+      <label><input type="radio" name="q10" value="d"> D. 获得固定利息</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 以下哪个事件最能说明衍生品的巨大风险？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 巴菲特买入苹果股票</label>
+      <label><input type="radio" name="q11" value="b"> B. 某公司发行新股融资</label>
+      <label><input type="radio" name="q11" value="c"> C. 巴林银行因尼克·里森日经期货投机亏损倒闭</label>
+      <label><input type="radio" name="q11" value="d"> D. 某债券按期支付利息</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 关于衍生品的本质，下列说法最准确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 衍生品只会增加市场风险</label>
+      <label><input type="radio" name="q12" value="b"> B. 衍生品只能用于投机</label>
+      <label><input type="radio" name="q12" value="c"> C. 衍生品会自动消除所有风险</label>
+      <label><input type="radio" name="q12" value="d"> D. 衍生品转移和重组风险，正确使用是避险工具，滥用则极具破坏力</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q13.</span> 如果你持有 1000 股某股票，担心短期内下跌但又不想卖出，最合适的操作是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 买入看涨期权</label>
+      <label><input type="radio" name="q13" value="b"> B. 买入看跌期权，相当于给持仓买保险</label>
+      <label><input type="radio" name="q13" value="c"> C. 卖出看跌期权</label>
+      <label><input type="radio" name="q13" value="d"> D. 做利率互换</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0008-corporate-finance.html">← 上一课</a>
+  <span>第 9 课 / 共 12 课</span>
+  <a href="0010-behavioral-finance.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '衍生品的「衍生」二字正源于此——其价值来自底层资产（如股票、债券、商品、利率等）的价格或指数。' },
+  q2: { correct: 'b', explanation: '期货是标准化、在交易所交易、有保证金和盯市制度的远期合约。远期是场外定制化合约，存在对手方违约风险。' },
+  q3: { correct: 'a', explanation: '到期股价 60 元 > 行权价 50 元，行权毛收益 = 60 - 50 = 10 元。减去期权费 3 元，净收益 = +7 元。' },
+  q4: { correct: 'd', explanation: '期权买方的最大亏损就是支付的期权费。无论底层资产跌多少，买方都可以选择不行权，损失不会超过期权费。' },
+  q5: { correct: 'c', explanation: '波动率上升会增加期权价值——因为期权收益不对称，波动带来更多上行机会。时间缩短、行权价上升都会降低看涨期权价值。' },
+  q6: { correct: 'b', explanation: '期权买方的下行损失有限（最多亏期权费），上行收益无限。波动率越大，暴涨的可能性越大，期权就越值钱。' },
+  q7: { correct: 'a', explanation: '企业已有浮动利率负债，通过利率互换支付固定利率、收取浮动利率，浮动部分对冲后，净效果是锁定固定利率支出。' },
+  q8: { correct: 'd', explanation: 'CDS 买方定期支付保费，底层债券违约时卖方赔付——本质上就是债券的违约保险。2008 年金融危机中它扮演了关键角色。' },
+  q9: { correct: 'b', explanation: '保证金只需合约面值的一小部分，因此杠杆效应明显——底层资产小幅波动就能导致保证金的大幅盈亏，盈亏双向放大。' },
+  q10: { correct: 'a', explanation: '看跌期权赋予持有者以行权价卖出底层资产的权利。当你担心资产下跌或想为持仓买保险时，看跌期权是合适的工具。' },
+  q11: { correct: 'c', explanation: '1995 年巴林银行因交易员尼克·里森在日经期货上的投机亏损 14 亿美元而倒闭，是衍生品风险最经典的案例。' },
+  q12: { correct: 'd', explanation: '衍生品本身是中性工具。套期保值时是卓越的风险管理利器，但过度杠杆和投机使用时极具破坏力。' },
+  q13: { correct: 'b', explanation: '买入看跌期权相当于给持仓买「跌价保险」——付出期权费，锁定下跌风险，同时保留股票上涨收益。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了衍生品的核心逻辑。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了主要概念，再复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重点复习期权收益和互换部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重点理解期权的不对称收益和期货的杠杆效应。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

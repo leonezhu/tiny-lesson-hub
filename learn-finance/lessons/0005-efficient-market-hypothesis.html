@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 有效市场假说</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 { margin-top: 0; }
+
+  .formula {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 1rem;
+    overflow-x: auto;
+  }
+
+  .example-box {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .q-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  .context {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .option-btn {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .option-btn:disabled {
+    cursor: default;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); border-left: 3px solid var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); border-left: 3px solid var(--wrong); }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .score-label {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .followup {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .followup a { color: var(--accent); }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  .footer .nav-disabled { color: #ccc; }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  li { margin-bottom: 0.25rem; }
+</style>
+</head>
+<body>
+
+<h1>第5课 — 有效市场假说</h1>
+<div class="lesson-meta">金融学 · 第5课 / 共12课</div>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解有效市场假说的三个层次，掌握为什么大多数主动基金经理跑不赢指数，学会判断什么时候市场可能是无效的——以及你该怎么做。
+</div>
+
+<h2>一、什么是有效市场？</h2>
+
+<p>1970年，尤金·法玛提出了金融学中最具争议的理论之一：<strong>有效市场假说（Efficient Market Hypothesis, EMH）</strong>。它的核心观点简洁而大胆：</p>
+
+<div class="concept-card">
+  <h3>有效市场的定义</h3>
+  <p>在一个有效的市场中，资产价格<strong>已经充分反映了所有可得信息</strong>。这意味着你无法通过分析信息来持续获得超额收益——因为信息已经被价格消化了。</p>
+</div>
+
+<p>打个比方：如果市场是完全有效的，那么股票价格就像一台完美的"信息榨汁机"——任何新闻、财报、分析师预测都会在瞬间被反映在价格里。你看到利好消息时买入，价格早就涨过了。</p>
+
+<p>但这听起来太理想化了。如果市场真的完全有效，为什么还会有巴菲特？为什么还会有2000年的互联网泡沫和2008年的金融危机？这些正是我们需要深入讨论的问题。</p>
+
+<h2>二、三种有效性：弱式、半强式、强式</h2>
+
+<p>法玛将市场效率分为三个层次，从弱到强：</p>
+
+<table>
+  <tr><th>形式</th><th>价格反映的信息</th><th>技术分析有用？</th><th>基本面分析有用？</th></tr>
+  <tr><td><strong>弱式有效</strong></td><td>历史价格和交易量</td><td>❌ 无用</td><td>❓ 可能有</td></tr>
+  <tr><td><strong>半强式有效</strong></td><td>所有公开信息（财报、新闻等）</td><td>❌ 无用</td><td>❌ 无用</td></tr>
+  <tr><td><strong>强式有效</strong></td><td>所有信息（包括内幕信息）</td><td>❌ 无用</td><td>❌ 无用</td></tr>
+</table>
+
+<p><strong>弱式有效</strong>是最弱的形式——它只说历史价格信息没用。绝大多数学者和市场参与者都同意这一点。如果你试图通过"看图说话"（比如头肩顶、MACD金叉）来赚钱，市场不会让你轻易得逞。</p>
+
+<p><strong>半强式有效</strong>更进一步：所有公开信息——包括财报、并购公告、分析师报告——都已经体现在价格中。这意味着即使你做深入的财务报表分析，也无法持续战胜市场。这个结论让无数分析师感到不安。</p>
+
+<p><strong>强式有效</strong>是最极端的：连内幕信息都被价格反映了。显然这不是真的—— insider trading 之所以违法，正是因为内幕信息可以带来超额收益。所以没人相信强式有效。</p>
+
+<h2>三、为什么大多数人赢不了市场？</h2>
+
+<p>有效市场假说的一个直接推论是：<strong>被动投资优于主动管理</strong>。让我们看数据：</p>
+
+<div class="example-box">
+  <strong>标普500指数基金 vs 主动管理基金（SPIVA报告，2023年数据）：</strong><br>
+  • 过去10年，约89%的美国大盘股主动基金跑不赢标普500<br>
+  • 过去15年，约92%的主动基金跑不赢基准<br>
+  • 即使是顶尖基金经理，长期跑赢市场的比例也不到5%
+</div>
+
+<p>为什么？原因有三：</p>
+
+<ul>
+  <li><strong>信息竞争太激烈：</strong>华尔街有数千名分析师、数万亿美元的资金在争夺同样的信息。当所有人都在分析财报时，你的分析几乎不可能领先。</li>
+  <li><strong>费用侵蚀收益：</strong>主动基金的管理费通常1%-2%，而指数基金只有0.03%-0.1%。一年差1%，复利20年后差距巨大。</li>
+  <li><strong>随机性伪装成能力：</strong>在大量基金中，总会有少数靠运气跑赢市场。人们会把运气误认为能力，然后继续投入更多资金。</li>
+</ul>
+
+<div class="formula">
+  <strong>复利对比示例：</strong><br>
+  初始投资 $100,000，20年：<br>
+  • 主动基金：年化10% - 管理费1.5% = 净收益8.3% → $509,000<br>
+  • 指数基金：年化10% - 管理费0.05% = 净收益9.95% → $668,000<br>
+  <strong>差距：$159,000</strong>（全部来自费用差异）
+</div>
+
+<h2>四、市场真的有效吗？反驳的声音</h2>
+
+<p>有效市场假说并非铁板钉钉。以下是一些著名的反证：</p>
+
+<h3>1. 市场异象（Anomalies）</h3>
+
+<p>学术研究发现了一些"系统性偏离"有效市场的模式：</p>
+
+<ul>
+  <li><strong>规模效应：</strong>小盘股长期跑赢大盘股（虽然近年有所减弱）</li>
+  <li><strong>价值效应：</strong>低市盈率/市净率的公司长期跑赢高估值的成长股</li>
+  <li><strong>动量效应：</strong>过去3-12个月表现好的股票，短期内倾向于继续表现好</li>
+  <li><strong>一月效应：</strong>历史上1月份股市倾向于异常上涨</li>
+</ul>
+
+<p>这些异象的存在说明市场并非完全有效——至少在某些时候、某些维度上不是。</p>
+
+<h3>2. 行为金融学的挑战</h3>
+
+<p>行为经济学家指出，投资者不是理性的。他们有以下系统性偏差：</p>
+
+<ul>
+  <li><strong>过度自信：</strong>认为自己能预测市场，频繁交易导致低收益</li>
+  <li><strong>损失厌恶：</strong>亏损的痛苦是同等收益快乐的两倍，导致"死扛亏损股、过早卖出盈利股"</li>
+  <li><strong>羊群效应：</strong>跟随大众买卖，导致泡沫和崩盘</li>
+  <li><strong>锚定效应：</strong>过度依赖某个参考点（如买入价）做决策</li>
+</ul>
+
+<h3>3. 泡沫与崩盘</h3>
+
+<div class="example-box">
+  1999年互联网泡沫：Dot-com公司没有收入、没有商业模式，股价却能炒到上千美元。如果市场完全有效，这种荒谬不可能发生。<br><br>
+  2008年次贷危机：房价被认为"只会涨不会跌"，直到整个体系崩溃。<br><br>
+  <strong>如果市场总是有效的，这些泡沫为什么会出现？</strong>
+</div>
+
+<h2>五、一个实用的中间立场</h2>
+
+<p>现代金融学的共识是：<strong>市场在很大程度上是有效的，但不是完全有效的</strong>。具体来说：</p>
+
+<div class="concept-card">
+  <h3>实用框架</h3>
+  <p>• 对于<strong>流动性好、关注度高</strong>的大公司股票（如苹果、微软），市场几乎是半强式有效的——很难通过公开信息战胜它们。<br><br>
+  • 对于<strong>关注度低</strong>的小盘股、新兴市场资产，市场效率较低——可能存在超额收益的机会。<br><br>
+  • <strong>短期</strong>内价格可能偏离价值（行为偏差驱动），但<strong>长期</strong>内价格趋向基本面。<br><br>
+  • 对绝大多数投资者来说，<strong>低成本指数基金仍然是最优选择</strong>——不是因为市场完全有效，而是因为"战胜市场的难度"远大于"接受市场平均回报"。</p>
+</div>
+
+<p>这就像开车：高速公路上的车流总体上是有序的（市场有效），但偶尔会有人突然变道（行为偏差创造机会）。对普通司机来说，遵守交通规则、保持安全车速（指数投资）永远是最好的策略——除非你是职业赛车手（专业基金经理）。</p>
+
+<h2>六、指数投资的逻辑</h2>
+
+<p>如果你接受市场在很大程度上是有效的，那么自然得出的结论就是：<strong>不要试图战胜市场，而是成为市场</strong>。这就是指数投资的哲学基础：</p>
+
+<ul>
+  <li><strong>买入并持有：</strong>既然价格已经反映了信息，频繁交易只会增加成本和犯错概率</li>
+  <li><strong>分散化：</strong>购买整个市场（如标普500指数基金），避免个股风险</li>
+  <li><strong>低成本：</strong>指数基金的费用极低，最大化你的净收益</li>
+  <li><strong>纪律性：</strong>定期定额投资，避免择时陷阱</li>
+</ul>
+
+<div class="formula">
+  <strong>沃伦·巴菲特的建议：</strong><br>
+  "通过定期投资指数基金，一个毫无金融知识的门外汉往往能够战胜大部分专业基金经理。"<br><br>
+  <em>—— 这段话出自巴菲特给股东的信，也是他推荐给普通投资者的唯一策略。</em>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，看看你是否掌握了有效市场假说的核心逻辑。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">1</span>
+    <div class="context">基本概念</div>
+    <div class="sentence">有效市场假说的核心观点是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">股票价格是不可预测的随机游走</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">资产价格已充分反映所有可得信息</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">政府应该监管市场以防止操纵</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">2</span>
+    <div class="context">三种有效性</div>
+    <div class="sentence">如果一个市场是半强式有效的，以下哪种分析方法无法产生超额收益？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">技术分析（图表分析）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基本面分析（研究财报和新闻）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">两者都无法产生超额收益</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">3</span>
+    <div class="context">主动 vs 被动</div>
+    <div class="sentence">根据SPIVA报告，过去10年美国大盘股主动基金的表现是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">超过60%跑赢了标普500</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约89%跑不赢标普500</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">一半对一半</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">4</span>
+    <div class="context">费用影响</div>
+    <div class="sentence">两只基金年化回报都是10%，A基金管理费1.5%，B基金管理费0.05%。20年后差距主要来自：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">A基金业绩更好</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">B基金的低费用复利效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">随机波动</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">5</span>
+    <div class="context">市场异象</div>
+    <div class="sentence">以下哪项属于市场异象？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">股票价格随宏观经济波动</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">小盘股长期跑赢大盘股的规模效应</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">利率上升时债券价格下跌</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">6</span>
+    <div class="context">行为偏差</div>
+    <div class="sentence">"死扛亏损股、过早卖出盈利股"的行为最符合以下哪种偏差？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">过度自信</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">损失厌恶</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">7</span>
+    <div class="context">强式有效</div>
+    <div class="sentence">以下哪种说法是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">没有人相信强式有效市场假说</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">所有人都相信市场是完全有效的</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">大多数人同意弱式有效，但对半强式和强式有争议</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">8</span>
+    <div class="context">综合判断</div>
+    <div class="sentence">根据有效市场假说的实用框架，以下哪种投资策略最合理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">每天频繁交易以捕捉价格波动</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">只买你深入研究过的个股</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">低成本指数基金定投，长期持有</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——不理解为什么大多数主动基金跑不赢指数？想知道哪些市场异象还真的有道理？这正是我们该深入讨论的地方。直接提问，我来解释。<br><br>
+  <strong>推荐资源：</strong> <a href="https://www.investopedia.com/terms/e/effICIENTMARKETHYPOTHESIS.asp" target="_blank">Investopedia: Efficient Market Hypothesis</a> — 深入了解EMH的经典入门文章。
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0006-stocks.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '正确！有效市场假说的核心就是"价格反映所有可得信息"——这是法玛的定义。',
+      wrong: '价格不可预测只是EMH的一个推论，不是核心定义。核心定义是"价格已充分反映所有可得信息"。'
+    },
+    q2: {
+      correct: '在半强式有效市场中，所有公开信息（包括财报和新闻）都已反映在价格中，所以基本面分析无法产生超额收益。',
+      wrong: '在半强式有效市场中，技术分析当然也没用（那是弱式有效就排除了的）。但题目问的是半强式——基本面分析同样无效。选"两者都无法"更准确。'
+    },
+    q3: {
+      correct: '没错！SPIVA数据显示约89%的美国大盘股主动基金在过去10年跑不赢标普500。',
+      wrong: '数据表明绝大多数主动基金跑不赢指数。约89%的主动基金在10年期内未能超越标普500。'
+    },
+    q4: {
+      correct: '完全正确！虽然两只基金表面回报一样，但B基金的低费用在复利作用下产生了巨大的最终差距。',
+      wrong: '两只基金表面回报相同，差距完全来自费用。1.5% vs 0.05%的年费差，20年复利下来差距可达数十万美元。'
+    },
+    q5: {
+      correct: '对！规模效应是一种市场异象——小盘股长期跑赢大盘股，这与有效市场假说不完全一致。',
+      wrong: '价格随宏观波动、利率与债券价格的关系都是正常的金融规律。规模效应是小盘股系统性跑赢大盘股，属于异象。'
+    },
+    q6: {
+      correct: '正确！损失厌恶是指亏损带来的痛苦是同等收益快乐的约两倍，导致投资者不愿"承认失败"而持有亏损股。',
+      wrong: '这是典型的损失厌恶——人们对亏损的感受远强于等量收益。过度自信是高估自己，锚定是过度依赖某个参考值。'
+    },
+    q7: {
+      correct: '完全正确。弱式有效（历史价格无用）几乎被普遍接受，但半强式和强式都有很大争议。',
+      wrong: 'A不对：虽然强式有效确实没人完全相信，但"没有人相信"太绝对了。C更准确——弱式基本达成共识，半强式和强式有争议。'
+    },
+    q8: {
+      correct: '正确！在有效市场假说的框架下，低成本指数基金定投是最理性的策略——接受市场平均回报，避免高昂费用。',
+      wrong: '频繁交易会增加成本和犯错概率。个股研究在有效市场中难以产生超额收益。指数基金定投是EMH框架下的最优解。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对有效市场假说的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下错题的解释，查漏补缺。';
+      else label.textContent = '建议重读上面的内容，重点理解三种有效性和指数投资的逻辑。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

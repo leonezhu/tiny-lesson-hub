@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 宏观金融</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
+  .phase-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .phase-box .phase-name {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>宏观金融：货币、央行与经济周期</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第11课 / 共12课 · 约19分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解宏观金融的大图景——央行如何通过货币政策影响利率和资产价格，经济周期如何驱动金融市场，以及通货膨胀、汇率和国际资本流动如何塑造全球金融格局。学会用宏观视角理解「为什么有时所有资产一起涨跌」。
+</div>
+
+<h2>一、金融市场不是孤岛</h2>
+
+<p>在前十课中，我们学习了股票、债券、衍生品等「微观」金融工具。但任何资产的回报都不是孤立决定的——它们都嵌入在一个更大的<strong>宏观金融环境</strong>中：</p>
+<ul>
+  <li>央行加息 → 所有资产价格受压（第1课的时间价值原理）</li>
+  <li>经济衰退 → 企业盈利下降 → 股市下跌</li>
+  <li>通货膨胀 → 债券实际收益缩水</li>
+  <li>汇率波动 → 影响跨国投资回报</li>
+</ul>
+
+<div class="vocab-card">
+  <span class="term">宏观金融 (Macro Finance)</span><br>
+  研究宏观经济变量（利率、通胀、汇率、GDP增长）与金融市场之间相互关系的学科。它连接了宏观经济学（研究整体经济）和金融学（研究资产定价），关注货币政策、财政政策和国际资本流动如何影响资产价格和金融稳定。
+</div>
+
+<div class="key-idea">
+  如果说前10课教的是「如何评估一棵树」，宏观金融教的是「如何理解整片森林的气候」。再好的树木也逃不过旱灾。
+</div>
+
+<h2>二、央行与货币政策：金融市场的「总开关」</h2>
+
+<p><strong>中央银行</strong>（如美联储、中国人民银行、欧洲央行）是现代金融体系的核心。它们的主要工具是<strong>货币政策</strong>——通过调控货币供给和利率来影响经济。</p>
+
+<h3>央行的双重目标（Dual Mandate）</h3>
+<ul>
+  <li><strong>物价稳定</strong>：控制通货膨胀（大多数发达国家的目标通胀率约 2%）</li>
+  <li><strong>充分就业 / 经济增长</strong>：促进经济在潜在产出水平附近运行</li>
+</ul>
+
+<p>这两个目标经常存在张力：刺激经济可能引发通胀，抑制通胀可能抑制增长。央行的艺术就在于平衡。</p>
+
+<h3>货币政策工具箱</h3>
+
+<div class="phase-box">
+  <span class="phase-name">1. 政策利率（最核心工具）</span><br>
+  央行设定基准利率（如美联储的联邦基金利率），影响整个经济体的借贷成本。<br>
+  <strong>降息</strong> → 借贷更便宜 → 消费和投资增加 → 经济扩张，但可能推高通胀<br>
+  <strong>加息</strong> → 借贷更贵 → 经济降温，通胀受控，但可能引发衰退
+</div>
+
+<div class="phase-box">
+  <span class="phase-name">2. 公开市场操作（Open Market Operations）</span><br>
+  央行在市场上买卖国债，调节银行体系的流动性。<br>
+  买入国债 → 释放货币 → 利率下降<br>
+  卖出国债 → 回收货币 → 利率上升
+</div>
+
+<div class="phase-box">
+  <span class="phase-name">3. 量化宽松 / 量化紧缩（QE / QT）</span><br>
+  当利率已经降到零附近、传统工具失效时，央行直接大规模购买长期债券（QE），压低长期利率。<br>
+  <strong>2008 年金融危机和 2020 年新冠疫情</strong>期间，美联储进行了史无前例的 QE，资产负债表从不到 1 万亿膨胀到近 9 万亿美元。2022 年开始 QT（缩表）。
+</div>
+
+<div class="phase-box">
+  <span class="phase-name">4. 存款准备金率</span><br>
+  要求商业银行必须按存款比例留存准备金。降低准备金率 → 银行可贷资金增加 → 货币乘数扩大。这是中国人民银行常用的工具。
+</div>
+
+<h2>三、利率如何传导到金融市场？</h2>
+
+<p>央行的每一次加息或降息，都会通过多条渠道传导到所有金融市场：</p>
+
+<h3>1. 贴现率渠道（估值渠道）</h3>
+<p>这是最直接的传导机制（也是第1课的核心内容）：加息 → 贴现率上升 → 所有未来现金流的现值下降 → 股票、债券、房产价格下跌。<strong>成长股</strong>（未来现金流集中在中长期）对加息尤其敏感。</p>
+
+<h3>2. 信贷渠道</h3>
+<p>加息 → 银行贷款利率上升 → 企业融资成本上升 → 投资减少、利润下降 → 股价下跌。同时，浮动利率债务的偿付压力增大，违约风险上升。</p>
+
+<h3>3. 汇率渠道</h3>
+<p>加息 → 本国利率高于他国 → 资本流入 → 本币升值。本币升值利好进口商、利空出口商。</p>
+
+<h3>4. 资产价格渠道（财富效应）</h3>
+<p>加息 → 资产价格下跌 → 居民财富缩水 → 消费意愿下降 → 经济进一步降温。这形成了一个正反馈循环。</p>
+
+<div class="example-box">
+  <strong>2022 年案例：</strong>美联储为对抗通胀，全年加息 425 个基点（从 0.25% 到 4.5%）。结果：标普500指数下跌约 19%，美国综合债券指数下跌约 13%（百年最差债券年），比特币暴跌 65%。加息几乎打击了所有资产类别——这就是「宏观压制」。
+</div>
+
+<h2>四、经济周期与金融市场的舞蹈</h2>
+
+<p>经济不是线性增长的，而是呈<strong>周期性波动</strong>。一个典型的经济周期包括四个阶段，每个阶段对不同资产的影响不同：</p>
+
+<div class="phase-box">
+  <span class="phase-name">阶段一：复苏期（Recovery）</span><br>
+  刚走出衰退，经济开始加速。央行维持低利率。<br>
+  <strong>最佳资产</strong>：股票（尤其周期股、小盘股）、高收益债券<br>
+  <strong>逻辑</strong>：低利率 + 盈利改善 = 股市黄金期
+</div>
+
+<div class="phase-box">
+  <span class="phase-name">阶段二：扩张期（Expansion / Overheating）</span><br>
+  经济强劲增长，但通胀开始升温。央行开始加息。<br>
+  <strong>最佳资产</strong>：股票（向防御股轮动）、大宗商品<br>
+  <strong>风险</strong>：估值偏高，加息开始压制市场
+</div>
+
+<div class="phase-box">
+  <span class="phase-name">阶段三：滞胀期（Stagflation）</span><br>
+  通胀高企但增长放缓——最痛苦的组合。<br>
+  <strong>最佳资产</strong>：现金、抗通胀资产（黄金、TIPS）、短久期债券<br>
+  <strong>风险</strong>：股债双杀，1970 年代美国经历了长期滞胀
+</div>
+
+<div class="phase-box">
+  <span class="phase-name">阶段四：衰退期（Recession）</span><br>
+  经济负增长，企业盈利暴跌，失业率上升。央行大幅降息救市。<br>
+  <strong>最佳资产</strong>：长期国债（降息直接推高债券价格）、高质量防御股、现金<br>
+  <strong>逻辑</strong>：降息利好债券；资金避险涌入安全资产
+</div>
+
+<div class="key-idea">
+  <strong>美林时钟（Merrill Lynch Investment Clock）</strong>将上述逻辑总结为一个框架：根据经济增长和通胀的不同组合，在债券、股票、大宗商品和现金之间轮动配置。这是宏观资产配置的经典工具。
+</div>
+
+<h2>五、通货膨胀：金融资产的隐形杀手</h2>
+
+<p>通胀是宏观金融最重要的变量之一。它对金融的影响是全方位的：</p>
+
+<h3>通胀的两种类型</h3>
+<ul>
+  <li><strong>需求拉动型</strong>：经济过热，需求超过供给 → 价格普涨。对策：加息降温</li>
+  <li><strong>成本推动型</strong>：供给侧冲击（如石油危机、供应链断裂）→ 生产成本上升 → 价格上涨。这种通胀更难治理——加息抑制需求但不解决供给问题</li>
+</ul>
+
+<h3>通胀对不同资产的影响</h3>
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.9rem;">
+  <tr style="background: var(--accent-light);">
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">资产类别</th>
+    <th style="border:1px solid var(--border); padding:0.5rem;">通胀影响</th>
+  </tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">长期固定利率债券</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--wrong); font-weight:600;">最差（实际收益被侵蚀）</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">现金</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--wrong); font-weight:600;">差（购买力缩水）</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">成长股</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--wrong); font-weight:600;">差（加息压估值）</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">价值股 / 资源股</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--correct); font-weight:600;">较好</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">不动产（房地产）</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--correct); font-weight:600;">较好（租金和房价随通胀涨）</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">黄金 / 大宗商品</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--correct); font-weight:600;">最好（传统抗通胀工具）</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">通胀保值债券（TIPS）</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center; color:var(--correct); font-weight:600;">好（本金随通胀调整）</td></tr>
+</table>
+
+<div class="example-box">
+  <strong>1970年代大通胀：</strong>美国 CPI 一度超过 14%。十年间标准普尔500名义回报为正，但扣除通胀后实际回报接近零。同期黄金上涨超过 20 倍。这就是为什么「通胀是债券的天然敌人，黄金的天然朋友」。
+</div>
+
+<h2>六、汇率与国际资本流动</h2>
+
+<p>在全球化的金融市场中，<strong>汇率</strong>是连接各国经济的纽带。汇率变动直接影响跨国投资的回报：</p>
+
+<div class="formula-box">
+  跨国投资总回报 = 资产本币回报 ± 汇率变动
+</div>
+
+<p>如果你投资美国标普500指数赚了 10%，但美元对人民币贬值了 8%，你的实际人民币回报只有约 2%。这就是<strong>汇率风险</strong>。</p>
+
+<h3>影响汇率的主要因素</h3>
+<ul>
+  <li><strong>利率差</strong>：高利率国家吸引资本流入 → 本币升值（「利差交易」Carry Trade）</li>
+  <li><strong>通胀差</strong>：高通胀国家货币购买力下降 → 本币贬值（购买力平价理论）</li>
+  <li><strong>贸易差额</strong>：贸易顺差国货币趋于升值</li>
+  <li><strong>经济增长</strong>：强劲增长吸引外资 → 本币升值</li>
+  <li><strong>政治和制度稳定性</strong>：稳定的政治环境吸引「避险资本」</li>
+</ul>
+
+<div class="vocab-card">
+  <span class="term">不可能三角 (Impossible Trinity)</span><br>
+  一个国家不可能同时拥有以下三者：① 固定汇率、② 资本自由流动、③ 独立的货币政策。最多只能选两个。例如：香港选择了固定汇率 + 资本自由流动 → 放弃独立货币政策（利率跟随美国）；中国选择了独立货币政策 + 资本管制 → 牺牲汇率弹性（部分管控）。
+</div>
+
+<h2>七、系统性风险与金融危机</h2>
+
+<p>宏观金融最关注的风险是<strong>系统性风险（Systemic Risk）</strong>——单个机构的困境传导到整个金融体系，导致系统性崩溃的风险。</p>
+
+<h3>2008 年全球金融危机的宏观金融教训</h3>
+<ul>
+  <li><strong>杠杆过度</strong>：次贷危机前，金融机构杠杆率极高，微小损失被放大</li>
+  <li><strong>传染效应</strong>：雷曼倒闭 → 信任崩溃 → 银行间市场冻结 → 全球信贷瘫痪</li>
+  <li><strong>影子银行</strong>：不受监管的金融中介放大了系统性风险</li>
+  <li><strong>政策应对</strong>：央行作为「最后贷款人」提供紧急流动性、量化宽松，阻止了全面崩溃</li>
+</ul>
+
+<div class="key-idea">
+  金融危机的本质是<strong>信心危机</strong>。当信任消失时，即使健康的机构也会因流动性枯竭而倒下。这就是为什么央行和政府必须在危机中果断干预——恢复信心比拯救个别机构更重要。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>宏观经济学</strong>：IS-LM 模型、总供给-总需求模型、菲利普斯曲线（通胀-失业权衡）</li>
+  <li><strong>国际经济学</strong>：购买力平价、蒙代尔-弗莱明模型、国际收支</li>
+  <li><strong>政治学</strong>：中央银行独立性、财政-货币政策协调</li>
+  <li><strong>历史学</strong>：大萧条、大通胀、亚洲金融危机、2008 年金融危机——历史是最好的宏观金融教科书</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>宏观金融连接宏观经济与金融市场——利率、通胀、汇率塑造所有资产的回报</li>
+    <li>央行是金融市场的「总开关」：通过利率、QE/QT、准备金率等工具影响经济</li>
+    <li>加息通过贴现率、信贷、汇率和财富效应四条渠道传导到所有资产</li>
+    <li>经济周期分为复苏、扩张、滞胀、衰退——每个阶段最佳资产配置不同（美林时钟）</li>
+    <li>通胀是债券和现金的隐形杀手，是黄金和大宗商品的朋友</li>
+    <li>汇率风险是跨国投资不可忽视的成本；不可能三角约束国家政策选择</li>
+    <li>金融危机的本质是信心危机——系统性风险传染速度远超想象</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 宏观金融主要研究什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 单个公司的财务报表分析</label>
+      <label><input type="radio" name="q1" value="b"> B. 宏观经济变量（利率、通胀、汇率）与金融市场之间的关系</label>
+      <label><input type="radio" name="q1" value="c"> C. 个人投资者如何选股</label>
+      <label><input type="radio" name="q1" value="d"> D. 会计准则的制定</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> 央行加息最直接的金融市场传导机制是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 贴现率上升导致所有资产现值下降</label>
+      <label><input type="radio" name="q2" value="b"> B. 央行直接购买股票</label>
+      <label><input type="radio" name="q2" value="c"> C. 企业盈利自动增加</label>
+      <label><input type="radio" name="q2" value="d"> D. 通胀立即消失</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q3.</span> 央行的两大核心目标通常是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 最大化税收和最小化失业</label>
+      <label><input type="radio" name="q3" value="b"> B. 拉高股市和保护银行利润</label>
+      <label><input type="radio" name="q3" value="c"> C. 扩大出口和缩小贸易逆差</label>
+      <label><input type="radio" name="q3" value="d"> D. 物价稳定（控制通胀）和充分就业 / 经济增长</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q4.</span> 量化宽松（QE）是指什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 央行提高存款准备金率</label>
+      <label><input type="radio" name="q4" value="b"> B. 央行卖出大量国债</label>
+      <label><input type="radio" name="q4" value="c"> C. 央行大规模购买长期债券，压低长期利率</label>
+      <label><input type="radio" name="q4" value="d"> D. 政府增加税收</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 在经济衰退期，通常表现最好的资产类别是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 高收益债券</label>
+      <label><input type="radio" name="q5" value="b"> B. 长期国债（降息推高债券价格）</label>
+      <label><input type="radio" name="q5" value="c"> C. 大宗商品</label>
+      <label><input type="radio" name="q5" value="d"> D. 小盘成长股</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q6.</span> 在滞胀（高通胀 + 低增长）环境中，最可能受益的资产是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 黄金和抗通胀资产</label>
+      <label><input type="radio" name="q6" value="b"> B. 长期固定利率债券</label>
+      <label><input type="radio" name="q6" value="c"> C. 现金</label>
+      <label><input type="radio" name="q6" value="d"> D. 科技成长股</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q7.</span> 通货膨胀对以下哪种资产的损害最大？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 黄金</label>
+      <label><input type="radio" name="q7" value="b"> B. 不动产</label>
+      <label><input type="radio" name="q7" value="c"> C. 长期固定利率债券</label>
+      <label><input type="radio" name="q7" value="d"> D. 大宗商品</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 美林时钟的核心思想是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 所有时期都应该满仓股票</label>
+      <label><input type="radio" name="q8" value="b"> B. 根据经济增长和通胀组合，在不同资产类别间轮动配置</label>
+      <label><input type="radio" name="q8" value="c"> C. 只投资黄金最安全</label>
+      <label><input type="radio" name="q8" value="d"> D. 市场时机不可预测，应该只持有现金</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q9.</span> 如果你投资海外市场赚了 10%，但本币升值了 12%，你的实际回报大约是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. +22%</label>
+      <label><input type="radio" name="q9" value="b"> B. +10%</label>
+      <label><input type="radio" name="q9" value="c"> C. 0%</label>
+      <label><input type="radio" name="q9" value="d"> D. 约 -2%（汇率侵蚀了收益）</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 「不可能三角」是指一个国家不能同时拥有以下哪三者？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 固定汇率 + 资本自由流动 + 独立货币政策</label>
+      <label><input type="radio" name="q10" value="b"> B. 低通胀 + 高增长 + 低失业</label>
+      <label><input type="radio" name="q10" value="c"> C. 高利率 + 低汇率 + 贸易顺差</label>
+      <label><input type="radio" name="q10" value="d"> D. 财政盈余 + 贸易顺差 + 资本流入</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 2008 年金融危机最核心的宏观金融教训之一是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 股票永远不会跌</label>
+      <label><input type="radio" name="q11" value="b"> B. 房地产没有风险</label>
+      <label><input type="radio" name="q11" value="c"> C. 杠杆过度和传染效应可以导致系统性崩溃</label>
+      <label><input type="radio" name="q11" value="d"> D. 央行不应该存在</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 为什么成长股对加息特别敏感？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 因为成长股不支付股息</label>
+      <label><input type="radio" name="q12" value="b"> B. 成长股的现金流集中在遥远的未来，加息对远期现金流现值的折损更大</label>
+      <label><input type="radio" name="q12" value="c"> C. 因为成长股受监管更多</label>
+      <label><input type="radio" name="q12" value="d"> D. 因为加息只影响成长股</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q13.</span> 金融危机的本质是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 仅仅是单个银行经营不善</label>
+      <label><input type="radio" name="q13" value="b"> B. 纯粹的技术故障</label>
+      <label><input type="radio" name="q13" value="c"> C. 只是利率太高</label>
+      <label><input type="radio" name="q13" value="d"> D. 信心危机——信任消失时，健康机构也可能因流动性枯竭而倒下</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0010-behavioral-finance.html">← 上一课</a>
+  <span>第 11 课 / 共 12 课</span>
+  <a href="0012-personal-finance.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '宏观金融研究宏观经济变量（利率、通胀、汇率、GDP增长）与金融市场之间的相互关系，是连接宏观经济学和金融学的桥梁。' },
+  q2: { correct: 'a', explanation: '加息最直接的传导是贴现率渠道——贴现率上升导致所有未来现金流的现值下降，资产价格下跌（第1课的核心原理）。' },
+  q3: { correct: 'd', explanation: '央行的双重目标通常是物价稳定（控制通胀）和充分就业/经济增长。这两个目标经常存在张力。' },
+  q4: { correct: 'c', explanation: 'QE 是央行大规模购买长期债券来压低长期利率的非常规货币政策工具，2008年和2020年期间被大规模使用。' },
+  q5: { correct: 'b', explanation: '衰退期央行降息救市，降息直接推高债券价格。同时资金避险涌入安全资产，长期国债是衰退期的最佳配置之一。' },
+  q6: { correct: 'a', explanation: '滞胀是最痛苦的组合（高通胀+低增长）。股债双杀，黄金和大宗商品等抗通胀资产表现最好。1970年代是经典案例。' },
+  q7: { correct: 'c', explanation: '长期固定利率债券的利息是固定的，通胀越高实际收益越低。这就是为什么通胀是债券的「天然敌人」。' },
+  q8: { correct: 'b', explanation: '美林时钟根据经济增长和通胀的不同组合，建议在债券、股票、大宗商品和现金之间轮动配置，是宏观资产配置的经典框架。' },
+  q9: { correct: 'd', explanation: '跨国投资回报 = 资产本币回报 - 本币升值幅度 ≈ 10% - 12% = -2%。汇率升值侵蚀了海外投资收益，这就是汇率风险。' },
+  q10: { correct: 'a', explanation: '不可能三角：固定汇率、资本自由流动、独立货币政策三者不可兼得，最多选两个。香港选固定汇率+资本自由流动，放弃了独立货币政策。' },
+  q11: { correct: 'c', explanation: '2008年危机的核心教训是：过度杠杆+传染效应可以导致系统性崩溃。个别机构的风险通过金融互联迅速扩散到整个体系。' },
+  q12: { correct: 'b', explanation: '成长股的现金流集中在远期，加息对远期现金流的贴现折损更大（分母(1+r)^n中n越大，影响越大）。因此成长股对利率极敏感。' },
+  q13: { correct: 'd', explanation: '金融危机的本质是信心危机。信任消失导致流动性枯竭，健康的机构也可能因挤兑或市场冻结而倒下。央行作为最后贷款人必须在危机中恢复信心。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经具备了宏观金融的系统性视角。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了宏观框架，再复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重点复习经济周期和通胀影响。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重点理解央行货币政策传导和经济周期四阶段。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

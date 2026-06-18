@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 行为金融学</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
+  .bias-card {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--wrong);
+    border-radius: 0 6px 6px 0;
+    padding: 0.8rem 1.1rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .bias-card .term {
+    font-weight: 700;
+    color: var(--wrong);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+</style>
+</head>
+<body>
+
+<h1>行为金融学：人为何不理性</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第10课 / 共12课 · 约17分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解传统金融学的「理性人」假设为何在现实中反复失效。学习认知偏差如何影响投资决策，认识市场泡沫与非理性的成因，掌握对抗自身心理陷阱的实用策略。
+</div>
+
+<h2>一、传统金融学的致命假设</h2>
+
+<p>到目前为止，我们学到的金融理论——CAPM、有效市场假说、期权定价模型——都建立在一个核心假设上：<strong>投资者是完全理性的</strong>。理性人会：</p>
+<ul>
+  <li>总是追求效用最大化</li>
+  <li>能够无偏地处理所有信息</li>
+  <li>对风险有一致的态度</li>
+  <li>不会被情绪干扰</li>
+</ul>
+
+<p>但现实是：<strong>人是人，不是电子表格</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">行为金融学 (Behavioral Finance)</span><br>
+  将心理学（尤其是认知心理学和行为经济学）与金融学结合的交叉学科。研究认知偏差、情绪和社会因素如何影响投资者决策和资产价格。代表人物包括丹尼尔·卡尼曼（2002年诺贝尔经济学奖）、理查德·塞勒（2017年诺贝尔经济学奖）和罗伯特·席勒（2013年诺贝尔经济学奖）。
+</div>
+
+<p>行为金融学并非要推翻传统金融学，而是<strong>补充</strong>它。理性模型告诉我们「应该怎么做」，行为金融学告诉我们「实际上人们是怎么做的」以及「为什么会出错」。</p>
+
+<div class="key-idea">
+  市场在大部分时间里接近有效，但在极端情况下——泡沫、崩盘、羊群效应——人类的系统性非理性会主导价格。
+</div>
+
+<h2>二、前景理论：损失比获得更痛</h2>
+
+<p>传统金融学用期望效用理论描述人的决策。1979 年，卡尼曼和特沃斯基提出了<strong>前景理论（Prospect Theory）</strong>，彻底改变了我们对风险决策的理解。其核心发现：</p>
+
+<div class="formula-box">
+  同样金额的损失带来的痛苦 ≈ 2~2.5 倍于同等金额的收益带来的快乐
+</div>
+
+<p>这意味着：<strong>人类天生是「损失厌恶」的</strong>。这种不对称有深远的金融含义。</p>
+
+<h3>损失厌恶导致的非理性行为</h3>
+
+<p>你持有两只股票：A 赚了 50%，B 亏了 50%。你需要卖掉一只。大多数人会怎么选？</p>
+
+<ul>
+  <li><strong>理性答案</strong>：卖掉未来前景更差的那只（与盈亏无关）</li>
+  <li><strong>实际行为</strong>：大多数人卖掉 A（「锁定收益」），留着 B（「等它涨回来」）</li>
+</ul>
+
+<p>这就是著名的<strong>处置效应（Disposition Effect）</strong>——投资者倾向于「过早卖出盈利股、过久持有亏损股」。根源就是损失厌恶：承认亏损的痛苦太大了，所以一直等「回本」。</p>
+
+<div class="example-box">
+  <strong>赌场心理学：</strong>赌徒在输钱后往往「加倍下注」想回本——这是损失厌恶的极端体现。在投资中，补仓「抄底」亏损股而不愿止损，本质上也是同一种心理。
+</div>
+
+<h2>三、六大认知偏差：投资中的隐形陷阱</h2>
+
+<div class="bias-card">
+  <span class="term">1. 锚定效应 (Anchoring)</span><br>
+  人在做判断时，会过度依赖最先获得的信息（「锚」），即使这个信息无关紧要。<br><br>
+  <strong>投资案例：</strong>你以 100 元买入股票，跌到 60 元。你判断「便宜了」（以 100 元为锚）。但如果股票本身只值 40 元呢？你的买入价不应影响它的内在价值——但你就是忍不住以此为参照。
+</div>
+
+<div class="bias-card">
+  <span class="term">2. 确认偏差 (Confirmation Bias)</span><br>
+  人们倾向于寻找、解读和记住那些<strong>支持自己已有观点</strong>的信息，忽略矛盾的证据。<br><br>
+  <strong>投资案例：</strong>你看好某只股票后，只看利好新闻，对利空消息充耳不闻。这导致「信息茧房」，越看越觉得自己对——直到崩盘。
+</div>
+
+<div class="bias-card">
+  <span class="term">3. 过度自信 (Overconfidence)</span><br>
+  绝大多数人（研究表明超过 80%）认为自己的驾驶能力「高于平均水平」——这在数学上不可能。在投资中，人们系统性地高估自己选股和择时的能力。<br><br>
+  <strong>投资案例：</strong>频繁交易的散户平均收益率远低于买入持有者。每次交易都源于「我觉得我能赚」，但交易成本和择时失误反而侵蚀了收益。男性比女性更容易过度自信，因此男性散户平均表现更差。
+</div>
+
+<div class="bias-card">
+  <span class="term">4. 从众效应 / 羊群效应 (Herding)</span><br>
+  人有强烈的群体归属需求。当不确定时，我们会观察别人的行为来决定自己怎么做。<br><br>
+  <strong>投资案例：</strong>比特币、GameStop、NFT——当「所有人都在赚钱」时，FOMO（错失恐惧症）驱使人们冲入市场。但羊群效应往往在顶部最强：当最后一批人入场时，聪明钱已经在离场了。
+</div>
+
+<div class="bias-card">
+  <span class="term">5. 近因偏差 (Recency Bias)</span><br>
+  人们过度看重最近发生的事，忽略长期的历史规律。<br><br>
+  <strong>投资案例：</strong>牛市持续了三年，人们就觉得「股市永远涨」——于是在顶部满仓。反之，熊市中人们觉得「股市永远跌」——于是在底部清仓。这正是「高买低卖」悲剧的心理根源。
+</div>
+
+<div class="bias-card">
+  <span class="term">6. 心理账户 (Mental Accounting)</span><br>
+  人在心里把钱分成不同的「账户」，对不同来源的钱有不同的花费倾向——尽管钱是同质的。<br><br>
+  <strong>投资案例：</strong>年终奖「轻松赚到」的钱，人们倾向于冒险花掉或投机；而辛苦工资则谨慎储蓄。理性行为应该是：所有钱的边际效用是一样的，与来源无关。
+</div>
+
+<h2>四、市场层面的非理性：泡沫与异象</h2>
+
+<h3>泡沫的形成机制</h3>
+
+<p>个别投资者的非理性叠加起来，就会形成<strong>市场泡沫</strong>。席勒在《非理性繁荣》中描述了泡沫的典型循环：</p>
+
+<ol style="margin: 0.5rem 0 0.75rem 1.5rem;">
+  <li><strong>结构性变化</strong>：新技术、新政策或新市场出现（如互联网、房地产）</li>
+  <li><strong>早期成功</strong>：先行者确实赚到了钱</li>
+  <li><strong>媒体放大</strong>：成功故事被广泛传播</li>
+  <li><strong>羊群涌入</strong>：FOMO 驱动更多人入场</li>
+  <li><strong>价格上涨自我强化</strong>：涨 → 吸引 → 更多买入 → 继续涨</li>
+  <li><strong>理性参与者离场</strong>：聪明钱开始套现</li>
+  <li><strong>崩盘</strong>：某个事件触发恐慌抛售，踩踏开始</li>
+</ol>
+
+<div class="example-box">
+  <strong>历史泡沫案例：</strong>1637 年荷兰郁金香泡沫、1720 年英国南海泡沫、2000 年互联网泡沫、2008 年房地产泡沫、2021 年加密货币泡沫。模式惊人地一致——唯一的区别是底层资产的「故事」不同。
+</div>
+
+<h3>市场异象（Anomalies）</h3>
+
+<p>有效市场假说预测市场不应存在系统性可预测的模式，但实证研究发现了一些持续存在的「异象」：</p>
+<ul>
+  <li><strong>动量效应</strong>：过去 6-12 个月表现好的股票，未来短期内倾向于继续好</li>
+  <li><strong>价值效应</strong>：低估值（低 P/B、低 P/E）股票长期表现优于高估值股票</li>
+  <li><strong>小市值效应</strong>：小公司股票长期平均回报高于大公司</li>
+  <li><strong>日历效应</strong>：「一月效应」「星期五效应」等季节性模式</li>
+</ul>
+
+<p>这些异象部分可以用行为偏差来解释：例如动量效应源于<strong>反应不足</strong>（投资者对好消息消化太慢），价值效应部分源于<strong>过度反应</strong>（投资者对坏消息反应过度，导致价值股被低估）。</p>
+
+<h2>五、如何对抗自己的非理性？</h2>
+
+<p>行为金融学不只是「诊断」，更提供了<strong>处方</strong>。以下是基于行为金融学研究的实用建议：</p>
+
+<h3>1. 系统化投资规则</h3>
+<p>用规则取代情绪。例如：每月固定金额定投指数基金（定投策略），不论市场涨跌。这能有效对抗择时的诱惑和近因偏差。</p>
+
+<h3>2. 预先承诺（Pre-commitment）</h3>
+<p>在冷静时做好决策：写下投资计划、设定自动再平衡规则。当市场恐慌或狂热时，你已经有了「自动驾驶」方案。</p>
+
+<h3>3. 写投资日记</h3>
+<p>记录每次买卖的理由。回顾时你会发现自己的判断模式——尤其是反复犯的错误。这是对抗确认偏差和后见之明偏差的有效工具。</p>
+
+<h3>4. 逆向思考</h3>
+<p>问自己：「如果我要推翻自己的观点，最有力的论据是什么？」主动寻找反面证据，对抗确认偏差。</p>
+
+<h3>5. 关注成本而非收益</h3>
+<p>你无法控制市场收益，但可以控制交易频率、费用和税收。减少交易就是减少过度自信犯错的机会。</p>
+
+<div class="key-idea">
+  认识偏差不能消除偏差。最有效的策略是<strong>设计系统来绕开偏差</strong>，而非依赖意志力在每次决策中对抗人性。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>认知心理学</strong>：双系统理论（系统1快思考、系统2慢思考）——卡尼曼《思考，快与慢》</li>
+  <li><strong>进化生物学</strong>：损失厌恶可能是进化的产物——在远古环境中，失去食物的后果比获得额外食物的好处更致命</li>
+  <li><strong>神经科学</strong>：fMRI 研究显示，面对亏损时大脑杏仁核（恐惧中心）强烈激活</li>
+  <li><strong>行为经济学</strong>：助推（Nudge）理论——如何用「选择架构」引导更好的决策</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>传统金融学的「理性人」假设在现实中经常失效——人是有限理性的</li>
+    <li>前景理论揭示：损失的痛苦约为同等收益快乐的 2-2.5 倍（损失厌恶）</li>
+    <li>处置效应：投资者倾向过早卖出盈利、过久持有亏损</li>
+    <li>六大认知偏差：锚定、确认、过度自信、从众、近因、心理账户</li>
+    <li>泡沫遵循可预测的心理循环：新故事 → 早期赚钱 → 媒体放大 → 羊群涌入 → 崩盘</li>
+    <li>对抗偏差最有效的方法不是意志力，而是设计系统化投资规则</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 行为金融学的核心观点是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 市场总是完全有效的</label>
+      <label><input type="radio" name="q1" value="b"> B. 投资者总是理性的</label>
+      <label><input type="radio" name="q1" value="c"> C. 认知偏差和情绪系统性地影响投资决策</label>
+      <label><input type="radio" name="q1" value="d"> D. 技术分析可以预测一切</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 前景理论的核心发现是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 收益的快乐大于损失的痛苦</label>
+      <label><input type="radio" name="q2" value="b"> B. 损失的痛苦约为同等收益快乐的 2-2.5 倍</label>
+      <label><input type="radio" name="q2" value="c"> C. 人对收益和损失的感受完全相同</label>
+      <label><input type="radio" name="q2" value="d"> D. 人完全不关心损失</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 「处置效应」指的是投资者倾向于？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 过早卖出盈利股、过久持有亏损股</label>
+      <label><input type="radio" name="q3" value="b"> B. 过早卖出亏损股、过久持有盈利股</label>
+      <label><input type="radio" name="q3" value="c"> C. 从不卖出任何股票</label>
+      <label><input type="radio" name="q3" value="d"> D. 同时买卖所有股票</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 你以 100 元买入股票，跌到 60 元就认为「便宜了」。这属于哪种偏差？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 确认偏差</label>
+      <label><input type="radio" name="q4" value="b"> B. 过度自信</label>
+      <label><input type="radio" name="q4" value="c"> C. 从众效应</label>
+      <label><input type="radio" name="q4" value="d"> D. 锚定效应</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q5.</span> 只看利好新闻、忽略利空消息，这是什么偏差？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 锚定效应</label>
+      <label><input type="radio" name="q5" value="b"> B. 心理账户</label>
+      <label><input type="radio" name="q5" value="c"> C. 确认偏差</label>
+      <label><input type="radio" name="q5" value="d"> D. 近因偏差</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q6.</span> 研究发现频繁交易的散户收益率通常低于买入持有者，主要原因是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 因为频繁交易者更聪明</label>
+      <label><input type="radio" name="q6" value="b"> B. 过度自信导致择时失误，加上交易成本侵蚀收益</label>
+      <label><input type="radio" name="q6" value="c"> C. 因为买入持有没有风险</label>
+      <label><input type="radio" name="q6" value="d"> D. 因为手续费为零</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 当「所有人都在赚钱」时你忍不住冲入市场，这是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 从众效应 / 羊群效应（FOMO）</label>
+      <label><input type="radio" name="q7" value="b"> B. 心理账户</label>
+      <label><input type="radio" name="q7" value="c"> C. 锚定效应</label>
+      <label><input type="radio" name="q7" value="d"> D. 损失厌恶</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q8.</span> 牛市三年后觉得「股市永远涨」，熊市后觉得「股市永远跌」，这属于？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 确认偏差</label>
+      <label><input type="radio" name="q8" value="b"> B. 锚定效应</label>
+      <label><input type="radio" name="q8" value="c"> C. 近因偏差</label>
+      <label><input type="radio" name="q8" value="d"> D. 心理账户</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 把年终奖和工资分别对待、花法不同，尽管钱本身没有区别。这属于？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 锚定效应</label>
+      <label><input type="radio" name="q9" value="b"> B. 心理账户</label>
+      <label><input type="radio" name="q9" value="c"> C. 从众效应</label>
+      <label><input type="radio" name="q9" value="d"> D. 近因偏差</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q10.</span> 根据席勒的理论，市场泡沫的典型发展顺序是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 崩盘 → 媒体放大 → 羊群涌入 → 涨价</label>
+      <label><input type="radio" name="q10" value="b"> B. 羊群涌入 → 崩盘 → 涨价 → 新故事</label>
+      <label><input type="radio" name="q10" value="c"> C. 媒体放大 → 崩盘 → 新故事 → 羊群涌入</label>
+      <label><input type="radio" name="q10" value="d"> D. 新故事 → 早期成功 → 媒体放大 → 羊群涌入 → 崩盘</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q11.</span> 行为金融学认为，市场异象（如动量效应、价值效应）部分源于？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 投资者的反应不足和过度反应</label>
+      <label><input type="radio" name="q11" value="b"> B. 央行的货币政策</label>
+      <label><input type="radio" name="q11" value="c"> C. 完全随机的噪音</label>
+      <label><input type="radio" name="q11" value="d"> D. 交易系统故障</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q12.</span> 根据本课，对抗认知偏差最有效的策略是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 每次决策时靠意志力克制自己</label>
+      <label><input type="radio" name="q12" value="b"> B. 完全停止投资</label>
+      <label><input type="radio" name="q12" value="c"> C. 设计系统化投资规则来绕开偏差（如定投、自动再平衡）</label>
+      <label><input type="radio" name="q12" value="d"> D. 只看技术分析图表</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0009-derivatives.html">← 上一课</a>
+  <span>第 10 课 / 共 12 课</span>
+  <a href="0011-macro-finance.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '行为金融学的核心是研究认知偏差、情绪和群体行为如何系统性影响投资决策和资产价格，是对「理性人」假设的补充。' },
+  q2: { correct: 'b', explanation: '卡尼曼和特沃斯基的前景理论发现：同样金额的损失带来的痛苦，约为同等收益快乐的 2-2.5 倍。这就是「损失厌恶」。' },
+  q3: { correct: 'a', explanation: '处置效应指投资者过早卖出盈利股（锁定收益）、过久持有亏损股（不愿承认亏损）。根源是损失厌恶。' },
+  q4: { correct: 'd', explanation: '锚定效应——你以买入价 100 元为「锚」，觉得 60 元便宜了。但你的买入价与股票内在价值无关，不应影响判断。' },
+  q5: { correct: 'c', explanation: '确认偏差——只看支持自己观点的信息，忽略反面证据。这会形成「信息茧房」，直到崩盘才醒悟。' },
+  q6: { correct: 'b', explanation: '过度自信让人频繁交易、自以为能择时，但择时失误加交易成本反而侵蚀收益。研究显示频繁交易散户收益更低。' },
+  q7: { correct: 'a', explanation: '从众效应/羊群效应——FOMO（错失恐惧症）驱使人们在「所有人都在赚钱」时冲入，往往恰好在顶部。' },
+  q8: { correct: 'c', explanation: '近因偏差——过度看重最近发生的事。牛市三年就觉得永远涨，熊市就觉得永远跌，导致高买低卖。' },
+  q9: { correct: 'b', explanation: '心理账户——人把钱按来源分类对待，尽管钱本身是同质的。理性行为应不受来源影响。' },
+  q10: { correct: 'd', explanation: '席勒描述的泡沫循环：新故事/新技术 → 早期成功 → 媒体放大 → 羊群涌入 → 价格自我强化 → 崩盘。' },
+  q11: { correct: 'a', explanation: '动量效应源于反应不足（好消息消化太慢），价值效应部分源于过度反应（坏消息反应过度导致价值股被低估）。' },
+  q12: { correct: 'c', explanation: '认识偏差不足以消除偏差。最有效的方法是设计系统化规则（如定投、自动再平衡、投资计划书）来绕开偏差。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经成为自我认知的投资达人。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了核心偏差，复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重点复习前景理论和六大偏差。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。重点理解损失厌恶和各种偏差的区分。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

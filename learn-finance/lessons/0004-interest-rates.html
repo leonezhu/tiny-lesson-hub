@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — 利率：资金的价格</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>利率：资金的价格</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第4课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解利率为什么是「资金的价格」。掌握名义利率与实际利率的区别、利率的风险结构、收益率曲线的形状与信号，以及中央银行如何通过利率调控整个经济体。
+</div>
+
+<h2>一、利率：看不见的万能价格</h2>
+
+<p>你去菜市场买苹果，会问「多少钱一斤？」——这是苹果的价格。但当你借钱时，钱的「价格」是什么？答案是<strong>利率</strong>。</p>
+
+<p>利率是使用资金的代价，也是出借资金的报酬。它是现代经济中影响范围最广的一个数字：一个百分点的变动，会牵动房贷月供、企业投资、股市估值、汇率走势、政府偿债压力……几乎一切。</p>
+
+<div class="key-idea">
+  利率是资金的价格。它把现在和未来、储蓄和投资、风险和安全统统连接起来。理解利率，就掌握了理解整个金融体系的钥匙。
+</div>
+
+<div class="vocab-card">
+  <span class="term">利率 (Interest Rate)</span><br>
+  借款人向贷款人支付的资金使用费，通常以本金的百分比表示。它既是借款的成本，也是储蓄的回报。
+</div>
+
+<h2>二、名义利率 vs 实际利率</h2>
+
+<p>银行告诉你「存款利率 3%」，但一年后你的购买力真的增加了 3% 吗？不一定——如果通胀是 2%，你的实际购买力只增加了约 1%。这就是<strong>名义利率</strong>和<strong>实际利率</strong>的区别。</p>
+
+<div class="formula-box">
+  实际利率 ≈ 名义利率 − 通货膨胀率
+</div>
+
+<p>这个近似公式叫做<strong>费雪方程式（Fisher Equation）</strong>，以经济学家欧文·费雪命名。</p>
+
+<div class="vocab-card">
+  <span class="term">实际利率 (Real Interest Rate)</span><br>
+  剔除通货膨胀影响后的利率，反映资金真实购买力的增长。投资者真正在乎的是实际利率，而非账面上的名义数字。
+</div>
+
+<div class="example-box">
+  <strong>真实案例——负利率：</strong>当通胀率高于名义利率时，实际利率为负。比如 2010 年代欧洲多国存款利率接近 0%，而通胀约 1-2%，储户实际在「赔钱」。这就是为什么负利率时代人们被迫寻求更高风险的投资。
+</div>
+
+<h2>三、利率的风险结构：为什么借钱的利率各不相同？</h2>
+
+<p>同样是借 10 万元，为什么国债利率只有 3%，而某企业的贷款利率要 8%？这中间的差额来自<strong>风险溢价</strong>。一个完整的利率通常由以下几部分构成：</p>
+
+<ul>
+  <li><strong>无风险利率</strong>：理论上的最低利率，通常以短期国债利率为代表（因为政府违约概率极低）</li>
+  <li><strong>通胀溢价</strong>：补偿出借人因通胀损失购买力的部分</li>
+  <li><strong>违约风险溢价</strong>：借款人可能不还钱，需要补偿</li>
+  <li><strong>流动性溢价</strong>：资产越难变现，出借人要求的补偿越高</li>
+  <li><strong>期限溢价</strong>：借出时间越长，不确定性越大，要求的补偿越多</li>
+</ul>
+
+<div class="formula-box">
+  利率 = 无风险利率 + 通胀溢价 + 违约溢价 + 流动性溢价 + 期限溢价
+</div>
+
+<p>信用越差、期限越长、流动性越低的资产，利率越高。这就是为什么信用卡利率（18%+）远高于房贷利率（5% 左右）——信用卡无抵押、违约率高、流动性差。</p>
+
+<h2>四、收益率曲线：期限结构</h2>
+
+<p>把同一时点上、不同到期日的国债利率画成一条曲线，就是<strong>收益率曲线（Yield Curve）</strong>。它描绘了「借出时间长短」与「利率高低」的关系。</p>
+
+<h3>三种典型形状</h3>
+<ul>
+  <li><strong>正常（向上倾斜）</strong>：期限越长利率越高。这是常态，反映期限溢价。</li>
+  <li><strong>平坦</strong>：长短期利率接近。往往出现在经济扩张后期。</li>
+  <li><strong>倒挂（向下倾斜）</strong>：短期利率高于长期利率。这是最引人关注的信号。</li>
+</ul>
+
+<div class="key-idea">
+  收益率曲线倒挂，是美国过去 70 年里<strong>每一次经济衰退</strong>之前都出现过的预警信号，因此被称为「衰退的先知」。
+</div>
+
+<p>为什么会倒挂？因为市场预期未来经济疲软、央行将降息，长期利率被压低；而短期利率还在高位（央行尚未降息）。当人们预期「未来的钱更便宜」，往往意味着经济要出问题。</p>
+
+<div class="example-box">
+  <strong>真实案例——2019 年倒挂与 2020 衰退：</strong>2019 年 8 月，美国 2 年期与 10 年期国债收益率出现短暂倒挂，引发市场恐慌。半年后，新冠疫情冲击经济（虽然衰退主因是疫情，但倒挂已提前发出警报）。历史上 1955 年以来，曲线倒挂后约 6-18 个月内通常出现衰退。
+</div>
+
+<h2>五、央行如何调控利率</h2>
+
+<p>谁在决定利率？表面上是市场供求，但背后有一个超级玩家——<strong>中央银行</strong>。在美国是美联储（Fed），在中国是中国人民银行，在欧洲是欧洲央行（ECB）。</p>
+
+<p>央行主要通过以下工具影响短期利率：</p>
+<ul>
+  <li><strong>政策利率</strong>：如美联储的联邦基金利率，直接设定银行间隔夜拆借的目标利率</li>
+  <li><strong>公开市场操作</strong>：买卖国债，调节市场上的货币供应</li>
+  <li><strong>存款准备金率</strong>：要求商业银行存在央行的准备金比例</li>
+  <li><strong>前瞻性指引</strong>：通过沟通影响市场对未来利率的预期</li>
+</ul>
+
+<p>央行加息 → 市场利率上升 → 借贷成本上升 → 消费投资减少 → 经济降温、通胀回落。反之亦然。这就是<strong>货币政策传导机制</strong>。</p>
+
+<h3>案例：沃尔克的「休克疗法」</h3>
+
+<p>1970 年代末，美国陷入滞胀——高通胀伴随高失业。1979 年，保罗·沃尔克出任美联储主席，他把联邦基金利率一口气推高到 <strong>20%</strong> 以上。这虽然引发了 1981-1982 年的严重衰退，但成功把两位数的通胀压了下去，奠定了此后 40 年低通胀的基础。这是「用高利率杀死通胀」最经典的一次实战。</p>
+
+<div class="example-box">
+  <strong>真实案例——2022-2023 加息周期：</strong>为应对 40 年最高的通胀，美联储在 2022 年 3 月至 2023 年 7 月连续加息 11 次，把利率从近 0% 提到 5.25-5.5%。结果：全球股债双杀、硅谷银行倒闭、房贷利率飙升。这正是第 1 课讲的「加息 → 贴现率升高 → 资产价格下跌」在现实中的演绎。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>宏观经济学</strong>：利率是 IS-LM 模型的核心变量，连接商品市场和货币市场（第11课详述）</li>
+  <li><strong>政治学</strong>：央行的独立性是一国治理的重要议题，加息/降息时机常带有政治影响</li>
+  <li><strong>数学</strong>：连续复利 e^rt、对数收益率</li>
+  <li><strong>历史学</strong>：利率史就是一部经济周期史——从古巴比伦的谷物借贷到现代量化宽松</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>利率是资金的价格，是连接现在与未来、储蓄与投资的核心枢纽</li>
+    <li>实际利率 = 名义利率 − 通胀率，投资者真正关心的是购买力的变化</li>
+    <li>利率由无风险利率 + 多重溢价构成，风险越高、期限越长，利率越高</li>
+    <li>收益率曲线倒挂是经济衰退的著名预警信号</li>
+    <li>中央银行通过政策利率和公开市场操作调控整个经济体的利率水平</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 利率本质上是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 通货膨胀率</label>
+      <label><input type="radio" name="q1" value="b"> B. 使用资金的价格</label>
+      <label><input type="radio" name="q1" value="c"> C. 股票的收益率</label>
+      <label><input type="radio" name="q1" value="d"> D. 银行的利润率</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 名义利率 5%，通胀率 3%，实际利率约为？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 8%</label>
+      <label><input type="radio" name="q2" value="b"> B. 5%</label>
+      <label><input type="radio" name="q2" value="c"> C. 2%</label>
+      <label><input type="radio" name="q2" value="d"> D. -2%</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 费雪方程式表达的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 实际利率 ≈ 名义利率 − 通胀率</label>
+      <label><input type="radio" name="q3" value="b"> B. 名义利率 = 实际利率 × 通胀率</label>
+      <label><input type="radio" name="q3" value="c"> C. 利率等于经济增长率</label>
+      <label><input type="radio" name="q3" value="d"> D. 实际利率恒等于零</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 以下哪种利率通常被当作「无风险利率」的基准？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 信用卡利率</label>
+      <label><input type="radio" name="q4" value="b"> B. 房贷利率</label>
+      <label><input type="radio" name="q4" value="c"> C. P2P 借贷利率</label>
+      <label><input type="radio" name="q4" value="d"> D. 短期国债利率</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 为什么信用卡利率（18%+）远高于房贷利率（5% 左右）？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 因为信用卡公司利润更高</label>
+      <label><input type="radio" name="q5" value="b"> B. 因为信用卡无抵押、违约风险高、流动性差，风险溢价更大</label>
+      <label><input type="radio" name="q5" value="c"> C. 因为信用卡受法律保护</label>
+      <label><input type="radio" name="q5" value="d"> D. 两者其实利率相同</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 收益率曲线「倒挂」指的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 长期利率远高于短期利率</label>
+      <label><input type="radio" name="q6" value="b"> B. 所有利率都为零</label>
+      <label><input type="radio" name="q6" value="c"> C. 短期利率高于长期利率</label>
+      <label><input type="radio" name="q6" value="d"> D. 曲线完全水平</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 收益率曲线倒挂通常被市场解读为？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 经济衰退的预警信号</label>
+      <label><input type="radio" name="q7" value="b"> B. 经济过热的信号</label>
+      <label><input type="radio" name="q7" value="c"> C. 股市必涨的信号</label>
+      <label><input type="radio" name="q7" value="d"> D. 无任何意义</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 中央银行加息通常会导致？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 股市上涨</label>
+      <label><input type="radio" name="q8" value="b"> B. 企业更愿意借贷扩张</label>
+      <label><input type="radio" name="q8" value="c"> C. 债券价格上涨</label>
+      <label><input type="radio" name="q8" value="d"> D. 借贷成本上升，经济降温</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 1979 年沃尔克把美国利率推高到 20% 以上，主要目的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 刺激经济增长</label>
+      <label><input type="radio" name="q9" value="b"> B. 抑制两位数的高通胀</label>
+      <label><input type="radio" name="q9" value="c"> C. 提高就业率</label>
+      <label><input type="radio" name="q9" value="d"> D. 降低国债发行量</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 当通胀率高于名义存款利率时，储户的实际回报？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 为正且很高</label>
+      <label><input type="radio" name="q10" value="b"> B. 恰好为零</label>
+      <label><input type="radio" name="q10" value="c"> C. 为负，购买力在缩水</label>
+      <label><input type="radio" name="q10" value="d"> D. 取决于汇率</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q11.</span> 利率的「期限溢价」反映的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 借出资金时间越长，不确定性越大，需要的额外补偿</label>
+      <label><input type="radio" name="q11" value="b"> B. 借款人的信用好坏</label>
+      <label><input type="radio" name="q11" value="c"> C. 资产变现的难易程度</label>
+      <label><input type="radio" name="q11" value="d"> D. 央行的政策偏好</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 2022-2023 年美联储连续加息，对全球资产的影响是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 全球股债齐涨</label>
+      <label><input type="radio" name="q12" value="b"> B. 贴现率升高，股债价格下跌，部分银行倒闭</label>
+      <label><input type="radio" name="q12" value="c"> C. 黄金价格暴跌为零</label>
+      <label><input type="radio" name="q12" value="d"> D. 房贷利率下降</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0003-portfolio-theory.html">← 第3课 投资组合理论</a>
+  <span>第 4 课 / 共 12 课</span>
+  <a href="0005-bonds.html">第5课 债券市场 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '利率是使用资金的代价/价格，就像苹果有价格一样，资金也有价格。' },
+  q2: { correct: 'c', explanation: '实际利率 ≈ 5% − 3% = 2%。费雪方程式的简单应用。' },
+  q3: { correct: 'a', explanation: '费雪方程式：实际利率 ≈ 名义利率 − 通胀率。剔除了通胀影响。' },
+  q4: { correct: 'd', explanation: '短期国债（如美国国债）违约概率极低，被视为最接近无风险的资产。' },
+  q5: { correct: 'b', explanation: '信用卡无抵押、违约风险高、流动性差，因此风险溢价大，利率远高于有抵押的房贷。' },
+  q6: { correct: 'c', explanation: '倒挂指短期利率高于长期利率，即收益率曲线向下倾斜。' },
+  q7: { correct: 'a', explanation: '历史上每次美国衰退前都出现过曲线倒挂，因此被视为衰退预警信号。' },
+  q8: { correct: 'd', explanation: '加息→借贷成本上升→消费投资减少→经济降温。这是货币政策的基本传导。' },
+  q9: { correct: 'b', explanation: '沃尔克用超高的利率「杀死」了两位数通胀，虽引发衰退但奠定了长期低通胀基础。' },
+  q10: { correct: 'c', explanation: '实际利率为负，储户名义上拿到利息，但购买力在缩水，相当于被通胀「征税」。' },
+  q11: { correct: 'a', explanation: '期限溢价补偿出借人因时间延长而增加的不确定性，是长期利率通常高于短期利率的原因。' },
+  q12: { correct: 'b', explanation: '加息→贴现率升高→资产现值下降→股债双杀，硅谷银行等也因此倒闭。与第1课的贴现原理一致。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经完全掌握利率的核心逻辑。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！理解了利率框架，复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重点重读收益率曲线和央行政策部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先弄清名义/实际利率和风险结构的区别。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

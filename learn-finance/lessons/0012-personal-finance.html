@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 — 个人理财</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
+  .step-box {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--correct);
+    border-radius: 0 6px 6px 0;
+    padding: 0.8rem 1.1rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .step-box .step-num {
+    font-weight: 700;
+    color: var(--correct);
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+  }
+
+  .final-message {
+    background: linear-gradient(135deg, var(--accent-light), #e8f5e9);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .final-message h2 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<h1>个人理财：从知识到行动</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第12课 / 共12课（最终课）· 约18分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>将前11课的理论知识转化为可执行的个人理财行动方案。掌握财务自由之路的四大支柱——储蓄、保险、投资、税务优化，学会建立适合自己的长期财务规划，并理解「理财的终极目标不是暴富，而是从容」。
+</div>
+
+<h2>一、理财的本质：用钱买自由</h2>
+
+<p>前11课我们学习了金融学的理论大厦：时间价值、风险与收益、资产定价、衍生品、行为金融、宏观金融。但这些知识如果不能转化为<strong>个人的财务决策</strong>，就只是纸上谈兵。</p>
+
+<div class="vocab-card">
+  <span class="term">个人理财 (Personal Finance)</span><br>
+  管理个人或家庭的财务资源，以实现短期和长期财务目标的过程。涵盖预算、储蓄、保险、投资、退休规划、税务优化和遗产规划等。其核心不是「赚最多钱」，而是「用合理的策略实现人生的财务安全与自由」。
+</div>
+
+<p>让我们重新定义「富有」：</p>
+<ul>
+  <li><strong>穷人思维</strong>：富有 = 有很多钱</li>
+  <li><strong>中产思维</strong>：富有 = 高收入</li>
+  <li><strong>富人思维</strong>：富有 = <strong>资产产生的被动收入 ≥ 生活开支</strong></li>
+</ul>
+
+<div class="key-idea">
+  理财的终极目标不是数字上的富有，而是<strong>财务自由</strong>——当你的被动收入（投资收益、租金、版税等）足以覆盖生活开支时，你就不再需要为钱出卖时间。你买了回自己人生的自由。
+</div>
+
+<h2>二、理财的四大支柱</h2>
+
+<p>个人理财可以浓缩为四个递进的支柱，就像建房子的四层楼：</p>
+
+<div class="step-box">
+  <span class="step-num">支柱一：预算与储蓄（地基）</span><br>
+  如果你不控制支出，赚再多也留不下。储蓄是一切理财的起点。
+</div>
+
+<div class="step-box">
+  <span class="step-num">支柱二：风险管理 / 保险（防护墙）</span><br>
+  在积累资产之前，先保护已有资产免受灾难性损失。没有保险，一次重病或意外就能摧毁十年积蓄。
+</div>
+
+<div class="step-box">
+  <span class="step-num">支柱三：投资增值（上层建筑）</span><br>
+  让钱为你工作。利用时间价值、复利和多元化配置，让资产长期增长。
+</div>
+
+<div class="step-box">
+  <span class="step-num">支柱四：税务与遗产规划（屋顶）</span><br>
+  合法最小化税负，确保财富能高效地传承给下一代。
+</div>
+
+<h2>三、支柱一：预算与储蓄——控制你能控制的</h2>
+
+<h3>50/30/20 法则</h3>
+
+<p>一个简单实用的预算框架：</p>
+<ul>
+  <li><strong>50% 必需开支</strong>：房租/房贷、水电、食物、交通、保险</li>
+  <li><strong>30% 想要</strong>：娱乐、旅行、外食、购物</li>
+  <li><strong>20% 储蓄与投资</strong>：退休账户、应急基金、债务偿还</li>
+</ul>
+
+<p>在高房价城市，必需开支可能超过 50%。此时要么增加收入，要么削减「想要」部分，确保储蓄率不低于 15-20%。</p>
+
+<h3>先储蓄，后消费</h3>
+
+<p>大多数人的储蓄逻辑是：<strong>收入 - 支出 = 储蓄</strong>。问题在于，支出总是会膨胀到消耗掉所有收入。</p>
+
+<p>富人的逻辑是：<strong>收入 - 储蓄 = 支出</strong>。发薪日自动将 20% 转入投资账户，剩下的才用于消费。这就是「先付给自己」（Pay Yourself First）原则。</p>
+
+<div class="example-box">
+  <strong>应急基金：</strong>在投资之前，先存够 <strong>3-6 个月的生活开支</strong>作为应急基金，放在高流动性账户（货币基金、活期存款）。这笔钱是你在失业、生病或意外时的安全网——它让你不必在市场低点被迫卖出投资。
+</div>
+
+<h3>债务管理：好债 vs 坏债</h3>
+
+<ul>
+  <li><strong>坏债</strong>：信用卡欠款、消费贷——利率高（15-24%），用于购买贬值资产。应该优先还清</li>
+  <li><strong>好债</strong>：房贷、教育贷款——利率相对低，用于购买增值资产或提升人力资本。可以合理利用</li>
+</ul>
+
+<div class="key-idea">
+  一个简单的经验法则：如果债务利率 > 你的投资预期回报率，就先还债。信用卡 20% 的利率，几乎没有合法投资能稳定跑赢——<strong>还清信用卡就等于赚了 20% 的无风险回报</strong>。
+</div>
+
+<h2>四、支柱二：保险——用小钱买大保障</h2>
+
+<p>保险的本质是<strong>用确定的小额支出，转移不确定的巨额损失风险</strong>。这与第9课的期权逻辑一模一样——你支付的保费就像期权费，换来的是对灾难性损失的「保护」。</p>
+
+<h3>个人需要的核心保险</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.9rem;">
+  <tr style="background: var(--accent-light);">
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">险种</th>
+    <th style="border:1px solid var(--border); padding:0.5rem;">保障内容</th>
+    <th style="border:1px solid var(--border); padding:0.5rem;">优先级</th>
+  </tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">医疗险</td><td style="border:1px solid var(--border); padding:0.5rem;">大病住院费用</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center;">★★★★★</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">意外险</td><td style="border:1px solid var(--border); padding:0.5rem;">意外伤害/残疾/身故</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center;">★★★★★</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">重疾险</td><td style="border:1px solid var(--border); padding:0.5rem;">重大疾病一次性赔付</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center;">★★★★</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">定期寿险</td><td style="border:1px solid var(--border); padding:0.5rem;">家庭经济支柱身故保障</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center;">★★★★（有家庭者）</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;">财产险</td><td style="border:1px solid var(--border); padding:0.5rem;">房屋/车辆损失</td><td style="border:1px solid var(--border); padding:0.5rem; text-align:center;">★★★</td></tr>
+</table>
+
+<div class="example-box">
+  <strong>保险的核心原则：</strong>只保「不可承受的大损失」，不保「可以承受的小损失」。车险的免赔额越高（自付越多），保费越低——因为小剐蹭自己修就好，不值得为小损失付高保费。把保险预算集中用于灾难性风险。
+</div>
+
+<h2>五、支柱三：投资——让钱为你工作</h2>
+
+<p>有了应急基金和基础保险后，剩余的储蓄就可以投入市场增值。这里我们将前11课的知识综合起来。</p>
+
+<h3>资产配置：90% 的回报来源</h3>
+
+<p>研究（包括 Gary Brinson 的经典研究）表明，投资组合长期回报的约 <strong>90%</strong> 由<strong>资产配置</strong>决定——即你把钱分配在股票、债券、现金、不动产等大类资产中的比例——而非选股或择时。</p>
+
+<div class="key-idea">
+  「不要把鸡蛋放在一个篮子里」说的不只是多买几只股票，而是要在<strong>不同大类资产</strong>之间分散——因为同一类资产在危机中往往一起暴跌（第11课：宏观压制）。
+</div>
+
+<h3>一个简单的懒人投资组合</h3>
+
+<p>基于年龄的资产配置经验公式（适合大多数普通投资者）：</p>
+
+<div class="formula-box">
+  股票占比 ≈ (110 - 你的年龄)%<br>
+  债券占比 ≈ (你的年龄 - 10)%
+</div>
+
+<p>例如 30 岁的人：股票 80%，债券 20%。50 岁的人：股票 60%，债券 40%。随着年龄增长，逐步增加债券比例以降低风险。</p>
+
+<h3>指数基金：普通人的最优选择</h3>
+
+<p>过去 15 年，约 <strong>85-90% 的主动管理基金跑不赢</strong>简单的标普500指数基金。原因很简单：</p>
+<ul>
+  <li>市场已经高度有效（第2课）——击败市场极难</li>
+  <li>主动管理的高费率（1-2%）长期复利下来侵蚀巨大（第1课的复利原理反用）</li>
+  <li>指数基金费率极低（0.03-0.1%），且天然分散</li>
+</ul>
+
+<p>巴菲特在遗嘱中建议：将遗产的 90% 投入低成本的标普500指数基金。<strong>对于绝大多数没有时间和专业能力研究个股的人来说，定投指数基金是最优策略</strong>。</p>
+
+<h3>定投（Dollar-Cost Averaging）</h3>
+
+<p>每月固定日期、固定金额投入指数基金，不论市场涨跌。这个简单策略解决了多个行为金融问题：</p>
+<ul>
+  <li><strong>消除择时焦虑</strong>（第10课：过度自信）——你不需要预测市场</li>
+  <li><strong>自动在低点买入更多份额</strong>（同样的钱，跌了买得多）</li>
+  <li><strong>养成纪律性投资习惯</strong>——系统对抗偏差</li>
+</ul>
+
+<h3>再平衡（Rebalancing）</h3>
+
+<p>如果你的目标配置是 80% 股票 / 20% 债券，一年后因股市大涨变成了 90/10，你需要<strong>卖出部分股票、买入债券</strong>恢复 80/20。这听起来反直觉——为什么要卖掉涨得好的？但再平衡的本质是<strong>「低买高卖」的系统化执行</strong>，同时控制风险水平。</p>
+
+<h2>六、支柱四：税务优化——合法省下的就是赚到的</h2>
+
+<p>税后回报才是你真正拿到手的回报。善用税优账户可以显著提升长期财富：</p>
+<ul>
+  <li><strong>退休账户</strong>：如中国的个人养老金账户、美国的 401(k) 和 IRA——递延纳税或免税增值</li>
+  <li><strong>长期持有</strong>：在很多国家，持有超过一年的资产享受更低的资本利得税率</li>
+  <li><strong>亏损收割（Tax-Loss Harvesting）</strong>：卖出亏损头寸抵扣税收，同时保持投资敞口</li>
+  <li><strong>费用意识</strong>：基金费率虽小，但 1% 和 0.1% 的差距在 30 年复利下是天壤之别</li>
+</ul>
+
+<div class="example-box">
+  <strong>1% 费率的长期代价：</strong>假设你投资 10 万元，年回报 8%。费率 0.1% 的指数基金 vs 费率 1.1% 的主动基金，30 年后差距：<br>
+  低费率：10万 × (1.079)^30 ≈ 96.3 万<br>
+  高费率：10万 × (1.069)^30 ≈ 71.6 万<br>
+  仅仅 1% 的费率差，30 年就差了 <strong>24.7 万</strong>——这就是第1课复利原理的威力，反过来用。
+</div>
+
+<h2>七、财务自由之路：FIRE 运动</h2>
+
+<p><strong>FIRE</strong>（Financial Independence, Retire Early）——经济独立，提前退休——是近年来全球流行的理财理念。其核心公式来自「4% 法则」：</p>
+
+<div class="formula-box">
+  财务自由门槛 = 年度开支 × 25<br>
+  （基于 4% 安全提取率：Trinity Study 的研究结论）
+</div>
+
+<p>如果你每年开支 20 万元，那么存够 <strong>500 万元</strong>的投资组合，按 4% 提取（每年 20 万元），在历史回测中有极高的概率永远不会耗尽（投资回报约 7%，扣除通胀 3%，净增长抵消提取）。</p>
+
+<h3>如何加速达到 FIRE 门槛？</h3>
+<ul>
+  <li><strong>提高储蓄率</strong>：储蓄率 50% → 约 17 年达到自由；储蓄率 70% → 约 8 年。储蓄率是 FIRE 的核心杠杆</li>
+  <li><strong>降低开支</strong>：开支越低，需要的自由门槛越低，且储蓄越多——双重加速</li>
+  <li><strong>增加收入</strong>：主业加薪、副业、投资收益</li>
+  <li><strong>长期投资</strong>：利用复利让钱自己增长</li>
+</ul>
+
+<div class="key-idea">
+  FIRE 不是真的让你什么都不做——而是让你<strong>有选择的自由</strong>。你可以继续工作，但不是因为「必须」，而是因为「想要」。这种从容感本身就是最大的财富。
+</div>
+
+<h2>八、终身学习：理财是一场马拉松</h2>
+
+<p>金融市场在变、税法在变、你的生活阶段在变。理财不是一次性的规划，而是终身的动态调整：</p>
+<ul>
+  <li><strong>20-30 岁</strong>：人力资本投资（教育、技能），开始定投，建立应急基金</li>
+  <li><strong>30-45 岁</strong>：家庭责任最重——保险加码、房产规划、子女教育金</li>
+  <li><strong>45-60 岁</strong>：投资组合逐步保守，退休规划精细化</li>
+  <li><strong>60 岁+</strong>：资产保值 + 提取策略 + 遗产规划</li>
+</ul>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>行为金融学</strong>（第10课）：所有理财错误都源于心理偏差——定投和系统化策略是对抗偏差的最佳武器</li>
+  <li><strong>宏观金融</strong>（第11课）：理解利率和通胀周期，指导资产配置的大方向</li>
+  <li><strong>税务法律</strong>：合理利用税法是「免费的」投资回报</li>
+  <li><strong>职业规划</strong>：你最大的人力资本是你自己——教育和职业发展是最被低估的「投资」</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>理财的终极目标是财务自由——被动收入 ≥ 生活开支</li>
+    <li>四大支柱：预算储蓄（地基）→ 保险（防护墙）→ 投资（上层建筑）→ 税务规划（屋顶）</li>
+    <li>先付给自己：收入 - 储蓄 = 支出，而非收入 - 支出 = 储蓄</li>
+    <li>资产配置决定约 90% 的长期回报——在股票、债券、不动产等大类间分散</li>
+    <li>对于绝大多数人，定投低费率指数基金是最优策略（巴菲特也这样建议）</li>
+    <li>4% 法则：年度开支 × 25 = 财务自由门槛；储蓄率是加速 FIRE 的核心杠杆</li>
+    <li>理财是一场终身马拉松——最好的投资时机是十年前，其次是现在</li>
+  </ol>
+</div>
+
+<div class="final-message">
+  <h2>🎓 恭喜完成全部 12 课！</h2>
+  <p style="margin: 1rem 0;">你已经完成了从货币时间价值到个人理财的完整金融知识旅程。</p>
+  <p style="margin: 0.5rem 0;">知识只是第一步。<strong>行动</strong>才是改变命运的关键。</p>
+  <p style="margin: 0.5rem 0;">今天就开始你的第一笔定投吧。</p>
+  <p style="margin-top: 1rem; font-style: italic; color: var(--muted);">「种一棵树最好的时间是二十年前，其次是现在。」</p>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 财务自由的定义是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 年收入超过 100 万</label>
+      <label><input type="radio" name="q1" value="b"> B. 拥有三套房产</label>
+      <label><input type="radio" name="q1" value="c"> C. 被动收入足以覆盖生活开支</label>
+      <label><input type="radio" name="q1" value="d"> D. 银行存款超过 1000 万</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 个人理财的四大支柱，按正确顺序排列是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 投资 → 储蓄 → 保险 → 税务</label>
+      <label><input type="radio" name="q2" value="b"> B. 预算储蓄 → 保险 → 投资 → 税务规划</label>
+      <label><input type="radio" name="q2" value="c"> C. 税务 → 投资 → 保险 → 储蓄</label>
+      <label><input type="radio" name="q2" value="d"> D. 保险 → 税务 → 储蓄 → 投资</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 「先付给自己」原则的意思是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 发薪日自动先扣除储蓄/投资，剩下的才用于消费</label>
+      <label><input type="radio" name="q3" value="b"> B. 每月给自己买礼物</label>
+      <label><input type="radio" name="q3" value="c"> C. 先还清所有债务再存钱</label>
+      <label><input type="radio" name="q3" value="d"> D. 把工资全部存起来</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 应急基金应该存多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 1 个月的生活开支</label>
+      <label><input type="radio" name="q4" value="b"> B. 1 周的工资</label>
+      <label><input type="radio" name="q4" value="c"> C. 一年的全部收入</label>
+      <label><input type="radio" name="q4" value="d"> D. 3-6 个月的生活开支</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 信用卡欠款（利率 20%）和投资指数基金（预期回报 8%），你应该优先做什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 先投资，因为复利很重要</label>
+      <label><input type="radio" name="q5" value="b"> B. 先还清信用卡，因为 20% 利率没有任何投资能稳定跑赢</label>
+      <label><input type="radio" name="q5" value="c"> C. 两件事同时做</label>
+      <label><input type="radio" name="q5" value="d"> D. 什么都不做</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 保险的核心原则是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 什么都保，越多越好</label>
+      <label><input type="radio" name="q6" value="b"> B. 只买最便宜的保险</label>
+      <label><input type="radio" name="q6" value="c"> C. 只保不可承受的大损失，不保可以承受的小损失</label>
+      <label><input type="radio" name="q6" value="d"> D. 不需要保险，靠储蓄就够了</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 研究表明，投资组合长期回报约多少由资产配置决定？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 约 90%</label>
+      <label><input type="radio" name="q7" value="b"> B. 约 50%</label>
+      <label><input type="radio" name="q7" value="c"> C. 约 10%</label>
+      <label><input type="radio" name="q7" value="d"> D. 0%（不重要）</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 对于绝大多数普通投资者，以下哪个策略被广泛认为是最优的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 频繁交易追逐热点</label>
+      <label><input type="radio" name="q8" value="b"> B. 集中买入一只热门股票</label>
+      <label><input type="radio" name="q8" value="c"> C. 听消息炒短线</label>
+      <label><input type="radio" name="q8" value="d"> D. 长期定投低费率宽基指数基金</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 定投（Dollar-Cost Averaging）策略帮助解决什么问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 保证每月赚钱</label>
+      <label><input type="radio" name="q9" value="b"> B. 消除择时焦虑，系统化对抗认知偏差，自动低买多买</label>
+      <label><input type="radio" name="q9" value="c"> C. 消除所有投资风险</label>
+      <label><input type="radio" name="q9" value="d"> D. 保证跑赢市场 20%</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 根据 4% 法则，如果你年度开支是 30 万元，财务自由门槛大约是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 300 万元</label>
+      <label><input type="radio" name="q10" value="b"> C. 600 万元</label>
+      <label><input type="radio" name="q10" value="c"> C. 750 万元（30 万 × 25）</label>
+      <label><input type="radio" name="q10" value="d"> D. 100 万元</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q11.</span> 假设 10 万元年回报 8%，低费率基金（0.1%）和高费率基金（1.1%）30 年后的差距大约是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 约 25 万元——1% 的费率差在复利下差异巨大</label>
+      <label><input type="radio" name="q11" value="b"> B. 几乎没有差别</label>
+      <label><input type="radio" name="q11" value="c"> C. 高费率基金反而更好</label>
+      <label><input type="radio" name="q11" value="d"> D. 差距不到 1 万元</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 资产配置中「再平衡」的核心目的是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 频繁买卖以赚取手续费</label>
+      <label><input type="radio" name="q12" value="b"> B. 恢复目标配置比例，系统化执行「低买高卖」并控制风险</label>
+      <label><input type="radio" name="q12" value="c"> C. 永远满仓股票</label>
+      <label><input type="radio" name="q12" value="d"> D. 每天调整一次</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q13.</span> 这句话对吗：「最好的投资时机是十年前，其次是现在」？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 错，应该等市场跌到底再投</label>
+      <label><input type="radio" name="q13" value="b"> B. 错，市场风险太高不该投资</label>
+      <label><input type="radio" name="q13" value="c"> C. 错，年轻人不需要投资</label>
+      <label><input type="radio" name="q13" value="d"> D. 对——复利需要时间，越早开始越好，不要试图择时</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0011-macro-finance.html">← 上一课</a>
+  <span>第 12 课 / 共 12 课（最终课）</span>
+  <a href="../index.html">← 返回目录</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '财务自由的定义是被动收入（投资收益、租金等）足以覆盖生活开支。这与收入高低或存款绝对值无关——低开支者更容易达到自由。' },
+  q2: { correct: 'b', explanation: '正确的顺序是：预算与储蓄（地基）→ 保险（防护墙）→ 投资（上层建筑）→ 税务规划（屋顶）。没有地基和防护墙，投资再好也可能被一次意外摧毁。' },
+  q3: { correct: 'a', explanation: '「先付给自己」：发薪日自动先扣除储蓄/投资金额，剩下的才用于消费。公式是「收入 - 储蓄 = 支出」，而非「收入 - 支出 = 储蓄」。' },
+  q4: { correct: 'd', explanation: '应急基金应为 3-6 个月的生活开支，放在高流动性账户。它是失业、生病或意外时的安全网，让你不必在市场低点被迫卖出投资。' },
+  q5: { correct: 'b', explanation: '信用卡 20% 的利率没有任何合法投资能稳定跑赢。还清信用卡就等于赚了 20% 的无风险回报——这比任何投资都优先。' },
+  q6: { correct: 'c', explanation: '保险的核心原则是「只保不可承受的大损失，不保可以承受的小损失」。把预算集中在灾难性风险上，用免赔额降低小损失的保费。' },
+  q7: { correct: 'a', explanation: 'Brinson 的经典研究表明，投资组合长期回报约 90% 由资产配置（股票/债券/现金等大类分配比例）决定，而非选股或择时。' },
+  q8: { correct: 'd', explanation: '绝大多数主动基金跑不赢指数。对于普通投资者，长期定投低费率宽基指数基金（如标普500）是最优策略——巴菲特也这样建议。' },
+  q9: { correct: 'b', explanation: '定投消除了择时焦虑（不需要预测市场），系统化对抗认知偏差，且自动在低点买入更多份额。但它不能保证赚钱或消除所有风险。' },
+  q10: { correct: 'c', explanation: '4% 法则：年度开支 × 25 = 财务自由门槛。30 万 × 25 = 750 万元。按 4% 提取，历史回测中有极高概率永不耗尽。' },
+  q11: { correct: 'a', explanation: '低费率：10万×(1.079)^30≈96.3万；高费率：10万×(1.069)^30≈71.6万。差距约25万——1%费率差在30年复利下是天壤之别。' },
+  q12: { correct: 'b', explanation: '再平衡是恢复目标配置比例，本质是系统化「低买高卖」（卖涨买跌），同时控制风险水平不偏离计划。' },
+  q13: { correct: 'd', explanation: '复利的核心是时间。越早开始，时间价值越大。不要试图择时——「在市场中待的时间」比「选择入场时机」重要得多。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了个人理财的完整框架，准备行动吧！';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你掌握了核心理财原则，复习错题后就可以开始了。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重点复习四大支柱和资产配置部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。从今天开始执行「先付给自己」原则，就是最好的第一步。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

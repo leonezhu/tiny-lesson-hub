@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 估值方法</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>估值方法</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第7课 / 共12课 · 约16分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>学会给资产「定价」——这是投资的核心技能。掌握现金流折现（DCF）、相对估值法（P/E、P/B、EV/EBITDA）和股利贴现模型，理解内在价值与市场价格的区别，以及巴菲特所说的「安全边际」。
+</div>
+
+<h2>一、价格 ≠ 价值：投资的第一课</h2>
+
+<p>沃伦·巴菲特说：「<strong>价格是你付出的，价值是你得到的。</strong>」这是估值的核心哲学。</p>
+
+<p>股票市场上的「价格」每秒都在跳动，但一家公司的「价值」相对稳定。聪明的投资者寻找价格<strong>低于</strong>价值的机会——这就是<strong>安全边际（Margin of Safety）</strong>。如果价值 100 元的东西卖 60 元，你有 40 元的缓冲，即使估算有误差，也不容易亏钱。</p>
+
+<div class="vocab-card">
+  <span class="term">内在价值 (Intrinsic Value)</span><br>
+  基于资产未来能产生的现金流，折现到今天算出的「真实价值」。它可能高于或低于市场价格。价值投资的核心就是买入价格低于内在价值的资产。
+</div>
+
+<div class="key-idea">
+  估值不是精确科学，而是一门艺术与判断的结合。不同的假设（增长率、贴现率）会得出截然不同的结果。所以芒格说：「宁要模糊的正确，不要精确的错误。」
+</div>
+
+<h2>二、绝对估值法：现金流折现（DCF）</h2>
+
+<p><strong>DCF（Discounted Cash Flow）</strong>是估值方法的「黄金标准」。它的逻辑直接来自第 1 课的现值公式：</p>
+
+<div class="formula-box">
+  价值 = Σ CF<sub>t</sub> / (1+r)<sup>t</sup> + 终值 / (1+r)<sup>N</sup>
+</div>
+
+<p>其中 CF<sub>t</sub> 是第 t 年的自由现金流，r 是贴现率（通常用 WACC，见第8课），N 是预测期，终值（Terminal Value）是预测期之后所有现金流的汇总。</p>
+
+<h3>DCF 的三步</h3>
+<ul>
+  <li><strong>预测未来现金流</strong>：通常做 5-10 年详细预测（收入、成本、投资）</li>
+  <li><strong>确定贴现率</strong>：反映资金成本和风险，风险越高 r 越大</li>
+  <li><strong>计算终值</strong>：用永续增长法（假设公司永远以 g 增长）或退出倍数法</li>
+</ul>
+
+<p>永续增长终值公式（与第1课的永续年金同源）：</p>
+<div class="formula-box">
+  终值 = CF<sub>N+1</sub> / (r − g)
+</div>
+
+<div class="example-box">
+  <strong>真实案例——巴菲特买可口可乐：</strong>1988 年，巴菲特开始大举买入可口可乐股票，斥资超 10 亿美元。他不是看图表，而是用 DCF 思维判断：可口可乐拥有无可替代的品牌、全球分销网络和稳定增长的现金流。按当时价格，内在价值远高于市价，安全边际充足。这笔投资后来涨了十几倍，成为价值投资的经典案例。
+</div>
+
+<p>DCF 的弱点：它<strong>极其依赖假设</strong>。增长率 g 和贴现率 r 的小幅变化，结果天差地别。终值往往占 DCF 价值的 70% 以上——也就是说，你对公司 10 年后的判断，决定了今天估值的绝大部分。这就是为什么估值被称为「艺术」。</p>
+
+<h2>三、相对估值法：跟同行比</h2>
+
+<p>DCF 太难、假设太多？那就用<strong>相对估值</strong>——拿一家公司与「可比公司」（comparable companies）对比。</p>
+
+<h3>1. 市盈率 P/E</h3>
+<p>股价 ÷ 每股收益。最直观。同行业中，P/E 低的相对便宜。但亏损公司没有 P/E，高增长公司 P/E 通常偏高。</p>
+
+<h3>2. 市净率 P/B</h3>
+<p>股价 ÷ 每股净资产。适合银行、保险等资产密集型行业。P/B < 1 意味着股价低于账面价值（可能被低估，也可能公司有问题）。</p>
+
+<h3>3. EV/EBITDA</h3>
+<p>企业价值 × 息税折旧摊销前利润。比 P/E 更科学，因为它剔除了资本结构（债务）和税收的影响，便于跨国跨行业比较。投行和私募基金最爱用。</p>
+
+<div class="vocab-card">
+  <span class="term">企业价值 (Enterprise Value, EV)</span><br>
+  EV = 市值 + 净债务。它代表收购整家公司需要付出的代价，比单纯看市值更全面，因为它考虑了债务。
+</div>
+
+<div class="key-idea">
+  相对估值的陷阱：在泡沫时期，<strong>整个行业</strong>都被高估，你跟同行比就觉得一切正常。2000 年互联网泡沫时，所有科技股 P/E 都上天，但「跟同行比很合理」并不意味着不贵。
+</div>
+
+<h2>四、股利贴现模型（DDM）</h2>
+
+<p>对于稳定分红的成熟公司，可以用<strong>股利贴现模型（Dividend Discount Model）</strong>。这是第 1 课永续年金公式的直接应用：</p>
+
+<p>戈登增长模型（Gordon Growth Model）：</p>
+<div class="formula-box">
+  P₀ = D₁ / (r − g)
+</div>
+
+<p>其中 D₁ 是下一年的股利，r 是要求回报率，g 是股利永续增长率。</p>
+
+<p>举例：可口可乐预计明年每股分红 2 元，要求回报率 8%，股利增长率 5%，则每股价值 = 2 / (0.08 − 0.05) = 66.7 元。</p>
+
+<h2>五、估值的陷阱与误区</h2>
+
+<ul>
+  <li><strong>垃圾进，垃圾出</strong>：DCF 模型再精美，如果增长率假设离谱，结果也是错的</li>
+  <li><strong>忽略周期性</strong>：在行业顶点用高盈利预测未来，会严重高估（如 2007 年的周期股）</li>
+  <li><strong>锚定市价</strong>：先看了股价再去「凑」估值模型使之合理，是常见的自欺</li>
+  <li><strong>相对估值的整体泡沫</strong>：同行都贵，不代表便宜</li>
+</ul>
+
+<div class="example-box">
+  <strong>真实案例——特斯拉估值争议：</strong>特斯拉的估值长期是华尔街最分裂的话题。看多者用 DCF 算出几千美元一股（假设它能主导电动车 + 储能 + 自动驾驶）；看空者认为它只是一家汽车公司，P/E 高得离谱。2020-2021 年特斯拉股价暴涨 10 倍，2022 年又跌去 70%。这种分歧正说明：<strong>估值的核心不在模型，而在对未来的判断。</strong>
+</div>
+
+<h2>六、安全边际：价值投资的护城河</h2>
+
+<p>本杰明·格雷厄姆提出，巴菲特奉为圭臬的原则：<strong>只在价格明显低于内在价值时买入</strong>，这个差额就是安全边际。</p>
+
+<ul>
+  <li>内在价值 100 元，买入价 60 元 → 安全边际 40%</li>
+  <li>即使你的估值高估了 20%（真实价值只有 80 元），你仍以 60 元买入，依然安全</li>
+</ul>
+
+<p>安全边际承认估值的模糊性，给自己留出犯错空间。这是格雷厄姆《聪明的投资者》中最核心的理念。</p>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>会计学</strong>：自由现金流的计算依赖财务报表三表勾稽</li>
+  <li><strong>统计学</strong>：可比公司分析需要回归、中位数等统计方法</li>
+  <li><strong>心理学</strong>：估值中的锚定效应、确认偏误（第10课）</li>
+  <li><strong>战略管理</strong>：判断一家公司未来能赚多少钱，本质是商业战略分析（护城河、竞争优势）</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>价格 ≠ 价值——价值投资的核心是找价格低于内在价值的机会</li>
+    <li>DCF 是估值的黄金标准，但极度依赖增长率和贴现率假设</li>
+    <li>相对估值（P/E、P/B、EV/EBITDA）快速但容易陷入整体泡沫</li>
+    <li>戈登增长模型 P = D/(r−g) 是永续年金在股票上的直接应用</li>
+    <li>安全边际是对估值模糊性的承认——宁要模糊的正确，不要精确的错误</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 「价格是你付出的，价值是你得到的。」这句话是谁说的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 尤金·法玛</label>
+      <label><input type="radio" name="q1" value="b"> B. 沃伦·巴菲特</label>
+      <label><input type="radio" name="q1" value="c"> C. 保罗·沃尔克</label>
+      <label><input type="radio" name="q1" value="d"> D. 欧文·费雪</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> DCF 估值的逻辑基础是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 技术分析图表</label>
+      <label><input type="radio" name="q2" value="b"> B. 与同行比较</label>
+      <label><input type="radio" name="q2" value="c"> C. 把未来现金流折现回今天求和（第1课现值公式）</label>
+      <label><input type="radio" name="q2" value="d"> D. 只看分红</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 戈登增长模型 P₀ = D₁ / (r − g) 中，g 代表什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 股利的永续增长率</label>
+      <label><input type="radio" name="q3" value="b"> B. 通货膨胀率</label>
+      <label><input type="radio" name="q3" value="c"> C. 无风险利率</label>
+      <label><input type="radio" name="q3" value="d"> D. 公司的负债率</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 企业价值（EV）的计算公式是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 股价 × 总股数</label>
+      <label><input type="radio" name="q4" value="b"> B. 市值 − 净债务</label>
+      <label><input type="radio" name="q4" value="c"> C. 净利润 × P/E</label>
+      <label><input type="radio" name="q4" value="d"> D. 市值 + 净债务</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> EV/EBITDA 相比 P/E 的优势是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 计算更简单</label>
+      <label><input type="radio" name="q5" value="b"> B. 剔除了资本结构（债务）和税收的影响，便于跨国跨行业比较</label>
+      <label><input type="radio" name="q5" value="c"> C. 适用于亏损公司</label>
+      <label><input type="radio" name="q5" value="d"> D. 不需要任何数据</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q6.</span> 安全边际的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 只在价格明显低于内在价值时买入，给自己留出估算误差的缓冲</label>
+      <label><input type="radio" name="q6" value="b"> B. 买最便宜的股票</label>
+      <label><input type="radio" name="q6" value="c"> C. 永远满仓</label>
+      <label><input type="radio" name="q6" value="d"> D. 用杠杆放大收益</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q7.</span> DCF 模型最大的弱点是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 公式太简单</label>
+      <label><input type="radio" name="q7" value="b"> B. 只适用于债券</label>
+      <label><input type="radio" name="q7" value="c"> C. 极度依赖增长率和贴现率假设，终值占比极大，小幅假设变化导致结果天差地别</label>
+      <label><input type="radio" name="q7" value="d"> D. 不使用现金流</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 相对估值法的主要陷阱是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 公式太复杂</label>
+      <label><input type="radio" name="q8" value="b"> B. 当整个行业或市场被高估时，跟同行比会误以为合理（如2000年互联网泡沫）</label>
+      <label><input type="radio" name="q8" value="c"> C. 需要太多数据</label>
+      <label><input type="radio" name="q8" value="d"> D. 只能用于债券</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q9.</span> 一只股票预计明年每股分红 3 元，要求回报率 10%，股利增长率 4%，根据戈登模型，每股价值约为？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 50 元</label>
+      <label><input type="radio" name="q9" value="b"> B. 30 元</label>
+      <label><input type="radio" name="q9" value="c"> C. 300 元</label>
+      <label><input type="radio" name="q9" value="d"> D. 3 元</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 市净率（P/B）特别适合用来估值哪类公司？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 互联网初创公司</label>
+      <label><input type="radio" name="q10" value="b"> B. 不分红的科技公司</label>
+      <label><input type="radio" name="q10" value="c"> C. 银行、保险等资产密集型行业</label>
+      <label><input type="radio" name="q10" value="d"> D. 奢侈品品牌</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 芒格说「宁要模糊的正确，不要精确的错误」，在估值中指的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 估值要精确到小数点</label>
+      <label><input type="radio" name="q11" value="b"> B. 与其用精确但假设错误的模型，不如做出方向正确的粗略判断</label>
+      <label><input type="radio" name="q11" value="c"> C. 永远不要做估值</label>
+      <label><input type="radio" name="q11" value="d"> D. 只相信市场价格</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 特斯拉估值长期分歧巨大，这说明了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 估值的核心不在模型而在对未来的判断，不同人对未来的预期导致截然不同的结论</label>
+      <label><input type="radio" name="q12" value="b"> B. DCF 模型无效</label>
+      <label><input type="radio" name="q12" value="c"> C. 特斯拉一定会破产</label>
+      <label><input type="radio" name="q12" value="d"> D. 股票估值很简单</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0006-stocks.html">← 第6课 股票市场</a>
+  <span>第 7 课 / 共 12 课</span>
+  <a href="0008-corporate-finance.html">第8课 公司金融 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '巴菲特名言，区分「付出的价格」与「获得的价值」是价值投资的起点。' },
+  q2: { correct: 'c', explanation: 'DCF 直接应用第1课的现值公式：把所有未来现金流折现回今天求和。' },
+  q3: { correct: 'a', explanation: 'g 是股利（或现金流）的永续增长率，必须小于 r，否则公式无意义。' },
+  q4: { correct: 'd', explanation: 'EV = 市值 + 净债务，代表收购整家公司的全部代价，比市值更全面。' },
+  q5: { correct: 'b', explanation: 'EV/EBITDA 剔除了资本结构和税收差异，跨地区跨行业可比性更强。' },
+  q6: { correct: 'a', explanation: '安全边际 = 内在价值 − 买入价，是对估值不确定性的缓冲，格雷厄姆的核心理念。' },
+  q7: { correct: 'c', explanation: 'DCF 终值常占价值 70%+，增长率和贴现率微调就会让结果剧变，是其最大软肋。' },
+  q8: { correct: 'b', explanation: '相对估值在整体泡沫时失效——大家都贵，跟同行比反而显得「合理」。' },
+  q9: { correct: 'a', explanation: 'P₀ = 3 / (0.10 − 0.04) = 3 / 0.06 = 50 元。' },
+  q10: { correct: 'c', explanation: '银行、保险等资产负债表驱动的行业，用 P/B 估值更有意义。' },
+  q11: { correct: 'b', explanation: '估值本质是判断而非计算，方向正确的粗略估算胜过假设错误却数字精确的模型。' },
+  q12: { correct: 'a', explanation: '同样的 DCF 模型，对增长前景的不同判断会导致天壤之别的估值，说明估值的核心在于商业判断。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了估值的核心方法论。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！估值思路清晰，复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。重点重读 DCF 和相对估值法。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先理解价格与价值的区别。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

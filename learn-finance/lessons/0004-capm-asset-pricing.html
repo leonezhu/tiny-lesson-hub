@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4课 — CAPM与资产定价</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg:#fdfdfd; --text:#1a1a1a; --accent:#2a6496; --accent-light:#e8f0fa; --muted:#666; --border:#e0e0e0; --correct:#2e7d32; --correct-bg:#e8f5e9; --wrong:#c62828; --wrong-bg:#ffebee; --warn-bg:#fff8e1; --warn-border:#f9a825; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Source Sans 3',-apple-system,sans-serif;font-size:16px;line-height:1.7;color:var(--text);background:var(--bg);max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+  h1{font-family:'Merriweather',Georgia,serif;font-size:1.8rem;margin-bottom:.25rem;color:var(--accent)}
+  .lesson-meta{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+  .goal-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:1rem 1.25rem;margin-bottom:2rem;border-radius:0 4px 4px 0}
+  .goal-box strong{color:var(--accent)}
+  h2{font-family:'Merriweather',Georgia,serif;font-size:1.2rem;margin-top:2.5rem;margin-bottom:.75rem;color:var(--accent)}
+  h3{font-family:'Merriweather',Georgia,serif;font-size:1.05rem;margin-top:1.5rem;margin-bottom:.5rem;color:var(--text)}
+  p{margin-bottom:.75rem}
+  .concept-card{border:1px solid var(--border);border-radius:6px;padding:1.25rem;margin:1rem 0}
+  .concept-card h3{margin-top:0}
+  .formula{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:4px;padding:1rem 1.25rem;margin:1rem 0;font-family:'Source Sans 3',monospace;font-size:1rem;overflow-x:auto}
+  .example-box{background:#f5f5f5;border-radius:6px;padding:1rem 1.25rem;margin:1rem 0;font-style:italic}
+  table{width:100%;border-collapse:collapse;margin:1rem 0}
+  th,td{border:1px solid var(--border);padding:.5rem .75rem;text-align:left}
+  th{background:var(--accent-light);font-weight:600}
+  .quiz-section{margin-top:2.5rem}
+  .quiz-section h2{margin-top:0}
+  .quiz-question{border:1px solid var(--border);border-radius:6px;padding:1.25rem;margin:1rem 0}
+  .q-num{display:inline-block;background:var(--accent);color:white;border-radius:50%;width:28px;height:28px;line-height:28px;text-align:center;font-size:.85rem;font-weight:700;margin-right:.5rem}
+  .context{font-size:.9rem;color:var(--muted);margin-bottom:.5rem}
+  .options{display:flex;flex-direction:column;gap:.5rem;margin-top:.75rem}
+  .option-btn{padding:.75rem 1rem;border:2px solid var(--border);border-radius:6px;background:white;cursor:pointer;font-size:.95rem;font-family:inherit;text-align:left;transition:all .15s}
+  .option-btn:hover:not(:disabled){border-color:var(--accent);background:var(--accent-light)}
+  .option-btn.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);font-weight:600}
+  .option-btn.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+  .option-btn.reveal-correct{border-color:var(--correct);background:var(--correct-bg)}
+  .option-btn:disabled{cursor:default}
+  .feedback{margin-top:.75rem;padding:.75rem 1rem;border-radius:4px;font-size:.9rem;display:none}
+  .feedback.show{display:block}
+  .feedback.correct-fb{background:var(--correct-bg);border-left:3px solid var(--correct)}
+  .feedback.wrong-fb{background:var(--wrong-bg);border-left:3px solid var(--wrong)}
+  .score-box{text-align:center;padding:1.5rem;margin-top:1.5rem;border:2px solid var(--accent);border-radius:8px;background:var(--accent-light);display:none}
+  .score-box.show{display:block}
+  .score-num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Merriweather',Georgia,serif}
+  .score-label{font-size:1rem;color:var(--muted);margin-top:.5rem}
+  .followup{margin-top:2.5rem;padding:1.25rem;background:#f5f5f5;border-radius:6px;font-size:.95rem}
+  .followup a{color:var(--accent)}
+  .footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.85rem;color:var(--muted)}
+  .footer a{color:var(--accent);text-decoration:none}
+  .footer a:hover{text-decoration:underline}
+  .footer .nav-disabled{color:#ccc}
+  ul{margin:.5rem 0 .75rem 1.5rem}
+  li{margin-bottom:.25rem}
+</style>
+</head>
+<body>
+<h1>第4课 — CAPM与资产定价</h1>
+<div class="lesson-meta">金融学 · 第4课 / 共12课</div>
+<div class="goal-box"><strong>本课目标：</strong>掌握CAPM模型的核心逻辑——为什么有些风险能获得溢价而有些不能，学会用Beta衡量系统性风险。</div>
+
+<h2>一、CAPM：最优雅也最有争议的金融模型</h2>
+<p>CAPM（Capital Asset Pricing Model，资本资产定价模型）是金融学中最著名的公式之一。它回答了一个根本问题：<strong>一项资产应该有多高的预期回报，才算"公平"？</strong></p>
+
+<div class="formula">
+  <strong>E(Ri) = Rf + βi × [E(Rm) − Rf]</strong><br><br>
+  E(Ri) = 资产i的预期收益率<br>
+  Rf = 无风险利率<br>
+  βi = 资产i的Beta（系统性风险度量）<br>
+  E(Rm) = 市场组合的预期收益率<br>
+  [E(Rm) − Rf] = 市场风险溢价
+</div>
+
+<p>这个公式的简洁令人震惊：资产的预期回报只由三个因素决定——无风险利率、市场风险溢价、以及你的Beta。没有公司名字，没有行业，没有故事。只有风险。</p>
+
+<h2>二、Beta：系统性风险的度量</h2>
+<p>Beta衡量的是资产相对于整个市场的波动程度。它回答了："当市场涨跌1%时，我的资产平均涨跌多少？"</p>
+
+<table>
+  <tr><th>Beta值</th><th>含义</th><th>典型例子</th></tr>
+  <tr><td>β = 1.0</td><td>与市场同步</td><td>宽基指数基金</td></tr>
+  <tr><td>β > 1.0</td><td>比市场更剧烈</td><td>科技成长股、小盘股</td></tr>
+  <tr><td>β < 1.0</td><td>比市场更温和</td><td>公用事业股、消费必需品</td></tr>
+  <tr><td>β = 0</td><td>与市场无关</td><td>理论上的无风险资产</td></tr>
+  <tr><td>β < 0</td><td>与市场反向</td><td>黄金（有时）、做空工具</td></tr>
+</table>
+
+<div class="example-box">
+  假设市场风险溢价为 6%，无风险利率为 3%。<br>
+  一只科技股的 Beta = 1.5：<br>
+  预期回报 = 3% + 1.5 × 6% = 3% + 9% = <strong>12%</strong><br><br>
+  一只公用事业股的 Beta = 0.6：<br>
+  预期回报 = 3% + 0.6 × 6% = 3% + 3.6% = <strong>6.6%</strong><br><br>
+  科技股预期回报更高，不是因为它是"更好的公司"，而是因为它承担了更高的系统性风险。
+</div>
+
+<h2>三、为什么只有系统性风险有溢价？</h2>
+<p>这是CAPM最深刻的洞见。<strong>非系统性风险（个股特有风险）可以通过分散化消除，所以市场不为它支付溢价。</strong>只有系统性风险（无法分散的风险）才有溢价。</p>
+
+<p>想象你持有100只不同行业的股票。某只医药股因为临床试验失败暴跌——这对你影响很小，因为其他99只股票不受影响。这种风险已经被分散掉了，不应该获得额外回报。</p>
+<p>但如果整个市场因经济衰退下跌——所有股票一起跌。这种风险无法消除，所以你必须为此获得补偿。</p>
+
+<h2>四、CAPM的局限与现实</h2>
+<p>CAPM在理论上优雅，在实践中争议很大：</p>
+
+<div class="concept-card">
+  <h3>问题1：Beta不稳定</h3>
+  <p>Beta基于历史数据计算，但未来可能完全不同。一家公司的Beta在危机前后可能相差很大。</p>
+</div>
+
+<div class="concept-card">
+  <h3>问题2：市场组合不可观测</h3>
+  <p>CAPM说要用"市场组合"（包含所有风险资产）来计算预期回报。但现实中我们只有股票指数，不包括债券、房地产、私募股权等。</p>
+</div>
+
+<div class="concept-card">
+  <h3>问题3：实证证据混合</h3>
+  <p>多项研究发现，Beta并不能很好地解释跨期回报差异。小规模股票、低估值股票往往跑赢高Beta股票——这与CAPM预测矛盾。</p>
+</div>
+
+<p>尽管如此，CAPM仍然是金融学的基石。它的价值不在于精确预测，而在于提供了一个思考框架：<strong>区分你能分散的风险和你必须承担的风险。</strong></p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共8道题。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">1</span>
+    <div class="context">CAPM计算</div>
+    <div class="sentence">无风险利率3%，市场风险溢价7%，某股票Beta=1.2。根据CAPM，其预期回报是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">10.8%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">11.4%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">8.4%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">2</span>
+    <div class="context">Beta含义</div>
+    <div class="sentence">Beta=0.8意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">该股票比市场波动大</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">该股票比市场波动小</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">该股票回报低于市场</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">3</span>
+    <div class="context">系统性风险</div>
+    <div class="sentence">根据CAPM，以下哪种风险会获得风险溢价？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">CEO突然离职</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">市场整体下跌</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">工厂火灾</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">4</span>
+    <div class="context">CAPM公式</div>
+    <div class="sentence">CAPM公式中的[E(Rm)−Rf]被称为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">无风险利率</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">市场风险溢价</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">Beta系数</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">5</span>
+    <div class="context">分散化</div>
+    <div class="sentence">为什么分散化消除了非系统性风险却不消除系统性风险？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">非系统性风险是个体的，系统性风险是整个市场的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">分散化不能消除任何风险</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统性风险可以通过更多分散来消除</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">6</span>
+    <div class="context">Beta计算</div>
+    <div class="sentence">市场风险溢价6%，无风险利率2%。一只股票的预期回报为14%。它的Beta是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">1.5</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">2.0</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">2.3</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">7</span>
+    <div class="context">CAPM局限</div>
+    <div class="sentence">以下哪项是CAPM的主要局限？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它假设所有人都厌恶风险</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">Beta不稳定且市场组合不可观测</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">它忽略了通货膨胀</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">8</span>
+    <div class="context">综合</div>
+    <div class="sentence">两只股票A(Beta=1.5)和B(Beta=0.5)，无风险利率3%，市场回报10%。以下正确的是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">A的预期回报为10.5%，B为6%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">A的预期回报为13.5%，B为6.5%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">A和B的预期回报相同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 不理解为什么只有系统性风险有溢价？觉得CAPM太抽象？直接问我——这些概念需要反复琢磨才能内化。<br><br>
+  <strong>推荐资源：</strong> <a href="https://www.investopedia.com/terms/c/capm.asp" target="_blank">Investopedia: CAPM</a> — 详细的CAPM图解教程。
+</div>
+
+<div class="footer">
+  <a href="0003-portfolio-theory.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0005-efficient-market-hypothesis.html">下一课</a>
+</div>
+
+<script>
+  const explanations={
+    q1:{correct:'11.4%！计算：3%+1.2×7%=3%+8.4%=11.4%。Beta越高，预期回报越高。',wrong:'3%+1.2×7%=3%+8.4%=11.4%。注意是乘法不是加法：1.2×7%=8.4%，不是1.2+7%=8.2%。'},
+    q2:{correct:'Beta=0.8意味着波动比市场小20%。市场涨1%，它平均涨0.8%。',wrong:'Beta衡量波动幅度，不是回报高低。Beta<1表示比市场更温和、波动更小。'},
+    q3:{correct:'市场整体下跌是所有资产共同面临的风险，无法分散，所以有溢价。CEO离职和工厂火灾都是个体风险，可以分散掉。',wrong:'CEO离职和工厂火灾都是非系统性风险——你可以通过持有多个股票来分散它们的影响。'},
+    q4:{correct:'市场风险溢价 = 市场回报 − 无风险利率。它代表投资者因承担市场风险而要求的额外回报。',wrong:'无风险利率是Rf。Beta是资产的波动系数。市场风险溢价是[E(Rm)−Rf]。'},
+    q5:{correct:'非系统性风险是单个公司或行业特有的，分散化可以消除。系统性风险是整个市场的问题——没有资产能幸免。',wrong:'系统性风险无法通过持有更多资产来消除，因为它是整个市场的问题。'},
+    q6:{correct:'14%=2%+β×6% → 12%=β×6% → β=2.0。',wrong:'14%=2%+β×6% → 12%=β×6% → β=12%/6%=2.0。记住公式变形：β=(E(Ri)−Rf)/市场风险溢价。'},
+    q7:{correct:'Beta基于历史数据，未来可能不同。而且真实的"市场组合"包含所有资产，我们只能用股票指数近似。',wrong:'CAPM假设所有人风险厌恶是基本前提，不是局限。通货膨胀也不是主要问题。'},
+    q8:{correct:'A: 3%+1.5×(10%−3%)=3%+10.5%=13.5%。B: 3%+0.5×7%=3%+3.5%=6.5%。',wrong:'市场风险溢价=10%−3%=7%。A=3%+1.5×7%=13.5%，B=3%+0.5×7%=6.5%。'}
+  };
+  let answered={},score=0,total=8;
+  function check(btn){
+    const q=btn.closest('.quiz-question'),qid=q.id;
+    if(answered[qid])return;answered[qid]=true;
+    const isCorrect=btn.dataset.correct==='true';
+    q.querySelectorAll('.option-btn').forEach(b=>{b.disabled=true;if(b.dataset.correct==='true')b.classList.add('reveal-correct')});
+    const fb=q.querySelector('.feedback');
+    if(isCorrect){btn.classList.add('correct');fb.className='feedback show correct-fb';fb.textContent=explanations[qid].correct;score++}
+    else{btn.classList.add('wrong');fb.className='feedback show wrong-fb';fb.textContent=explanations[qid].wrong}
+    if(Object.keys(answered).length===total){const box=document.getElementById('score-box');document.getElementById('score-num').textContent=score+' / '+total;if(score===total)document.getElementById('score-label').textContent='完美！CAPM你已经掌握了。';else if(score>=6)document.getElementById('score-label').textContent='做得好！回顾错题加深理解。';else document.getElementById('score-label').textContent='建议重读Beta和市场风险溢价的概念。';box.classList.add('show')}
+  }
+</script>
+</body>
+</html>

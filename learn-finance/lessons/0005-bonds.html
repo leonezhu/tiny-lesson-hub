@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 债券市场</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+
+  .formula-box {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>债券市场</h1>
+<p class="lesson-meta">TeachHub · 金融与投资 · 第5课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解债券这一全球规模最大的金融资产。掌握债券的基本要素、价格与利率的反向关系、到期收益率、信用评级和久期，看懂为什么债券被称为「避风港」又能在危机中酿成灾难。
+</div>
+
+<h2>一、债券：最古老的「借条」</h2>
+
+<p>债券本质上就是一张<strong>标准化的借条</strong>。你把钱借给政府或企业，对方承诺在到期时还本，并定期支付利息（票息）。就这么简单——人类从两千年前的古巴比伦就开始玩这种游戏了。</p>
+
+<p>债券是全球规模最大的金融市场。股票市场固然引人注目，但<strong>债券市场的体量远超股票市场</strong>。截至 2023 年，全球债券市场规模超过 130 万亿美元，是股市的两倍多。利率、汇率、国家信用，全都由债券市场说了算。</p>
+
+<div class="vocab-card">
+  <span class="term">债券 (Bond)</span><br>
+  发行者（债务人）向持有者（债权人）承诺在未来特定日期还本付息的固定收益证券。它是法律意义上的债务契约。
+</div>
+
+<h2>二、债券的四个核心要素</h2>
+
+<p>每一只债券都有四个关键数字：</p>
+<ul>
+  <li><strong>面值（Par Value）</strong>：到期时偿还的本金金额，通常是 1000 元或 100 元</li>
+  <li><strong>票面利率（Coupon Rate）</strong>：每年按面值支付的利息百分比</li>
+  <li><strong>到期日（Maturity）</strong>：还本的日期</li>
+  <li><strong>价格（Price）</strong>：债券在市场上交易的价格（会波动）</li>
+</ul>
+
+<div class="example-box">
+  <strong>举例：</strong>一只面值 1000 元、票面利率 5%、10 年期的国债，意味着：每年付 50 元利息，第 10 年末归还 1000 元本金。如果你持有到期，最终能拿到的现金流是 50×10 + 1000 = 1500 元。
+</div>
+
+<h2>三、债券价格与利率：此消彼长</h2>
+
+<p>这是债券市场最重要的规律，没有之一：</p>
+
+<div class="key-idea">
+  市场利率上升 → 已发行债券的价格下跌；市场利率下降 → 已发行债券的价格上涨。两者呈反向关系。
+</div>
+
+<p>为什么？想象你持有一只票面 5% 的债券。如果新发行的同类债券利率升到 7%，谁还愿意买你那只只给 5% 的旧债券？你必须<strong>降价</strong>，让买方的实际收益率（到期收益率）提高到 7%，才有人愿意接手。</p>
+
+<div class="example-box">
+  <strong>真实案例——2022 年债券大屠杀：</strong>美联储在 2022 年激进加息，美国国债价格暴跌。一只 30 年期国债，利率从 2% 升到 5% 时，价格能下跌近 <strong>40%</strong>。「最安全」的国债也能腰斩——这就是为什么债券并不等于「无风险」（第2课已讨论风险与回报的对应关系）。
+</div>
+
+<h2>四、到期收益率（YTM）</h2>
+
+<p>票面利率是固定的，但你买入债券的价格可能高于或低于面值。衡量你<strong>真正回报</strong>的指标是<strong>到期收益率（Yield to Maturity, YTM）</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">到期收益率 (YTM)</span><br>
+  假设你以当前价格买入债券并持有到期，且所有票息都能按 YTM 再投资，那么你的年化回报率就是 YTM。它是债券投资最重要的收益衡量指标。
+</div>
+
+<p>三种价格关系：</p>
+<ul>
+  <li>价格 = 面值（平价）→ YTM = 票面利率</li>
+  <li>价格 < 面值（折价）→ YTM > 票面利率</li>
+  <li>价格 > 面值（溢价）→ YTM < 票面利率</li>
+</ul>
+
+<p>YTM 实际上就是把第 1 课的现值/贴现公式反过来用：已知所有未来现金流和当前价格，求解隐含的贴现率。</p>
+
+<h2>五、债券的种类</h2>
+
+<ul>
+  <li><strong>国债</strong>：政府发行，信用最高，被视为无风险基准（如美国国债、中国国债）</li>
+  <li><strong>公司债</strong>：企业发行，利率高于国债，信用风险各异</li>
+  <li><strong>市政债</strong>：地方政府发行，常用于基建，部分利息免税</li>
+  <li><strong>可转债</strong>：可在特定条件下转换为公司股票的债券</li>
+  <li><strong>零息债</strong>：不付票息，以折价发行，到期按面值偿还</li>
+  <li><strong>浮动利率债</strong>：票息随基准利率浮动，规避利率风险</li>
+</ul>
+
+<h2>六、信用评级：从 AAA 到 D</h2>
+
+<p>债券的违约风险由<strong>信用评级机构</strong>评估，最著名的三家是标准普尔（S&P）、穆迪（Moody's）和惠誉（Fitch）。评级从最高的 AAA 一路到违约的 D。</p>
+
+<ul>
+  <li><strong>投资级（Investment Grade）</strong>：BBB- 及以上，违约风险低，利率较低</li>
+  <li><strong>投机级 / 垃圾债（Junk Bonds / High Yield）</strong>：BB+ 及以下，违约风险高，但利率（收益）也高</li>
+</ul>
+
+<div class="example-box">
+  <strong>真实案例——评级机构的失灵：</strong>2008 金融危机前，大量由次级房贷打包成的 MBS（抵押贷款支持证券）被评级机构评为 AAA。当房价下跌、贷款人违约潮爆发，这些「AAA」资产瞬间变废纸，引发全球金融海啸。评级机构事后被广泛批评为利益冲突的共谋者——它们收的是发行方的钱。
+</div>
+
+<h2>七、久期：衡量利率风险的标尺</h2>
+
+<p>久期（Duration）衡量债券价格对利率变动的<strong>敏感度</strong>。久期越长，利率风险越大。</p>
+
+<div class="formula-box">
+  价格变动 ≈ −久期 × 利率变动
+</div>
+
+<p>例如，久期为 8 年的债券，利率上升 1 个百分点，价格约下跌 8%。这就是为什么<strong>长期债券的利率风险远大于短期债券</strong>。</p>
+
+<div class="example-box">
+  <strong>真实案例——硅谷银行倒闭（2023）：</strong>硅谷银行把大量存款投资于长期美国国债和 MBS。当美联储急速加息，这些长久期资产价格暴跌，而银行又被迫亏本抛售应对储户挤兑，最终在 48 小时内倒闭。这是「久期错配 + 挤兑」的经典惨案。
+</div>
+
+<h2>跨学科链接</h2>
+<ul>
+  <li><strong>会计学</strong>：债券按摊余成本或公允价值计量，影响企业资产负债表</li>
+  <li><strong>法律</strong>：债券契约（Indenture）是复杂的法律文件，规定违约条款和债权人权利</li>
+  <li><strong>宏观经济学</strong>：国债收益率是整个金融体系定价的基准（第11课）</li>
+  <li><strong>政治学</strong>：主权债务危机（如希腊、阿根廷）涉及国际政治博弈</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>债券是标准化的借条，是全球规模最大的金融市场</li>
+    <li>债券价格与市场利率呈反向关系——加息利空债券</li>
+    <li>到期收益率（YTM）衡量持有到期的真实年化回报</li>
+    <li>信用评级从 AAA 到 D，区分投资级和垃圾债</li>
+    <li>久期衡量利率风险，硅谷银行正是死于长久期资产 + 加息</li>
+  </ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 债券本质上是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 公司的所有权凭证</label>
+      <label><input type="radio" name="q1" value="b"> B. 一张标准化的借条（债务契约）</label>
+      <label><input type="radio" name="q1" value="c"> C. 央行发行的货币</label>
+      <label><input type="radio" name="q1" value="d"> D. 一种保险产品</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q2.</span> 债券价格与市场利率的关系是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 同向变动</label>
+      <label><input type="radio" name="q2" value="b"> B. 无关</label>
+      <label><input type="radio" name="q2" value="c"> C. 利率上升则债券价格上升</label>
+      <label><input type="radio" name="q2" value="d"> D. 反向变动：利率上升则债券价格下跌</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 面值 1000 元、票面利率 5% 的债券，每年票息是多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 50 元</label>
+      <label><input type="radio" name="q3" value="b"> B. 500 元</label>
+      <label><input type="radio" name="q3" value="c"> C. 5 元</label>
+      <label><input type="radio" name="q3" value="d"> D. 1000 元</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q4.</span> 到期收益率（YTM）衡量的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 债券的票面利率</label>
+      <label><input type="radio" name="q4" value="b"> B. 发行者的信用等级</label>
+      <label><input type="radio" name="q4" value="c"> C. 以当前价格买入并持有到期的年化回报率</label>
+      <label><input type="radio" name="q4" value="d"> D. 债券的面值</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 当债券以折价（低于面值）交易时，YTM 与票面利率的关系？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. YTM = 票面利率</label>
+      <label><input type="radio" name="q5" value="b"> B. YTM > 票面利率</label>
+      <label><input type="radio" name="q5" value="c"> C. YTM < 票面利率</label>
+      <label><input type="radio" name="q5" value="d"> D. 无法比较</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q6.</span> 信用评级 BBB- 及以上的债券通常被称为？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 投资级债券</label>
+      <label><input type="radio" name="q6" value="b"> B. 垃圾债</label>
+      <label><input type="radio" name="q6" value="c"> C. 零息债</label>
+      <label><input type="radio" name="q6" value="d"> D. 永续债</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q7.</span> 垃圾债（高收益债）相比国债，其特点是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 违约风险更低</label>
+      <label><input type="radio" name="q7" value="b"> B. 利率更低</label>
+      <label><input type="radio" name="q7" value="c"> C. 与国债完全相同</label>
+      <label><input type="radio" name="q7" value="d"> D. 违约风险更高，但票面利率也更高（风险溢价）</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q8.</span> 久期衡量的是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 债券的剩余年限</label>
+      <label><input type="radio" name="q8" value="b"> B. 债券的票面利率</label>
+      <label><input type="radio" name="q8" value="c"> C. 债券价格对利率变动的敏感度</label>
+      <label><input type="radio" name="q8" value="d"> D. 发行者的违约概率</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 一只久期 10 年的债券，利率上升 1%，价格大约下跌多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 约 1%</label>
+      <label><input type="radio" name="q9" value="b"> B. 约 10%</label>
+      <label><input type="radio" name="q9" value="c"> C. 约 100%</label>
+      <label><input type="radio" name="q9" value="d"> D. 不受影响</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 2008 金融危机中，MBS（抵押贷款支持证券）暴露了什么问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 评级机构给高风险次贷资产错误地评了 AAA，酿成系统性危机</label>
+      <label><input type="radio" name="q10" value="b"> B. 国债违约导致崩盘</label>
+      <label><input type="radio" name="q10" value="c"> C. 债券利率过低</label>
+      <label><input type="radio" name="q10" value="d"> D. 久期太短</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q11.</span> 2023 年硅谷银行倒闭的根本原因是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 投资了垃圾债</label>
+      <label><input type="radio" name="q11" value="b"> B. 被黑客攻击</label>
+      <label><input type="radio" name="q11" value="c"> C. 发行了假债券</label>
+      <label><input type="radio" name="q11" value="d"> D. 大量持有长久期国债/MBS，加息致价格暴跌，叠加储户挤兑</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> 以下哪类债券通常被视为「无风险」基准？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 垃圾债</label>
+      <label><input type="radio" name="q12" value="b"> B. 主权信用良好的短期国债</label>
+      <label><input type="radio" name="q12" value="c"> C. 公司债</label>
+      <label><input type="radio" name="q12" value="d"> D. 可转债</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0004-interest-rates.html">← 第4课 利率</a>
+  <span>第 5 课 / 共 12 课</span>
+  <a href="0006-stocks.html">第6课 股票市场 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '债券本质是债务契约——借款人承诺还本付息的借条。' },
+  q2: { correct: 'd', explanation: '利率上升时，旧债券的固定票息显得不吸引人，必须降价才能让收益率跟上市场。反向关系是债券定价的核心。' },
+  q3: { correct: 'a', explanation: '票息 = 面值 × 票面利率 = 1000 × 5% = 50 元。' },
+  q4: { correct: 'c', explanation: 'YTM 是以当前市场价格买入、持有到期的年化回报率，是衡量债券投资收益的核心指标。' },
+  q5: { correct: 'b', explanation: '折价买入意味着到期时能赚回面值差额，因此 YTM > 票面利率。' },
+  q6: { correct: 'a', explanation: 'BBB- 及以上为投资级，BB+ 及以下为投机级（垃圾债）。' },
+  q7: { correct: 'd', explanation: '垃圾债违约风险高，因此必须提供更高的票面利率作为风险溢价补偿。' },
+  q8: { correct: 'c', explanation: '久期衡量债券价格对利率变化的敏感度，久期越长风险越大。' },
+  q9: { correct: 'b', explanation: '价格变动 ≈ −久期 × 利率变动 = −10 × 1% = −10%。' },
+  q10: { correct: 'a', explanation: '评级机构把大量次贷支持的 MBS 评为 AAA，房价下跌后这些资产崩盘，引爆全球金融危机。' },
+  q11: { correct: 'd', explanation: '硅谷银行把存款投入长久期国债/MBS，加息致资产暴跌，又遇挤兑被迫亏本抛售，最终倒闭。' },
+  q12: { correct: 'b', explanation: '主权信用良好（如美国）的短期国债违约风险极低，被视为无风险利率基准。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了债券市场的核心。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！债券知识扎实，复习一下错题。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。重点重读价格-利率关系和久期。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先弄懂债券价格为什么与利率反向变动。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>
