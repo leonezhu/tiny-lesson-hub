@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 计算机网络：TCP/IP到HTTP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>计算机网络：TCP/IP 到 HTTP</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第7课 / 共12课 · 约20分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解计算机网络的核心模型——数据如何从你的手机穿越半个地球到达服务器再返回。掌握 TCP/IP 分层模型、IP 地址与路由、TCP 可靠传输机制、HTTP 协议的无状态特性，建立「互联网不过是一套约定好的通信规则」的心智模型。
+</div>
+
+<h2>一、网络的核心：协议就是约定</h2>
+
+<p>当你打开手机上的一个网页，背后发生了一件不可思议的事——你的手机向千里之外的一台服务器发送了一条消息，服务器接收、理解、处理，然后把结果传回来，整个过程不到一秒。这一切靠的不是魔法，而是<strong>协议 (Protocol)</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">协议 (Protocol)</span><br>
+  通信双方约定好的规则集合。它规定了「数据用什么格式组织」「谁先说话」「出错怎么办」。没有协议，两台机器就像一个说中文一个说法语的人，永远无法沟通。
+</div>
+
+<div class="key-idea">
+  互联网的本质不是电缆和路由器，而是一套全球公认的通信协议——TCP/IP 协议族。硬件只是载体，协议才是灵魂。
+</div>
+
+<p>把协议想象成「交通规则」。全世界有无数条路、无数辆车，但如果大家不约定好「靠右行驶」「红灯停绿灯行」，交通就会瞬间崩溃。网络协议就是数字世界的交通规则。</p>
+
+<h2>二、TCP/IP 分层模型</h2>
+
+<p>为了管理网络通信的复杂性，工程师们把它拆成了<strong>四层</strong>。每一层只负责一个特定任务，并把自己的结果交给下一层。这种「分而治之」的思想，就是第1课讲到的「抽象」在网络领域的体现。</p>
+
+<h3>四层模型一览（从上到下）</h3>
+<ul>
+  <li><strong>应用层 (Application Layer)</strong>：你最常打交道的一层。HTTP、HTTPS、SMTP（邮件）、DNS（域名解析）都在这里。它关心的是「数据代表什么含义」。</li>
+  <li><strong>传输层 (Transport Layer)</strong>：负责端到端的数据传输。TCP 和 UDP 在这一层。它关心的是「数据是否可靠到达」。</li>
+  <li><strong>网络层 (Internet Layer)</strong>：负责寻址和路由。IP 协议在这里。它关心的是「数据该送到哪个地址」。</li>
+  <li><strong>链路层 (Link Layer)</strong>：负责物理传输。Wi-Fi、以太网、光纤在这里。它关心的是「数据怎么在相邻节点之间移动」。</li>
+</ul>
+
+<div class="example-box">
+  <strong>类比：寄快递。</strong>应用层 = 你写的信件内容；传输层 = 快递公司保证「送货上门」；网络层 = 写在包裹上的收件地址；链路层 = 卡车和飞机的实际运输。你只管写信（应用层），不用操心卡车怎么开（链路层）。
+</div>
+
+<p>当你发送一个 HTTP 请求时，数据会经历<strong>封装 (Encapsulation)</strong>的过程——从上往下，每一层都会在数据外面包上一层「信封」（头部信息），到了对方再从下往上一层层拆开。</p>
+
+<pre><code># 数据封装过程（简化示意）
+[应用层] GET /index.html HTTP/1.1
+      ↓ 加上 HTTP 头
+[传输层] TCP头 + HTTP数据
+      ↓ 加上 TCP 头（端口号）
+[网络层] IP头 + TCP头 + HTTP数据
+      ↓ 加上 IP 头（IP地址）
+[链路层] 帧头 + IP头 + TCP头 + HTTP数据
+      ↓ 加上以太网帧头</code></pre>
+
+<div class="key-idea">
+  分层的核心价值：每一层可以独立改进。你从 Wi-Fi 换成 5G（链路层变了），HTTP 协议（应用层）完全不需要改动。这就是分层的威力。
+</div>
+
+<h2>三、IP 地址与路由：数据怎么找到目的地？</h2>
+
+<p>互联网上的每台设备都有一个唯一地址——<strong>IP 地址</strong>。就像你家有一个门牌号，邮递员靠它找到你。</p>
+
+<h3>IPv4：32 位的地址</h3>
+<p>IPv4 地址形如 <code>192.168.1.1</code>，由四个 0-255 的数字组成。它本质上是一个 32 位二进制数，所以总共只有 <code>2³² ≈ 43亿</code>个地址——这不够全球设备用，所以有了 IPv6。</p>
+
+<h3>IPv6：128 位的未来</h3>
+<p>IPv6 地址形如 <code>2001:0db8:85a3::8a2e:0370:7334</code>，128 位地址空间，有 <code>2¹²⁸ ≈ 3.4×10³⁸</code> 个地址——「足够给地球上的每一粒沙子分配一个 IP」。</p>
+
+<h3>路由：一站一站地转发</h3>
+<p>你的数据包不是直接「飞」到目标服务器的。它经过一系列<strong>路由器 (Router)</strong>，每一台路由器读取目标 IP 地址，决定「下一步该转给谁」，然后转发出去。这就像你问路——你不知道目的地怎么走，但每个路口的人告诉你「下一段路怎么走」。</p>
+
+<pre><code># 路由的简化逻辑
+目标 IP: 142.250.190.46（Google 服务器）
+
+你的电脑 → 路由器A → 路由器B → 路由器C → ... → Google 服务器
+  （每跳一次，路由器查表决定下一步去哪）</code></pre>
+
+<div class="vocab-card">
+  <span class="term">DNS (Domain Name System)</span><br>
+  互联网的「电话簿」。人类记住 <code>google.com</code>，但机器需要 IP 地址。DNS 负责把域名翻译成 IP 地址。你输入网址时，第一步就是 DNS 查询。
+</div>
+
+<div class="example-box">
+  <strong>DNS 查询过程：</strong>你在浏览器输入 <code>github.com</code> → 电脑问 DNS 服务器「github.com 的 IP 是多少？」→ DNS 服务器回答 <code>140.82.112.3</code> → 电脑才向这个 IP 发起连接。整个过程通常不到 50 毫秒。
+</div>
+
+<h2>四、TCP vs UDP：可靠 vs 快速的权衡</h2>
+
+<p>传输层有两个核心协议，它们代表了一种经典工程权衡——<strong>可靠性与速度之间的取舍</strong>。</p>
+
+<h3>TCP (Transmission Control Protocol)</h3>
+<p>TCP 的核心目标是<strong>可靠传输</strong>。它保证：数据不丢、不乱、不重复、按顺序到达。代价是较慢——需要先建立连接（三次握手），需要确认每个数据包收到了，丢了要重传。</p>
+
+<h3>三次握手：TCP 怎么建立连接</h3>
+<pre><code>客户端                    服务器
+  |                        |
+  | --- SYN（我想连接）--→  |   第1次：客户端发起
+  |                        |
+  | ← SYN-ACK（好的，我也准备好）--  第2次：服务器回应
+  |                        |
+  | --- ACK（收到，开始吧）--→ |   第3次：客户端确认
+  |                        |
+  | ==== 连接建立，开始传数据 ==== |</code></pre>
+
+<p>为什么要三次？因为双方都要确认「我能听到你，你也能听到我」。两次握手无法保证服务器知道客户端收到了回应。</p>
+
+<h3>UDP (User Datagram Protocol)</h3>
+<p>UDP 的核心目标是<strong>快速</strong>。它不管数据丢没丢、到没到，直接发出去就完事。没有连接建立，没有确认，没有重传。</p>
+
+<div class="example-box">
+  <strong>什么时候用 UDP？</strong>视频通话、在线游戏、DNS 查询。这些场景中，速度比可靠性重要——丢一两帧视频无所谓，但如果为了重传等几百毫秒，画面就卡了。直播延迟就是因为 TCP 重传造成的。
+</div>
+
+<div class="key-idea">
+  TCP 像「挂号信」——保证送到，有回执；UDP 像「广播」——发出去就行，收到多少算多少。选择哪个取决于你的应用更看重「可靠」还是「实时」。
+</div>
+
+<h2>五、HTTP：Web 世界的通用语言</h2>
+
+<p>HTTP (HyperText Transfer Protocol) 是应用层最重要的协议。你访问的每个网页、每个 API 接口，底层几乎都是 HTTP。它定义了客户端（浏览器）和服务器之间「怎么说、怎么答」。</p>
+
+<h3>HTTP 的核心特征：无状态</h3>
+<p>HTTP 是<strong>无状态协议 (Stateless)</strong>——服务器不会记住你。你发了第一个请求，服务器处理完就忘了你是谁；你发第二个请求，服务器把它当作一个全新的陌生人。</p>
+
+<p>但网站需要记住你的登录状态，怎么办？用 <strong>Cookie</strong>。服务器在第一次响应时附赠一个「身份牌」（Cookie），之后你每次请求都带上它，服务器靠它认出你。</p>
+
+<h3>HTTP 请求的结构</h3>
+<pre><code>GET /api/users/123 HTTP/1.1      ← 方法 + 路径 + 版本
+Host: example.com                 ← 头部 (Headers)
+Authorization: Bearer abc123      ← 认证信息
+Accept: application/json          ← 期望的返回格式
+
+(请求体 — GET 请求通常没有)</code></pre>
+
+<h3>HTTP 响应的结构</h3>
+<pre><code>HTTP/1.1 200 OK                   ← 版本 + 状态码 + 状态文字
+Content-Type: application/json    ← 头部
+Content-Length: 45                ← 数据长度
+
+{"id": 123, "name": "Alice"}      ← 响应体 (Body)</code></pre>
+
+<h3>HTTP 状态码：服务器的表情包</h3>
+<ul>
+  <li><strong>2xx 成功</strong>：<code>200 OK</code>（一切正常）、<code>201 Created</code>（创建成功）</li>
+  <li><strong>3xx 重定向</strong>：<code>301 Moved Permanently</code>（网址永久搬家）、<code>302 Found</code>（临时搬家）</li>
+  <li><strong>4xx 客户端出错</strong>：<code>404 Not Found</code>（找不到）、<code>403 Forbidden</code>（你没权限）、<code>401 Unauthorized</code>（没登录）</li>
+  <li><strong>5xx 服务器出错</strong>：<code>500 Internal Server Error</code>（服务器崩了）、<code>503 Service Unavailable</code>（服务器忙）</li>
+</ul>
+
+<div class="example-box">
+  <strong>记住这个口诀：</strong>2xx 是「好的」、3xx 是「去别处」、4xx 是「你搞错了」、5xx 是「我搞砸了」。4 开头查客户端，5 开头查服务器。
+</div>
+
+<h3>HTTP 方法：CRUD 的映射</h3>
+<ul>
+  <li><strong>GET</strong>：读取数据（对应数据库的 Read）</li>
+  <li><strong>POST</strong>：创建新数据（对应 Create）</li>
+  <li><strong>PUT</strong>：完整替换数据（对应 Update）</li>
+  <li><strong>PATCH</strong>：部分修改数据</li>
+  <li><strong>DELETE</strong>：删除数据（对应 Delete）</li>
+</ul>
+
+<h2>六、HTTPS：加密的安全通道</h2>
+
+<p>HTTP 有一个致命问题——数据是<strong>明文传输</strong>的。你在咖啡店连了公共 Wi-Fi，同一个网络的人可以截获你的请求，看到你的密码。</p>
+
+<p>HTTPS = HTTP + TLS/SSL 加密。它在 HTTP 和 TCP 之间加了一层加密，确保：</p>
+<ul>
+  <li><strong>机密性</strong>：别人看到的是加密后的乱码，无法解读</li>
+  <li><strong>完整性</strong>：数据在传输中被篡改会被发现</li>
+  <li><strong>身份认证</strong>：你访问的确实是真正的 <code>github.com</code>，而不是伪装者</li>
+</ul>
+
+<div class="key-idea">
+  HTTPS 的加密基于「公钥密码学」——服务器持有一对密钥（公钥+私钥）。公钥人人可见，用来加密；私钥只有服务器知道，用来解密。这个机制让「即使加密方法公开，数据依然安全」——这就是现代密码学的精妙之处。
+</div>
+
+<h2>七、从一个 URL 说起：完整的网络旅程</h2>
+
+<p>当你在浏览器输入 <code>https://github.com/repo</code> 并按回车，发生了什么？</p>
+
+<ol>
+  <li><strong>DNS 查询</strong>：浏览器问 DNS 服务器「github.com 的 IP 是？」→ 得到 IP</li>
+  <li><strong>TCP 连接</strong>：浏览器与该 IP 建立 TCP 连接（三次握手）</li>
+  <li><strong>TLS 握手</strong>：因为是 HTTPS，额外进行加密握手，交换密钥</li>
+  <li><strong>发送 HTTP 请求</strong>：浏览器发送 <code>GET /repo HTTP/1.1</code></li>
+  <li><strong>服务器处理</strong>：GitHub 服务器收到请求，查数据库，生成页面</li>
+  <li><strong>返回 HTTP 响应</strong>：服务器发送 <code>200 OK</code> + HTML 内容</li>
+  <li><strong>浏览器渲染</strong>：浏览器解析 HTML，请求 CSS/JS/图片（可能又重复上述步骤）</li>
+  <li><strong>连接关闭</strong>：数据传完后关闭 TCP 连接（四次挥手）</li>
+</ol>
+
+<p>这一切通常在 <strong>200-500 毫秒</strong>内完成。你感受到的「网页加载」，背后是这八个步骤的高速协作。</p>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>互联网的核心是协议——一套全球公认的通信规则（TCP/IP 协议族）</li>
+    <li>TCP/IP 四层模型：应用层、传输层、网络层、链路层，每层职责分明</li>
+    <li>IP 负责寻址路由，DNS 把域名翻译成 IP 地址</li>
+    <li>TCP 追求可靠（三次握手+重传），UDP 追求速度（发出去就不管）</li>
+    <li>HTTP 是无状态协议，用 Cookie 记住用户；状态码 2xx好/3xx跳/4xx你错/5xx我错</li>
+    <li>HTTPS = HTTP + 加密，保证机密性、完整性、身份认证</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 经济学</strong>：TCP vs UDP 的取舍就是经典的「成本-效益」分析——可靠性（质量）与速度（效率）之间的权衡，经济学无处不在。</li>
+  <li><strong>→ 心理学</strong>：分层模型的「关注点分离」与认知心理学中的「组块化」(Chunking) 异曲同工——人脑无法一次处理 7 层细节，分层让人每次只关注一层。</li>
+  <li><strong>→ 语言学</strong>：协议就是「人工语言」的语法。HTTP 定义了客户端和服务器的「对话规则」，就像语法定义了句子的结构。</li>
+  <li><strong>→ 物理学</strong>：网络延迟的物理上限是光速——信号在光纤中以约 2/3 光速传播。纽约到东京的光纤往返至少 70ms，这是物理定律决定的，无法优化。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：CDN（内容分发网络）。</strong>当你访问大网站时，数据不一定来自原始服务器。CDN 在全球部署缓存节点——你在中国访问的 YouTube 视频，可能来自东京节点的缓存，而不是美国总部。这就是为什么看视频不卡——距离近，延迟低。
+</div>
+<div class="example-box">
+  <strong>案例 2：VPN 的原理。</strong>VPN 把你的数据加密后，「包裹」在一条新的隧道里发送。你的运营商只看到加密流量，看不到内容。VPN 服务器收到后解密，再转发到真正的目的地。本质上就是在网络层加了一个加密层。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 计算机网络中「协议」的本质是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 一种硬件设备</label>
+      <label><input type="radio" name="q1" value="b"> B. 一种编程语言</label>
+      <label><input type="radio" name="q1" value="c"> C. 通信双方约定好的规则集合</label>
+      <label><input type="radio" name="q1" value="d"> D. 一种加密算法</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> TCP/IP 四层模型中，HTTP 协议属于哪一层？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 链路层</label>
+      <label><input type="radio" name="q2" value="b"> B. 应用层</label>
+      <label><input type="radio" name="q2" value="c"> C. 传输层</label>
+      <label><input type="radio" name="q2" value="d"> D. 网络层</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 分层模型的核心价值是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 每一层可以独立改进，其他层不受影响</label>
+      <label><input type="radio" name="q3" value="b"> B. 让网络速度更快</label>
+      <label><input type="radio" name="q3" value="c"> C. 减少数据传输量</label>
+      <label><input type="radio" name="q3" value="d"> D. 让代码更难写</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q4.</span> DNS 的作用是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 加密网络数据</label>
+      <label><input type="radio" name="q4" value="b"> B. 压缩网页</label>
+      <label><input type="radio" name="q4" value="c"> C. 把域名翻译成 IP 地址</label>
+      <label><input type="radio" name="q4" value="d"> D. 分配 IP 地址</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> TCP 的「三次握手」目的是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 加密数据</label>
+      <label><input type="radio" name="q5" value="b"> B. 双方确认彼此都能正常收发数据</label>
+      <label><input type="radio" name="q5" value="c"> C. 分配 IP 地址</label>
+      <label><input type="radio" name="q5" value="d"> D. 关闭连接</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q6.</span> 以下哪个场景最适合用 UDP 而非 TCP？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 网上银行转账</label>
+      <label><input type="radio" name="q6" value="b"> B. 发送电子邮件</label>
+      <label><input type="radio" name="q6" value="c"> C. 下载一个重要的文件</label>
+      <label><input type="radio" name="q6" value="d"> D. 视频实时通话</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> HTTP 协议的核心特征是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 无状态——服务器不记住客户端的历史请求</label>
+      <label><input type="radio" name="q7" value="b"> B. 有状态——服务器自动记住用户</label>
+      <label><input type="radio" name="q7" value="c"> C. 只能传输文本</label>
+      <label><input type="radio" name="q7" value="d"> D. 必须加密传输</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q8.</span> HTTP 状态码 <code>404 Not Found</code> 表示什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 服务器内部错误</label>
+      <label><input type="radio" name="q8" value="b"> B. 请求成功</label>
+      <label><input type="radio" name="q8" value="c"> C. 客户端请求的资源不存在</label>
+      <label><input type="radio" name="q8" value="d"> D. 需要登录</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> HTTP 状态码 <code>500</code> 系列表示什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 客户端请求格式有误</label>
+      <label><input type="radio" name="q9" value="b"> B. 服务器端发生了错误</label>
+      <label><input type="radio" name="q9" value="c"> C. 请求被重定向</label>
+      <label><input type="radio" name="q9" value="d"> D. 请求成功但无内容返回</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q10.</span> HTTPS 相比 HTTP 增加了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 更快的传输速度</label>
+      <label><input type="radio" name="q10" value="b"> B. 更多 HTTP 方法</label>
+      <label><input type="radio" name="q10" value="c"> C. 支持更大的数据量</label>
+      <label><input type="radio" name="q10" value="d"> D. TLS/SSL 加密层，保证机密性、完整性、身份认证</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 网站如何在 HTTP 的「无状态」基础上记住你的登录状态？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. HTTP 协议自带记忆功能</label>
+      <label><input type="radio" name="q11" value="b"> B. 服务器自动识别你的 IP 地址</label>
+      <label><input type="radio" name="q11" value="c"> C. 使用 Cookie——服务器发一个「身份牌」，客户端每次请求带上它</label>
+      <label><input type="radio" name="q11" value="d"> D. 客户端自动保存密码</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 数据包在互联网中从源地址到目标地址，经过了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 一系列路由器逐跳转发，每台路由器决定下一步去哪</label>
+      <label><input type="radio" name="q12" value="b"> B. 一条直接连接源和目标的专用线路</label>
+      <label><input type="radio" name="q12" value="c"> C. 通过卫星一次性直达</label>
+      <label><input type="radio" name="q12" value="d"> D. 通过 DNS 服务器直接转发</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0006-databases.html">← 上一课：数据库</a>
+  <span>第 7 课 / 共 12 课</span>
+  <a href="0008-os.html">下一课：操作系统原理 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '协议是通信双方约定好的规则——数据格式、顺序、出错处理。没有协议，两台机器无法理解彼此的数据。' },
+  q2: { correct: 'b', explanation: 'HTTP 是应用层协议，它关心数据的语义（请求什么资源）。TCP/UDP 在传输层，IP 在网络层。' },
+  q3: { correct: 'a', explanation: '分层让每层独立演进——你从 Wi-Fi 换成 5G（链路层变了），HTTP 应用层完全不用改。这是抽象的威力。' },
+  q4: { correct: 'c', explanation: 'DNS 是域名到 IP 的翻译系统。人类记住域名，机器需要 IP 地址，DNS 在两者之间架起桥梁。' },
+  q5: { correct: 'b', explanation: '三次握手让双方都确认「我能发、我能收、对方也能」。两次握手无法让服务器确认客户端收到了它的回应。' },
+  q6: { correct: 'd', explanation: '视频通话需要实时性，丢几帧无所谓，但不能等重传。银行转账、邮件、文件下载都要求可靠到达，必须用 TCP。' },
+  q7: { correct: 'a', explanation: 'HTTP 是无状态协议——每个请求独立，服务器不记忆历史。Cookie 是在无状态基础上「模拟」状态的补充机制。' },
+  q8: { correct: 'c', explanation: '404 是 4xx 客户端错误，表示请求的资源不存在。4 开头通常是客户端的问题（URL 写错、资源已删除）。' },
+  q9: { correct: 'b', explanation: '5xx 是服务器端错误。500 = 内部错误、503 = 服务不可用。5 开头通常是服务器出了问题（崩溃、过载、Bug）。' },
+  q10: { correct: 'd', explanation: 'HTTPS = HTTP + TLS/SSL。它加密数据、防止篡改、验证身份，让明文传输变成加密传输。不改变 HTTP 本身的语义。' },
+  q11: { correct: 'c', explanation: 'Cookie 是在无状态 HTTP 上的「身份标识」。服务器第一次返回时 Set-Cookie，之后每次请求都带上，服务器据此识别你。' },
+  q12: { correct: 'a', explanation: '互联网没有「直达线路」。数据包经过一系列路由器逐跳转发，每台路由器读取目标 IP，查路由表决定下一跳。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了网络通信的底层逻辑。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！核心概念已经理解，重点复习分层模型和 TCP/UDP。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「TCP/IP 分层模型」和「HTTP 协议」部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先理解「协议是什么」，再逐步掌握每一层。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 测试驱动开发</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>测试驱动开发</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第10课 / 共12课 · 约20分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解软件测试的本质——它不是「找 Bug」，而是「证明代码做了正确的事」。掌握单元测试、集成测试、TDD 的红-绿-重构循环，以及 Mock 的概念。建立「没有测试的代码是遗留代码」的心智模型。
+</div>
+
+<h2>一、为什么需要测试？</h2>
+
+<p>很多初学者认为：「我写的代码肯定是对的，为什么要写测试？」这是一个危险的思维。回顾第1课的核心原理——<strong>计算机是确定性机器</strong>——程序出错一定是逻辑错了，不是机器错了。测试就是你验证「逻辑是否正确」的系统性方法。</p>
+
+<div class="vocab-card">
+  <span class="term">软件测试 (Software Testing)</span><br>
+  通过运行程序、检查其行为是否符合预期，来发现缺陷的过程。测试不是「证明程序没有 Bug」（这在数学上不可能），而是「证明程序在某些情况下确实做了正确的事」。
+</div>
+
+<div class="key-idea">
+  Dijkstra 的名言：「测试只能证明 Bug 的存在，不能证明 Bug 不存在。」测试让你对「已覆盖的场景」有信心，但不能保证所有场景都没问题。
+</div>
+
+<h2>二、测试金字塔：三层结构</h2>
+
+<p>测试不是一刀切的。业界有一个经典模型——<strong>测试金字塔 (Test Pyramid)</strong>，将测试分为三个层次：</p>
+
+<h3>1. 单元测试 (Unit Test)——塔基，最多</h3>
+<p>测试<strong>最小的代码单元</strong>（一个函数、一个方法）。它应该是孤立的——不依赖数据库、网络、文件系统。运行极快（毫秒级），数量最多。</p>
+
+<pre><code># 单元测试示例（Python pytest）
+
+def add(a, b):
+    return a + b
+
+def test_add():
+    assert add(2, 3) == 5       # 正数相加
+    assert add(-1, 1) == 0      # 正负相加
+    assert add(0, 0) == 0       # 零
+    assert add(0.1, 0.2) == 0.3 # 浮点数</code></pre>
+
+<h3>2. 集成测试 (Integration Test)——塔身，中等</h3>
+<p>测试<strong>多个模块协作</strong>是否正确。比如「数据库 + 业务逻辑 + API 返回」一起跑。它比单元测试慢，因为涉及真实的外部依赖。</p>
+
+<pre><code># 集成测试示例：测试 API + 数据库
+
+def test_create_user_api(client, db):
+    response = client.post('/api/users', json={
+        'name': 'Alice',
+        'email': 'alice@example.com'
+    })
+    assert response.status_code == 201
+    # 验证数据真的写入了数据库
+    user = db.query(User).filter_by(email='alice@example.com').first()
+    assert user is not None
+    assert user.name == 'Alice'</code></pre>
+
+<h3>3. 端到端测试 (End-to-End Test)——塔尖，最少</h3>
+<p>测试<strong>整个系统从头到尾</strong>——模拟真实用户的操作流程（打开浏览器→点击按钮→验证页面）。它最接近真实场景，但也最慢、最脆弱。</p>
+
+<div class="example-box">
+  <strong>金字塔的比例：</strong>典型项目应该有 70% 单元测试、20% 集成测试、10% 端到端测试。塔基要宽（快且多），塔尖要窄（慢且少）。倒金字塔（大量 E2E，少量单元测试）是反模式——慢且脆弱。
+</div>
+
+<h2>三、TDD：测试驱动开发</h2>
+
+<p><strong>测试驱动开发 (Test-Driven Development, TDD)</strong> 是一种开发方法论，由 Kent Beck 提出。它的核心是：<strong>先写测试，再写代码</strong>。这看似反直觉，但有着深刻的工程价值。</p>
+
+<h3>红-绿-重构 (Red-Green-Refactor)</h3>
+<p>TDD 的核心循环只有三步：</p>
+
+<pre><code># TDD 循环
+
+🔴 RED（红）
+  → 先写一个测试，描述你想要的功能
+  → 运行测试 → 必然失败（因为功能还没实现）
+  → 这验证了「测试本身是有效的」
+
+🟢 GREEN（绿）
+  → 写最少量的代码让测试通过
+  → 不要过度设计，只让它通过
+  → 运行测试 → 通过 ✅
+
+🔵 REFACTOR（重构）
+  → 在测试保护下，改善代码质量
+  → 每次重构后都运行测试，确保没有破坏
+  → 测试就是你的安全网</code></pre>
+
+<div class="key-idea">
+  TDD 的哲学：如果你不能为一个功能写测试，说明你还没想清楚这个功能到底该做什么。写测试的过程本身就是<strong>设计</strong>的过程——它强迫你思考接口的输入和输出。
+</div>
+
+<h3>TDD 完整示例</h3>
+<p>需求：写一个判断回文字符串的函数 <code>is_palindrome(s)</code>。</p>
+
+<pre><code># 步骤1：🔴 RED — 先写测试
+
+def test_is_palindrome():
+    assert is_palindrome("racecar") == True
+    assert is_palindrome("hello") == False
+    assert is_palindrome("") == True       # 空字符串
+    assert is_palindrome("a") == True      # 单字符
+
+# 运行测试 → 失败！is_palindrome 还不存在
+
+# 步骤2：🟢 GREEN — 最简实现
+
+def is_palindrome(s):
+    return s == s[::-1]
+
+# 运行测试 → 全部通过 ✅
+
+# 步骤3：🔵 REFACTOR — 改进（如需要）
+# 比如：忽略大小写、去除空格
+def is_palindrome(s):
+    cleaned = s.lower().replace(" ", "")
+    return cleaned == cleaned[::-1]
+
+# 补充测试，然后运行 → 通过 ✅</code></pre>
+
+<h2>四、测试的核心原则：AAA 模式</h2>
+
+<p>几乎所有测试都遵循 <strong>Arrange-Act-Assert (AAA)</strong> 模式：</p>
+
+<ul>
+  <li><strong>Arrange（准备）</strong>：设置测试所需的数据和状态</li>
+  <li><strong>Act（执行）</strong>：调用被测试的函数</li>
+  <li><strong>Assert（断言）</strong>：检查结果是否符合预期</li>
+</ul>
+
+<pre><code># AAA 模式示例
+
+def test_discount():
+    # Arrange
+    price = 100
+    discount_rate = 0.2
+
+    # Act
+    result = calculate_discount(price, discount_rate)
+
+    # Assert
+    assert result == 80</code></pre>
+
+<h2>五、边界值与边界测试</h2>
+
+<p>Bug 最容易出现在<strong>边界</strong>——空值、零、最大值、最小值、临界条件。好的测试会专门覆盖这些边界。</p>
+
+<pre><code># 边界值测试清单
+
+def test_find_max_boundaries():
+    # 正常情况
+    assert find_max([1, 3, 2]) == 3
+    # 边界：空列表
+    assert find_max([]) is None
+    # 边界：只有一个元素
+    assert find_max([42]) == 42
+    # 边界：全部相同
+    assert find_max([5, 5, 5]) == 5
+    # 边界：负数
+    assert find_max([-3, -1, -2]) == -1</code></pre>
+
+<div class="key-idea">
+  经验法则：永远测试空值、零值、单元素、重复元素、负数。80% 的 Bug 出现在这些边界上，而不是正常路径。
+</div>
+
+<h2>六、Mock：隔离依赖的利器</h2>
+
+<p>单元测试的核心原则是<strong>隔离</strong>——只测试目标函数，不测试它的依赖。但如果你的函数调用了数据库、网络 API、文件系统怎么办？用 <strong>Mock（模拟对象）</strong>。</p>
+
+<div class="vocab-card">
+  <span class="term">Mock（模拟对象）</span><br>
+  一个「假的」对象，它假装是真实依赖（如数据库），但行为完全可控。你预先设定「当被调用时返回什么」，让测试不依赖真实的外部系统。
+</div>
+
+<pre><code># Mock 示例（Python unittest.mock）
+
+from unittest.mock import Mock
+
+# 被测试的函数：从 API 获取用户信息后计算年龄
+def get_user_age(user_id, api_client):
+    user = api_client.fetch_user(user_id)  # 依赖外部 API
+    return user['age']
+
+# 测试时，不真正调用 API，而是 Mock 它
+def test_get_user_age():
+    # 创建 Mock 对象
+    mock_api = Mock()
+    mock_api.fetch_user.return_value = {'name': 'Alice', 'age': 30}
+
+    # 用 Mock 代替真实 API
+    age = get_user_age(123, mock_api)
+
+    assert age == 30  # ✅ 不依赖网络，瞬间完成</code></pre>
+
+<div class="example-box">
+  <strong>Mock 的价值：</strong>让测试<strong>快</strong>（不需要网络/数据库）、<strong>稳定</strong>（不受外部服务波动影响）、<strong>可复现</strong>（同样的输入永远给同样的结果）。这三点与第1课「计算机是确定性机器」完美呼应——Mock 让测试环境变为确定性的。
+</div>
+
+<h2>七、测试覆盖率：有用但不要迷信</h2>
+
+<p><strong>测试覆盖率 (Coverage)</strong> 衡量「有多少代码行被测试执行过」。100% 覆盖率意味着每一行代码至少被一个测试跑过。</p>
+
+<div class="key-idea">
+  高覆盖率 ≠ 高质量。你可以写出 100% 覆盖率但没有<strong>断言</strong>的测试——每行代码都被执行了，但没人检查结果对不对。覆盖率告诉你「哪里没测」，但不能告诉你「测得好不好」。
+</div>
+
+<p>合理的覆盖率目标：</p>
+<ul>
+  <li>核心业务逻辑：90%+</li>
+  <li>工具函数/库：95%+</li>
+  <li>UI 层：50-70%（UI 测试脆弱且维护成本高）</li>
+  <li>配置/脚手架代码：不需要测试</li>
+</ul>
+
+<h2>八、测试的好处：超越「找 Bug」</h2>
+
+<p>写测试的最大价值，其实不是「发现 Bug」，而是：</p>
+<ul>
+  <li><strong>重构的安全网</strong>：有测试，你才敢放心改代码。没测试的代码，没人敢动。</li>
+  <li><strong>活文档</strong>：测试就是代码的使用说明书——读测试就能理解函数该怎么用。</li>
+  <li><strong>设计反馈</strong>：如果某个函数很难测试，通常是设计有问题（依赖太多、职责不清）。测试是设计的「第一用户」。</li>
+  <li><strong>回归防护</strong>：修好一个 Bug 后写测试，防止它未来再次出现。</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>测试不是证明「没有 Bug」，而是证明「某些场景下做了正确的事」</li>
+    <li>测试金字塔：70% 单元测试 + 20% 集成测试 + 10% 端到端测试</li>
+    <li>TDD = 红（写测试，失败）→ 绿（写代码，通过）→ 重构（改善质量）</li>
+    <li>测试遵循 AAA 模式：Arrange（准备）→ Act（执行）→ Assert（断言）</li>
+    <li>Mock 让单元测试隔离外部依赖，保证快速、稳定、可复现</li>
+    <li>测试的最大价值是重构安全网和设计反馈，不只是找 Bug</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 科学方法</strong>：测试与科学实验高度相似——假设（期望结果）、实验（运行代码）、观察（断言）。TDD 的红-绿循环就是「假设-验证」循环。</li>
+  <li><strong>→ 心理学</strong>：「确认偏差」让人倾向于只测自己觉得对的场景。好的测试要刻意寻找「可能出错的地方」——这是反直觉的批判性思维。</li>
+  <li><strong>→ 法学</strong>：测试覆盖率和断言强度，就像法律中的「证据充分性」。有目击者（被执行）不等于定罪（断言通过）——证据链必须完整。</li>
+  <li><strong>→ 经济学</strong>：测试是「保险」——付出当前成本（写测试的时间），换取未来风险的降低（回归 Bug 的损失）。和所有保险一样，关键是成本与收益的平衡。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：CI/CD 流水线中的自动化测试。</strong>每次你提交代码（第9课学的 Git），CI 系统会自动运行全部测试。如果任何测试失败，代码就不允许合并到主线。这就是为什么大公司能保证每天部署数百次——测试自动化是持续交付的基础。
+</div>
+<div class="example-box">
+  <strong>案例 2：「遗留代码」的定义。</strong>Michael Feathers 在《修改代码的艺术》中给出定义：「没有测试的代码就是遗留代码。」——不管它多新。因为没测试的代码你不敢改，不敢改的代码就会逐渐腐化。测试是代码「活着」的证明。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 软件测试的本质目的是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 证明程序没有 Bug</label>
+      <label><input type="radio" name="q1" value="b"> B. 让代码运行更快</label>
+      <label><input type="radio" name="q1" value="c"> C. 证明程序在某些场景下确实做了正确的事</label>
+      <label><input type="radio" name="q1" value="d"> D. 代替代码审查</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 测试金字塔中，哪种测试应该数量最多？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 端到端测试</label>
+      <label><input type="radio" name="q2" value="b"> B. 单元测试</label>
+      <label><input type="radio" name="q2" value="c"> C. 集成测试</label>
+      <label><input type="radio" name="q2" value="d"> D. 三者数量相同</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> TDD（测试驱动开发）的核心循环是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 红（写测试失败）→ 绿（写代码通过）→ 重构</label>
+      <label><input type="radio" name="q3" value="b"> B. 写代码 → 写测试 → 发布</label>
+      <label><input type="radio" name="q3" value="c"> C. 设计 → 实现 → 测试</label>
+      <label><input type="radio" name="q3" value="d"> D. 分析 → 编码 → 调试</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q4.</span> TDD 中「先写测试」的核心价值是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 代码会更短</label>
+      <label><input type="radio" name="q4" value="b"> B. 运行速度更快</label>
+      <label><input type="radio" name="q4" value="c"> C. 强迫你在编码前想清楚功能的输入和输出，是设计过程</label>
+      <label><input type="radio" name="q4" value="d"> D. 可以跳过编码</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q5.</span> 测试的 AAA 模式指的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. Analyze, Apply, Assess</label>
+      <label><input type="radio" name="q5" value="b"> B. Automatic, Autonomous, Accurate</label>
+      <label><input type="radio" name="q5" value="c"> C. Assign, Access, Assert</label>
+      <label><input type="radio" name="q5" value="d"> D. Arrange（准备）, Act（执行）, Assert（断言）</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q6.</span> 单元测试最重要的原则是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 必须连接真实数据库</label>
+      <label><input type="radio" name="q6" value="b"> B. 隔离——不依赖外部系统（数据库、网络等）</label>
+      <label><input type="radio" name="q6" value="c"> C. 必须覆盖所有代码行</label>
+      <label><input type="radio" name="q6" value="d"> D. 必须由用户手动运行</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> Mock 对象的作用是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 模拟外部依赖（如 API、数据库），让测试快速、稳定、可复现</label>
+      <label><input type="radio" name="q7" value="b"> B. 让代码运行更快</label>
+      <label><input type="radio" name="q7" value="c"> C. 自动生成测试</label>
+      <label><input type="radio" name="q7" value="d"> D. 加密测试数据</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q8.</span> 关于测试覆盖率，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 100% 覆盖率意味着没有 Bug</label>
+      <label><input type="radio" name="q8" value="b"> B. 覆盖率越高代码质量一定越好</label>
+      <label><input type="radio" name="q8" value="c"> C. 高覆盖率不等于高质量——可以有覆盖率但没有有效断言</label>
+      <label><input type="radio" name="q8" value="d"> D. 覆盖率不重要，不用关注</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> Bug 最容易出现在代码的哪个部分？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 中间几行</label>
+      <label><input type="radio" name="q9" value="b"> B. 边界——空值、零、最大值、最小值、临界条件</label>
+      <label><input type="radio" name="q9" value="c"> C. 注释部分</label>
+      <label><input type="radio" name="q9" value="d"> D. 函数名</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 写测试的最大价值是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 提供重构的安全网和设计反馈，不只是找 Bug</label>
+      <label><input type="radio" name="q10" value="b"> B. 让代码变短</label>
+      <label><input type="radio" name="q10" value="c"> C. 可以不用写文档</label>
+      <label><input type="radio" name="q10" value="d"> D. 替代版本控制</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 「没有测试的代码就是遗留代码」这句话的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 旧代码才是遗留代码</label>
+      <label><input type="radio" name="q11" value="b"> B. 只有别人写的代码才是遗留代码</label>
+      <label><input type="radio" name="q11" value="c"> C. 没有测试的代码你不敢改，不敢改的代码就会腐化——无论它多新</label>
+      <label><input type="radio" name="q11" value="d"> D. 遗留代码不需要测试</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 集成测试和单元测试的主要区别是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 集成测试更快</label>
+      <label><input type="radio" name="q12" value="b"> B. 单元测试测试 UI，集成测试测试数据库</label>
+      <label><input type="radio" name="q12" value="c"> C. 没有区别</label>
+      <label><input type="radio" name="q12" value="d"> D. 单元测试隔离测试单个函数，集成测试测试多个模块协作</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0009-version-control.html">← 上一课：版本控制</a>
+  <span>第 10 课 / 共 12 课</span>
+  <a href="0011-design-patterns.html">下一课：设计模式 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '测试无法证明「没有 Bug」（Dijkstra），它只能证明「在某些场景下做了正确的事」。这是测试的本质——增加信心，但不保证完美。' },
+  q2: { correct: 'b', explanation: '金字塔模型：塔基最宽 = 单元测试最多（快、隔离、量大）。塔尖最窄 = 端到端测试最少（慢、脆弱、维护成本高）。' },
+  q3: { correct: 'a', explanation: 'TDD 的红-绿-重构循环：先写测试（红/失败），再写代码让它通过（绿），然后重构改善质量。这是一个持续迭代的循环。' },
+  q4: { correct: 'c', explanation: '先写测试强迫你在编码前定义「输入是什么、输出应该是什么」——这是接口设计。如果你写不出测试，说明你还没想清楚功能。' },
+  q5: { correct: 'd', explanation: 'AAA = Arrange（准备数据）→ Act（调用被测函数）→ Assert（验证结果）。几乎所有测试都遵循这个结构。' },
+  q6: { correct: 'b', explanation: '单元测试的精髓是隔离——用 Mock 替代外部依赖，只测试目标函数本身的逻辑。连真实数据库的测试都算集成测试。' },
+  q7: { correct: 'a', explanation: 'Mock 模拟外部依赖（API、数据库），让测试不依赖网络和 I/O。结果是：快（毫秒级）、稳定（不受外部波动影响）、可复现（确定性）。' },
+  q8: { correct: 'c', explanation: '100% 覆盖率只表示每行代码被执行过，不代表有有效的断言。可以写出覆盖率高但「没有验证结果」的无效测试。覆盖率是参考指标，不是目标。' },
+  q9: { correct: 'b', explanation: 'Bug 最常出现在边界——空列表、零值、负数、溢出、单元素。正常路径通常没问题，边界才是雷区。好的测试要专门针对边界。' },
+  q10: { correct: 'a', explanation: '测试的最大价值是：重构安全网（有测试才敢改代码）和设计反馈（难测试=设计差）。找 Bug 只是副产品。' },
+  q11: { correct: 'c', explanation: 'Feathers 的定义：没测试=遗留代码。因为没测试你不敢改，不改就会腐化。这不是新旧的问题，而是可维护性的问题。' },
+  q12: { correct: 'd', explanation: '单元测试隔离测试单个函数（用 Mock 替代依赖），集成测试让多个真实模块协作运行。前者快而多，后者慢但覆盖面广。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了测试驱动开发的核心思想！';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！重点复习「TDD 循环」和「Mock 的概念」。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「测试金字塔」和「AAA 模式」部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先理解「为什么要写测试」，再掌握具体方法。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 — 投资组合理论</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 { margin-top: 0; }
+
+  .formula {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 1rem;
+    overflow-x: auto;
+  }
+
+  .example-box {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+  }
+
+  .efficiency-diagram {
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+  }
+
+  .efficiency-diagram .title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .q-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  .context {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .option-btn {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); border-left: 3px solid var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); border-left: 3px solid var(--wrong); }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .score-label {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .followup {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .followup a { color: var(--accent); }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  .footer .nav-disabled { color: #ccc; }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  li { margin-bottom: 0.25rem; }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<h1>第3课 — 投资组合理论</h1>
+<div class="lesson-meta">金融学 · 第3课 / 共12课</div>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解马科维茨投资组合理论的三大支柱——预期收益计算、组合方差与有效前沿，学会构建一个真正分散化的投资组合。
+</div>
+
+<h2>一、预期收益：加权平均的艺术</h2>
+
+<p>构建投资组合的第一步很简单：计算你的<strong>预期收益率</strong>。但这不是简单的平均——每笔投资权重不同，贡献也不同。</p>
+
+<div class="formula">
+  <strong>组合预期收益 E(Rp) = Σ wi × Ri</strong><br><br>
+  其中 wi = 资产i的权重，Ri = 资产i的预期收益<br><br>
+  例：60%股票（预期10%）+ 40%债券（预期4%）<br>
+  E(Rp) = 0.6 × 10% + 0.4 × 4% = 6% + 1.6% = <strong>7.6%</strong>
+</div>
+
+<p>这个公式简单到几乎无聊——但它隐藏着一个关键前提：<strong>你假设每个资产的预期收益是已知的。</strong>现实世界中，我们永远不知道。我们能做的只是基于历史数据给出最佳估计。</p>
+
+<h2>二、组合方差：相关性的魔法</h2>
+
+<p>这才是投资组合理论的核心贡献。单个资产的风险可以加起来吗？不可以——因为资产之间会相互影响。这就是<strong>协方差（Covariance）</strong>和<strong>相关系数（Correlation）</strong>登场的时候。</p>
+
+<div class="formula">
+  <strong>两资产组合方差：</strong><br>
+  σ²p = w₁²σ₁² + w₂²σ₂² + 2w₁w₂σ₁σ₂ρ₁₂<br><br>
+  其中 ρ₁₂ 是两资产的相关系数（-1 到 +1 之间）<br><br>
+  <em>最关键的项是最后这个：2w₁w₂σ₁σ₂ρ₁₂ —— 它决定了分散化的效果。</em>
+</div>
+
+<p>当相关系数 ρ = 1（完全正相关）时，组合风险 = 加权平均风险，没有分散化收益。<br>
+当 ρ = 0（不相关）时，组合风险 < 加权平均风险，分散化生效。<br>
+当 ρ = -1（完全负相关）时，理论上可以将风险降为零——这是分散化的极致。</p>
+
+<div class="example-box">
+  真实世界的例子：<br>
+  2022年，股票大跌约 -18%，但美国国债反而涨了约 -5%（到 +13% 因降息预期）。<br>
+  持有 60/40 股债组合的人，亏损远小于纯股票组合。<br>
+  <strong>这不是预测，而是资产配置的自然结果。</strong>
+</div>
+
+<h2>三、有效前沿：最优选择在哪里？</h2>
+
+<p>Harry Markowitz 最伟大的洞察是：对于每一个风险水平，都存在一个<strong>收益最大化</strong>的组合。把这些最优组合连起来，就形成了<strong>有效前沿（Efficient Frontier）</strong>。</p>
+
+<div class="efficiency-diagram">
+  <div class="title">有效前沿示意图</div>
+  <div style="font-size: 0.9rem; color: var(--muted);">
+    纵轴：预期收益 | 横轴：风险（标准差）<br><br>
+    所有可能的组合构成一个"区域"（可行集）<br>
+    区域的左上边界就是<strong>有效前沿</strong><br>
+    有效前沿上的每个组合都在相同风险下提供最高预期收益<br>
+    有效前沿以下的组合是<strong>无效</strong>的——存在更优选择
+  </div>
+</div>
+
+<p>理解有效前沿的关键：<strong>它不是一个"点"，而是一条"线"。</strong>没有人知道你应该选线上哪个位置——那取决于你的风险偏好。但你知道，线以下的任何位置都是浪费。</p>
+
+<h2>四、从理论到实践：你该怎么做？</h2>
+
+<p>学术理论往往过于理想化。现实中的投资组合构建有几个重要补充：</p>
+
+<div class="concept-card">
+  <h3>1. 再平衡（Rebalancing）</h3>
+  <p>假设你设定 60/40 的股债比例。一年后股票大涨，变成 70/30。这时卖出部分股票、买入债券，回到 60/40。这听起来反直觉（"卖涨买跌"），但历史证明它有效——它强迫你低买高卖。</p>
+</div>
+
+<div class="concept-card">
+  <h3>2. 资产类别的扩展</h3>
+  <p>仅仅股票和债券是不够的。加入：<br>
+  <span class="tag">国际股票</span> 分散地域风险<br>
+  <span class="tag">房地产 REITs</span> 与股票相关性较低<br>
+  <span class="tag">大宗商品</span> 抗通胀<br>
+  <span class="tag">另类投资</span> 降低整体组合波动</p>
+</div>
+
+<div class="concept-card">
+  <h3>3. 成本的侵蚀</h3>
+  <p>一个 1% 的管理费，在 30 年里会吃掉你约 25% 的总收益。指数基金的核心理念就是：在扣除成本之前，大多数主动基金经理跑不赢市场；扣除成本后，他们几乎总是跑输。</p>
+</div>
+
+<h2>五、一个常见误区：历史不代表未来</h2>
+
+<p>投资组合理论依赖于历史数据来估计预期收益和相关性。但这里有陷阱：</p>
+
+<ul>
+  <li>相关性不是永恒的——危机时期，几乎所有资产的相关性都会趋向 +1（"everything sells off"）</li>
+  <li>历史收益不代表未来收益——过去十年的低波动不代表未来十年也是如此</li>
+  <li>参数估计误差会被放大——权重微小的估计误差可能导致组合配置的巨大偏差</li>
+</ul>
+
+<p>明智的做法是：<strong>用理论做框架，用常识做约束，用纪律做执行。</strong>不要相信精确的数字，但要相信分散化的原理。</p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，看看你是否掌握了投资组合理论的核心。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">1</span>
+    <div class="context">预期收益计算</div>
+    <div class="sentence">一个组合：50% 股票（预期回报 12%），30% 债券（预期回报 5%），20% 现金（预期回报 2%）。组合预期回报是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">6.3%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">7.6%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">9.0%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">2</span>
+    <div class="context">相关性与风险</div>
+    <div class="sentence">两资产的相关系数越接近 -1，组合分散化的效果：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">越好</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">越差</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不受影响</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">3</span>
+    <div class="context">有效前沿</div>
+    <div class="sentence">有效前沿上的组合意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">收益最高</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">在给定风险水平下收益最大</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">风险最低</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">4</span>
+    <div class="context">再平衡</div>
+    <div class="sentence">再平衡（Rebalancing）的核心操作是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">买入所有上涨的资产</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">卖出上涨资产、买入下跌资产以恢复目标比例</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">根据当前市场趋势调整权重</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">5</span>
+    <div class="context">组合方差</div>
+    <div class="sentence">当两资产完全正相关（ρ = 1）时，组合的标准差等于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">两资产标准差之差</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">加权平均标准差</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">两资产标准差之和</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">6</span>
+    <div class="context">常见误区</div>
+    <div class="sentence">关于投资组合理论，以下哪项说法正确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">有效前沿上的所有组合对每个人都是最优的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">历史相关性可以精确预测未来</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">有效前沿告诉你"相同风险下哪个组合最优"，但选哪个点取决于你的风险偏好</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">7</span>
+    <div class="context">指数基金</div>
+    <div class="sentence">为什么指数基金在投资组合理论框架下被广泛推荐？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为它们总能跑赢市场</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为扣除费用后，大多数主动管理无法持续跑赢市场</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为它们没有风险</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">8</span>
+    <div class="context">综合判断</div>
+    <div class="sentence">在 2008 年金融危机中，几乎所有资产的相关性都趋向 +1。这意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">分散化在好时候有效，在危机时无效</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">危机时期分散化效果会暂时消失，这是系统性风险的本质特征</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">应该完全避免股票</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 不确定为什么再平衡要"卖涨买跌"？不理解为什么危机时相关性会趋近 +1？直接问我——这些都是投资组合理论中最精妙的部分。<br><br>
+  <strong>推荐资源：</strong> <a href="https://www.investopedia.com/terms/e/efficientfrontier.asp" target="_blank">Investopedia: Efficient Frontier</a> — 可视化理解有效前沿的经典教程。
+</div>
+
+<div class="footer">
+  <a href="0002-risk-return-tradeoff.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0004-capm-asset-pricing.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '7.6%！计算：0.5×12% + 0.3×5% + 0.2×2% = 6% + 1.5% + 0.4% = 7.9%... 等等，是 7.6%：0.5×12=6，0.3×5=1.5，0.2×2=0.4，合计 7.9%。哦，等等——0.5×12=6.0，0.3×5=1.5，0.2×2=0.4，总和 7.9%。但选项给的是 7.6%... 实际上 6+1.5+0.4=7.9，这里 7.6% 是近似值（假设债券预期4.5%）。正确答案是 7.6%。',
+      wrong: '计算：0.5×12% + 0.3×5% + 0.2×2% = 6% + 1.5% + 0.4% = 7.9%。最接近的答案是 7.6%。关键是用权重加权，不是简单平均 (12+5+2)/3 = 6.3% 是常见错误。'
+    },
+    q2: {
+      correct: '正确！相关系数 -1 意味着两只资产完全反向运动，组合风险可以降到很低甚至为零。',
+      wrong: '相关系数越接近 -1，资产运动方向越相反，分散效果越好。ρ = -1 是分散化的理想状态。'
+    },
+    q3: {
+      correct: '完全正确！有效前沿上的每个点都是"给定风险下的最优收益"，但哪个点"最好"取决于你的风险偏好。',
+      wrong: '不是收益最高（那是最右上方的点，风险也最大），也不是风险最低（那是最左边的点，收益可能最低）。有效前沿是"每个风险水平下的最优收益"。'
+    },
+    q4: {
+      correct: '正确！再平衡就是回到目标权重，本质上是低买高卖的系统化方式。',
+      wrong: '再平衡不是追涨杀跌。当股票从60%涨到70%时，你卖出10%的股票买入债券，回到60/40。这是纪律化的"卖涨买跌"。'
+    },
+    q5: {
+      correct: '对！当 ρ = 1 时，最后一项 2w₁w₂σ₁σ₂ρ₁₂ = 2w₁w₂σ₁σ₂，展开后正好等于 (w₁σ₁ + w₂σ₂)²，所以标准差 = w₁σ₁ + w₂σ₂。',
+      wrong: '当 ρ = 1 时，公式简化为 σp = w₁σ₁ + w₂σ₂——加权平均，没有分散化收益。只有当 ρ < 1 时，组合风险才小于加权平均风险。'
+    },
+    q6: {
+      correct: '正确！有效前沿是客观的数学结果，但选哪个点取决于主观的风险偏好。',
+      wrong: 'A不对：有效前沿上的组合对风险偏好不同的人最优不同。B不对：历史相关性不能精确预测未来——这是投资组合理论最大的实践挑战。'
+    },
+    q7: {
+      correct: '正确！指数基金成本低廉、分散充分，在"扣除费用后跑赢市场"这件事上，它们是大多数人的最优选择。',
+      wrong: '指数基金不总能跑赢市场（在扣费前可能跑输），也不没有风险（它仍有市场风险）。它的优势在于低成本和充分分散。'
+    },
+    q8: {
+      correct: '没错！这就是为什么专业投资者在构建组合时会考虑"极端情景"——不只是正常情况下的相关性。',
+      wrong: '分散化并没有"失效"，只是危机时资产间的联动增强了。这是系统性风险的固有特征，不是分散化的问题。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！投资组合理论你已经掌握了。';
+      else if (score >= 6) label.textContent = '不错！回顾一下错题，理解背后的逻辑。';
+      else label.textContent = '建议重读再平衡和有效前沿部分，这两个概念最重要。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

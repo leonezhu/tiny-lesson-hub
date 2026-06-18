@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 函数式编程</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 1rem 1.25rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.5; font-family: 'SF Mono', 'Fira Code', Consolas, monospace; }
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>函数式编程</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第5课 / 共12课 · 约20分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解函数式编程（FP）的核心理念——把计算视为数学函数的求值，而非状态的修改。掌握纯函数、不可变性、高阶函数三大支柱，理解 map/filter/reduce 如何替代循环，以及为什么 FP 在并发、大数据、AI 时代重新崛起。最终你能回答：为什么「函数无副作用」如此重要。
+</div>
+
+<h2>一、命令式 vs 声明式：两种思维范式</h2>
+
+<p>你已经学过 OOP——它把数据和行为打包成对象。函数式编程则走上了一条截然不同的路：它把一切计算都看作<strong>函数的求值</strong>，就像数学里的 f(x) = x² + 1。</p>
+
+<p>先看一个对比例子。任务：把列表中所有偶数平方后求和。</p>
+
+<p><strong>命令式写法</strong>（告诉计算机「怎么做」每一步）：</p>
+
+<pre><code>numbers = [1, 2, 3, 4, 5, 6]
+result = 0
+for n in numbers:
+    if n % 2 == 0:
+        result += n ** 2
+print(result)  # 4 + 16 + 36 = 56</code></pre>
+
+<p><strong>函数式写法</strong>（描述「要什么」，而非怎么做）：</p>
+
+<pre><code>numbers = [1, 2, 3, 4, 5, 6]
+result = sum(map(lambda x: x ** 2, filter(lambda x: x % 2 == 0, numbers)))
+print(result)  # 56
+
+# 或用列表推导式（Python 的函数式糖）
+result = sum(x ** 2 for x in numbers if x % 2 == 0)</code></pre>
+
+<div class="key-idea">
+  命令式编程关注「怎么做」（循环、赋值、状态变化）；声明式/函数式编程关注「要什么」（用函数描述转换关系）。函数式代码更接近数学定义，更易于推理和并行。
+</div>
+
+<h2>二、纯函数：FP 的基石</h2>
+
+<div class="vocab-card">
+  <span class="term">纯函数 (Pure Function)</span><br>
+  满足两个条件的函数：(1) 给定相同的输入，永远返回相同的输出；(2) 不产生任何副作用——不修改外部状态、不读写文件、不打印、不改变参数。
+</div>
+
+<pre><code># 纯函数：只依赖输入，不碰外部
+def add(a, b):
+    return a + b
+
+# 不纯的函数：依赖外部变量（每次调用结果可能不同）
+total = 0
+def add_to_total(x):
+    total += x       # 修改了外部状态！
+    return total
+
+# 不纯的函数：有副作用
+def greet(name):
+    print(f"Hello, {name}")  # 副作用：输出到屏幕
+    return name</code></pre>
+
+<p>纯函数的价值是什么？<strong>可预测、可测试、可并行</strong>。</p>
+<ul>
+  <li><strong>可预测</strong>：相同的输入永远得到相同输出——没有「隐藏依赖」，代码行为一目了然</li>
+  <li><strong>可测试</strong>：不需要 mock 外部状态，直接传输入断言输出</li>
+  <li><strong>可并行</strong>：多个纯函数可以放心并发执行，因为它们不会互相干扰</li>
+  <li><strong>可缓存</strong>：同样的输入算过一次，结果可以永久缓存（记忆化 memoization）</li>
+</ul>
+
+<div class="key-idea">
+  纯函数是数学意义上的「函数」——它只是从输入到输出的映射，不改变世界的任何其他东西。这种「无副作用」让代码变得极其容易推理。
+</div>
+
+<h2>三、不可变性：数据一旦创建就不变</h2>
+
+<p>在 FP 中，数据一旦创建就<strong>不会被修改</strong>。需要「改变」时，你不是改原数据，而是创建一份新的副本。</p>
+
+<pre><code># 可变（命令式思维）
+scores = [90, 85, 78]
+scores.append(92)       # 原地修改
+scores[0] = 95          # 原地修改
+# scores 现在是 [95, 85, 78, 92]
+
+# 不可变（函数式思维）
+scores = (90, 85, 78)   # 元组，不可变
+new_scores = scores + (92,)    # 创建新元组，原元组不变
+# scores 仍是 (90, 85, 78)
+# new_scores 是 (90, 85, 78, 92)</code></pre>
+
+<p>为什么要不可变？因为<strong>可变状态是 bug 的温床</strong>。当一个对象在多处被引用时，任何一处修改都会影响所有持有引用的代码——这种「远距离副作用」是大型系统中最难追踪的 bug 来源。</p>
+
+<div class="example-box">
+  <strong>工程案例：</strong>React 的核心设计理念就是「状态不可变」。你永远不直接修改 state，而是调用 setState 创建新状态。React 拿新旧状态做对比（浅比较），就能高效判断需要重新渲染哪些组件。如果允许直接修改，React 就无法检测变化——这就是不可变性的实战价值。
+</div>
+
+<h2>四、高阶函数：函数是一等公民</h2>
+
+<p>在 FP 中，函数是「一等公民」——它可以像数据一样被赋值、传递、返回。<strong>高阶函数</strong>就是接收函数作为参数、或返回函数的函数。</p>
+
+<div class="vocab-card">
+  <span class="term">高阶函数 (Higher-Order Function)</span><br>
+  接收一个或多个函数作为参数，或者返回一个函数的函数。map、filter、reduce 是最经典的高阶函数。
+</div>
+
+<h3>map：对每个元素施加变换</h3>
+
+<pre><code>numbers = [1, 2, 3, 4, 5]
+squares = list(map(lambda x: x ** 2, numbers))
+# [1, 4, 9, 16, 25]
+
+# 等价的列表推导式
+squares = [x ** 2 for x in numbers]</code></pre>
+
+<h3>filter：按条件筛选</h3>
+
+<pre><code>numbers = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+# [2, 4, 6]
+
+# 等价的列表推导式
+evens = [x for x in numbers if x % 2 == 0]</code></pre>
+
+<h3>reduce：把列表归约为单个值</h3>
+
+<pre><code>from functools import reduce
+
+numbers = [1, 2, 3, 4, 5]
+product = reduce(lambda a, b: a * b, numbers)
+# 1*2=2 → 2*3=6 → 6*4=24 → 24*5=120
+print(product)  # 120</code></pre>
+
+<div class="key-idea">
+  map / filter / reduce 是 FP 的「三剑客」。它们让你不再写显式的循环，而是用「数据流水线」描述转换——这是声明式编程的核心。现代语言的流式 API（Java Stream、JS Array 方法、Rust 迭代器）都源于此。
+</div>
+
+<h2>五、函数组合：像乐高一样拼装</h2>
+
+<p>当每个函数都是纯函数且只做一件事时，你可以把它们<strong>组合</strong>成更复杂的逻辑——就像用管道把简单的零件接成流水线。</p>
+
+<pre><code>def double(x): return x * 2
+def add_one(x): return x + 1
+def square(x): return x ** 2
+
+# 组合：先加1，再平方，再翻倍
+def compose(f, g):
+    return lambda x: f(g(x))
+
+transform = compose(double, compose(square, add_one))
+print(transform(3))  # (3+1)²×2 = 16×2 = 32</code></pre>
+
+<p>这就是 Unix 哲学的核心：<code>cat file | grep "error" | sort | uniq -c</code>——每个命令是一个纯函数，用管道（<code>|</code>）组合起来。函数组合让复杂逻辑由简单零件搭建，每个零件可独立测试和复用。</p>
+
+<h2>六、递归：FP 的循环替代品</h2>
+
+<p>纯函数式语言（如 Haskell）甚至没有循环语句——它们用<strong>递归</strong>替代。递归是一个函数调用自己，把问题分解成更小的同类问题。</p>
+
+<pre><code># 用递归计算阶乘
+def factorial(n):
+    if n <= 1:
+        return 1           # 基准情况（终止条件）
+    return n * factorial(n - 1)  # 递归调用
+
+print(factorial(5))  # 5×4×3×2×1 = 120
+
+# 用递归遍历树结构
+def count_tree(node):
+    if node is None:
+        return 0
+    return 1 + count_tree(node.left) + count_tree(node.right)</code></pre>
+
+<div class="key-idea">
+  递归的精髓：把大问题化成「同样的更小问题 + 一步组合」。只要有明确的基准情况（终止条件），递归就能优雅地解决树、图、分治等问题。
+</div>
+
+<p>但要注意：递归过深会导致栈溢出（Python 默认递归深度约 1000）。很多语言提供「尾递归优化」来避免这个问题，Python 没有内置支持，所以实际工程中 Python 会用循环替代深层递归。</p>
+
+<h2>七、FP 在现代工程中的崛起</h2>
+
+<p>FP 并非新事物——它的理论基础（Lambda 演算）诞生于 1930 年代，比计算机本身还早。但它近年来强势回归，原因是：</p>
+<ul>
+  <li><strong>多核并发</strong>：纯函数无副作用，天然适合并行——不需要锁，不会数据竞争</li>
+  <li><strong>大数据</strong>：Hadoop 的 MapReduce、Spark 的 RDD 都基于 map/reduce 模型</li>
+  <li><strong>前端革命</strong>：React/Redux 的「不可变状态 + 纯函数 reducer」彻底改变了前端架构</li>
+  <li><strong>AI/ML</strong>：TensorFlow、PyTorch 的计算图本质是函数式的数据流</li>
+</ul>
+
+<div class="example-box">
+  <strong>工程案例：</strong>WhatsApp 曾用 Erlang（纯函数式语言）支撑了每秒 200 万条消息、仅 50 名工程师维护。Erlang 的 actor 模型 + 不可变消息 + 纯函数，让它能在海量并发下几乎不出现数据竞争 bug——这是命令式语言极难达到的。这就是为什么电信、金融交易系统偏爱 FP。
+</div>
+
+<h2>八、OOP 与 FP：互补而非对立</h2>
+
+<p>OOP 和 FP 不是非此即彼。现代最佳实践是<strong>混合使用</strong>：</p>
+<ul>
+  <li>用 OOP 建模系统的结构（对象、组件、模块边界）</li>
+  <li>用 FP 编写对象内部的逻辑（纯函数、不可变转换）</li>
+</ul>
+
+<p>Scala、Rust、现代 JavaScript、TypeScript、Kotlin 都融合了两种范式。Python 也从 3.0 开始大量引入函数式特性。未来的趋势不是「哪个范式更好」，而是「在合适的场景用合适的工具」。</p>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>FP 把计算视为数学函数求值，关注「要什么」而非「怎么做」</li>
+    <li>纯函数：相同输入永远相同输出，无副作用——可预测、可测试、可并行</li>
+    <li>不可变性：数据创建后不变，需要修改就创建副本——消除远距离副作用</li>
+    <li>高阶函数（map/filter/reduce）替代显式循环，描述数据转换流水线</li>
+    <li>FP 在并发、大数据、前端领域强势回归，与 OOP 互补而非对立</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 数学</strong>：FP 直接源于 Lambda 演算（Church, 1936）——一种用函数定义计算的形式系统。它与图灵机等价，是理论计算机科学的两大基石之一。</li>
+  <li><strong>→ 物理学</strong>：「不可变性」类似热力学中的状态函数——系统的状态是确定的、可重现的。纯函数不改变世界，就像可逆过程不增加熵。</li>
+  <li><strong>→ 语言学</strong>：函数组合类似句法树——简单的词（小函数）通过语法规则（组合）构成复杂的句子（大函数）。FP 的表达力来自组合规则，正如语言的表达力来自语法。</li>
+  <li><strong>→ 烹饪</strong>：map/filter/reduce 就像流水线厨房——洗菜（filter 去掉坏的）、切菜（map 变换形状）、炖煮（reduce 合并成菜）。每一步都是纯转换，不回头修改前面的步骤。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：Excel 的数组公式。</strong>Excel 的 <code>SUM(IF(A1:A10>0, A1:A10, 0))</code> 本质就是 filter + reduce。整个电子表格可以看作一个巨大的函数式数据流——每个单元格是一个纯函数，输入是其他单元格，输出是计算结果。改一个输入，所有依赖它的单元格自动重算。这就是 FP 的威力被包装成亿万用户都能用的工具。
+</div>
+<div class="example-box">
+  <strong>案例 2：Netflix 的推荐流水线。</strong>Netflix 用 Spark 的函数式 API 处理海量用户观看数据：<code>events.filter(是否观看).map(提取特征).reduceByKey(聚合).collect()</code>。每一步都是纯转换，可以分布到上千台机器并行执行——不需要担心数据竞争，因为数据不可变。这就是大数据时代 FP 成为主流的原因。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 函数式编程最核心的理念是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 把数据和函数打包成对象</label>
+      <label><input type="radio" name="q1" value="b"> B. 把计算视为数学函数的求值，关注「要什么」而非「怎么做」</label>
+      <label><input type="radio" name="q1" value="c"> C. 用循环和赋值来解决问题</label>
+      <label><input type="radio" name="q1" value="d"> D. 尽量多写函数少写变量</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 纯函数 (Pure Function) 必须满足哪两个条件？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 函数名必须以 pure 开头，且不能有参数</label>
+      <label><input type="radio" name="q2" value="b"> B. 必须返回布尔值，且不能调用其他函数</label>
+      <label><input type="radio" name="q2" value="c"> C. 相同输入永远相同输出，且不产生任何副作用</label>
+      <label><input type="radio" name="q2" value="d"> D. 必须用递归实现，且不能有循环</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 「不可变性 (Immutability)」的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 数据一旦创建就不能被修改，需要改变时创建新副本</label>
+      <label><input type="radio" name="q3" value="b"> B. 变量一旦定义就不能再使用</label>
+      <label><input type="radio" name="q3" value="c"> C. 程序运行后代码不能修改</label>
+      <label><input type="radio" name="q3" value="d"> D. 所有数据都必须是常量</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 高阶函数 (Higher-Order Function) 是指？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 运行速度很快的函数</label>
+      <label><input type="radio" name="q4" value="b"> B. 只能在高级语言中使用的函数</label>
+      <label><input type="radio" name="q4" value="c"> C. 嵌套层级很深的函数</label>
+      <label><input type="radio" name="q4" value="d"> D. 接收函数作为参数，或返回函数的函数</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> <code>map(lambda x: x * 2, [1, 2, 3])</code> 的结果是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. [1, 2, 3]</label>
+      <label><input type="radio" name="q5" value="b"> B. [2, 4, 6]</label>
+      <label><input type="radio" name="q5" value="c"> C. 6</label>
+      <label><input type="radio" name="q5" value="d"> D. [1, 4, 9]</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> <code>reduce</code> 函数的作用是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 减少列表的长度</label>
+      <label><input type="radio" name="q6" value="b"> B. 删除列表中不需要的元素</label>
+      <label><input type="radio" name="q6" value="c"> C. 把一个列表逐步归约成单个值（如求和、求积）</label>
+      <label><input type="radio" name="q6" value="d"> D. 压缩列表以节省内存</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 为什么纯函数天然适合并行计算？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 因为它们不修改共享状态，不会产生数据竞争</label>
+      <label><input type="radio" name="q7" value="b"> B. 因为它们运行得更快</label>
+      <label><input type="radio" name="q7" value="c"> C. 因为它们不需要 CPU</label>
+      <label><input type="radio" name="q7" value="d"> D. 因为编译器会自动并行化所有纯函数</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q8.</span> 下列哪个函数<strong>不是</strong>纯函数？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. <code>def square(x): return x * x</code></label>
+      <label><input type="radio" name="q8" value="b"> B. <code>def now(): return datetime.now()</code></label>
+      <label><input type="radio" name="q8" value="c"> C. <code>def add(a, b): return a + b</code></label>
+      <label><input type="radio" name="q8" value="d"> D. <code>def length(s): return len(s)</code></label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q9.</span> 「函数组合 (Composition)」的核心思想是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 把所有函数合并成一个巨大的函数</label>
+      <label><input type="radio" name="q9" value="b"> B. 让多个函数同时运行</label>
+      <label><input type="radio" name="q9" value="c"> C. 用继承来复用函数代码</label>
+      <label><input type="radio" name="q9" value="d"> D. 把简单函数像管道一样串联，构建出复杂的转换流水线</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q10.</span> 为什么 FP 在大数据和并发时代重新崛起？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 因为 FP 是新发明的技术</label>
+      <label><input type="radio" name="q10" value="b"> B. 因为 OOP 已经被淘汰了</label>
+      <label><input type="radio" name="q10" value="c"> C. 因为纯函数和不可变性天然适合分布式并行计算</label>
+      <label><input type="radio" name="q10" value="d"> D. 因为法律要求大数据必须用 FP</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q11.</span> 关于递归，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 递归必须有基准情况（终止条件），否则会无限循环或栈溢出</label>
+      <label><input type="radio" name="q11" value="b"> B. 递归总是比循环效率高</label>
+      <label><input type="radio" name="q11" value="c"> C. 递归不能用于树形结构</label>
+      <label><input type="radio" name="q11" value="d"> D. Python 完全不支持递归</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q12.</span> OOP 和 FP 的关系，最准确的描述是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. FP 已经完全取代了 OOP</label>
+      <label><input type="radio" name="q12" value="b"> B. 它们是互补的范式，现代最佳实践是在合适的场景混合使用</label>
+      <label><input type="radio" name="q12" value="c"> C. 它们是完全对立的，不能同时使用</label>
+      <label><input type="radio" name="q12" value="d"> D. OOP 适合函数式语言，FP 适合面向对象语言</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0004-oop.html">← 上一课：面向对象编程</a>
+  <span>第 5 课 / 共 12 课</span>
+  <a href="0006-databases.html">下一课：数据库与SQL →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: 'FP 把计算视为「函数求值」，关注「要什么结果」而非「怎么一步步做」。这是声明式编程的核心。' },
+  q2: { correct: 'c', explanation: '纯函数 = 相同输入永远相同输出 + 无副作用。不依赖外部状态、不修改外部状态——像数学函数一样纯粹。' },
+  q3: { correct: 'a', explanation: '不可变 = 创建后不能修改。需要「改变」时，创建新副本。这消除了「远距离修改」导致的 bug。' },
+  q4: { correct: 'd', explanation: '高阶函数接收函数为参数或返回函数。map/filter/reduce 是经典例子。函数在 FP 中是「一等公民」，可像数据一样传递。' },
+  q5: { correct: 'b', explanation: 'map 对每个元素施加变换。[1,2,3] 每个乘以 2，得到 [2,4,6]。' },
+  q6: { correct: 'c', explanation: 'reduce 把列表逐步「归约」成单个值。如 reduce(加法, [1,2,3,4]) = 1+2+3+4 = 10。' },
+  q7: { correct: 'a', explanation: '纯函数不修改共享状态，所以多个纯函数并发执行时不会产生数据竞争——这是 FP 适合并发的根本原因。' },
+  q8: { correct: 'b', explanation: 'datetime.now() 每次调用返回不同结果（依赖当前时间），违反了「相同输入相同输出」——这是不纯的。' },
+  q9: { correct: 'd', explanation: '函数组合 = 把简单函数串联成流水线。f(g(h(x))) 就是组合。Unix 管道、RxJS、Spark 都基于这个思想。' },
+  q10: { correct: 'c', explanation: 'FP 并非新技术（Lambda 演算 1936 年就有了）。它在大数据/并发时代崛起，是因为纯函数和不可变性天然适合分布式并行——无锁、无竞争。' },
+  q11: { correct: 'a', explanation: '递归必须有终止条件（基准情况），否则无限递归导致栈溢出。Python 默认递归深度约 1000。' },
+  q12: { correct: 'b', explanation: 'OOP 和 FP 互补：OOP 建模系统结构，FP 编写内部逻辑。现代语言（Scala、Rust、TS、Kotlin）都融合两者。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了函数式编程的精髓。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！重点复习「纯函数」和「不可变性」。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「纯函数」和「高阶函数」两节，对照代码示例。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先理解「命令式 vs 函数式」的区别，再逐步深入。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

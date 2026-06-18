@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — 风险与收益的权衡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 { margin-top: 0; }
+
+  .formula {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 1rem;
+    overflow-x: auto;
+  }
+
+  .example-box {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+  }
+
+  .risk-meter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .risk-bar {
+    flex: 1;
+    height: 20px;
+    background: linear-gradient(to right, #4caf50, #ffeb3b, #ff9800, #f44336);
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .risk-marker {
+    position: absolute;
+    top: -8px;
+    width: 4px;
+    height: 36px;
+    background: var(--text);
+    border-radius: 2px;
+  }
+
+  .risk-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .q-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  .context {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .option-btn {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .option-btn:disabled {
+    cursor: default;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); border-left: 3px solid var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); border-left: 3px solid var(--wrong); }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .score-label {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .followup {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .followup a { color: var(--accent); }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  .footer .nav-disabled { color: #ccc; }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  li { margin-bottom: 0.25rem; }
+</style>
+</head>
+<body>
+
+<h1>第2课 — 风险与收益的权衡</h1>
+<div class="lesson-meta">金融学 · 第2课 / 共12课</div>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解风险与收益的关系，学会用夏普比率评估投资回报，明白为什么高收益必然伴随高风险——以及你该如何应对。
+</div>
+
+<h2>一、核心法则：没有免费的午餐</h2>
+
+<p>金融学的第一个真理很简单：<strong>高收益来自高风险。</strong>这不是警告，而是描述。市场不会因为你想要更多钱就给你更多回报。</p>
+
+<p>想象两个投资机会：</p>
+
+<div class="concept-card">
+  <h3>选项 A：国债</h3>
+  <p>中国政府发行10年期国债，年化收益率约 2.5%。几乎无违约风险。</p>
+</div>
+
+<div class="concept-card">
+  <h3>选项 B：初创公司股权</h3>
+  <p>你投资一家AI创业公司，可能翻倍，也可能归零。预期年化 15%–30%，但波动极大。</p>
+</div>
+
+<p>为什么选项 B 的"预期"收益更高？因为你在承担更多的不确定性。<strong>风险溢价（Risk Premium）</strong>就是市场为补偿你承担的额外风险而支付的"加班费"。</p>
+
+<div class="formula">
+  <strong>预期收益率 = 无风险利率 + 风险溢价</strong><br>
+  例：国债 2.5% + 股票风险溢价 5% ≈ 预期股市回报 7.5%
+</div>
+
+<h2>二、风险的量化：标准差与波动率</h2>
+
+<p>风险不是感觉，是可以测量的。最常用的指标是<strong>标准差（Standard Deviation）</strong>——它衡量收益偏离平均值的程度。</p>
+
+<div class="example-box">
+  两只基金年均回报都是 10%：<br>
+  • 基金A的标准差是 3%（每年回报在 7%–13% 之间波动）<br>
+  • 基金B的标准差是 25%（每年可能在 -15% 到 +35% 之间跳跃）<br><br>
+  平均回报一样，但风险天差地别。理性投资者会选择A。
+</div>
+
+<p>这里的关键洞察是：<strong>你关心的不是总波动，而是下行风险。</strong>涨过头了你不会难受，跌过头了你睡不着觉。这就是为什么专业投资者用<strong>下行标准差</strong>而不是普通标准差来衡量风险。</p>
+
+<h2>三、夏普比率：性价比之王</h2>
+
+<p>如果两只基金回报不同、风险也不同，怎么比？答案是<strong>夏普比率（Sharpe Ratio）</strong>——它回答了一个简单的问题：<strong>每承担一单位风险，我多赚了多少钱？</strong></p>
+
+<div class="formula">
+  <strong>夏普比率 = (投资组合收益率 − 无风险利率) / 组合标准差</strong><br><br>
+  例：基金A 回报10%，标准差3%，无风险利率2.5%<br>
+  夏普比率 = (10% − 2.5%) / 3% = 2.50<br><br>
+  基金B 回报15%，标准差25%，无风险利率2.5%<br>
+  夏普比率 = (15% − 2.5%) / 25% = 0.50<br><br>
+  尽管B回报更高，但A的"风险调整后收益"远超B。
+</div>
+
+<p>夏普比率大于1被认为是好的，大于2是优秀的。这个指标把"赚了多少"和"担了多少心"合二为一，是基金经理最害怕被问到的数字之一。</p>
+
+<h2>四、分散化：唯一的免费午餐</h2>
+
+<p>Harry Markowitz 因此获得诺贝尔奖，因为他发现了一个反直觉的事实：<strong>分散化可以降低风险而不降低预期收益。</strong></p>
+
+<p>关键概念是<strong>相关性（Correlation）</strong>：</p>
+
+<ul>
+  <li>相关系数 +1：两只资产同涨同跌（完全正相关）</li>
+  <li>相关系数 0：彼此无关（不相关）</li>
+  <li>相关系数 -1：一只涨另一只跌（完全负相关）</li>
+</ul>
+
+<div class="example-box">
+  如果你只持有科技股，市场下跌时你全部亏损。<br>
+  如果你同时持有科技股（高增长、高波动）、国债（低收益、低风险）、黄金（抗通胀），那么当科技股下跌时，资金可能流向国债和黄金，你的整体波动就会大幅降低。<br><br>
+  <strong>这就是分散化的魔力：用不相关的资产组合，降低整体风险。</strong>
+</div>
+
+<p>但要注意：分散化不能消除<strong>系统性风险（Systematic Risk）</strong>——整个市场一起崩盘的时候，什么资产都救不了你。它能消除的是<strong>非系统性风险（Idiosyncratic Risk）</strong>——单个公司或行业特有的风险。</p>
+
+<h2>五、风险偏好：认识你自己</h2>
+
+<p>同样的风险调整回报，不同的人感受完全不同。这取决于你的<strong>风险容忍度</strong>：</p>
+
+<table>
+  <tr><th>投资者类型</th><th>典型配置</th><th>最大回撤容忍</th></tr>
+  <tr><td>保守型</td><td>80% 债券 / 20% 股票</td><td>-5%</td></tr>
+  <tr><td>稳健型</td><td>60% 股票 / 40% 债券</td><td>-15%</td></tr>
+  <tr><td>激进型</td><td>90% 股票 / 10% 另类</td><td>-30%</td></tr>
+</table>
+
+<p>选择错误风险偏好的后果很严重：一个保守的人在2008年持有100%股票组合，可能在最低点恐慌卖出，锁定永久性损失。这比资产本身跌多少更致命——<strong>行为偏差往往比市场风险造成更大的伤害。</strong></p>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，看看你是否掌握了风险与收益的核心逻辑。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">1</span>
+    <div class="context">基本概念</div>
+    <div class="sentence">如果一只股票的预期回报高于国债，高出部分被称为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">时间价值</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">风险溢价</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">股息率</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">2</span>
+    <div class="context">夏普比率计算</div>
+    <div class="sentence">基金X：回报12%，标准差15%。基金Y：回报10%，标准差8%。无风险利率3%。哪个基金的夏普比率更高？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">基金X</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">基金Y</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">两者相同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">3</span>
+    <div class="context">分散化原理</div>
+    <div class="sentence">以下哪种情况最能通过分散化降低风险？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">持有5只同一行业的股票</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">持有科技股、国债、黄金的组合</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">持有10只高度相关的股票</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">4</span>
+    <div class="context">系统性风险</div>
+    <div class="sentence">分散化无法消除的风险是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">公司管理层丑闻</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">某行业监管政策变化</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">全球金融危机</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">5</span>
+    <div class="context">标准差含义</div>
+    <div class="sentence">两只基金的年均回报都是8%，但基金A的标准差是5%，基金B的标准差是20%。这意味着：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">基金B的收益波动更大，风险更高</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">基金B的实际回报一定更高</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">两只基金的风险相同</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">6</span>
+    <div class="context">风险与行为</div>
+    <div class="sentence">一个风险承受能力为-10%的投资者，持有100%股票组合在市场下跌15%时最可能：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">加仓买入</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">恐慌卖出，锁定亏损</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">无动于衷</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">7</span>
+    <div class="context">夏普比率解读</div>
+    <div class="sentence">夏普比率的分子（投资组合收益率 − 无风险利率）代表：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">总收益</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">超额收益（风险调整后收益）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">波动率</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">8</span>
+    <div class="context">综合判断</div>
+    <div class="sentence">以下哪项说法是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">高夏普比率意味着高回报</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">分散化可以完全消除风险</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">夏普比率衡量的是每单位风险带来的超额回报</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong> 随时问我——不确定为什么分散化能降低风险？不理解夏普比率的局限性？这正是我们需要讨论的地方。直接提问，我来解释。<br><br>
+  <strong>推荐资源：</strong> <a href="https://www.investopedia.com/terms/r/riskreturn.asp" target="_blank">Investopedia: Risk and Return</a> — 深入了解风险收益关系的经典入门文章。
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0003-portfolio-theory.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '风险溢价！超出无风险利率的那部分回报，就是市场给你的"风险补偿"。',
+      wrong: '不是时间价值（那是无风险利率的部分），也不是股息率（那是分红）。高出国债的部分叫"风险溢价"——因为你承担了额外的风险。'
+    },
+    q2: {
+      correct: '基金Y的夏普比率 = (10%-3%)/8% = 0.875，基金X的夏普比率 = (12%-3%)/15% = 0.6。Y的性价比更高！',
+      wrong: '看起来X回报更高，但别忘了它的风险也高得多。夏普比率 = (12%-3%)/15% = 0.6；Y = (10%-3%)/8% = 0.875。Y用更少的风险赚到了不错的回报。'
+    },
+    q2_wrong_alt: '持有同行业股票或高度相关股票几乎不能分散风险，因为它们会一起涨跌。',
+    q3: {
+      correct: '正确！科技股、国债、黄金的相关性很低甚至为负，组合在一起能显著降低整体波动。',
+      wrong: '同行业股票高度相关，一起涨一起跌，分散效果很差。真正有效的分散需要不相关或负相关的资产。'
+    },
+    q4: {
+      correct: '对！全球金融危机是系统性风险，影响整个市场，分散化无法免疫。',
+      wrong: '管理层丑闻和行业政策是单个公司或行业的问题，可以通过分散化消除。但全球金融危机影响所有资产——这是系统性风险。'
+    },
+    q5: {
+      correct: '没错！标准差越大，收益越不稳定。虽然平均回报一样，但B可能在某些年份亏很多。',
+      wrong: '年均回报相同不代表风险相同。标准差20%意味着收益可能在-12%到+28%之间跳动，而5%的标准差意味着-2%到+18%。B的风险远高于A。'
+    },
+    q6: {
+      correct: '是的！行为偏差是投资者最大的敌人。承受不了-10%的人却持有-15%回撤的产品，结果就是在底部割肉。',
+      wrong: '恐慌卖出是典型的非理性行为。但现实中，大多数人在深度亏损时确实会做出这种选择——这也是为什么资产配置要与风险承受能力匹配。'
+    },
+    q7: {
+      correct: '超额收益！减去无风险利率后，剩下的才是你承担风险真正多赚的部分。',
+      wrong: '这不是总收益（总收益包含无风险部分），也不是波动率。它是"超额收益"——扣除无风险利率后的净风险回报。'
+    },
+    q8: {
+      correct: '完全正确。夏普比率 = 超额收益 / 风险。它衡量的不是绝对回报高低，而是"性价比"。',
+      wrong: 'A不对：高夏普比率可能对应低回报（低风险低回报但性价比高）。B不对：分散化只能消除非系统性风险。C是对的。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对风险与收益的理解非常扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾一下错题的解释，查漏补缺。';
+      else label.textContent = '建议重读上面的内容，重点理解夏普比率和分散化。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 — 算法思维：排序、搜索、复杂度</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>算法思维：排序、搜索、复杂度</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第3课 / 共12课 · 约22分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>建立「算法思维」——学会用步骤、效率和代价的眼光看待问题。掌握排序与搜索两大经典算法族，理解大O记号如何量化算法的效率差异，并能根据数据规模选择合适的算法。最终你能回答：为什么有些程序慢到无法使用，而有些程序在百万级数据上依然飞快。
+</div>
+
+<h2>一、什么是算法思维？</h2>
+
+<p>第1课我们说过：算法是「解决问题的明确步骤」。但仅有步骤还不够——<strong>同一个问题，不同的解法效率可以相差亿万倍</strong>。算法思维，就是在解决问题时不仅想「能不能做」，更要想「做得够不够快、够不够省」。</p>
+
+<div class="key-idea">
+  算法思维 = 在解决问题时，同时关注正确性（结果对不对）和效率（资源花得多不多）。
+</div>
+
+<p>举个例子：你要在字典里查一个词。一本十万词的字典，你怎么查？</p>
+<ul>
+  <li><strong>方法 A</strong>：从第一页翻到最后一页，逐个比对。——一定能找到，但平均要翻五万页。</li>
+  <li><strong>方法 B</strong>：翻到字典中间，看当前词比目标大还是小，然后在对应的一半里继续折半。——最多翻 17 次就能找到。</li>
+</ul>
+
+<p>这就是算法思维的威力：同样的输入，方法 B 比方法 A 快了约三千倍。在十万条数据上，一个是「秒级」，一个是「全天候跑不完」。</p>
+
+<div class="vocab-card">
+  <span class="term">时间复杂度 (Time Complexity)</span><br>
+  衡量算法运行时间随输入规模增长的趋势。它不关心具体的毫秒数，只关心「数据变大时，时间怎么变」。
+</div>
+
+<h2>二、大O记号：衡量效率的通用语言</h2>
+
+<p>要比较算法，我们需要一种<strong>与硬件、语言无关的度量</strong>。这就是大O记号 (Big-O Notation)。它描述的是：当输入规模 n 趋向无穷大时，算法所需操作次数的<strong>增长阶</strong>。</p>
+
+<div class="key-idea">
+  大O记号回答的是：「数据量翻倍、翻十倍、翻一万倍时，这个算法会慢多少倍？」它关注的是趋势，不是常数。
+</div>
+
+<p>常见的时间复杂度，从快到慢：</p>
+
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.9rem;">
+  <tr style="background:var(--accent-light);">
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">复杂度</th>
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">名称</th>
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">n=10</th>
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">n=1000</th>
+    <th style="border:1px solid var(--border); padding:0.5rem; text-align:left;">n=100万</th>
+  </tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;"><code>O(1)</code></td><td style="border:1px solid var(--border); padding:0.5rem;">常数</td><td style="border:1px solid var(--border); padding:0.5rem;">1</td><td style="border:1px solid var(--border); padding:0.5rem;">1</td><td style="border:1px solid var(--border); padding:0.5rem;">1</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;"><code>O(log n)</code></td><td style="border:1px solid var(--border); padding:0.5rem;">对数</td><td style="border:1px solid var(--border); padding:0.5rem;">3</td><td style="border:1px solid var(--border); padding:0.5rem;">10</td><td style="border:1px solid var(--border); padding:0.5rem;">20</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;"><code>O(n)</code></td><td style="border:1px solid var(--border); padding:0.5rem;">线性</td><td style="border:1px solid var(--border); padding:0.5rem;">10</td><td style="border:1px solid var(--border); padding:0.5rem;">1000</td><td style="border:1px solid var(--border); padding:0.5rem;">100万</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;"><code>O(n log n)</code></td><td style="border:1px solid var(--border); padding:0.5rem;">线性对数</td><td style="border:1px solid var(--border); padding:0.5rem;">33</td><td style="border:1px solid var(--border); padding:0.5rem;">10000</td><td style="border:1px solid var(--border); padding:0.5rem;">2000万</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;"><code>O(n²)</code></td><td style="border:1px solid var(--border); padding:0.5rem;">平方</td><td style="border:1px solid var(--border); padding:0.5rem;">100</td><td style="border:1px solid var(--border); padding:0.5rem;">100万</td><td style="border:1px solid var(--border); padding:0.5rem;">1万亿</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.5rem;"><code>O(2ⁿ)</code></td><td style="border:1px solid var(--border); padding:0.5rem;">指数</td><td style="border:1px solid var(--border); padding:0.5rem;">1024</td><td style="border:1px solid var(--border); padding:0.5rem;">∞</td><td style="border:1px solid var(--border); padding:0.5rem;">∞</td></tr>
+</table>
+
+<p>请仔细看最后一列：n=100万时，O(n²) 已经是一万亿次操作（按每秒一亿次算要 3 小时），而 O(2ⁿ) 直接爆炸到宇宙都算不完。这就是为什么<strong>选择算法比优化代码细节重要得多</strong>——一个 O(n²) 的程序再怎么微优化，也追不上一个 O(n log n) 的程序。</p>
+
+<div class="example-box">
+  <strong>直觉记忆：</strong>O(1) 是「开门拿东西」（不管房子多大），O(log n) 是「翻字典」（每次砍一半），O(n) 是「逐个点名」，O(n²) 是「两两握手」（n 个人每人握 n 次），O(2ⁿ) 是「所有子集」（每多一个元素，方案数翻倍）。
+</div>
+
+<h2>三、排序：计算机科学的「Hello World」</h2>
+
+<p>排序是算法教学中最经典的课题，因为它足够简单、又有丰富的效率差异，完美展示了「同一问题不同解法的天壤之别」。</p>
+
+<h3>1. 冒泡排序 (Bubble Sort) — O(n²)</h3>
+
+<p>最直观但最慢的排序。思路：反复遍历列表，每次比较相邻两个元素，如果顺序错了就交换。像气泡一样，大的元素会逐渐「浮」到末尾。</p>
+
+<pre><code>def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+print(bubble_sort([5, 2, 9, 1, 5, 6]))
+# [1, 2, 5, 5, 6, 9]</code></pre>
+
+<p>两层嵌套循环，所以是 O(n²)。排序 10000 个元素要做一亿次比较——这就是它慢的原因。</p>
+
+<h3>2. 归并排序 (Merge Sort) — O(n log n)</h3>
+
+<p>分治法的典型代表。思路：把数组对半切开，递归地排序两半，然后合并两个已排序的半段。</p>
+
+<pre><code>def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    return merge(left, right)
+
+def merge(a, b):
+    result = []
+    i = j = 0
+    while i < len(a) and j < len(b):
+        if a[i] <= b[j]:
+            result.append(a[i]); i += 1
+        else:
+            result.append(b[j]); j += 1
+    result.extend(a[i:])
+    result.extend(b[j:])
+    return result</code></pre>
+
+<p>为什么是 O(n log n)？每层合并需要 O(n)，而递归深度是 log n 层（每次砍半），相乘得 O(n log n)。排序 100 万个元素约 2000 万次操作——比冒泡快了五万倍。</p>
+
+<div class="key-idea">
+  分治法 (Divide and Conquer)：把大问题拆成小问题，分别解决，再合并结果。这是计算机科学最重要的思想之一——归并排序、快速排序、二分搜索、FFT、MapReduce 都源自这个思想。
+</div>
+
+<h3>3. 快速排序 (Quick Sort) — 平均 O(n log n)</h3>
+
+<p>实际工程中最常用的排序。思路：选一个「基准」元素，把比它小的放左边、大的放右边，然后对左右两段递归排序。</p>
+
+<pre><code>def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)</code></pre>
+
+<p>快排在大多数实际数据上比归并更快（常数因子小），但最坏情况会退化到 O(n²)（比如每次选到最大或最小的基准）。Python 的 <code>sorted()</code> 底层用的是 Timsort——一种融合了归并和插入排序的混合算法，专门针对真实世界数据优化。</p>
+
+<div class="example-box">
+  <strong>工程案例：</strong>Google 曾经面临一个挑战——每天要对几十亿个网页做排序来计算排名。如果用 O(n²) 算法，光排序就要跑几年。换成 O(n log n) 后，同样的任务几分钟搞定。算法的选择，直接决定了一个产品「能不能上线」。
+</div>
+
+<h2>四、搜索：找东西的艺术</h2>
+
+<h3>1. 线性搜索 (Linear Search) — O(n)</h3>
+
+<p>最简单的搜索：从头到尾逐个比对。</p>
+
+<pre><code>def linear_search(arr, target):
+    for i, v in enumerate(arr):
+        if v == target:
+            return i
+    return -1</code></pre>
+
+<p>简单直接，但对无序列表必须 O(n)。n=100 万时要平均比对 50 万次。</p>
+
+<h3>2. 二分搜索 (Binary Search) — O(log n)</h3>
+
+<p><strong>前提：列表必须已排序。</strong>每次取中间元素，根据比较结果砍掉一半，直到找到或确认不存在。</p>
+
+<pre><code>def binary_search(arr, target):
+    lo, hi = 0, len(arr) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+
+# 只能用于已排序数组
+print(binary_search([1, 3, 5, 7, 9, 11], 7))  # 3</code></pre>
+
+<div class="key-idea">
+  二分搜索是 log n 的奇迹：100 万元素的列表，最多只要 20 次比较。每多一倍数据，只多一次操作。这是「指数级减半」的力量。
+</div>
+
+<p>二分搜索的精髓是「每次淘汰一半」。这个思想远不止于搜索——求平方根、找方程的根、优化机器学习的超参数、数据库索引查找，都基于同样的「折半」策略。</p>
+
+<div class="example-box">
+  <strong>生活类比：</strong>猜数字游戏——我想一个 1 到 100 的数，你猜我告诉你是大了还是小了。如果你从 1 开始逐个猜，平均要 50 次。如果你每次猜中间值（50、然后 25 或 75……），最多 7 次就能猜中。这就是二分搜索。
+</div>
+
+<h2>五、空间复杂度：内存也要花钱</h2>
+
+<p>算法消耗的资源不止是时间，还有内存。<strong>空间复杂度</strong>衡量算法运行时占用的额外内存随 n 的增长趋势，同样用大O记号。</p>
+
+<ul>
+  <li>冒泡排序：原地交换，额外空间 O(1)</li>
+  <li>归并排序：需要 O(n) 额外空间存放合并结果</li>
+  <li>递归调用：每层递归占用一份栈空间，深度 d 的递归占 O(d)</li>
+</ul>
+
+<div class="key-idea">
+  时间和空间经常是一对权衡 (Time-Space Tradeoff)。用更多内存可以换来更快的速度——例如哈希表用 O(n) 空间把查找降到 O(1)。
+</div>
+
+<h2>六、最好、最坏、平均：同一个算法的三副面孔</h2>
+
+<p>大O通常描述<strong>最坏情况</strong>（保证算法在任何输入下都不会更差）。但实际中我们也关心平均情况。以快速排序为例：</p>
+<ul>
+  <li>最好：每次基准恰好把数组平分 → O(n log n)</li>
+  <li>平均：基准大致均匀分布 → O(n log n)</li>
+  <li>最坏：每次基准都是最大/最小 → O(n²)</li>
+</ul>
+
+<p>工程上常通过「随机选基准」来避免最坏情况，让快排在概率意义上稳定在 O(n log n)。这就是为什么 Python、Java 的标准库都用改进版快排。</p>
+
+<div class="example-box">
+  <strong>工程案例：</strong>Netflix 的推荐系统每天要为上亿用户排序候选视频。如果用 O(n²) 算法，单次推荐就要几分钟。改用 O(n log n) 后降到毫秒级——这才是「即时推荐」的物理基础。算法不是象牙塔里的数学，它直接决定用户体验。
+</div>
+
+<h2>七、如何选择算法？</h2>
+
+<p>没有「最好」的算法，只有「最适合当前场景」的算法。选择时要考虑：</p>
+<ul>
+  <li><strong>数据规模</strong>：n 小时简单算法（如插入排序）反而更快，因为常数因子小</li>
+  <li><strong>数据特征</strong>：几乎已排序的数据用插入排序接近 O(n)；随机数据用快排</li>
+  <li><strong>内存限制</strong>：嵌入式设备可能无法承受 O(n) 额外空间的归并排序</li>
+  <li><strong>稳定性需求</strong>：归并排序是稳定排序（相等元素保持原顺序），快排不是</li>
+  <li><strong>是否需要实时响应</strong>：最坏情况敏感的场景要避免可能退化到 O(n²) 的算法</li>
+</ul>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>算法思维 = 同时关注正确性和效率。同一问题不同解法效率可差亿万倍</li>
+    <li>大O记号衡量「增长趋势」，与硬件语言无关。O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)</li>
+    <li>排序：冒泡 O(n²)、归并 O(n log n)、快排平均 O(n log n)。真实系统多用 Timsort</li>
+    <li>搜索：无序用线性 O(n)，有序用二分 O(log n)。二分是「折半淘汰」的普适思想</li>
+    <li>时间与空间常需权衡。没有万能算法，只有场景适配</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 数学</strong>：大O记号源自数学分析，是描述函数渐近行为的严格工具。log 函数的「增长极慢」特性，是信息论（熵、编码长度）和计算机科学共同的基石。</li>
+  <li><strong>→ 经济学</strong>：「时间-空间权衡」与经济学中的「资源替代」如出一辙——用一种资源（内存）替代另一种资源（时间）来优化总成本。</li>
+  <li><strong>→ 生物学</strong>：归并排序的「分治」思想，与细胞分裂、神经网络层级处理、基因组的分块组装异曲同工——大自然也偏爱分治。</li>
+  <li><strong>→ 管理/运筹学</strong>：排序算法是「调度问题」的特例。快递分拣、工厂流水线、医院急诊分诊，本质都是某种排序问题。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：数据库索引。</strong>当你在一个百万行的用户表里查「id=12345」的用户，数据库不是逐行扫描（O(n)），而是用 B+ 树索引——一种二分搜索的推广。这让查找从「几秒」降到「微秒」。整个现代数据库的性能，本质上建立在本课的算法之上。
+</div>
+<div class="example-box">
+  <strong>案例 2：Git 的 diff 算法。</strong>当你 <code>git diff</code> 时，Git 用的是 Myers 算法——一种基于动态规划的最长公共子序列算法，复杂度 O(ND)（N、D 是文本长度和差异数）。这就是为什么 Git 能秒级显示几千行代码的差异。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 算法思维最关注的核心是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 代码写得多漂亮</label>
+      <label><input type="radio" name="q1" value="b"> B. 不仅关注能不能解决，更关注解决得够不够快、够不够省</label>
+      <label><input type="radio" name="q1" value="c"> C. 用最新的编程语言</label>
+      <label><input type="radio" name="q1" value="d"> D. 代码越短越好</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 大O记号衡量的是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 算法的具体运行毫秒数</label>
+      <label><input type="radio" name="q2" value="b"> B. 算法占用的字节数</label>
+      <label><input type="radio" name="q2" value="c"> C. 算法运行时间随输入规模增长的趋势</label>
+      <label><input type="radio" name="q2" value="d"> D. 算法的代码行数</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 下列复杂度从快到慢排序，正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. O(1) < O(log n) < O(n) < O(n log n) < O(n²)</label>
+      <label><input type="radio" name="q3" value="b"> B. O(n²) < O(n log n) < O(n) < O(log n) < O(1)</label>
+      <label><input type="radio" name="q3" value="c"> C. O(log n) < O(1) < O(n) < O(n²) < O(n log n)</label>
+      <label><input type="radio" name="q3" value="d"> D. O(n) < O(1) < O(log n) < O(n²) < O(n log n)</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q4.</span> 冒泡排序的时间复杂度是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. O(n)</label>
+      <label><input type="radio" name="q4" value="b"> B. O(n²)</label>
+      <label><input type="radio" name="q4" value="c"> C. O(n log n)</label>
+      <label><input type="radio" name="q4" value="d"> D. O(log n)</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q5.</span> 归并排序使用的是哪种核心思想？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 贪心法</label>
+      <label><input type="radio" name="q5" value="b"> B. 动态规划</label>
+      <label><input type="radio" name="q5" value="c"> C. 分治法（Divide and Conquer）</label>
+      <label><input type="radio" name="q5" value="d"> D. 回溯法</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q6.</span> 二分搜索的前提条件是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 列表元素都是数字</label>
+      <label><input type="radio" name="q6" value="b"> B. 列表长度是偶数</label>
+      <label><input type="radio" name="q6" value="c"> C. 列表没有重复元素</label>
+      <label><input type="radio" name="q6" value="d"> D. 列表必须已排序</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q7.</span> 在一个 100 万元素的已排序列表中用二分搜索，最多需要多少次比较？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 100 万次</label>
+      <label><input type="radio" name="q7" value="b"> B. 约 20 次</label>
+      <label><input type="radio" name="q7" value="c"> C. 1000 次</label>
+      <label><input type="radio" name="q7" value="d"> D. 50 万次</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q8.</span> 「时间-空间权衡」的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 用更多内存可以换取更快的运行速度，反之亦然</label>
+      <label><input type="radio" name="q8" value="b"> B. 时间和空间总是同时增加</label>
+      <label><input type="radio" name="q8" value="c"> C. 内存贵的机器算法更快</label>
+      <label><input type="radio" name="q8" value="d"> D. 算法要么省时间要么省空间，不能兼得</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q9.</span> 快速排序的最坏情况时间复杂度是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. O(n log n)</label>
+      <label><input type="radio" name="q9" value="b"> B. O(n)</label>
+      <label><input type="radio" name="q9" value="c"> C. O(n²)</label>
+      <label><input type="radio" name="q9" value="d"> D. O(log n)</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q10.</span> 为什么大O记号比「具体毫秒数」更有意义？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 毫秒数无法测量</label>
+      <label><input type="radio" name="q10" value="b"> B. 毫秒数太精确了反而没用</label>
+      <label><input type="radio" name="q10" value="c"> C. 大O记号更复杂显得高级</label>
+      <label><input type="radio" name="q10" value="d"> D. 大O与硬件语言无关，描述的是算法本质的增长趋势</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 下列哪种场景下，简单的冒泡排序可能比快速排序更合适？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 排序十亿条数据</label>
+      <label><input type="radio" name="q11" value="b"> B. 数据量很小（如 n<10）且对常数因子敏感</label>
+      <label><input type="radio" name="q11" value="c"> C. 实时高并发系统</label>
+      <label><input type="radio" name="q11" value="d"> D. 需要稳定排序的大数据集</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q12.</span> 「分治法」的核心步骤是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 分解 → 递归解决 → 合并结果</label>
+      <label><input type="radio" name="q12" value="b"> B. 从头到尾扫描一遍</label>
+      <label><input type="radio" name="q12" value="c"> C. 每次选最小的放前面</label>
+      <label><input type="radio" name="q12" value="d"> D. 随机打乱再排序</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0002-data-structures.html">← 上一课：数据结构</a>
+  <span>第 3 课 / 共 12 课</span>
+  <a href="0004-oop.html">下一课：面向对象编程 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '算法思维的核心是「效率意识」——不只问能不能解决，还要问解决得好不好。漂亮的代码、最新的语言都是次要的。' },
+  q2: { correct: 'c', explanation: '大O描述的是「时间随 n 增长的趋势」，与具体硬件无关。同一个 O(n) 算法在快慢机器上的毫秒数不同，但增长趋势一致。' },
+  q3: { correct: 'a', explanation: '记住这个顺序：O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)。这是算法效率的「族谱」。' },
+  q4: { correct: 'b', explanation: '冒泡排序有两层嵌套循环，每层最多 n 次，所以是 O(n²)。这是它在大数据上不可用的根本原因。' },
+  q5: { correct: 'c', explanation: '归并排序是分治法的经典：把数组对半切，递归排序两半，再合并。快速排序、FFT、MapReduce 都基于分治。' },
+  q6: { correct: 'd', explanation: '二分搜索依赖「中间元素与目标的大小关系」来决定砍哪一半，这只有已排序的列表才能保证。无序列表必须先排序或用线性搜索。' },
+  q7: { correct: 'b', explanation: 'log₂(100万) ≈ 20。每次砍一半，2²⁰ ≈ 100万。这就是 O(log n) 的威力——数据翻倍只多一次操作。' },
+  q8: { correct: 'a', explanation: '时间-空间权衡：例如哈希表用 O(n) 额外内存把查找从 O(n) 降到 O(1)。用空间换时间是工程中最常见的优化。' },
+  q9: { correct: 'c', explanation: '快排最坏情况（每次基准都是最大/最小）退化到 O(n²)。实际工程用「随机选基准」或「三数取中」来避免最坏情况。' },
+  q10: { correct: 'd', explanation: '毫秒数依赖硬件、语言、编译器，无法跨平台比较。大O描述算法本身的增长趋势，是算法效率的通用语言。' },
+  q11: { correct: 'b', explanation: 'n 很小时，快排的递归开销和常数因子可能比冒泡的简单循环更大。工程上很多排序库在小数据段会切换到插入排序。' },
+  q12: { correct: 'a', explanation: '分治三步：分解（切分子问题）→ 递归解决（对子问题递归）→ 合并（把子问题的解组合成原问题的解）。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了算法思维的精髓。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！核心概念已经清晰。重点复习错题对应的算法。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「大O记号」和「二分搜索」部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。算法思维需要练习，先重读「大O记号」一节建立直觉。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

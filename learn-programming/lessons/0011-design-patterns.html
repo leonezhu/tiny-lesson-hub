@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 设计模式：复用前人的智慧</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>设计模式：复用前人的智慧</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第11课 / 共12课 · 约22分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解什么是设计模式，为什么它们是软件工程的「词汇表」。掌握四大经典模式——单例、观察者、策略、工厂——的意图、结构和适用场景。学会区分模式的两面性：何时该用，何时不该用，避免「过度设计」的陷阱。
+</div>
+
+<h2>一、什么是设计模式？</h2>
+
+<p>假设你是一名建筑设计师。你发现，无论设计什么样的房子，总有一些问题反复出现：门朝哪开？楼梯放哪？客厅和卧室怎么分隔？经过几十年的实践，行业沉淀出了一套<strong>标准方案</strong>——比如「开放式厨房适合小户型」「卧室远离入口保证安静」。这些方案不是法律规定，而是被验证过的<strong>经验模板</strong>。</p>
+
+<p>软件设计模式 (Design Pattern) 就是编程领域的「标准方案」。</p>
+
+<div class="vocab-card">
+  <span class="term">设计模式 (Design Pattern)</span><br>
+  在特定场景下，对反复出现的设计问题的一种可复用的解决方案。它不是一段可以直接复制的代码，而是一种<strong>设计思路的模板</strong>——告诉你「遇到这类问题时，通常应该这样组织代码」。
+</div>
+
+<p>这个概念由四位作者——Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides（合称「四人帮」GoF）——在 1994 年的经典著作《设计模式》中系统化。书中归纳了 23 种面向对象的设计模式，从此成为软件工程师的共同语言。</p>
+
+<div class="key-idea">
+  设计模式最大的价值不是「教你写代码」，而是<strong>提供一套共同的词汇</strong>。当你说「这里用观察者模式」，对方立刻理解你要表达的设计意图——不需要你解释几十行代码。模式让设计沟通从「描述实现」升级为「描述意图」。
+</div>
+
+<div class="example-box">
+  <strong>为什么需要模式？</strong>想象你每次盖房子都从零开始琢磨「墙怎么搭、屋顶怎么防水」。前辈们已经踩过无数坑、总结出最优解，你为什么不站在他们的肩膀上？设计模式就是前辈工程师留给我们的「踩坑笔记」。
+</div>
+
+<h2>二、模式的三大分类</h2>
+
+<p>GoF 把 23 种模式分为三类，按粒度从大到小排列：</p>
+
+<ul>
+  <li><strong>创建型模式 (Creational)</strong>：关注「如何创建对象」。把对象的创建过程抽象出来，让系统不依赖于具体的类。代表：单例、工厂、建造者。</li>
+  <li><strong>结构型模式 (Structural)</strong>：关注「如何把类或对象组合成更大的结构」。代表：适配器、装饰器、代理。</li>
+  <li><strong>行为型模式 (Behavioral)</strong>：关注「对象之间如何分工和通信」。代表：观察者、策略、状态、命令。</li>
+</ul>
+
+<div class="key-idea">
+  这三个分类回答了软件设计的三个核心问题：<strong>怎么造（创建）、怎么搭（结构）、怎么协作（行为）</strong>。记住这个框架，你就能快速判断某个模式属于哪类、解决什么层次的问题。
+</div>
+
+<p>本课我们深入讲解四个最常用、最有代表性的模式——每种类型各取一个或两个——让你建立对模式的「手感」。</p>
+
+<h2>三、单例模式 (Singleton)</h2>
+
+<h3>解决的问题</h3>
+<p>有些东西，全局只应该有一个实例。比如：数据库连接池、日志记录器、系统配置对象。如果这些对象被创建了多个副本，会导致资源浪费、状态不一致、甚至程序崩溃。</p>
+
+<div class="vocab-card">
+  <span class="term">单例模式 (Singleton)</span><br>
+  保证一个类只有一个实例，并提供一个全局访问点。属于<strong>创建型模式</strong>。
+</div>
+
+<h3>结构</h3>
+<p>核心思路：把构造函数设为私有（外部无法 <code>new</code>），在类内部持有一个静态实例，通过一个静态方法返回它。</p>
+
+<pre><code>class Logger:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.logs = []
+        return cls._instance
+
+    def log(self, msg):
+        self.logs.append(msg)
+        print(f"[LOG] {msg}")
+
+# 无论创建多少次，都是同一个对象
+a = Logger()
+b = Logger()
+print(a is b)  # True —— 同一个实例</code></pre>
+
+<div class="example-box">
+  <strong>现实类比：</strong>一个国家只有一个「总统」职位。无论谁当总统，对外都通过「总统办公室」这个唯一接口沟通。你不能自己 <code>new</code> 一个总统出来——必须通过宪法规定的流程（静态方法）获取当前的那一位。
+</div>
+
+<h3>注意事项</h3>
+<p>单例是最容易<strong>被滥用</strong>的模式。许多初学者觉得「全局只要一个，用单例多方便」，结果把所有东西都变成单例，代码变成了披着面向对象外衣的全局变量——难以测试、难以维护。</p>
+
+<div class="key-idea">
+  单例的本质是<strong>全局状态</strong>。全局状态是测试和并发的噩梦——单例持有的状态在测试之间无法隔离，在多线程下需要加锁。能用依赖注入解决的，就别用单例。
+</div>
+
+<h2>四、观察者模式 (Observer)</h2>
+
+<h3>解决的问题</h3>
+<p>当一个对象的状态变化需要通知一堆其他对象时，怎么做？</p>
+
+<p>最笨的办法是：被通知的对象轮流去「问」——「你变了吗？你变了吗？」。这叫<strong>轮询</strong>，效率极低。更好的办法是：状态一变，主动「喊一声」，关心的人自己来听。</p>
+
+<div class="vocab-card">
+  <span class="term">观察者模式 (Observer)</span><br>
+  定义对象间一对多的依赖关系：当一个对象（被观察者 / Subject）的状态发生变化时，所有依赖于它的对象（观察者 / Observer）都会自动收到通知并更新。属于<strong>行为型模式</strong>。
+</div>
+
+<h3>结构</h3>
+<pre><code># 被观察者：气象站
+class WeatherStation:
+    def __init__(self):
+        self._observers = []
+        self._temperature = 0
+
+    def subscribe(self, observer):
+        self._observers.append(observer)
+
+    def unsubscribe(self, observer):
+        self._observers.remove(observer)
+
+    def set_temperature(self, temp):
+        self._temperature = temp
+        self._notify_all()
+
+    def _notify_all(self):
+        for obs in self._observers:
+            obs.update(self._temperature)
+
+# 观察者：显示屏
+class PhoneDisplay:
+    def update(self, temperature):
+        print(f"📱 手机显示：当前温度 {temperature}°C")
+
+class WindowDisplay:
+    def update(self, temperature):
+        print(f"🪟 窗口显示：当前温度 {temperature}°C")
+
+station = WeatherStation()
+station.subscribe(PhoneDisplay())
+station.subscribe(WindowDisplay())
+station.set_temperature(25)
+# 📱 手机显示：当前温度 25°C
+# 🪟 窗口显示：当前温度 25°C</code></pre>
+
+<div class="example-box">
+  <strong>现实类比：</strong>微信公众号。你关注（subscribe）了一个公众号，它发文章时你会自动收到推送——你不需要每隔五分钟去刷新看它有没有更新。公众号是被观察者，你是观察者。这是典型的「发布-订阅」机制。
+</div>
+
+<h3>为什么重要</h3>
+<p>观察者模式是现代软件中<strong>出现频率最高</strong>的模式之一。几乎所有涉及「事件」的系统都用它：</p>
+<ul>
+  <li>GUI 框架：按钮点击事件通知所有监听器</li>
+  <li>前端框架：Vue/React 的响应式数据变化触发视图更新</li>
+  <li>消息队列：Kafka、RabbitMQ 的发布订阅模型</li>
+  <li>Node.js 的 EventEmitter、Python 的 signal、C# 的 event</li>
+</ul>
+
+<div class="key-idea">
+  观察者模式的核心价值是<strong>解耦</strong>：被观察者不需要知道有谁在观察自己、观察者有几个、它们是谁。它只负责「状态变了，喊一声」。这种松耦合让系统可以灵活扩展——加一个观察者，不需要修改被观察者的代码。
+</div>
+
+<h2>五、策略模式 (Strategy)</h2>
+
+<h3>解决的问题</h3>
+<p>假设你在开发一个电商系统，结账时需要根据用户类型计算折扣：普通用户打 9 折、VIP 打 8 折、超级会员打 7 折。最直觉的写法是一堆 <code>if-else</code>：</p>
+
+<pre><code># ❌ 糟糕的写法：策略和业务逻辑混在一起
+def calculate_price(user_type, price):
+    if user_type == "normal":
+        return price * 0.9
+    elif user_type == "vip":
+        return price * 0.8
+    elif user_type == "super":
+        return price * 0.7
+    # 以后每加一种用户类型，就要改这里</code></pre>
+
+<p>问题在于：每加一种折扣规则，就要修改这个函数。<code>if-else</code> 会越来越长，函数承担了太多职责，违反了「开闭原则」（对扩展开放，对修改关闭）。</p>
+
+<div class="vocab-card">
+  <span class="term">策略模式 (Strategy)</span><br>
+  定义一系列算法，把它们各自封装成独立的类（策略），使它们可以互相替换。策略模式让算法的变化独立于使用算法的客户端。属于<strong>行为型模式</strong>。
+</div>
+
+<h3>结构</h3>
+<pre><code># 抽象策略：定义接口
+from abc import ABC, abstractmethod
+
+class DiscountStrategy(ABC):
+    @abstractmethod
+    def calculate(self, price):
+        pass
+
+# 具体策略：各自封装一种算法
+class NormalDiscount(DiscountStrategy):
+    def calculate(self, price):
+        return price * 0.9
+
+class VIPDiscount(DiscountStrategy):
+    def calculate(self, price):
+        return price * 0.8
+
+class SuperDiscount(DiscountStrategy):
+    def calculate(self, price):
+        return price * 0.7
+
+# 上下文：使用策略
+class Checkout:
+    def __init__(self, strategy):
+        self._strategy = strategy
+
+    def set_strategy(self, strategy):
+        self._strategy = strategy
+
+    def final_price(self, price):
+        return self._strategy.calculate(price)
+
+# 使用
+checkout = Checkout(NormalDiscount())
+print(checkout.final_price(100))  # 90.0
+
+checkout.set_strategy(VIPDiscount())
+print(checkout.final_price(100))  # 80.0</code></pre>
+
+<div class="example-box">
+  <strong>现实类比：</strong>导航软件的路线规划。从 A 到 B 可以「驾车」「步行」「骑行」「公交」——每种方式是一个策略。你只需要选择策略，导航用该策略算路线。加一种「飞行」策略，不需要改原有代码——符合开闭原则。
+</div>
+
+<div class="key-idea">
+  策略模式的本质是<strong>用多态替代条件分支</strong>。与其写一堆 <code>if-else</code> 判断走哪条路，不如把每条路封装成对象，运行时动态切换。这是面向对象设计消除 <code>if-else</code> 地狱的经典武器。
+</div>
+
+<h2>六、工厂模式 (Factory)</h2>
+
+<h3>解决的问题</h3>
+<p>假设你的程序需要创建多种「形状」对象：圆形、方形、三角形。如果到处直接 <code>Circle()</code>、<code>Square()</code>，一旦需求变化（比如改成需要传参数、或换一个实现类），所有调用处都要改。</p>
+
+<p>工厂模式把「创建对象」这件事<strong>集中到一个地方</strong>，让调用者不关心对象怎么造，只关心拿到对象后能用。</p>
+
+<div class="vocab-card">
+  <span class="term">工厂模式 (Factory)</span><br>
+  定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类。属于<strong>创建型模式</strong>。
+</div>
+
+<h3>结构</h3>
+<pre><code>from abc import ABC, abstractmethod
+
+# 产品接口
+class Shape(ABC):
+    @abstractmethod
+    def draw(self):
+        pass
+
+# 具体产品
+class Circle(Shape):
+    def draw(self):
+        print("● 画一个圆")
+
+class Square(Shape):
+    def draw(self):
+        print("■ 画一个方形")
+
+class Triangle(Shape):
+    def draw(self):
+        print("▲ 画一个三角")
+
+# 工厂：集中管理创建逻辑
+class ShapeFactory:
+    @staticmethod
+    def create(shape_type):
+        if shape_type == "circle":
+            return Circle()
+        elif shape_type == "square":
+            return Square()
+        elif shape_type == "triangle":
+            return Triangle()
+        raise ValueError(f"未知形状: {shape_type}")
+
+# 调用者不需要知道具体类名
+s1 = ShapeFactory.create("circle")
+s2 = ShapeFactory.create("square")
+s1.draw()  # ● 画一个圆
+s2.draw()  # ■ 画一个方形</code></pre>
+
+<div class="example-box">
+  <strong>现实类比：</strong>快递公司就是一个「包裹工厂」。你只需要说「寄到北京」，快递公司内部决定用哪家承运商、什么车型——你不需要关心这些细节。如果某天承运商换了，你的寄件方式不变。
+</div>
+
+<h3>工厂 vs 直接 new</h3>
+<p>初学者常问：「为什么不直接 <code>Circle()</code>？多此一举？」答案在于<strong>变化的隔离</strong>。当创建逻辑变得复杂——需要读配置、需要缓存、需要根据运行时条件选择不同实现——工厂就把这些复杂度封装起来，调用方代码完全不用动。</p>
+
+<div class="key-idea">
+  工厂模式的核心价值：<strong>封装变化</strong>。它把「创建对象」和「使用对象」分离，让系统的某一部分变化时，不影响其他部分。这是依赖倒置原则的体现——高层模块不应该依赖低层模块，二者都应该依赖抽象。
+</div>
+
+<h2>七、其他常见模式速览</h2>
+
+<p>除了上面四个，还有许多模式在实践中频繁出现。这里做一个速览，帮助你建立全景认知：</p>
+
+<h3>装饰器模式 (Decorator)</h3>
+<p><strong>意图</strong>：动态地给一个对象添加职责，而不改变其接口。比继承更灵活。</p>
+<p><strong>例子</strong>：给一杯咖啡动态加「牛奶」「糖」「奶泡」——每加一层就是一个装饰器。Python 的 <code>@decorator</code> 语法就是这个名字的来源。</p>
+
+<h3>适配器模式 (Adapter)</h3>
+<p><strong>意图</strong>：把一个类的接口转换成客户端期望的另一个接口。让原本不兼容的类能一起工作。</p>
+<p><strong>例子</strong>：你的笔记本只有 USB-C 接口，但鼠标是 USB-A 的——需要一个「转接头」。适配器模式就是这个转接头。</p>
+
+<h3>代理模式 (Proxy)</h3>
+<p><strong>意图</strong>：为其他对象提供一个代理，以控制对这个对象的访问。</p>
+<p><strong>例子</strong>：远程代理（RPC 客户端）、缓存代理、权限校验代理。你调用的是代理，代理帮你转发或拦截。</p>
+
+<h3>命令模式 (Command)</h3>
+<p><strong>意图</strong>：把「请求」封装成对象，从而可以用不同的请求对客户进行参数化、排队请求、记录日志、支持撤销。</p>
+<p><strong>例子</strong>：文本编辑器的「撤销 / 重做」功能。每个操作都是一个命令对象，存在历史栈里。</p>
+
+<h2>八、模式的另一面：过度设计</h2>
+
+<p>学完模式，最容易犯的错误是<strong>拿着锤子找钉子</strong>——看到什么都想套个模式。这是初学者的通病，被称为「模式病」。</p>
+
+<div class="key-idea">
+  模式不是越多越好。每一个模式都引入了额外的类、接口、间接层。<strong>简单的问题用简单的方案解决</strong>——只有一个 <code>if-else</code> 的时候，不需要策略模式；只有两三种对象的时候，不需要工厂。
+</div>
+
+<p>判断何时该用模式，有一个朴素的原则：<strong>等痛点出现再重构</strong>。当你发现某段代码反复修改、难以扩展、耦合严重——这时再引入模式来解决<strong>具体的</strong>问题。而不是一开始就为「将来可能的需求」堆砌模式。</p>
+
+<div class="example-box">
+  <strong>工程经验：</strong>很多资深工程师的忠告是——<strong>先用最简单的方式实现，遇到第三次重复时再抽象</strong>（Rule of Three）。过早抽象比不抽象更危险，因为你预测的未来需求往往是错的。
+</div>
+
+<h2>九、设计原则：模式背后的道</h2>
+
+<p>模式是「术」，模式背后还有「道」——那就是面向对象设计的<strong>六大原则</strong>（SOLID + 两个补充）。理解了原则，你甚至能自己「发明」模式：</p>
+
+<ul>
+  <li><strong>单一职责原则 (SRP)</strong>：一个类只应该有一个引起它变化的原因。</li>
+  <li><strong>开闭原则 (OCP)</strong>：对扩展开放，对修改关闭。加功能时尽量加新代码，不改老代码。</li>
+  <li><strong>里氏替换原则 (LSP)</strong>：子类必须能替换父类而不影响程序正确性。</li>
+  <li><strong>接口隔离原则 (ISP)</strong>：客户端不应该依赖它不需要的接口。</li>
+  <li><strong>依赖倒置原则 (DIP)</strong>：依赖抽象，不依赖具体实现。</li>
+</ul>
+
+<div class="key-idea">
+  每一个设计模式，本质上都是这五个原则在特定场景下的应用。策略模式体现了开闭原则和依赖倒置；工厂模式体现了依赖倒置；观察者模式体现了开闭原则。先理解原则，模式就是水到渠成的事。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>设计模式是反复出现的设计问题的可复用方案，更是工程师之间的「共同词汇」</li>
+    <li>三大分类：创建型（怎么造）、结构型（怎么搭）、行为型（怎么协作）</li>
+    <li>单例保证全局唯一实例，但要警惕全局状态的测试和并发陷阱</li>
+    <li>观察者实现一对多通知，是事件驱动、响应式系统的基石</li>
+    <li>策略用多态替代条件分支，工厂封装对象的创建过程</li>
+    <li>模式是把双刃剑：解决真实痛点是利器，过度设计是负担</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 建筑学</strong>：设计模式的概念直接来自建筑学家 Christopher Alexander 的《建筑模式语言》——他提出「模式」是反复出现的空间问题的通用解法。软件领域借用了这个思想。</li>
+  <li><strong>→ 语言学</strong>：模式作为「共同词汇」，就像专业术语让沟通更高效。没有术语，每次都要从零描述；有了术语，一个词就能传递复杂含义。</li>
+  <li><strong>→ 心理学</strong>：模式识别是人类认知的核心能力。我们大脑天生擅长从重复经验中提取「模式」——这正是设计模式的认知基础。</li>
+  <li><strong>→ 经济学</strong>：「过度设计」本质是「过早投资」，类似经济学的「期权价值」——保持灵活性（简单方案）比提前锁定（复杂架构）更值钱，当未来不确定性高时。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：前端框架的响应式系统。</strong>Vue 的数据变化能自动触发视图更新，底层就是观察者模式。每个数据属性是一个被观察者，依赖它的组件是观察者。数据变了，组件自动重新渲染——你不需要手动调用刷新。
+</div>
+<div class="example-box">
+  <strong>案例 2：Python 的 <code>logging</code> 模块。</strong>Python 标准库的 <code>logging.getLogger()</code> 就是单例模式——无论你在哪个文件调用，拿到的都是同一个 logger 实例，保证所有日志走统一的配置和输出通道。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 设计模式最核心的价值是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 让代码运行得更快</label>
+      <label><input type="radio" name="q1" value="b"> B. 提供一套共同的词汇，让设计沟通更高效</label>
+      <label><input type="radio" name="q1" value="c"> C. 减少代码行数</label>
+      <label><input type="radio" name="q1" value="d"> D. 取代编程语言的学习</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q2.</span> GoF 设计模式的三大分类是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 创建型、结构型、行为型</label>
+      <label><input type="radio" name="q2" value="b"> B. 简单型、中级型、高级型</label>
+      <label><input type="radio" name="q2" value="c"> C. 数据型、逻辑型、界面型</label>
+      <label><input type="radio" name="q2" value="d"> D. 前端型、后端型、全栈型</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q3.</span> 单例模式属于哪一类？它解决什么问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 行为型——解决对象通信问题</label>
+      <label><input type="radio" name="q3" value="b"> B. 结构型——解决对象组合问题</label>
+      <label><input type="radio" name="q3" value="c"> C. 创建型——保证全局只有一个实例</label>
+      <label><input type="radio" name="q3" value="d"> D. 创建型——加速对象创建</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 关于单例模式的缺点，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 单例模式没有任何缺点</label>
+      <label><input type="radio" name="q4" value="b"> B. 单例模式无法实现</label>
+      <label><input type="radio" name="q4" value="c"> C. 单例模式会自动解决所有并发问题</label>
+      <label><input type="radio" name="q4" value="d"> D. 单例本质是全局状态，难以测试、并发下需加锁，容易被滥用</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 观察者模式的核心价值是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 让程序运行更快</label>
+      <label><input type="radio" name="q5" value="b"> B. 解耦——被观察者不需要知道观察者的具体身份</label>
+      <label><input type="radio" name="q5" value="c"> C. 保证只有一个实例</label>
+      <label><input type="radio" name="q5" value="d"> D. 加密通信内容</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q6.</span> 微信公众号的「关注-推送」机制，最符合哪个模式？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 观察者模式</label>
+      <label><input type="radio" name="q6" value="b"> B. 单例模式</label>
+      <label><input type="radio" name="q6" value="c"> C. 策略模式</label>
+      <label><input type="radio" name="q6" value="d"> D. 工厂模式</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q7.</span> 策略模式的本质是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 用全局变量替代函数</label>
+      <label><input type="radio" name="q7" value="b"> B. 用继承替代组合</label>
+      <label><input type="radio" name="q7" value="c"> C. 用多态替代条件分支（if-else）</label>
+      <label><input type="radio" name="q7" value="d"> D. 用注释替代文档</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 工厂模式解决的核心问题是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 让对象创建得更慢以节省内存</label>
+      <label><input type="radio" name="q8" value="b"> B. 禁止创建任何对象</label>
+      <label><input type="radio" name="q8" value="c"> C. 让所有对象变成同一个类型</label>
+      <label><input type="radio" name="q8" value="d"> D. 封装对象的创建过程，隔离「创建」与「使用」</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 「开闭原则」的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 代码写完就不允许再修改</label>
+      <label><input type="radio" name="q9" value="b"> B. 对扩展开放，对修改关闭——加功能尽量加新代码，不改老代码</label>
+      <label><input type="radio" name="q9" value="c"> C. 所有代码必须公开开源</label>
+      <label><input type="radio" name="q9" value="d"> D. 文件读写必须先 open 再 close</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> 适配器模式最贴切的现实类比是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. USB-C 转 USB-A 的转接头</label>
+      <label><input type="radio" name="q10" value="b"> B. 一个国家的总统</label>
+      <label><input type="radio" name="q10" value="c"> C. 微信公众号</label>
+      <label><input type="radio" name="q10" value="d"> D. 导航软件的路线选择</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> 关于「过度设计」，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 模式用得越多越好</label>
+      <label><input type="radio" name="q11" value="b"> B. 一开始就应该把所有模式都加上</label>
+      <label><input type="radio" name="q11" value="c"> C. 简单的问题用简单的方案，遇到真实痛点再引入模式</label>
+      <label><input type="radio" name="q11" value="d"> D. 过早抽象比不抽象更好</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 「Rule of Three」（三次法则）的含义是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 一个项目最多只能用三种模式</label>
+      <label><input type="radio" name="q12" value="b"> B. 代码写三遍就算通过</label>
+      <label><input type="radio" name="q12" value="c"> C. 每个函数不能超过三行</label>
+      <label><input type="radio" name="q12" value="d"> D. 同一段逻辑重复出现三次时，才值得抽象成模式或函数</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q13.</span> Vue/React 的响应式数据驱动视图更新，底层最核心运用了哪个模式？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 单例模式</label>
+      <label><input type="radio" name="q13" value="b"> B. 观察者模式</label>
+      <label><input type="radio" name="q13" value="c"> C. 工厂模式</label>
+      <label><input type="radio" name="q13" value="d"> D. 适配器模式</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0010-testing.html">← 上一课：测试与质量保证</a>
+  <span>第 11 课 / 共 12 课</span>
+  <a href="0012-software-architecture.html">下一课：软件架构 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '模式最大的价值是提供共同词汇。当你说「用观察者模式」，对方立刻理解设计意图。加速、省代码都是次要的，它不取代语言学习。' },
+  q2: { correct: 'a', explanation: 'GoF 三大分类：创建型（怎么造对象）、结构型（怎么组合对象）、行为型（对象怎么协作）。记住这个框架就能定位任何模式。' },
+  q3: { correct: 'c', explanation: '单例属于创建型，核心目的是保证全局只有一个实例。它不解决通信或组合问题，更不会加速创建。' },
+  q4: { correct: 'd', explanation: '单例本质是全局状态，在测试中无法隔离、在多线程下需要加锁，且常被初学者滥用。它能实现，但不是银弹。' },
+  q5: { correct: 'b', explanation: '观察者的核心价值是解耦：被观察者不关心有谁在观察、有几个。它只负责状态变化时通知。这让系统可灵活扩展。' },
+  q6: { correct: 'a', explanation: '公众号（被观察者）发文章时，关注者（观察者）自动收到推送——这是典型的发布-订阅机制，即观察者模式。' },
+  q7: { correct: 'c', explanation: '策略模式的本质是「用多态替代 if-else」。把每种算法封装成对象，运行时动态切换，消除条件分支地狱。' },
+  q8: { correct: 'd', explanation: '工厂模式封装对象的创建过程，把「创建」和「使用」分离。当创建逻辑变化时，只改工厂，调用方不受影响。' },
+  q9: { correct: 'b', explanation: '开闭原则 = 对扩展开放，对修改关闭。加新功能时尽量加新代码（新类、新方法），而不是改已有代码。' },
+  q10: { correct: 'a', explanation: '适配器就像 USB 转接头——让不兼容的接口能一起工作。总统是单例，公众号是观察者，导航是策略。' },
+  q11: { correct: 'c', explanation: '过度设计是初学者通病。简单问题用简单方案，遇到第三次重复或真实痛点时再抽象——这是工程经验的结晶。' },
+  q12: { correct: 'd', explanation: 'Rule of Three：同一段逻辑重复三次才值得抽象。前两次重复可能是巧合，第三次说明确实有模式可提取。过早抽象比不抽象更危险。' },
+  q13: { correct: 'b', explanation: '响应式系统的底层就是观察者模式：数据是被观察者，依赖它的视图组件是观察者。数据变化自动通知视图更新。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了设计模式的核心思想。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你理解了主要模式。重点复习错题涉及的分类和原则。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「四大模式」和「过度设计」部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。设计模式需要反复实践，先把四大经典模式的结构看懂。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

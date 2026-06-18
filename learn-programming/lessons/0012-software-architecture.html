@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 — 软件架构：从代码到系统</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .vocab-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: #fafafa;
+  }
+
+  .vocab-card .term {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .example-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box strong { color: #e65100; }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+
+  .quiz-section {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fafafa;
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .quiz-question:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .quiz-question p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .q-num {
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .quiz-options label {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .quiz-options label:hover {
+    background: var(--accent-light);
+  }
+
+  .quiz-options input[type="radio"] {
+    margin-right: 0.5rem;
+  }
+
+  .feedback {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct);
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1px solid var(--wrong);
+  }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-box .score-num {
+    font-size: 2rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-box p { margin-top: 0.5rem; }
+
+  button.submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  button.submit-btn:hover { opacity: 0.9; }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  .key-idea {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+
+  .takeaway {
+    background: #e8f5e9;
+    border: 1px solid var(--correct);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>软件架构：从代码到系统</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第12课 / 共12课 · 约24分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解软件架构是什么，它和「写代码」有什么区别。掌握四种经典架构风格——分层架构、MVC、事件驱动、微服务——的原理、优劣和适用场景。建立「架构是关于权衡的」这一核心认知，学会在真实约束下做技术选型。
+</div>
+
+<h2>一、架构 vs 代码：你在哪个层次思考？</h2>
+
+<p>写代码时，你思考的是：「这个函数怎么实现？」「这个循环对不对？」「这个变量叫什么名字好？」——这是<strong>微观</strong>层面的思考。</p>
+
+<p>但当一个系统从几百行代码膨胀到几十万行、从一台服务器扩展到几百台、从一个人开发变成几十人协作时，另一类问题浮出水面：</p>
+<ul>
+  <li>系统应该分成哪几个部分？部分之间怎么通信？</li>
+  <li>数据存在哪里？谁来管理？</li>
+  <li>哪些逻辑放在一起，哪些必须分开？</li>
+  <li>当流量暴增十倍，系统能撑住吗？哪里是瓶颈？</li>
+</ul>
+
+<p>这些问题，就是<strong>软件架构</strong>要回答的。</p>
+
+<div class="vocab-card">
+  <span class="term">软件架构 (Software Architecture)</span><br>
+  系统的高层结构设计——定义系统的组件、组件之间的关系和交互方式、以及指导这种设计的原则。架构是关于<strong>如何组织</strong>系统的，而非系统「怎么实现」的。
+</div>
+
+<div class="key-idea">
+  如果写代码是「盖一堵墙」，那架构就是「设计整栋楼」——客厅在哪、卧室在哪、管道怎么走、承重墙在哪。墙砌得再好，如果整栋楼的结构设计错了，住户依然会觉得别扭。架构决定了系统的<strong>上限</strong>，代码质量决定了你离这个上限有多近。
+</div>
+
+<div class="example-box">
+  <strong>建筑类比：</strong>一位泥瓦匠手艺精湛，但他设计不了一座摩天大楼。摩天大楼需要建筑师考虑地基承载力、风载荷、电梯井布局、消防通道、管线走向——这些是「结构级」的决策，一旦建成，修改成本极高。软件架构也是一样：改一个函数只需几分钟，改一个架构可能需要几个月。
+</div>
+
+<h2>二、架构的核心目标</h2>
+
+<p>所有架构风格，本质上都在追求以下几个目标的<strong>平衡</strong>：</p>
+
+<ul>
+  <li><strong>可维护性</strong>：代码容易理解、修改、扩展。新人能快速上手。</li>
+  <li><strong>可扩展性 (Scalability)</strong>：负载增长时，系统能通过加资源（横向）或升级资源（纵向）来应对。</li>
+  <li><strong>可靠性 (Reliability)</strong>：部分组件故障时，系统整体仍然可用。</li>
+  <li><strong>可测试性</strong>：每个部分可以独立测试，快速定位问题。</li>
+  <li><strong>性能</strong>：在资源约束下，响应快、吞吐量高。</li>
+</ul>
+
+<div class="key-idea">
+  架构的核心真相：<strong>这些目标往往是互相矛盾的</strong>。追求极致性能可能牺牲可维护性；追求高可靠性可能增加复杂度和成本；追求微服务可扩展性可能引入分布式系统的各种难题。架构师的工作不是「全都做到」，而是<strong>在约束下找到最优权衡</strong>。
+</div>
+
+<h2>三、分层架构 (Layered Architecture)</h2>
+
+<p>这是最经典、最直觉、也是大多数系统默认采用的架构风格。核心思想：<strong>把系统分成若干层，每层只和相邻的层通信</strong>。</p>
+
+<h3>典型的四层结构</h3>
+
+<pre><code>┌─────────────────────────┐
+│  表现层 (Presentation)   │  ← 用户界面、API 接口
+├─────────────────────────┤
+│  业务逻辑层 (Business)   │  ← 核心规则、流程编排
+├─────────────────────────┤
+│  持久层 (Persistence)    │  ← 数据访问、ORM
+├─────────────────────────┤
+│  数据库层 (Database)     │  ← MySQL / PostgreSQL
+└─────────────────────────┘
+    每层只依赖它的下一层</code></pre>
+
+<div class="vocab-card">
+  <span class="term">分层架构 (Layered / N-tier Architecture)</span><br>
+  将系统组织成水平层次，每层承担特定职责，层与层之间通过明确定义的接口通信。请求自上而下流转，<strong>每层只依赖直接下层</strong>，不跨层调用。
+</div>
+
+<div class="example-box">
+  <strong>现实类比：</strong>一家公司的组织架构。CEO（表现层）给总监（业务层）下指令，总监给经理（持久层）安排任务，经理指挥一线员工（数据库层）。CEO 不会直接跑去指挥一线员工——必须层层传达。这种层级保证秩序，但也意味着沟通链路长。
+</div>
+
+<h3>优缺点</h3>
+<p><strong>优点</strong>：结构清晰、容易理解、职责分离明确、每层可独立替换（比如换个数据库只改持久层）。这是最成熟的架构，团队上手成本低。</p>
+<p><strong>缺点</strong>：简单的请求也要穿过所有层（哪怕业务层什么都不做），效率低；层间依赖容易导致「改一层影响多层」；难以横向扩展——整个应用是一个整体（单体应用 Monolith）。</p>
+
+<div class="key-idea">
+  分层架构的陷阱：<strong>层间泄漏</strong>。本该封装在业务层的逻辑泄漏到表现层（比如在 API 接口里直接写 SQL），或者数据库细节泄漏到业务层。一旦泄漏，分层的隔离价值就消失了。好的分层需要严格的纪律。
+</div>
+
+<h2>四、MVC 架构</h2>
+
+<p>MVC (Model-View-Controller) 是分层架构在<strong>用户界面</strong>领域的特化版本，也是被应用得最广泛的 UI 架构模式。几乎所有的 Web 框架——Rails、Django、Spring MVC、ASP.NET MVC——都以它为基础。</p>
+
+<h3>三个角色</h3>
+
+<pre><code>      用户操作
+         │
+         ▼
+  ┌─────────────┐
+  │  Controller  │  ← 接收输入，调度逻辑
+  └──────┬───────┘
+         │  调用
+         ▼
+  ┌─────────────┐
+  │    Model     │  ← 数据 + 业务规则
+  └──────┬───────┘
+         │  数据变化通知
+         ▼
+  ┌─────────────┐
+  │     View     │  ← 渲染界面给用户
+  └─────────────┘</code></pre>
+
+<ul>
+  <li><strong>Model（模型）</strong>：管理数据和业务逻辑。它不关心数据怎么展示。</li>
+  <li><strong>View（视图）</strong>：负责展示。它从 Model 获取数据并渲染给用户，不包含业务逻辑。</li>
+  <li><strong>Controller（控制器）</strong>：接收用户输入，调用 Model 处理，选择合适的 View 响应。它是 M 和 V 之间的「协调员」。</li>
+</ul>
+
+<div class="vocab-card">
+  <span class="term">MVC (Model-View-Controller)</span><br>
+  一种将应用程序分为数据模型 (Model)、用户界面 (View) 和输入控制 (Controller) 三个部分的架构模式。核心目的是<strong>分离关注点</strong>——让数据、展示、控制各自独立变化。
+</div>
+
+<div class="example-box">
+  <strong>现实类比：</strong>一家餐厅。Model 是后厨和仓库（食材、菜谱、做菜逻辑），View 是菜单和餐桌摆盘（顾客看到的），Controller 是服务员（接收点单，传达给后厨，把菜端给顾客）。服务员不做饭，后厨不直接见顾客——各司其职。
+</div>
+
+<h3>为什么重要</h3>
+<p>MVC 的核心价值是<strong>关注点分离 (Separation of Concerns)</strong>。当你需要换一个界面风格（比如把网页改成 App），只需要改 View，Model 和 Controller 不动。当你修改业务规则，只改 Model，View 不受影响。这种隔离让系统的每一部分可以独立开发、测试、演进。</p>
+
+<div class="key-idea">
+  MVC 是后面所有 UI 架构演化的起点。MVP（Model-View-Presenter）、MVVM（Model-View-ViewModel，Vue/Knockout 的基础）都是 MVC 的变体——它们都在解决同一个问题：怎么让 UI 逻辑和数据逻辑干净地分离。
+</div>
+
+<h2>五、事件驱动架构 (Event-Driven)</h2>
+
+<p>传统的架构是「请求-响应」模式：客户端问，服务器答。但有些场景下，更有用的是<strong>事件驱动</strong>——某件事发生了（事件），关心这件事的人各自去处理，事件的产生者和处理者互不知道对方。</p>
+
+<h3>工作原理</h3>
+
+<pre><code>事件生产者          事件总线 / 消息队列          事件消费者
+                         ┌──────────┐
+  订单服务 ──"下单"──→  │  Event   │  ──→ 库存服务（扣库存）
+                         │  Bus /   │  ──→ 通知服务（发短信）
+  支付服务 ──"已付"──→  │  Message │  ──→ 积分服务（加积分）
+                         │  Queue   │  ──→ 分析服务（统计数据）
+                         └──────────┘
+  生产者不关心谁来消费
+  消费者不关心谁生产的</code></pre>
+
+<div class="vocab-card">
+  <span class="term">事件驱动架构 (Event-Driven Architecture, EDA)</span><br>
+  系统的组件通过<strong>产生和消费事件</strong>来通信。事件是「某件已经发生的事情」的记录。生产者发布事件，不知道也不关心谁会处理；消费者监听事件，不知道也不关心谁产生的。
+</div>
+
+<div class="example-box">
+  <strong>现实类比：</strong>消防警报系统。某处着火（事件产生），警报拉响（事件发布），消防队出动、医院待命、交通管制——各方各自响应，互不协调但配合默契。着火的地方不需要打电话逐个通知消防队、医院——它只需要「喊一声」。
+</div>
+
+<h3>优缺点</h3>
+<p><strong>优点</strong>：极度松耦合——加一个新功能（新消费者），完全不用动生产者；天然支持异步，提高吞吐；可扩展性强。</p>
+<p><strong>缺点</strong>：流程不直观——「一个请求到底经过了哪些步骤」很难追踪；调试困难（事件可能在任何时间被任何消费者处理）；最终一致性问题——数据可能在短时间内不一致。</p>
+
+<div class="key-idea">
+  事件驱动架构的关键挑战是<strong>调试和可追溯性</strong>。在传统请求-响应模型中，一个请求的调用栈清晰可见；在事件驱动中，事件可能经过十几个异步消费者，出问题时极难定位「到底哪一步错了」。这就是为什么需要分布式追踪工具（如 Jaeger、Zipkin）。
+</div>
+
+<h2>六、微服务架构 (Microservices)</h2>
+
+<p>这是过去十年最热门的架构风格。理解它，要先理解它的对立面——<strong>单体架构 (Monolith)</strong>。</p>
+
+<h3>单体 vs 微服务</h3>
+
+<pre><code>单体架构：                          微服务架构：
+┌───────────────────┐              ┌────────┐ ┌────────┐ ┌────────┐
+│  用户管理         │              │ 用户   │ │ 订单   │ │ 支付   │
+│  订单管理    一个  │              │ 服务   │ │ 服务   │ │ 服务   │
+│  支付管理    进程  │              └───┬────┘ └───┬────┘ └───┬────┘
+│  库存管理         │                  │          │          │
+│  通知服务         │                  └──── API 网关 ────────┘
+└───────────────────┘                      各自独立部署、独立扩展</code></pre>
+
+<p>单体架构把所有功能打包成一个应用。优点是简单——开发、测试、部署都方便。但当系统变大，单体的问题暴露：改一行代码要重新部署整个系统；一个模块的 bug 可能拖垮全局；几十个人改同一个代码库，冲突不断。</p>
+
+<div class="vocab-card">
+  <span class="term">微服务架构 (Microservices)</span><br>
+  将一个大型应用拆分为若干<strong>小型、独立、自治的服务</strong>，每个服务围绕特定的业务能力构建，独立部署、独立扩展、拥有自己的数据库。服务之间通过轻量级协议（通常是 HTTP/REST 或消息队列）通信。
+</div>
+
+<h3>微服务的特征</h3>
+<ul>
+  <li><strong>单一职责</strong>：每个服务做一件事，并把它做好。</li>
+  <li><strong>独立部署</strong>：升级用户服务不需要重新部署订单服务。</li>
+  <li><strong>独立数据存储</strong>：每个服务有自己的数据库，不共享——避免数据耦合。</li>
+  <li><strong>去中心化</strong>：没有全局的技术栈约束，Java 服务可以和 Go 服务共存。</li>
+  <li><strong>按业务能力划分</strong>：不是按技术层（前端/后端），而是按业务领域（订单/用户/支付）。</li>
+</ul>
+
+<div class="example-box">
+  <strong>现实类比：</strong>单体架构像一家「大而全」的公司——销售、生产、财务、后勤全在一个大楼里，共用一套管理系统。微服务像把这家公司拆成多家独立子公司——销售公司、生产公司、财务公司，各自独立运营，通过合同（API）协作。子公司更灵活，但协调成本更高。
+</div>
+
+<h3>微服务的代价</h3>
+
+<p>微服务不是银弹。它在解决单体问题的同时，引入了一整套分布式系统的复杂性：</p>
+
+<ul>
+  <li><strong>网络不可靠</strong>：服务间调用走网络，随时可能超时、失败。需要重试、熔断、降级机制。</li>
+  <li><strong>数据一致性</strong>：跨服务的事务怎么保证？分布式事务（如 Saga 模式）极其复杂。</li>
+  <li><strong>运维复杂度</strong>：从部署一个应用变成部署几十个服务，需要容器编排（K8s）、服务网格、配置中心。</li>
+  <li><strong>调试困难</strong>：一个请求经过五个服务，出问题需要分布式追踪才能定位。</li>
+  <li><strong>团队成本</strong>：需要 DevOps 能力、CI/CD 流水线、自动化监控。</li>
+</ul>
+
+<div class="key-idea">
+  微服务第一定律：<strong>先单体，后微服务</strong>。绝大多数成功的微服务系统，都是从单体演化来的——而不是一开始就设计的。Martin Fowler 的「微服务溢价」理论指出：只有在团队规模和系统复杂度达到一定程度后，微服务的收益才大于它的成本。过早拆分，是把单体内部的复杂度变成了网络层面的复杂度——更难处理。
+</div>
+
+<h2>七、如何选择架构？</h2>
+
+<p>没有「最好的」架构，只有「最适合当前场景的」架构。选择时考虑以下因素：</p>
+
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.85rem;">
+  <thead>
+    <tr style="border-bottom:2px solid var(--accent);">
+      <th style="text-align:left; padding:0.5rem;">场景</th>
+      <th style="text-align:left; padding:0.5rem;">推荐架构</th>
+      <th style="text-align:left; padding:0.5rem;">理由</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">小型项目 / MVP</td>
+      <td style="padding:0.5rem;">单体 + 分层</td>
+      <td style="padding:0.5rem;">简单、快速、运维成本低</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">Web 应用（前后端）</td>
+      <td style="padding:0.5rem;">MVC</td>
+      <td style="padding:0.5rem;">关注点分离，UI 与逻辑独立演进</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">实时 / 异步处理</td>
+      <td style="padding:0.5rem;">事件驱动</td>
+      <td style="padding:0.5rem;">松耦合、高吞吐、异步响应</td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:0.5rem;">大规模 / 多团队</td>
+      <td style="padding:0.5rem;">微服务</td>
+      <td style="padding:0.5rem;">独立部署、独立扩展、团队自治</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="key-idea">
+  架构选择的黄金法则：<strong>用能解决当前问题的最简单方案</strong>。如果单体够用，就用单体。当单体的某个部分成为瓶颈，再把它拆出来。架构是<strong>演化</strong>出来的，不是<strong>设计</strong>出来的。Netflix、Amazon、Uber 的微服务架构，都是在业务增长倒逼下逐步拆分的。
+</div>
+
+<h2>八、架构的反模式</h2>
+
+<p>了解正确的架构固然重要，了解<strong>错误的架构</strong>同样有价值。以下是几个常见的「反模式」：</p>
+
+<h3>1. 分布式单体 (Distributed Monolith)</h3>
+<p>名义上拆成了微服务，实际上服务之间高度耦合——改一个服务必须同时部署其他服务，或者多个服务共享同一个数据库。结果是：既没有微服务的灵活性，又背上了分布式系统的全部复杂度。<strong>最差的状态</strong>。</p>
+
+<h3>2. 过早微服务化</h3>
+<p>团队只有三五个人、系统刚上线，就迫不及待地拆成二十个微服务。结果大部分时间花在服务间通信和运维上，业务开发效率极低。<strong>先单体，后微服务</strong>。</p>
+
+<h3>3. 神级对象 (God Object / God Class)</h3>
+<p>一个类或模块承担了太多职责——既管用户认证，又管订单处理，还管发邮件。修改任何功能都要碰这个类，它成了整个系统的瓶颈点。违反单一职责原则。</p>
+
+<h3>4. 大泥球 (Big Ball of Mud)</h3>
+<p>系统没有任何架构约束，代码随意堆砌，依赖关系错综复杂如蜘蛛网。改一处牵动全身，谁也不敢重构。这是<strong>没有架构</strong>的最终形态——也是大多数遗留系统的真实状态。</p>
+
+<div class="key-idea">
+  反模式的共同根源：<strong>缺乏约束和纪律</strong>。好的架构不仅是一张设计图，更是一套<strong>持续维护的规则</strong>。如果团队不遵守层间隔离、不控制服务边界、不管理依赖方向，再好的架构设计也会退化为「大泥球」。
+</div>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>架构是系统的高层组织决策，决定了系统的上限；代码质量决定你离上限有多近</li>
+    <li>架构的目标是平衡：可维护性、可扩展性、可靠性、性能——它们往往互相矛盾</li>
+    <li>分层架构是最经典的默认选择，MVC 是 UI 领域的关注点分离方案</li>
+    <li>事件驱动极度松耦合但调试困难，微服务支持独立扩展但引入分布式复杂性</li>
+    <li>没有最好的架构，只有最适合的——用最简单的方案解决当前问题，随业务演化</li>
+    <li>先单体后微服务：成功的架构是演化出来的，不是一开始设计出来的</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 城市规划</strong>：软件架构与城市规划高度相似——分区（商业区/住宅区 = 不同服务）、交通网络（道路 = API/消息总线）、基础设施（水电 = 数据库/缓存）。一座好城市和一套好架构都需要前瞻性的顶层设计。</li>
+  <li><strong>→ 组织管理学</strong>：Conway 定律指出「系统的架构会映射组织的沟通结构」。微服务的独立团队结构，本质上对应了康威定律——把大组织拆成小团队，每个团队负责一个服务。</li>
+  <li><strong>→ 生物学</strong>：微服务的「独立自治、通过协议协作」很像多细胞生物——每个细胞有自己的功能，通过化学信号（激素/神经递质）协作。而单体像单细胞生物——简单但体积有限。</li>
+  <li><strong>→ 经济学</strong>：架构选型本质是「成本-收益」分析。微服务的运维成本（基础设施、监控、人力）是固定开销，只有当业务规模带来的收益超过这个开销，才值得采用——这和工厂规模经济的逻辑一致。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：Netflix 的微服务演化。</strong>Netflix 早期是一个单体应用。2008 年一次数据库故障导致全线停服三天后，他们决定迁移到 AWS 云并以微服务架构重构。如今 Netflix 运行着数百个微服务——推荐、播放、计费、字幕各自独立。一个字幕服务出问题，不影响你看电影。这就是微服务的核心价值：<strong>故障隔离</strong>。
+</div>
+<div class="example-box">
+  <strong>案例 2：你手机上的每一个 App。</strong>无论是微信、淘宝还是抖音，前端用的都是 MVC/MVVM 架构的变体——界面（View）、数据（Model）、逻辑（Controller/ViewModel）严格分离。这就是为什么 App 能频繁更新 UI 而不影响你的数据——改 View 不碰 Model。
+</div>
+<div class="example-box">
+  <strong>案例 3：12306 春运抢票。</strong>春运期间流量暴增百倍，12306 采用事件驱动 + 微服务：购票请求先进入消息队列（削峰填谷），后端的余票计算、支付、通知各自独立消费事件。如果用单体同步处理，系统在第一秒就会崩溃。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 软件架构和写代码的核心区别是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 架构是项目经理做的事，写代码是程序员做的</label>
+      <label><input type="radio" name="q1" value="b"> B. 架构关注系统的高层组织和组件关系，代码关注具体实现</label>
+      <label><input type="radio" name="q1" value="c"> C. 架构比写代码简单</label>
+      <label><input type="radio" name="q1" value="d"> D. 架构就是画 UML 图</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 架构师的核心工作是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 让所有指标都达到最优</label>
+      <label><input type="radio" name="q2" value="b"> B. 写出最少的代码</label>
+      <label><input type="radio" name="q2" value="c"> C. 在互相矛盾的目标之间找到最优权衡</label>
+      <label><input type="radio" name="q2" value="d"> D. 选择最新的技术栈</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 分层架构的核心规则是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 每层只和相邻的层通信，不跨层调用</label>
+      <label><input type="radio" name="q3" value="b"> B. 每层必须调用所有其他层</label>
+      <label><input type="radio" name="q3" value="c"> C. 层数越多越好</label>
+      <label><input type="radio" name="q3" value="d"> D. 所有逻辑放在同一层</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> MVC 中，Controller 的职责是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 管理数据和业务逻辑</label>
+      <label><input type="radio" name="q4" value="b"> B. 渲染用户界面</label>
+      <label><input type="radio" name="q4" value="c"> C. 直接操作数据库</label>
+      <label><input type="radio" name="q4" value="d"> D. 接收用户输入，协调 Model 和 View</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> MVC 的核心价值「关注点分离」意味着？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 所有代码集中在一个文件</label>
+      <label><input type="radio" name="q5" value="b"> B. 数据、展示、控制各自独立，可以独立变化和测试</label>
+      <label><input type="radio" name="q5" value="c"> C. 每个程序员只做自己的部分，互不交流</label>
+      <label><input type="radio" name="q5" value="d"> D. 把所有功能都放到 View 里</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 事件驱动架构中，事件生产者和消费者的关系是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 生产者必须知道所有消费者并逐一调用</label>
+      <label><input type="radio" name="q6" value="b"> B. 消费者必须知道事件的来源</label>
+      <label><input type="radio" name="q6" value="c"> C. 互相不知道对方——生产者只管发布，消费者只管监听</label>
+      <label><input type="radio" name="q6" value="d"> D. 只能有一个消费者</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 事件驱动架构的主要缺点是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 流程不直观、调试和追溯困难</label>
+      <label><input type="radio" name="q7" value="b"> B. 无法处理任何异步操作</label>
+      <label><input type="radio" name="q7" value="c"> C. 性能极差</label>
+      <label><input type="radio" name="q7" value="d"> D. 必须使用单体架构</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 微服务架构的核心特征<strong>不包括</strong>？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 每个服务独立部署</label>
+      <label><input type="radio" name="q8" value="b"> B. 每个服务有自己的数据库</label>
+      <label><input type="radio" name="q8" value="c"> C. 服务间通过轻量级协议通信</label>
+      <label><input type="radio" name="q8" value="d"> D. 所有服务共享同一个数据库和代码仓库</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q9.</span> 「分布式单体」反模式指的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 一种高效的微服务部署方式</label>
+      <label><input type="radio" name="q9" value="b"> B. 名义上是微服务，实际高度耦合，既有单体缺点又有分布式复杂度</label>
+      <label><input type="radio" name="q9" value="c"> C. 单体架构的最佳实践</label>
+      <label><input type="radio" name="q9" value="d"> D. 分布式系统的理想状态</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> Martin Fowler 关于微服务的「先单体后微服务」建议，核心逻辑是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 微服务的运维成本高，只有规模足够大时收益才超过成本</label>
+      <label><input type="radio" name="q10" value="b"> B. 单体永远比微服务好</label>
+      <label><input type="radio" name="q10" value="c"> C. 微服务无法从单体演化而来</label>
+      <label><input type="radio" name="q10" value="d"> D. 小团队也应该一开始就用微服务</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q11.</span> Conway 定律的核心观点是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. 架构决定了团队结构，反过来不影响</label>
+      <label><input type="radio" name="q11" value="b"> B. 微服务比单体总是更好</label>
+      <label><input type="radio" name="q11" value="c"> C. 系统的架构会映射设计该系统的组织的沟通结构</label>
+      <label><input type="radio" name="q11" value="d"> D. 架构师不需要了解团队</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q12.</span> 对于一个刚起步的创业项目（3人团队、产品验证阶段），最合适的架构是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 微服务架构——为未来扩展做准备</label>
+      <label><input type="radio" name="q12" value="b"> B. 事件驱动架构——追求高吞吐</label>
+      <label><input type="radio" name="q12" value="c"> C. 复杂的多层分布式架构</label>
+      <label><input type="radio" name="q12" value="d"> D. 单体 + 分层架构——简单快速，验证产品优先</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q13.</span> 「大泥球 (Big Ball of Mud)」反模式的根本原因是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q13" value="a"> A. 使用了微服务架构</label>
+      <label><input type="radio" name="q13" value="b"> B. 没有任何架构约束，代码随意堆砌，依赖关系混乱</label>
+      <label><input type="radio" name="q13" value="c"> C. 架构设计过于严格</label>
+      <label><input type="radio" name="q13" value="d"> D. 团队人数太少</label>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0011-design-patterns.html">← 上一课：设计模式</a>
+  <span>第 12 课 / 共 12 课 · 课程完结 🎓</span>
+  <a href="../index.html">返回目录 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '架构关注系统高层组织——组件如何划分、如何交互；代码关注具体怎么实现。架构决定上限，代码质量决定你离上限多近。' },
+  q2: { correct: 'c', explanation: '架构的核心是权衡。可维护性、可扩展性、可靠性、性能往往互相矛盾，不可能全优。架构师的工作是在约束下找最优平衡。' },
+  q3: { correct: 'a', explanation: '分层架构的核心规则：每层只和相邻层通信，不跨层调用。这保证隔离性——改一层最多影响相邻层。' },
+  q4: { correct: 'd', explanation: 'Controller 是协调员——接收输入、调用 Model 处理、选择 View 响应。Model 管数据逻辑，View 管展示。' },
+  q5: { correct: 'b', explanation: '关注点分离意味着数据、展示、控制各自独立。换 UI 只改 View，改业务规则只动 Model——互不影响。' },
+  q6: { correct: 'c', explanation: '事件驱动的核心是解耦：生产者只管发布事件，消费者只管监听。双方互不知道对方——这就是松耦合。' },
+  q7: { correct: 'a', explanation: '事件驱动的主要缺点是流程不直观、调试困难。一个事件可能经过多个异步消费者，追踪「哪一步出错」极具挑战。' },
+  q8: { correct: 'd', explanation: '微服务的特征是独立部署、独立数据库、轻量协议通信。共享数据库是反模式——会导致数据耦合，破坏服务自治。' },
+  q9: { correct: 'b', explanation: '分布式单体是最差状态：名义上拆成微服务，实际高度耦合。改一个必须同时部署其他，既没有微服务灵活性，又有全部分布式复杂度。' },
+  q10: { correct: 'a', explanation: '微服务有固定的运维成本（基础设施、监控、人力）。只有当业务规模和团队复杂度足够大时，收益才超过成本。小团队过早微服务化得不偿失。' },
+  q11: { correct: 'c', explanation: 'Conway 定律：系统架构映射组织沟通结构。微服务的独立团队结构正是康威定律的体现——组织拆成小团队，每个团队负责一个服务。' },
+  q12: { correct: 'd', explanation: '创业初期最重要的是快速验证产品。单体 + 分层最简单、最快、运维成本最低。等产品验证成功、团队和流量增长后，再逐步拆分微服务。' },
+  q13: { correct: 'b', explanation: '大泥球是没有架构约束的最终形态——代码随意堆砌、依赖混乱如蛛网。根源是缺乏纪律和约束，不是技术选择问题。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经建立了完整的软件架构认知体系。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！你掌握了架构的核心概念。重点复习错题对应的架构风格。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「微服务代价」和「架构选择」部分。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。架构是经验积累型知识，先把四种架构风格的优缺点对比看懂。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>

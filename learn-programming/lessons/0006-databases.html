@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 数据库与SQL</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  pre { background: #1e1e2e; color: #cdd6f4; padding: 1rem 1.25rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.5; font-family: 'SF Mono', 'Fira Code', Consolas, monospace; }
+  pre code { font-family: inherit; }
+  code { font-family: 'SF Mono', 'Fira Code', Consolas, monospace; background: #f0f0f0; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+</style>
+</head>
+<body>
+
+<h1>数据库与SQL</h1>
+<p class="lesson-meta">TeachHub · 编程与计算机科学 · 第6课 / 共12课 · 约22分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解数据库为什么是现代软件的「心脏」——它让数据持久化、可查询、可并发、可恢复。掌握关系型数据库的核心概念（表、行、主键、外键），学会用 SQL 进行增删改查（CRUD），理解事务的 ACID 特性和索引的工作原理。最终你能回答：为什么几乎所有企业应用都离不开数据库。
+</div>
+
+<h2>一、为什么需要数据库？</h2>
+
+<p>到目前为止，你的程序处理的数据都存在<strong>内存</strong>里——程序一关，数据就消失了。但现实世界的要求是：</p>
+<ul>
+  <li><strong>持久化</strong>：银行余额、订单记录必须永久保存</li>
+  <li><strong>并发</strong>：上千用户同时查询和修改，不能互相覆盖</li>
+  <li><strong>查询</strong>：从十亿条记录中秒级找到「北京、过去 7 天、金额大于 1 万」的订单</li>
+  <li><strong>安全恢复</strong>：断电、崩溃后数据不丢、不损坏</li>
+</ul>
+
+<p>如果你用文件（如 JSON、CSV）存数据，以上每一条都会变成噩梦。数据库 (Database) 就是专门为解决这些问题而设计的<strong>数据管理系统</strong>。</p>
+
+<div class="key-idea">
+  数据库 ≠ 文件。数据库是一套专业软件，负责高效地存储、查询、并发控制、崩溃恢复。它让应用程序只管「我要什么数据」，不用操心「数据怎么存、怎么并发、怎么不丢」。
+</div>
+
+<h2>二、关系型数据库：用表格组织数据</h2>
+
+<p>最主流的数据库类型是<strong>关系型数据库</strong>（RDBMS），如 MySQL、PostgreSQL、Oracle、SQLite。它的核心思想是：用「表格」组织数据，用「关系」连接不同表。</p>
+
+<div class="vocab-card">
+  <span class="term">关系型数据库 (Relational Database)</span><br>
+  以「二维表」形式组织数据的数据库。每张表有列（字段/属性）和行（记录），表与表之间通过「外键」建立关联。1970 年由 E.F. Codd 提出，至今仍是企业数据存储的绝对主流。
+</div>
+
+<p>来看一个电商系统的例子：</p>
+
+<p><strong>users 表</strong></p>
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.85rem;">
+  <tr style="background:var(--accent-light);">
+    <th style="border:1px solid var(--border); padding:0.4rem;">id (主键)</th>
+    <th style="border:1px solid var(--border); padding:0.4rem;">name</th>
+    <th style="border:1px solid var(--border); padding:0.4rem;">email</th>
+  </tr>
+  <tr><td style="border:1px solid var(--border); padding:0.4rem;">1</td><td style="border:1px solid var(--border); padding:0.4rem;">Alice</td><td style="border:1px solid var(--border); padding:0.4rem;">alice@mail.com</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.4rem;">2</td><td style="border:1px solid var(--border); padding:0.4rem;">Bob</td><td style="border:1px solid var(--border); padding:0.4rem;">bob@mail.com</td></tr>
+</table>
+
+<p><strong>orders 表</strong></p>
+<table style="width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.85rem;">
+  <tr style="background:var(--accent-light);">
+    <th style="border:1px solid var(--border); padding:0.4rem;">id (主键)</th>
+    <th style="border:1px solid var(--border); padding:0.4rem;">user_id (外键)</th>
+    <th style="border:1px solid var(--border); padding:0.4rem;">amount</th>
+    <th style="border:1px solid var(--border); padding:0.4rem;">date</th>
+  </tr>
+  <tr><td style="border:1px solid var(--border); padding:0.4rem;">101</td><td style="border:1px solid var(--border); padding:0.4rem;">1</td><td style="border:1px solid var(--border); padding:0.4rem;">99.00</td><td style="border:1px solid var(--border); padding:0.4rem;">2024-01-15</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.4rem;">102</td><td style="border:1px solid var(--border); padding:0.4rem;">1</td><td style="border:1px solid var(--border); padding:0.4rem;">50.00</td><td style="border:1px solid var(--border); padding:0.4rem;">2024-01-20</td></tr>
+  <tr><td style="border:1px solid var(--border); padding:0.4rem;">103</td><td style="border:1px solid var(--border); padding:0.4rem;">2</td><td style="border:1px solid var(--border); padding:0.4rem;">200.00</td><td style="border:1px solid var(--border); padding:0.4rem;">2024-01-18</td></tr>
+</table>
+
+<p><code>orders.user_id</code> 是<strong>外键</strong>——它指向 <code>users.id</code>，建立了「订单属于用户」的关联。通过这种关联，你可以查询「Alice 的所有订单」而不需要把用户信息复制到每个订单里——这就是「关系」的力量。</p>
+
+<div class="vocab-card">
+  <span class="term">主键 (Primary Key)</span><br>
+  表中唯一标识每一行的列。每个值不能重复、不能为空。如 <code>users.id</code>。
+</div>
+
+<div class="vocab-card">
+  <span class="term">外键 (Foreign Key)</span><br>
+  表中引用另一张表主键的列，用于建立表间关联。如 <code>orders.user_id</code> 指向 <code>users.id</code>。外键保证了「引用完整性」——不能创建一个指向不存在用户的订单。
+</div>
+
+<h2>三、SQL：与数据库对话的语言</h2>
+
+<p>SQL (Structured Query Language) 是操作关系型数据库的标准语言。它是一种<strong>声明式语言</strong>——你描述「要什么数据」，数据库自己决定「怎么高效地找出来」（查询优化器）。核心操作分为四类，俗称 CRUD。</p>
+
+<h3>1. 查询 (SELECT) — 最常用的操作</h3>
+
+<pre><code>-- 查询所有用户
+SELECT * FROM users;
+
+-- 查询特定列
+SELECT name, email FROM users;
+
+-- 条件查询
+SELECT * FROM orders WHERE amount > 100;
+
+-- 排序
+SELECT * FROM orders ORDER BY amount DESC;
+
+-- 聚合统计
+SELECT user_id, COUNT(*) AS order_count, SUM(amount) AS total
+FROM orders
+GROUP BY user_id;
+-- 结果：每个用户的订单数和总金额</code></pre>
+
+<h3>2. 插入 (INSERT)</h3>
+
+<pre><code>INSERT INTO users (name, email) VALUES ('Charlie', 'charlie@mail.com');</code></pre>
+
+<h3>3. 更新 (UPDATE)</h3>
+
+<pre><code>UPDATE users SET email = 'newalice@mail.com' WHERE id = 1;</code></pre>
+
+<h3>4. 删除 (DELETE)</h3>
+
+<pre><code>DELETE FROM orders WHERE id = 103;</code></pre>
+
+<div class="key-idea">
+  SQL 的强大在于它的<strong>声明式</strong>特性。你写 <code>SELECT name FROM users WHERE age > 18</code>，数据库的查询优化器会自动决定用全表扫描还是索引查找——你不用关心执行细节。这正是第5课「声明式编程」思想在数据领域的体现。
+</div>
+
+<h2>四、JOIN：连接多张表</h2>
+
+<p>关系型数据库的精髓在于<strong>JOIN</strong>——把分散在不同表中的数据按关联条件拼在一起。</p>
+
+<pre><code>-- 查询每个订单及其对应的用户名
+SELECT orders.id, users.name, orders.amount
+FROM orders
+JOIN users ON orders.user_id = users.id;
+
+-- 结果：
+-- 101 | Alice | 99.00
+-- 102 | Alice | 50.00
+-- 103 | Bob   | 200.00</code></pre>
+
+<p>JOIN 的类型：</p>
+<ul>
+  <li><strong>INNER JOIN</strong>：只返回两表中都匹配的行（最常用）</li>
+  <li><strong>LEFT JOIN</strong>：返回左表所有行，右表没有的填 NULL</li>
+  <li><strong>RIGHT JOIN</strong>：返回右表所有行</li>
+  <li><strong>FULL OUTER JOIN</strong>：返回两表所有行</li>
+</ul>
+
+<div class="example-box">
+  <strong>直觉理解：</strong>INNER JOIN 像「求交集」——只有两边都有的才保留。LEFT JOIN 像「以左边为主，右边没匹配的就空着」。想象把两张表沿着外键「粘」在一起，不同的 JOIN 决定了没粘上的部分怎么处理。
+</div>
+
+<h2>五、事务与 ACID：保证数据一致性</h2>
+
+<p>这是数据库最强大的特性之一。假设 Alice 给 Bob 转账 100 元，操作分两步：(1) Alice 扣 100 元，(2) Bob 加 100 元。如果第一步成功、第二步失败（比如断电），Alice 的钱没了，Bob 没收到——灾难。<strong>事务 (Transaction)</strong> 就是解决这种问题的。</p>
+
+<div class="vocab-card">
+  <span class="term">事务 (Transaction)</span><br>
+  一组要么全部成功、要么全部回滚的操作单元。事务保证数据从一个一致状态转换到另一个一致状态，中间不会出现「半完成」的不一致。
+</div>
+
+<p>事务的四个特性——ACID：</p>
+<ul>
+  <li><strong>A — 原子性 (Atomicity)</strong>：事务是不可分割的原子单元。要么全做，要么全不做。不会出现「做了一半」。</li>
+  <li><strong>C — 一致性 (Consistency)</strong>：事务执行前后，数据必须满足所有约束（主键、外键、唯一性等）。不会留下违法的数据。</li>
+  <li><strong>I — 隔离性 (Isolation)</strong>：并发执行的多个事务互不干扰，仿佛是串行执行的。</li>
+  <li><strong>D — 持久性 (Durability)</strong>：事务一旦提交，结果就永久保存——即使系统崩溃也不会丢失。</li>
+</ul>
+
+<pre><code>-- 用事务包裹转账
+BEGIN TRANSACTION;
+  UPDATE accounts SET balance = balance - 100 WHERE user = 'Alice';
+  UPDATE accounts SET balance = balance + 100 WHERE user = 'Bob';
+COMMIT;  -- 两条都成功才提交；任一失败则 ROLLBACK 回滚</code></pre>
+
+<div class="key-idea">
+  ACID 是数据库区别于普通文件的根本所在。文件系统没有事务——写一半断电文件就损坏了。数据库通过预写日志 (WAL)、锁机制、MVCC 等技术，保证了即使在硬件故障下数据依然一致。
+</div>
+
+<h2>六、索引：让查询飞起来</h2>
+
+<p>没有索引时，<code>SELECT * FROM users WHERE email = 'x@y.com'</code> 要<strong>逐行扫描</strong>整张表——100 万行就比对 100 万次（O(n)）。这太慢了。</p>
+
+<p>索引 (Index) 就像书的目录——它是一种额外的数据结构（通常是 B+ 树），让数据库能<strong>快速定位</strong>到目标行。</p>
+
+<pre><code>-- 在 email 列上建索引
+CREATE INDEX idx_email ON users(email);
+
+-- 现在这个查询从 O(n) 降到 O(log n)
+SELECT * FROM users WHERE email = 'x@y.com';</code></pre>
+
+<p>这正是第3课「二分搜索」的工程化——B+ 树是二分搜索的多路推广，让数据库在海量数据上实现毫秒级查找。</p>
+
+<div class="example-box">
+  <strong>⚠ 索引不是免费的：</strong>索引加速了读，但拖慢了写（每次插入/更新都要维护索引树）。而且索引占额外磁盘空间。所以索引要加在「经常查询但很少修改」的列上。过度索引反而降低写入性能——这是工程权衡的典型案例。
+</div>
+
+<h2>七、NoSQL：非关系型数据库的崛起</h2>
+
+<p>关系型数据库统治了 40 年，但互联网时代催生了 <strong>NoSQL</strong>——处理关系型数据库不擅长的场景：</p>
+<ul>
+  <li><strong>文档数据库</strong>（MongoDB）：存灵活结构的 JSON 文档，适合内容管理、用户画像</li>
+  <li><strong>键值数据库</strong>（Redis）：极速缓存，微秒级响应，适合会话、排行榜</li>
+  <li><strong>列族数据库</strong>（Cassandra）：海量分布式写入，适合日志、IoT 数据</li>
+  <li><strong>图数据库</strong>（Neo4j）：存关系网络，适合社交、推荐、反欺诈</li>
+</ul>
+
+<p>NoSQL 放松了 ACID 的一致性要求（很多遵循 BASE——最终一致性），换取了更高的扩展性和灵活性。现代系统通常是<strong>混合架构</strong>：用关系型库存核心交易数据，用 Redis 做缓存，用 Elasticsearch 做全文搜索，用 MongoDB 存非结构化日志。</p>
+
+<div class="takeaway">
+  <strong>本课核心收获：</strong>
+  <ol style="margin: 0.5rem 0 0 1.5rem;">
+    <li>数据库 = 专业数据管理系统，解决持久化、并发、查询、恢复四大问题</li>
+    <li>关系型数据库用「表 + 主键 + 外键」组织数据，SQL 是操作它的声明式语言</li>
+    <li>SQL 四大操作：SELECT（查）、INSERT（增）、UPDATE（改）、DELETE（删）</li>
+    <li>JOIN 连接多表，事务的 ACID 保证数据一致性</li>
+    <li>索引（B+ 树）把查询从 O(n) 降到 O(log n)，但写入有代价——工程权衡</li>
+  </ol>
+</div>
+
+<h2>🔗 跨学科链接</h2>
+<ul>
+  <li><strong>→ 图书馆学</strong>：关系型数据库的表设计源于关系代数（Codd, 1970），而关系代数与图书馆的「卡片目录」异曲同工——都是用结构化方式组织海量信息。</li>
+  <li><strong>→ 会计学</strong>：事务的「原子性」与会计的「复式记账」本质相同——一笔交易必须借贷平衡，不能只记一半。ACID 的概念在会计中早有雏形。</li>
+  <li><strong>→ 数学</strong>：SQL 的 JOIN、SELECT、WHERE 对应关系代数的笛卡尔积、投影、选择运算。SQL 本质是「关系代数的可执行版本」。</li>
+  <li><strong>→ 城市规划</strong>：索引类似城市的「门牌号系统」——没有门牌号（索引），快递员要逐户敲门（全表扫描）；有了门牌号，直接定位。B+ 树是「分区→街道→门牌」的层级定位推广。</li>
+</ul>
+
+<h2>🌍 现实应用</h2>
+<div class="example-box">
+  <strong>案例 1：你每次网购的背后。</strong>当你下单时，数据库用一个事务完成：扣库存、创建订单、记支付、更新用户积分——四张表要么全成功要么全回滚。如果中间断电，你的钱不会被扣但订单没生成。这就是为什么电商系统可以放心做秒杀——ACID 保证了数据绝不出错。
+</div>
+<div class="example-box">
+  <strong>案例 2：银行的核心系统。</strong>全球银行每天处理数十亿笔交易，全部依赖关系型数据库的事务保证。一笔跨境汇款涉及几十个系统、上百次数据更新，但 ACID 保证最终状态一定正确。没有数据库的事务，整个金融体系无法运转。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q1.</span> 数据库相比普通文件系统，最核心的额外能力是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 存储容量更大</label>
+      <label><input type="radio" name="q1" value="b"> B. 文件格式更丰富</label>
+      <label><input type="radio" name="q1" value="c"> C. 持久化、并发控制、高效查询、崩溃恢复</label>
+      <label><input type="radio" name="q1" value="d"> D. 运行速度更快</label>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q2.</span> 关系型数据库用什么形式组织数据？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 树形结构</label>
+      <label><input type="radio" name="q2" value="b"> B. 二维表（行和列），表间用外键关联</label>
+      <label><input type="radio" name="q2" value="c"> C. 纯文本文件</label>
+      <label><input type="radio" name="q2" value="d"> D. 图结构</label>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> 「主键 (Primary Key)」的作用是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 唯一标识表中的每一行</label>
+      <label><input type="radio" name="q3" value="b"> B. 加密数据</label>
+      <label><input type="radio" name="q3" value="c"> C. 连接两张表</label>
+      <label><input type="radio" name="q3" value="d"> D. 排序数据</label>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> SQL 中，<code>SELECT name FROM users WHERE age > 18</code> 属于哪种编程范式？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 面向对象编程</label>
+      <label><input type="radio" name="q4" value="b"> B. 命令式编程</label>
+      <label><input type="radio" name="q4" value="c"> C. 面向过程编程</label>
+      <label><input type="radio" name="q4" value="d"> D. 声明式编程——描述「要什么」而非「怎么做」</label>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q5.</span> JOIN 操作的作用是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 合并两个数据库</label>
+      <label><input type="radio" name="q5" value="b"> B. 把数据连接成字符串</label>
+      <label><input type="radio" name="q5" value="c"> C. 根据关联条件，把多张表的数据拼在一起</label>
+      <label><input type="radio" name="q5" value="d"> D. 加快查询速度</label>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q6.</span> 事务的「原子性 (Atomicity)」意味着？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 事务中的操作要么全部成功，要么全部回滚</label>
+      <label><input type="radio" name="q6" value="b"> B. 事务执行速度极快</label>
+      <label><input type="radio" name="q6" value="c"> C. 事务只能操作一条记录</label>
+      <label><input type="radio" name="q6" value="d"> D. 事务数据会被原子化存储</label>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q7.</span> 转账场景中，为什么需要事务？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 让转账速度更快</label>
+      <label><input type="radio" name="q7" value="b"> B. 保证「扣款」和「到账」要么同时成功要么同时回滚，不出现钱凭空消失</label>
+      <label><input type="radio" name="q7" value="c"> C. 加密转账数据</label>
+      <label><input type="radio" name="q7" value="d"> D. 记录转账日志</label>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q8.</span> 数据库索引通常使用什么数据结构？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 链表</label>
+      <label><input type="radio" name="q8" value="b"> B. 哈希表（仅适合等值查询）</label>
+      <label><input type="radio" name="q8" value="c"> C. B+ 树（二分搜索的多路推广）</label>
+      <label><input type="radio" name="q8" value="d"> D. 普通数组</label>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q9.</span> 索引的代价是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q9" value="a"> A. 索引完全没有代价</label>
+      <label><input type="radio" name="q9" value="b"> B. 索引会永久锁住数据</label>
+      <label><input type="radio" name="q9" value="c"> C. 索引会让查询变慢</label>
+      <label><input type="radio" name="q9" value="d"> D. 加速了读，但拖慢了写入（每次增删改都要维护索引），且占额外空间</label>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q10.</span> ACID 中的「I」（隔离性）解决的是哪个问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q10" value="a"> A. 多个事务并发执行时互不干扰，仿佛串行执行</label>
+      <label><input type="radio" name="q10" value="b"> B. 数据加密存储</label>
+      <label><input type="radio" name="q10" value="c"> C. 断电后数据恢复</label>
+      <label><input type="radio" name="q10" value="d"> D. 查询速度优化</label>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q11.</span> 关于 NoSQL 数据库，下列说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q11" value="a"> A. NoSQL 已经完全取代了关系型数据库</label>
+      <label><input type="radio" name="q11" value="b"> B. NoSQL 放松了 ACID 要求，换取更高的扩展性和灵活性，适合特定场景</label>
+      <label><input type="radio" name="q11" value="c"> C. NoSQL 不能存储任何数据</label>
+      <label><input type="radio" name="q11" value="d"> D. NoSQL 比 SQL 在所有方面都更优</label>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q12.</span> <code>orders.user_id</code> 指向 <code>users.id</code>，这种关系体现了？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q12" value="a"> A. 主键约束</label>
+      <label><input type="radio" name="q12" value="b"> B. 数据加密</label>
+      <label><input type="radio" name="q12" value="c"> C. 外键——建立表间关联，保证引用完整性</label>
+      <label><input type="radio" name="q12" value="d"> D. 索引</label>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-msg"></p>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-links">
+  <a href="0005-functional.html">← 上一课：函数式编程</a>
+  <span>第 6 课 / 共 12 课</span>
+  <a href="0007-networks.html">下一课：计算机网络 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'c', explanation: '数据库的核心价值是持久化、并发控制、高效查询、崩溃恢复。容量和速度不是它区别于文件的关键。' },
+  q2: { correct: 'b', explanation: '关系型数据库用二维表（行和列）组织数据，表之间通过外键建立关联。这是 Codd 关系模型的核心。' },
+  q3: { correct: 'a', explanation: '主键唯一标识每一行，不能重复、不能为空。它是「行」的身份证明。' },
+  q4: { correct: 'd', explanation: 'SQL 是声明式的——你描述「要什么数据」，数据库的查询优化器决定「怎么找」。这是声明式编程的典型。' },
+  q5: { correct: 'c', explanation: 'JOIN 根据关联条件（通常是外键 = 主键）把多张表的行拼接在一起，让你能一次查询跨表数据。' },
+  q6: { correct: 'a', explanation: '原子性 = 事务不可分割，要么全做要么全不做。转账场景中不会出现「扣了款但没到账」。' },
+  q7: { correct: 'b', explanation: '没有事务，扣款成功但到账失败会导致钱凭空消失。事务保证两步原子完成，要么都成功要么都回滚。' },
+  q8: { correct: 'c', explanation: 'B+ 树是二分搜索的多路推广，支持范围查询和等值查询，是关系型数据库索引的主流结构。哈希索引只适合等值查询。' },
+  q9: { correct: 'd', explanation: '索引加速读但拖慢写（每次增删改都要更新索引树），且占额外空间。所以索引要加在「频繁查询、很少修改」的列上。' },
+  q10: { correct: 'a', explanation: '隔离性 (Isolation) 保证并发事务互不干扰——仿佛串行执行。这是通过锁机制和 MVCC 实现的。' },
+  q11: { correct: 'b', explanation: 'NoSQL 不是取代关系型数据库，而是补充。它放松 ACID 换取扩展性和灵活性，适合缓存、日志、文档等特定场景。现代系统常混合使用。' },
+  q12: { correct: 'c', explanation: 'user_id 指向 users.id 就是外键——它建立了 orders 和 users 的关联，并保证不能创建指向不存在用户的订单（引用完整性）。' }
+};
+
+function submitQuiz() {
+  let score = 0;
+  const total = Object.keys(answers).length;
+
+  for (const [qName, data] of Object.entries(answers)) {
+    const selected = document.querySelector(`input[name="${qName}"]:checked`);
+    const fb = document.getElementById(`fb-${qName}`);
+    const questionEl = fb.closest('.quiz-question');
+
+    fb.className = 'feedback';
+
+    if (!selected) {
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠ 你还没有选择答案。';
+      continue;
+    }
+
+    if (selected.value === data.correct) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = `✅ 正确！${data.explanation}`;
+      questionEl.style.background = '';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = `❌ 不正确。正确选项：${data.correct.toUpperCase()}。${data.explanation}`;
+    }
+
+    const radios = document.querySelectorAll(`input[name="${qName}"]`);
+    radios.forEach(r => r.disabled = true);
+  }
+
+  const scoreBox = document.getElementById('score-box');
+  const scoreNum = document.getElementById('score-num');
+  const scoreMsg = document.getElementById('score-msg');
+
+  scoreNum.textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  if (pct === 1) {
+    scoreMsg.textContent = '🎉 完美！你已经掌握了数据库的核心概念。';
+  } else if (pct >= 0.7) {
+    scoreMsg.textContent = '👍 很棒！重点复习「事务 ACID」和「索引」。';
+  } else if (pct >= 0.4) {
+    scoreMsg.textContent = '📖 还行。建议重读「关系型数据库」和「事务」两节。';
+  } else {
+    scoreMsg.textContent = '💪 别灰心。先理解「为什么要数据库」，再逐步掌握 SQL。';
+  }
+
+  scoreBox.className = 'score-box show';
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = '已提交';
+  document.querySelector('.submit-btn').style.opacity = '0.5';
+}
+</script>
+
+</body>
+</html>
