@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 保险与风险管理</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--accent-light); }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav-links .disabled { color: var(--muted); text-decoration: line-through; opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<h1>保险与风险管理</h1>
+<p class="lesson-meta">TeachHub · 金融学 · 第8课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解风险的本质与分类、掌握保险的基本原理与运作机制、认识企业风险管理的核心工具（对冲、分散化、衍生品）、学会区分可保风险与不可保风险、建立个人的风险意识框架。
+</div>
+
+<!-- Section 1 -->
+<h2>一、什么是风险？</h2>
+
+<p>在金融学中，<strong>风险（Risk）</strong>不仅仅是"可能会亏钱"那么简单。它是一个精确的概念：<strong>结果的不确定性</strong>。而且这种不确定性，既包括损失的可能，也包括收益超出预期的可能。</p>
+
+<div class="key-idea">
+  风险 = 不确定性 + 可量化。在金融中，我们用标准差（波动率）来衡量风险。波动越大，风险越高。
+</div>
+
+<p>风险分为两大类：</p>
+
+<table>
+  <tr><th>类型</th><th>定义</th><th>例子</th><th>能否分散？</th></tr>
+  <tr><td><strong>系统性风险</strong></td><td>影响整个市场的风险</td><td>经济衰退、战争、利率上升</td><td>❌ 不能</td></tr>
+  <tr><td><strong>非系统性风险</strong></td><td>只影响个别公司或行业</td><td>CEO丑闻、产品召回、专利过期</td><td>✅ 可以</td></tr>
+</table>
+
+<div class="example-box">
+  <strong>经典例子：</strong>2020年新冠疫情爆发时，几乎所有股票都下跌了——这是系统性风险。但与此同时，某些医药公司的股票却暴涨——因为疫情对它们来说是利好。这就是非系统性风险：有人受损，有人受益。
+</div>
+
+<p>你之前学过的<strong>投资组合理论</strong>（第3课）告诉我们：通过持有多种不相关的资产，可以消除非系统性风险。但系统性风险无法消除——你只能接受它，或者用其他工具来对冲。</p>
+
+<!-- Section 2 -->
+<h2>二、保险：转移风险的工具</h2>
+
+<p>保险是人类发明出来的最古老、也是最有效的风险管理工具之一。它的核心逻辑很简单：<strong>把少数人的大额损失，分摊给大量的人共同承担。</strong></p>
+
+<h3>2.1 保险的运作原理</h3>
+
+<p>保险公司靠三个核心概念赚钱（或者说，维持运转）：</p>
+
+<div class="vocab-card">
+  <p><span class="term">大数法则（Law of Large Numbers）</span>：当样本量足够大时，实际损失率会趋近于预期损失率。保险公司之所以敢收保费，就是因为它知道——虽然不确定谁会出险，但总体上有多少比例的人会出险是可以预测的。</p>
+</div>
+
+<div class="vocab-card">
+  <p><span class="term">风险 pooling（风险池）</span>：把大量面临相似风险的个体放在一起，让少数人的损失由大家分担。你交保费，别人也交保费；只有少数人出险，所有人的保费一起支付理赔。</p>
+</div>
+
+<div class="vocab-card">
+  <p><span class="term">期望值（Expected Value）</span>：保费 = 预期赔付 × (1 + 利润率)。比如一个地区的火灾概率是每年0.1%，房屋价值100万，那么预期损失就是1000元。保险公司收取1200元保费，其中200元覆盖运营成本和利润。</p>
+</div>
+
+<h3>2.2 道德风险与逆向选择</h3>
+
+<p>保险有两个经典的"市场失灵"问题：</p>
+
+<div class="vocab-card">
+  <p><span class="term">道德风险（Moral Hazard）</span>：买了保险之后，人们的行为变得更冒险了。比如买了全额车险的人开车可能就不那么小心了——因为知道出了事保险公司赔。</p>
+</div>
+
+<p>保险公司如何应对？通过<strong>免赔额（deductible）</strong>和<strong>共保比例（co-pay）</strong>——让你自己也承担一部分损失，保持你的谨慎动力。</p>
+
+<div class="vocab-card">
+  <p><span class="term">逆向选择（Adverse Selection）</span>：高风险的人更倾向于购买保险，低风险的人觉得"我不太可能出事"就不买了。结果保险池中全是高风险人群，保费被迫提高，更多人退出，恶性循环。</p>
+</div>
+
+<p>保险公司如何应对？通过<strong>核保（underwriting）</strong>——评估每个投保人的风险等级，差别定价。健康检查、驾驶记录、信用评分，都是用来识别风险的工具。</p>
+
+<div class="key-idea">
+  道德风险发生在"买了保险之后"（行为改变），逆向选择发生在"买保险之前"（人群筛选）。两者不同，但都会推高保险公司的成本。
+</div>
+
+<!-- Section 3 -->
+<h2>三、什么能保？什么不能保？</h2>
+
+<p>并非所有风险都能通过保险转移。保险只保<strong>纯粹风险（Pure Risk）</strong>——只有损失可能、没有获利可能的风险。比如火灾、疾病、车祸。</p>
+
+<p>但<strong>投机风险（Speculative Risk）</strong>不能保——因为有赚有亏的风险，比如炒股、创业、赌博。这些风险要么自己承担，要么通过对冲来管理。</p>
+
+<table>
+  <tr><th>可保风险</th><th>不可保风险</th></tr>
+  <tr><td>财产损失险（火灾、盗窃）</td><td>股市波动</td></tr>
+  <tr><td>人身险（寿险、重疾险）</td><td>创业失败</td></tr>
+  <tr><td>责任险（产品责任、职业责任）</td><td>技术革新导致的产品过时</td></tr>
+  <tr><td>意外险</td><td>汇率波动（但有外汇远期合约可以对冲）</td></tr>
+  <tr><td>农业险（部分地区）</td><td>政策变化风险</td></tr>
+</table>
+
+<div class="example-box">
+  <strong>思考：</strong>如果你开了一家餐厅，你能买到"生意不好"的保险吗？不能。但你可以买到火灾险（保护你的厨房）、责任险（保护顾客在你店里摔倒）、营业中断险（保护火灾后的收入损失）。保险保的是"意外事件"，不是"经营不善"。
+</div>
+
+<!-- Section 4 -->
+<h2>四、企业风险管理（ERM）</h2>
+
+<p>对于大型企业来说，风险管理是一门专业学科。<strong>企业全面风险管理（Enterprise Risk Management, ERM）</strong>不只是买保险——它是一套系统性的方法，用来识别、评估和管理企业面临的所有风险。</p>
+
+<h3>4.1 四大类企业风险</h3>
+
+<ul>
+  <li><strong>市场风险（Market Risk）</strong>：价格变动带来的风险。包括股票价格、利率、汇率、商品价格的波动。</li>
+  <li><strong>信用风险（Credit Risk）</strong>：交易对手违约的风险。比如借给别人钱不还，或者买的债券发行人破产。</li>
+  <li><strong>操作风险（Operational Risk）</strong>：内部流程、人员或系统出错的风险。比如交易员错误下单、黑客攻击、自然灾害导致数据中心宕机。</li>
+  <li><strong>法律与合规风险（Legal &amp; Compliance Risk）</strong>：违反法律法规或被起诉的风险。比如反垄断调查、数据泄露被罚款。</li>
+</ul>
+
+<h3>4.2 对冲（Hedging）：用衍生品锁定风险</h3>
+
+<p>对冲是企业最常用的非保险风险管理手段。它的核心思路是：<strong>做一个与现有头寸相反的交易，抵消风险。</strong></p>
+
+<div class="example-box">
+  <strong>经典对冲案例：</strong>一家中国出口企业，下个月将从美国收到100万美元货款。但现在担心美元贬值（人民币升值），导致收到的人民币变少。解决方案：在远期外汇市场上，以当前约定的汇率卖出100万美元、买入人民币。这样无论未来汇率怎么变，它都能锁定一个确定的人民币收入。代价是——如果美元反而升值了，它也错过了额外收益。<strong>对冲的本质就是用"放弃 upside"来换取"消除 downside"。</strong>
+</div>
+
+<p>常用的对冲工具包括：</p>
+
+<ul>
+  <li><strong>远期合约（Forwards）</strong>：双方约定在未来某个时间以特定价格交易。场外交易，灵活定制。</li>
+  <li><strong>期货（Futures）</strong>：标准化的远期合约，在交易所交易。</li>
+  <li><strong>期权（Options）</strong>：赋予你在未来以特定价格买入或卖出的权利（但不是义务）。期权是对冲的高级工具——它保护你免于下行风险，同时保留上行空间。</li>
+  <li><strong>互换（Swaps）</strong>：双方交换现金流。最常见的利率互换：固定利率换浮动利率。</li>
+</ul>
+
+<div class="key-idea">
+  对冲不是用来赚钱的——它是用来"花钱买确定"的。好的风险管理不是追求最高收益，而是确保企业在极端情况下也能存活。记住：2008年雷曼兄弟倒闭，不是因为市场不好，是因为它对冲失败了。
+</div>
+
+<!-- Section 5 -->
+<h2>五、个人风险管理</h2>
+
+<p>企业有专业的风险管理团队，但个人的风险管理同样重要。以下是每个人都应该考虑的风险管理步骤：</p>
+
+<h3>5.1 第一步：识别风险</h3>
+
+<p>问自己几个问题：</p>
+<ul>
+  <li>如果我明天失去工作能力，我能撑多久？（收入中断风险）</li>
+  <li>如果我发生重大疾病，医疗费多少能承担？（健康风险）</li>
+  <li>如果我身故，家人能维持现有生活水平吗？（身故风险）</li>
+  <li>我的房子、车子、贵重物品有足够的保障吗？（财产风险）</li>
+</ul>
+
+<h3>5.2 第二步：优先级排序</h3>
+
+<p>不是所有风险都需要保险。遵循这个原则：</p>
+
+<div class="key-idea">
+  <strong>只保险那些"发生概率低、但损失巨大"的风险。</strong>比如火灾、重大疾病、意外身故——这些是小概率事件，但一旦发生会摧毁你的生活。而"发生概率高、损失小"的事情（比如感冒、小磕碰），自己承担可能比买保险更划算。
+</div>
+
+<h3>5.3 第三步：选择合适的保障</h3>
+
+<table>
+  <tr><th>风险类型</th><th>推荐工具</th><th>优先级</th></tr>
+  <tr><td>重大疾病</td><td>重疾险 / 医疗险</td><td>⭐⭐⭐</td></tr>
+  <tr><td>意外身故/残疾</td><td>定期寿险</td><td>⭐⭐⭐</td></tr>
+  <tr><td>日常医疗</td><td>医保 + 百万医疗险</td><td>⭐⭐⭐</td></tr>
+  <tr><td>财产损失</td><td>财产险 / 家财险</td><td>⭐⭐</td></tr>
+  <tr><td>第三方责任</td><td>责任险（如车险三者险）</td><td>⭐⭐⭐</td></tr>
+  <tr><td>投资波动</td><td>分散化投资</td><td>⭐⭐⭐</td></tr>
+</table>
+
+<div class="takeaway">
+  <strong>终极提醒：</strong>保险不是投资。很多人混淆了"保障型保险"和"投资型保险"（比如分红险、万能险）。保障型保险的目的是转移风险，费用低、杠杆高；投资型保险把保险和投资捆绑在一起，费用高、透明度低。先做好保障，再考虑投资——这是个人风险管理的铁律。
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+  <h2>课堂练习</h2>
+  <p>共8道题，检验你对保险与风险管理的理解。</p>
+
+  <div class="quiz-question">
+    <p class="q-num">第1题</p>
+    <p>以下哪项属于<strong>系统性风险</strong>？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 某制药公司的新药研发失败</label>
+      <label><input type="radio" name="q1" value="b"> B. 央行加息导致股市整体下跌</label>
+      <label><input type="radio" name="q1" value="c"> C. 某航空公司飞行员罢工</label>
+      <label><input type="radio" name="q1" value="d"> D. 某科技公司遭遇数据泄露</label>
+    </div>
+    <div class="feedback" id="fb1"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第2题</p>
+    <p>买了全险之后开始不锁车门，这属于什么问题？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 逆向选择（Adverse Selection）</label>
+      <label><input type="radio" name="q2" value="b"> B. 道德风险（Moral Hazard）</label>
+      <label><input type="radio" name="q2" value="c"> C. 大数法则失效</label>
+      <label><input type="radio" name="q2" value="d"> D. 风险 pooling 失败</label>
+    </div>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第3题</p>
+    <p>以下哪种风险是<strong>不能</strong>通过保险转移的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 房屋火灾</label>
+      <label><input type="radio" name="q3" value="b"> B. 突发心脏病</label>
+      <label><input type="radio" name="q3" value="c"> C. 股票投资亏损</label>
+      <label><input type="radio" name="q3" value="d"> D. 交通事故导致他人受伤</label>
+    </div>
+    <div class="feedback" id="fb3"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第4题</p>
+    <p>一家出口企业用远期外汇合约锁定汇率，这属于哪种风险管理策略？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 风险规避（Avoidance）</label>
+      <label><input type="radio" name="q4" value="b"> B. 风险转移（Transfer）</label>
+      <label><input type="radio" name="q4" value="c"> C. 风险对冲（Hedging）</label>
+      <label><input type="radio" name="q4" value="d"> D. 风险自留（Retention）</label>
+    </div>
+    <div class="feedback" id="fb4"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第5题</p>
+    <p>关于<strong>期权（Options）</strong>作为对冲工具，以下说法正确的是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 期权只能用于投机，不能用于对冲</label>
+      <label><input type="radio" name="q5" value="b"> B. 期权对冲消除了所有风险，包括上行收益</label>
+      <label><input type="radio" name="q5" value="c"> C. 期权对冲保护下行风险，同时保留上行收益的可能</label>
+      <label><input type="radio" name="q5" value="d"> D. 期权对冲不需要支付任何费用</label>
+    </div>
+    <div class="feedback" id="fb5"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第6题</p>
+    <p>保险公司设置<strong>免赔额（deductible）</strong>的主要目的是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 增加保费收入</label>
+      <label><input type="radio" name="q6" value="b"> B. 降低小额理赔的处理成本并减少道德风险</label>
+      <label><input type="radio" name="q6" value="c"> C. 满足监管要求</label>
+      <label><input type="radio" name="q6" value="d"> D. 吸引低风险客户</label>
+    </div>
+    <div class="feedback" id="fb6"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第7题</p>
+    <p>根据"只保险低概率、高损失风险"的原则，以下哪个<strong>最应该</strong>优先配置保险？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 手机碎屏险（每月花几十块，修手机要几百块）</label>
+      <label><input type="radio" name="q7" value="b"> B. 重大疾病保险（保费几千/年，重疾治疗费可能几十万）</label>
+      <label><input type="radio" name="q7" value="c"> C. 衣服损坏险（衣服本来就不贵）</label>
+      <label><input type="radio" name="q7" value="d"> D. 电脑软件授权险（软件可以重装）</label>
+    </div>
+    <div class="feedback" id="fb7"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p class="q-num">第8题</p>
+    <p>"逆向选择"发生在什么时候？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 买了保险之后，投保人改变行为</label>
+      <label><input type="radio" name="q8" value="b"> B. 投保之前，高风险人群更倾向于购买保险</label>
+      <label><input type="radio" name="q8" value="c"> C. 理赔审核阶段，保险公司判断失误</label>
+      <label><input type="radio" name="q8" value="d"> D. 保险公司精算师算错了概率</label>
+    </div>
+    <div class="feedback" id="fb8"></div>
+  </div>
+
+  <button class="submit-btn" onclick="gradeQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-text"></p>
+  </div>
+</div>
+
+<div class="followup" style="background:#f0f4f8;border-radius:6px;padding:1rem 1.25rem;margin-top:2rem;font-size:0.9rem;">
+  <strong>有问题？</strong>随时问我——不管是保险条款的细节，还是对冲的具体操作，或者你想聊聊自己的保障规划。有疑问就说明你在思考，这正是最好的学习方式。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.investopedia.com/terms/r/riskmanagement.asp" target="_blank" style="color:var(--accent);">Investopedia — Risk Management Guide</a> — 深入了解企业风险管理的框架和实践。
+</div>
+
+<div class="nav-links">
+  <a href="0009-behavioral-finance.html">← 上一课：行为金融学</a>
+  <a href="../index.html">📚 目录</a>
+  <a href="0009-insurance-risk-management.html">下一课：个人理财与税务规划 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: 'b', q2: 'b', q3: 'c', q4: 'c',
+  q5: 'c', q6: 'b', q7: 'b', q8: 'b'
+};
+
+const explanations = {
+  q1: { correct: "✅ 正确！央行加息影响整个市场，所有股票都受到波及，这是典型的系统性风险。", wrong: "系统性风险是影响整个市场的风险。央行加息会影响所有资产类别——股市、债市、房市，所以选B。A、C、D都是只影响特定公司或行业的非系统性风险。" },
+  q2: { correct: "✅ 正确！买了保险之后行为变得更冒险（不锁车门），这就是道德风险——发生在投保之后。", wrong: "道德风险发生在'买了保险之后'——因为有人兜底了，所以你不再那么谨慎。逆向选择则是'买保险之前'——高风险的人更想买保险。" },
+  q3: { correct: "✅ 正确！股票投资亏损属于投机风险（有赚有亏），保险公司不保。其他三项都是纯粹风险（只有损失可能），可以投保。", wrong: "保险只保'纯粹风险'——只有损失可能、没有获利可能的风险。股票投资有赚有亏，属于投机风险，保险公司不会承保。" },
+  q4: { correct: "✅ 正确！远期外汇合约是对冲工具——通过做一个相反的远期交易，锁定汇率，消除不确定性。对冲不等于转移给第三方（那是保险），而是用金融工具抵消风险。", wrong: "远期外汇合约属于对冲（Hedging）。它不是风险规避（你仍然在做出口业务），也不是风险转移（你没有把风险转嫁给保险公司），更不是自留。" },
+  q5: { correct: "✅ 正确！期权是对冲的高级工具——你支付权利金，获得保护下行风险的权利，但如果市场朝有利方向走，你仍然可以享受收益。这比远期合约更灵活。", wrong: "期权对冲的独特之处在于：它保护你免于下行风险（股价大跌），同时保留上行收益（股价大涨）。代价是你需要支付权利金（premium）。" },
+  q6: { correct: "✅ 正确！免赔额有两个作用：一是降低小额理赔的处理成本（每次理赔都有行政成本），二是让被保险人自己承担一部分损失，保持谨慎动力，减少道德风险。", wrong: "免赔额的核心作用是降低小额理赔成本和减少道德风险。如果每次修车都走保险，保险公司会被海量小额理赔拖垮，而且车主也会变得不那么小心。" },
+  q7: { correct: "✅ 正确！重疾险符合'低概率、高损失'原则——得重病的概率不高，但一旦得病可能需要几十万治疗费。手机碎屏、衣服损坏这些高频低损的事情，自己承担更划算。", wrong: "保险最适合'低概率、高损失'的事件。重疾险每年几千块保费，但重疾治疗费可能几十万——这就是高杠杆保障。手机碎屏虽然单次维修费比保费高，但发生的概率太高了，频繁理赔不划算。" },
+  q8: { correct: "✅ 正确！逆向选择发生在投保之前——高风险的人更意识到自己的风险，所以更积极地购买保险，导致保险池的质量下降。", wrong: "逆向选择（Adverse Selection）发生在'买保险之前'：知道自己风险高的人更想买保险。道德风险（Moral Hazard）才发生在'买了保险之后'：因为有人兜底，所以行为变得更冒险。" }
+};
+
+let answered = {};
+let score = 0;
+const total = 8;
+
+function gradeQuiz() {
+  score = 0;
+  let allAnswered = true;
+
+  for (let i = 1; i <= total; i++) {
+    const qname = 'q' + i;
+    const selected = document.querySelector(`input[name="${qname}"]:checked`);
+    const fb = document.getElementById('fb' + i);
+
+    if (!selected) {
+      allAnswered = false;
+      fb.className = 'feedback wrong';
+      fb.textContent = '⚠️ 请先选择答案！';
+      fb.style.display = 'block';
+      continue;
+    }
+
+    answered[qname] = selected.value;
+    const isCorrect = selected.value === answers[qname];
+
+    if (isCorrect) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = explanations[qname].correct;
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = explanations[qname].wrong;
+    }
+    fb.style.display = 'block';
+  }
+
+  if (!allAnswered) return;
+
+  const scoreBox = document.getElementById('score-box');
+  document.getElementById('score-num').textContent = score + ' / ' + total;
+  const pct = Math.round(score / total * 100);
+  let msg = '';
+  if (pct >= 87.5) msg = '太棒了！你对保险与风险管理的理解非常扎实！🎉';
+  else if (pct >= 62.5) msg = '不错！大部分概念掌握了，再看看错题加深印象。';
+  else msg = '建议重新阅读课程内容，特别是保险原理和对冲部分。';
+  document.getElementById('score-text').textContent = msg;
+  scoreBox.className = 'score-box show';
+}
+</script>
+
+</body>
+</html>

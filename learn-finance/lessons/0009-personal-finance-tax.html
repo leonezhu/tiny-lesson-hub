@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第9课 · 个人理财与税务规划</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 { margin-top: 0; }
+
+  .rule-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+  }
+
+  .rule-box strong { color: #e65100; }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    background: #f5f5f5;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) { background: #fafafa; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-link { color: var(--accent); text-decoration: none; }
+  .nav-link:hover { text-decoration: underline; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>个人理财与税务规划</h1>
+<p class="lesson-meta">第9课 · 约12分钟 · 金融学基础</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：制定个人预算框架、理解应急基金与保险配置原则、掌握复利在储蓄和投资中的实际运用、了解个人所得税的基本筹划思路。
+</div>
+
+<h2>为什么这很重要</h2>
+<p>
+  金融学不只是华尔街的事情。你每个月拿到工资后的每一笔支出、每一次消费决策、每一个储蓄习惯，都在影响你的财务未来。个人理财的核心不是"赚更多钱"——而是建立一套可持续的系统，让你的钱为你工作。
+</p>
+<p>
+  在中国语境下，很多人有一个误区："等我有钱了再理财"。但事实恰恰相反：<strong>理财是一种习惯，不是一种状态</strong>。即使月薪只有五千，你也能通过合理的预算、储蓄和投资规划，让财务状况稳步改善。
+</p>
+
+<h2>一、预算：了解你的钱去了哪里</h2>
+<p>
+  理财的第一步是记账和预算。不是要你精确记录每一分钱，而是要建立一个清晰的框架，知道你的收入如何分配。
+</p>
+
+<div class="card">
+  <h3>50/30/20 法则</h3>
+  <p>这是一个被广泛验证的个人预算框架：</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>类别</th><th>比例</th><th>包括什么</th></tr>
+      <tr><td>需要（Needs）</td><td>50%</td><td>房租/房贷、水电、交通、基本饮食、保险</td></tr>
+      <tr><td>想要（Wants）</td><td>30%</td><td>娱乐、外出就餐、购物、旅行、订阅服务</td></tr>
+      <tr><td>储蓄与投资</td><td>20%</td><td>应急基金、退休储蓄、投资账户</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="rule-box">
+  <strong>关键原则：</strong>如果你发现"需要"超过了50%，说明你的基本生活成本过高，需要考虑搬家、换工作或者削减固定支出。如果"储蓄"低于20%，优先从这里开始调整——先储蓄，再消费。
+</div>
+
+<h2>二、应急基金：你的财务安全气囊</h2>
+<p>
+  在考虑任何投资之前，你需要一个应急基金（Emergency Fund）。这是你在失业、疾病或突发状况时不至于陷入债务的安全网。
+</p>
+
+<div class="card">
+  <h3>应急基金应该有多少？</h3>
+  <p>标准建议是 <strong>3-6个月的生活必需开支</strong>。如果你的收入不稳定（自由职业、佣金制），建议存够6个月。</p>
+  <p>应急基金应该放在：</p>
+  <ul>
+    <li>随时可以取出的地方（活期存款、货币基金）</li>
+    <li>不应该用于投资（股票、基金、房产）</li>
+    <li>只用于真正的紧急情况，不是打折购物</li>
+  </ul>
+</div>
+
+<h3>复利的魔力</h3>
+<p>
+  假设你每月存2000元到年化3.5%的货币基金中，6个月后你会有一笔可观的应急资金。但如果把这2000元拿去消费呢？这就是"机会成本"的概念——你选择的每一件事，都意味着放弃了其他可能性。
+</p>
+
+<div class="formula">
+  终值 = 本金 × (1 + 利率)<sup>年数</sup>
+</div>
+
+<p>
+  举例：如果你现在存1万元到年化4%的理财产品中，10年后它变成了约1.49万元。看起来不多？但如果每月定投1000元，10年后本金12万，加上复利收益，大约能到15万元左右。<strong>关键是开始得越早越好。</strong>
+</p>
+
+<h2>三、保险配置：管理人生风险</h2>
+<p>
+  在金融学中，我们讨论过"风险转移"——保险公司就是帮你做风险转移的工具。没有保险的财务规划是不完整的。
+</p>
+
+<div class="card">
+  <h3>个人保险优先级</h3>
+  <p>按重要性排序：</p>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>医疗保险</strong>——最基础的保障，覆盖大额医疗费用。国家医保是基础，商业医疗险是补充。</li>
+    <li><strong>重疾险</strong>——确诊即赔付一笔钱，弥补收入损失和康复费用。</li>
+    <li><strong>意外险</strong>——保费低、保额高，是对突发意外事件的保障。</li>
+    <li><strong>定期寿险</strong>——如果你是家庭的经济支柱，这项保障非常重要。</li>
+  </ol>
+</div>
+
+<div class="rule-box">
+  <strong>常见误区：</strong>很多人把保险当投资（分红险、万能险），但实际上保险的首要功能是保障。纯保障型保险的性价比远高于"保险+理财"的组合产品。先保障，后投资。
+</div>
+
+<h2>四、税务规划基础</h2>
+<p>
+  税务规划不是逃税，而是在法律允许的范围内，合理安排收入和支出，降低税负。在中国个人所得税体系下，有几个重要的概念需要了解。
+</p>
+
+<h3>综合所得与专项附加扣除</h3>
+<p>
+  中国个人所得税采用综合所得计税方式，每年汇算清缴。2023年起，专项附加扣除项目包括：
+</p>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>扣除项目</th><th>标准（元/月）</th><th>说明</th></tr>
+    <tr><td>子女教育</td><td>2000</td><td>每个子女，3岁至博士阶段</td></tr>
+    <tr><td>继续教育</td><td>400</td><td>学历教育期间；或取得证书当年3600元</td></tr>
+    <tr><td>住房贷款利息</td><td>1000</td><td>首套房贷款，最长240个月</td></tr>
+    <tr><td>住房租金</td><td>800-1500</td><td>根据城市等级不同</td></tr>
+    <tr><td>大病医疗</td><td>限额</td><td>超过15000元的部分，限额80000元</td></tr>
+    <tr><td>赡养老人</td><td>3000</td><td>独生子女；非独生分摊</td></tr>
+    <tr><td>3岁以下婴幼儿照护</td><td>2000</td><td>每个婴幼儿</td></tr>
+  </table>
+</div>
+
+<h3>个税税率表（综合所得年度）</h3>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>级数</th><th>年应纳税所得额</th><th>税率</th><th>速算扣除数</th></tr>
+    <tr><td>1</td><td>不超过36,000元</td><td>3%</td><td>0</td></tr>
+    <tr><td>2</td><td>36,000 – 144,000元</td><td>10%</td><td>2,520</td></tr>
+    <tr><td>3</td><td>144,000 – 300,000元</td><td>20%</td><td>16,920</td></tr>
+    <tr><td>4</td><td>300,000 – 420,000元</td><td>25%</td><td>31,920</td></tr>
+    <tr><td>5</td><td>420,000 – 660,000元</td><td>30%</td><td>52,920</td></tr>
+    <tr><td>6</td><td>660,000 – 960,000元</td><td>35%</td><td>85,920</td></tr>
+    <tr><td>7</td><td>超过960,000元</td><td>45%</td><td>181,920</td></tr>
+  </table>
+</div>
+
+<div class="rule-box">
+  <strong>筹划思路：</strong>充分利用专项附加扣除、年终奖单独计税政策（如有）、个人养老金账户（每年最高可抵扣12000元）等合法渠道，可以有效降低个税负担。
+</div>
+
+<h2>五、退休规划：越早越好</h2>
+<p>
+  听起来离你很远，但这是金融数学中最有力的证明之一。让我们做一个简单计算：
+</p>
+
+<div class="card">
+  <h3>两个投资者的对比</h3>
+  <p>假设年化收益率6%：</p>
+  <p><strong>投资者A：</strong>25岁开始，每月投1000元，连续投10年到35岁，然后停止投入，让钱继续增长到60岁。</p>
+  <p><strong>投资者B：</strong>35岁开始，每月投1000元，连续投25年到60岁。</p>
+  <p style="margin-top:0.75rem;"><strong>A投入本金：</strong>12万元</p>
+  <p><strong>B投入本金：</strong>30万元</p>
+  <p style="margin-top:0.75rem;"><strong>到60岁时，A大约有：</strong>约25.6万元</p>
+  <p><strong>到60岁时，B大约有：</strong>约109.3万元</p>
+  <p style="margin-top:0.75rem; color: var(--accent); font-weight: 600;">但A的投入只有B的40%，回报率却更高！这就是时间的力量。</p>
+</div>
+
+<div class="rule-box">
+  <strong>个人养老金账户：</strong>中国自2022年起推行个人养老金制度，每年缴费上限12000元，享受税收递延优惠。投资收益免税，领取时按3%计税。对于边际税率高于3%的人来说，这是一项被严重低估的福利。
+</div>
+
+<h2>六、行动框架</h2>
+<p>
+  理财不是理论，是行动。以下是你可以从今天开始的步骤：
+</p>
+
+<div class="card">
+  <h3>30天行动计划</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>第1周：盘点现状</strong>——列出所有收入、固定支出、债务、现有资产</li>
+    <li><strong>第2周：建立预算</strong>——按50/30/20法则分配下月支出</li>
+    <li><strong>第3周：检查保障</strong>——确认社保是否正常缴纳，是否需要补充医疗险</li>
+    <li><strong>第4周：开始储蓄</strong>——设置自动转账，每月发薪日当天将收入的20%转入储蓄账户</li>
+  </ol>
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下有8道情景题，请做出选择。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：你月薪10000元，房租3500元，日常开销2000元。</div>
+    <div class="question-text">按照50/30/20法则，你的"需要"类支出不合格。问题出在哪里？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">房租太高，应该搬到更便宜的地方</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">房租+开销=5500元，已超过50%的预算线</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：你有存款5万元，月固定支出4000元。</div>
+    <div class="question-text">你的应急基金是否充足？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">充足，因为超过3万元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不足，只能覆盖约12.5个月的支出，应保持在3-6个月</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：你25岁，每月能拿出500元投资。</div>
+    <div class="question-text">在年化6%的情况下，60岁时你大约有多少钱？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约21万元（500×12×35）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约74万元（本金21万+复利收益）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：你年收入15万元，有住房贷款、一个在读小孩、一位65岁的父母。</div>
+    <div class="question-text">你可以申报哪些专项附加扣除？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">只能申报住房贷款利息</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">住房贷款利息+子女教育+赡养老人</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：朋友推荐了一款"分红型终身寿险"，说既能保障又能赚钱。</div>
+    <div class="question-text">作为理财顾问，你会怎么建议？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">好的保险产品就应该兼顾保障和投资</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">先买纯保障型保险，投资另做安排，分开通常更划算</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：你的边际税率是20%。</div>
+    <div class="question-text">你向个人养老金账户存入12000元，大约可以少交多少税？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">约360元（12000×3%）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约2400元（12000×20%）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：你有信用卡欠款2万元，年利率18%；同时有银行存款5万元，年利率2%。</div>
+    <div class="question-text">从财务最优角度，你应该怎么做？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">先保留应急基金，慢慢还信用卡</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">用存款还清信用卡，因为还款收益(18%)远高于存款收益(2%)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：你刚入职，公司提供了五险一金。</div>
+    <div class="question-text">关于公积金的正确理解是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">公积金是公司白给的钱，可以随意花</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">个人和公司各缴一部分，属于个人财产，可用于购房/租房/还贷</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>下一步行动：</strong>打开你的银行APP，看看上个月的支出构成。用50/30/20法则给自己画一张预算图。然后检查一下你的专项附加扣除信息是否完整填报了。
+  <br><br>
+  <strong>推荐资源：</strong>
+  <br>• <a href="https://www.chinatax.gov.cn" target="_blank">国家税务总局官网</a> — 查看最新个税政策和专项附加扣除细则
+  <br>• <a href="https://www.csrc.gov.cn" target="_blank">中国证监会投资者教育基地</a> — 免费理财知识课程
+  <br><br>
+  <strong>有疑问？</strong>随时问我——关于预算、保险、投资、税务的任何问题，都可以深入探讨。
+</div>
+
+<div class="footer">
+  <a href="0008-insurance-risk-management.html" class="nav-link">← 上一课：保险与风险管理</a>
+  &nbsp;·&nbsp;
+  <a href="../index.html" class="nav-link">金融学目录</a>
+  &nbsp;·&nbsp;
+  <a href="0010-international-finance.html" class="nav-link">下一课：国际金融与汇率 →</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '"需要"类=50%×10000=5000元。你的房租3500+开销2000=5500元，超过了5000元的上限。要么降低固定成本，要么增加收入。',
+      wrong: '房租3500+开销2000=5500元，占月薪的55%，超过了50%的"需要"上限。你需要调整支出结构。'
+    },
+    q2: {
+      correct: '50000÷4000≈12.5个月。虽然看起来很多，但应急基金的目标是3-6个月。这里的关键是：5万太多闲置了，超出6个月的部分应该用于投资或还债。',
+      wrong: '应急基金的标准是3-6个月。4000×6=24000元，你确实有5万，超出部分应该用于其他用途（投资、还债等），而不是全部放在应急基金里。'
+    },
+    q3:
+      correct: '每月500元，年化6%，35年。使用年金终值公式：FV = PMT × [(1+r)^n - 1]/r ≈ 500 × [(1.005)^420 - 1]/0.005 ≈ 74万元。其中本金21万，利息53万！这就是复利的力量。',
+      wrong: '21万只是本金总额（500×12×35），但复利会让这个数字翻三倍多。35年的时间是最大的优势。'
+    },
+    q4: {
+      correct: '住房贷款利息（1000元/月）、子女教育（2000元/月）、赡养老人（3000元/月，因为你父母满60岁）。合计每月可扣除6000元，大幅降低应纳税所得额。',
+      wrong: '你符合条件的所有三项：住房贷款（首套）、子女教育（在读）、赡养老人（父母≥60岁）。加起来每月可扣6000元。'
+    },
+    q5: {
+      correct: '保险的核心功能是风险保障。"保险+理财"组合产品通常保障不足、费用高昂。正确做法：先买纯保障型保险（定期寿险、医疗险、重疾险），然后用剩余资金做投资。',
+      wrong: '分红险的收益往往被高估，保障成本被低估。专业的做法是把保障和投资分开处理。'
+    },
+    q6: {
+      correct: '12000元×20%=2400元。个人养老金缴费可以在税前扣除，直接减少你的应纳税所得额。如果你的边际税率更高（比如30%或45%），省税效果更明显。',
+      wrong: '边际税率20%意味着每多1元收入要交0.2元税。存入12000元，直接减少12000×20%=2400元的税款。'
+    },
+    q7: {
+      correct: '信用卡欠款年利率18%，存款年利率2%。每保留1元存款不还债，你净损失16%的利差。最优策略：还清高息债务后再建立应急基金。',
+      wrong: '18%的信用卡利率远高于2%的存款利率。从数学上讲，还债的收益（18%）远大于存款收益（2%）。先还债，再重建应急基金。'
+    },
+    q8: {
+      correct: '住房公积金是"双缴"制度——你和公司各缴一部分（通常各5%-12%），全部归你所有。可用于购房贷款、租房提取、装修等，是一笔被忽视的隐性收入。',
+      wrong: '公积金不是你"白拿"的钱，而是你和公司共同缴纳的法定福利，完全属于你个人，可以灵活使用。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = '✓ ' + explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = '✗ ' + explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对个人理财和税务规划有了扎实的理解。';
+      else if (score >= 6) label.textContent = '不错！回顾一下错题的解释，巩固薄弱环节。';
+      else label.textContent = '继续加油！重新阅读上面的内容，理解每个概念背后的逻辑。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

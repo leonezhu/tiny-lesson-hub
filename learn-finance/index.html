@@ -3,43 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>金融与投资 — TeachHub</title>
+<title>金融学 · TeachHub</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
-  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; }
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --muted: #666; --border: #e0e0e0; --done: #2e7d32; --active: #f9a825; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Source Sans 3', sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
-  h1 { font-family: 'Merriweather', serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
-  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  body { font-family: -apple-system, 'Source Sans 3', sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; background: var(--bg); color: var(--text); line-height: 1.7; }
+  h1 { font-family: Georgia, serif; font-size: 1.8rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .progress { background: var(--border); border-radius: 4px; height: 8px; margin-bottom: 1.5rem; }
+  .progress-bar { background: var(--done); height: 100%; border-radius: 4px; }
   .lesson-list { list-style: none; }
-  .lesson-item { display: flex; align-items: baseline; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
-  .lesson-num { font-family: 'Merriweather', serif; font-size: 0.85rem; color: var(--muted); min-width: 36px; font-weight: 700; }
-  .lesson-title { flex: 1; }
-  .lesson-title a { color: var(--accent); text-decoration: none; }
-  .lesson-title a:hover { text-decoration: underline; }
-  .lesson-status { font-size: 0.8rem; padding: 0.15rem 0.5rem; border-radius: 3px; margin-left: 0.5rem; }
-  .lesson-status.done { background: var(--correct-bg); color: var(--correct); }
-  .lesson-status.pending { background: #f0f0f0; color: #999; }
-  footer { margin-top: 3rem; text-align: center; color: #aaa; font-size: 0.8rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+  .lesson-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+  .lesson-list li:last-child { border-bottom: none; }
+  .status-icon { width: 20px; text-align: center; flex-shrink: 0; }
+  .status-icon.done { color: var(--done); }
+  .status-icon.active { color: var(--active); }
+  .lesson-list a { color: var(--text); text-decoration: none; }
+  .lesson-list a:hover { color: var(--accent); }
+  .lesson-list .title { flex: 1; }
+  .lesson-list .idx { color: var(--muted); font-size: 0.85rem; min-width: 60px; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.85rem; color: var(--muted); }
+  .footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
-<h1>金融与投资</h1>
-<p class="subtitle">Phase 3 · 共 12 课 · 从货币时间价值到个人理财规划</p>
+<h1>金融学</h1>
+<p class="meta">TeachHub · 12课 · 约3小时</p>
+
+<div class="progress"><div class="progress-bar" style="width: 66.7%"></div></div>
+
+<p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem;">已完成 8 / 12 课</p>
+
 <ol class="lesson-list">
-  <li class="lesson-item"><span class="lesson-num">01</span><span class="lesson-title"><a href="lessons/0001-money-time-value.html">货币的时间价值</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">02</span><span class="lesson-title"><a href="lessons/0002-interest-rates.html">利率：资金的价格</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">03</span><span class="lesson-title"><a href="lessons/0003-bonds.html">债券市场</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">04</span><span class="lesson-title"><a href="lessons/0004-stocks.html">股票市场</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">05</span><span class="lesson-title"><a href="lessons/0005-portfolio-theory.html">投资组合理论</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">06</span><span class="lesson-title"><a href="lessons/0006-risk-return.html">风险与收益</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">07</span><span class="lesson-title"><a href="lessons/0007-valuation.html">估值方法</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">08</span><span class="lesson-title"><a href="lessons/0008-corporate-finance.html">公司金融</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">09</span><span class="lesson-title"><a href="lessons/0009-derivatives.html">衍生品</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">10</span><span class="lesson-title"><a href="lessons/0010-behavioral-finance.html">行为金融学</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">11</span><span class="lesson-title"><a href="lessons/0011-macro-finance.html">宏观金融</a></span><span class="lesson-status done">✓</span></li>
-  <li class="lesson-item"><span class="lesson-num">12</span><span class="lesson-title"><a href="lessons/0012-personal-finance.html">个人理财</a></span><span class="lesson-status done">✓</span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0001</span><span class="title"><a href="lessons/0001-money-time-value.html">货币的时间价值</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0002</span><span class="title"><a href="lessons/0002-risk-return-tradeoff.html">风险与收益的权衡</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0003</span><span class="title"><a href="lessons/0003-portfolio-theory.html">投资组合理论</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0004</span><span class="title"><a href="lessons/0004-capm-asset-pricing.html">CAPM与资产定价</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0005</span><span class="title"><a href="lessons/0005-efficient-market-hypothesis.html">有效市场假说</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0006</span><span class="title"><a href="lessons/0006-capital-structure-financing.html">资本结构与企业融资</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0007</span><span class="title"><a href="lessons/0007-valuation-dcf.html">估值基础：DCF与相对估值</a></span></li>
+  <li><span class="status-icon done">✓</span><span class="idx">0008</span><span class="title"><a href="lessons/0008-options-derivatives.html">期权与衍生品基础</a></span></li>
+  <li><span class="status-icon active">●</span><span class="idx">0009</span><span class="title">行为金融学</span></li>
+  <li><span class="status-icon active">○</span><span class="idx">0010</span><span class="title">保险与风险管理</span></li>
+  <li><span class="status-icon active">○</span><span class="idx">0011</span><span class="title">个人理财与税务规划</span></li>
+  <li><span class="status-icon active">○</span><span class="idx">0012</span><span class="title">国际金融与汇率</span></li>
 </ol>
-<footer>TeachHub · 金融与投资 · generated by LeoneZhu</footer>
+
+<div class="footer">
+  <a href="../index.html">← 返回 TeachHub 目录</a>
+</div>
 </body>
 </html>

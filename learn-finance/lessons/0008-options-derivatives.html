@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第8课 — 期权与衍生品基础</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--accent-light); }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav-links .disabled { color: var(--muted); text-decoration: line-through; opacity: 0.5; }
+  .option-btn { background: white; border: 2px solid var(--border); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.95rem; cursor: pointer; text-align: center; font-family: 'Source Sans 3', sans-serif; transition: all 0.15s; margin: 0.25rem; display: inline-block; }
+  .option-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .option-btn.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); font-weight: 600; }
+  .option-btn.wrong { border-color: var(--wrong); background: var(--wrong-bg); color: var(--wrong); }
+  .option-btn.reveal-correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); font-weight: 600; }
+  .profit-chart { background: #fafafa; border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin: 1rem 0; font-family: 'Merriweather', Georgia, serif; font-size: 0.85rem; overflow-x: auto; white-space: nowrap; }
+  .profit-chart table { display: inline-block; }
+</style>
+</head>
+<body>
+
+<h1>期权与衍生品基础</h1>
+<p class="lesson-meta">TeachHub · 金融学 · 第8课 / 共12课 · 约15分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解期权的核心概念（看涨/看跌、行权价、权利金）、掌握期货与远期合约的基本逻辑、认识衍生品的双重角色（风险管理 vs. 投机）、学会用简单的损益图分析期权策略。
+</div>
+
+<h2>一、为什么需要衍生品？</h2>
+
+<p>想象你是一个咖啡农场主。你三个月后要收获咖啡豆，但现在你不知道三个月后市场价格会是多少。如果价格暴跌，你会亏惨。如果你是一个咖啡连锁店的老板，你也面临同样的不确定性——如果价格暴涨，你的成本会失控。</p>
+
+<p>这就是衍生品存在的意义：<strong>把价格风险从一个不想承担的人，转移给一个愿意承担的人。</strong></p>
+
+<div class="key-idea">
+  衍生品（Derivatives）的价值"衍生"自某种基础资产（underlying asset），比如股票、商品、利率、汇率等。它们本身不产生现金流，但可以改变你对基础资产风险的敞口。
+</div>
+
+<p>主要的衍生品类型包括：</p>
+
+<ul>
+  <li><strong>远期合约（Forwards）</strong>：双方约定在未来某一时间以某一价格买卖某种资产。非标准化、场外交易。</li>
+  <li><strong>期货合约（Futures）</strong>：标准化的远期合约，在交易所交易，有保证金制度。</li>
+  <li><strong>期权（Options）</strong>：赋予持有者在未来某一时间以某一价格买入或卖出资产的"权利"（而非义务）。</li>
+  <li><strong>互换（Swaps）</strong>：双方交换一系列现金流，最常见的是利率互换。</li>
+</ul>
+
+<p>今天我们先聚焦期权——因为它是最灵活、最有趣的衍生品。</p>
+
+<h2>二、期权是什么？</h2>
+
+<p>期权是一种合约，买方支付一笔钱（权利金/premium），获得在未来某个日期之前（或当天）以某个固定价格买入或卖出某项资产的权利。</p>
+
+<div class="vocab-card">
+  <span class="term">看涨期权（Call Option）</span>——赋予你以固定价格"买入"的权利。你希望价格上涨。
+  <br><br>
+  举例：你买了一份特斯拉的看涨期权，行权价 $200，一个月到期。如果一个月后特斯拉涨到 $250，你可以用 $200 买入，立刻赚 $50（扣除权利金后就是净利润）。如果股价只有 $180，你就不行权，最大损失只是你付的权利金。
+</div>
+
+<div class="vocab-card">
+  <span class="term">看跌期权（Put Option）</span>——赋予你以固定价格"卖出"的权利。你希望价格下跌。
+  <br><br>
+  举例：你持有苹果股票，担心下周财报不好导致股价大跌。你买一份看跌期权，行权价 $150。如果股价跌到 $130，你仍然可以按 $150 卖出，保护了你的收益。如果股价涨到 $170，你就不行权，损失只是权利金。
+</div>
+
+<p>这里有一个关键区别：<strong>期权的买方只有权利，没有义务。</strong>买方可以选择不行权，最大损失就是权利金。而卖方（写权人）收了权利金，但有义务在买方行权时履约——卖方的风险理论上更大。</p>
+
+<h2>三、期权的四个基本要素</h2>
+
+<table>
+  <tr><th>要素</th><th>说明</th><th>举例</th></tr>
+  <tr><td>标的资产（Underlying）</td><td>期权对应的资产</td><td>特斯拉股票、黄金、原油</td></tr>
+  <tr><td>行权价（Strike Price）</td><td>约定的买卖价格</td><td>$200/股</td></tr>
+  <tr><td>到期日（Expiration）</td><td>期权有效的截止日期</td><td>2026年7月19日</td></tr>
+  <tr><td>权利金（Premium）</td><td>买方支付给卖方的价格</td><td>$5/股（即 $500/份合约）</td></tr>
+</table>
+
+<p>美式期权可以在到期日前任何时间行权；欧式期权只能在到期日行权。美股期权大多是美式的。</p>
+
+<h2>四、损益分析：一张图看懂期权</h2>
+
+<p>理解期权最好的方式是画损益图（Payoff Diagram）。让我们看几个经典场景：</p>
+
+<h3>场景1：买入看涨期权（Long Call）</h3>
+
+<div class="profit-chart">
+  <table>
+    <tr><th>股价</th><th>期权行权价值</th><th>扣除权利金后利润</th></tr>
+    <tr><td>$180</td><td>0（不行权）</td><td>-$500（损失全部权利金）</td></tr>
+    <tr><td>$190</td><td>0（不行权）</td><td>-$500</td></tr>
+    <tr><td>$200</td><td>0（刚好不行权）</td><td>-$500</td></tr>
+    <tr><td>$210</td><td>$100（$210-$200）</td><td>+$500</td></tr>
+    <tr><td>$220</td><td>$200</td><td>+$1,500</td></tr>
+    <tr><td>$250</td><td>$500</td><td>+$4,500</td></tr>
+  </table>
+</div>
+
+<p><strong>关键洞察：</strong>买入看涨期权的损失是有限的（最多权利金），但收益理论上是无限的——股价可以一直涨。这就是为什么很多人喜欢买看涨期权：风险有限，回报无上限。</p>
+
+<h3>场景2：买入看跌期权（Long Put）</h3>
+
+<div class="profit-chart">
+  <table>
+    <tr><th>股价</th><th>期权行权价值</th><th>扣除权利金后利润</th></tr>
+    <tr><td>$250</td><td>0（不行权）</td><td>-$500</td></tr>
+    <tr><td>$220</td><td>0（不行权）</td><td>-$500</td></tr>
+    <tr><td>$200</td><td>0（刚好不行权）</td><td>-$500</td></tr>
+    <tr><td>$190</td><td>$100（$200-$190）</td><td>+$500</td></tr>
+    <tr><td>$180</td><td>$200</td><td>+$1,500</td></tr>
+    <tr><td>$150</td><td>$500</td><td>+$4,500</td></tr>
+  </table>
+</div>
+
+<p><strong>关键洞察：</strong>买入看跌期权在股价下跌时赚钱。它是天然的"保险"——你付保险费（权利金），换取下跌时的保护。</p>
+
+<h3>场景3：买入标的股票 + 买入看跌期权（Protective Put）</h3>
+
+<p>这是机构投资者常用的策略。假设你花 $200 买了一股特斯拉，同时花 $5 买了一份行权价 $180 的看跌期权：</p>
+
+<div class="profit-chart">
+  <table>
+    <tr><th>股价</th><th>股票盈亏</th><th>看跌期权盈亏</th><th>总盈亏</th></tr>
+    <tr><td>$250</td><td>+$50</td><td>-$5</td><td>+$45</td></tr>
+    <tr><td>$200</td><td>$0</td><td>-$5</td><td>-$5</td></tr>
+    <tr><td>$180</td><td>-$20</td><td>-$5</td><td>-$25</td></tr>
+    <tr><td>$150</td><td>-$50</td><td>+$25（$180-$150-$5权利金）</td><td>-$30</td></tr>
+    <tr><td>$100</td><td>-$100</td><td>+$75（$180-$100-$5权利金）</td><td>-$25</td></tr>
+  </table>
+</div>
+
+<p><strong>关键洞察：</strong>有了看跌期权保护，即使股价跌到 $100，你的最大亏损也只有 $25（而不是 $100）。代价是：如果股价大涨，你的收益会被权利金稍微吃掉一点。这就是保险的逻辑——你花钱买确定性。</p>
+
+<h2>五、期权定价直觉：三个决定因素</h2>
+
+<p>期权的价格（权利金）由很多因素决定，但最核心的有三个：</p>
+
+<div class="vocab-card">
+  <span class="term">1. 内在价值（Intrinsic Value）</span>——期权立即行权能值多少钱。
+  <br><br>
+  看涨期权的内在价值 = 当前股价 − 行权价（如果是负数，就是 0）。
+  <br>
+  看跌期权的内在价值 = 行权价 − 当前股价（如果是负数，就是 0）。
+  <br><br>
+  举例：行权价 $200 的特斯拉看涨期权，如果股价 $220，内在价值 = $20。如果股价 $180，内在价值 = 0（因为没人会傻到用 $200 买市价 $180 的东西）。
+</div>
+
+<div class="vocab-card">
+  <span class="term">2. 时间价值（Time Value）</span>——距离到期日越远，期权越贵。
+  <br><br>
+  因为时间越长，价格波动的可能性越大，期权越可能变得值钱。临近到期时，时间价值会快速衰减——这就是为什么期权买方要赶时间，卖方喜欢等时间流逝。
+</div>
+
+<div class="vocab-card">
+  <span class="term">3. 波动率（Volatility）</span>——价格波动越大，期权越贵。
+  <br><br>
+  想象两只股票：一只每天波动 0.5%，另一只每天波动 5%。哪只股票的期权更值钱？当然是波动大的那只——它更可能大幅偏离行权价。这就是为什么财报发布前，期权价格通常会飙升（预期波动加大）。
+</div>
+
+<h2>六、衍生品：双刃剑</h2>
+
+<p>衍生品本身是中性的工具。它可以用来对冲风险，也可以用来放大赌注。2008 年金融危机中，CDO（担保债务凭证）和 CDS（信用违约互换）这些复杂的衍生品被大量用于投机，放大了整个金融系统的风险。</p>
+
+<p>但同样这些工具，如果用在正确的地方——比如航空公司用燃油期货锁定成本、出口商用远期合约锁定汇率——就能帮助企业稳定经营。</p>
+
+<div class="key-idea">
+  衍生品的核心原则：<strong>永远知道你在对冲什么风险，而不是在赌什么方向。</strong>对冲是对冲，投机是投机——两者不能混为一谈。
+</div>
+
+<p>一个经典的教训是 1995 年的巴林银行倒闭案。尼克·里森（Nick Leeson）作为新加坡交易员，表面上在做套利（低风险），实际上在大量投机日经指数方向。当日本地震导致市场剧烈波动时，他的亏损超过了银行的资本金，巴林银行在两天内破产。这就是把投机伪装成对冲的后果。</p>
+
+<h2>七、总结与关键要点</h2>
+
+<div class="takeaway">
+  <strong>记住这三件事：</strong><br><br>
+  1. <strong>期权是权利，不是义务。</strong>买方风险有限（权利金），卖方风险可能很大。<br>
+  2. <strong>看涨期权赌上涨，看跌期权赌下跌（或买保险）。</strong> Protective Put = 持股 + 看跌期权 = 给股票买保险。<br>
+  3. <strong>期权价格由内在价值 + 时间价值 + 波动率决定。</strong>时间是你（买方）的朋友，也是你的敌人——时间对你有利，但对期权买方来说，时间在不断消耗价值。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，每题选出最佳答案。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <p>你买了一份行权价为 ¥100 的腾讯看涨期权，支付了 ¥5 的权利金。如果到期时腾讯股价为 ¥120，你的净利润是多少？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. ¥20</label>
+      <label><input type="radio" name="q1" value="b"> B. ¥15</label>
+      <label><input type="radio" name="q1" value="c"> C. ¥25</label>
+      <label><input type="radio" name="q1" value="d"> D. ¥5</label>
+    </div>
+    <div class="feedback" id="fb1"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <p>以下哪种情况最适合买入看跌期权？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 你认为股价会上涨</label>
+      <label><input type="radio" name="q2" value="b"> B. 你持有股票，担心短期下跌</label>
+      <label><input type="radio" name="q2" value="c"> C. 你想获得股票的股息</label>
+      <label><input type="radio" name="q2" value="d"> D. 你认为市场会很平静</label>
+    </div>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <p>期权的买方和卖方，谁有更大的理论风险？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 买方，因为可能血本无归</label>
+      <label><input type="radio" name="q3" value="b"> B. 卖方，因为义务可能无限</label>
+      <label><input type="radio" name="q3" value="c"> C. 两者的风险一样大</label>
+      <label><input type="radio" name="q3" value="d"> D. 取决于标的资产</label>
+    </div>
+    <div class="feedback" id="fb3"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <p>以下哪个因素不会直接影响期权的价格？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. 标的资产的当前价格</label>
+      <label><input type="radio" name="q4" value="b"> B. 距离到期日的天数</label>
+      <label><input type="radio" name="q4" value="c"> C. 公司的CEO是谁</label>
+      <label><input type="radio" name="q4" value="d"> D. 标的资产的波动率</label>
+    </div>
+    <div class="feedback" id="fb4"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <p>你花 ¥3 买了行权价 ¥50 的阿里巴巴看跌期权。到期时阿里股价为 ¥40，你选择行权。你的净收益是？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. ¥7（¥10行权价值 − ¥3权利金）</label>
+      <label><input type="radio" name="q5" value="b"> B. ¥10</label>
+      <label><input type="radio" name="q5" value="c"> C. ¥3</label>
+      <label><input type="radio" name="q5" value="d"> D. −¥3（亏损权利金）</label>
+    </div>
+    <div class="feedback" id="fb5"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <p>"时间价值"在什么时候衰减最快？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 刚买入时</label>
+      <label><input type="radio" name="q6" value="b"> B. 到期前最后一周</label>
+      <label><input type="radio" name="q6" value="c"> C. 中间阶段均匀衰减</label>
+      <label><input type="radio" name="q6" value="d"> D. 时间价值不衰减</label>
+    </div>
+    <div class="feedback" id="fb6"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <p>以下哪项最准确地描述了 Protective Put 策略？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 卖出看涨期权 + 卖出看跌期权</label>
+      <label><input type="radio" name="q7" value="b"> B. 持有标的资产 + 买入看跌期权</label>
+      <label><input type="radio" name="q7" value="c"> C. 买入看涨期权 + 买入看跌期权</label>
+      <label><input type="radio" name="q7" value="d"> D. 卖出看涨期权 + 买入看跌期权</label>
+    </div>
+    <div class="feedback" id="fb7"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <p>巴林银行倒闭的主要原因是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 客户大规模挤兑</label>
+      <label><input type="radio" name="q8" value="b"> B. 交易员尼克·里森的未授权投机</label>
+      <label><input type="radio" name="q8" value="c"> C. 美联储加息</label>
+      <label><input type="radio" name="q8" value="d"> D. 房地产泡沫破裂</label>
+    </div>
+    <div class="feedback" id="fb8"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <p id="score-label"></p>
+  </div>
+</div>
+
+<div class="nav-links">
+  <span class="disabled">上一课</span>
+  <a href="../index.html">📚 金融学目录</a>
+  <a href="0009-behavioral-finance.html">下一课 →</a>
+</div>
+
+<script>
+const answers = {
+  q1: 'b', q2: 'b', q3: 'b', q4: 'c',
+  q5: 'a', q6: 'b', q7: 'b', q8: 'b'
+};
+const explanations = {
+  q1: { correct: '正确！行权价值 = ¥120 − ¥100 = ¥20，减去 ¥3 权利金 = ¥15 净利润。', wrong: '不对。行权价值 = ¥120 − ¥100 = ¥20，但要减去 ¥5 权利金成本，所以净利润 = ¥20 − ¥5 = ¥15。' },
+  q2: { correct: '正确！看跌期权在股价下跌时赚钱，特别适合持有股票时做对冲保护。', wrong: '不对。看跌期权在股价下跌时赚钱，最适合的场景是持有股票但担心短期下跌——相当于买保险。' },
+  q3: { correct: '正确！买方最大损失是权利金（有限），但卖方有义务履约——如果股价暴涨，看涨期权卖方的损失理论上是无限的。', wrong: '不对。买方风险有限（最多损失权利金），但卖方有履约义务，风险可能非常大甚至无限。' },
+  q4: { correct: '正确！期权定价主要看内在价值、时间价值和波动率。CEO 是谁不直接反映在定价模型中（虽然可能间接影响波动率）。', wrong: '不对。CEO 不是期权定价的直接因素。定价模型（如 Black-Scholes）只看：标的价格、行权价、时间、波动率、利率。' },
+  q5: { correct: '正确！行权价值 = ¥50 − ¥40 = ¥10，减去 ¥3 权利金 = ¥7 净收益。', wrong: '不对。行权价值 = ¥50 − ¥40 = ¥10，减去 ¥3 权利金成本 = ¥7 净收益。' },
+  q6: { correct: '正确！时间价值在到期前最后阶段加速衰减（称为 Theta decay），最后一周衰减最快。这也是为什么期权卖方喜欢等时间流逝。', wrong: '不对。时间价值的衰减是非线性的——最后阶段衰减最快（Theta 增大）。越接近到期，时间价值掉得越快。' },
+  q7: { correct: '正确！Protective Put = 持有标的资产 + 买入看跌期权。就像给你的股票买了"下跌保险"。', wrong: '不对。Protective Put 的策略是：持有标的资产 + 买入看跌期权。这样可以限制下行风险。' },
+  q8: { correct: '正确！尼克·里森在新加坡进行未授权的日经指数投机，亏损 13 亿美元，导致拥有 233 年历史的巴林银行在两天内破产。', wrong: '不对。巴林银行倒闭的直接原因是交易员尼克·里森的未授权投机行为，亏损超过银行资本金。' }
+};
+
+let answered = {};
+let score = 0;
+const total = 8;
+
+function submitQuiz() {
+  score = 0;
+  let allAnswered = true;
+
+  for (let i = 1; i <= total; i++) {
+    const qid = 'q' + i;
+    const selected = document.querySelector(`input[name="${qid}"]:checked`);
+    const fb = document.getElementById('fb' + i);
+
+    if (!selected) {
+      allAnswered = false;
+      fb.className = 'feedback wrong';
+      fb.textContent = '请先选择一个答案。';
+      fb.style.display = 'block';
+      continue;
+    }
+
+    answered[qid] = true;
+    const userAns = selected.value;
+    const isCorrect = userAns === answers[qid];
+
+    if (isCorrect) {
+      score++;
+      fb.className = 'feedback correct';
+      fb.textContent = explanations[qid].correct;
+    } else {
+      fb.className = 'feedback wrong';
+      fb.textContent = explanations[qid].wrong;
+    }
+    fb.style.display = 'block';
+  }
+
+  if (!allAnswered) return;
+
+  const scoreBox = document.getElementById('score-box');
+  document.getElementById('score-num').textContent = score + ' / ' + total;
+  const pct = Math.round(score / total * 100);
+  let msg = '';
+  if (pct >= 87.5) msg = '太棒了！你对期权已经有扎实的理解。';
+  else if (pct >= 62.5) msg = '不错！再回顾一下损益分析部分会更有信心。';
+  else msg = '建议重新阅读损益图和关键概念，然后回来再做一遍。';
+  document.getElementById('score-label').textContent = msg;
+  scoreBox.className = 'score-box show';
+}
+</script>
+
+</body>
+</html>

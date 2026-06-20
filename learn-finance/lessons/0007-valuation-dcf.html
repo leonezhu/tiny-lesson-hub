@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7课 — 估值基础：DCF与相对估值</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 { margin-top: 0; }
+
+  .formula {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 1rem;
+    overflow-x: auto;
+  }
+
+  .example-box {
+    background: #f5f5f5;
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+  }
+
+  th { background: var(--accent-light); font-weight: 600; }
+
+  .highlight { background: var(--warn-bg); padding: 0.1rem 0.3rem; border-radius: 3px; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 { margin-top: 0; }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .q-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+  }
+
+  .context {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .option-btn {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+
+  .option-btn.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); border-left: 3px solid var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); border-left: 3px solid var(--wrong); }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-label { font-size: 0.95rem; color: var(--muted); margin-top: 0.25rem; }
+
+  .followup {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<h1>第7课 — 估值基础：DCF与相对估值</h1>
+<div class="lesson-meta">金融学 · 第7课 · 约15分钟阅读</div>
+
+<div class="goal-box">
+  <strong>学习目标：</strong>理解估值的两大范式——绝对估值（DCF）和相对估值（可比公司法），掌握自由现金流折现的核心逻辑，学会用市盈率等倍数进行横向比较，并了解两种方法的优缺点与适用场景。
+</div>
+
+<!-- Section 1 -->
+<h2>一、为什么估值是一门"艺术"而非"科学"？</h2>
+
+<p>当你听到分析师说"苹果值2万亿美元"或者"某只股票被低估了30%"时，他们其实是在做一件极其困难的事：<strong>用今天的数字，去预测一个充满不确定性的未来</strong>。估值的本质，就是把一家公司未来能赚到的每一分钱，折算成今天的价值。</p>
+
+<p>金融学界和实务界最常用的两大类估值方法是：</p>
+
+<table>
+  <thead>
+    <tr><th>方法类别</th><th>代表方法</th><th>核心思想</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>绝对估值</td><td>DCF（现金流折现）</td><td>公司价值 = 未来自由现金流的现值总和</td></tr>
+    <tr><td>相对估值</td><td>可比公司法（Multiples）</td><td>公司价值 = 同行可比公司的估值倍数 × 自身指标</td></tr>
+  </tbody>
+</table>
+
+<div class="concept-card">
+  <h3>🔑 核心直觉</h3>
+  <p>绝对估值像"自己算账"——不看别人，只看这家公司自己能产生多少现金。相对估值像"货比三家"——看看市场上类似的公司在卖什么价，然后给自己定个合理的价格。两者各有优劣，专业分析师通常会同时使用两种方法交叉验证。</p>
+</div>
+
+<!-- Section 2 -->
+<h2>二、DCF：自由现金流折现模型</h2>
+
+<h3>2.1 什么是自由现金流（FCF）？</h3>
+
+<p><strong>自由现金流</strong>（Free Cash Flow）是公司经营活动产生的、在满足了必要的资本支出之后，真正可以自由支配的现金。它是企业的"真金白银"——不像会计利润那样容易被操纵。</p>
+
+<div class="formula">
+  FCF = EBIT × (1 − Tc) + 折旧摊销 − 资本支出 − 营运资本增加<br><br>
+  简单理解：FCF = 公司赚到的、不需要再投入就能分给投资者的钱
+</div>
+
+<p>注意区分两个常见概念：</p>
+
+<table>
+  <thead>
+    <tr><th>指标</th><th>含义</th><th>归属</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>FCFF（公司自由现金流）</td><td>可供债权人和股东分配的现金流</td><td>企业价值（EV）</td></tr>
+    <tr><td>FCFE（股权自由现金流）</td><td>可供股东分配的现金流</td><td>股权价值</td></tr>
+  </tbody>
+</table>
+
+<h3>2.2 折现：时间的魔法</h3>
+
+<p>DCF 的核心公式非常简洁：</p>
+
+<div class="formula">
+  企业价值 = Σ [FCF<sub>t</sub> / (1 + WACC)<sup>t</sup>] + 终值/(1 + WACC)<sup>n</sup><br><br>
+  FCF<sub>t</sub> = 第 t 年的自由现金流<br>
+  WACC = 加权平均资本成本（折现率）<br>
+  终值 = 永续期价值的现值
+</div>
+
+<p>这里有两个关键参数：<strong>FCF 预测</strong>和<strong>折现率（WACC）</strong>。DCF 对这两个参数的敏感度极高——这也是它被称为"垃圾进、垃圾出"（Garbage In, Garbage Out）的原因。哪怕只是微调增长率或折现率，估值结果可能相差数倍。</p>
+
+<div class="example-box">
+  <strong>案例演示：</strong>假设一家公司未来 5 年的自由现金流分别为 10亿、12亿、14亿、16亿、18亿，WACC 为 10%，永续增长率为 3%。<br><br>
+  前 5 年现值 ≈ 10/1.1 + 12/1.1² + 14/1.1³ + 16/1.1⁴ + 18/1.1⁵ ≈ 52.8亿<br>
+  终值 = 18×(1+3%) / (10%−3%) ≈ 265亿 → 现值 ≈ 265/1.1⁵ ≈ 164亿<br>
+  <strong>企业价值 ≈ 52.8 + 164 = 216.8亿</strong>
+</div>
+
+<h3>2.3 终值：DCF 中最大的不确定性来源</h3>
+
+<p>在大多数 DCF 模型中，<strong>终值（Terminal Value）占企业总价值的 50%-80%</strong>。这意味着你花了大量时间预测未来 5-10 年的现金流，但最终估值的大部分却来自对"永远以后"的假设。</p>
+
+<p>终值计算有两种常用方法：</p>
+
+<table>
+  <thead>
+    <tr><th>方法</th><th>公式</th><th>适用场景</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>永续增长法（Gordon Growth）</td><td>TV = FCF<sub>n</sub> × (1+g) / (WACC−g)</td><td>成熟稳定行业</td></tr>
+    <tr><td>退出倍数法（Exit Multiple）</td><td>TV = EV/EBITDA<sub>n</sub> × 倍数</td><td>成长型公司</td></tr>
+  </tbody>
+</table>
+
+<div class="concept-card">
+  <h3>⚠️ 常见陷阱</h3>
+  <p>永续增长率 g 绝不能超过长期 GDP 增长率（通常 2%-3%）。如果你假设一家公司的现金流以 5% 的速度永远增长，那就意味着它最终会超过整个经济体——这在逻辑上说不通。</p>
+</div>
+
+<!-- Section 3 -->
+<h2>三、相对估值：用倍数说话</h2>
+
+<h3>3.1 为什么倍数有用？</h3>
+
+<p>相对估值法的核心思想非常简单：<strong>同样的东西应该卖同样的价钱</strong>。如果两家公司的业务模式、增长速度和风险水平相似，那么它们的估值倍数也应该接近。</p>
+
+<h3>3.2 常用估值倍数</h3>
+
+<table>
+  <thead>
+    <tr><th>倍数</th><th>公式</th><th>适用行业</th><th>优点</th><th>缺点</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>P/E（市盈率）</td><td>股价 / 每股收益</td><td>盈利稳定的成熟企业</td><td>直观易懂</td><td>负盈利时无效；受会计政策影响</td></tr>
+    <tr><td>P/B（市净率）</td><td>股价 / 每股净资产</td><td>银行、保险、重资产</td><td>账面价值相对稳定</td><td>不适用于轻资产公司</td></tr>
+    <tr><td>EV/EBITDA</td><td>企业价值 / 息税折旧摊销前利润</td><td>资本密集型、高折旧行业</td><td>排除资本结构和税制差异</td><td>忽略资本支出</td></tr>
+    <tr><td>P/S（市销率）</td><td>市值 / 销售收入</td><td>尚未盈利的成长公司</td><td>收入比利润更难操纵</td><td>不考虑盈利能力</td></tr>
+    <tr><td>EV/Revenue</td><td>企业价值 / 收入</td><td>SaaS、互联网平台</td><td>反映整体企业价值</td><td>未考虑利润率差异</td></tr>
+  </tbody>
+</table>
+
+<h3>3.3 可比公司法实战步骤</h3>
+
+<p>使用可比公司法（Comps）进行估值，通常遵循以下步骤：</p>
+
+<div class="concept-card">
+  <h3>📋 步骤清单</h3>
+  <ol style="padding-left: 1.25rem;">
+    <li><strong>选定可比公司</strong>：同行业、相似规模、相似增长阶段</li>
+    <li><strong>计算交易倍数</strong>：收集可比公司的 P/E、EV/EBITDA 等倍数</li>
+    <li><strong>确定目标倍数</strong>：取中位数或平均值（避免极端值干扰）</li>
+    <li><strong>应用到目标公司</strong>：用目标公司的相应指标 × 目标倍数 = 估值</li>
+    <li><strong>调整差异</strong>：如果目标公司增速更快/更慢，适当上调/下调倍数</li>
+  </ol>
+</div>
+
+<div class="example-box">
+  <strong>案例演示：</strong>假设你要估值一家中国电商公司。你找到了 4 家可比上市公司，它们的 EV/EBITDA 倍数分别为 12x、15x、18x、20x。中位数为 16.5x。你的目标公司 EBITDA 为 100 亿元，则企业价值 ≈ 100 × 16.5 = 1650 亿元。如果该公司增速低于可比公司平均水平，你可能将倍数下调至 14x，得到 1400 亿元的估值。
+</div>
+
+<h3>3.4 倍数的局限性</h3>
+
+<p>相对估值法看似简单直接，但有几个致命弱点：</p>
+
+<ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
+  <li><strong>市场可能整体高估或低估</strong>——如果整个行业都在泡沫中，用可比倍数估值只会放大错误</li>
+  <li><strong>"可比"是主观的</strong>——哪几家公司真正可比？选错了参照系，结论就偏了</li>
+  <li><strong>忽视个体差异</strong>——两家公司可能有相同的 P/E，但一家增长 20%、另一家增长 2%，它们的真实价值天差地别</li>
+</ul>
+
+<!-- Section 4 -->
+<h2>四、DCF vs 相对估值：何时用哪种？</h2>
+
+<p>这两种方法不是互斥的，而是互补的。理解它们的适用场景，是优秀分析师的基本功。</p>
+
+<table>
+  <thead>
+    <tr><th>维度</th><th>DCF（绝对估值）</th><th>相对估值（倍数法）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>理论基础</td><td>扎实——基于现金流折现原理</td><td>较弱——假设市场定价大体合理</td></tr>
+    <tr><td>数据需求</td><td>高——需要预测多年现金流</td><td>低——只需要当前财务数据和可比公司</td></tr>
+    <tr><td>敏感性</td><td>极高——微小假设变化导致大幅波动</td><td>中等——取决于可比公司选择</td></tr>
+    <tr><td>最佳适用</td><td>现金流稳定的成熟公司</td><td>快速变化的市场、新兴行业</td></tr>
+    <tr><td>最大优势</td><td>不依赖市场情绪</td><td>反映市场共识</td></tr>
+    <tr><td>最大劣势</td><td>假设过多，容易出错</td><td>无法识别市场泡沫</td></tr>
+  </tbody>
+</table>
+
+<div class="goal-box">
+  <strong>专业建议：</strong>华尔街分析师几乎从不只用一种方法。标准的做法是：用 DCF 做一个内在价值估算，用可比公司法做一个市场定价参考，再用 precedent transactions（先例交易法）看看并购市场上的溢价水平。最后给出一个估值区间（valuation range），而不是一个精确的数字。
+</div>
+
+<!-- Section 5 -->
+<h2>五、估值中的"安全边际"</h2>
+
+<p>既然所有估值方法都有缺陷，那怎么办？价值投资的鼻祖本杰明·格雷厄姆提出了一个简单而深刻的概念：<strong>安全边际</strong>（Margin of Safety）。</p>
+
+<div class="concept-card">
+  <h3>🛡️ 安全边际</h3>
+  <p>如果你估算一家公司的内在价值是 100 元，那么只在价格远低于 100 元（比如 60-70 元）时才买入。这个差价就是安全边际——它缓冲了你的估值错误和市场波动带来的风险。</p>
+</div>
+
+<p>安全边际的哲学意义在于：<strong>承认自己可能会错</strong>。DCF 的假设可能太乐观，可比公司可能不够"可比"，终值可能高估了永续增长率。有了安全边际，即使你的估值有 20% 的错误，仍然可能获得合理的回报。</p>
+
+<div class="example-box">
+  <strong>现实教训：</strong>2000年互联网泡沫期间，许多分析师用 P/S 倍数给没有盈利的互联网公司估值，认为"只要用户增长够快，赚钱是水到渠成的事"。但当市场转向、可比公司集体暴跌时，这些基于相对估值的结论瞬间崩塌。那些坚持 DCF 思维、要求正向自由现金流的投资者，反而躲过了一劫。
+</div>
+
+<!-- Section 6 -->
+<h2>六、估值工具箱：进阶概念</h2>
+
+<h3>6.1 SOTP（分部加总估值）</h3>
+<p>对于业务多元化的大型集团（如阿里巴巴、三星），单一倍数无法准确反映其价值。分析师会将各业务板块分别估值，再加总。例如：电商业务用 P/E，云计算用 EV/Revenue，物流用 EV/EBITDA。</p>
+
+<h3>6.2 LBO 估值</h3>
+<p>私募股权基金常用的估值方法：假设通过杠杆收购一家公司，用未来的现金流偿还债务，最终退出时能获得多少回报。LBO 估值给出了一个"最低可接受价格"——如果在这个价格下收购都无法达到目标回报率，那就不值得买。</p>
+
+<h3>6.3 实物期权估值</h3>
+<p>对于具有重大战略选择权的公司（如药企的研发管线、矿企的探矿权），传统 DCF 会低估其价值。实物期权（Real Options）模型将管理层的灵活性纳入估值——就像期权一样，等待本身就有价值。</p>
+
+<div class="concept-card">
+  <h3>💡 为什么这很重要？</h3>
+  <p>一家生物科技公司可能在研一款新药，DCF 模型可能显示它现在"不值钱"（因为没有收入）。但如果这款药获批成功，价值可能翻十倍。实物期权思维告诉你：不要只看当下的现金流，还要看未来可能的"选择权"。</p>
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，涵盖本节课的核心概念。每题即时反馈。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">DCF 基础</div>
+    <div class="sentence">自由现金流（FCF）与会计利润的主要区别是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">FCF 总是大于会计利润</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">FCF 基于实际现金流入流出，会计利润受确认规则和估计影响</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">FCF 只包括经营活动现金流</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">两者没有实质区别</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">折现率</div>
+    <div class="sentence">在 DCF 模型中，如果用更高的 WACC 作为折现率，其他条件不变，那么估算的企业价值会怎样变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">降低</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">升高</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不变</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">先升高后降低</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">终值</div>
+    <div class="sentence">关于 DCF 中的终值（Terminal Value），以下哪项说法是正确的？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">终值通常只占总估值的 10%-20%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">终值计算不需要任何假设</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">终值通常占总估值的 50%-80%，是估值中最敏感的部分</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">终值只能用退出倍数法计算</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">倍数选择</div>
+    <div class="sentence">评估一家尚未盈利但收入快速增长的 SaaS 公司，最合适的相对估值倍数是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">P/E（市盈率）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">P/B（市净率）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">EV/Revenue 或 P/S（市销率）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">股息率</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">可比公司法</div>
+    <div class="sentence">在使用可比公司法估值时，为什么通常取可比公司倍数的"中位数"而非"平均值"？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为中位数更容易计算</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为中位数受极端值影响更小</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为平均值在统计学上是错误的</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为监管要求必须用中位数</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">DCF vs 相对估值</div>
+    <div class="sentence">以下哪项是相对估值法相对于 DCF 的最大优势？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">理论基础更扎实</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不受市场情绪影响</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">更简洁、更能反映市场共识定价</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不需要任何财务数据</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">安全边际</div>
+    <div class="sentence">格雷厄姆提出的"安全边际"概念的核心目的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">确保每次投资都能获得超额收益</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">为估值错误和市场波动提供缓冲</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">避免使用 DCF 模型</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">只投资股息率高的股票</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">综合判断</div>
+    <div class="sentence">一家成熟的公用事业公司（现金流稳定、增长缓慢），最适合的估值方法组合是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">只用 P/S 倍数</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">DCF + EV/EBITDA 倍数法</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">只用实物期权模型</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">LBO 估值</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num">0/8</div>
+    <div class="score-label">答对题目数</div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>下一步：</strong>你已经掌握了估值的两大支柱——DCF 和相对估值。下一课将深入讲解<strong>期权与衍生品基础</strong>，学习如何用 Black-Scholes 模型给期权定价，以及期货、互换等衍生工具如何被用于对冲风险或投机。
+</div>
+
+<div class="footer">
+  <p>TeachHub · 金融学 · 第7课 · 估值基础：DCF与相对估值</p>
+  <p style="margin-top:0.5rem;">估值不是精确的科学，而是一种思维方式。好的估值者知道自己在做什么假设，以及这些假设有多大的犯错空间。</p>
+</div>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 8;
+
+function check(btn) {
+  const question = btn.closest('.quiz-question');
+  if (question.classList.contains('answered')) return;
+  question.classList.add('answered');
+  answered++;
+
+  const isCorrect = btn.getAttribute('data-correct') === 'true';
+  const feedback = question.querySelector('.feedback');
+
+  // Disable all buttons
+  const buttons = question.querySelectorAll('.option-btn');
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b.getAttribute('data-correct') === 'true') {
+      b.classList.add('correct');
+    }
+  });
+
+  if (isCorrect) {
+    score++;
+    btn.classList.add('correct');
+    feedback.className = 'feedback show correct-fb';
+    feedback.textContent = '✅ 正确！';
+  } else {
+    btn.classList.add('wrong');
+    feedback.className = 'feedback show wrong-fb';
+    feedback.textContent = '❌ 不正确。正确答案已用绿色标出。';
+  }
+
+  if (answered === total) {
+    const scoreBox = document.getElementById('score-box');
+    const scoreNum = document.getElementById('score-num');
+    scoreNum.textContent = score + '/' + total;
+    scoreBox.classList.add('show');
+  }
+}
+</script>
+
+</body>
+</html>

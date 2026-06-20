@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 · 国际金融与汇率</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .card h3 { margin-top: 0; }
+
+  .rule-box {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+  }
+
+  .rule-box strong { color: #e65100; }
+
+  .formula {
+    font-family: 'Merriweather', Georgia, serif;
+    background: #f5f5f5;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) { background: #fafafa; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-link { color: var(--accent); text-decoration: none; }
+  .nav-link:hover { text-decoration: underline; }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>国际金融与汇率</h1>
+<p class="lesson-meta">第10课 · 约12分钟 · 金融学进阶</p>
+
+<div class="goal-box">
+  <strong>本课结束时</strong>，你将能够：理解汇率的决定因素、解释固定汇率与浮动汇率的区别、掌握进出口与汇率的关系、了解外汇储备的作用、理解资本流动如何影响一国经济。
+</div>
+
+<h2>为什么这很重要</h2>
+<p>
+  你可能没意识到，但你每天都在和国际金融打交道。你买进口化妆品用的是人民币还是美元？你去日本旅游换了多少日元？跨境电商卖家收到的货款以什么货币结算？汇率不仅仅是新闻里跳动的数字——它直接影响你的购买力、就业甚至房价。
+</p>
+<p>
+  2022年以来，人民币兑美元汇率从7附近一度跌到7.3以上，又回升到7.1左右。这看似只是"0.2"的变化，但对于一个进口原材料的企业来说，成本可能增加十几个百分点。对于普通消费者来说，意味着进口商品的价格波动。
+</p>
+
+<h2>一、汇率是什么？</h2>
+<p>
+  汇率（Exchange Rate）就是一国货币兑换另一国货币的比率。比如"1美元 = 7.2人民币"，意思是你要花7.2元人民币才能买到1美元。
+</p>
+
+<div class="card">
+  <h3>两种标价方式</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>方式</th><th>定义</th><th>例子</th></tr>
+      <tr><td>直接标价法</td><td>1单位外币 = ?本币</td><td>1 USD = 7.2 CNY（中国常用）</td></tr>
+      <tr><td>间接标价法</td><td>1单位本币 = ?外币</td><td>1 GBP = 1.27 USD（英国常用）</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="rule-box">
+  <strong>关键区分：</strong>当人们说"人民币升值"，指的是1美元能换的人民币变少了（比如从7.3变成7.1）。当人们说"人民币贬值"，指的是1美元能换的人民币变多了（比如从7.1变成7.3）。这和直觉相反——记住"升值=换得更少"。
+</div>
+
+<h2>二、汇率是如何决定的？</h2>
+<p>
+  和股票一样，汇率也是由供求关系决定的。但外汇市场的供求有一些独特的驱动因素。
+</p>
+
+<h3>购买力平价（PPP）——长期锚</h3>
+<p>
+  购买力平价理论认为，长期来看，汇率应该使同样的商品在不同国家的花费相同。这就是著名的"巨无霸指数"背后的逻辑。
+</p>
+
+<div class="card">
+  <h3>巨无霸指数示例</h3>
+  <p>假设麦当劳巨无霸在美国售价5.50美元，在中国售价22元人民币：</p>
+  <div class="formula">隐含汇率 = 22 ÷ 5.50 = 4.0</div>
+  <p>而实际汇率是7.2。这意味着：<strong>人民币被低估了约44%</strong>。换句话说，在中国吃一个巨无霸比在美国便宜得多。</p>
+  <p style="font-size:0.9rem; color: var(--muted); margin-top:0.5rem;">注：这是经济学家《经济学人》杂志的趣味指标，并非严谨的学术工具。但它直观地展示了PPP的思想。</p>
+</div>
+
+<h3>利率平价（IRP）——短期驱动力</h3>
+<p>
+  利率差异是汇率短期波动的核心驱动力。如果美国利率5%、中国利率2%，那么持有美元资产的回报更高，资本会流向美国，推高美元汇率。
+</p>
+
+<div class="formula">
+  远期汇率 ≈ 即期汇率 × (1 + 外币利率) / (1 + 本币利率)
+</div>
+
+<p>
+  这就是为什么美联储加息时，全球资本往往会回流美国，新兴市场货币普遍承压。2022-2023年中美利差倒挂（美国利率高于中国），就是人民币贬值的重要推手。
+</p>
+
+<h3>供求关系的其他因素</h3>
+<div class="card">
+  <h3>影响汇率的关键变量</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>贸易收支</strong>——出口多（卖东西给外国人）→ 外国人需要更多本币 → 本币升值</li>
+    <li><strong>资本流动</strong>——外资流入多 → 对本币需求增加 → 本币升值</li>
+    <li><strong>通货膨胀率</strong>——通胀高的国家货币倾向于贬值（购买力下降）</li>
+    <li><strong>市场预期</strong>——如果市场预期某国货币将贬值，投机者会提前抛售</li>
+    <li><strong>政治稳定性</strong>——政局动荡的国家，资本外逃，货币贬值</li>
+    <li><strong>央行干预</strong>——央行可以直接买卖外汇来影响汇率</li>
+  </ol>
+</div>
+
+<h2>三、汇率制度：固定 vs 浮动</h2>
+<p>
+  各国采用的汇率制度各不相同，主要分为以下几类：
+</p>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>制度类型</th><th>特点</th><th>代表</th></tr>
+    <tr><td>完全固定汇率</td><td>货币与某一锚定物（如美元）保持固定比价</td><td>港元（联系汇率制）、丹麦克朗</td></tr>
+    <tr><td>有管理的浮动</td><td>日常浮动，但央行在极端情况下干预</td><td>中国（"有管理的浮动汇率制度"）</td></tr>
+    <tr><td>自由浮动</td><td>汇率完全由市场决定</td><td>美元、欧元、日元</td></tr>
+    <tr><td>货币局制度</td><td>法定要求本币与外币1:1储备支持</td><td>阿根廷（曾使用）、保加利亚</td></tr>
+    <tr><td>美元化</td><td>直接放弃本币，使用美元</td><td>厄瓜多尔、巴拿马</td></tr>
+  </table>
+</div>
+
+<div class="rule-box">
+  <strong>中国的汇率制度：</strong>中国人民银行每日设定"中间价"，允许人民币在中间价上下2%的幅度内浮动。这个机制被称为"参考一篮子货币调节"——不仅看美元，还参考欧元、日元等主要货币的变动。
+</div>
+
+<h2>四、汇率变动的影响</h2>
+
+<h3>对进出口的影响</h3>
+<div class="card">
+  <h3>人民币贬值的影响</h3>
+  <p><strong>利好出口：</strong>中国商品在国际市场上变得更便宜，外国买家更愿意购买。比如原来一件衬衫卖10美元（成本72元人民币），贬值后同样72元成本的衬衫可以卖10.5美元，仍然有利润空间，但外国买家觉得更便宜了。</p>
+  <p><strong>利空进口：</strong>进口商品变得更贵。比如一架波音飞机原本1亿美元（7.2亿人民币），贬值到7.3后需要7.3亿人民币。</p>
+  <p><strong>对旅游业：</strong>中国人出国旅游成本上升，外国人到中国旅游成本下降。</p>
+</div>
+
+<h3>对跨国企业的影响</h3>
+<p>
+  一家中国企业在美国有子公司，赚了1亿美元。如果汇率从7.0变成7.3，换算回人民币就多出了3000万的账面收入——这纯粹是汇率变动带来的"纸面富贵"，不代表经营改善。
+</p>
+
+<h2>五、外汇储备：国家的金融盾牌</h2>
+<p>
+  外汇储备是一个国家持有的外币资产总和。截至2024年底，中国外汇储备约3.2万亿美元，是全球最大的外汇储备国。
+</p>
+
+<div class="card">
+  <h3>外汇储备的主要用途</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>稳定汇率</strong>——当本币过度贬值时，央行卖出美元、买入本币来支撑汇率</li>
+    <li><strong>支付进口</strong>——确保国家有能力支付进口商品和服务</li>
+    <li><strong>偿还外债</strong>——确保政府和企业有能力偿还以外币计价的债务</li>
+    <li><strong>增强信心</strong>——充足的外汇储备向国际市场传递"这个国家不会违约"的信号</li>
+  </ol>
+</div>
+
+<div class="rule-box">
+  <strong>警戒线：</strong>国际经验表明，外汇储备至少应覆盖3-6个月的进口需求，以及短期外债的60%以上。储备太少容易引发货币危机（如1997年亚洲金融危机中的泰国），储备太多则意味着资源闲置的机会成本。
+</div>
+
+<h2>六、货币危机与金融危机</h2>
+<p>
+  国际金融史充满了戏剧性的崩溃时刻。理解这些危机的机制，能帮你更好地判断经济新闻。
+</p>
+
+<div class="card">
+  <h3>1997年亚洲金融危机——泰铢崩盘</h3>
+  <p><strong>背景：</strong>泰国实行固定汇率制（泰铢盯住美元），吸引了大量短期外资流入。但泰国的出口竞争力在下降，经常账户赤字扩大。</p>
+  <p><strong>攻击：</strong>对冲基金（如索罗斯的量子基金）发现泰铢被高估且外汇储备不足，开始大规模借入泰铢并卖出换美元。</p>
+  <p><strong>崩溃：</strong>泰国央行耗尽外汇储备试图捍卫汇率，最终被迫放弃固定汇率。泰铢一天之内暴跌20%，随后蔓延到整个东南亚。</p>
+  <p><strong>启示：</strong>固定汇率制在资本自由流动的情况下难以维持——这就是著名的"不可能三角"理论。</p>
+</div>
+
+<h3>不可能三角（The Impossible Trinity）</h3>
+<p>
+  一个国家不可能同时实现以下三点，最多只能选两个：
+</p>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>目标</th><th>含义</th></tr>
+    <tr><td>资本自由流动</td><td>资金可以自由进出该国</td></tr>
+    <tr><td>固定汇率</td><td>本国货币与外币保持固定比价</td></tr>
+    <tr><td>货币政策独立性</td><td>央行可以自由设定利率来调控国内经济</td></tr>
+  </table>
+</div>
+
+<p>
+  中国选择了"资本管制 + 有管理的浮动"——放弃了完全的资本自由流动，保留了汇率的一定弹性和货币政策的独立空间。
+</p>
+
+<h2>七、人民币汇率的未来</h2>
+<p>
+  人民币汇率的走势受到多重因素影响：中国经济增速、中美利差、贸易格局变化、地缘政治等。没有人能准确预测短期走势，但我们可以理解影响方向的关键变量。
+</p>
+
+<div class="card">
+  <h3>影响人民币汇率的核心变量</h3>
+  <ol style="padding-left: 1.5rem;">
+    <li><strong>贸易顺差</strong>——中国长期保持贸易顺差，对人民币构成支撑</li>
+    <li><strong>中美利差</strong>——利差扩大 → 人民币承压；利差收窄 → 人民币回升</li>
+    <li><strong>中国经济基本面</strong>——GDP增速、就业数据、企业盈利</li>
+    <li><strong>美元强弱</strong>——美元指数走强时，人民币通常被动贬值</li>
+    <li><strong>地缘政治</strong>——贸易战、制裁等因素会影响资本流动和市场情绪</li>
+    <li><strong>人民币国际化</strong>——跨境贸易中使用人民币结算的比例上升，会增加人民币需求</li>
+  </ol>
+</div>
+
+<div class="rule-box">
+  <strong>对个人投资者的建议：</strong>除非你是专业交易者，否则不要试图"炒汇"。汇率短期波动受多种不可预测因素影响。如果你有海外留学、旅游或资产配置需求，可以考虑分批换汇来平滑汇率风险，而不是赌某一个时点的汇率。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>以下有8道情景题，请做出选择。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">情景：1美元 = 7.0人民币 → 1美元 = 7.3人民币。</div>
+    <div class="question-text">在这个过程中，人民币发生了什么变化？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人民币升值了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">人民币贬值了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">情景：美国联邦基金利率5.5%，日本利率0.1%。</div>
+    <div class="question-text">在其他条件不变的情况下，这对美元兑日元汇率有什么影响？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">美元升值，日元贬值</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">美元贬值，日元升值</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">情景：中国某公司从美国进口芯片，合同以美元计价。</div>
+    <div class="question-text">如果人民币对美元大幅贬值，这家公司会怎样？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">成本降低，因为人民币更值钱了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">成本升高，需要更多人民币来兑换同样的美元</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">情景：根据PPP理论，同一款手机在美国卖800美元，在中国卖6400元人民币。</div>
+    <div class="question-text">根据购买力平价，隐含汇率是多少？与实际汇率7.2相比说明什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">隐含汇率8.0，人民币被高估</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">隐含汇率8.0，人民币被低估</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">情景：一国希望同时实现资本自由流动、固定汇率和独立的货币政策。</div>
+    <div class="question-text">根据"不可能三角"理论，这可能吗？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">可能，只要外汇储备足够多</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不可能，三者最多只能实现两个</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">情景：中国出口企业向欧洲客户出口价值100万欧元的商品。</div>
+    <div class="question-text">如果欧元对人民币贬值（比如从1欧元=7.8人民币变为1欧元=7.2人民币），该企业会怎样？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">换回的人民币减少，利润被侵蚀</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">换回的人民币增加，利润提升</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">情景：某新兴市场国家经常账户持续逆差，外汇储备快速下降，短期外债高企。</div>
+    <div class="question-text">这种情况下最可能发生什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">该国货币会升值，因为吸引外资</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">该国货币面临贬值压力，可能爆发货币危机</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">情景：你计划明年去欧洲旅游，预算约1万欧元。</div>
+    <div class="question-text">如果担心欧元升值，以下哪种策略最合理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">等到出发前一次性换完全部欧元</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">分批换汇，比如每月换一点，平滑汇率风险</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+</div>
+
+<div class="followup">
+  <strong>下一步：</strong>这一课是金融学的最后一课。你已经完成了金融学全部10节课的学习，建立了从货币时间价值到国际金融的完整知识框架。回顾一下你的学习笔记，思考这些概念如何相互关联——它们共同构成了理解现代金融世界的基石。
+</div>
+
+<div class="footer">
+  <a href="../index.html" class="nav-link">← 返回金融学课程目录</a> · 
+  <a href="0009-personal-finance-tax.html" class="nav-link">上一课：个人理财与税务规划</a>
+</div>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 8;
+
+function check(btn) {
+  const question = btn.closest('.quiz-question');
+  if (question.dataset.answered) return;
+  question.dataset.answered = 'true';
+  answered++;
+
+  const isCorrect = btn.dataset.correct === 'true';
+  const feedback = question.querySelector('.feedback');
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.textContent = '✓ 正确！';
+    feedback.className = 'feedback show correct-fb';
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    // Reveal correct answer
+    question.querySelectorAll('.option-btn').forEach(b => {
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+    feedback.textContent = '✗ 不正确，已显示正确答案。';
+    feedback.className = 'feedback show wrong-fb';
+  }
+
+  // Disable all buttons in this question
+  question.querySelectorAll('.option-btn').forEach(b => {
+    b.style.pointerEvents = 'none';
+  });
+
+  if (answered === total) {
+    const pct = Math.round(score / total * 100);
+    const msg = pct >= 90 ? '太棒了！你对国际金融的理解非常扎实！' :
+                pct >= 70 ? '不错！大部分概念已经掌握了。' :
+                pct >= 50 ? '还行，建议回顾一下课程内容。' :
+                '建议重新阅读课程，重点理解汇率决定机制。';
+    const scoreBox = document.createElement('div');
+    scoreBox.className = 'score-box show';
+    scoreBox.innerHTML = `<div class="score-num">${score}/${total}</div><div class="score-label">${pct}% · ${msg}</div>`;
+    document.querySelector('.quiz-section').appendChild(scoreBox);
+  }
+}
+</script>
+
+</body>
+</html>

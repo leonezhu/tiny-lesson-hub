@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第6课 — 资本结构与企业融资</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .concept-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .concept-card h3 { margin-top: 0; }
+
+  .formula {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 1rem;
+    overflow-x: auto;
+  }
+
+  .example-box {
+    background: #f5f5f5;
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .example-box strong { color: var(--accent); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+  }
+
+  th { background: var(--accent-light); font-weight: 600; }
+
+  .highlight { background: var(--warn-bg); padding: 0.1rem 0.3rem; border-radius: 3px; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 { margin-top: 0; }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .q-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+  }
+
+  .context {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .option-btn {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+
+  .option-btn.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); border-left: 3px solid var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); border-left: 3px solid var(--wrong); }
+
+  .score-box {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    background: var(--accent-light);
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+
+  .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-label { font-size: 0.95rem; color: var(--muted); margin-top: 0.25rem; }
+
+  .followup {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .footer a { color: var(--accent); }
+
+  .nav-disabled { color: #bbb; }
+</style>
+</head>
+<body>
+
+<h1>第6课 — 资本结构与企业融资</h1>
+<div class="lesson-meta">金融学 · 第6课 · 约12分钟阅读</div>
+
+<div class="goal-box">
+  <strong>学习目标：</strong>理解企业为什么需要融资、债务与股权的核心区别、资本结构如何影响公司价值，以及 MM 定理的直觉与局限。
+</div>
+
+<!-- Section 1 -->
+<h2>一、企业为什么要融资？</h2>
+
+<p>任何企业从创立那天起就在做一件事：<strong>找钱</strong>。找钱的本质很简单——你有一个想法、一个产品、一个市场机会，但你的口袋里没有足够的现金去实现它。于是你需要向外界借钱或出让股份。</p>
+
+<p>企业融资主要有两条路：</p>
+
+<table>
+  <thead>
+    <tr><th>维度</th><th>股权融资</th><th>债务融资</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>资金来源</td><td>投资者出资换股份</td><td>银行/债券市场借钱</td></tr>
+    <tr><td>回报方式</td><td>分红 + 股价上涨</td><td>固定利息</td></tr>
+    <tr><td>风险承担</td><td>股东先亏后赚</td><td>债权人优先受偿</td></tr>
+    <tr><td>控制权</td><td>稀释原有股东</td><td>不稀释（除非违约）</td></tr>
+    <tr><td>税务处理</td><td>分红不可抵扣</td><td>利息可抵税（税盾）</td></tr>
+  </tbody>
+</table>
+
+<div class="example-box">
+  <strong>现实案例：</strong>特斯拉在2010年IPO融资22.6亿美元。这笔钱用来建超级工厂、研发电池技术。如果当时马斯克选择贷款而非卖股份，每年数千万美元的利息支出可能让现金流直接断裂。
+</div>
+
+<!-- Section 2 -->
+<h2>二、资本结构：债务与股权的比例</h2>
+
+<p><strong>资本结构</strong>（Capital Structure）就是企业资金来源中债务和股权的比例。一家公司的资产负债表右边（负债 + 所有者权益）展示了它的资本结构。</p>
+
+<p>关键概念：<span class="highlight">WACC（加权平均资本成本）</span>——企业为每块钱资金支付的平均成本。</p>
+
+<div class="formula">
+  WACC = (E/V) × Re + (D/V) × Rd × (1 − Tc)<br><br>
+  E = 股权市值 &nbsp;|&nbsp; D = 债务市值 &nbsp;|&nbsp; V = E + D<br>
+  Re = 股权成本 &nbsp;|&nbsp; Rd = 债务成本 &nbsp;|&nbsp; Tc = 企业所得税率
+</div>
+
+<p>注意公式中 <code>Rd × (1 − Tc)</code> 这一项——这就是著名的<strong>税盾效应</strong>。因为利息可以在税前扣除，所以债务的实际成本比名义利率更低。这就是为什么企业通常喜欢借债。</p>
+
+<div class="concept-card">
+  <h3>🔑 核心直觉</h3>
+  <p>债务有税盾好处（便宜），但太多债务会增加破产风险（贵）。最优资本结构就是找到一个平衡点——让 WACC 最小化。</p>
+</div>
+
+<!-- Section 3 -->
+<h2>三、MM 定理：从完美到现实</h2>
+
+<p>1958年，Modigliani 和 Miller 发表了一篇改变金融学的论文。他们的结论在当时看来近乎荒谬：</p>
+
+<div class="concept-card">
+  <h3>MM 定理（无税情形）</h3>
+  <p>在完美市场中（无税收、无破产成本、信息对称），企业的价值与其资本结构无关。无论借多少债、发多少股，企业总价值不变。</p>
+</div>
+
+<p>这听起来不对对吧？直觉告诉我们：借债可以抵税，当然更有利。但 MM 说的是在"完美世界"里——没有税，就没有税盾；没有破产成本，就不怕高杠杆。</p>
+
+<div class="concept-card">
+  <h3>MM 定理（有税情形）</h3>
+  <p>引入企业所得税后，由于利息抵税，企业价值随债务增加而上升。最优策略是 100% 债务融资。</p>
+</div>
+
+<p>这个结论同样极端——现实中没有公司真的 100% 借债。为什么？因为 MM 忽略了<strong>财务困境成本</strong>和<strong>代理成本</strong>。</p>
+
+<div class="formula">
+  V<sub>L</sub> = V<sub>U</sub> + Tc × D<br><br>
+  V<sub>L</sub> = 有负债企业价值 &nbsp;|&nbsp; V<sub>U</sub> = 无负债企业价值<br>
+  Tc = 税率 &nbsp;|&nbsp; D = 债务规模
+</div>
+
+<!-- Section 4 -->
+<h2>四、现实中的权衡理论</h2>
+
+<p>现实世界里，企业融资是在多个力量之间走钢丝：</p>
+
+<table>
+  <thead>
+    <tr><th>力量</th><th>方向</th><th>说明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>税盾</td><td>↑ 偏好债务</td><td>利息抵税，降低 WACC</td></tr>
+    <tr><td>破产成本</td><td>↓ 偏好股权</td><td>高杠杆增加违约概率</td></tr>
+    <tr><td>代理成本</td><td>↓ 偏好股权</td><td>股东可能投资高风险项目，损害债权人</td></tr>
+    <tr><td>信息不对称</td><td>↓ 偏好内部融资</td><td>管理者比投资者更了解公司</td></tr>
+  </tbody>
+</table>
+
+<div class="example-box">
+  <strong>优序融资理论（Pecking Order Theory）：</strong>企业在融资时有一个"优先级"——先用内部留存收益，再发债，最后才考虑增发股票。不是因为股权不好，而是因为发行新股会向市场传递"股价可能被高估"的信号。
+</div>
+
+<!-- Section 5 -->
+<h2>五、融资渠道详解</h2>
+
+<h3>5.1 银行贷款</h3>
+<p>最传统的债务融资方式。优点：关系稳定、灵活度高（可协商条款）。缺点：信息披露要求高、利率通常高于公开市场债券。</p>
+
+<h3>5.2 公司债券</h3>
+<p>面向公开市场发行。投资级债券利率低但门槛高；垃圾债（高收益债）利率高但风险大。2008年金融危机期间，大量高收益债发行人违约，证明"高收益"不是白来的。</p>
+
+<h3>5.3 股权融资</h3>
+<p>IPO（首次公开募股）、增发、私募。股权融资不需要偿还本金，但会稀释控制权。科技公司早期常用私募股权（VC/PE），成熟后才考虑 IPO。</p>
+
+<h3>5.4 混合工具</h3>
+<p>可转债（Convertible Bonds）是最经典的混合工具——初始是债，但在特定条件下可以转为股票。给了投资者"下有保底、上不封顶"的结构，因此发行利率通常较低。</p>
+
+<div class="concept-card">
+  <h3>💡 可转债的直觉</h3>
+  <p>想象你借给苹果公司100万元，年利率2%。同时约定：如果苹果股价涨到200元以上，你可以把债券换成股票。这样你既拿到了稳定利息，又分享了股价上涨的收益。对发行方来说，代价是未来可能稀释股权；对投资方来说，代价是放弃了部分利息。</p>
+</div>
+
+<!-- Section 6 -->
+<h2>六、资本结构的行业差异</h2>
+
+<p>不同行业的资本结构差异巨大，这反映了它们的业务特征和风险属性：</p>
+
+<table>
+  <thead>
+    <tr><th>行业</th><th>典型负债率</th><th>原因</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>公用事业</td><td>60-70%</td><td>现金流稳定、资产可抵押</td></tr>
+    <tr><td>房地产</td><td>50-70%</td><td>资产本身可作为抵押品</td></tr>
+    <tr><td>制造业</td><td>30-50%</td><td>固定资产较多、周期性中等</td></tr>
+    <tr><td>科技/医药</td><td>10-30%</td><td>轻资产、现金流不确定</td></tr>
+  </tbody>
+</table>
+
+<div class="goal-box" style="margin-top:1.5rem;">
+  <strong>关键洞察：</strong>资本结构不是"好"或"坏"的问题，而是"适合"的问题。一家公用事业公司用70%的负债很正常，但一家初创科技公司如果也用70%的负债，可能明天就破产了。
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+  <h2>练习：检验你的理解</h2>
+  <p>共 8 道题，涵盖本节课的核心概念。每题即时反馈。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">考察基本概念</div>
+    <div class="sentence">在企业融资的两条主要路径中，以下哪项是债务融资的特征？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">稀释原有股东的控制权</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">利息支出可在税前扣除</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">回报与公司盈利直接挂钩</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">WACC 计算</div>
+    <div class="sentence">如果一家公司的股权成本为12%，债务成本为6%，税率为25%，且资本结构中债务占比40%、股权占比60%，那么 WACC 大约是多少？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">9.0%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">9.6%</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">8.4%</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">7.8%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">MM 定理</div>
+    <div class="sentence">根据 MM 定理（无税情形），以下哪项说法正确？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">负债越多，企业价值越高</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">资本结构不影响企业价值</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">股权融资永远优于债务融资</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">最优资本结构是零负债</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">现实权衡</div>
+    <div class="sentence">为什么现实中企业不会选择 100% 债务融资（即使有税盾好处）？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为税法不允许全额抵税</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为银行拒绝给全部贷款</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">因为破产成本和代理成本会抵消税盾收益</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">因为股东不喜欢杠杆</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">优序融资理论</div>
+    <div class="sentence">根据优序融资理论，企业融资的首选方式是？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">发行新股</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">银行贷款</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">内部留存收益</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">发行可转债</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">行业比较</div>
+    <div class="sentence">以下哪个行业的公司最可能拥有最高的资产负债率？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">软件开发公司</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">生物制药初创公司</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">城市供水公司</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">风险投资基金</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">可转债</div>
+    <div class="sentence">可转债对发行方最大的好处是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全不需要还本付息</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">可以用低于普通债券的利率融资</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">永远不会被转换成股票</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">不需要披露任何财务信息</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">综合判断</div>
+    <div class="sentence">一家成熟的大型制造企业想要扩建新工厂，预计需要5亿元。以下哪种融资组合最合理？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">100% 增发股票</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">部分银行贷款 + 部分留存收益</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">100% 发行垃圾债</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">完全依靠创始人个人借款</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有问题？</strong> 随时问我——不管是对 WACC 公式里的某个变量有疑问，还是想深入聊聊某个行业的资本结构偏好。直接提问就好。<br><br>
+  <strong>推荐阅读：</strong> <a href="https://www.investopedia.com/articles/fundamental-analysis/11/modigliani-miller-theorem.asp" target="_blank">Investopedia — Modigliani-Miller Theorem</a> — 一篇清晰的 MM 定理通俗解读。<br><br>
+  <a href="../index.html" class="resource-link">← 返回金融学目录</a>
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0007-valuation-dcf.html">下一课：估值基础</a>
+</div>
+
+<script>
+const explanations = {
+  q1: {
+    correct: '正确！债务融资的核心特征之一就是利息税前扣除（税盾），这是它与股权融资的关键区别之一。',
+    wrong: '利息税前扣除是债务融资的独特优势。股权融资会稀释控制权，回报与盈利挂钩——这些是股权的特征，不是债务的。'
+  },
+  q2: {
+    correct: '正确！WACC = 0.60×12% + 0.40×6%×(1−0.25) = 7.2% + 1.8% = 9.0%。注意债务成本要乘以(1−税率)来体现税盾效应。',
+    wrong: '一步步算：WACC = 0.60×12% + 0.40×6%×(1−0.25) = 7.2% + 1.8% = 9.0%。别忘了债务成本要乘以(1−Tc)来反映税盾。'
+  },
+  q3: {
+    correct: '正确！MM 定理在无税假设下的核心结论就是：资本结构与企业价值无关。这是一个基准命题，现实中的偏离恰恰证明了税盾和破产成本的存在。',
+    wrong: 'MM 定理（无税）的结论是：在完美市场中，资本结构不影响企业价值。负债增加带来的税盾好处在"无税"假设下不存在，破产成本也不存在。'
+  },
+  q4: {
+    correct: '正确！虽然税盾鼓励负债，但破产成本（直接的和间接的）和代理成本（股东-债权人的利益冲突）会随着负债增加而上升，最终抵消税盾的好处。',
+    wrong: '即使税盾很有吸引力，100% 债务意味着极高的破产风险和严重的代理问题。现实中，破产的直接成本（法律费用）和间接成本（客户流失、供应商收紧信用）都会吞噬税盾的好处。'
+  },
+  q5: {
+    correct: '正确！优序融资理论认为，内部留存收益是第一选择（没有信息不对称问题、没有发行成本），其次才是债务，最后才考虑股权融资。',
+    wrong: '优序融资理论的顺序是：内部融资 > 债务融资 > 股权融资。首选内部留存收益，因为它没有信息不对称问题，也没有发行成本。'
+  },
+  q6: {
+    correct: '正确！城市供水公司拥有稳定、可预测的现金流和大量可抵押的实体资产（管道、水厂），因此可以承受高负债率。相反，软件公司和生物制药公司现金流不确定、资产以人力资本为主，不适合高杠杆。',
+    wrong: '公用事业（如供水、供电）的特点是现金流稳定、资产重且可抵押，因此通常有最高的负债率。科技和生物医药公司现金流不确定，负债率低。'
+  },
+  q7: {
+    correct: '正确！可转债因为附带了转股期权，投资者愿意接受更低的票面利率。发行方因此可以用比普通债券更低的成本融资——这是可转债最大的吸引力。',
+    wrong: '可转债仍然需要还本付息，只是利率比普通债券低。它确实可能转换为股票（这正是它的魅力所在），并且发行方仍需披露财务信息。'
+  },
+  q8: {
+    correct: '正确！对于一家成熟的制造企业，混合融资（银行贷款 + 内部留存）是最务实的选择。银行贷款可以利用税盾，留存收益没有发行成本，两者结合既控制了成本又分散了风险。',
+    wrong: '100% 增发会严重稀释股权且信号负面；100% 垃圾债风险太高；创始人个人借款既不现实也不合规。银行贷款 + 留存收益的组合在成本和风险之间取得了最佳平衡。'
+  }
+};
+
+let answered = {};
+let score = 0;
+const total = 8;
+
+function check(btn) {
+  const question = btn.closest('.quiz-question');
+  const qid = question.id;
+  if (answered[qid]) return;
+  answered[qid] = true;
+
+  const isCorrect = btn.dataset.correct === 'true';
+  const allBtns = question.querySelectorAll('.option-btn');
+  const feedback = question.querySelector('.feedback');
+
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.className = 'feedback show correct-fb';
+    feedback.textContent = explanations[qid].correct;
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    feedback.className = 'feedback show wrong-fb';
+    feedback.textContent = explanations[qid].wrong;
+  }
+
+  if (Object.keys(answered).length === total) {
+    const box = document.getElementById('score-box');
+    const num = document.getElementById('score-num');
+    const label = document.getElementById('score-label');
+    num.textContent = score + ' / ' + total;
+    if (score === total) label.textContent = '完美！你对资本结构和融资决策有了扎实的理解。';
+    else if (score >= 6) label.textContent = '做得不错！回顾一下错题的解释，巩固关键概念。';
+    else label.textContent = '建议重新阅读课程内容，特别是 WACC 和 MM 定理部分。';
+    box.classList.add('show');
+  }
+}
+</script>
+
+</body>
+</html>
