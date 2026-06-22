@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>状态低谷与逃避循环 — 自我科学与行为改变</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#222;line-height:1.7;max-width:800px;margin:0 auto;padding:20px 24px 60px}
+h1,h2,h3{font-family:'Merriweather',serif;color:#1a1a1a}
+h1{font-size:2em;border-bottom:3px solid #2563eb;padding-bottom:12px;margin-bottom:8px}
+h2{font-size:1.45em;margin-top:36px;margin-bottom:12px;color:#1e40af}
+h3{font-size:1.15em;margin-top:24px;margin-bottom:8px;color:#334155}
+p{margin-bottom:14px;font-size:1.05em}
+.term{font-style:italic;color:#475569}
+.example{background:#f0f7ff;border-left:4px solid #2563eb;padding:14px 18px;margin:16px 0;border-radius:0 8px 8px 0;font-size:.98em}
+.example strong{color:#1e40af}
+.collapse-btn{display:inline-flex;align-items:center;gap:6px;background:#e0ecff;border:1px solid #b0cfff;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:.95em;font-family:inherit;color:#1e40af;transition:background .2s}
+.collapse-btn:hover{background:#cde0ff}
+.collapse-btn .arrow{transition:transform .25s;display:inline-block}
+.collapse-btn.open .arrow{transform:rotate(90deg)}
+.collapse-content{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease;opacity:0}
+.collapse-content.show{max-height:3000px;opacity:1}
+.quiz-section{margin-top:40px;padding-top:20px;border-top:2px solid #e2e8f0}
+.quiz-section h2{margin-top:0}
+.quiz-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.quiz-card .q-num{font-weight:700;color:#2563eb;font-size:.85em;text-transform:uppercase;letter-spacing:.5px}
+.quiz-card .q-text{font-size:1.05em;margin:8px 0 14px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:block;width:100%;text-align:left;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fafafa;cursor:pointer;font-size:.97em;font-family:inherit;transition:all .15s}
+.quiz-opt:hover:not(.disabled){border-color:#2563eb;background:#eff6ff}
+.quiz-opt.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:600}
+.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-opt.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.95em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.quiz-feedback.no{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.fill-blank{display:inline-block;border-bottom:2px solid #2563eb;min-width:100px;padding:2px 8px;margin:0 4px;font-family:inherit;font-size:inherit;color:#1e40af;background:transparent;outline:none}
+.fill-blank.correct-input{border-color:#16a34a;color:#166534}
+.fill-blank.wrong-input{border-color:#dc2626;color:#991b1b}
+.action-list{background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:20px;margin-top:30px}
+.action-list h3{color:#a16207;margin-top:0}
+.action-list ul{padding-left:20px}
+.action-list li{margin-bottom:8px;font-size:.98em}
+.action-list li strong{color:#92400e}
+footer{text-align:center;margin-top:50px;color:#94a3b8;font-size:.85em;padding-top:20px;border-top:1px solid #e2e8f0}
+.key-point{background:#f0fdf4;border-left:4px solid #16a34a;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.key-point strong{color:#166534}
+.warning-box{background:#fef2f2;border-left:4px solid #ef4444;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.warning-box strong{color:#dc2626}
+.diagram{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin:20px 0;text-align:center}
+.diagram .cycle-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+.diagram .cycle-step{background:#2563eb;color:#fff;padding:8px 14px;border-radius:6px;font-size:.9em;font-weight:600}
+.diagram .cycle-arrow{color:#94a3b8;font-size:1.2em}
+.diagram .cycle-step.low{background:#ef4444}
+.diagram .cycle-step.esc{background:#f59e0b}
+.diagram .cycle-step.relief{background:#22c55e}
+.diagram .cycle-step.guilt{background:#8b5cf6}
+.interactive-check{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin:20px 0}
+.interactive-check h4{color:#1e40af;margin-bottom:12px}
+.check-item{display:flex;align-items:flex-start;gap:10px;margin:10px 0;padding:10px;background:#f8fafc;border-radius:6px;cursor:pointer;transition:background .15s}
+.check-item:hover{background:#eff6ff}
+.check-item input[type=checkbox]{margin-top:3px;accent-color:#2563eb;width:18px;height:18px}
+.check-item.checked{background:#f0fdf4;border:1px solid #bbf7d0}
+.check-item label{font-size:.98em;cursor:pointer}
+.progress-bar{height:8px;background:#e2e8f0;border-radius:4px;margin-top:12px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#2563eb,#16a34a);border-radius:4px;transition:width .4s ease}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:16px 0}
+.stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.stat-card .num{font-size:1.8em;font-weight:700;color:#2563eb}
+.stat-card .label{font-size:.85em;color:#64748b;margin-top:4px}
+.step-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:16px 0}
+.step-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.step-card h4{color:#1e40af;font-size:.95em;margin-bottom:6px}
+.step-card p{font-size:.9em;margin:0}
+</style>
+</head>
+<body>
+
+<h1>状态低谷与逃避循环</h1>
+<p><strong>Low States &amp; Avoidance Cycles</strong></p>
+
+<div class="example">
+<strong>🧠 课前思考：</strong>你有没有过这样的经历——本来打算起床运动，结果脑子一沉又躺回去了，然后刷了一个小时短视频，最后既没运动也没休息好，整个人更累了？这不是你「懒」，这是一个真实的、有科学解释的心理循环。这节课就是来拆解它的。
+</div>
+
+<!-- Section 1 -->
+<h2>一、什么是"状态低谷"？</h2>
+<p>状态低谷（Low State）不是你偶尔心情不好，而是你的身心进入了一种低能量、低动力的生理和心理状态。在这种状态下，你：<br>
+— 觉得做什么都提不起劲<br>
+— 对平时喜欢的事物也失去了兴趣<br>
+— 身体感到沉重或疲惫<br>
+— 大脑像裹了一层雾</p>
+
+<p>关键在于：<strong>状态低谷是生理现象，不是道德缺陷。</strong>你不是「故意」不想做事，而是你的神经系统确实处于低能量模式。就像手机电量剩 5% 时会自动降频一样，你的大脑也在节能。</p>
+
+<div class="key-point">
+<strong>💡 关键概念：</strong>状态低谷 ≠ 懒惰。懒惰是一种主动选择（「我选择不做」），而状态低谷是一种被动体验（「我想做但做不到」）。混淆这两者是自我批评的根源。
+</div>
+
+<h3>生活案例：周一早晨的挣扎</h3>
+<div class="example">
+<strong>场景：</strong>周日晚上你雄心勃勃地计划周一早起跑步。但周一闹钟响时，你只觉得身体像灌了铅。你告诉自己「再睡十分钟」，结果睡了四十分钟。起床后你已经迟到了，跑步计划泡汤，于是你坐在电脑前刷手机「放松一下」，一刷就是两小时。
+</div>
+
+<p>很多人在这套流程的终点会给自己贴标签：「我就是没有自制力。」但让我们换个角度——用科学来看这个链条。</p>
+
+<!-- Section 2 -->
+<h2>二、逃避循环（Avoidance Cycle）是如何运转的？</h2>
+<p>逃避循环是一个自我强化的闭环。它之所以「循环」，是因为每一步都让你更难跳出下一步。</p>
+
+<div class="diagram">
+<h3 style="margin-bottom:12px;">逃避循环四步</h3>
+<div class="cycle-row">
+<span class="cycle-step low">① 状态低谷<br><small>能量低、不想动</small></span>
+<span class="cycle-arrow">→</span>
+<span class="cycle-step esc">② 逃避行为<br><small>刷手机、拖延、躺平</small></span>
+<span class="cycle-arrow">→</span>
+<span class="cycle-step relief">③ 短期缓解<br><small>暂时舒服了一点</small></span>
+<span class="cycle-arrow">→</span>
+<span class="cycle-step guilt">④ 内疚反弹<br><small>觉得自己废了</small></span>
+</div>
+<div class="cycle-row" style="margin-top:8px;">
+<span class="cycle-arrow" style="font-size:1.5em;">↩ 回到 ①</span>
+</div>
+<p style="margin-top:12px;font-size:.9em;color:#64748b;">注意第④步的内疚如何把能量消耗得更低，从而回到第①步——这就是「循环」的力量。</p>
+</div>
+
+<h3>为什么逃避行为让人上瘾？</h3>
+<p>逃避行为（刷短视频、打游戏、吃垃圾食品）之所以能在第③步带来「短期缓解」，是因为它们做了一件很厉害的事：<strong>快速释放多巴胺（Dopamine）</strong>。</p>
+
+<p>多巴胺不是「快乐分子」，它是「想要分子」——它让你产生欲望和驱动力。当你状态低谷时，大脑急需一点驱动力来摆脱不舒服的感觉，而逃避行为提供了最快速、最低成本的 dopamine hit（多巴胺冲击）。问题在于：</p>
+
+<div class="warning-box">
+<strong>⚠️ 陷阱：</strong>逃避行为提供的多巴胺是「免费且即时」的。相比之下，运动、学习、工作这些高回报行为的多巴胺来得慢、成本高。在状态低谷时，大脑天然会选择「免费且即时」的那条路——这不是你的错，是你的进化机制在起作用。
+</div>
+
+<!-- Section 3 -->
+<h2>三、逃避循环的科学机制</h2>
+
+<h3>3.1 负强化（Negative Reinforcement）</h3>
+<p>这是行为心理学中最容易被误解的概念之一。负强化不是「惩罚」，而是<strong>通过移除不舒服的东西来增加某个行为的发生概率</strong>。</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 点击展开：负强化 vs 正强化详解
+</button>
+<div class="collapse-content">
+<div class="example" style="margin-top:12px;">
+<strong>正强化（Positive Reinforcement）：</strong>做某事后得到好东西 → 更可能再做。<br>
+例子：你跑了步，感觉很好 → 明天还想跑。<br><br>
+<strong>负强化（Negative Reinforcement）：</strong>做某事后移除了坏东西 → 更可能再做。<br>
+例子：你焦虑了，刷了短视频 → 焦虑暂时消失 → 下次焦虑你还想刷短视频。<br><br>
+<strong>关键点：</strong>逃避循环的核心机制是负强化。你刷视频不是因为视频有多好，而是因为刷完那一刻「不想动的感觉」消失了。这种「消除不舒服」的体验，比任何正面奖励都更有效地塑造了你的行为。
+</div>
+</div>
+
+<h3>3.2 能量守恒与决策疲劳</h3>
+<p>当你处于状态低谷时，你的意志力资源（Willpower Resources）几乎为零。心理学中的「自我损耗理论」（Ego Depletion Theory）指出，每一个决定、每一次克制冲动都在消耗有限的心理能量。当你已经花了一整天的精力应付工作或学习，晚上回到家时，你的「决策账户」已经空了。</p>
+
+<div class="example">
+<strong>真实场景：</strong>你在公司开了三个会、回了二十封邮件、处理了两个突发问题。回到家，你只想瘫在沙发上。这时候有人跟你说「你应该去健身」。你的大脑反应不是「好主意」，而是「别烦我」。这不是态度问题——是你的前额叶皮层（Prefrontal Cortex，负责理性决策的大脑区域）已经超负荷工作了。
+</div>
+
+<h3>3.3 内疚的代价</h3>
+<p>逃避循环最危险的一步不是逃避本身，而是第④步——内疚反弹。内疚（Guilt）看起来像是个「道德信号」，提醒你该改正了。但实际上，<strong>内疚本身就是一种高能耗的情绪</strong>。它需要大量的心理能量来维持「我在浪费生命」「我太差劲了」这样的叙事。</p>
+
+<p>研究（Neff &amp; Germer, 2013）发现，内疚并不会让你变得更好——它只会让你更累。而更累的状态，让你更容易再次陷入逃避循环。这就是为什么「自责」往往不是解药，而是毒药。</p>
+
+<!-- Section 4 -->
+<h2>四、如何识别自己正在逃避循环中？</h2>
+<p>打破循环的第一步是意识到你已经在循环中了。以下是一个自检工具：</p>
+
+<div class="interactive-check">
+<h4>🔍 你现在在逃避循环的第几步？</h4>
+<p style="font-size:.9em;color:#64748b;margin-bottom:14px;">勾选所有符合你当前状态的选项：</p>
+<div id="checkItems">
+<label class="check-item"><input type="checkbox" onchange="updateCheck()"><span>我觉得身体很重，什么都不想做</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateCheck()"><span>我在刷手机/看视频/吃东西，但并没有真正享受</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateCheck()"><span>我知道我应该去做某件事，但我就是动不了</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateCheck()"><span>我刚刚经历了「再五分钟就好」的反复拖延</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateCheck()"><span>我感到内疚或自责，觉得自己在浪费时间</span></label>
+<label class="check-item"><input type="checkbox" onchange="updateCheck()"><span>我其实很累，但睡不着也不想动</span></label>
+</div>
+<div class="progress-bar" id="progressBar" style="display:none;"><div class="fill" id="progressFill" style="width:0%"></div></div>
+<p id="checkResult" style="margin-top:12px;font-size:.95em;"></p>
+</div>
+
+<!-- Section 5 -->
+<h2>五、打断循环的策略</h2>
+<p>打断逃避循环不需要巨大的意志力。事实上，越依赖意志力的方法越容易失败。以下是经过验证的低成本策略：</p>
+
+<div class="step-grid">
+<div class="step-card">
+<h4>🔄 策略一：微启动（Micro-Start）</h4>
+<p>不要试图从「什么都不做」跳到「完成一个大任务」。做一个小到不可能失败的行动。比如：不是「去跑步」，而是「穿上运动鞋」；不是「写完报告」，而是「打开文档写一行字」。</p>
+</div>
+<div class="step-card">
+<h4>🌡️ 策略二：生理优先（Body First）</h4>
+<p>状态低谷首先是生理问题。先调整身体状态，再谈心理建设。喝杯水、洗个脸、站起来走两步——这些动作不需要意志力，但能改变你的生理基线。</p>
+</div>
+<div class="step-card">
+<h4>⏱️ 策略三：五分钟法则（Five-Minute Rule）</h4>
+<p>告诉自己：我只做五分钟，五分钟后如果不想做了就停下。大多数情况下，一旦你开始了，继续下去会变得容易得多。因为启动的摩擦力远大于持续的摩擦力。</p>
+</div>
+<div class="step-card">
+<h4>💬 策略四：自我对话重构（Reframe）</h4>
+<p>把「我又在浪费时间了」换成「我现在处于低能量状态，我需要先恢复能量」。同一个事实，不同的叙事，产生的情绪和后续行为完全不同。</p>
+</div>
+<div class="step-card">
+<h4>🚪 策略五：环境切换（Context Switch）</h4>
+<p>离开你当前所在的物理空间。从沙发移到餐桌，从卧室走到阳台，从家里走到楼下便利店。环境的改变会打断大脑的自动化模式。</p>
+</div>
+<div class="step-card">
+<h4>🤝 策略六：社会锚定（Social Anchor）</h4>
+<p>找一个人在你身边，或者至少让他们知道你正在做什么。不需要监督，只需要存在感。研究表明，仅仅是「有人在场」就能显著提高行为执行力。</p>
+</div>
+</div>
+
+<h3>策略对比：为什么「微启动」比「打鸡血」更有效</h3>
+<div class="diagram">
+<h3 style="margin-bottom:12px;">两种方法的能量路径</h3>
+<p style="margin-bottom:8px;"><strong>打鸡血型（错误路径）：</strong></p>
+<div class="cycle-row">
+<span style="color:#64748b;font-size:.9em;">状态低谷</span>
+<span class="cycle-arrow">→</span>
+<span style="color:#64748b;font-size:.9em;">「我要振作！」</span>
+<span class="cycle-arrow">→</span>
+<span style="color:#ef4444;font-size:.9em;">能量耗尽</span>
+<span class="cycle-arrow">→</span>
+<span style="color:#ef4444;font-size:.9em;">更深的低谷</span>
+</div>
+<p style="margin:12px 0 8px;"><strong>微启型（正确路径）：</strong></p>
+<div class="cycle-row">
+<span style="color:#64748b;font-size:.9em;">状态低谷</span>
+<span class="cycle-arrow">→</span>
+<span style="color:#22c55e;font-size:.9em;">「只穿鞋」</span>
+<span class="cycle-arrow">→</span>
+<span style="color:#22c55e;font-size:.9em;">轻微能量提升</span>
+<span class="cycle-arrow">→</span>
+<span style="color:#22c55e;font-size:.9em;">可以走两步了</span>
+</div>
+</div>
+
+<!-- Section 6 -->
+<h2>六、常见误区</h2>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 误区一：「我需要更多自律」
+</button>
+<div class="collapse-content">
+<div class="warning-box" style="margin-top:12px;">
+<strong>❌ 错误思维：</strong>「我之所以陷入逃避循环，是因为我不够自律，所以我需要更强的意志力。」<br><br>
+<strong>✅ 真相：</strong>自律在高能量状态下是有效的，但在低能量状态下，自律几乎总是失效的。把状态低谷归咎于自律不足，就像把手机没电归咎于「充电线质量不好」——方向错了。你需要的是恢复能量的方法，而不是更强的意志力。
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 误区二：「我应该直接跳过低谷期」
+</button>
+<div class="collapse-content">
+<div class="warning-box" style="margin-top:12px;">
+<strong>❌ 错误思维：</strong>「我不能让自己处于低谷，必须立刻起来做事。」<br><br>
+<strong>✅ 真相：</strong>强行跳过低谷期往往适得其反。想象一辆陷在泥里的车——你踩油门的力度越大，轮子转得越快，车陷得越深。正确的做法是先让引擎怠速运转一会儿，等轮子找到抓地力再慢慢加速。状态低谷也是一样：允许自己短暂地处于低能量状态，然后用最小的动作试探性地动起来。
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 误区三：「逃避行为都是坏的」
+</button>
+<div class="collapse-content">
+<div class="example" style="margin-top:12px;">
+<strong>❌ 错误思维：</strong>「刷手机就是浪费时间，我应该完全避免。」<br><br>
+<strong>✅ 真相：</strong>逃避行为本身不是问题，问题在于它是你应对低能量状态的<strong>唯一</strong>方式。如果你能在状态低谷时找到一个既能恢复能量又不消耗太多意志力的活动（比如散步、听音乐、做简单的拉伸），那就不算真正的「逃避」。关键在于多样性——不要让逃避行为成为你的默认选项。
+</div>
+</div>
+
+<!-- Section 7 -->
+<h2>七、实战练习：设计你的「低谷急救包」</h2>
+<p>每个人对低能量状态的反应都不同。下面是一个互动工具，帮你设计属于自己的「低谷急救包」——一套在你状态最差时也能执行的最小行动列表。</p>
+
+<div class="interactive-check">
+<h4>🎒 我的低谷急救包</h4>
+<p style="font-size:.9em;color:#64748b;margin-bottom:14px;">在下面列出 3-5 个你在状态低谷时可以做的、不超过 2 分钟的小动作：</p>
+<div id="emergencyList">
+<div class="check-item" style="cursor:default;">
+<input type="checkbox" checked disabled style="margin-right:8px;"><span style="color:#94a3b8;font-size:.9em;">示例：站起来伸个懒腰</span>
+</div>
+<div class="check-item" style="cursor:default;">
+<input type="checkbox" checked disabled style="margin-right:8px;"><span style="color:#94a3b8;font-size:.9em;">示例：喝一杯水</span>
+</div>
+<div class="check-item" style="cursor:default;">
+<input type="checkbox" checked disabled style="margin-right:8px;"><span style="color:#94a3b8;font-size:.9em;">示例：走到窗边看外面 30 秒</span>
+</div>
+</div>
+<p style="margin-top:12px;font-size:.9em;color:#64748b;">在你的笔记中写下你的急救包内容，然后贴在手机备忘录或冰箱上。</p>
+</div>
+
+<!-- Section 8 -->
+<h2>八、理解「能量周期」：低谷是正常的</h2>
+<p>人类不是机器，我们的能量水平天生就有波动。科学研究表明：</p>
+
+<div class="stat-grid">
+<div class="stat-card">
+<div class="num">~90</div>
+<div class="label">分钟一个基本休息-活动周期（BRAC）</div>
+</div>
+<div class="stat-card">
+<div class="num">↓</div>
+<div class="label">下午 2-4 点是大多数人的能量低谷期</div>
+</div>
+<div class="stat-card">
+<div class="num">☀️</div>
+<div class="label">起床后 1-2 小时是能量峰值窗口</div>
+</div>
+<div class="stat-card">
+<div class="num">🌙</div>
+<div class="label">睡前 90 分钟适合低能量活动</div>
+</div>
+</div>
+
+<p>理解这一点非常重要：<strong>在下午三点感到不想做事，不是因为你废了，而是因为你的人类身体正在经历正常的能量波动。</strong></p>
+
+<div class="key-point">
+<strong>💡 行动原则：</strong>不要在能量低谷期安排需要高专注力的任务。把重要的、需要创造力的工作放在你的能量峰值时段（通常是早上），把低价值的、机械性的任务安排在低谷期。这不是偷懒——这是顺应你的生理节律。
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>九、随堂测验 📝</h2>
+
+<!-- Q1 -->
+<div class="quiz-card">
+<div class="q-num">Question 1 of 8</div>
+<div class="q-text">以下哪个描述最准确地定义了「逃避循环」中的负强化（Negative Reinforcement）？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb1')">A. 因为你做了某事而被惩罚，所以你不再做了</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb1')">B. 因为逃避行为暂时消除了不舒服的感觉，所以你更可能在下次重复这种行为</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb1')">C. 因为你做了某事而感到内疚，所以内疚促使你改变行为</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb1')">D. 因为逃避行为带来了多巴胺，所以你获得了正向的快乐体验</button>
+</div>
+<div class="quiz-feedback" id="fb1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-card">
+<div class="q-num">Question 2 of 8</div>
+<div class="q-text">你周日晚上计划周一早起跑步，但周一闹钟响时你实在起不来，然后刷了两小时手机。根据逃避循环模型，你刷手机的核心驱动力是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb2')">A. 你对跑步失去了兴趣</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb2')">B. 你缺乏自律，意志力薄弱</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb2')">C. 你在状态低谷中，逃避行为提供了快速的多巴胺释放来暂时缓解不舒服感</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb2')">D. 短视频平台的设计就是为了让人上瘾</button>
+</div>
+<div class="quiz-feedback" id="fb2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-card">
+<div class="q-num">Question 3 of 8</div>
+<div class="q-text">「五分钟法则」为什么比「我要立刻振作起来」更有效？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb3')">A. 因为它降低了启动的摩擦力——开始做的成本比一直不动的成本小得多</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb3')">B. 因为五分钟足够完成大部分任务</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb3')">C. 因为五分钟后会释放更多的多巴胺</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb3')">D. 因为五分钟是一个精确的生理恢复时间</button>
+</div>
+<div class="quiz-feedback" id="fb3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-card">
+<div class="q-num">Question 4 of 8</div>
+<div class="q-text">以下哪种情况属于「自我损耗」（Ego Depletion）？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb4')">A. 你跑完五公里后感到身体疲惫</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb4')">B. 你开了一整天会后，回家连洗碗的力气都没有了</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb4')">C. 你熬夜到凌晨三点，第二天早上起不来</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb4')">D. 你吃得太饱，饭后不想动</button>
+</div>
+<div class="quiz-feedback" id="fb4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-card">
+<div class="q-num">Question 5 of 8</div>
+<div class="q-text">填空题：逃避循环中，最危险的一步不是______（逃避行为）本身，而是第④步——内疚反弹。因为内疚本身也是一种高能耗的情绪，它会消耗你本就不多的心理能量。</div>
+<input type="text" class="fill-blank" id="blank5" placeholder="填入一个词" style="width:120px;">
+<button class="collapse-btn" onclick="checkBlank(5)" style="margin-left:8px;">检查</button>
+<div class="quiz-feedback" id="fb5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-card">
+<div class="q-num">Question 6 of 8</div>
+<div class="q-text">你在下午三点感到特别不想做事，这最可能是因为：</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb6')">A. 你中午吃太多了</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb6')">B. 你的工作效率太低</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb6')">C. 你正在经历正常的 BRAC（基本休息-活动周期）能量低谷</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb6')">D. 你缺乏咖啡因</button>
+</div>
+<div class="quiz-feedback" id="fb6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-card">
+<div class="q-num">Question 7 of 8</div>
+<div class="q-text">以下哪项关于「内疚」的说法是正确的？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb7')">A. 内疚是改变行为的最佳动力</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb7')">B. 内疚是一种高能耗情绪，会让你更累，从而更容易再次陷入逃避循环</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb7')">C. 内疚只在你对自己要求高的人身上出现</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb7')">D. 内疚和逃避循环没有直接关系</button>
+</div>
+<div class="quiz-feedback" id="fb7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-card">
+<div class="q-num">Question 8 of 8</div>
+<div class="q-text">情景题：你发现自己又在逃避循环中——已经躺了两个小时刷手机，现在感到极度内疚。以下哪种回应最能帮助你真正跳出循环？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb8')">A. 「我太堕落了，明天一定要早起补回来。」</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true, 'fb8')">B. 「我现在处于低谷期，先站起来喝杯水，然后只做一件事：把手机放到另一个房间。」</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb8')">C. 「算了，今天就彻底摆烂吧。」</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false, 'fb8')">D. 「我应该制定一个严格的作息表，杜绝这种情况再发生。」</button>
+</div>
+<div class="quiz-feedback" id="fb8"></div>
+</div>
+</div>
+
+<!-- ACTION LIST -->
+<div class="action-list">
+<h3>⚡ 今天就能做的行动清单</h3>
+<ul>
+<li><strong>1 分钟：</strong>站起来，走到窗边或门口，深呼吸三次。不需要想什么，只是换一下位置。</li>
+<li><strong>1 分钟：</strong>拿出一张纸或打开手机备忘录，写下「当我处于低谷时，我可以做的三件小事」：① ____ ② ____ ③ ____</li>
+<li><strong>1 分钟：</strong>把手机放到另一个房间，或者关掉一个正在自动播放的视频页面。打断当前的逃避行为链。</li>
+<li><strong>2 分钟：</strong>喝一大杯水，然后洗一把脸。用物理手段重置你的生理状态。</li>
+<li><strong>今天：</strong>观察你今天的一次「想逃避」的瞬间。不要评判，只是注意到它：「啊，我正在进入逃避循环的第②步。」仅仅觉察，就已经是在打破了。</li>
+</ul>
+</div>
+
+<footer>
+<p>自我科学与行为改变 · 课程 10/12 · 状态低谷与逃避循环</p>
+<p>下一课：螺旋上升——重新理解回退 ↗</p>
+</footer>
+
+<script>
+function toggleCollapse(btn) {
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('show');
+}
+
+// Quiz checking
+const feedbackTexts = {
+  fb1: {
+    ok: '✅ <strong>正确！</strong>负强化的核心是「移除不舒服感来增强行为」。你刷视频不是因为视频多好，而是因为刷完那一刻「不想动的难受」消失了。这种「消除不舒服」的体验，比任何正面奖励都更有效地塑造了你的行为。',
+    no: '❌ 正确答案是 <strong>B</strong>。负强化不是惩罚（A），也不是内疚驱动（C）。虽然多巴胺参与了（D），但负强化的核心机制是「通过移除不舒服感来增加行为频率」——这正是逃避循环的引擎。'
+  },
+  fb2: {
+    ok: '✅ <strong>正确！</strong>逃避循环的起点是状态低谷，而刷手机提供的是快速多巴胺释放来缓解「不想动」的不舒服感。这不是道德问题，是神经化学问题。理解了这一点，你就不会再用「懒」来攻击自己了。',
+    no: '❌ 正确答案是 <strong>C</strong>。A（失去兴趣）可能是结果但不是原因；B（缺乏自律）是错误归因——自律在低能量状态下几乎无效；D（平台设计）是外部因素但不是你个人的核心驱动力。逃避循环的关键是你内在的能量状态 + 多巴胺的快速释放。'
+  },
+  fb3: {
+    ok: '✅ <strong>正确！</strong>启动的摩擦力远大于持续的摩擦力。这就是为什么「穿上运动鞋」比「去跑步」容易得多——前者只是一个微小的动作，但它能撬动整个行为链。一旦你开始做了五分钟，大脑的「我已经投入了」效应会让你更愿意继续。',
+    no: '❌ 正确答案是 <strong>A</strong>。「我要立刻振作起来」的问题在于它要求你在低能量状态下做一个高能量动作——就像要求一辆熄火的汽车直接飙到 120 码。五分钟法则通过降低启动成本，绕过了意志力的需求。'
+  },
+  fb4: {
+    ok: '✅ <strong>正确！</strong>自我损耗指的是心理能量（而非体力）的耗尽。开会的决策、社交、情绪管理都在消耗你的前额叶资源。回到家后「连洗碗都不想动」，就是你的决策账户已经透支的信号。',
+    no: '❌ 正确答案是 <strong>B</strong>。A 是体力疲劳，C 是睡眠剥夺，D 是消化系统的正常反应。只有 B 描述的是心理决策资源的耗竭——即使你的身体不累，你的大脑也已经「下班」了。'
+  },
+  fb5: null,
+  fb6: {
+    ok: '✅ <strong>正确！</strong>BRAC（基本休息-活动周期）是人类天生的生理节律。下午 2-4 点是大多数人的能量低谷期，这是正常的生理现象，不是你的错。聪明的做法是在这个时间段安排低能量任务（回复邮件、整理文件），而不是强迫自己做创造性工作。',
+    no: '❌ 正确答案是 <strong>C</strong>。A、B、D 都可能是影响因素，但不是最核心的原因。BRAC 是一个被广泛验证的生理现象——你的身体每 90 分钟左右就会经历一次能量波动，下午的低谷是其中最明显的。'
+  },
+  fb7: {
+    ok: '✅ <strong>正确！</strong>内疚看起来像是一种「道德觉醒」，但实际上它是一种高能耗情绪。研究（Neff & Germer, 2013）表明，自我关怀（Self-Compassion）比自我批评更能促成长期行为改变。因为自我关怀不消耗额外的心理能量，而自我批评会。',
+    no: '❌ 正确答案是 <strong>B</strong>。A 是最常见的错觉——人们以为内疚会推动改变，但实际上它推动的是「逃避更多」来缓解内疚带来的不适。这就是内疚如何把逃避循环推向更深的陷阱。'
+  },
+  fb8: {
+    ok: '✅ <strong>正确！</strong>B 选项做了一件最关键的事：它不要求你「立刻振作」，而是用一个极小的物理动作（放下手机）来打断循环。这比任何宏大的决心都有效。觉察 + 微小行动 = 跳出循环的最短路径。',
+    no: '❌ 正确答案是 <strong>B</strong>。A 和 D 都需要高能量状态下的意志力（你现在没有）；C 是放弃，不是解决；只有 B 用了「生理优先」的策略——用一个 30 秒的物理动作来打断自动化循环。'
+  }
+};
+
+function checkAnswer(btn, isCorrect, fbId) {
+  const card = btn.closest('.quiz-card');
+  const opts = card.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById(fbId);
+
+  // Disable all options
+  opts.forEach(o => {
+    o.classList.add('disabled');
+    if (o === btn && !isCorrect) {
+      o.classList.add('wrong');
+    }
+    if (o !== btn && !isCorrect && o.onclick && o.onclick.toString().includes('true')) {
+      // highlight correct
+    }
+  });
+
+  // Mark selected
+  if (isCorrect) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+  }
+
+  // Show correct answer
+  opts.forEach(o => {
+    const onclickStr = o.getAttribute('onclick');
+    if (onclickStr && onclickStr.includes('true')) {
+      o.classList.add('correct');
+    }
+  });
+
+  const text = isCorrect ? feedbackTexts[fbId].ok : feedbackTexts[fbId].no;
+  fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'no');
+  fb.innerHTML = text;
+}
+
+function checkBlank(num) {
+  const input = document.getElementById('blank' + num);
+  const fb = document.getElementById('fb' + num);
+  const val = input.value.trim();
+
+  if (val === '逃避' || val === '刷手机' || val === '拖延' || val === '逃避行为') {
+    input.classList.add('correct-input');
+    fb.className = 'quiz-feedback show ok';
+    fb.innerHTML = '✅ <strong>正确！</strong>逃避循环中的关键一步是逃避行为本身（刷手机、打游戏、吃零食等）。但真正让循环持续恶化的，是逃避之后的内疚感。理解了这一点，你就有了打断循环的两个切入点：减少逃避行为的选择范围，以及减少对逃避的内疚。';
+  } else if (val === '') {
+    fb.className = 'quiz-feedback show no';
+    fb.innerHTML = '❌ 请输入答案。提示：这个词是逃避循环第二步的名称。';
+  } else {
+    input.classList.add('wrong-input');
+    fb.className = 'quiz-feedback show no';
+    fb.innerHTML = '❌ 不准确。正确答案是 <strong>「逃避」</strong>或<strong>「逃避行为」</strong>。逃避行为本身不是最危险的——最危险的是逃避后的内疚反弹。';
+  }
+}
+
+// Interactive check tool
+function updateCheck() {
+  const items = document.querySelectorAll('#checkItems .check-item');
+  let count = 0;
+  items.forEach(item => {
+    const cb = item.querySelector('input[type=checkbox]');
+    if (cb.checked) {
+      count++;
+      item.classList.add('checked');
+    } else {
+      item.classList.remove('checked');
+    }
+  });
+
+  const bar = document.getElementById('progressBar');
+  const fill = document.getElementById('progressFill');
+  const result = document.getElementById('checkResult');
+
+  bar.style.display = 'block';
+  fill.style.width = (count / items.length * 100) + '%';
+
+  if (count >= 4) {
+    result.innerHTML = '<strong style="color:#dc2626;">⚠️ 你很可能正在逃避循环中。</strong> 不要自责——先做一个最小动作：站起来，换个位置，喝口水。不需要想太多，只是改变一下物理状态。';
+  } else if (count >= 2) {
+    result.innerHTML = '<strong style="color:#f59e0b;">⚡ 你可能正在进入低谷状态。</strong> 现在是干预的最佳时机。试试「五分钟法则」——选一件小事，只做五分钟。';
+  } else if (count > 0) {
+    result.innerHTML = '<strong style="color:#16a34a;">👍 状态还不错。</strong> 利用这段能量窗口做最重要的事情。';
+  } else {
+    result.innerHTML = '';
+  }
+}
+</script>
+
+</body>
+</html>

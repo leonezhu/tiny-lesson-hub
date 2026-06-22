@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动力衰减与中断恢复 — 自我科学与行为改变</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#222;line-height:1.7;max-width:800px;margin:0 auto;padding:20px 24px 60px}
+h1,h2,h3{font-family:'Merriweather',serif;color:#1a1a1a}
+h1{font-size:2em;border-bottom:3px solid #2563eb;padding-bottom:12px;margin-bottom:8px}
+h2{font-size:1.45em;margin-top:36px;margin-bottom:12px;color:#1e40af}
+h3{font-size:1.15em;margin-top:24px;margin-bottom:8px;color:#334155}
+p{margin-bottom:14px;font-size:1.05em}
+.term{font-style:italic;color:#475569}
+.example{background:#f0f7ff;border-left:4px solid #2563eb;padding:14px 18px;margin:16px 0;border-radius:0 8px 8px 0;font-size:.98em}
+.example strong{color:#1e40af}
+.collapse-btn{display:inline-flex;align-items:center;gap:6px;background:#e0ecff;border:1px solid #b0cfff;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:.95em;font-family:inherit;color:#1e40af;transition:background .2s}
+.collapse-btn:hover{background:#cde0ff}
+.collapse-btn .arrow{transition:transform .25s;display:inline-block}
+.collapse-btn.open .arrow{transform:rotate(90deg)}
+.collapse-content{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease;opacity:0}
+.collapse-content.show{max-height:3000px;opacity:1}
+.quiz-section{margin-top:40px;padding-top:20px;border-top:2px solid #e2e8f0}
+.quiz-section h2{margin-top:0}
+.quiz-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.quiz-card .q-num{font-weight:700;color:#2563eb;font-size:.85em;text-transform:uppercase;letter-spacing:.5px}
+.quiz-card .q-text{font-size:1.05em;margin:8px 0 14px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:block;width:100%;text-align:left;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fafafa;cursor:pointer;font-size:.97em;font-family:inherit;transition:all .15s}
+.quiz-opt:hover:not(.disabled){border-color:#2563eb;background:#eff6ff}
+.quiz-opt.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:600}
+.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-opt.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.95em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.quiz-feedback.no{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.fill-blank{display:inline-block;border-bottom:2px solid #2563eb;min-width:100px;padding:2px 8px;margin:0 4px;font-family:inherit;font-size:inherit;color:#1e40af;background:transparent;outline:none}
+.fill-blank.correct-input{border-color:#16a34a;color:#166534}
+.fill-blank.wrong-input{border-color:#dc2626;color:#991b1b}
+.action-list{background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:20px;margin-top:30px}
+.action-list h3{color:#a16207;margin-top:0}
+.action-list ul{padding-left:20px}
+.action-list li{margin-bottom:8px;font-size:.98em}
+.action-list li strong{color:#92400e}
+footer{text-align:center;margin-top:50px;color:#94a3b8;font-size:.85em;padding-top:20px;border-top:1px solid #e2e8f0}
+.key-point{background:#f0fdf4;border-left:4px solid #16a34a;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.key-point strong{color:#166534}
+.warning-box{background:#fef2f2;border-left:4px solid #ef4444;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.warning-box strong{color:#dc2626}
+.diagram{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin:20px 0;text-align:center;font-family:'Source Sans 3',monospace}
+.diagram .bar{height:30px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;margin:4px 0}
+.diagram .bar.high{background:#22c55e}
+.diagram .bar.mid{background:#f59e0b}
+.diagram .bar.low{background:#ef4444}
+.diagram .bar.recovery{background:#3b82f6}
+.progress-track{display:flex;align-items:center;justify-content:center;gap:0;margin:10px 0}
+.progress-track .segment{width:60px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75em;font-weight:600;border-radius:4px;margin:0 2px}
+.progress-track .arrow{font-size:1.2em;color:#94a3b8;margin:0 4px}
+.interactive-slider{margin:20px 0;padding:16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0}
+.interactive-slider label{font-weight:600;color:#1e40af;display:block;margin-bottom:8px}
+.interactive-slider input[type=range]{width:100%;margin:8px 0}
+.interactive-slider .result{font-size:.95em;color:#334155;margin-top:6px}
+</style>
+</head>
+<body>
+
+<h1>动力衰减与中断恢复</h1>
+<p><strong>Motivation Decay &amp; Recovery from Interruptions</strong></p>
+<p>你有没有经历过这样的时刻：</p>
+<div class="example">
+<strong>📌 场景：</strong> 1月1日，你雄心勃勃地立下flag："从今天开始每天跑步30分钟！" 前两周你跑得风风火火，朋友圈打卡不断。第三周开始，天气变冷了，你"明天再跑"。第四周，你"上周太忙了"。到了第五周，你打开跑步软件一看——连续断签21天。你盯着那个红色的断连图标，心想："算了，等下个月月初重新开始吧。"<br><br>然后……再也没有然后了。
+</div>
+<p>这不是你一个人的故事。这是每一个试图改变的人都会经历的 <strong>动力衰减曲线（Motivation Decay Curve）</strong> 和 <strong>中断陷阱（Interruption Trap）</strong>。</p>
+
+<div class="key-point">
+<strong>核心观点：</strong> 动力天生就是会衰减的——这不是你的错，是大脑的设计。关键不在于"保持高动力"，而在于学会在动力衰减时如何行动，在中断发生后如何优雅地恢复。
+</div>
+
+<h2>一、动力的自然衰减曲线</h2>
+<p>几乎所有新行为都会经历一个相似的动力变化过程。这不是道德缺陷，而是生理规律。</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第一阶段：蜜月期（第1-2周）
+</button>
+<div class="collapse-content">
+<p>刚启动一个新习惯时，你的多巴胺系统处于高度活跃状态。新鲜感、好奇心、"我能行"的自我效能感全都在线。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你买了新的健身卡，第一次去健身房，教练给你做了个体测，拍了对比照。你觉得自己就像电影主角，马上就要脱胎换骨了。回到家，你甚至还在社交媒体上发了条动态。
+</div>
+<p>这个阶段你感觉不到任何阻力。你觉得"坚持"这个词根本不需要出现在你的字典里。</p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第二阶段：摩擦期（第3-6周）
+</button>
+<div class="collapse-content">
+<p>新鲜感褪去了。行为的<strong>摩擦力（Friction）</strong>开始显现。你开始注意到：</p>
+<ul style="margin:12px 0 12px 24px">
+<li>早起跑步比想象中冷</li>
+<li>做饭健康餐比点外卖多花了40分钟</li>
+<li>每天背单词的重复感让你想关掉APP</li>
+</ul>
+<p>这时候，<strong>动力已经从100%降到了大约40%-60%</strong>。你还能靠"意志力"硬撑，但每次执行都需要做心理建设。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你站在门口，心里上演了一场微型辩论："今天真的好累……就休息一天吧。" "不行，已经断了两天了。" "断两天不算什么。" "但是连续记录很重要啊……" 最后你去了，但全程想着"下次一定早点结束回家躺平"。
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第三阶段：断崖期（第6-12周）
+</button>
+<div class="collapse-content">
+<p>这是最危险的阶段。动力已经衰减到极低水平，而行为的回报还没有显著出现。</p>
+<div class="diagram">
+<p style="font-weight:700;color:#1e40af;margin-bottom:8px">典型动力衰减曲线</p>
+<div class="progress-track">
+<div class="segment bar high">蜜月期</div>
+<div class="arrow">→</div>
+<div class="segment bar mid">摩擦期</div>
+<div class="arrow">→</div>
+<div class="segment bar low">断崖期</div>
+<div class="arrow">→</div>
+<div class="segment" style="background:#94a3b8">放弃</div>
+</div>
+<p style="font-size:.85em;color:#64748b;margin-top:8px">横轴 = 时间 ｜ 纵轴 = 动力水平</p>
+</div>
+<p>在这个阶段，你会遇到两个致命陷阱：</p>
+<div class="warning-box">
+<strong>⚠️ 陷阱一：回报延迟（Delayed Reward）</strong><br>
+你跑了三周步，体重只掉了0.5公斤。你算了一下投入产出比——"每天早起40分钟，就掉了半斤？还不如好好睡一觉。"<br><br>大脑天生偏好即时回报。当回报不够即时、不够显著时，它会判定这个行为"不值得"。
+</div>
+<div class="warning-box">
+<strong>⚠️ 陷阱二：全有全无思维（All-or-Nothing Thinking）</strong><br>
+"我已经断了三天了，这个习惯算是废了。" "既然这个月没做到，那就等下个月再说吧。"<br><br>你把中断等同于失败，把失败等同于"我不适合这件事"。
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第四阶段：新常态（如果能熬过去）
+</button>
+<div class="collapse-content">
+<p>如果你 somehow 熬过了断崖期，事情会发生微妙的变化。行为开始变成<strong>自动化的日常（Automatic Routine）</strong>。你不再需要"决定"去跑步——你就是去跑，就像刷牙一样自然。</p>
+<p>但这通常需要 <strong>至少8-12周</strong> 的持续实践。而绝大多数人在第3-6周就放弃了。</p>
+<div class="example">
+<strong>📌 数据：</strong> 一项针对新年flag的研究发现，80%的人在2月中旬之前就放弃了。只有约8%的人坚持到了年底。
+</div>
+</div>
+
+<h2>二、中断是必然的——不是你的错</h2>
+<p>让我们面对一个残酷但解放性的事实：</p>
+
+<div class="key-point">
+<strong>你一定会中断。每个人都一定会中断。</strong> 生病、出差、加班、家庭变故、心情低落、旅行、节假日……生活中有太多因素会打断你精心设计的习惯系统。
+</div>
+
+<p>问题不在于"中断"，而在于 <strong>中断之后你做了什么</strong>。</p>
+
+<h3>2.1 中断的常见类型</h3>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 计划中断（Planned Interruption）
+</button>
+<div class="collapse-content">
+<p>你知道会有中断发生：出差一周、过年回老家、项目冲刺期。这种中断是可以预见的。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你每天早晨冥想10分钟，但下周要去上海出差三天。你心想："完了，连续记录要断了。"
+</div>
+<p>对付计划中断的关键是：<strong>提前设计"最小版本"（Minimum Viable Version）</strong>。</p>
+<p>比如：出差期间不冥想10分钟，改为<strong>在酒店床上做3次深呼吸</strong>。这个动作只需要30秒，但它的意义在于：<em>"我没有完全放弃这个行为"</em>。</p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 意外中断（Unexpected Interruption）
+</button>
+<div class="collapse-content">
+<p>突然生病、临时加班、家人有事需要你处理。这种中断无法预见。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你连续健身了两个月，突然某天感冒发烧，躺了五天。病好了之后，你看着空荡荡的健身APP记录，觉得"两个月白练了"。
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 主动放弃型中断（Voluntary Dropout）
+</button>
+<div class="collapse-content">
+<p>这不是被迫的，而是你"主动"决定不做了——因为动力已经耗尽了。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你刷短视频刷到凌晨两点，明明知道明天还要早起，但你停不下来。不是因为"想看"，而是因为"不想面对今天的疲惫"。第二天你告诉自己"今天算了"，然后第三天、第四天……一周过去了，你已经三天没去健身房了。
+</div>
+<p>这种中断是最隐蔽也最危险的。因为它披着"休息"的外衣，实际上是一种<strong>逃避循环（Avoidance Loop）</strong>。</p>
+</div>
+
+<h3>2.2 为什么中断后很难恢复？</h3>
+<p>中断之后重新启动，比一开始就坚持更难。原因有三个：</p>
+
+<div class="example">
+<strong>🔬 科学解释：</strong><br><br>
+<strong>1. 身份断裂（Identity Disruption）：</strong><br>
+当你连续做一件事超过两周，它就开始成为你"是谁"的一部分。"我是一个每天跑步的人。" 中断之后，这个身份认同就开始松动。等你中断了一个月，你再想说"我是跑步的人"，你自己都不信了。<br><br>
+<strong>2. 启动成本（Activation Energy）：</strong><br>
+物理学有个概念叫"活化能"——化学反应需要达到一定的能量门槛才能开始。行为也是这样。刚开始养成习惯时，你需要很大的动力去启动。但一旦进入惯性，维持的成本很低。中断之后，你相当于从零开始，又要支付高昂的启动成本。<br><br>
+<strong>3. 情感负担（Emotional Burden）：</strong><br>
+中断会触发羞耻感和自我批评。"我又失败了。""我怎么这么没毅力。" 这些负面情绪反而会降低你的动力，让你更不愿意重新开始——形成恶性循环。
+</div>
+
+<h2>三、中断恢复的四个策略</h2>
+<p>好消息是：中断不是终点，而是行为改变过程中的一个正常环节。关键在于你如何从中断中恢复。</p>
+
+<h3>3.1 策略一：设置"底线行为"（Floor Behavior）</h3>
+<p>每个习惯都应该有一个<strong>最低限度版本</strong>——低到即使在你状态最差的时候也能完成。</p>
+
+<div class="example">
+<strong>📌 生活案例：</strong><br>
+• 健身的底线行为：不做完整训练，只做<strong>5个俯卧撑</strong><br>
+• 阅读的底线行为：不看一章，只读<strong>一页</strong><br>
+• 冥想的底线行为：不打坐20分钟，只做<strong>一次深呼吸</strong><br>
+• 写作的底线行为：不写一千字，只写<strong>一句话</strong><br><br>
+<strong>核心原则：</strong> 底线行为的目的不是"进步"，而是<strong>"保持连接"</strong>。就像一条绳子，即使只拉紧了一点点，也比完全松掉要好。
+</div>
+
+<button class="interactive-slider" id="slider1">
+<label>🎯 互动：你的底线行为是什么？</label>
+<p style="font-size:.9em;color:#64748b;margin-bottom:8px">拖动滑块，看看不同"最低标准"的效果：</p>
+<input type="range" min="1" max="5" value="3" step="1" oninput="updateSlider(this.value)">
+<div class="result" id="sliderResult">3 = 做5分钟 → 保持习惯连接，中等恢复难度</div>
+</button>
+
+<h3>3.2 策略二：采用"两日规则"（The Two-Day Rule）</h3>
+<p>这是一个简单但有强大实证支持的原则：</p>
+
+<div class="key-point">
+<strong>你可以休息一天，但不能连续休息两天。</strong><br><br>
+休息一天是恢复，休息两天就是新习惯的开始——"不做的习惯"。
+</div>
+
+<div class="example">
+<strong>📌 生活案例：</strong><br>
+你周三因为加班没去健身房。周四你告诉自己"就休息一天"，然后周五去了。这就是两日规则在工作——你没有让中断变成新的习惯。<br><br>
+但如果你周四也休息了，到周五你就会想"好吧，既然断了就继续断吧"。因为"休息"已经变成了一个新的行为模式。
+</div>
+
+<p>两日规则的精妙之处在于：<strong>它不要求你每天都完美，只要求你不给"放弃"留下连续两天的窗口</strong>。</p>
+
+<h3>3.3 策略三：重建"身份锚点"（Identity Anchoring）</h3>
+<p>中断之后最难的部分不是"重新开始做"，而是"重新相信自己是那种人会做"。</p>
+
+<div class="example">
+<strong>📌 场景对比：</strong><br><br>
+<strong>身份脆弱的人：</strong> "我断了两周了，看来我就是个三分钟热度的人。"<br>→ 中断定义了你是谁。<br><br>
+<strong>身份锚定的人：</strong> "我断了两周，但我本质上是一个注重健康的人。这两周是因为项目加班，不是我改变了。"<br>→ 中断被定义为"例外"，不是"本质"。
+</div>
+
+<p>重建身份锚点的方法：</p>
+<ul style="margin:12px 0 16px 24px">
+<li><strong>回顾初心：</strong> 写下你最初为什么要开始这个行为。不是为了"瘦10斤"，而是"我想对自己好一点"。</li>
+<li><strong>寻找证据：</strong> 即使中断了，你有没有做过任何与此相关的事？哪怕只是看了一篇相关文章？那也是证据。</li>
+<li><strong>使用"暂时"而非"永远"：</strong> "我暂停了两周" vs "我放弃了"。语言的微妙差异决定了你能不能重新站起来。</li>
+</ul>
+
+<h3>3.4 策略四：设计"重启仪式"（Restart Ritual）</h3>
+<p>中断之后需要一个明确的信号，告诉自己和大脑："之前的翻篇了，现在重新开始。"</p>
+
+<div class="example">
+<strong>📌 生活案例：</strong><br>
+• 买了一双新的跑鞋，作为"重新开始跑步"的信号<br>
+• 清空手机里的待办事项列表，新建一个"2月计划"<br>
+• 在日历上画一个大大的圆圈，圈出重新开始的那一天<br>
+• 告诉一个朋友："我下周重新开始，你来监督我"<br><br>
+这些仪式本身没有实际作用，但它们创造了<strong>心理上的分界点（Psychological Boundary）</strong>——"之前是之前，现在是现在"。
+</div>
+
+<h2>四、动力管理的长期视角</h2>
+<p>理解了衰减和中断之后，我们需要换一个更宏观的视角来看待行为改变。</p>
+
+<h3>4.1 接受波动，拒绝线性</h3>
+<div class="key-point">
+<strong>行为改变从来不是直线上升的，而是螺旋式的。</strong><br><br>
+你以为的进步：↑↑↑↑↑↑↑↑↑<br>
+实际的进步：↗↘↗↗↘↗↗↗↘↗↗↗↗↘
+</div>
+
+<p>每一次"回退"（dip）都是正常的。问题不在于回退本身，而在于你把回退解读为"失败"。</p>
+
+<div class="example">
+<strong>📌 类比：</strong> 就像股票市场的K线图。短期有涨有跌，但如果你看的是十年线，趋势可能是向上的。你的行为改变也是一样——不要看一天的表现，要看一个月的趋势。
+</div>
+
+<h3>4.2 用系统代替动力</h3>
+<p>既然动力注定会衰减，那么<strong>不应该依赖动力</strong>。你应该建立一个系统，在动力不足时也能运转。</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 系统 vs 动力的对比
+</button>
+<div class="collapse-content">
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:.95em">
+<tr style="background:#f0f7ff"><td style="padding:10px;border:1px solid #e2e8f0"><strong>维度</strong></td><td style="padding:10px;border:1px solid #e2e8f0"><strong>依赖动力</strong></td><td style="padding:10px;border:1px solid #e2e8f0"><strong>依赖系统</strong></td></tr>
+<tr><td style="padding:10px;border:1px solid #e2e8f0">启动条件</td><td style="padding:10px;border:1px solid #e2e8f0">需要感觉对了</td><td style="padding:10px;border:1px solid #e2e8f0">按既定流程执行</td></tr>
+<tr><td style="padding:10px;border:1px solid #e2e8f0">中断后</td><td style="padding:10px;border:1px solid #e2e8f0">"我没动力了，算了"</td><td style="padding:10px;border:1px solid #e2e8f0">"回到系统就行"</td></tr>
+<tr><td style="padding:10px;border:1px solid #e2e8f0">长期效果</td>< style="padding:10px;border:1px solid #e2e8f0">大起大落</td><td style="padding:10px;border:1px solid #e2e8f0">稳定渐进</td></tr>
+</table>
+</div>
+
+<p>一个典型的"系统"包括：</p>
+<ul style="margin:12px 0 16px 24px">
+<li><strong>固定时间：</strong> 每天早上7点跑步（不是"有空就跑"）</li>
+<li><strong>固定环境：</strong> 跑鞋放在门口最显眼的位置</li>
+<li><strong>固定流程：</strong> 闹钟响 → 起床 → 穿鞋 → 出门（不需要思考）</li>
+<li><strong>固定伙伴：</strong> 每周二四六和室友一起跑</li>
+</ul>
+
+<h3>4.3 追踪趋势，而非单日</h3>
+<div class="example">
+<strong>📌 生活案例：</strong><br>
+你记录每天的健身情况。周一去了，周二没去，周三去了，周四没去，周五去了……如果你只看某一天，你会觉得"我一半时间都没去，太差了"。但如果看一周的趋势——5天去了3天，那就是60%的执行率，其实还不错。<br><br>
+<strong>关键指标：</strong> 周执行率（Weekly Execution Rate）> 日执行率（Daily Execution Rate）
+</div>
+
+<h2>五、实战演练：你的中断恢复计划</h2>
+<p>现在，让我们把学到的东西应用到你的真实生活中。</p>
+
+<div class="example">
+<strong>📝 练习：</strong> 回答以下问题（可以写在纸上或手机备忘录里）：<br><br>
+<strong>1.</strong> 你目前正在坚持的一个习惯是什么？<br>
+<strong>2.</strong> 上一次中断这个习惯是什么时候？持续了多久？<br>
+<strong>3.</strong> 当时是什么触发了中断？（生病、忙碌、动力耗尽……）<br>
+<strong>4.</strong> 中断之后，是什么阻止了你重新开始？<br>
+<strong>5.</strong> 如果下次再中断，你的"底线行为"会是什么？<br>
+<strong>6.</strong> 你会设计一个什么样的"重启仪式"？
+</div>
+
+<p>把这些答案写下来，你就有了自己的<strong>中断恢复预案（Interruption Recovery Plan）</strong>。这不是多余的准备工作——研究表明，提前制定应对方案的人，在遭遇中断后恢复的速度比没有预案的人快 <strong>3-5倍</strong>。</p>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>随堂测验</h2>
+
+<div class="quiz-card">
+<div class="q-num">Question 1 of 8</div>
+<div class="q-text">你连续健身三周后，因为出差停了五天。回来后你觉得"全断了，重新开始吧"。根据本课内容，最合理的做法是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 等出差的那段记录清零了再重新开始</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">B. 从"底线行为"开始——比如先做5个俯卧撑，保持习惯连接</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">C. 买一双新跑鞋，当作全新开始</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 给自己放一周假，彻底放松后再说</button>
+</div>
+<div class="quiz-feedback" id="fb1"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 2 of 8</div>
+<div class="q-text">关于"两日规则"，以下哪个说法是正确的？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 你可以连续休息两天，但不能休息三天</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">B. 规则要求你必须每天都坚持，不允许任何休息</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">C. 休息一天是恢复，休息两天就可能变成新习惯，所以要避免连续两天中断</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 两日规则只适用于运动习惯，不适用于阅读或学习</button>
+</div>
+<div class="quiz-feedback" id="fb2"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 3 of 8</div>
+<div class="q-text">你每天背单词，已经连续坚持了两个月。这周因为准备考试，你三天没背。现在考试结束了，你想重新开始。以下哪种想法最能帮助你快速恢复？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. "我都断三天了，之前背的都忘了，得从头再来"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">B. "看来我不是一个自律的人，可能我不适合学外语"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">C. "我只是暂停了三天，本质上我还是一个每天背单词的人。今天先背5个单词就好"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. "等下个月1号再开始吧，那样更有仪式感"</button>
+</div>
+<div class="quiz-feedback" id="fb3"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 4 of 8</div>
+<div class="q-text">动力衰减曲线中，最危险的阶段是哪一个？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 蜜月期——因为太兴奋了容易透支</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">B. 摩擦期——因为刚开始感到困难</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">C. 断崖期——动力极低但回报尚未显现</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 新常态——因为已经习惯了所以没有动力继续提升</button>
+</div>
+<div class="quiz-feedback" id="fb4"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 5 of 8</div>
+<div class="q-text">以下哪项最能描述"底线行为"（Floor Behavior）的核心目的？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 确保每天都有显著的进步</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">B. 在状态最差的时候也能保持与行为的连接，防止完全断开</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">C. 减少完成任务所需的时间</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 为奖励自己提供一个标准</button>
+</div>
+<div class="quiz-feedback" id="fb5"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 6 of 8</div>
+<div class="q-text">你发现自己陷入了"刷短视频逃避→第二天自责→更加想逃避"的循环。从本课的角度，最根本的问题是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 你的意志力不够强</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">B. 你在用逃避应对疲惫，而中断后的自责又加剧了逃避，形成了恶性循环</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">C. 短视频平台的设计就是为了让人上瘾</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 你应该删除所有社交软件</button>
+</div>
+<div class="quiz-feedback" id="fb6"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 7 of 8</div>
+<div class="q-text">以下哪种追踪方式最能帮助你客观评估自己的行为改变进展？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 只看今天有没有完成</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">B. 看一周的趋势和执行率</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">C. 和别人比较谁坚持的天数更多</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 记录每次中断的原因并详细反思</button>
+</div>
+<div class="quiz-feedback" id="fb7"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 8 of 8</div>
+<div class="q-text">一个"重启仪式"（Restart Ritual）的作用是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">A. 让你看起来很有仪式感，发朋友圈炫耀</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">B. 补偿之前中断的损失</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">C. 创造心理上的分界点，帮助大脑区分"之前"和"现在"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">D. 提高下一次行为的效率</button>
+</div>
+<div class="quiz-feedback" id="fb8"></div>
+</div>
+</div>
+
+<!-- ACTION LIST -->
+<div class="action-list">
+<h3>🎯 今天就能做的行动清单</h3>
+<ul>
+<li><strong>花2分钟写下你的"底线行为"：</strong> 选一个你正在坚持的习惯，把它缩减到最小版本（5个俯卧撑、读一页书、做1次深呼吸）。写下来，贴在显眼处。</li>
+<li><strong>检查你的"两日规则"：</strong> 你今天有没有中断某个习惯？如果有，确保明天补上——不要让中断变成连续两天。</li>
+<li><strong>设计一个简单的重启仪式：</strong> 可以是清空桌面、换一张壁纸、买一支新笔。关键是给你的大脑一个信号："旧的中断翻篇了，现在是新的开始。"</li>
+<li><strong>把"暂停"替换"放弃"：</strong> 今天说话的时候留意一下。把"我又失败了"换成"我只是暂停了"。一字之差，天壤之别。</li>
+<li><strong>看一周的账，不看一天的账：</strong> 打开你的习惯追踪APP，把视角从"今天做了没"切换到"这周执行率多少"。如果超过60%，你就做得不错。</li>
+</ul>
+</div>
+
+<footer>
+<p>自我科学与行为改变 · 课程 0008/12 · 动力衰减与中断恢复</p>
+<p>下一课：环境设计——意志力的替代品</p>
+</footer>
+
+<script>
+function toggleCollapse(btn) {
+    btn.classList.toggle('open');
+    var content = btn.nextElementSibling;
+    content.classList.toggle('show');
+}
+
+function checkAnswer(btn, isCorrect) {
+    var card = btn.closest('.quiz-card');
+    var opts = card.querySelectorAll('.quiz-opt');
+    var fb = card.querySelector('.quiz-feedback');
+    
+    // Disable all options
+    opts.forEach(function(opt) {
+        opt.classList.add('disabled');
+        opt.style.pointerEvents = 'none';
+    });
+    
+    if (isCorrect) {
+        btn.classList.add('correct');
+        fb.className = 'quiz-feedback show ok';
+        fb.textContent = '✅ 正确！理解得很好。';
+    } else {
+        btn.classList.add('wrong');
+        // Highlight the correct answer
+        opts.forEach(function(opt) {
+            if (opt.onclick && opt.onclick.toString().includes('true')) {
+                opt.classList.add('correct');
+            }
+        });
+        fb.className = 'quiz-feedback show no';
+        fb.textContent = '❌ 不太对。正确答案已标绿。回顾一下课程内容再想想为什么选它。';
+    }
+}
+
+function updateSlider(val) {
+    var labels = {
+        '1': '1 = 做1个俯卧撑 → 几乎零阻力，但可能不够维持习惯感',
+        '2': '2 = 做3个俯卧撑 → 极低阻力，适合状态极差的日子',
+        '3': '3 = 做5分钟 → 保持习惯连接，中等恢复难度',
+        '4': '4 = 做15分钟 → 接近正常训练，恢复难度较高',
+        '5': '5 = 完整训练 → 几乎不可能在状态差时做到'
+    };
+    document.getElementById('sliderResult').textContent = labels[val] || '';
+}
+</script>
+
+</body>
+</html>

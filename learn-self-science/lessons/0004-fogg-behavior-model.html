@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四课：B=MAP行为设计模型 | TeachHub · 自我科学</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Helvetica Neue',Arial,sans-serif;background:#fdfdfd;color:#222;line-height:1.8;font-size:16px;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3,h4{font-family:'Merriweather',Georgia,serif;color:#1a1a1a;margin-top:2.5rem;margin-bottom:.8rem}
+h1{font-size:1.9rem;border-bottom:3px solid #4a6fa5;padding-bottom:.5rem}
+h2{font-size:1.45rem;border-left:4px solid #4a6fa5;padding-left:.8rem}
+h3{font-size:1.15rem;color:#333}
+.lead{font-size:1.1rem;color:#444;margin:1rem 0 2rem}
+.subtitle{color:#666;font-size:.95rem;margin-bottom:1.5rem}
+.english{font-style:italic;color:#555;font-size:.92em}
+code{background:#f0f0f0;padding:.15em .4em;border-radius:3px;font-size:.9em}
+blockquote{border-left:4px solid #ddd;margin:1.5rem 0;padding:.8rem 1.2rem;background:#fafafa;border-radius:0 6px 6px 0}
+.tip-box{background:#eef5ff;border:1px solid #c5d9f0;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.tip-box strong{color:#2a5a8f}
+.example-box{background:#fff8ee;border:1px solid #f0dbb0;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.example-box strong{color:#8b6914}
+.section-nav{display:flex;gap:.6rem;flex-wrap:wrap;margin:2rem 0}
+.section-nav button{padding:.5rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:6px;cursor:pointer;font-size:.9rem;font-family:inherit}
+.section-nav button:hover{background:#3a5a8a}
+.section-content{display:none;margin-top:1rem;padding:1.2rem 1.4rem;background:#f7f9fc;border-radius:8px;border:1px solid #e0e7ef}
+.section-content.active{display:block}
+.quiz-container{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1.5rem;margin:1.8rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-container h4{margin-top:0;color:#4a6fa5;font-size:1.05rem}
+.quiz-option{display:block;padding:.6rem 1rem;margin:.4rem 0;border:1px solid #ddd;border-radius:6px;cursor:pointer;transition:all .15s;font-size:.95rem}
+.quiz-option:hover{background:#f0f4ff;border-color:#4a6fa5}
+.quiz-option.correct{background:#e6f9ee;border-color:#4caf50;color:#2e7d32}
+.quiz-option.wrong{background:#fdecea;border-color:#e53935;color:#c62828}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:.8rem;padding:.8rem;border-radius:6px;font-size:.93rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:#e6f9ee;color:#2e7d32;border:1px solid #a5d6a7}
+.quiz-feedback.wrong{background:#fdecea;color:#c62828;border:1px solid #ef9a9a}
+.fill-input{border:1px solid #ccc;border-radius:4px;padding:.3rem .6rem;font-size:.95rem;font-family:inherit;width:180px}
+.fill-input:focus{outline:none;border-color:#4a6fa5;box-shadow:0 0 0 2px rgba(74,111,165,.15)}
+.action-list{background:#f0faf0;border:1px solid #a5d6a7;border-radius:8px;padding:1.2rem 1.4rem;margin:2rem 0}
+.action-list h4{color:#2e7d32;margin-top:0}
+.action-list ol{padding-left:1.4rem}
+.action-list li{margin-bottom:.5rem}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:#eee;z-index:999}
+.progress-bar{height:100%;background:linear-gradient(90deg,#4a6fa5,#6bb5e0);width:0%;transition:width .3s}
+.summary-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+.summary-table th,.summary-table td{border:1px solid #ddd;padding:.6rem 1rem;text-align:left;font-size:.93rem}
+.summary-table th{background:#4a6fa5;color:#fff}
+.summary-table tr:nth-child(even){background:#f9f9f9}
+.tag{display:inline-block;background:#e8eef6;color:#4a6fa5;padding:.15em .5em;border-radius:4px;font-size:.82rem;margin-right:.3rem}
+.collapse-btn{cursor:pointer;color:#4a6fa5;font-weight:600;display:inline-flex;align-items:center;gap:.3rem}
+.collapse-btn::before{content:'▼';font-size:.7em;transition:transform .2s}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.collapse-body.open{max-height:2000px}
+.map-diagram{background:#f7f9fc;border:2px solid #4a6fa5;border-radius:12px;padding:2rem;margin:1.8rem 0;text-align:center}
+.map-diagram .formula{font-size:2rem;font-weight:700;color:#4a6fa5;font-family:'Merriweather',serif;margin:.5rem 0}
+.map-diagram .formula span{display:inline-block;padding:.3rem .6rem;border-radius:6px;margin:0 .2rem}
+.map-diagram .formula .b{background:#e3f2fd;color:#1565c0}
+.map-diagnosis{background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;padding:1rem 1.2rem;margin:1rem 0}
+.map-diagnosis h4{margin-top:0;color:#e65100;font-size:1rem}
+@media(max-width:600px){body{padding:1rem 1rem 3rem}h1{font-size:1.5rem}h2{font-size:1.2rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<h1>第四课：B=MAP行为设计模型</h1>
+<p class="subtitle">自我科学与行为改变 · Lesson 4 of 12</p>
+<p class="lead">你以前肯定听过这句话："只要你想，你就一定能做到。"但事实是——你不想，或者你试了就是做不到。斯坦福大学行为设计师 BJ Fogg 发现了一个更诚实的公式：<strong>B = MAP</strong>。它告诉你：行为不是由"想不想"决定的，而是由三个因素同时满足决定的。<strong>Motivation（动机）、Ability（能力）、Prompt（提示）。</strong></p>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+你是不是也这样——晚上躺床上发誓明天一定要早起跑步，结果闹钟响了按掉继续睡？第二天早上 Motivation 爆棚（"我要瘦！"），但 Ability 为零（困得要死），Prompt 也不存在（床太舒服了）。结果呢？行为 = 0。<br><br>
+这不是你意志力差。这是 B=MAP 公式在起作用。
+</div>
+
+<p>这节课我们来拆解这个公式，然后学会用它诊断自己的每一个"做不到"。</p>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2>一、B=MAP 公式拆解</h2>
+
+<p>Fogg 的行为模型可以用一个极简的公式表示：</p>
+
+<div class="map-diagram">
+<div style="font-size:.9rem;color:#666;margin-bottom:.5rem">Fogg Behavior Model</div>
+<div class="formula">
+<span class="b">B</span>
+=
+<span style="background:#fce4ec;color:#c62828">M</span>
+×
+<span style="background:#e8f5e9;color:#2e7d32">A</span>
+×
+<span style="background:#fff3e0;color:#e65100">P</span>
+</div>
+<div style="font-size:.85rem;color:#888;margin-top:.5rem">
+Motivation × Ability × Prompt = Behavior
+</div>
+</div>
+
+<p>三个要素缺一不可。任何一个为零，行为就不会发生。我们来逐个看。</p>
+
+<h3>1.1 Motivation（动机）— "我想做"</h3>
+
+<p><span class="english">Motivation</span> 是你想做事的欲望强度。Fogg 发现，动机不是固定不变的——它在一天之内波动巨大。</p>
+
+<div class="tip-box">
+<strong>💡 关键洞察</strong><br>
+你的动机像一个钟摆。早上你想健身，中午你想学习，晚上只想刷手机。这不是你"不自律"，这是人类动机的自然规律。
+</div>
+
+<p>动机有两个方向：</p>
+
+<div class="collapse-btn" onclick="this.classList.toggle('open');document.getElementById('motivation-detail').classList.toggle('open')">正向动机：追求快乐 / 希望</div>
+<div class="collapse-body" id="motivation-detail">
+<ul style="margin:.8rem 0 0 1.2rem">
+<li><strong>追求快乐</strong> — 吃美食、打游戏、刷短视频带来的即时快感</li>
+<li><strong>寻求希望</strong> — 想到"学了英语可以去更好的公司"而开始背单词</li>
+<li><strong>避免痛苦</strong> — 怕胖所以少吃（这是恐惧驱动）</li>
+<li><strong>避免丧失</strong> — 怕错过限时优惠而下单</li>
+</ul>
+</div>
+
+<div class="collapse-btn" style="margin-top:.5rem" onclick="this.classList.toggle('open');document.getElementById('motivation-neg').classList.toggle('open')">负向动机：逃避痛苦 / 恐惧</div>
+<div class="collapse-body" id="motivation-neg">
+<ul style="margin:.8rem 0 0 1.2rem">
+<li><strong>逃避痛苦</strong> — 牙疼去看医生</li>
+<li><strong>避免丧失</strong> — 怕丢工作所以加班</li>
+<li><strong>社会压力</strong> — 别人都买了你也买</li>
+</ul>
+</div>
+
+<p><strong>但问题来了：</strong>动机是最不可靠的行为触发因素。为什么？因为它像电量——用完了就得充，而且充得很慢。</p>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+你刚加完班，累得像条狗。这时候你说"我要去跑步"——动机为零。就算你有再强的"自律精神"，身体也不会听你的。这不是道德问题，这是生物学问题。
+</div>
+
+<h3>1.2 Ability（能力）— "我能做"</h3>
+
+<p><span class="english">Ability</span> 不是你有没有"能力"，而是这件事对你来说<strong>有多容易</strong>。Fogg 强调：不要相信"我做不到是因为我不会"，大多数时候是"我做不到是因为太难了"。</p>
+
+<p>影响 Ability 的六个因素（从最重要到最不重要）：</p>
+
+<table class="summary-table">
+<tr><th>因素</th><th>说明</th><th>例子</th></tr>
+<tr><td><strong>时间</strong></td><td>需要做多少事？</td><td>"花2小时写报告" vs "花30秒回复消息"</td></tr>
+<tr><td><strong>金钱</strong></td><td>需要花多少钱？</td><td>买一杯奶茶 vs 买一辆车</td></tr>
+<tr><td><strong>体力</strong></td><td>需要多少体力？</td><td>走一步 vs 跑五公里</td></tr>
+<tr><td><strong>脑力</strong></td><td>需要多少思考？</td><td>打开微信 vs 解微积分题</td></tr>
+<tr><td><strong>社会偏差</strong></td><td>别人怎么看？</td><td>在办公室唱歌 vs 在家里唱歌</td></tr>
+<tr><td><strong>非常规性</strong></td><td>是不是打破常规？</td><td>正常走路 vs 倒着走</td></tr>
+</table>
+
+<div class="tip-box">
+<strong>💡 核心原则</strong><br>
+<strong>想让行为更容易发生？别去提高动机，先去降低难度。</strong> 这就像减肥——与其逼自己饿肚子（提高痛苦动机），不如把零食扔掉（降低获取难度）。
+</div>
+
+<h3>1.3 Prompt（提示）— "现在做"</h3>
+
+<p><span class="english">Prompt</span> 是触发行为的信号。没有提示，再强的动机和再高的能力都不会转化为行为。</p>
+
+<p>Fogg 区分了三种提示：</p>
+
+<div class="collapse-btn" onclick="this.classList.toggle('open');document.getElementById('prompt-types').classList.toggle('open')">✅ 火花型提示（Spark Prompt）</div>
+<div class="collapse-body" id="prompt-types">
+<p style="margin:.5rem 0 0 1.2rem">触发已有动机的信号。比如看到健身广告→想起"我要瘦"→去健身。这类提示依赖动机水平，动机低时无效。</p>
+</div>
+
+<div class="collapse-btn" style="margin-top:.5rem" onclick="this.classList.toggle('open');document.getElementById('prompt-action').classList.toggle('open')">⚡ 行动型提示（Action Prompt）</div>
+<div class="collapse-body" id="prompt-action">
+<p style="margin:.5rem 0 0 1.2rem">直接告诉你要做什么。比如手机闹钟显示"该喝水了！"。这类提示最有效的前提是行为已经足够简单。</p>
+</div>
+
+<div class="collapse-btn" style="margin-top:.5rem" onclick="this.classList.toggle('open');document.getElementById('prompt-tiny').classList.toggle('open')">🔔 简单提示（Tiny Prompt）</div>
+<div class="collapse-body" id="prompt-tiny">
+<p style="margin:.5rem 0 0 1.2rem">最微小的触发信号。比如把跑鞋放在门口——看到就跑鞋=去跑步。这种提示之所以有效，是因为行为本身足够简单。</p>
+</div>
+
+<p><strong>最常见的错误：</strong>在动机很低的时候，用一个微弱的提示指望引发重大行为。比如你在沙发上躺着，手机弹了一条"今天学习了吗？"的通知——然后你关掉了通知继续躺。</p>
+
+<div class="map-diagnosis">
+<h4>🔍 诊断：为什么你没学习？</h4>
+<ul style="margin:.5rem 0 0 1.2rem">
+<li>Motivation：低（刚下班，不想动脑）</li>
+<li>Ability：低（书太厚，不知道从哪开始）</li>
+<li>Prompt：弱（一条通知而已）</li>
+</ul>
+<p style="margin:.5rem 0 0 1.2rem"><strong>结论：</strong>三个条件都不满足，不学习是必然结果。不是你不努力，是设计不合理。</p>
+</div>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2>二、动机-能力曲线（The Behavior Map）</h2>
+
+<p>Fogg 做了一个著名的图表，横轴是能力（从左到右越来越容易），纵轴是动机（从下到上越来越高），中间有一条分界线：</p>
+
+<div class="map-diagram">
+<div style="font-size:.9rem;color:#666;margin-bottom:1rem">行为地图（简化版）</div>
+<div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin:1rem 0">
+<div style="text-align:center">
+<div style="font-size:2rem">📈</div>
+<div style="font-weight:700;color:#c62828">高动机 + 难 = ❌ 不行</div>
+<div style="font-size:.85rem;color:#888">比如：熬夜时逼自己写论文</div>
+</div>
+<div style="text-align:center">
+<div style="font-size:2rem">🎯</div>
+<div style="font-weight:700;color:#2e7d32">低动机 + 易 = ✅ 可以</div>
+<div style="font-size:.85rem;color:#888">比如：累了就刷5分钟书</div>
+</div>
+<div style="text-align:center">
+<div style="font-size:2rem">⚡</div>
+<div style="font-weight:700;color:#e65100">高动机 + 易 = 💪 最好</div>
+<div style="font-size:.85rem;color:#888">比如：有劲时做大事</div>
+</div>
+</div>
+</div>
+
+<p>这条曲线的核心启示是：<strong>当动机低的时候，你必须让行为变得极其简单。</strong></p>
+
+<div class="tip-box">
+<strong>💡 这就是"微习惯"的科学依据</strong><br>
+很多人以为微习惯是"懒人做法"，其实恰恰相反——微习惯是在承认人类动机的天然波动性之后，做出的最理性的策略选择。你不是在降低标准，你是在用最低成本维持行为的发生频率。
+</div>
+
+<h3>2.1 现实案例：健身房的真相</h3>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+小明办了健身卡，第一天热血沸腾，做了半小时有氧。第二天上班很累，心想"明天再去"。第三天忘了。第四天想起来，觉得"都三天没去了，下次再说"。<br><br>
+<strong>分析：</strong><br>
+- 第一天：动机高 ✅，行为设计合理 ✅ → 成功了<br>
+- 第二天：动机低 ❌，但行为还是"去健身房30分钟"（太难）❌ → 失败<br>
+- 第四天：动机中等，但行为太复杂 → 放弃<br><br>
+<strong>如果用 B=MAP 重新设计：</strong><br>
+- 低动机日改为"在家做5个俯卧撑"（能力↑↑）<br>
+- 高动机日再去健身房（能力↑ + 动机↑ = 💪）<br>
+- 设置固定提示：下班回家先换运动服（Prompt✅）
+</div>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2>三、如何用 B=MAP 设计你的行为</h2>
+
+<p>现在你知道公式了，接下来是实操。Fogg 建议按照以下四个步骤来设计任何你想养成的行为：</p>
+
+<h3>3.1 第一步：选一个你想要的小行为</h3>
+
+<p>不是"我要变得自律"，而是具体的、可观察的行为：</p>
+
+<div class="tip-box">
+<strong>❌ 模糊目标</strong> → "我要多读书"<br>
+<strong>✅ 具体行为</strong> → "每晚睡前读2页书"<br><br>
+<strong>❌ 模糊目标</strong> → "我要更健康"<br>
+<strong>✅ 具体行为</strong> → "每天午餐后散步10分钟"
+</div>
+
+<h3>3.2 第二步：为这个行为找到合适的时机和提示</h3>
+
+<p>提示必须<strong>具体、可见、不可忽略</strong>：</p>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+你想养成"每天喝水"的习惯。<br>
+- 弱提示：心里想着"该喝水了"（容易被忘）<br>
+- 强提示：在电脑旁边放一个装满水的大杯子（视觉可见，触手可及）<br><br>
+<strong>关键原则：</strong>提示必须出现在行为即将发生的时间和地点。
+</div>
+
+<h3>3.3 第三步：降低行为的难度</h3>
+
+<p>问自己："如果我现在一点都不想做，这个行为最小可以小到什么程度？"</p>
+
+<div class="collapse-btn" onclick="this.classList.toggle('open');document.getElementById('ability-examples').classList.toggle('open')">📖 阅读</div>
+<div class="collapse-body" id="ability-examples">
+<p style="margin:.5rem 0 0 1.2rem">最小行为：翻开书，读一行字。就这么小。小到你的 System 1 不会反抗。</p>
+</div>
+
+<div class="collapse-btn" style="margin-top:.5rem" onclick="this.classList.toggle('open');document.getElementById('ability-ex-2').classList.toggle('open')">🏃 运动</div>
+<div class="collapse-body" id="ability-ex-2">
+<p style="margin:.5rem 0 0 1.2rem">最小行为：穿上运动鞋。或者做1个深蹲。小到不可能失败。</p>
+</div>
+
+<div class="collapse-btn" style="margin-top:.5rem" onclick="this.classList.toggle('open');document.getElementById('ability-ex-3').classList.toggle('open')">✍️ 写作</div>
+<div class="collapse-body" id="ability-ex-3">
+<p style="margin:.5rem 0 0 1.2rem">最小行为：打开文档，写一句话。哪怕只是"今天不想写"。</p>
+</div>
+
+<h3>3.4 第四步：设置庆祝（Celebration）</h3>
+
+<p>这是 Fogg 模型中最被低估的一环。完成行为后，立即给自己一个<strong>小型庆祝</strong>：</p>
+
+<div class="tip-box">
+<strong>🎉 庆祝不是奖励，是神经信号的锚定</strong><br>
+做一个深呼吸，在心里说"太棒了！"，或者比个耶。这个动作会告诉你的大脑："刚才那件事是好的，以后多做。"<br><br>
+庆祝不需要物质奖励。一句"好样的"就够了。因为你在训练的是大脑的情绪记忆，不是在做交易。
+</div>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+你完成了"读2页书"的最小行为。合上书，对自己笑一下，说"不错嘛"。然后继续做别的事。<br><br>
+<strong>注意：</strong>不要说"才读了两页有什么用"。这句话会摧毁你刚刚建立的正向神经连接。庆祝的目的是让行为本身成为奖励，而不是让行为成为获得奖励的手段。
+</div>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2>四、诊断工具：你的行为为什么没发生？</h2>
+
+<p>当你发现自己"又没做到"的时候，不要自责。拿出 B=MAP 的诊断表，逐项检查：</p>
+
+<div class="map-diagnosis">
+<h4>🔍 B=MAP 诊断模板</h4>
+<p>行为：<span class="english">[填写你想做的行为]</span></p>
+<ul style="margin:.5rem 0 0 1.2rem">
+<li><strong>Motivation（动机）：</strong>当时我想做吗？（1-10分）___</li>
+<li><strong>Ability（能力）：</strong>这件事对我来说容易吗？（1-10分，10=非常简单）___</li>
+<li><strong>Prompt（提示）：</strong>当时有明确的触发信号吗？（有/无）___</li>
+</ul>
+<p style="margin:.5rem 0 0 1.2rem"><strong>改进方案：</strong>从三个维度中选一个最容易调整的，优先修改它。</p>
+</div>
+
+<h3>4.1 常见场景诊断</h3>
+
+<p><strong>场景1：久坐腰疼</strong></p>
+<div class="map-diagnosis">
+<ul style="margin:.5rem 0 0 1.2rem">
+<li>Motivation：知道该起来活动，但"等会儿再说"→ 动机中等偏低</li>
+<li>Ability：站起来走两步不难 → 能力尚可</li>
+<li>Prompt：没有定时提醒 → 提示缺失 ❌</li>
+</ul>
+<p style="margin:.5rem 0 0 1.2rem"><strong>解决方案：</strong>设一个每45分钟的闹钟（Prompt✅），闹钟响了就做1个拉伸（Ability✅）。不需要很高动机。</p>
+</div>
+
+<p><strong>场景2：刷视频逃避工作</strong></p>
+<div class="map-diagnosis">
+<ul style="margin:.5rem 0 0 1.2rem">
+<li>Motivation：不想面对困难的工作 → 负向动机</li>
+<li>Ability：刷视频极其简单 → 能力极高</li>
+<li>Prompt：手机就在手边，App图标在首页 → 提示极强</li>
+</ul>
+<p style="margin:.5rem 0 0 1.2rem"><strong>解决方案：</strong>把社交 App 移到文件夹深处（增加难度↓），设一个"打开工作文档"的桌面快捷方式（Prompt✅），告诉自己"只做5分钟"（降低Ability门槛）。</p>
+</div>
+
+<p><strong>场景3：健身房中断</strong></p>
+<div class="map-diagnosis">
+<ul style="margin:.5rem 0 0 1.2rem">
+<li>Motivation：刚开始很高，一个月后下降 → 动机衰减</li>
+<li>Ability：去健身房路上+换衣服+锻炼 → 综合难度高</li>
+<li>Prompt：没有固定时间 → 提示不稳定</li>
+</ul>
+<p style="margin:.5rem 0 0 1.2rem"><strong>解决方案：</strong>固定每周二四六晚上8点（Prompt✅），当天只要求自己"换上运动服"（Ability↑↑），到了健身房再说（动机自然会来）。</p>
+</div>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2>五、动机陷阱：为什么"打鸡血"没用</h2>
+
+<p>我们从小被教育："只要有足够的动力，你就能做任何事。"但 Fogg 的研究推翻了这一点：</p>
+
+<div class="tip-box">
+<strong>⚠️ 动机陷阱</strong><br>
+<strong>1.</strong> 动机来得快，去得更快。靠打鸡血驱动的行为，通常坚持不超过一周。<br>
+<strong>2.</strong> 高动机时的行为设计不可靠。你在精力充沛时制定的计划（"每天跑5公里"），在疲惫时根本执行不了。<br>
+<strong>3.</strong> 动机和能力是替代关系。行为越难，需要的动机越高；行为越简单，需要的动机越低。聪明的做法是让行为简单到几乎不需要动机。
+</div>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+你有没有过这种经历——凌晨两点睡不着，突然灵感爆发，列了一个"明天开始的人生计划"：早起、跑步、读书、学英语、早睡……然后第二天早上闹钟一响，全部归零。<br><br>
+这不是你"缺乏执行力"。这是你在低动机时段（凌晨困倦）和高动机时刻（灵感爆发）做了同一件事的设计。这两个时刻的 M-A-P 条件完全不同，但计划却一样。当然执行不了。
+</div>
+
+<h3>5.1 应对策略：为低动机日设计</h3>
+
+<p>Fogg 的建议是：<strong>永远按照你最低动机、最低能力的状态来设计行为。</strong></p>
+
+<p>为什么？因为：</p>
+<ul style="margin:.5rem 0 1rem 1.2rem">
+<li>如果你的行为在低动机状态下也能完成，那么在高中机状态下一定也能完成</li>
+<li>行为的一致性比单次行为的强度更重要</li>
+<li>低动机日的成功体验会积累成自我效能感（"我能做到"的信心）</li>
+</ul>
+
+<div class="tip-box">
+<strong>💡 "最低可行行为"（Minimum Viable Action）</strong><br>
+在任何你想培养的行为上，问自己："如果我现在一点也不想动，我能做的最小一步是什么？"<br><br>
+跑步的最小一步：穿上跑鞋。<br>
+读书的最小一步：翻开书。<br>
+工作的最小一步：打开电脑。<br><br>
+<strong>只要做了这一步，你就赢了。</strong> 多做了是 bonus，没多做也不是失败。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<h2>六、随堂练习</h2>
+
+<div class="quiz-container" id="q1">
+<h4>📝 第 1 题</h4>
+<p>根据 B=MAP 模型，如果一个行为没有发生，最可能的原因是：</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">A. 你不够努力</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">B. 你缺乏意志力</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">C. 动机、能力或提示中至少有一个条件未满足</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">D. 你选的目标太大了</div>
+<div class="quiz-feedback" id="q1-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q2">
+<h4>📝 第 2 题</h4>
+<p>你晚上加班回家后想读书，但总是刷手机。根据 B=MAP，最有效的改进方法是：</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">A. 给自己打气"明天一定要读书"</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">B. 把书放在枕头上，规定自己只读一页</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">C. 下载一个读书打卡 App</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">D. 找一个读书伙伴互相监督</div>
+<div class="quiz-feedback" id="q2-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q3">
+<h4>📝 第 3 题</h4>
+<p>以下哪个行为在 B=MAP 模型中属于"提高能力（降低难度）"的策略？</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">A. 看着镜子里的自己说"你可以的"</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">B. 告诉自己跑完步会很爽</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">C. 把跑鞋放在门口，规定自己只穿鞋出门</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">D. 发朋友圈宣布自己要每天跑步</div>
+<div class="quiz-feedback" id="q3-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q4">
+<h4>📝 第 4 题</h4>
+<p>Fogg 说"永远按照最低动机状态来设计行为"，这是因为：</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">A. 大多数人大部分时间都很懒</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">B. 如果在低动机时也能做，那么在高动机时一定能做；一致性比强度重要</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">C. 高动机是不可靠的，应该避免依赖它</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">D. A 和 C 都对</div>
+<div class="quiz-feedback" id="q4-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q5">
+<h4>📝 第 5 题</h4>
+<p>你在沙发上躺着，手机弹出"今天运动了吗？"的通知。你没有运动。最可能的原因是：</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">A. 通知太烦人了，你故意不看</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">B. 动机低（累）+ 行为难（运动）+ 提示弱（一条通知）= 行为不发生</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">C. 你缺乏运动习惯</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">D. 那天天气不好</div>
+<div class="quiz-feedback" id="q5-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q6">
+<h4>📝 第 6 题</h4>
+<p>以下哪种庆祝方式最符合 Fogg 的建议？</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q6')">A. 完成行为后吃一块巧克力作为奖励</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q6')">B. 完成行为后立即做一个深呼吸，在心里说"太棒了"</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q6')">C. 完成行为后发一条朋友圈炫耀</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q6')">D. 什么都不做，直接开始下一个任务</div>
+<div class="quiz-feedback" id="q6-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q7">
+<h4>📝 第 7 题</h4>
+<p>你想养成"每天写日记"的习惯，但总是坚持不了。用 B=MAP 诊断，最可能的问题出在哪？</p>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q7')">A. 动机不足——你根本不想写</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q7')">B. 提示不够——没有人提醒你</div>
+<div class="quiz-option" onclick="checkAnswer(this, true, 'q7')">C. 能力太低——"写日记"听起来太复杂，可以从"写一句话"开始</div>
+<div class="quiz-option" onclick="checkAnswer(this, false, 'q7')">D. 以上三个因素可能都有问题</div>
+<div class="quiz-feedback" id="q7-feedback"></div>
+</div>
+
+<div class="quiz-container" id="q8">
+<h4>📝 第 8 题（填空题）</h4>
+<p>在 B=MAP 公式中，M = <input type="text" class="fill-input" id="q8-fill" placeholder="填英文缩写">，A = <input type="text" class="fill-input" id="q8-fill2" placeholder="填英文缩写">，P = <input type="text" class="fill-input" id="q8-fill3" placeholder="填英文缩写">。</p>
+<button onclick="checkFillAnswer()" style="margin-top:.8rem;padding:.4rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:6px;cursor:pointer;font-size:.9rem;font-family:inherit">检查答案</button>
+<div class="quiz-feedback" id="q8-feedback"></div>
+</div>
+
+<!-- ==================== ACTION LIST ==================== -->
+<div class="action-list">
+<h4>🎯 今天就能做的行动清单</h4>
+<ol>
+<li><strong>选一个你一直想做但没做成的行为</strong>（比如每天喝8杯水、每天做10个俯卧撑）。写下它。</li>
+<li><strong>把它缩小到"最低可行行为"</strong>——小到你在最累、最不想动的时候也能做。比如"喝一口水"、"做一个俯卧撑"。</li>
+<li><strong>为这个行为设计一个提示</strong>——把它放在你每天必经的地方。比如水杯放在电脑旁，俯卧撑垫铺在床边。</li>
+<li><strong>完成之后，立即庆祝</strong>——做一个深呼吸，在心里说"搞定！"。不要小看这个动作，它在重塑你的神经通路。</li>
+</ol>
+</div>
+
+<!-- ==================== SUMMARY ==================== -->
+<h2>七、本课总结</h2>
+
+<table class="summary-table">
+<tr><th>概念</th><th>一句话记住它</th></tr>
+<tr><td><strong>B = MAP</strong></td><td>行为 = 动机 × 能力 × 提示，三者缺一不可</td></tr>
+<tr><td><strong>动机不可靠</strong></td><td>动机像电量，用完了就没了，不能靠它办事</td></tr>
+<tr><td><strong>能力 > 动机</strong></td><td>让行为变简单，比提高动机有效得多</td></tr>
+<tr><td><strong>提示要具体</strong></td><td>模糊的"想想看"不算提示，"看到跑鞋就穿"才算</td></tr>
+<tr><td><strong>最低可行行为</strong></td><td>按你最不想动的时候来设计，这样任何时候都能做</td></tr>
+<tr><td><strong>庆祝很重要</strong></td><td>完成行为后立即给自己一个小肯定，这是在训练大脑</td></tr>
+</table>
+
+<p style="margin-top:2rem;color:#888;font-size:.9rem">下一课：拖延的本质——为什么你不是懒，而是情绪调节失败了。</p>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var pct = (h.scrollTop)/(h.scrollHeight - h.clientHeight)*100;
+  document.getElementById('progressBar').style.width = pct+'%';
+});
+
+// Quiz checking
+function checkAnswer(el, isCorrect, qId){
+  var container = document.getElementById(qId);
+  var options = container.querySelectorAll('.quiz-option');
+  var feedback = document.getElementById(qId+'-feedback');
+  
+  // Disable all options
+  options.forEach(function(opt){
+    opt.classList.add('disabled');
+    opt.style.pointerEvents = 'none';
+  });
+  
+  if(isCorrect){
+    el.classList.add('correct');
+    feedback.className = 'quiz-feedback show correct';
+    feedback.innerHTML = '✅ 正确！你理解了 B=MAP 的核心逻辑。';
+  } else {
+    el.classList.add('wrong');
+    // Highlight correct answer
+    options.forEach(function(opt){
+      if(opt.onclick.toString().indexOf('true') !== -1){
+        // Find the one with true
+      }
+    });
+    feedback.className = 'quiz-feedback show wrong';
+    feedback.innerHTML = '❌ 不对哦。再想一想：B=MAP 告诉我们行为需要三个条件同时满足。';
+  }
+}
+
+function checkFillAnswer(){
+  var a1 = document.getElementById('q8-fill').value.trim().toLowerCase();
+  var a2 = document.getElementById('q8-fill2').value.trim().toLowerCase();
+  var a3 = document.getElementById('q8-fill3').value.trim().toLowerCase();
+  var feedback = document.getElementById('q8-feedback');
+  
+  if(a1 === 'm' || a1 === 'motivation'){
+    if(a2 === 'a' || a2 === 'ability'){
+      if(a3 === 'p' || a3 === 'prompt'){
+        feedback.className = 'quiz-feedback show correct';
+        feedback.innerHTML = '✅ 完全正确！M=Motivation（动机），A=Ability（能力），P=Prompt（提示）。';
+      } else {
+        feedback.className = 'quiz-feedback show wrong';
+        feedback.innerHTML = '⚠️ P 应该是 Prompt（提示）。';
+      }
+    } else {
+      feedback.className = 'quiz-feedback show wrong';
+      feedback.innerHTML = '⚠️ A 应该是 Ability（能力）。';
+    }
+  } else {
+    feedback.className = 'quiz-feedback show wrong';
+    feedback.innerHTML = '⚠️ M 应该是 Motivation（动机）。';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一课 — 双系统理论：你的大脑里有两个你</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .system-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .system-card.system-1 {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+  }
+
+  .system-card.system-2 {
+    border-left: 4px solid var(--warn-border);
+    background: var(--warn-bg);
+  }
+
+  .system-card h3 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .system-card .tagline {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .system-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .system-card ul li {
+    padding: 0.2rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .system-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .scenario-box {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .scenario-box strong { color: var(--accent); }
+
+  .insight-box {
+    background: var(--correct-bg);
+    border-left: 4px solid var(--correct);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .insight-box strong { color: var(--correct); }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>双系统理论：你的大脑里有两个你</h1>
+<p class="lesson-meta">第一课 · 约 10 分钟 · 行为科学基础</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够识别自己大脑中两个系统的运作方式，理解为什么"理智上知道"常常打不过"本能反应"，并学会用系统 1 和系统 2 的框架来分析日常决策。
+</div>
+
+<h2>核心概念：两个系统</h2>
+<p>诺贝尔奖得主丹尼尔·卡尼曼在《思考，快与慢》中提出了一个简单但颠覆性的观点：你的大脑里其实有两个"你"——它们不是两个人格，而是两套不同的思维方式。</p>
+
+<div class="system-card system-1">
+  <h3>系统 1：快思考</h3>
+  <p class="tagline">"自动驾驶模式"</p>
+  <ul>
+    <li>速度极快，几乎不费力气</li>
+    <li>基于直觉、联想和情绪</li>
+    <li>擅长识别模式，但不擅长逻辑</li>
+    <li>容易受偏见影响</li>
+    <li>例子：看到一张愤怒的脸 → 立刻感到紧张</li>
+  </ul>
+</div>
+
+<div class="system-card system-2">
+  <h3>系统 2：慢思考</h3>
+  <p class="tagline">"认真模式"</p>
+  <ul>
+    <li>速度慢，需要集中注意力和精力</li>
+    <li>基于逻辑、计算和推理</li>
+    <li>擅长处理复杂问题</li>
+    <li>能抑制系统 1 的冲动</li>
+    <li>例子：计算 17 × 24 → 你需要停下来认真想</li>
+  </ul>
+</div>
+
+<h2>为什么这个理论重要</h2>
+<p>大多数人在生活中过度信任系统 1——那个快速、直觉的"你"。而系统 2——那个理性、谨慎的"你"——通常很懒，只有在必要时才会启动。</p>
+
+<div class="scenario-box">
+  <strong>场景 1：</strong>你在网购时看到一个商品"限时折扣，还剩 3 件！"——你的系统 1 立刻产生了紧迫感，想买。系统 2 其实可以告诉你：你真的需要这个吗？但你可能根本没调用它。
+</div>
+
+<div class="scenario-box">
+  <strong>场景 2：</strong>有人对你发了条语气冲的消息。你的第一反应是生气（系统 1），但如果你停下来想想——也许对方只是忙、心情不好——你就启动了系统 2。
+</div>
+
+<p>关键洞察：<strong>系统 1 并不是"坏的"</strong>。它帮你每天做出成千上万个快速判断——走路不撞到人、认出朋友的声音、判断食物是否新鲜。它的问题在于<strong>在某些重要场合过于自信</strong>。</p>
+
+<h2>两个系统如何协作</h2>
+<p>理想状态下，系统 1 提出建议（直觉），系统 2 进行审核（理性）。但现实是——系统 2 经常偷懒，直接接受了系统 1 的建议。这就是为什么你知道熬夜不好但还是刷手机到凌晨，为什么你明明在减肥还是忍不住吃那块蛋糕。</p>
+
+<div class="insight-box">
+  <strong>💡 核心洞察：</strong>行为改变的第一步不是"更有毅力"，而是<strong>理解这两个系统如何在暗中操控你的选择</strong>。当你意识到"哦，这是我的系统在自动运行"时，你就已经启动了系统 2。
+</div>
+
+<h2>常见的认知陷阱（系统 1 的弱点）</h2>
+<h3>锚定效应</h3>
+<p>系统 1 会被第一个看到的数字"锚定"。比如一件衣服原价 ¥999，现价 ¥399——你觉得划算了。但如果它一直卖 ¥399，你就不会觉得是便宜。</p>
+
+<h3>可得性启发</h3>
+<p>系统 1 根据"最容易想到的例子"来判断概率。新闻里报道了飞机失事 → 你觉得坐飞机很危险 → 但其实开车更危险。因为你更容易想起新闻里的画面，而不是统计数字。</p>
+
+<h3>损失厌恶</h3>
+<p>失去 ¥100 的痛苦大约是得到 ¥100 的快乐的两倍。系统 1 对"避免损失"的驱动力远大于"追求收益"。这也是为什么"限时优惠"比"长期低价"更有效。</p>
+
+<div class="quiz-section">
+  <h2>练习：识别你的系统</h2>
+  <p>以下每个场景中，哪个系统主导了你的反应？选出一个最合适的。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">场景：你走进一家咖啡店，闻到香味，立刻觉得"好想要一杯"。</div>
+    <div class="question-text">这是哪个系统在驱动？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 1（直觉、情绪驱动）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 2（逻辑分析）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">场景：你在做选择题，逐项分析每个选项的优缺点。</div>
+    <div class="question-text">这是哪个系统在驱动？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 1（快速直觉）</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 2（缓慢分析）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">场景：你看到一条标题为"震惊！这种食物致癌！"的新闻，马上转发给家人。</div>
+    <div class="question-text">这里的问题出在哪里？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 2 太慢了</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 1 没有经过系统 2 审核就行动了</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">场景：商家把原价划掉，标上新价，还写"仅剩 2 件"。</div>
+    <div class="question-text">这利用了系统 1 的哪个特点？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">损失厌恶和紧迫感</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">逻辑推理能力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">场景：你在减肥，但路过面包店闻到刚出炉的面包味，不自觉地走了进去。</div>
+    <div class="question-text">这个情境说明了什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">你的系统 2 很强大</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">系统 1 可以被环境线索触发，不需要意志力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">系统 2 的主要局限性是什么？</div>
+    <div class="question-text">选择最准确的描述。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">它总是做出错误的判断</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">它很耗能，所以倾向于偷懒</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">场景：你第一次见到一个人，他穿着西装、说话流利，你立刻觉得"这个人很专业"。</div>
+    <div class="question-text">这属于哪种认知捷径？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">代表性启发（基于刻板印象快速判断）</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">锚定效应（被第一个信息影响）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">关于系统 1 和系统 2 的关系，以下哪项最准确？</div>
+    <div class="question-text">请选择最佳答案。</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">系统 1 是坏的，应该完全被系统 2 取代</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">两者各有优劣，关键是让系统 2 在重要决策时介入</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>下一步：</strong>下一课我们将学习<strong>习惯回路（Cue-Routine-Reward）</strong>——这是系统 1 运作的核心机制之一。理解了双系统理论，你就能更好地设计自己的习惯。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.amazon.cn/dp/750864354X" target="_blank">《思考，快与慢》</a>（丹尼尔·卡尼曼）— 这本书是双系统理论的源头，写得深入浅出。
+  <br><br>
+  <strong>自测练习：</strong>今天留意至少 3 次你"不假思索就做决定"的时刻。问问自己：当时是系统 1 在主导吗？如果换作系统 2，你会做出不同的选择吗？
+</div>
+
+<div class="footer">
+  <span class="nav-disabled">上一课</span> | <a href="../index.html">目录</a> | <a href="0002-habit-loop.html">下一课：习惯回路</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: { correct: '正确！闻到香味就想喝——这是系统 1 的直觉反应，基于情绪和联想，不需要思考。', wrong: '这不是逻辑分析的结果。闻到香味→想要一杯，是系统 1 的快速直觉反应，基于感官和情绪。' },
+    q2: { correct: '正确！逐项分析需要集中注意力和脑力——这正是系统 2 的特征。', wrong: '逐项分析是一个缓慢、需要专注的过程，这是系统 2 的工作方式，不是系统 1 的直觉。' },
+    q3: { correct: '正确！你没有停下来核实信息来源或查证事实——系统 1 的直觉判断跳过了系统 2 的审核。', wrong: '问题不在于系统 2 慢，而在于系统 2 根本没有被激活。你被系统 1 的情绪反应带着走了。' },
+    q4: { correct: '正确！"仅剩 2 件"触发了损失厌恶（怕错过），"原价 vs 现价"利用了锚定效应。都是系统 1 的弱点。', wrong: '这与逻辑推理无关。限时优惠利用的是系统 1 的情绪反应——紧迫感和损失厌恶。' },
+    q5: { correct: '正确！系统 1 对环境线索极其敏感。面包香味直接触发了欲望，绕过了你"正在减肥"的理性目标。', wrong: '如果系统 2 很强，你会直接走过面包店。但现实是系统 1 被感官线索瞬间捕获了。' },
+    q6: { correct: '正确！系统 2 非常耗能——消耗大量葡萄糖和注意力。大脑会尽量节省能量，所以系统 2 倾向于"节能模式"。', wrong: '系统 2 并不总是错误——它的优势恰恰在于能做出正确的逻辑判断。问题是它太耗能，大脑不愿意经常使用它。' },
+    q7: { correct: '正确！代表性启发是指我们根据某个事物"看起来像什么"来做判断，而不是基于统计数据。穿西装=专业，是一种刻板印象。', wrong: '锚定效应是关于数字的——比如先看到一个高价再看到折扣价。这里没有数字锚定的问题。' },
+    q8: { correct: '正确！系统 1 帮我们快速应对日常事务，系统 2 帮我们做深度思考。两者互补，关键在于知道什么时候该切换到系统 2。', wrong: '系统 1 不是"坏的"——它帮我们活了数百万年。真正的问题是我们在不该用直觉的时候用了直觉。' }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '满分！你已经很好地掌握了双系统理论的核心。';
+      else if (score >= 6) label.textContent = '做得不错！回顾错题的解释，加深理解。';
+      else label.textContent = '继续加油！重新阅读上面的内容，理解系统 1 和系统 2 的区别。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 · 元认知：看懂自己问题的能力 — 自我科学</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px;padding:0 16px}
+.container{max-width:800px;margin:0 auto;padding:40px 0 80px}
+h1{font-family:'Merriweather',serif;font-weight:900;font-size:2em;color:#1a1a2e;margin-bottom:6px;line-height:1.3}
+h2{font-family:'Merriweather',serif;font-weight:700;font-size:1.45em;color:#1a1a2e;margin-top:48px;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid #e8e8f0}
+h3{font-family:'Merriweather',serif;font-weight:700;font-size:1.15em;color:#2d2d44;margin-top:32px;margin-bottom:10px}
+.subtitle{font-size:1.05em;color:#555;margin-bottom:36px;font-style:italic}
+.meta-badge{display:inline-block;background:#eef0ff;color:#4a4fa0;padding:3px 12px;border-radius:20px;font-size:.82em;font-weight:600;margin-right:6px;margin-bottom:6px}
+.lead{font-size:1.1em;color:#333;margin-bottom:20px}
+p{margin-bottom:16px}
+.term{font-weight:600;color:#2d4a8a}
+.en{color:#666;font-size:.92em;font-style:italic}
+.case-box{background:#f4f6fc;border-left:4px solid #6b7db3;padding:18px 22px;margin:24px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#4a4fa0;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.case-box p{margin-bottom:8px}
+.case-box p:last-child{margin-bottom:0}
+.key-insight{background:#fff9f0;border-left:4px solid #e8a84c;padding:16px 20px;margin:24px 0;border-radius:0 8px 8px 0}
+.key-insight .label{font-weight:700;color:#c47f17;margin-bottom:4px}
+.collapsible{margin:16px 0;border:1px solid #ddd;border-radius:8px;overflow:hidden}
+.collapsible-header{background:#f0f2f8;padding:14px 20px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background .2s}
+.collapsible-header:hover{background:#e4e7f2}
+.collapsible-header .arrow{transition:transform .3s;font-size:1.1em}
+.collapsible-header.open .arrow{transform:rotate(180deg)}
+.collapsible-body{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease}
+.collapsible-body.open{max-height:2000px;padding:16px 20px}
+.quiz-section{margin:40px 0 20px}
+.quiz-section h2{text-align:center;margin-bottom:30px}
+.quiz-card{background:#fff;border:1px solid #e0e0ea;border-radius:12px;padding:24px 26px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:box-shadow .2s}
+.quiz-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.quiz-num{font-size:.82em;font-weight:700;color:#6b7db3;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.quiz-question{font-weight:600;color:#1a1a2e;margin-bottom:16px;font-size:1.02em}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin-bottom:8px}
+.quiz-opt-btn{display:block;width:100%;text-align:left;padding:12px 18px;border:2px solid #ddd;border-radius:8px;background:#fafafe;cursor:pointer;font-size:.97em;transition:all .15s;font-family:inherit}
+.quiz-opt-btn:hover:not(.disabled){border-color:#6b7db3;background:#f0f2ff}
+.quiz-opt-btn.correct{border-color:#34a853;background:#e6f9ec;color:#1a6b2e}
+.quiz-opt-btn.wrong{border-color:#ea4335;background:#fdecea;color:#a12a1e}
+.quiz-opt-btn.disabled{cursor:default;opacity:.65}
+.quiz-opt-btn.correct.disabled{opacity:1}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:.95em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e6f9ec;border:1px solid #a0d8b0;color:#1a6b2e}
+.quiz-feedback.wrong-fb{background:#fdecea;border:1px solid #f0a0a0;color:#a12a1e}
+.fill-blank-input{border:2px solid #ddd;border-radius:6px;padding:8px 14px;font-size:1em;font-family:inherit;width:200px;max-width:100%;outline:none;transition:border-color .2s}
+.fill-blank-input:focus{border-color:#6b7db3}
+.fill-blank-input.correct-input{border-color:#34a853;background:#e6f9ec}
+.fill-blank-input.wrong-input{border-color:#ea4335;background:#fdecea}
+.check-btn{background:#6b7db3;color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.95em;cursor:pointer;font-weight:600;font-family:inherit;margin-top:10px;transition:background .2s}
+.check-btn:hover{background:#4a5a9a}
+.action-list{background:#f0faf0;border:1px solid #a0d8b0;border-radius:12px;padding:24px;margin:36px 0}
+.action-list h3{color:#1a6b2e;margin-top:0}
+.action-list ol{padding-left:20px}
+.action-list li{margin-bottom:10px;line-height:1.6}
+.action-list .time-tag{display:inline-block;background:#34a853;color:#fff;font-size:.75em;padding:2px 8px;border-radius:10px;font-weight:600;margin-right:6px}
+.score-bar{background:#eef0ff;border-radius:12px;padding:20px 24px;text-align:center;margin:30px 0}
+.score-bar .score{font-size:2.2em;font-weight:900;color:#4a4fa0;font-family:'Merriweather',serif}
+.score-bar .score-label{font-size:.9em;color:#666;margin-top:4px}
+.note{font-size:.88em;color:#888;margin-top:4px}
+footer{text-align:center;margin-top:60px;padding-top:20px;border-top:1px solid #e8e8f0;color:#aaa;font-size:.85em}
+@media(max-width:600px){body{font-size:16px}h1{font-size:1.6em}.quiz-card{padding:18px 16px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>第12课 · 元认知</h1>
+<p class="subtitle">Metacognition — 看懂自己问题的能力</p>
+
+<span class="meta-badge">自我科学</span>
+<span class="meta-badge">第12课 / 共12课</span>
+<span class="meta-badge">完结篇</span>
+
+<div class="case-box">
+<div class="label">&#128161; 开场场景</div>
+<p>你已经学完了前面11课。你可能已经知道：</p>
+<p>&#8226; 你的大脑里有两个系统（System 1 / System 2）</p>
+<p>&#8226; 习惯是由线索- routine-奖励构成的回路</p>
+<p>&#8226; 拖延本质上是情绪调节失败</p>
+<p>&#8226; 回退是螺旋上升的一部分</p>
+<p><strong>但你有没有想过——谁在"知道"这些？谁在观察你自己的思考过程？</strong></p>
+<p>这就是元认知：<span class="en">Metacognition</span> ——对认知的认知。它是自我科学与行为改变的"终极技能"。</p>
+</div>
+
+<!-- Section 1 -->
+<h2>一、什么是元认知？</h2>
+
+<p>元认知这个词由心理学家 <span class="term">约翰·哈维尔<span class="en">(John Flavell)</span></span> 在1976年提出。简单来说，它包含两个层面：</p>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>1. 元认知知识 — 你知道什么关于自己的事</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p><strong>元认知知识<span class="en">(Metacognitive Knowledge)</span></strong> 是指你对自己和他人的认知过程的知识和信念。它包括三个维度：</p>
+<p>&#8226; <span class="term">个人知识<span class="en">(Person Knowledge)</span></span>：了解自己的认知特点。比如你知道自己早上头脑清醒、下午容易犯困；知道自己记名字比记数字差。</p>
+<p>&#8226; <span class="term">任务知识<span class="en">(Task Knowledge)</span></span>：了解不同任务的难度和要求。比如你知道背一首诗比理解一篇论文简单；做高数题需要比做英语阅读更多的注意力。</p>
+<p>&#8226; <span class="term">策略知识<span class="en">(Strategy Knowledge)</span></span>：知道有哪些认知策略可用。比如你知道可以用"联想记忆"来背单词，用"费曼技巧"来理解复杂概念。</p>
+<div class="key-insight">
+<div class="label">&#9889; 关键洞察</div>
+<p>大多数人只具备"任务知识"——知道这道题难、那道题简单。但元认知高手还清楚自己的"个人知识"和"策略知识"，所以能精准调配自己的脑力资源。</p>
+</div>
+</div>
+</div>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>2. 元认知监控 — 你在实时观察自己吗？</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p><strong>元认知监控<span class="en">(Metacognitive Monitoring)</span></strong> 是指在认知活动过程中，实时跟踪和理解自己的思维过程。主要包括：</p>
+<p>&#8226; <span class="term">注意力监测<span class="en">(Attention Monitoring)</span></span>：意识到自己走神了。</p>
+<p>&#8226; <span class="term">理解度监测<span class="en">(Comprehension Monitoring)</span></span>：察觉到"我刚才读的那段根本没懂"。</p>
+<p>&#8226; <span class="term">信心评估<span class="en">(Confidence Judgment)</span></span>：判断自己对某个答案有多确定。</p>
+<p>&#8226; <span class="term">学习进度追踪<span class="en">(Learning Progress Tracking)</span></span>：评估自己学得怎么样了，还需要多少时间。</p>
+<div class="case-box">
+<div class="label">&#127970; 生活案例：刷视频时的"元认知闪回"</div>
+<p>你原本只想查一个视频教程，结果被推荐算法带进了短视频黑洞。突然某一刻——也许是你瞥见时钟的那一刻——你脑子里冒出一个声音：<em>"等等，我到底在干什么？"</em></p>
+<p>那一瞬间，就是你的元认知在工作。它像一个"观察者"，把你从沉浸式的 System 1 体验中拉出来，让你以更高的视角审视自己的行为。</p>
+<p>问题是：这个"观察者"大多数时候是沉默的。它只在少数时刻闪回一下，然后你又掉回去了。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Section 2 -->
+<h2>二、元认知的三个核心能力</h2>
+
+<p>元认知不是单一的能力，而是由三个相互关联的核心技能组成的。</p>
+
+<h3>2.1 计划能力 — 做事前的"预演"</h3>
+<p><span class="term">计划<span class="en">(Planning)</span></span> 是在开始任何认知任务之前，先想清楚：我需要做什么？用什么方法？要花多长时间？可能会遇到什么困难？</p>
+
+<div class="case-box">
+<div class="label">&#128161; 场景对比：写报告前</div>
+<p><strong>低元认知的人：</strong>打开文档就开始写。写到一半发现数据不够，回去找数据。找到后发现结构乱了，又从头改。</p>
+<p><strong>高元认知的人：</strong>花5分钟先列大纲——"我要回答什么问题？需要哪些数据？按什么逻辑组织？"然后按步骤执行。遇到卡壳知道停下来重新规划。</p>
+<p>差别不在于智商，而在于<strong>是否在行动前先"观察"了行动本身</strong>。</p>
+</div>
+
+<h3>2.2 监控能力 — 过程中的"实时导航"</h3>
+<p><span class="term">监控<span class="en">(Monitoring)</span></span> 是在做事的过程中，持续检查："我现在的方法有效吗？我理解了吗？我偏题了吗？"</p>
+
+<div class="case-box">
+<div class="label">&#128161; 场景：健身时的身体监控</div>
+<p>你在跑步机上跑步。低元认知的人不看任何数据，凭感觉跑，跑到一半才发现喘不上气——因为一开始就冲太快了。</p>
+<p>高元认知的人会实时关注心率、呼吸节奏、腿部感受。当发现自己心率过高时，主动减速。这不是意志力问题，这是<strong>对自己状态的觉察能力</strong>。</p>
+<p>把这种能力迁移到学习和工作中——当你发现自己读了三遍还是不懂时，停下来换一种方法，而不是继续硬啃。</p>
+</div>
+
+<h3>2.3 评估能力 — 事后的"复盘"</h3>
+<p><span class="term">评估<span class="en">(Evaluation)</span></span> 是在任务完成后，回顾整个过程："我做得怎么样？哪里可以改进？下次怎么做更好？"</p>
+
+<div class="key-insight">
+<div class="label">&#9889; 关键洞察</div>
+<p>绝大多数人的"复盘"只停留在结果层面——"成功了"或"失败了"。而元认知高手会复盘<strong>过程</strong>：我当时为什么选了那个策略？哪个环节出了问题？我的判断准不准？</p>
+<p>这种"对思考的思考"，就是成长最快的方式。</p>
+</div>
+
+<!-- Section 3 -->
+<h2>三、为什么你"知道但做不到"？</h2>
+
+<p>这是自我科学中最核心的问题。你已经学了11课，知道了很多改变行为的方法——但你有没有发现，知道和行动之间有一条巨大的鸿沟？</p>
+
+<p>元认知就是跨越这条鸿沟的桥梁。</p>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>为什么我们常常"不知道自己不知道"？</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>心理学中有一个概念叫 <span class="term">达克效应<span class="en">(Dunning-Kruger Effect)</span></span>：能力越低的人，越难以认识到自己的不足。因为他们缺乏元认知能力——没有足够的"元能力"来评估自己的能力。</p>
+<div class="case-box">
+<div class="label">&#128161; 真实场景：你周末的计划</div>
+<p>周六早上你雄心勃勃地写下计划：上午学习2小时，下午运动1小时，晚上读一本书。</p>
+<p>到了下午三点，你发现自己什么都没完成。你责怪自己"太懒了"、"没有意志力"。</p>
+<p>但如果运用元认知，你会问：</p>
+<ul style="margin:12px 0 12px 20px">
+<li>"我为什么定了三个任务？是不是太多了？"</li>
+<li>"上午的学习安排在什么时间段效率最高？"</li>
+<li>"是什么打断了我？是手机？是疲劳？还是任务本身太难？"</li>
+<li>"我有没有根据自己实际的状态调整过计划？"</li>
+</ul>
+<p>这些问题没有一个在问"你为什么不努力"。它们在问"你的思考过程出了什么问题"。</p>
+</div>
+</div>
+</div>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>元认知盲区：你以为你在思考，其实你在"反刍"</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>很多人以为自己在"反思"，其实只是在 <span class="term">反刍<span class="en">(Rumination)</span></span>——反复咀嚼同样的负面想法，却没有产生任何新的洞察。</p>
+<div class="case-box">
+<div class="label">&#128161; 场景：深夜的自我批判</div>
+<p>你躺在床上，脑子里不断回放今天说错的一句话、做错的一个决定。你一遍遍地想："我真蠢""我为什么总是这样"。</p>
+<p>这不是元认知。这是情绪驱动的 <span class="term">反刍思维<span class="en">(Ruminative Thinking)</span></span>。元认知应该是冷静的、观察性的、建设性的。它不评判"我好不好"，而是分析"我的思维过程发生了什么"。</p>
+<p><strong>区分标准：</strong>如果你反思之后感觉更清晰、更有方向感，那是元认知。如果你反思之后感觉更焦虑、更自责，那可能是反刍。</p>
+</div>
+</div>
+</div>
+
+<!-- Section 4 -->
+<h2>四、元认知的练习方法</h2>
+
+<p>元认知不是天赋，是可以训练的肌肉。以下是四种经过验证的方法：</p>
+
+<h3>4.1 思维日记<span class="en">(Thinking Journal)</span></h3>
+<p>每天花5分钟，记录三件事：</p>
+<ol style="margin:12px 0 12px 20px">
+<li><strong>今天我做了什么决定？</strong>——记录决策内容</li>
+<li><strong>我当时是怎么想的？</strong>——记录推理过程</li>
+<li><strong>如果重来一次，我会怎么做？</strong>——记录修正方案</li>
+</ol>
+
+<div class="case-box">
+<div class="label">&#128161; 场景：你拒绝了一个社交邀请</div>
+<p><strong>决定：</strong>拒绝了朋友周五晚上的聚会邀请。</p>
+<p><strong>当时的想法：</strong>"我太累了，不想说话。而且去了也玩不好。"</p>
+<p><strong>元认知追问：</strong>"我是真的累了，还是在逃避社交？如果是逃避，背后是什么恐惧？如果真的是累了，我有没有更好的休息方式？"</p>
+<p><strong>修正：</strong>"下次遇到类似情况，我先问自己：我是真的需要休息，还是在回避什么？"</p>
+</div>
+
+<h3>4.2 费曼技巧<span class="en">(Feynman Technique)</span></h3>
+<p>尝试用最简单的语言把一个概念讲给"完全不懂的人"听。如果你卡住了，说明你没有真正理解——这就是元认知在告诉你"这里有个盲区"。</p>
+
+<h3>4.3 暂停-提问-调整<span class="en">(Pause-Question-Adjust)</span></h3>
+<p>在任何重要任务中，设置三个暂停点：</p>
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>▶ 开始前：问"我要达成什么？用什么方法？"</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>比如你要写一份报告——在打开电脑之前，先想清楚：这份报告的目标读者是谁？他们最需要知道什么？我应该用什么结构来组织内容？</p>
+</div>
+</div>
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>▶ 进行中：问"我的方法有效吗？"</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>写了半小时发现越写越乱——停下来。问自己：是我方向错了，还是方法不对？需不需要先画个思维导图再动笔？</p>
+</div>
+</div>
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>▶ 结束后：问"我学到了什么？下次怎么更好？"</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>报告交上去后，不要只是"搞定"。问自己：这次最大的收获是什么？哪个环节可以优化？下次做类似任务，我可以建立什么模板或流程？</p>
+</div>
+</div>
+
+<h3>4.4 认知偏差自检表<span class="en">(Bias Checklist)</span></h3>
+<p>在做重要决定前，快速过一遍这份清单：</p>
+<ul style="margin:12px 0 12px 20px">
+<li>我是不是陷入了 <span class="term">确认偏误<span class="en">(Confirmation Bias)</span></span>？——我只看了支持自己观点的信息吗？</li>
+<li>我是不是受到了 <span class="term">锚定效应<span class="en">(Anchoring Effect)</span></span>的影响？——我是不是被第一个看到的信息束缚了？</li>
+<li>我是不是在 <span class="term">过度自信<span class="en">(Overconfidence)</span></span>？——我对自己的判断有多大把握？证据是什么？</li>
+<li>我是不是在 <span class="term">损失厌恶<span class="en">(Loss Aversion)</span></span>？——我是在避免损失，还是在追求真正的利益？</li>
+</ul>
+
+<!-- Section 5 -->
+<h2>五、元认知的最高境界：成为自己的"教练"</h2>
+
+<p>元认知的终极目标，不是让你变成一个不停分析自己的人。而是让你能够在关键时刻，像一个好的教练一样，客观地观察自己、理解自己、引导自己。</p>
+
+<div class="case-box">
+<div class="label">&#128161; 场景：你连续三天没去健身房</div>
+<p><strong>低元认知反应：</strong>"我又放弃了。我就是没有毅力。"——自我标签化，陷入自责循环。</p>
+<p><strong>元认知反应：</strong>"让我看看发生了什么。第一天没去是因为加班？第二天是觉得太累了？第三天呢？是前三天的累积疲劳？还是我根本没有制定一个应对突发情况的B计划？"</p>
+<p>注意区别：前者是在评判"我是谁"，后者是在分析"发生了什么"。前者让人瘫痪，后者让人找到解决方案。</p>
+</div>
+
+<div class="key-insight">
+<div class="label">&#9889; 关键洞察</div>
+<p>好的教练不会骂球员"你怎么这么笨"。好的教练会说："你刚才那个动作哪里出了问题？是发力点不对，还是预判慢了？我们调整一下试试。"</p>
+<p><strong>对自己的元认知，也应该如此。</strong>你不是自己的法官，你是自己的教练。</p>
+</div>
+
+<!-- Section 6 -->
+<h2>六、元认知与其他自我科学概念的整合</h2>
+
+<p>作为自我科学的最后一课，让我们把前面11课的内容用元认知的视角串起来：</p>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>第1课 · 双系统理论 — 元认知是 System 2 的"元工具"</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>System 1（快思考）自动运行，System 2（慢思考）负责理性分析。而元认知是 System 2 的 System 2——它监控"我在用什么系统"。当你意识到"我现在正在用 System 1 做决定"时，你就可以选择切换到 System 2。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>第2-3课 · 习惯回路 — 元认知帮你识别自动化的行为模式</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>习惯之所以强大，就是因为它绕过了意识。元认知让你能够"看到"自己的习惯回路：什么线索触发了它？routine 是什么？奖励是什么？一旦你看到了，你就可以有意识地设计新的习惯来替换旧的。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>第5课 · 拖延 — 元认知是治拖良药</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>拖延不是时间管理问题，而是情绪管理问题。元认知让你看到："我不是不想做，我是害怕做不好。"当你识别出这个情绪模式，你就可以用第6课学到的自我关怀来应对，而不是用自我批判来加剧拖延。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>第7课 · 身份认同 — 元认知帮你重构"我是谁"</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>你如何看待自己，决定了你能做到什么。元认知让你有机会审视："我现在的自我叙事是什么？它准确吗？它帮助我还是限制了我？"你可以选择一个更有力量的身份叙事——不是"我是个不自律的人"，而是"我正在学习如何更好地管理自己"。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<div class="collapsible-header" onclick="toggleCollapse(this)">
+<span>第11课 · 螺旋上升 — 元认知让你在回退时不崩溃</span><span class="arrow">&#9660;</span>
+</div>
+<div class="collapsible-body">
+<p>当你发现自己"回退"了，元认知告诉你：这不是失败，这是螺旋上升的一部分。它会问："我从这次回退中学到了什么？我的系统哪里有漏洞？"——然后把它修复。每一次回退后的元认知复盘，都会让你的行为系统更强韧。</p>
+</div>
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+<h2>七、课堂练习 Quiz</h2>
+<p style="text-align:center;color:#666;margin-bottom:24px">通过以下10道题目检验你的元认知水平</p>
+
+<!-- Q1 -->
+<div class="quiz-card" id="q1">
+<div class="quiz-num">题目 1 / 10</div>
+<div class="quiz-question">你正在读一篇复杂的学术论文，读了两页后发现自己一直在重复读同一段话却完全没理解。这时，元认知会告诉你做什么？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q1',this,false)">继续读下去，也许后面就懂了</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q1',this,true)">停下来，意识到理解出现了问题，换一种阅读策略</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q1',this,false)">责怪自己不够聪明，放弃这篇论文</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q1',this,false)">把这段话抄十遍加深印象</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-card" id="q2">
+<div class="quiz-num">题目 2 / 10</div>
+<div class="quiz-question">以下哪种情况最符合"元认知监控"的定义？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q2',this,false)">你背了一整晚的单词，第二天考试全对了</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q2',this,true)">你在背单词时发现自己在走神，于是主动把手机放到另一个房间</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q2',this,false)">你告诉朋友你明天要早起学习</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q2',this,false)">你做了一道数学题，用了三种不同的解法</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-card" id="q3">
+<div class="quiz-num">题目 3 / 10</div>
+<div class="quiz-question">你计划在周末完成一个大项目。周一早上你坐下来开始做，做了20分钟就感到极度烦躁，什么都看不进去。运用元认知的"暂停-提问-调整"方法，你最应该问的问题是：</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q3',this,false)">"我为什么这么没用，连20分钟都坚持不了？"</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q3',this,false)">"我应该再逼自己一把，站起来去冲杯咖啡继续"</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q3',this,true)">"我现在烦躁的原因是什么？是任务太难、太无聊、还是我本来就不适合在这个时间做这件事？"</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q3',this,false)">"这个项目可能不适合我，我是不是应该放弃？"</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-card" id="q4">
+<div class="quiz-num">题目 4 / 10</div>
+<div class="quiz-question">填空题：当你躺在床上反复回想白天说错的一句话，感到越来越焦虑，但并没有产生任何新的洞察或解决方案——这种行为在心理学上被称为<span class="term">__________</span>（英文：<span class="en">rumination</span>），它不同于健康的元认知反思。</div>
+<input type="text" class="fill-blank-input" id="ans4" placeholder="输入中文术语">
+<button class="check-btn" onclick="checkFillBlank(4,'反刍')">检查答案</button>
+<div class="quiz-feedback" id="fb-4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-card" id="q5">
+<div class="quiz-num">题目 5 / 10</div>
+<div class="quiz-question">元认知知识中的"任务知识"指的是什么？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q5',this,false)">了解自己的记忆力和注意力特点</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q5',this,true)">了解不同任务的难度特征和所需策略</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q5',this,false)">知道有哪些学习方法可以使用</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q5',this,false)">评估自己对他人的影响</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-card" id="q6">
+<div class="quiz-num">题目 6 / 10</div>
+<div class="quiz-question">你连续一周都在刷短视频到凌晨。第二天你问自己："我昨天又浪费了一天。我到底怎么了？"这个自我提问的方式，在元认知角度有什么主要问题？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q6',this,false)">没有问题——自我质问是改变的第一步</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q6',this,true)">"我到底怎么了"是一个身份层面的评判，而非过程层面的分析，容易导致自责而非改进</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q6',this,false)">问题在于不应该问自己，应该直接删除短视频App</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q6',this,false)">问题在于没有量化自己刷了多少小时</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-card" id="q7">
+<div class="quiz-num">题目 7 / 10</div>
+<div class="quiz-question">填空题：心理学家<span class="term">__________</span>（<span class="en">John Flavell</span>）在1976年首次提出了"元认知"这一概念。</div>
+<input type="text" class="fill-blank-input" id="ans7" placeholder="输入人名（中文或英文均可）">
+<button class="check-btn" onclick="checkName(7,['哈维尔','flavell','弗拉维尔','约翰·哈维尔','约翰弗拉维尔'])">检查答案</button>
+<div class="quiz-feedback" id="fb-7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-card" id="q8">
+<div class="quiz-num">题目 8 / 10</div>
+<div class="quiz-question">以下哪个场景最能体现"元认知评估"（事后复盘）的价值？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q8',this,false)">你在考试前紧张地复习，确保每个知识点都看过</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q8',this,true)">考试结束后，你分析哪类题目失分最多，发现自己的复习策略忽略了薄弱环节，于是调整了下次复习计划</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q8',this,false)">你每天设定一个学习目标并按时完成</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q8',this,false)">你看到别人考了高分，决定向他学习</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q8"></div>
+</div>
+
+<!-- Q9 -->
+<div class="quiz-card" id="q9">
+<div class="quiz-num">题目 9 / 10</div>
+<div class="quiz-question">你发现自己在做重要决定时，总是倾向于选择第一个想到的选项，很少考虑其他可能性。这最可能与以下哪种认知偏差有关？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q9',this,false)">确认偏误<span class="en">(Confirmation Bias)</span> — 只看支持自己观点的信息</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q9',this,true)">锚定效应<span class="en">(Anchoring Effect)</span> — 第一个信息成为决策锚点</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q9',this,false)">幸存者偏差<span class="en">(Survivorship Bias)</span> — 只看到成功者</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q9',this,false)">可得性启发<span class="en">(Availability Heuristic)</span> — 根据容易想起的例子做判断</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q9"></div>
+</div>
+
+<!-- Q10 -->
+<div class="quiz-card" id="q10">
+<div class="quiz-num">题目 10 / 10</div>
+<div class="quiz-question">元认知的最高境界被描述为"成为自己的教练"。以下哪种说法最准确地体现了"教练型元认知"的态度？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q10',this,false)">"我必须完美地执行每一个计划，否则就是失败"</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q10',this,false)">"只要我够努力，就没有做不到的事情"</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q10',this,true)">"我注意到我这次没能按计划执行。让我分析一下原因，调整策略，下次做得更好"</button></li>
+<li><button class="quiz-opt-btn" onclick="checkMCQ('q10',this,false)">"别人的方法都不适合我，我需要找到属于自己的独特道路"</button></li>
+</ul>
+<div class="quiz-feedback" id="fb-q10"></div>
+</div>
+
+<!-- Score Display -->
+<div class="score-bar" id="score-bar" style="display:none">
+<div class="score" id="score-display"></div>
+<div class="score-label">正确率</div>
+<p style="margin-top:12px;color:#555" id="score-message"></p>
+</div>
+
+</div><!-- quiz section end -->
+
+<!-- Action List -->
+<div class="action-list">
+<h3>&#9989; 今天就能做的行动清单</h3>
+<p style="color:#555;margin-bottom:16px">不需要等到明天。选一件，1分钟内完成：</p>
+<ol>
+<li><span class="time-tag">30秒</span> <strong>做一次"此刻我在想什么"扫描</strong>——停下手中事，闭上眼睛，说出你现在脑子里的三个想法。这就是元认知的起点：觉察。</li>
+<li><span class="time-tag">1分钟</span> <strong>写下一条"暂停-提问-调整"笔记</strong>——最近一次让你卡住的决定是什么？当时是怎么想的？如果重来你会问自己什么问题？写在手机备忘录里。</li>
+<li><span class="time-tag">1分钟</span> <strong>做一次"反刍vs反思"自检</strong>——回想最近一次让你焦虑的"反复思考"。那是反刍（只有情绪没有洞察）还是反思（产生了新的理解）？给自己贴一个标签就好。</li>
+<li><span class="time-tag">1分钟</span> <strong>对自己说一句"教练的话"</strong>——不是"你怎么又这样"，而是"我注意到这件事没做好，让我看看哪里可以改进"。说出口都行。</li>
+<li><span class="time-tag">1分钟</span> <strong>关闭这个页面，去做一件事</strong>——元认知不是为了让你永远在"想"，而是为了让你在"做"的时候更清醒。现在，去行动。</li>
+</ol>
+</div>
+
+<!-- Closing -->
+<h2>八、结语：元认知——自我科学的"操作系统"</h2>
+
+<p>恭喜你完成了自我科学·行为改变的12课全部课程。</p>
+
+<p>回顾整个系列，我们从大脑的双系统开始，学习了习惯是如何形成的、拖延的本质是什么、身份认同如何驱动行为、环境设计如何替代意志力……最后，我们用元认知把所有这些串了起来。</p>
+
+<p>元认知就像你大脑的<span class="term">操作系统<span class="en">(Operating System)</span></span>。前面的11课都是安装在这个系统上的"应用程序"——它们各自解决特定问题。但操作系统本身，决定了你能否有效地运行这些程序，能否在系统出错时诊断和修复，能否不断升级自己。</p>
+
+<div class="key-insight">
+<div class="label">&#128161; 最后一课的最后一条洞察</div>
+<p>你不需要完美地运用元认知。你只需要在足够多的关键时刻，"看见"自己在想什么、做什么。哪怕一天只有一次——当你意识到"等等，我刚刚在做什么？"——那就是改变的开始。</p>
+</div>
+
+<p>自我科学不是一门让你变成"完美自律的人"的学科。它是一门让你变成<strong>"更了解自己、更能和自己合作"</strong>的人的学科。</p>
+
+<p>而你，现在已经拥有了这个能力。</p>
+
+<footer>
+<p>自我科学 · 第12课 / 共12课 · 完结</p>
+<p>TeachHub · 由 Nous Research 的 Hermes Agent 生成</p>
+</footer>
+
+</div><!-- container -->
+
+<script>
+// Collapse toggle
+function toggleCollapse(header) {
+    const body = header.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+}
+
+// Quiz state
+let score = 0;
+let answered = {};
+const totalQuestions = 10;
+
+const mcqFeedback = {
+    'q1': {
+        correct: '✓ 正确！元认知监控的核心就是在发现"不理解"时及时停下来，换策略而不是硬撑。',
+        wrong: '✗ 元认知的关键是"意识到自己不理解"并做出调整。继续硬读或自我批判都不是元认知反应。'
+    },
+    'q2': {
+        correct: '✓ 正确！监控自己是否在走神并主动调整环境，正是元认知监控的典型表现。',
+        wrong: '✗ 元认知监控是指在过程中实时觉察和调整。背单词成功是结果，不是监控过程。'
+    },
+    'q3': {
+        correct: '✓ 正确！元认知的"提问"阶段关注的是"发生了什么"而非"我是不是很差"。找到原因才能调整。',
+        wrong: '✗ 自我批判和"再逼一把"都不是元认知反应。元认知要求你冷静分析原因。'
+    },
+    'q5': {
+        correct: '✓ 正确！任务知识是关于"不同任务的难度和要求"的知识，区别于了解自己的个人知识和知道用什么的策略知识。',
+        wrong: '✗ 任务知识特指了解不同任务的特征和难度，不是了解自己的特点（个人知识）或知道用什么方法（策略知识）。'
+    },
+    'q6': {
+        correct: '✓ 正确！"我到底怎么了"是在评判身份（我是谁），而不是分析过程（发生了什么）。好的元认知问"发生了什么"而不是"我怎么了"。',
+        wrong: '✗ 问题的核心在于身份评判而非过程分析。"我到底怎么了"会触发自责，而不是洞察。'
+    },
+    'q8': {
+        correct: '✓ 正确！元认知评估的价值就在于从结果中学习、调整策略、形成闭环。这正是"复盘"的真谛。',
+        wrong: '✗ 元认知评估是事后的分析和策略调整。复习和设定目标是计划阶段，向别人学习是社会学习，都不是元认知评估。'
+    },
+    'q9': {
+        correct: '✓ 正确！锚定效应指第一个获得的信息会成为后续判断的"锚"，让你难以考虑其他可能性。',
+        wrong: '✗ 倾向于第一个选项是锚定效应的典型表现。确认偏误是只看支持信息，幸存者偏差是只看成功者。'
+    },
+    'q10': {
+        correct: '✓ 正确！"教练型元认知"关注观察-分析-调整，而非评判-自责-完美主义。',
+        wrong: '✗ 教练型元认知的特点是：观察事实 → 分析原因 → 调整策略。完美主义和鸡汤式鼓励都不是。'
+    }
+};
+
+function checkMCQ(cardId, btn, isCorrect) {
+    if (answered[cardId]) return;
+    answered[cardId] = true;
+
+    const card = document.getElementById(cardId);
+    const buttons = card.querySelectorAll('.quiz-opt-btn');
+    const fb = card.querySelector('.quiz-feedback');
+
+    buttons.forEach(b => {
+        b.classList.add('disabled');
+        if (b === btn && isCorrect) {
+            b.classList.add('correct');
+        } else if (b === btn && !isCorrect) {
+            b.classList.add('wrong');
+        }
+    });
+
+    // Highlight correct answer
+    if (!isCorrect) {
+        buttons.forEach(b => {
+            if (b.getAttribute('onclick') && b.getAttribute('onclick').includes('true')) {
+                b.classList.add('correct');
+            }
+        });
+    }
+
+    if (isCorrect) score++;
+
+    fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+    const key = cardId.replace('q','');
+    fb.textContent = mcqFeedback['q' + key][isCorrect ? 'correct' : 'wrong'];
+
+    updateScore();
+}
+
+function checkFillBlank(num, correctAnswer) {
+    if (answered[num]) return;
+    const input = document.getElementById('ans' + num);
+    const fb = document.getElementById('fb-' + num);
+    const userAnswer = input.value.trim();
+
+    if (!userAnswer) {
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '请输入答案后再检查。';
+        return;
+    }
+
+    answered[num] = true;
+    const isCorrect = userAnswer === correctAnswer;
+
+    if (isCorrect) {
+        score++;
+        input.classList.add('correct-input');
+        fb.className = 'quiz-feedback show correct-fb';
+        fb.textContent = '✓ 正确！反刍（Rumination）是一种无建设性的反复思考，与元认知的观察性反思不同。';
+    } else {
+        input.classList.add('wrong-input');
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '✗ 答案是"反刍"。反刍思维是反复咀嚼负面情绪但没有产生新洞察，与健康的元认知反思不同。';
+    }
+
+    updateScore();
+}
+
+function checkName(num, acceptedAnswers) {
+    if (answered[num]) return;
+    const input = document.getElementById('ans' + num);
+    const fb = document.getElementById('fb-' + num);
+    const userAnswer = input.value.trim().toLowerCase();
+
+    if (!userAnswer) {
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '请输入答案后再检查。';
+        return;
+    }
+
+    answered[num] = true;
+    const isCorrect = acceptedAnswers.some(a => userAnswer.includes(a.toLowerCase()));
+
+    if (isCorrect) {
+        score++;
+        input.classList.add('correct-input');
+        fb.className = 'quiz-feedback show correct-fb';
+        fb.textContent = '✓ 正确！John Flavell（约翰·哈维尔/弗拉维尔）在1976年首次提出了元认知概念。';
+    } else {
+        input.classList.add('wrong-input');
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '✗ 答案是"哈维尔"或"Flavell"。John Flavell 在1976年首次提出元认知概念。';
+    }
+
+    updateScore();
+}
+
+function updateScore() {
+    const answeredCount = Object.keys(answered).length;
+    if (answeredCount === totalQuestions) {
+        const bar = document.getElementById('score-bar');
+        const display = document.getElementById('score-display');
+        const msg = document.getElementById('score-message');
+        bar.style.display = 'block';
+        display.textContent = score + ' / ' + totalQuestions;
+
+        if (score === 10) {
+            msg.textContent = '🎉 满分！你对元认知的理解已经非常深入了。现在，去用它吧。';
+        } else if (score >= 7) {
+            msg.textContent = '👏 很棒！你已经掌握了元认知的核心。回顾错题，巩固理解。';
+        } else if (score >= 4) {
+            msg.textContent = '💪 还不错！建议重读相关章节，特别是错题涉及的概念。';
+        } else {
+            msg.textContent = '📖 建议重新学习本课内容，特别是元认知的三个核心能力和实践方法。';
+        }
+
+        bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+</script>
+
+</body>
+</html>

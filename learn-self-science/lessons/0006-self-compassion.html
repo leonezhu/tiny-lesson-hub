@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第六课：自我关怀：反直觉的改变加速器 | TeachHub · 自我科学</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Helvetica Neue',Arial,sans-serif;background:#fdfdfd;color:#222;line-height:1.8;font-size:16px;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3,h4{font-family:'Merriweather',Georgia,serif;color:#1a1a1a;margin-top:2.5rem;margin-bottom:.8rem}
+h1{font-size:1.9rem;border-bottom:3px solid #4a6fa5;padding-bottom:.5rem}
+h2{font-size:1.45rem;border-left:4px solid #4a6fa5;padding-left:.8rem}
+h3{font-size:1.15rem;color:#333}
+.lead{font-size:1.1rem;color:#444;margin:1rem 0 2rem}
+.subtitle{color:#666;font-size:.95rem;margin-bottom:1.5rem}
+.english{font-style:italic;color:#555;font-size:.92em}
+code{background:#f0f0f0;padding:.15em .4em;border-radius:3px;font-size:.9em}
+blockquote{border-left:4px solid #ddd;margin:1.5rem 0;padding:.8rem 1.2rem;background:#fafafa;border-radius:0 6px 6px 0}
+.tip-box{background:#eef5ff;border:1px solid #c5d9f0;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.tip-box strong{color:#2a5a8f}
+.example-box{background:#fff8ee;border:1px solid #f0dbb0;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.example-box strong{color:#8b6914}
+.section-nav{display:flex;gap:.6rem;flex-wrap:wrap;margin:2rem 0}
+.section-nav button{padding:.5rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:6px;cursor:pointer;font-size:.9rem;font-family:inherit}
+.section-nav button:hover{background:#3a5a8a}
+.section-content{display:none;margin-top:1rem;padding:1.2rem 1.4rem;background:#f7f9fc;border-radius:8px;border:1px solid #e0e7ef}
+.section-content.active{display:block}
+.quiz-container{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1.5rem;margin:1.8rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-container h4{margin-top:0;color:#4a6fa5;font-size:1.05rem}
+.quiz-option{display:block;padding:.6rem 1rem;margin:.4rem 0;border:1px solid #ddd;border-radius:6px;cursor:pointer;transition:all .15s;font-size:.95rem}
+.quiz-option:hover{background:#f0f4ff;border-color:#4a6fa5}
+.quiz-option.correct{background:#e6f9ee;border-color:#4caf50;color:#2e7d32}
+.quiz-option.wrong{background:#fdecea;border-color:#e53935;color:#c62828}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:.8rem;padding:.8rem;border-radius:6px;font-size:.93rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:#e6f9ee;color:#2e7d32;border:1px solid #a5d6a7}
+.quiz-feedback.wrong{background:#fdecea;color:#c62828;border:1px solid #ef9a9a}
+.fill-input{border:1px solid #ccc;border-radius:4px;padding:.3rem .6rem;font-size:.95rem;font-family:inherit;width:180px}
+.fill-input:focus{outline:none;border-color:#4a6fa5;box-shadow:0 0 0 2px rgba(74,111,165,.15)}
+.action-list{background:#f0faf0;border:1px solid #a5d6a7;border-radius:8px;padding:1.2rem 1.4rem;margin:2rem 0}
+.action-list h4{color:#2e7d32;margin-top:0}
+.action-list ol{padding-left:1.4rem}
+.action-list li{margin-bottom:.5rem}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:#eee;z-index:999}
+.progress-bar{height:100%;background:linear-gradient(90deg,#4a6fa5,#6bb5e0);width:0%;transition:width .3s}
+.summary-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+.summary-table th,.summary-table td{border:1px solid #ddd;padding:.6rem 1rem;text-align:left;font-size:.93rem}
+.summary-table th{background:#4a6fa5;color:#fff}
+.summary-table tr:nth-child(even){background:#f9f9f9}
+.tag{display:inline-block;background:#e8eef6;color:#4a6fa5;padding:.15em .5em;border-radius:4px;font-size:.82rem;margin-right:.3rem}
+.collapse-btn{cursor:pointer;color:#4a6fa5;font-weight:600;display:inline-flex;align-items:center;gap:.3rem}
+.collapse-btn::before{content:'▼';font-size:.7em;transition:transform .2s}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.collapse-body.open{max-height:2000px}
+.diagram-box{background:#fafafa;border:2px dashed #ccc;border-radius:12px;padding:1.5rem;margin:1.5rem 0;text-align:center}
+.diagram-box .cycle{font-size:1.1rem;line-height:2}
+.diagram-box .arrow{color:#4a6fa5;font-size:1.3rem}
+.warning-box{background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.warning-box strong{color:#e65100}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+.comparison-card{border-radius:10px;padding:1.2rem;border:1px solid #ddd}
+.comparison-card.harsh{background:#fef5f5;border-color:#f5c6cb}
+.comparison-card.compassionate{background:#f0faf0;border-color:#a5d6a7}
+.comparison-card h4{margin-top:0;font-size:1rem}
+@media(max-width:600px){body{padding:1rem 1rem 3rem}h1{font-size:1.5rem}h2{font-size:1.2rem}.comparison-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<h1>第六课：自我关怀：反直觉的改变加速器</h1>
+<p class="subtitle">自我科学与行为改变 · Lesson 6 of 12</p>
+<p class="lead">你批评自己越狠，你越不可能改变。<strong>这不是鸡汤，这是实验数据。</strong>自我关怀（Self-Compassion）听起来像\"对自己好一点\"——但它实际上是一套经过科学验证的行为改变工具。当你搞砸了计划、中断了习惯、又回到了刷视频的老路时，那个骂自己\"废物\"的声音，恰恰是你下一次失败的推手。</p>
+
+<div class="example-box">
+<strong>🛋️ 生活场景</strong><br>
+上周你决定每天去健身房。第一天去了，感觉不错。第二天加班晚了，没去。第三天想补上，结果周一到周五全错过了。周六早上你照镜子，心里想的是：<em>"我连健身都坚持不了，真是废物。"</em><br><br>
+现在，想象另一个版本的自己，在同样的情况发生后说：<em>"好吧，这周确实忙。健身计划被打断了很正常。明天我先去走一圈，哪怕只练十分钟。"</em><br><br>
+两个版本的你，哪个下周更可能回到健身房？答案是第一个版本里的后者——那个对自己说话更温和的人。
+</div>
+
+<p>这节课我们将拆解自我关怀的三个核心成分，理解为什么「对自己温柔」反而比「对自己狠」更能推动长期行为改变，并学会一套可以在任何失败场景下使用的自我关怀对话模板。</p>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2>一、自我关怀的三个成分</h2>
+
+<p>自我关怀不是\"溺爱\"，也不是\"放弃标准\"。心理学家 Kristin Neff 将其定义为三个同时运作的成分：</p>
+
+<div class="comparison-grid">
+<div class="comparison-card harsh">
+<h4>🔴 自我批判 Self-Criticism</h4>
+<p>「我又搞砸了。我总是这样。我根本没有自制力。」</p>
+<p style="margin-top:.5rem;color:#8b0000;font-size:.9rem">→ 触发羞耻感 → 逃避行为增加</p>
+</div>
+<div class="comparison-card compassionate">
+<h4>🟢 自我关怀 Self-Compassion</h4>
+<p>「这次没做到很正常。每个人都会遇到状态不好的时候。我可以从这次经验中学到什么？」</p>
+<p style="margin-top:.5rem;color:#2e7d32;font-size:.9rem">→ 触发反思 → 行动意愿恢复</p>
+</div>
+</div>
+
+<p>自我关怀的三个成分分别是：</p>
+
+<div class="tip-box">
+<strong>1. 自我友善（Self-Kindness）</strong><br>
+对自己说话的方式，就像对一个好朋友说话的方式。不是\"算了没关系\"，而是\"这确实不容易，但你已经在努力了\"。
+</div>
+
+<div class="tip-box">
+<strong>2. 共通人性（Common Humanity）</strong><br>
+认识到失败和挣扎是人类共同的经验，不是\"只有我这么差\"。你不是一个人在跟拖延和中断作斗争——这是人类大脑的正常反应。
+</div>
+
+<div class="tip-box">
+<strong>3. 正念觉察（Mindful Awareness）</strong><br>
+承认自己的痛苦和挫败，但不被它淹没。不是\"一切都糟透了\"，也不是\"我根本没问题\"——而是\"我现在感到沮丧，这很正常，我可以看着这种感觉而不被它控制\"。
+</div>
+
+<h3>🧠 为什么这三个成分缺一不可？</h3>
+
+<div class="collapse-btn" onclick="toggleCollapse(this)">点击查看详解</div>
+<div class="collapse-body">
+<p>如果你只有自我友善但没有共通人性 → 你会觉得自己特殊，\"别人都能做到，只有我需要安慰\"，反而增加了孤立感。</p>
+<p style="margin-top:.5rem">如果你只有共通人性但没有正念觉察 → 你会用\"大家都这样\"来合理化放弃，而不是真正面对问题。</p>
+<p style="margin-top:.5rem">如果你只有正念觉察但没有自我友善 → 你看到了自己的问题，但看到的角度仍然是批判性的，这会让你陷入\"清醒地堕落\"——明知问题却更不想动。</p>
+<p style="margin-top:.5rem">三个成分同时运作时，你才能既承认痛苦、又不被痛苦控制、还知道自己不是一个人在战斗。</p>
+</div>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2>二、自我关怀 vs 自我批判：实验数据</h2>
+
+<p>Neff 和她的团队做了大量研究，比较了自我关怀者和自我批判者在面对失败后的行为差异。结果非常明确：</p>
+
+<table class="summary-table">
+<tr><th>维度</th><th>自我批判者</th><th>自我关怀者</th></tr>
+<tr><td>面对失败后的情绪</td><td>羞耻、自责、挫败</td><td>遗憾、平静、愿意改进</td></tr>
+<tr><td>下次尝试的意愿</td><td>降低 30-40%</td><td>提高 20-30%</td></tr>
+<tr><td>目标达成率</td><td>更低（因为逃避）</td><td>更高（因为快速恢复）</td></tr>
+<tr><td>应对策略</td><td>回避、拖延、刷手机</td><td>分析问题、调整方法、重新开始</td></tr>
+</table>
+
+<div class="example-box">
+<strong>📊 经典实验</strong><br>
+Neff 让学生们完成一项很难的认知任务。一半学生被告知\"你可以再试一次\"，另一半被告知\"这是最后一次机会\"。然后研究人员观察他们在失败后的反应：<br><br>
+<strong>自我批判倾向高</strong>的学生：第二次尝试时花更少时间，更容易放弃，且自评\"这次还是做得很差\"。<br>
+<strong>自我关怀倾向高</strong>的学生：第二次尝试时花更多时间，更投入，且自评\"虽然没做好，但我学到了东西\"。<br><br>
+关键发现：自我关怀者的实际表现更好——不是因为天赋，而是因为他们在失败后没有陷入情绪泥潭。
+</div>
+
+<h3>🔄 自我关怀的悖论</h3>
+
+<p>这里有一个反直觉的发现：</p>
+
+<div class="diagram-box">
+<div class="cycle">
+<span>自我关怀 → 情绪负荷降低</span><br>
+<span class="arrow">↓</span><br>
+<span>前额叶皮层功能恢复（理性决策区）</span><br>
+<span class="arrow">↓</span><br>
+<span>更有能力分析和调整行为</span><br>
+<span class="arrow">↓</span><br>
+<span>实际行为改变更快</span>
+</div>
+</div>
+
+<p>我们通常认为\"对自己狠\"才能进步——但神经科学研究表明，自我批判激活的是大脑的<strong>威胁检测系统</strong>（类似被狮子追的感觉），这会抑制前额叶皮层的理性思考能力。而自我关怀激活的是<strong>安抚系统</strong>（催产素和副交感神经系统），让人能够冷静分析、灵活调整。</p>
+
+<div class="warning-box">
+<strong>⚠️ 常见误解</strong><br>
+「自我关怀就是纵容自己。」<br><br>
+错。自我关怀不是降低标准，而是改变你面对未达标时的反应方式。一个自我关怀的人仍然会设定高标准，但在没达到时不会用羞耻感来驱动自己——而是用好奇心和责任感。
+</div>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2>三、自我关怀对话模板</h2>
+
+<p>自我关怀不是抽象概念，它可以通过具体的对话练习来培养。下面是一套可以在任何失败场景下使用的三步对话模板：</p>
+
+<h3>第一步：承认痛苦（Acknowledge the Struggle）</h3>
+
+<p>不要否认、不要压抑、不要急着\"正能量\"。直接说出你正在经历什么：</p>
+
+<div class="example-box">
+<strong>场景：你答应自己今晚要写完报告，结果又刷了两个小时短视频</strong><br><br>
+❌ 「我又浪费了时间，我真没用。」<br>
+✅ 「我现在感到很懊恼。我知道自己答应了要做报告，但最后还是刷了视频。这种感觉确实不好受。」
+</div>
+
+<h3>第二步：连接共通人性（Connect to Common Humanity）</h3>
+
+<p>提醒自己：你不是一个人在经历这个：</p>
+
+<div class="example-box">
+<strong>接上面的场景：</strong><br><br>
+❌ 「别人都能管住自己，就我不行。」<br>
+✅ 「其实每个人都会有控制不住刷手机的时候。这不是我一个人的问题，这是人类大脑在面对压力和疲劳时的正常反应。」
+</div>
+
+<h3>第三步：自我友善回应（Respond with Kindness）</h3>
+
+<p>用你会对好朋友说的话来说自己：</p>
+
+<div class="example-box">
+<strong>接上面的场景：</strong><br><br>
+❌ 「明天你必须早起把报告写完，不然你就完了。」<br>
+✅ 「没关系，今晚已经过去了。你现在可以做两件事：要么花五分钟列个大纲，要么好好休息明天一早开始。选一个对你最友好的方式。」
+</div>
+
+<div class="tip-box">
+<strong>💡 关键技巧</strong><br>
+试试这个简单的方法：把手放在胸口，深呼吸三次。这个动作会激活你的安抚神经系统（parasympathetic nervous system），让你的身体从\"威胁模式\"切换到\"安全模式\"。研究显示，即使只是物理上的触摸，也能降低皮质醇水平。
+</div>
+
+<h3>🛠️ 不同场景的对话模板</h3>
+
+<div class="collapse-btn" onclick="toggleCollapse(this)">点击查看完整模板库</div>
+<div class="collapse-body">
+
+<p><strong>场景 A：健身中断一周</strong></p>
+<p>❌ 「一周没练，肌肉都要掉了。我这个人就是三分钟热度。」</p>
+<p>✅ 「中断一周确实让人沮丧，但这不代表我之前练的都白费了。身体有记忆，回去练几天就会恢复。关键是现在怎么开始，而不是过去为什么停了。」</p>
+
+<p style="margin-top:.8rem"><strong>场景 B：学习计划没完成</strong></p>
+<p>❌ 「学了三个月还是没进展，我是不是不适合学英语？」</p>
+<p>✅ 「三个月没有明显的进步感是很正常的。语言学习的前几个月都是\"看不见的积累期\"。我可以检查一下学习方法是否需要调整，而不是直接否定自己。」</p>
+
+<p style="margin-top:.8rem"><strong>场景 C：又一次熬夜</strong></p>
+<p>❌ 「我连早睡都做不到，还有什么能做到的？」</p>
+<p>✅ 「熬夜确实是个问题，但它只是一个行为，不是我的全部。我可以找出今天熬夜的具体原因（是工作压力？还是习惯性刷手机？），然后针对那个原因做一个小调整。」</p>
+
+</div>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2>四、自我关怀如何加速行为改变</h2>
+
+<p>理解了自我关怀是什么之后，我们来看看它为什么比自我批判更有效——从行为设计的角度来看：</p>
+
+<h3>机制 1：降低情绪负荷 → 释放执行资源</h3>
+
+<p>当你因为失败而自责时，你的大脑在处理两层任务：</p>
+
+<div class="diagram-box">
+<div class="cycle">
+<span>原始任务未完成</span><br>
+<span class="arrow">+</span><br>
+<span>对自己的情绪处理（自责/羞耻/焦虑）</span><br>
+<span class="arrow">=</span><br>
+<span>可用的执行资源大幅减少</span>
+</div>
+</div>
+
+<p>自我关怀把第二层任务降到最低，让有限的认知资源可以用于解决问题本身。</p>
+
+<h3>机制 2：缩短恢复时间</h3>
+
+<p>自我批判者从失败中恢复的平均时间是 <strong>2-5 天</strong>（甚至更长）。自我关怀者是 <strong>几小时到一天</strong>。在行为改变中，恢复时间越短，长期坚持的概率越高。</p>
+
+<h3>机制 3：从\"证明自己\"转向\"提升自己\"</h3>
+
+<p>自我批判的核心动机是「我要证明自己不是废物」。这是一种防御性动机——它有效于一时，但会消耗大量心理能量。</p>
+
+<p>自我关怀的核心动机是「我想变得更好」。这是一种成长型动机——它不否认失败，但也不被失败定义。</p>
+
+<div class="example-box">
+<strong>🏋️ 真实案例：健身中断的两种叙事</strong><br><br>
+<strong>自我批判叙事：</strong>「我已经连续三天没去健身房了。我是个失败者。每次都是这样。也许我真的不适合运动。」<br><br>
+<strong>自我关怀叙事：</strong>「我连续三天没去健身房了。这让我有点沮丧，但我能理解为什么会发生——可能是上周工作太忙，也可能是我设定的目标太高了。让我想想怎么调整。」<br><br>
+注意：两种叙事都承认了同一个事实（三天没去健身房）。区别在于叙事的角度和由此产生的下一步行动。
+</div>
+
+<h3>机制 4：建立\"失败友好\"的系统</h3>
+
+<p>自我关怀不是让你在失败后感觉良好就完了。它的终极目标是建立一个<strong>\"失败友好\"（failure-friendly）的系统</strong>——在这个系统中，失败不是终点，而是数据点。</p>
+
+<div class="tip-box">
+<strong>📐 失败友好 vs 失败恐惧</strong><br><br>
+<strong>失败恐惧系统：</strong>失败 = 我是废物 → 逃避 → 再次失败 → 更深的自我批判<br>
+<strong>失败友好系统：</strong>失败 = 这个方法不行 → 分析原因 → 调整方法 → 再次尝试<br><br>
+自我关怀是建设失败友好系统的基石。
+</div>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2>五、立即行动：今天就能做的自我关怀练习</h2>
+
+<div class="action-list">
+<h4>🎯 今天就能做的行动清单（每项 ≤ 1 分钟）</h4>
+<ol>
+<li><strong>胸口触摸呼吸</strong>：把手放在胸口，深呼吸三次。对自己说：「这不容易，但我在这里陪着自己。」</li>
+<li><strong>写一封给自己的关怀信</strong>：用 2 分钟写一段话，描述你最近的一个失败，然后用对待好朋友的语气回应它。</li>
+<li><strong>重命名你的内在声音</strong>：给你的自我批判声音起个名字（比如\"监工\"或\"毒舌\"）。当它开始说话时，认出它：「哦，监工又来了。」这创造了心理距离。</li>
+<li><strong>记录一次共通人性时刻</strong>：今天当你感到挫败时，写下：「其实很多人也会这样。」把这个感受写下来。</li>
+<li><strong>设置一个\"原谅提醒\"</strong>：在手机备忘录里存一句话：「中断不是失败，放弃才是。」贴在显眼处。</li>
+</ol>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<h2>六、课堂练习</h2>
+
+<div class="quiz-container" id="q1">
+<h4>📝 选择题 1</h4>
+<p>你设定了一个每天阅读 30 分钟的目标，但连续五天都没做到。以下哪种自我关怀回应最符合三个成分的要求？</p>
+<div class="quiz-option" onclick="checkQuiz('q1', this, false)">「算了，我不是那块读书的料，换个目标吧。」</div>
+<div class="quiz-option" onclick="checkQuiz('q1', this, true)">「连续五天没做到确实让人沮丧（承认痛苦）。但其实很多人刚开始设定阅读习惯时都会遇到困难（共通人性）。我可以看看是哪天最容易中断，然后调整那个时间段（自我友善回应）。」</div>
+<div class="quiz-option" onclick="checkQuiz('q1', this, false)">「我太没自制力了，明天必须读够一小时补回来！」</div>
+<div class="quiz-option" onclick="checkQuiz('q1', this, false)">「读书本来就不是最重要的，放松点就好。」</div>
+<div class="quiz-feedback" id="q1-fb"></div>
+</div>
+
+<div class="quiz-container" id="q2">
+<h4>📝 选择题 2</h4>
+<p>根据 Neff 的研究，自我关怀者在面对失败后的主要优势是：</p>
+<div class="quiz-option" onclick="checkQuiz('q2', this, false)">他们几乎不会感到负面情绪。</div>
+<div class="quiz-option" onclick="checkQuiz('q2', this, true)">他们在失败后能更快地恢复行动意愿，因为他们的情绪负荷更低。</div>
+<div class="quiz-option" onclick="checkQuiz('q2', this, false)">他们会设定更低的目標以避免失败。</div>
+<div class="quiz-option" onclick="checkQuiz('q2', this, false)">他们天生就比其他人更有毅力。</div>
+<div class="quiz-feedback" id="q2-fb"></div>
+</div>
+
+<div class="quiz-container" id="q3">
+<h4>📝 选择题 3</h4>
+<p>当你把手放在胸口并深呼吸时，主要激活的是身体的哪个系统？</p>
+<div class="quiz-option" onclick="checkQuiz('q3', this, false)">交感神经系统（战斗或逃跑）</div>
+<div class="quiz-option" onclick="checkQuiz('q3', this, true)">副交感神经系统（安抚和恢复）</div>
+<div class="quiz-option" onclick="checkQuiz('q3', this, false)">边缘系统（情绪处理中心）</div>
+<div class="quiz-option" onclick="checkQuiz('q3', this, false)">下丘脑-垂体轴（压力激素系统）</div>
+<div class="quiz-feedback" id="q3-fb"></div>
+</div>
+
+<div class="quiz-container" id="q4">
+<h4>📝 选择题 4</h4>
+<p>以下哪个说法正确地描述了自我关怀和自我批判的区别？</p>
+<div class="quiz-option" onclick="checkQuiz('q4', this, false)">自我关怀意味着放弃高标准，自我批判意味着坚持高标准。</div>
+<div class="quiz-option" onclick="checkQuiz('q4', this, false)">自我批判更有效，因为它能产生更强的改变动力。</div>
+<div class="quiz-option" onclick="checkQuiz('q4', this, true)">自我关怀和自我批判都可以有高目标，但它们在未达标时的反应方式完全不同。</div>
+<div class="quiz-option" onclick="checkQuiz('q4', this, false)">自我关怀只适用于轻微的问题，严重的问题需要自我批判。</div>
+<div class="quiz-feedback" id="q4-fb"></div>
+</div>
+
+<div class="quiz-container" id="q5">
+<h4>📝 选择题 5</h4>
+<p>你正在准备一个重要考试，但模拟测验的成绩不理想。以下哪种回应体现了完整的自我关怀三成分？</p>
+<div class="quiz-option" onclick="checkQuiz('q5', this, false)">「没关系，考试没那么重要，别给自己太大压力。」</div>
+<div class="quiz-option" onclick="checkQuiz('q5', this, true)">「看到成绩不理想确实让人沮丧（承认痛苦）。但其实每个备考的人都会遇到瓶颈期（共通人性）。我可以分析一下哪些题型得分低，针对性地加强（自我友善回应）。</div>
+<div class="quiz-option" onclick="checkQuiz('q5', this, false)">「我必须加倍努力，明天开始每天多学两小时。」</div>
+<div class="quiz-option" onclick="checkQuiz('q5', this, false)">「也许我不适合这个考试，换一个方向吧。」</div>
+<div class="quiz-feedback" id="q5-fb"></div>
+</div>
+
+<div class="quiz-container" id="q6">
+<h4>📝 选择题 6</h4>
+<p>「失败友好系统」的核心特征是：</p>
+<div class="quiz-option" onclick="checkQuiz('q6', this, false)">永远不会失败。</div>
+<div class="quiz-option" onclick="checkQuiz('q6', this, true)">把失败视为数据点而非身份标签。</div>
+<div class="quiz-option" onclick="checkQuiz('q6', this, false)">有人替你承担失败的后果。</div>
+<div class="quiz-option" onclick="checkQuiz('q6', this, false)">降低标准以避免失败的发生。</div>
+<div class="quiz-feedback" id="q6-fb"></div>
+</div>
+
+<div class="quiz-container" id="q7">
+<h4>📝 选择题 7</h4>
+<p>自我批判激活的大脑系统类似于：</p>
+<div class="quiz-option" onclick="checkQuiz('q7', this, false)">解数学题时的认知系统</div>
+<div class="quiz-option" onclick="checkQuiz('q7', this, true)">被狮子追时的威胁检测系统</div>
+<div class="quiz-option" onclick="checkQuiz('q7', this, false)">睡觉时的休息系统</div>
+<div class="quiz-option" onclick="checkQuiz('q7', this, false)">运动时的肌肉系统</div>
+<div class="quiz-feedback" id="q7-fb"></div>
+</div>
+
+<div class="quiz-container" id="q8">
+<h4>📝 选择题 8</h4>
+<p>当你想练习自我关怀但不知道从哪里开始时，最推荐的第一个微小行动是：</p>
+<div class="quiz-option" onclick="checkQuiz('q8', this, false)">写一本自我关怀日记，每天记录 1000 字。</div>
+<div class="quiz-option" onclick="checkQuiz('q8', this, true)">把手放在胸口，深呼吸三次，说一句友善的话。</div>
+<div class="quiz-option" onclick="checkQuiz('q8', this, false)">找一位心理咨询师进行长期治疗。</div>
+<div class="quiz-option" onclick="checkQuiz('q8', this, false)">立刻改变所有导致失败的行为习惯。</div>
+<div class="quiz-feedback" id="q8-fb"></div>
+</div>
+
+<div class="quiz-container" id="q9">
+<h4>📝 填空题</h4>
+<p>自我关怀的三个成分是：自我友善（Self-Kindness）、共通人性（__________）和正念觉察（Mindful Awareness）。</p>
+<input type="text" class="fill-input" id="q9-input" placeholder="填入第二个成分的英文名或中文名">
+<button onclick="checkFill('q9')" style="padding:.4rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:4px;cursor:pointer;font-family:inherit;margin-left:.5rem">检查</button>
+<div class="quiz-feedback" id="q9-fb"></div>
+</div>
+
+<div class="quiz-container" id="q10">
+<h4>📝 填空题</h4>
+<p>面对失败时，自我批判者的恢复时间通常是 __________ 天，而自我关怀者只需几小时到一天。</p>
+<input type="text" class="fill-input" id="q10-input" placeholder="填入数字范围">
+<button onclick="checkFill('q10')" style="padding:.4rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:4px;cursor:pointer;font-family:inherit;margin-left:.5rem">检查</button>
+<div class="quiz-feedback" id="q10-fb"></div>
+</div>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', function() {
+  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+});
+
+// Collapse toggle
+function toggleCollapse(btn) {
+  btn.classList.toggle('open');
+  var body = btn.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// Multiple choice quiz
+function checkQuiz(id, option, isCorrect) {
+  var container = document.getElementById(id);
+  var options = container.querySelectorAll('.quiz-option');
+  var feedback = document.getElementById(id + '-fb');
+
+  options.forEach(function(opt) {
+    opt.classList.add('disabled');
+    opt.style.pointerEvents = 'none';
+  });
+
+  option.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  feedback.classList.add('show');
+  feedback.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  if (isCorrect) {
+    feedback.innerHTML = '<strong>✅ 正确！</strong>' + getExplanation(id);
+  } else {
+    options.forEach(function(opt) {
+      if (opt.getAttribute('onclick').indexOf('true') !== -1) {
+        opt.classList.add('correct');
+      }
+    });
+    feedback.innerHTML = '<strong>❌ 不太对。</strong>' + getExplanation(id);
+  }
+}
+
+function getExplanation(id) {
+  var explanations = {
+    'q1': '自我关怀的三个成分必须同时出现：承认痛苦（\"连续五天没做到让人沮丧\"）、共通人性（\"很多人都会遇到\"）、友善回应（\"分析原因并调整\"）。选项 B 完整包含了这三个要素。',
+    'q2': '自我关怀者并非没有负面情绪，而是负面情绪的强度和持续时间更短。关键优势是更快的恢复和行动意愿。',
+    'q3': '副交感神经系统负责\"休息和消化\"，与安抚、恢复相关。胸口的物理触摸已被证明可以降低皮质醇水平。',
+    'q4': '自我关怀和自我批判都可以有高目标。真正的区别在于未达标时的反应方式——是羞耻逃避还是分析调整。',
+    'q5': '选项 B 同时包含了三个成分：承认沮丧（痛苦）、瓶颈期是普遍现象（共通人性）、分析并改进（友善回应）。',
+    'q6': '失败友好系统的核心是把失败当作\"这个方法不行\"的数据，而不是\"我是一个失败者\"的身份标签。',
+    'q7': '自我批判激活的是威胁检测系统（类似被狮子追），这会抑制前额叶皮层的理性思考能力。',
+    'q8': '自我关怀的起点应该是极小的、可立即执行的行动。胸口触摸+深呼吸是最简单的入口。',
+    'q9': '共通人性（Common Humanity）——认识到失败和挣扎是人类共同的经验，不是\"只有我这么差\"。',
+    'q10': '自我批判者从失败中恢复通常需要 2-5 天甚至更长。这个差距解释了为什么\"对自己狠\"反而进步更慢。'
+  };
+  return explanations[id] || '';
+}
+
+// Fill-in-blank quiz
+function checkFill(id) {
+  var input = document.getElementById(id + '-input');
+  var feedback = document.getElementById(id + '-fb');
+  var value = input.value.trim();
+
+  var answers = {
+    'q9': ['common humanity', 'Common Humanity', '共通人性', 'Common humanity', 'common humanity', '共通的', '共同人性', '共通的人性'],
+    'q10': ['2-5', '2到5', '两到五', '2', '3-5', '3到5', '三五', '2~5', '2—5', '2至5']
+  };
+
+  var correct = answers[id].some(function(a) {
+    return value.toLowerCase().includes(a.toLowerCase()) || value.includes(a);
+  });
+
+  feedback.classList.add('show');
+  if (correct) {
+    feedback.className = 'quiz-feedback show correct';
+    feedback.innerHTML = '<strong>✅ 正确！</strong>' + getFillExplanation(id);
+  } else {
+    feedback.className = 'quiz-feedback show wrong';
+    var hint = id === 'q9' ? '提示：这个词的意思是"认识到失败是人类共同的经验"' : '提示：范围是 2 到 5 天';
+    feedback.innerHTML = '<strong>❌ 不对哦。</strong>' + hint;
+  }
+}
+
+function getFillExplanation(id) {
+  if (id === 'q9') return '共通人性是自我关怀的核心——它让你从"只有我这么差"的孤立感中解脱出来。';
+  if (id === 'q10') return '这个差距看似不大，但在行为改变中，每次恢复时间的缩短都会显著增加长期坚持的概率。';
+  return '';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>身份认同：行为改变的最深层次 — 自我科学与行为改变</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#222;line-height:1.7;max-width:800px;margin:0 auto;padding:20px 24px 60px}
+h1,h2,h3{font-family:'Merriweather',serif;color:#1a1a1a}
+h1{font-size:2em;border-bottom:3px solid #2563eb;padding-bottom:12px;margin-bottom:8px}
+h2{font-size:1.45em;margin-top:36px;margin-bottom:12px;color:#1e40af}
+h3{font-size:1.15em;margin-top:24px;margin-bottom:8px;color:#334155}
+p{margin-bottom:14px;font-size:1.05em}
+.term{font-style:italic;color:#475569}
+.example{background:#f0f7ff;border-left:4px solid #2563eb;padding:14px 18px;margin:16px 0;border-radius:0 8px 8px 0;font-size:.98em}
+.example strong{color:#1e40af}
+.collapse-btn{display:inline-flex;align-items:center;gap:6px;background:#e0ecff;border:1px solid #b0cfff;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:.95em;font-family:inherit;color:#1e40af;transition:background .2s}
+.collapse-btn:hover{background:#cde0ff}
+.collapse-btn .arrow{transition:transform .25s;display:inline-block}
+.collapse-btn.open .arrow{transform:rotate(90deg)}
+.collapse-content{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease;opacity:0}
+.collapse-content.show{max-height:3000px;opacity:1}
+.quiz-section{margin-top:40px;padding-top:20px;border-top:2px solid #e2e8f0}
+.quiz-section h2{margin-top:0}
+.quiz-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.quiz-card .q-num{font-weight:700;color:#2563eb;font-size:.85em;text-transform:uppercase;letter-spacing:.5px}
+.quiz-card .q-text{font-size:1.05em;margin:8px 0 14px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:block;width:100%;text-align:left;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fafafa;cursor:pointer;font-size:.97em;font-family:inherit;transition:all .15s}
+.quiz-opt:hover:not(.disabled){border-color:#2563eb;background:#eff6ff}
+.quiz-opt.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:600}
+.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-opt.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.95em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.quiz-feedback.no{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.fill-blank{display:inline-block;border-bottom:2px solid #2563eb;min-width:100px;padding:2px 8px;margin:0 4px;font-family:inherit;font-size:inherit;color:#1e40af;background:transparent;outline:none}
+.fill-blank.correct-input{border-color:#16a34a;color:#166534}
+.fill-blank.wrong-input{border-color:#dc2626;color:#991b1b}
+.action-list{background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:20px;margin-top:30px}
+.action-list h3{color:#a16207;margin-top:0}
+.action-list ul{padding-left:20px}
+.action-list li{margin-bottom:8px;font-size:.98em}
+.action-list li strong{color:#92400e}
+footer{text-align:center;margin-top:50px;color:#94a3b8;font-size:.85em;padding-top:20px;border-top:1px solid #e2e8f0}
+.key-point{background:#f0fdf4;border-left:4px solid #16a34a;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.key-point strong{color:#166534}
+</style>
+</head>
+<body>
+
+<h1>身份认同：行为改变的最深层次</h1>
+<p><strong>Identity-Based Habits — The Deepest Layer of Behavior Change</strong></p>
+<p>我们之前学过习惯回路、微习惯、Fogg行为模型……但有没有发现一个共同的问题？它们都在教你 <em>做什么</em>，却很少告诉你 <em>你是谁</em>。</p>
+<p>这一课要讲一个反直觉的事实：<strong>真正持久的行为改变，不是从"我要做什么"开始的，而是从"我是什么样的人"开始的。</strong></p>
+
+<div class="key-point">
+<strong>核心观点：</strong> 行为改变有三个层次——结果（Outcome）、过程（Process）、身份（Identity）。大多数人只关注最外层的结果，而最有效的改变发生在最内层的身份认同上。
+</div>
+
+<h2>一、改变的三层洋葱</h2>
+<p>想象行为改变像一个三层洋葱：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第一层：结果导向（Outcome-based）
+</button>
+<div class="collapse-content">
+<p>这是最常见的改变方式。你设定一个目标，然后努力去达成它：</p>
+<div class="example">
+<strong>📌 场景：</strong> 你给自己立了个 flag："今年我要瘦10斤！" 于是开始节食、跑步。坚持了两周，体重掉了3斤，但第三周你实在扛不住火锅的诱惑，暴食了一顿，之后又觉得"反正都破戒了"，彻底放弃。
+</div>
+<p>这种方式的致命问题是：<strong>一旦目标达成或放弃，行为就会反弹。</strong> 因为你改变的只是"结果"，而不是"自己"。</p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第二层：过程导向（Process-based）
+</button>
+<div class="collapse-content">
+<p>你不再执着于结果，而是专注于建立好的流程：</p>
+<div class="example">
+<strong>📌 场景：</strong> "我不再想瘦10斤了，我只要每天做20分钟运动就好。" 于是你把运动写进日程表，像打卡一样完成。
+</div>
+<p>这比第一层好得多——James Clear在《原子习惯》里大力推崇这种方式。但问题依然存在：<strong>如果某天你没完成，你会觉得自己"失败了"，而不是"我还是那个人"。</strong></p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第三层：身份导向（Identity-based）
+</button>
+<div class="collapse-content">
+<p>这才是真正的底层逻辑。你不是"在尝试戒烟"，你是"一个不抽烟的人"。你不是"在努力健身"，你是"一个运动者"。</p>
+<div class="example">
+<strong>📌 场景对比：</strong><br>
+• 结果导向的人被递来一支烟："谢谢，我不抽。""因为我正在戒烟。"<br>
+• 身份导向的人被递来一支烟："不用了，谢谢。""因为我不抽烟。"<br><br>
+听起来差别不大，但心理机制完全不同。前者在"抵抗诱惑"，消耗意志力；后者在"做自己"，不需要抵抗。
+</div>
+</div>
+
+<h2>二、为什么身份认同如此强大？</h2>
+
+<h3>2.1 认知一致性（Cognitive Consistency）</h3>
+<p>人类有一个强大的心理驱动力：<strong>我们渴望自己的行为与自我认知保持一致。</strong> 心理学家Leon Festinger在1957年提出的"认知失调理论"（Cognitive Dissonance Theory）解释了这一点——当我们的行为和自我认知冲突时，我们会感到不舒服，并倾向于改变行为来恢复一致。</p>
+
+<div class="example">
+<strong>📌 生活案例：</strong> 你是一个"爱干净的人"（身份），那么看到地板上有头发，你会不由自主地弯腰捡起来——不是因为你在执行某个流程，而是因为"不捡起来"让你觉得自己不像"爱干净的人"。<br><br>
+反过来，如果你告诉自己"我就是个懒得收拾的人"，哪怕你偶尔收拾了，你也会觉得"今天怎么这么勤快？"——因为那不符合你的身份叙事。
+</div>
+
+<h3>2.2 自我实现的预言（Self-Fulfilling Prophecy）</h3>
+<p>当你认定自己是某种人，你会无意识地寻找证据来支持这个信念，甚至做出行为让它成真。这就是"标签的力量"。</p>
+
+<div class="example">
+<strong>📌 真实场景：</strong> 你一直觉得自己"不擅长数学"。每次看到数学题就焦虑，考试就紧张发挥失常。结果成绩真的不好——你看，"证据"来了，你的身份信念得到了"证实"。<br><br>
+但如果有一天你开始对自己说："我是一个正在学习数学的人"，你的行为会发生微妙变化——遇到难题时不再立刻退缩，而是愿意多花10分钟思考。这10分钟，就是身份转变的种子。
+</div>
+
+<h3>2.3 意志力的替代方案</h3>
+<p>这是最关键的一点：<strong>靠意志力坚持的行为，最终都会崩盘。靠身份认同维持的行为，几乎不需要意志力。</strong></p>
+
+<div class="key-point">
+<strong>💡 关键洞察：</strong> 你不是在"坚持"跑步，你就是一个"跑者"。跑者跑步，就像鱼游泳一样自然——不需要"坚持"，只需要"不做就不是鱼"。
+</div>
+
+<h2>三、身份认同如何形成？</h2>
+<p>身份不是天生的，也不是凭空想象的。它通过一个循环逐步建立：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第1步：小行动 → 积累证据
+</button>
+<div class="collapse-content">
+<p>每一个微小的行为，都是一次"投票"——投给你想成为的那个人。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你想成为一个"读书的人"。第一周你只读了5页书。但这5页不是浪费——它们是你对自己说的"看，我在读书"的第一条证据。<br><br>
+James Clear说得好："每一次你完成一次阅读，你就在为你想要成为的身份投了一票。"
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第2步：证据积累 → 身份转变
+</button>
+<div class="collapse-content">
+<p>当你有了足够的"证据"，你的自我叙事就开始改变了。从"我在尝试读书"变成"我是个会读书的人"。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你连续读了三个月的书，虽然每次都很少——有时一页，有时十页。但回头看，你已经"读了十几本书"。这个事实会让你自然而然地说出："我最近在看不少书呢。"——注意，你不再说"我在尝试读书"，你说的是"我看书"。<strong>语言的变化，就是身份变化的信号。</strong>
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 第3步：新身份 → 驱动更多行动
+</button>
+<div class="collapse-content">
+<p>新的身份会产生新的行为预期。你开始觉得"读书的人就应该多读"，于是自然而然地读了更多。这是一个正向飞轮。</p>
+<div class="example">
+<strong>📌 场景：</strong> 你现在是"一个运动者"了。朋友约你喝酒，你心里想的是"运动者不该喝太多"；周末在家，你想到"运动者应该去活动一下"。这些想法不需要意志力——它们只是"你在做你自己"。
+</div>
+</div>
+
+<h2>四、常见误区</h2>
+
+<h3>4.1 误区一：身份 = 固定不变</h3>
+<p>很多人担心："如果我告诉自己'我是一个自律的人'，万一哪天不自律了怎么办？那不是自欺欺人吗？"</p>
+<p>这是把身份当成了"标签"，而不是"方向"。正确的身份认同不是"我已经完美了"，而是"我正在成为这样的人"。</p>
+
+<div class="example">
+<strong>📌 正确说法：</strong> "我是一个正在养成运动习惯的人"——这句话允许你有不完美的日子，同时指向一个明确的方向。<br><br>
+<strong>错误说法：</strong> "我是一个完美的自律者"——这句话一旦你某天偷懒，就会崩塌，带来巨大的挫败感。
+</div>
+
+<h3>4.2 误区二：身份可以凭空想象</h3>
+<p>你不能坐在沙发上告诉自己"我是一个企业家"就真的变成企业家。身份必须建立在<strong>真实的行为证据</strong>之上。</p>
+<p>这不是鸡汤——这是心理学。你的大脑需要看到真实的行动，才会更新自我叙事。</p>
+
+<div class="example">
+<strong>📌 场景：</strong> 你每天写50个字，一个月后你写了1500字。虽然离一本书差得远，但你已经完成了"写东西"这件事。这时你说"我是一个写作者"，是有真实依据的。<br><br>
+反之，你没有写过一行字，却告诉自己"我是作家"——这叫妄想，不叫身份认同。
+</div>
+
+<h3>4.3 误区三：身份认同适合所有场景</h3>
+<p>身份认同对于<strong>长期行为习惯</strong>最有效，但对于一次性任务或短期项目，结果导向可能更高效。</p>
+
+<div class="key-point">
+<strong>💡 实用建议：</strong> 如果你想培养一个长期习惯（运动、阅读、写作），用身份认同。如果你只是想完成一次性的任务（明天交一份报告），用结果导向就够了——别把力气花在不必要的身份转换上。
+</div>
+
+<h2>五、实战：如何设计你的身份认同</h2>
+<p>以下是具体步骤，你可以现在就做：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 步骤1：识别你想改变的旧身份
+</button>
+<div class="collapse-content">
+<p>诚实地写下你现在的自我叙事。比如：</p>
+<ul style="margin:10px 0 10px 24px">
+<li>"我就是个久坐的人"</li>
+<li>"我一到晚上就管不住嘴"</li>
+<li>"我对学习提不起兴趣"</li>
+</ul>
+<p>这些不是事实——它们是<strong>你过去行为的总结</strong>。你可以通过新的行为来改写它们。</p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 步骤2：定义你想要的新身份
+</button>
+<div class="collapse-content">
+<p>用"我是一个……的人"的句式来定义。关键是：<strong>描述行为，而不是描述特质。</strong></p>
+<div class="example">
+<strong>✅ 好的身份陈述：</strong><br>
+• "我是一个每天动一动的人"（行为导向，可执行）<br>
+• "我是一个晚上吃蔬菜的人"（行为导向，可执行）<br>
+• "我是一个每天学一点新东西的人"（行为导向，可执行）<br><br>
+<strong>❌ 不好的身份陈述：</strong><br>
+• "我是一个健康的人"（模糊，不可直接验证）<br>
+• "我是一个自律的人"（抽象，没有具体行为对应）<br>
+• "我是一个聪明的人"（与行为无关）
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 步骤3：设计最小身份投票
+</button>
+<div class="collapse-content">
+<p>每天做一个微小的、能"证明"新身份的行动。它小到不可能失败。</p>
+<div class="example">
+<strong>📌 场景：你想成为"运动的人"</strong><br>
+• 最小投票：穿上运动鞋（是的，就这一步）<br>
+• 一旦穿了鞋，你可能会走两步<br>
+• 即使只走了两步，你也投了一票："看，我今天做了运动者的事"<br><br>
+<strong>📌 场景：你想成为"读书的人"</strong><br>
+• 最小投票：翻开书，读一句话<br>
+• 读了一句话也是投票<br>
+• 关键不在于读了多少，而在于"我做了读书这件事"
+</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 步骤4：收集并回顾你的"证据"
+</button>
+<div class="collapse-content">
+<p>每周花5分钟回顾：我这周为"新身份"投了多少票？用简单的记录方式：</p>
+<div class="example">
+<strong>📌 示例记录表：</strong><br>
+周一：穿了运动鞋 ✓<br>
+周二：翻开了书 ✓<br>
+周三：没穿鞋，但看了5分钟书 ✓<br>
+周四：什么都没做 ✗<br>
+周五：散步10分钟 ✓<br>
+周末：休息日，不计数<br><br>
+结果：5天中有4天投了票。80%的完成率已经足够让你的大脑开始相信："嗯，我确实在往那个方向走。"
+</div>
+</div>
+
+<h2>六、身份认同与之前的工具如何配合</h2>
+<p>身份认同不是取代我们之前学过的所有工具，而是为它们提供一个<strong>更深的锚点</strong>。</p>
+
+<div class="example">
+<strong>📌 完整框架：</strong><br><br>
+<strong>习惯回路（第2课）</strong> → 身份告诉你"奖励"应该是什么。<br>
+比如你是"一个健康的人"，那么健康的食物本身就是奖励，而不是"吃了之后才奖励自己一块蛋糕"。<br><br>
+<strong>微习惯（第3课）</strong> → 身份认同让微习惯更容易坚持。<br>
+因为你不只是在完成一个动作，你是在"投票"给自己想要的身份。<br><br>
+<strong>Fogg模型（第4课）</strong> → 身份认同提升了"动机"这个变量。<br>
+Fogg说行为需要动机×能力×提示。身份认同让你的动机从"我需要做"变成"我就是做这件事的人"。<br><br>
+<strong>拖延与情绪（第5课）</strong> → 身份认同改变了你对任务的感受。<br>
+拖延往往是因为任务让你感觉不好。但如果你认为"读书的人是会读书的"，那么读书就不再是一个痛苦的任务，而是一种自我表达。
+</div>
+
+<h2>七、生活中的真实挑战</h2>
+
+<h3>7.1 "我太忙了，没时间改变身份"</h3>
+<div class="example">
+<strong>📌 场景：</strong> 你每天加班到9点，回到家只想躺平刷手机。你觉得"成为一个有运动习惯的人"太奢侈了。<br><br>
+<strong>身份层面的解法：</strong> 你不需要变成"健身达人"。你只需要成为一个"每天动一下的人"。在等电梯的时候做10个深蹲，在接电话的时候站起来走两步——这些都是"运动的人"的投票。身份不是非黑即白的，它是一个光谱。
+</div>
+
+<h3>7.2 "我以前试过，每次都半途而废"</h3>
+<div class="example">
+<strong>📌 场景：</strong> 你三年前想过"成为一个早起的人"，坚持了两周就放弃了。现在你觉得"算了，我不是那种人"。<br><br>
+<strong>身份层面的解法：</strong> 过去的失败不代表你"不是那个人"——它只代表你当时的<strong>策略</strong>有问题。早起失败很可能是因为目标太大（从8点改成5点），而不是你这个人不行。<br><br>
+试着说："我是一个在练习早起的人。"——这样即使某天没成功，你仍然在"练习"的路上。身份认同允许失败，因为它关注的是方向，不是完美。
+</div>
+
+<h3>7.3 "我的环境不支持我的新身份"</h3>
+<div class="example">
+<strong>📌 场景：</strong> 你想成为"一个读书的人"，但你的朋友圈全是游戏群，家人都觉得"读书有什么用"。<br><br>
+<strong>身份层面的解法：</strong> 环境确实会影响身份认同，但你可以<strong>主动创造自己的微环境</strong>。比如加入一个线上读书会，或者在社交媒体上关注几个读书博主。每天花5分钟和"同类人"互动，你的身份叙事就会得到外部确认。
+</div>
+
+<h2>八、今天就能做的行动清单</h2>
+<div class="action-list">
+<h3>⚡ 今日行动（每项不超过1分钟）</h3>
+<ul>
+<li><strong>写下你的旧身份叙事：</strong> 拿出手机备忘录，写下"我一直以为自己是……的人"。（30秒）</li>
+<li><strong>定义一个新身份：</strong> 选一个你想培养的习惯，用"我是一个……的人"的句式写下来。（30秒）</li>
+<li><strong>完成一次最小投票：</strong> 如果新身份是"运动的人"，做5个深蹲。如果是"读书的人"，翻开书读一行。如果是"早睡的人"，今晚把手机放到卧室外面。（1分钟）</li>
+</ul>
+<p style="margin-top:12px;font-size:.9em;color:#92400e"><strong>记住：</strong> 你不是在"做一件事"，你是在"成为一个人"。每一票都很小，但每一票都算数。</p>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>🧠 互动测验</h2>
+<p style="margin-bottom:20px;color:#64748b;font-size:.95em">以下题目检验你对"身份认同"的理解。每题选出一个答案，系统会即时反馈。</p>
+
+<!-- Q1 -->
+<div class="quiz-card" id="q1">
+<div class="q-num">Question 1 of 8</div>
+<div class="q-text">你朋友说："我想减肥。" 以下哪种回应最能帮助他从"身份认同"层面出发？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q1',false)">A. "那你每天至少运动30分钟吧。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q1',true)">B. "试着把自己当成一个'注重健康的人'，然后看看这样的人会怎么选。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q1',false)">C. "我给你推荐几个减肥APP吧。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q1',false)">D. "你先定一个目标，比如一个月减5斤。"</button>
+</div>
+<div class="quiz-feedback" id="q1-fb"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-card" id="q2">
+<div class="q-num">Question 2 of 8</div>
+<div class="q-text">小明一直觉得自己"不擅长社交"，所以每次聚会他都躲在角落玩手机。后来他尝试把自己重新定义为"一个正在学习社交的人"。以下哪个结果最符合身份认同理论的预期？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q2',false)">A. 他会立刻变得非常外向，成为派对焦点。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q2',true)">B. 他在聚会上犯错时会觉得这是正常的学习过程，而不是"我不擅长社交"的证据。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q2',false)">C. 他的社交技巧会在一周内大幅提升。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q2',false)">D. 他会开始讨厌参加聚会，因为压力太大了。</button>
+</div>
+<div class="quiz-feedback" id="q2-fb"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-card" id="q3">
+<div class="q-num">Question 3 of 8</div>
+<div class="q-text">以下哪个身份陈述是最有效的？（选最佳选项）</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q3',false)">A. "我是一个完美的人。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q3',false)">B. "我是一个成功的人。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q3',true)">C. "我是一个每天写500字的人。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q3',false)">D. "我是一个聪明的人。"</button>
+</div>
+<div class="quiz-feedback" id="q3-fb"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-card" id="q4">
+<div class="q-num">Question 4 of 8</div>
+<div class="q-text">小红想养成运动习惯，但她总是坚持不到一周。根据身份认同理论，她最大的问题最可能是：</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q4',false)">A. 她运动的时间不对。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q4',true)">B. 她在用"结果"驱动行为（"我要瘦10斤"），而不是用"身份"驱动（"我是一个运动的人"）。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q4',false)">C. 她的运动装备不够好。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q4',false)">D. 她需要找一个运动搭子。</button>
+</div>
+<div class="quiz-feedback" id="q4-fb"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-card" id="q5">
+<div class="q-num">Question 5 of 8</div>
+<div class="q-text">【填空题】James Clear 说："每一次你完成一次______，你就在为你想要成为的身份投了一票。" 请填写关键词。</div>
+<div class="quiz-options">
+<input type="text" class="fill-blank" id="q5-input" placeholder="输入你的答案…" style="width:100%;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:1em;font-family:inherit">
+<button class="quiz-opt" onclick="checkFillBlank('q5')" style="margin-top:8px">提交答案</button>
+</div>
+<div class="quiz-feedback" id="q5-fb"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-card" id="q6">
+<div class="q-num">Question 6 of 8</div>
+<div class="q-text">你告诉朋友"我是一个正在学习编程的人"。某天你写代码卡了两个小时没进展，按照身份认同理论，以下哪种反应最健康？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q6',false)">A. "看来我根本不是学编程的料，我应该放弃。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q6',true)">B. "学编程的人会遇到卡壳的情况，这很正常。我继续试。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q6',false)">C. "我今天没进展，所以我不是一个好的学习者。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q6',false)">D. "算了，编程太难了，我还是去做别的事吧。"</button>
+</div>
+<div class="quiz-feedback" id="q6-fb"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-card" id="q7">
+<div class="q-num">Question 7 of 8</div>
+<div class="q-text">以下关于"身份认同"的说法，哪一个是<strong>错误</strong>的？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q7',false)">A. 身份认同需要通过真实的行为证据来建立。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q7',true)">B. 身份一旦确立就永远不能改变，否则就是自欺欺人。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q7',false)">C. 身份认同对于长期行为习惯的培养特别有效。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q7',false)">D. 最小的身份投票也比不投要好。</button>
+</div>
+<div class="quiz-feedback" id="q7-fb"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-card" id="q8">
+<div class="q-num">Question 8 of 8</div>
+<div class="q-text">【场景题】你每天下班回家都忍不住刷短视频，想改但总是失败。如果用身份认同的方法，第一步应该是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this,'q8',false)">A. 下载一个限制屏幕时间的APP。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q8',true)">B. 先想清楚："我希望自己成为什么样的人？" 然后从这个身份出发，设计一个最小的行动。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q8',false)">C. 把手机扔到另一个房间。</button>
+<button class="quiz-opt" onclick="checkAnswer(this,'q8',false)">D. 列一个"今晚不刷短视频"的计划表。</button>
+</div>
+<div class="quiz-feedback" id="q8-fb"></div>
+</div>
+
+</div><!-- end quiz-section -->
+
+<footer>
+<p>自我科学与行为改变 · 第7课 / 共12课</p>
+<p>身份认同：行为改变的最深层次 | Generated by TeachHub</p>
+</footer>
+
+<script>
+function toggleCollapse(btn){
+  var content=btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('show');
+}
+
+var quizData={
+  q1:{correct:1,explanation:"身份认同方法从'你是谁'出发，而不是'你要达到什么结果'。B选项引导朋友从身份角度思考选择，这是最根本的改变。A和D都是结果导向，C是工具导向。"},
+  q2:{correct:1,explanation:"身份认同不会一夜之间改变你的能力，但它会改变你对失败的解读。'正在学习'的身份允许犯错，而'不擅长社交'的身份会把每次尴尬当作'证明'。"},
+  q3:{correct:2,explanation:"有效的身份陈述应该是行为导向的。C选项'每天写500字'是可执行的、可验证的具体行为。A、B、D都是模糊的特质描述，无法指导具体行动。"},
+  q4:{correct:1,explanation:"结果驱动（如'瘦10斤'）的失败率很高，因为一旦短期内看不到结果就容易放弃。身份驱动（如'我是一个运动的人'）关注的是持续的行为，而不是某个特定结果。"},
+  q5:{correct:"行为",explanation:"原句出自James Clear《原子习惯》。关键理解是：每一个具体的行为（reading, exercising, practicing）都是一次身份投票。不在于量，在于'做了'这个事实本身。"},
+  q6:{correct:1,explanation:"身份认同的核心优势之一就是'允许不完美'。'正在学习'的身份意味着遇到困难是正常的，而不是'我不行'的证明。这正是它比结果导向更可持续的原因。"},
+  q7:{correct:1,explanation:"身份认同不是固定不变的标签，而是一个动态的过程。你可以随时调整你的身份叙事。B选项的错误在于把身份当成了不可改变的宿命。"},
+  q8:{correct:1,explanation:"身份认同方法的第一步永远是'定义你想要的身份'，然后从身份出发设计行动。A、C、D都是'结果导向'的工具——它们可能在短期内有效，但不会带来深层改变。"}
+};
+
+function checkAnswer(btn,isCorrect){
+  var card=btn.closest('.quiz-card');
+  var opts=card.querySelectorAll('.quiz-opt');
+  var fb=document.getElementById(card.id+'-fb');
+  
+  opts.forEach(function(o){o.classList.add('disabled')});
+  
+  if(isCorrect){
+    btn.classList.add('correct');
+    fb.className='quiz-feedback show ok';
+    fb.innerHTML='<strong>✅ 正确！</strong>'+quizData[card.id].explanation;
+  }else{
+    btn.classList.add('wrong');
+    // highlight correct
+    opts.forEach(function(o){
+      if(o!==btn&&o.getAttribute('onclick')&&o.getAttribute('onclick').includes('true')){
+        o.classList.add('correct');
+      }
+    });
+    fb.className='quiz-feedback show no';
+    fb.innerHTML='<strong>❌ 不太对。</strong>'+quizData[card.id].explanation;
+  }
+}
+
+function checkFillBlank(qid){
+  var input=document.getElementById(qid+'-input');
+  var fb=document.getElementById(qid+'-fb');
+  var val=input.value.trim();
+  
+  if(val==='行为'||val==='行动'||val==='习惯'||val==='练习'){
+    input.classList.add('correct-input');
+    fb.className='quiz-feedback show ok';
+    fb.innerHTML='<strong>✅ 正确！</strong>'+quizData[qid].explanation;
+  }else if(val===''){
+    fb.className='quiz-feedback show no';
+    fb.innerHTML='<strong>⚠️ 请输入你的答案。</strong>';
+  }else{
+    input.classList.add('wrong-input');
+    fb.className='quiz-feedback show no';
+    fb.innerHTML='<strong>❌ 不完全对。</strong>参考答案是"行为"（behavior/action）。你也可以接受"行动""习惯""练习"等近义词。'+quizData[qid].explanation;
+  }
+}
+</script>
+
+</body>
+</html>

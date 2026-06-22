@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三课：习惯叠加与微习惯设计 | TeachHub · 自我科学</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Helvetica Neue',Arial,sans-serif;background:#fdfdfd;color:#222;line-height:1.8;font-size:16px;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3,h4{font-family:'Merriweather',Georgia,serif;color:#1a1a1a;margin-top:2.5rem;margin-bottom:.8rem}
+h1{font-size:1.9rem;border-bottom:3px solid #4a6fa5;padding-bottom:.5rem}
+h2{font-size:1.45rem;border-left:4px solid #4a6fa5;padding-left:.8rem}
+h3{font-size:1.15rem;color:#333}
+.lead{font-size:1.1rem;color:#444;margin:1rem 0 2rem}
+.subtitle{color:#666;font-size:.95rem;margin-bottom:1.5rem}
+.english{font-style:italic;color:#555;font-size:.92em}
+code{background:#f0f0f0;padding:.15em .4em;border-radius:3px;font-size:.9em}
+blockquote{border-left:4px solid #ddd;margin:1.5rem 0;padding:.8rem 1.2rem;background:#fafafa;border-radius:0 6px 6px 0}
+.tip-box{background:#eef5ff;border:1px solid #c5d9f0;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.tip-box strong{color:#2a5a8f}
+.example-box{background:#fff8ee;border:1px solid #f0dbb0;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
+.example-box strong{color:#8b6914}
+.section-nav{display:flex;gap:.6rem;flex-wrap:wrap;margin:2rem 0}
+.section-nav button{padding:.5rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:6px;cursor:pointer;font-size:.9rem;font-family:inherit}
+.section-nav button:hover{background:#3a5a8a}
+.section-content{display:none;margin-top:1rem;padding:1.2rem 1.4rem;background:#f7f9fc;border-radius:8px;border:1px solid #e0e7ef}
+.section-content.active{display:block}
+.quiz-container{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1.5rem;margin:1.8rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-container h4{margin-top:0;color:#4a6fa5;font-size:1.05rem}
+.quiz-option{display:block;padding:.6rem 1rem;margin:.4rem 0;border:1px solid #ddd;border-radius:6px;cursor:pointer;transition:all .15s;font-size:.95rem}
+.quiz-option:hover{background:#f0f4ff;border-color:#4a6fa5}
+.quiz-option.correct{background:#e6f9ee;border-color:#4caf50;color:#2e7d32}
+.quiz-option.wrong{background:#fdecea;border-color:#e53935;color:#c62828}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:.8rem;padding:.8rem;border-radius:6px;font-size:.93rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:#e6f9ee;color:#2e7d32;border:1px solid #a5d6a7}
+.quiz-feedback.wrong{background:#fdecea;color:#c62828;border:1px solid #ef9a9a}
+.fill-input{border:1px solid #ccc;border-radius:4px;padding:.3rem .6rem;font-size:.95rem;font-family:inherit;width:180px}
+.fill-input:focus{outline:none;border-color:#4a6fa5;box-shadow:0 0 0 2px rgba(74,111,165,.15)}
+.action-list{background:#f0faf0;border:1px solid #a5d6a7;border-radius:8px;padding:1.2rem 1.4rem;margin:2rem 0}
+.action-list h4{color:#2e7d32;margin-top:0}
+.action-list ol{padding-left:1.4rem}
+.action-list li{margin-bottom:.5rem}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:#eee;z-index:999}
+.progress-bar{height:100%;background:linear-gradient(90deg,#4a6fa5,#6bb5e0);width:0%;transition:width .3s}
+.summary-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+.summary-table th,.summary-table td{border:1px solid #ddd;padding:.6rem 1rem;text-align:left;font-size:.93rem}
+.summary-table th{background:#4a6fa5;color:#fff}
+.summary-table tr:nth-child(even){background:#f9f9f9}
+.tag{display:inline-block;background:#e8eef6;color:#4a6fa5;padding:.15em .5em;border-radius:4px;font-size:.82rem;margin-right:.3rem}
+.collapse-btn{cursor:pointer;color:#4a6fa5;font-weight:600;display:inline-flex;align-items:center;gap:.3rem}
+.collapse-btn::before{content:'▼';font-size:.7em;transition:transform .2s}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.collapse-body.open{max-height:2000px}
+@media(max-width:600px){body{padding:1rem 1rem 3rem}h1{font-size:1.5rem}h2{font-size:1.2rem}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<h1>第三课：习惯叠加与微习惯设计</h1>
+<p class="subtitle">自我科学与行为改变 · Lesson 3 of 12</p>
+<p class="lead">你已经知道习惯是怎么形成的了（cue → routine → reward），也知道大脑里有两套系统在做决定。现在的问题是：<strong>怎么让好习惯真正落地？</strong> 答案不是靠意志力，而是靠两招：<span class="english">habit stacking</span>（习惯叠加）和<span class="english">tiny habits</span>（微习惯）。</p>
+
+<p>想象一下这个场景：</p>
+
+<div class="example-box">
+<strong>🏠 生活场景</strong><br>
+你每天下班回家，瘫在沙发上刷短视频。你想运动，但每次想着"等会儿去健身房"——然后就忘了。不是因为你懒，而是因为"去健身房"这个行为太大了，大到你的 System 2（理性脑）还没反应过来，System 1（自动脑）就已经把你拖进了沙发。
+</div>
+
+<p>这节课教你把"去健身房"变成一件几乎不需要思考的事。</p>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2>一、习惯叠加（Habit Stacking）</h2>
+
+<p><span class="english">Habit stacking</span> 的核心思路很简单：<strong>把一个你想养的新习惯，绑定到一个你已经有的旧习惯后面。</strong></p>
+
+<p>它的公式是：</p>
+
+<div class="tip-box">
+<strong>📐 公式：</strong><br>
+"在我做完 <em>[现有习惯]</em> 之后，我会做 <em>[新习惯]</em>。"<br>
+<span class="english">After I [CURRENT HABIT], I will [NEW HABIT].</span>
+</div>
+
+<h3>为什么这招管用？</h3>
+
+<p>因为你的旧习惯已经是<strong>自动触发</strong>的了。你刷牙不用想就会挤牙膏，你早上起床就会摸手机——这些行为已经在大脑里形成了稳固的神经通路。习惯叠加就是<strong>搭便车</strong>：借你已有习惯的"势能"，把新习惯一起带起来。</p>
+
+<p>从神经科学的角度看，这就是在已有的 cue-response 链路上<strong>追加</strong>一个新的 response，而不是从零开始建一条新路。</p>
+
+<h3>生活案例</h3>
+
+<div class="example-box">
+<strong>案例 1：久坐党的脖子救星</strong><br>
+现状：你每天坐在电脑前工作 8 小时，脖子越来越酸。<br>
+旧习惯：每次去茶水间倒水。<br>
+叠加："在我倒完水之后，我会做 3 个颈部拉伸。"<br>
+效果：不用提醒，倒水→拉伸，自动连上了。
+</div>
+
+<div class="example-box">
+<strong>案例 2：刷视频后的补救</strong><br>
+现状：你发现自己经常一刷短视频就停不下来，结束后充满负罪感。<br>
+旧习惯：放下手机的那一刻。<br>
+叠加："在我放下手机之后，我会站起来走一圈。"<br>
+效果：把"刷视频结束"这个 cue，从负罪感的起点变成运动的起点。
+</div>
+
+<div class="example-box">
+<strong>案例 3：健身房的"中断恢复"</strong><br>
+现状：你去健身房练了两周，第三周开始觉得"好累不想去"。<br>
+旧习惯：每天早上穿鞋。<br>
+叠加："在我穿上运动鞋之后，我会做 5 个深蹲。"<br>
+效果：注意，不是"去健身房"，而是"做 5 个深蹲"。门槛低到你没法拒绝。然后你可能就顺带去健身房了——但就算不去，你也完成了。
+</div>
+
+<h3>⚠️ 常见错误</h3>
+
+<p>很多人写习惯叠加公式时犯了一个错：</p>
+
+<div class="tip-box">
+<strong>❌ 错误示范：</strong>"在我吃完饭后，我会去健身房锻炼一小时。"<br><br>
+<strong>✅ 正确姿势：</strong>"在我吃完饭后，我会换上运动服。"<br><br>
+原因：新习惯<strong>必须足够小</strong>，小到不需要意志力就能完成。"换运动服"是 cue，"去健身房"是之后的事，不要一口气塞太多。
+</div>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2>二、微习惯（Tiny Habits）</h2>
+
+<p><span class="english">Tiny habits</span> 是由斯坦福大学行为科学家 BJ Fogg 提出的方法。核心观点是：<strong>把行为缩小到不可思议的小，小到不可能失败。</strong></p>
+
+<h3>微习惯的三个原则</h3>
+
+<ol style="margin-left:1.5rem;margin-bottom:1.5rem">
+<li><strong>极小化</strong>：行为要小到不需要任何意志力就能启动。</li>
+<li><strong>即时奖励</strong>：做完之后立刻给自己一个正面感受（"太棒了！"）。</li>
+<li><strong>先做再说</strong>：不要等"有状态"才做——做了才会有状态。</li>
+</ol>
+
+<h3>微习惯 vs 普通目标</h3>
+
+<table class="summary-table">
+<thead><tr><th>维度</th><th>普通目标</th><th>微习惯</th></tr></thead>
+<tbody>
+<tr><td>例子</td><td>"每天跑步 5 公里"</td><td>"每天穿上跑鞋"</td></tr>
+<tr><td>失败感</td><td>没跑 = 失败</td><td>穿上鞋 = 成功</td></tr>
+<tr><td>启动阻力</td><td>高（需要意志力）</td><td>极低（几乎为零）</td></tr>
+<tr><td>持续性</td><td>容易中断</td><td>几乎不会断</td></tr>
+<tr><td>扩展空间</td><td>做不了就放弃</td><td>做完小的，还能做更多</td></tr>
+</tbody>
+</table>
+
+<h3>为什么"太小"反而有效？</h3>
+
+<p>这听起来反直觉——你难道不是为了"跑 5 公里"才买跑鞋的吗？为什么要只做到"穿鞋"？</p>
+
+<p>关键在于：<strong>行为的启动成本是最高的。</strong> 物理学上叫"静摩擦力大于动摩擦力"，心理学上叫"行动瘫痪"（action paralysis）。一旦你穿上了鞋，站在门口了，"出去走走"就变得顺理成章。但如果你把目标定为"跑 5 公里"，光是想想这个任务量，System 1 就会说"算了，太累了"。</p>
+
+<div class="example-box">
+<strong>🏠 生活场景：腰疼的你</strong><br>
+你每天坐办公室，腰越来越疼。医生建议"多做核心训练"。<br>
+❌ 普通目标："每天做 20 分钟平板支撑"——坚持了三天就断了。<br>
+✅ 微习惯："每天做一个平板支撑"——就一个，10 秒钟那种。<br>
+<br>
+结果：大多数日子里，你做完了那 10 秒就觉得"够了"。但有时候你会多做几个——<strong>那是你的选择，不是你的义务。</strong> 关键是，你没有"失败过"。
+</div>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2>三、习惯叠加 × 微习惯：组合拳</h2>
+
+<p>单独用习惯叠加或微习惯都有效，但<strong>结合起来威力更大</strong>。</p>
+
+<div class="tip-box">
+<strong>🔥 终极公式：</strong><br>
+"在我做完 <em>[现有微习惯]</em> 之后，我会做 <em>[新微习惯]</em>。"<br><br>
+比如："在我刷完牙之后，我会做一个深蹲。"<br>
+或者："在我倒完水之后，我会做 3 次深呼吸。"
+</div>
+
+<p>这种组合之所以强大，是因为：</p>
+
+<ul style="margin-left:1.5rem;margin-bottom:1.5rem">
+<li><strong>旧习惯提供 cue</strong>（触发信号），不需要你主动记。</li>
+<li><strong>微习惯降低阻力</strong>，小到 System 1 不会抗拒。</li>
+<li><strong>叠加产生连锁反应</strong>，一个习惯带动另一个。</li>
+</ul>
+
+<h3>折叠案例库</h3>
+
+<div class="collapse-btn" onclick="toggleCollapse(this)">点击查看 6 个真实叠加方案 ▸</div>
+<div class="collapse-body">
+<div class="example-box" style="margin-top:1rem">
+<strong>场景 1：早起困难户</strong><br>
+• 旧习惯：闹钟响 → 关掉<br>
+• 新微习惯：关掉闹钟后，坐起来伸个懒腰<br>
+• 叠加链：关闹钟 → 伸懒腰 → 喝一口水 → 下床<br>
+<br>
+<strong>场景 2：不爱喝水的上班族</strong><br>
+• 旧习惯：每次打开 Slack/微信<br>
+• 新微习惯：打开聊天软件之前，先喝一口水<br>
+• 叠加链：拿起杯子 → 喝水 → 打开电脑<br>
+<br>
+<strong>场景 3：睡前刷手机停不下来</strong><br>
+• 旧习惯：躺到床上<br>
+• 新微习惯：躺下后先做 2 次深呼吸<br>
+• 叠加链：躺下 → 深呼吸 ×2 → 把手机放远 → 闭眼
+</div>
+</div>
+
+<h3>如何设计你自己的叠加链？</h3>
+
+<p>跟着下面三步走：</p>
+
+<div class="tip-box">
+<strong>Step 1：列出你的"锚定习惯"</strong><br>
+写下你每天一定会做的事（不需要思考的那种）：刷牙、上厕所、倒水、开门、坐下……<br><br>
+<strong>Step 2：为每个锚定习惯配一个微习惯</strong><br>
+挑一个你想养的新行为，把它缩小到不可思议的小。<br><br>
+<strong>Step 3：写下来，贴在显眼处</strong><br>
+"在我 [锚定习惯] 之后，我会 [微习惯]。"写在手机备忘录或便签上。
+</div>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2>四、当习惯中断了怎么办？</h2>
+
+<p>这是最现实的问题。<strong>你不是机器，你会生病、会出差、会心情不好、会断掉。</strong> 关键是断掉之后怎么接回来。</p>
+
+<p>Bertrand Eysenbach 和 James Clear 的研究发现：</p>
+
+<div class="tip-box">
+<strong>📊 关键数据：</strong><br>
+• 错过一天 ≠ 失败。<br>
+• 连续错过两天 = 新习惯的开始。<br>
+• 连续错过三天以上 = 旧习惯回归。<br><br>
+所以，<strong>黄金规则是：永远不要连续错过两天。</strong> 即使那天你只做了一个俯卧撑，也比什么都不做强。
+</div>
+
+<div class="example-box">
+<strong>🏠 生活场景：健身房中断</strong><br>
+你去了三周健身房，第四周加班，第五周感冒，第六周觉得"算了不去了"。<br>
+<br>
+正确的做法不是"下周重新开始"，而是：<br>
+<strong>"就算不去健身房，我今天也要在家做 5 个深蹲。"</strong><br>
+<br>
+这 5 个深蹲就是你的"底线习惯"（minimum viable habit），它是连接你和好习惯之间的绳子——哪怕被风吹得乱晃，绳子不断，你就不会掉下去。
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<h2>五、课堂练习</h2>
+<p>以下 8 道题帮你检验理解程度。每道题都有即时反馈。</p>
+
+<!-- Q1 -->
+<div class="quiz-container" data-quiz="1">
+<h4>第 1 题：习惯叠加的核心原理是什么？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 1, false)">A. 用意志力强迫自己做新习惯</div>
+<div class="quiz-option" onclick="checkQuiz(this, 1, false)">B. 找一个更大的旧习惯来覆盖它</div>
+<div class="quiz-option" onclick="checkQuiz(this, 1, true)">C. 把一个微习惯绑定到已有的自动行为之后</div>
+<div class="quiz-option" onclick="checkQuiz(this, 1, false)">D. 每天设定闹钟提醒自己</div>
+<div class="quiz-feedback" id="feedback-1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-container" data-quiz="2">
+<h4>第 2 题：以下哪个是"错误的"习惯叠加公式？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 2, false)">A. "在我喝完早咖啡之后，我会做一个深呼吸。"</div>
+<div class="quiz-option" onclick="checkQuiz(this, 2, true)">B. "在我吃完晚饭之后，我会去健身房跑步 45 分钟。"</div>
+<div class="quiz-option" onclick="checkQuiz(this, 2, false)">C. "在我打开电脑之后，我会写下今天的第一个待办事项。"</div>
+<div class="quiz-option" onclick="checkQuiz(this, 2, false)">D. "在我系好安全带之后，我会听一段播客。"</div>
+<div class="quiz-feedback" id="feedback-2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-container" data-quiz="3">
+<h4>第 3 题：微习惯的关键特征是？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 3, false)">A. 每天必须完成一个固定时长</div>
+<div class="quiz-option" onclick="checkQuiz(this, 3, true)">B. 小到不需要意志力就能启动</div>
+<div class="quiz-option" onclick="checkQuiz(this, 3, false)">C. 需要他人监督才能完成</div>
+<div class="quiz-option" onclick="checkQuiz(this, 3, false)">D. 一开始就要看到明显效果</div>
+<div class="quiz-feedback" id="feedback-3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-container" data-quiz="4">
+<h4>第 4 题：填空题——</h4>
+<p>BJ Fogg 的黄金规则是：<strong>永远不要连续错过 _____ 天。</strong></p>
+<input type="text" class="fill-input" id="fill-4" placeholder="输入一个数字">
+<button class="quiz-option" style="display:inline-block;margin-top:.5rem" onclick="checkFill(4, '两', 'two')">检查答案</button>
+<div class="quiz-feedback" id="feedback-4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-container" data-quiz="5">
+<h4>第 5 题：你连续一周没有去健身房，周一晚上回到家，你最应该做的是？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 5, false)">A. 明天开始重新制定严格的健身计划</div>
+<div class="quiz-option" onclick="checkQuiz(this, 5, true)">B. 今晚在家做 5 个深蹲，保持"底线习惯"不断</div>
+<div class="quiz-option" onclick="checkQuiz(this, 5, false)">C. 告诉自己"反正已经断了，下周再说"</div>
+<div class="quiz-option" onclick="checkQuiz(this, 5, false)">D. 直接去健身房练 1 小时弥补</div>
+<div class="quiz-feedback" id="feedback-5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-container" data-quiz="6">
+<h4>第 6 题：以下哪个微习惯设计最适合"久坐腰疼"的人？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 6, false)">A. 每天中午去健身房练 30 分钟</div>
+<div class="quiz-option" onclick="checkQuiz(this, 6, true)">B. 每次起身去洗手间回来时，做 3 次猫牛式伸展</div>
+<div class="quiz-option" onclick="checkQuiz(this, 6, false)">C. 每天早上做 20 分钟瑜伽</div>
+<div class="quiz-option" onclick="checkQuiz(this, 6, false)">D. 买一个人体工学椅</div>
+<div class="quiz-feedback" id="feedback-6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-container" data-quiz="7">
+<h4>第 7 题：微习惯做完之后，为什么要给自己一个即时奖励（比如心里说"太棒了"）？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 7, false)">A. 奖励会让 habit 变得奢侈</div>
+<div class="quiz-option" onclick="checkQuiz(this, 7, true)">B. 正面情绪帮助大脑把行为和愉悦感关联，强化神经回路</div>
+<div class="quiz-option" onclick="checkQuiz(this, 7, false)">C. 只是为了让自己开心一下</div>
+<div class="quiz-option" onclick="checkQuiz(this, 7, false)">D. 奖励是养成习惯的必要条件</div>
+<div class="quiz-feedback" id="feedback-7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-container" data-quiz="8">
+<h4>第 8 题：情景题——你想养成阅读的习惯，但每天下班都很累。以下哪种方式最有效？</h4>
+<div class="quiz-option" onclick="checkQuiz(this, 8, false)">A. 规定自己每天读 30 页书</div>
+<div class="quiz-option" onclick="checkQuiz(this, 8, true)">B. 在床头放一本书，规定自己每晚读 1 段（哪怕只有一句话）</div>
+<div class="quiz-option" onclick="checkQuiz(this, 8, false)">C. 周末一次性读完一周的书</div>
+<div class="quiz-option" onclick="checkQuiz(this, 8, false)">D. 加入读书打卡群，让朋友监督你</div>
+<div class="quiz-feedback" id="feedback-8"></div>
+</div>
+
+<!-- ==================== ACTION LIST ==================== -->
+<div class="action-list">
+<h4>⚡ 今天就能做的行动清单（1 分钟内完成）</h4>
+<ol>
+<li><strong>写出你的一个"锚定习惯"</strong>：比如"刷牙"或"倒水"。（30 秒）</li>
+<li><strong>想一个可以叠加的微习惯</strong>：比如"刷完牙后做一个深呼吸"。（30 秒）</li>
+<li><strong>把公式写下来</strong>："在我______之后，我会______。"（30 秒）</li>
+<li><strong>现在就做一次这个微习惯</strong>：验证它真的小到不需要思考。（1 分钟）</li>
+</ol>
+<p style="margin-top:1rem;color:#2e7d32;font-weight:600">完成这四步，你就已经开始了。不是"明天开始"，不是"下周开始"——就是现在。</p>
+</div>
+
+<!-- ==================== SUMMARY ==================== -->
+<h2>六、本课总结</h2>
+
+<div class="tip-box">
+<strong>📝 要点回顾：</strong>
+<ul style="margin-top:.5rem;padding-left:1.5rem">
+<li><strong>习惯叠加</strong> = 把新行为绑定到已有习惯后面，公式："在我做 [X] 之后，我会做 [Y]。"</li>
+<li><strong>微习惯</strong> = 把行为缩小到不可思议的小，小到不需要意志力。</li>
+<li><strong>组合拳</strong> = 习惯叠加 + 微习惯 = 最强的行为设计工具之一。</li>
+<li><strong>底线习惯</strong> = 即使状态再差也要做的那一点点，保证习惯链条不断。</li>
+<li><strong>黄金规则</strong> = 永远不要连续错过两天。</li>
+</ul>
+</div>
+
+<p style="margin-top:2rem;color:#888;font-size:.9rem;text-align:center">
+下一课：B=MAP 行为设计模型 · <span class="tag">Lesson 4 of 12</span>
+</p>
+
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){
+var h=document.documentElement;
+var pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+document.getElementById('progressBar').style.width=pct+'%';
+});
+
+// Quiz logic
+var quizData={
+1:'习惯叠加不是靠意志力，而是借已有习惯的"势能"。你把新行为绑在旧行为后面，就像搭便车一样。',
+2:'"去健身房跑步 45 分钟"太大了，需要意志力。微习惯应该是"换上运动服"或"穿上跑鞋"这种小到不需要思考的事。',
+3:'微习惯的核心就是"极小化"——小到不需要任何意志力就能启动。这样 System 1 不会抗拒。',
+4:'连续错过一天没关系，但两天就开始形成新习惯了，三天以上旧习惯就回来了。所以底线是"绝不连续错过两天"。',
+5:'底线习惯是关键。与其"下周重新开始"，不如今晚就做 5 个深蹲保持链条不断。中断不可怕，放弃才可怕。',
+6:'B 选项用了习惯叠加（去洗手间回来）+ 微习惯（3 次伸展），两者结合效果最好。A 和 C 都太大了，D 是买装备不是习惯。',
+7:'Fogg 强调"庆祝"（celebration）的重要性。正面情绪（pride, satisfaction）会让大脑把行为和愉悦感关联，强化神经回路。这不是虚荣心，这是神经科学。',
+8:'B 选项同时用了微习惯（读 1 段）和习惯叠加（床头放书=睡前 cue）。A 太大，C 不可持续，D 靠外部监督不如内部设计。'
+};
+
+function checkQuiz(el,quizNum,isCorrect){
+var container=el.closest('.quiz-container');
+var options=container.querySelectorAll('.quiz-option');
+options.forEach(function(o){o.classList.add('disabled')});
+if(isCorrect){
+el.classList.add('correct');
+}else{
+el.classList.add('wrong');
+options.forEach(function(o){
+if(o!==el)o.classList.remove('disabled');
+});
+}
+var fb=document.getElementById('feedback-'+quizNum);
+fb.className='quiz-feedback show '+(isCorrect?'correct':'wrong');
+fb.innerHTML=(isCorrect?'✅ 正确！':'❌ 不对哦，正确答案是 C。')+quizData[quizNum];
+}
+
+function checkFill(quizNum,answer){
+var input=document.getElementById('fill-'+quizNum);
+var val=input.value.trim();
+var fb=document.getElementById('feedback-'+quizNum);
+if(val===answer||val==='2'||val==='two'){
+fb.className='quiz-feedback show correct';
+fb.innerHTML='✅ 正确！'+quizData[quizNum];
+}else{
+fb.className='quiz-feedback show wrong';
+fb.innerHTML='❌ 应该是"两"（2）天。'+quizData[quizNum];
+}
+input.disabled=true;
+}
+
+// Collapse toggle
+function toggleCollapse(btn){
+var body=btn.nextElementSibling;
+btn.classList.toggle('open');
+body.classList.toggle('open');
+btn.textContent=btn.classList.contains('open')?'收起案例库 ▾':'点击查看 6 个真实叠加方案 ▸';
+}
+</script>
+</body>
+</html>

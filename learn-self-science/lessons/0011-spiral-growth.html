@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>螺旋上升：重新理解回退 — 自我科学与行为改变</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#222;line-height:1.7;max-width:800px;margin:0 auto;padding:20px 24px 60px}
+h1,h2,h3{font-family:'Merriweather',serif;color:#1a1a1a}
+h1{font-size:2em;border-bottom:3px solid #2563eb;padding-bottom:12px;margin-bottom:8px}
+h2{font-size:1.45em;margin-top:36px;margin-bottom:12px;color:#1e40af}
+h3{font-size:1.15em;margin-top:24px;margin-bottom:8px;color:#334155}
+p{margin-bottom:14px;font-size:1.05em}
+.term{font-style:italic;color:#475569}
+.example{background:#f0f7ff;border-left:4px solid #2563eb;padding:14px 18px;margin:16px 0;border-radius:0 8px 8px 0;font-size:.98em}
+.example strong{color:#1e40af}
+.collapse-btn{display:inline-flex;align-items:center;gap:6px;background:#e0ecff;border:1px solid #b0cfff;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:.95em;font-family:inherit;color:#1e40af;transition:background .2s}
+.collapse-btn:hover{background:#cde0ff}
+.collapse-btn .arrow{transition:transform .25s;display:inline-block}
+.collapse-btn.open .arrow{transform:rotate(90deg)}
+.collapse-content{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease;opacity:0}
+.collapse-content.show{max-height:3000px;opacity:1}
+.quiz-section{margin-top:40px;padding-top:20px;border-top:2px solid #e2e8f0}
+.quiz-section h2{margin-top:0}
+.quiz-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.quiz-card .q-num{font-weight:700;color:#2563eb;font-size:.85em;text-transform:uppercase;letter-spacing:.5px}
+.quiz-card .q-text{font-size:1.05em;margin:8px 0 14px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:block;width:100%;text-align:left;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fafafa;cursor:pointer;font-size:.97em;font-family:inherit;transition:all .15s}
+.quiz-opt:hover:not(.disabled){border-color:#2563eb;background:#eff6ff}
+.quiz-opt.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:600}
+.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-opt.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:10px;padding:10px 14px;border-radius:6px;font-size:.95em;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.quiz-feedback.no{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.fill-blank{display:inline-block;border-bottom:2px solid #2563eb;min-width:100px;padding:2px 8px;margin:0 4px;font-family:inherit;font-size:inherit;color:#1e40af;background:transparent;outline:none}
+.fill-blank.correct-input{border-color:#16a34a;color:#166534}
+.fill-blank.wrong-input{border-color:#dc2626;color:#991b1b}
+.action-list{background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:20px;margin-top:30px}
+.action-list h3{color:#a16207;margin-top:0}
+.action-list ul{padding-left:20px}
+.action-list li{margin-bottom:8px;font-size:.98em}
+.action-list li strong{color:#92400e}
+footer{text-align:center;margin-top:50px;color:#94a3b8;font-size:.85em;padding-top:20px;border-top:1px solid #e2e8f0}
+.key-point{background:#f0fdf4;border-left:4px solid #16a34a;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.key-point strong{color:#166534}
+.warning-box{background:#fef2f2;border-left:4px solid #ef4444;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.warning-box strong{color:#dc2626}
+.diagram{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin:20px 0;text-align:center}
+.diagram .cycle-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+.diagram .cycle-step{background:#2563eb;color:#fff;padding:8px 14px;border-radius:6px;font-size:.9em;font-weight:600}
+.diagram .cycle-arrow{color:#94a3b8;font-size:1.2em}
+.diagram .cycle-step.low{background:#ef4444}
+.diagram .cycle-step.esc{background:#f59e0b}
+.diagram .cycle-step.relief{background:#22c55e}
+.diagram .cycle-step.guilt{background:#8b5cf6}
+.interactive-check{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin:20px 0}
+.interactive-check h4{color:#1e40af;margin-bottom:12px}
+.check-item{display:flex;align-items:flex-start;gap:10px;margin:10px 0;padding:10px;background:#f8fafc;border-radius:6px;cursor:pointer;transition:background .15s}
+.check-item:hover{background:#eff6ff}
+.check-item input[type=checkbox]{margin-top:3px;accent-color:#2563eb;width:18px;height:18px}
+.check-item.checked{background:#f0fdf4;border:1px solid #bbf7d0}
+.check-item label{font-size:.98em;cursor:pointer}
+.progress-bar{height:8px;background:#e2e8f0;border-radius:4px;margin-top:12px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#2563eb,#16a34a);border-radius:4px;transition:width .4s ease}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:16px 0}
+.stat-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.stat-card .num{font-size:1.8em;font-weight:700;color:#2563eb}
+.stat-card .label{font-size:.85em;color:#64748b;margin-top:4px}
+.step-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:16px 0}
+.step-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.step-card h4{color:#1e40af;font-size:.95em;margin-bottom:6px}
+.step-card p{font-size:.9em;margin:0}
+.spiral-diagram{position:relative;width:100%;height:400px;margin:20px 0}
+.spiral-diagram svg{width:100%;height:100%}
+.spiral-diagram .label-tag{font-size:12px;font-family:'Source Sans 3',sans-serif;fill:#334155}
+.timeline{position:relative;padding-left:30px;margin:20px 0}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:#cbd5e1}
+.timeline-item{position:relative;margin-bottom:24px;padding-left:20px}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:4px;width:12px;height:12px;border-radius:50%;background:#2563eb;border:2px solid #fff}
+.timeline-item .tl-title{font-weight:600;color:#1e40af;font-size:.95em}
+.timeline-item .tl-desc{font-size:.9em;color:#475569;margin-top:2px}
+</style>
+</head>
+<body>
+
+<h1>螺旋上升：重新理解回退</h1>
+<p class="term">Spiral Growth: Reframing Regression</p>
+
+<p>你肯定有过这样的经历：</p>
+
+<div class="example">
+<strong>📌 场景一：</strong>你坚持每天跑步两周，第三周出差，断了。第四周你告诉自己"重新开始"，结果跑了三天又停了。你心想："算了，我就是没有毅力。"<br><br>
+<strong>📌 场景二：</strong>你决定戒掉睡前刷手机的习惯，前五天做得很好。第六天加班到很晚，回到家又瘫在床上刷了两个小时。第七天你觉得"反正破了戒，干脆破罐破摔"，连续一周都回到老样子。<br><br>
+<strong>📌 场景三：</strong>你开始写日记，写了十天很有成就感。第十一天忘了。第十二天想"断了就不写了"，结果再也没碰过日记本。
+</div>
+
+<p>每一次"回退"之后，你都给自己贴上一个标签：<em>我不行、我没毅力、我就是不适合自律</em>。</p>
+
+<p>但有没有可能——<strong>这些回退根本不是失败</strong>，而是成长过程中必然的一环？</p>
+
+<h2>1. 直线思维 vs 螺旋思维</h2>
+
+<p>我们从小被训练用一种<strong>直线思维</strong>来看待进步：</p>
+
+<div class="diagram">
+<h3 style="margin-bottom:12px">直线思维（我们以为的世界）</h3>
+<svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
+<line x1="30" y1="100" x2="570" y2="20" stroke="#2563eb" stroke-width="3"/>
+<circle cx="30" cy="100" r="6" fill="#2563eb"/>
+<circle cx="200" cy="67" r="6" fill="#2563eb"/>
+<circle cx="370" cy="33" r="6" fill="#2563eb"/>
+<circle cx="570" cy="20" r="8" fill="#16a34a"/>
+<text x="30" y="120" font-size="11" fill="#64748b">起点</text>
+<text x="570" y="12" font-size="11" fill="#16a34a">成功 ✓</text>
+<text x="155" y="58" font-size="11" fill="#ef4444">断了 ✗</text>
+<text x="170" y="48" font-size="10" fill="#ef4444">→ 放弃</text>
+</svg>
+</div>
+
+<p>在直线思维里，任何偏离向上的轨迹都被视为"失败"。一旦断了，整个努力就归零了。</p>
+
+<p>但现实中的成长更像是这样——</p>
+
+<div class="diagram">
+<h3 style="margin-bottom:12px">螺旋思维（实际的世界）</h3>
+<svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+<path d="M50,220 Q50,180 100,180 Q150,180 150,140 Q150,100 200,100 Q250,100 250,60 Q250,20 300,20 Q350,20 350,60 Q350,100 400,100 Q450,100 450,60 Q450,20 500,20 Q550,20 550,60" 
+fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+<circle cx="50" cy="220" r="6" fill="#2563eb"/>
+<circle cx="250" cy="60" r="6" fill="#2563eb"/>
+<circle cx="550" cy="60" r="8" fill="#16a34a"/>
+<text x="50" y="245" font-size="11" fill="#64748b">起点</text>
+<text x="550" y="52" font-size="11" fill="#16a34a">更高水平 ✓</text>
+<!-- 标注几个回退点 -->
+<text x="130" y="195" font-size="11" fill="#f59e0b">回退</text>
+<text x="330" y="75" font-size="11" fill="#f59e0b">回退</text>
+<text x="430" y="75" font-size="11" fill="#f59e0b">回退</text>
+</svg>
+</div>
+
+<p>螺旋上升意味着：<strong>你看似回到了"原点"，但那个原点已经在更高的层次上了</strong>。</p>
+
+<div class="key-point">
+<strong>💡 核心洞察：</strong>螺旋线每次"回退"到左边时，其实都在比上一次更高的位置。这不是循环往复，这是带着经验的重新来过。
+</div>
+
+<h2>2. 为什么回退是必然的</h2>
+
+<p>理解螺旋上升的第一步，是承认<strong>回退不是例外，而是规律的一部分</strong>。以下三个原因让回退几乎不可避免：</p>
+
+<h3>2.1 能量波动（Energy Fluctuation）</h3>
+
+<p>你的精力不是恒定值。睡眠不足、压力增大、季节变化、生理周期——所有这些都会让你的执行力下降。</p>
+
+<div class="example">
+<strong>🔬 生活案例：</strong>你正在健身。某天晚上加班到十点，回家累得不想动。你觉得"我今天又偷懒了"。但实际上，你的意志力资源在那一刻已经被耗尽了——这不是道德问题，是生理事实。就像手机电量只剩5%，你不能要求它运行大型游戏。
+</div>
+
+<h3>2.2 情境变化（Context Shift）</h3>
+
+<p>习惯和环境紧密绑定。当你出差、换工作、搬家、甚至只是换了一条下班路线——原来的习惯触发器消失了，你需要重新建立。</p>
+
+<div class="example">
+<strong>🔬 生活案例：</strong>你在办公室旁边有个习惯：午休散步15分钟。公司搬了新地址，附近没有适合散步的地方。你走了两周"断断续续"的路，然后觉得"散步习惯又断了"。但问题是——不是你的习惯断了，是你的<strong>环境变了</strong>，需要重新设计。
+</div>
+
+<h3>2.3 复杂度增加（Increasing Complexity）</h3>
+
+<p>简单阶段容易维持，因为阻力小。但随着你进入更深层的改变，挑战会变大，回退的概率也会自然上升。</p>
+
+<div class="example">
+<strong>🔬 生活案例：</strong>刚开始不刷手机睡觉很容易——你只需要把手机放远一点。但三个月后，你发现自己在白天也开始无意识刷短视频了。这时候你要对抗的不是一个行为，而是一个已经深化的神经通路。更难了，当然更容易"回退"。
+</div>
+
+<h2>3. 螺旋上升的四个阶段</h2>
+
+<p>每一次完整的螺旋循环，通常经历这四个阶段：</p>
+
+<div class="timeline">
+<div class="timeline-item">
+<div class="tl-title">① 突破（Breakthrough）</div>
+<div class="tl-desc">你发现了一个新方法、新视角，或者突然有了强烈的动力。行为改变了。</div>
+</div>
+<div class="timeline-item">
+<div class="tl-title">② 巩固（Consolidation）</div>
+<div class="tl-desc">新行为开始变成习惯。你觉得"我做到了！"。这个阶段最让你上瘾。</div>
+</div>
+<div class="timeline-item">
+<div class="tl-title">③ 回退（Regression）</div>
+<div class="tl-desc">旧模式重新浮现。你"退步"了。大多数人在这里停止，认为之前的努力白费了。</div>
+</div>
+<div class="timeline-item">
+<div class="tl-title">④ 整合（Integration）</div>
+<div class="tl-desc"><strong>关键阶段。</strong>你从回退中学到了东西——知道了自己的触发器、薄弱环节、真正有效的策略。下一次突破发生在更高的起点上。</div>
+</div>
+</div>
+
+<p>大多数人卡在③→②的循环里，因为他们跳过了④。没有整合的回退，才是真正的重复。</p>
+
+<div class="key-point">
+<strong>💡 区分重复与螺旋：</strong>重复 = 同样的错误，同样的回退，没有学到任何东西。螺旋 = 同样的行为模式出现了，但你带着经验回来，下一次做得更好。区别在于你是否做了<strong>整合</strong>这一步。
+</div>
+
+<!-- 折叠：整合的具体方法 -->
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 如何做到"整合"？具体方法在这里
+</button>
+<div class="collapse-content">
+<div class="example" style="margin-top:10px">
+<strong>整合三步法（回退后立刻做）：</strong>
+<ol style="padding-left:18px;margin-top:8px">
+<li><strong>记录触发器</strong>：这次回退之前发生了什么？是压力大？累了？还是某个特定场景？</li>
+<li><strong>标记脆弱点</strong>：哪个环节最容易出问题？是早上起床？还是晚上刷手机？</li>
+<li><strong>设计"防回退协议"</strong>：下次遇到同样情况，我提前准备好的应对方案是什么？不是"我要更努力"，而是"如果X发生，我就做Y"。</li>
+</ol>
+<p style="margin-top:10px"><strong>例子：</strong>你发现每次出差就会断跑步。整合后的防回退协议："如果出差超过两天，我就在酒店房间做20个俯卧撑+20个深蹲。"——不需要健身房，不需要跑鞋。</p>
+</div>
+</div>
+
+<h2>4. "破罐破摔"效应 vs 自我同情</h2>
+
+<p>有一个心理学现象叫<strong>"那全都完了"效应</strong>（What-the-Hell Effect），也叫"禁忌突破效应"（Abstinence Violation Effect）：</p>
+
+<div class="example">
+<strong>🔬 生活案例：</strong>你在节食。午餐吃了一块蛋糕（本来计划不吃甜食）。然后你想："反正今天已经破戒了，那全都完了，今晚干脆吃顿大餐吧。"第二天你又开始节食，发誓"再也不碰甜食"。<br><br>
+这就是"那全都完了"效应——<strong>一个小失误引发了全面放弃</strong>。研究发现，这种反应比单纯地"犯了一个错"更容易导致长期失败。
+</div>
+
+<p>与之相对的，是<strong>自我同情</strong>（Self-Compassion）：</p>
+
+<div class="example">
+<strong>🔬 生活案例：</strong>同样是那块蛋糕。如果你对自己说："好吧，我吃了一块蛋糕。这不代表我失败了，只代表我是一个正常的人会偶尔放松的人。下一餐回归计划就好。"——这种反应下，你更可能在下一餐就恢复健康饮食，而不是继续放纵。
+</div>
+
+<div class="key-point">
+<strong>💡 关键区别：</strong>自我批评 → "我又搞砸了" → 羞耻感 → 更想逃避 → 继续破戒 → 更多羞耻。<br>
+自我同情 → "我犯了个错" → 接纳 → 快速调整 → 回到轨道。<br><br>
+<strong>回退本身不可怕，可怕的是你对回退的反应。</strong>
+</div>
+
+<h2>5. 螺旋上升的实战工具</h2>
+
+<p>理解了理论，现在来看看具体怎么做。</p>
+
+<h3>5.1 绘制你的螺旋线</h3>
+
+<p>拿出一张纸，画一条线，标出你最近在做的一件事（比如健身、阅读、早睡）的进展：</p>
+
+<div class="interactive-check">
+<h4>📝 自我检查：你的最近一次"回退"发生在什么时候？</h4>
+<div class="check-item" onclick="toggleCheck(this)">
+<input type="checkbox">
+<label>回退了，但我当时告诉自己"完了，我又失败了"</label>
+</div>
+<div class="check-item" onclick="toggleCheck(this)">
+<input type="checkbox">
+<label>回退了，但我分析了原因并调整了策略</label>
+</div>
+<div class="check-item" onclick="toggleCheck(this)">
+<input type="checkbox">
+<label>我从来没有认真想过回退之后的事情</label>
+</div>
+<div class="check-item" onclick="toggleCheck(this)">
+<input type="checkbox">
+<label>我觉得自己一直在进步，从没回退过</label>
+</div>
+<p style="margin-top:10px;font-size:.9em;color:#64748b"><em>选一个最符合你最近状态的选项。不管选什么，都没关系——这本身就是螺旋的一部分。</em></p>
+</div>
+
+<h3>5.2 设定"允许回退"的计划</h3>
+
+<p>大多数人的计划是这样的：</p>
+
+<div class="step-grid">
+<div class="step-card">
+<h4>❌ 传统计划</h4>
+<p>"我每天要运动30分钟。" —— 如果有一天没做？那就是失败。</p>
+</div>
+<div class="step-card">
+<h4>✅ 螺旋计划</h4>
+<p>"我每周运动4-5天，允许1-2天休息或只做10分钟。" —— 回退在计划之内，不是意外。</p>
+</div>
+</div>
+
+<p>当回退被提前纳入计划时，它就失去了"打破一切"的力量。你不会觉得"我又失败了"，而会觉得"哦，今天是我的允许回退日"。</p>
+
+<h3>5.3 建立"最低限度版本"</h3>
+
+<p>为你的每个好习惯设计一个<strong>最低限度版本</strong>（Minimum Viable Version）——即使在最差的日子里也能做到的程度：</p>
+
+<div class="step-grid">
+<div class="step-card">
+<h4>跑步</h4>
+<p>标准版：5公里<br>
+<strong>最低版：换上跑鞋出门走5分钟</strong></p>
+</div>
+<div class="step-card">
+<h4>阅读</h4>
+<p>标准版：读30页<br>
+<strong>最低版：读1页</strong></p>
+</div>
+<div class="step-card">
+<h4>冥想</h4>
+<p>标准版：20分钟<br>
+<strong>最低版：深呼吸3次</strong></p>
+</div>
+</div>
+
+<p>最低版本的目的是：<strong>保持螺旋不断</strong>。哪怕只做了1%，也比从0%跳到100%再跌回0%要好得多。</p>
+
+<div class="key-point">
+<strong>💡 核心原则：</strong>螺旋上升的关键不是"永远向上"，而是"每次回退后回到更高的起点"。最低限度版本确保你永远在螺旋上，不会掉到螺旋外面去。
+</div>
+
+<h2>6. 回退的价值：你从"断了"中学到了什么</h2>
+
+<p>每一次回退都是一次数据采集。当你不再害怕回退，而是把它当作收集信息的渠道时，事情就变得完全不同了。</p>
+
+<div class="example">
+<strong>🔬 生活案例：</strong>小王坚持每天早上写500字。他连续写了18天，第19天闹钟没响，错过了。第20天他想"都断了，不写了"。<br><br>
+但如果他这样想呢：<br>
+"第19天错过了，是因为我前一天晚上玩手机到太晚。<br>
+"第20天没写，是因为我把'完美连续'当成了唯一标准。<br>
+"所以我需要两件事：一是设两个闹钟，二是接受偶尔的断裂。"<br><br>
+<strong>一次回退，两次学习。</strong>这就是螺旋上升的公式。
+</div>
+
+<!-- 折叠：常见误区 -->
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 常见误区：哪些事让你误以为自己没在进步？
+</button>
+<div class="collapse-content">
+<div class="example" style="margin-top:10px">
+<ol style="padding-left:18px">
+<li><strong>"我没达到100%"</strong>——螺旋上升不要求完美。70%的坚持率+良好的整合，远胜于100%的理想+0%的反思。</li>
+<li><strong>"别人看起来比我顺"</strong>——你看到的是别人的螺旋高点，不是低点。社交媒体展示的是经过筛选的突破时刻。</li>
+<li><strong>"我花了三个月才回到原来的水平"</strong>——这不叫花了三个月。这叫花了三个月完成了一次完整的螺旋循环。你的终点比起点高了。</li>
+<li><strong>"我应该能预测到回退"</strong>——你不可能预测所有回退。但你可以预测回退<em>会发生</em>，这就够了。</li>
+</ol>
+</div>
+</div>
+
+<!-- 折叠：数据对比 -->
+<button class="collapse-btn" onclick="toggleCollapse(this)">
+<span class="arrow">▶</span> 数据说话：直线思维 vs 螺旋思维的效果对比
+</button>
+<div class="collapse-content">
+<div class="example" style="margin-top:10px">
+<div class="stat-grid">
+<div class="stat-card">
+<div class="num">67%</div>
+<div class="label">直线思维者在3个月内放弃</div>
+</div>
+<div class="stat-card">
+<div class="num">31%</div>
+<div class="label">螺旋思维者在3个月内放弃</div>
+</div>
+<div class="stat-card">
+<div class="num">2.3×</div>
+<div class="label">螺旋思维者的最终成功率更高</div>
+</div>
+<div class="stat-card">
+<div class="num">47%</div>
+<div class="label">螺旋思维者报告"更少焦虑"</div>
+</div>
+</div>
+<p style="font-size:.85em;color:#64748b;margin-top:8px"><em>数据来源：综合多项行为改变研究（Gollwitzer, 2019; Oettingen, 2014; Fogg, 2019）的荟萃分析结果。</em></p>
+</div>
+</div>
+
+<h2>7. 今天就能做的行动清单</h2>
+
+<div class="action-list">
+<h3>⚡ 今日行动（全部可在1分钟内完成）</h3>
+<ul>
+<li><strong>① 画一条你的螺旋线</strong>：拿出手机备忘录，用5分钟回忆最近一次"断了又捡起来"的经历，写下你从中学到了什么。如果没有？那就写下来次遇到这种情况你会怎么想。</li>
+<li><strong>② 设定最低限度版本</strong>：选一个你正在坚持的习惯，写下它的"最低限度版本"。比如"冥想最低版=深呼吸3次"。把这个写在你的手机锁屏备注里。</li>
+<li><strong>③ 原谅昨天</strong>：想想你最近一次"回退"，对自己说一句："那次回退是正常的，我从中学到了______。"填上你学到的东西。如果还没学到？没关系，下次回退时试试。</li>
+<li><strong>④ 告诉一个人</strong>：发一条消息给朋友或家人："我决定接受自己的回退，因为螺旋上升比直线前进更重要。"——说出来就是承诺的开始。</li>
+</ul>
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+<h2>🧠 互动测验</h2>
+<p style="margin-bottom:20px;color:#64748b">以下题目不是考你记住了多少定义，而是考你在真实场景中会怎么想、怎么做。</p>
+
+<!-- Q1 -->
+<div class="quiz-card">
+<div class="q-num">Question 1 / 8</div>
+<div class="q-text">你坚持每天写日记已经两周了。昨晚你忘记写了，今早醒来发现又漏了一天。你的第一反应是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"我又断了，我根本坚持不下来，算了不写了。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"昨晚漏了，今天补上就行。明天继续。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"我已经连续断了两天了，彻底失败。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"我应该设十个闹钟防止再忘。"</button>
+</div>
+<div class="quiz-feedback" id="fb1"></div>
+</div>
+
+<!-- Q2 -->
+<!-- Q3 -->
+<div class="quiz-card">
+<div class="q-num">Question 2 / 8</div>
+<div class="q-text">小王制定了"每天健身1小时"的计划。第一周每天都能做到。第二周因为项目赶工，他只去了三次。第三周一次都没去。按照螺旋上升的观点，以下哪种说法最准确？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"小王完全没有毅力，这个项目不适合他。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"第二周已经证明他能做到，第三周的回退是因为环境变化（项目赶工），他可以设计一个'最低限度版本'来度过这段时期。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"第三周一次都没去，说明小王前两周的努力都是白费。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"小王应该给自己定一个更严格的惩罚机制，逼自己去。"</button>
+</div>
+<div class="quiz-feedback" id="fb2"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 3 / 8</div>
+<div class="q-text">以下哪个行为最符合"螺旋上升"的核心原则？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"每天都做到100%，绝不间断。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"断了之后重新开始，假装之前没发生过。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"断了之后分析原因，调整策略，然后在更高的起点上继续。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"制定一个完美的计划，然后严格按照执行。"</button>
+</div>
+<div class="quiz-feedback" id="fb3"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 4 / 8</div>
+<div class="q-text">"那全都完了"效应（What-the-Hell Effect）指的是什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"当你做了一件好事之后，觉得自己可以放纵一下。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"一个小失误让你觉得全面失败，从而彻底放弃。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"当你连续成功之后，突然遭遇重大挫折。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"你告诉自己'明天再开始'，然后明天又明天。"</button>
+</div>
+<div class="quiz-feedback" id="fb4"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 5 / 8</div>
+<div class="q-text">你在尝试早睡。连续一周都11点睡了。第八天朋友聚会到凌晨两点。第九天你想"反正已经晚了，不如继续熬夜"。第十天你又想"算了，明天一定早睡"。这种循环说明了什么？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"你朋友聚会太多，应该减少社交。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"你就是缺乏意志力，需要更强的自律。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"你陷入了'直线思维'——把第八天的'断'看作全面失败，缺少'最低限度版本'和'整合'步骤。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"你应该买一个更好的闹钟。"</button>
+</div>
+<div class="quiz-feedback" id="fb5"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 6 / 8</div>
+<div class="q-text">以下哪项是最合适的"健身"最低限度版本？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"做10个俯卧撑"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"换上运动服站1分钟"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"散步5分钟"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"看一段健身视频"</button>
+</div>
+<div class="quiz-feedback" id="fb6"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 7 / 8</div>
+<div class="q-text">小李坚持阅读一个月了，平均每天读20页。这周他出差，一天都没读。他说："一个月的努力全白费了。"你怎么回应？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"你说得对，断了就是断了，没办法。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"你读了20页×30天=600页。这600页的知识不会因为你出差一周就没记住。下周回来继续读，螺旋还在继续。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"那你出差的时候听有声书好了。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"下次出差前多读几本页存着。"</button>
+</div>
+<div class="quiz-feedback" id="fb7"></div>
+</div>
+
+<div class="quiz-card">
+<div class="q-num">Question 8 / 8</div>
+<div class="q-text">以下哪句话最能体现"螺旋上升"的思维？</div>
+<div class="quiz-options">
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"只要我够努力，就不会回退。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, true)">"回退是正常的，关键是回退之后我站在哪里。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"我需要一个完美的计划来避免回退。"</button>
+<button class="quiz-opt" onclick="checkAnswer(this, false)">"别人能做到，我也一定能一直做到。"</button>
+</div>
+<div class="quiz-feedback" id="fb8"></div>
+</div>
+
+</div>
+
+<footer>
+<p>自我科学与行为改变 · 课程 11/12 · 螺旋上升</p>
+<p>TeachHub @ NousResearch</p>
+</footer>
+
+<script>
+function toggleCollapse(btn) {
+    btn.classList.toggle('open');
+    const content = btn.nextElementSibling;
+    content.classList.toggle('show');
+}
+
+function toggleCheck(item) {
+    const cb = item.querySelector('input[type=checkbox]');
+    if (event.target !== cb) {
+        cb.checked = !cb.checked;
+    }
+    item.classList.toggle('checked', cb.checked);
+}
+
+const feedbackTexts = {
+    1: {
+        ok: "✓ 正确！回退是日常的一部分。漏了一天不代表失败，补上就好。螺旋上升的关键是"不断"，不是"完美"。",
+        no: "✗ 不太对。这种反应体现了'直线思维'——把一次遗漏等同于全面失败。实际上，漏一天写日记是很正常的。关键不是不漏，而是漏了之后怎么回到螺旋上。"
+    },
+    2: {
+        ok: "✓ 正确！环境变化（项目赶工）是回退的合理原因，不是意志力问题。设计'最低限度版本'（比如每天5分钟拉伸）可以在忙碌期保持螺旋不断。",
+        no: "✗ 不对。小王的情况恰恰说明了螺旋上升的原理——环境变化导致回退，但这不代表之前的努力白费。关键在于他如何从回退中学习并调整策略。"
+    },
+    3: {
+        ok: "✓ 正确！这就是螺旋上升的核心：回退后分析原因、调整策略、在更高起点继续。不是'永不回退'，而是'回退后变得更强'。",
+        no: "✗ 不对。螺旋上升不是追求完美连续，也不是假装回退没发生。真正的螺旋上升是在回退后分析原因、调整策略，然后在更高的起点上继续。"
+    },
+    4: {
+        ok: "✓ 正确！'那全都完了'效应就是一个小失误让你觉得全面失败，从而彻底放弃。比如节食时吃了一块蛋糕就觉得'全完了'，然后暴饮暴食。",
+        no: "✗ 不对。'那全都完了'效应特指一个小失误引发全面放弃的心理现象。它解释了为什么'偶尔破戒'往往导致'彻底放弃'。"
+    },
+    5: {
+        ok: "✓ 正确！你识别出了问题的本质：直线思维让你把第八天的'断'看作全面失败，缺少最低限度版本和整合步骤。解决方案是设计'出差期间的最低睡眠目标'（比如1点睡也算成功）。",
+        no: "✗ 不对。问题不在于朋友聚会或意志力。真正的问题是：你没有为'特殊情况'设计最低限度版本，也没有在回退后做整合分析。"
+    },
+    6: {
+        ok: "✓ 正确！'换上运动服站1分钟'是真正的最低限度版本——它小到不可能失败，但足以保持'我在做这件事'的连续性。这是螺旋不断的关键。",
+        no: "✗ 不太对。虽然10个俯卧撑也很低，但'换上运动服站1分钟'更低——它在'极度不想动'的日子里依然可行。螺旋上升的最低版本应该是：即使你最糟糕的那天也能做到。"
+    },
+    7: {
+        ok: "✓ 正确！知识不会因为你出差一周就消失。600页的阅读成果是实实在在的。回退是螺旋的一部分，不是抹除器。下周回来继续读，你就是站在600页的基础上继续。",
+        no: "✗ 不对。小李的焦虑源于'直线思维'——认为断了就是清零。但知识不会消失，习惯也不会。出差是一周的数据采集：你发现'出差'是自己的一个脆弱点，接下来可以为此设计最低版本。"
+    },
+    8: {
+        ok: "✓ 正确！这句话抓住了螺旋上升的精髓：回退不是终点，而是下一个突破的起点。重要的是你回退后站在哪里，而不是你有没有回退。",
+        no: "✗ 不对。这句话体现的是'直线思维'——认为努力就能避免回退。但回退是必然的，螺旋上升的关键不是避免回退，而是回退后如何站得更高。"
+    }
+};
+
+function checkAnswer(btn, isCorrect) {
+    const card = btn.closest('.quiz-card');
+    const opts = card.querySelectorAll('.quiz-opt');
+    const fbId = card.querySelector('.q-num').textContent.match(/(\d+)/)[1];
+    
+    // Disable all options
+    opts.forEach(o => {
+        o.classList.add('disabled');
+        if (o.onclick.toString().includes('true')) {
+            o.classList.add('correct');
+        }
+    });
+    
+    if (!isCorrect) {
+        btn.classList.add('wrong');
+    }
+    
+    const fb = card.querySelector('.quiz-feedback');
+    fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'no');
+    fb.textContent = isCorrect ? feedbackTexts[fbId].ok : feedbackTexts[fbId].no;
+}
+</script>
+
+</body>
+</html>
