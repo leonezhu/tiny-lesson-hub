@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0002 - 用户需求与痛点 (User Needs &amp; Pain Points)</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#1a1a2e;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3,h4{font-family:'Merriweather',serif;font-weight:700}
+h1{font-size:2.1rem;text-align:center;margin-bottom:.3rem;color:#16213e}
+.subtitle{text-align:center;color:#666;font-size:1.05rem;margin-bottom:2.5rem}
+.badge{display:inline-block;background:#e8f0fe;color:#1a73e8;font-size:.78rem;padding:.15rem .6rem;border-radius:12px;font-weight:600;vertical-align:middle}
+.section{margin:2.5rem 0}
+.section h2{font-size:1.5rem;border-left:4px solid #1a73e8;padding-left:.8rem;margin-bottom:1rem}
+.section h3{font-size:1.15rem;margin-top:1.5rem;margin-bottom:.5rem;color:#16213e}
+p{margin-bottom:1rem}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:1rem 1.2rem;margin:1.2rem 0;border-radius:0 8px 8px 0;font-size:.97rem}
+.case-box strong{color:#e65100}
+.toggle-btn{display:block;width:100%;text-align:left;background:#f0f4ff;border:1px solid #d0d9f2;border-radius:8px;padding:.85rem 1rem;margin:.6rem 0;cursor:pointer;font-size:1rem;font-family:'Source Sans 3',sans-serif;color:#16213e;transition:all .2s}
+.toggle-btn:hover{background:#e3eaff}
+.toggle-btn .arrow{display:inline-block;margin-right:.5rem;transition:transform .2s;font-size:.85rem}
+.toggle-btn.open .arrow{transform:rotate(90deg)}
+.toggle-content{display:none;padding:.8rem 1.2rem;background:#fafbff;border-radius:0 0 8px 8px;margin-top:-.4rem}
+.toggle-content.show{display:block}
+.quiz-container{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.5rem;margin:1.5rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-question{font-weight:700;font-size:1.05rem;margin-bottom:1rem;color:#16213e}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:.4rem 0}
+.quiz-opt{display:block;width:100%;text-align:left;padding:.7rem 1rem;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;cursor:pointer;font-size:.95rem;font-family:'Source Sans 3',sans-serif;transition:all .15s}
+.quiz-opt:hover{background:#eef2ff;border-color:#1a73e8}
+.quiz-opt.correct{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+.quiz-opt.wrong{background:#ffebee;border-color:#f44336;color:#c62828}
+.quiz-feedback{margin-top:.8rem;padding:.8rem 1rem;border-radius:6px;font-size:.93rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#e8f5e9;color:#2e7d32}
+.quiz-feedback.no{background:#ffebee;color:#c62828}
+.fill-input{border:2px solid #ccc;border-radius:6px;padding:.5rem .8rem;font-size:1rem;font-family:'Source Sans 3',sans-serif;width:200px;transition:border-color .2s}
+.fill-input:focus{outline:none;border-color:#1a73e8}
+.fill-check{margin-left:.5rem;padding:.5rem 1rem;background:#1a73e8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:.95rem}
+.fill-feedback{margin-top:.6rem;font-size:.93rem;display:none}
+.fill-feedback.show{display:block}
+.key-point{background:#e3f2fd;border-left:4px solid #1a73e8;padding:.8rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.key-point strong{color:#0d47a1}
+.action-list{background:#f1f8e9;border:1px solid #c5e1a5;border-radius:12px;padding:1.2rem 1.5rem;margin:2rem 0}
+.action-list h3{color:#33691e;margin-bottom:.8rem}
+.action-list ol{padding-left:1.5rem}
+.action-list li{margin:.4rem 0;font-size:.95rem}
+footer{text-align:center;color:#999;font-size:.85rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #eee}
+.progress-bar{height:6px;background:#e0e0e0;border-radius:3px;margin:1.5rem 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1a73e8,#4fc3f7);border-radius:3px;transition:width .5s}
+.concept-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:1.2rem;margin:1rem 0;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.concept-card h4{color:#1a73e8;margin-bottom:.5rem}
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+.pain-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.pain-card h4{font-size:.95rem;margin-bottom:.4rem}
+.pain-card .pain-tag{display:inline-block;background:#fce4ec;color:#c62828;font-size:.75rem;padding:.1rem .5rem;border-radius:10px;font-weight:600;margin-bottom:.4rem}
+.pain-card .pain-tag.latent{background:#e8f5e9;color:#2e7d32}
+@media(max-width:600px){.pain-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<h1>用户需求与痛点 <span class="badge">Lesson 02/12</span></h1>
+<p class="subtitle">User Needs &amp; Pain Points — 找到真正值得解决的问题</p>
+<div class="progress-bar"><div class="progress-fill" style="width:17%"></div></div>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、需求 vs 痛点：别搞混了</h2>
+
+<p>在产品设计里，"需求"（<strong>User Needs</strong>）和"痛点"（<strong>Pain Points</strong>）经常被混为一谈，但它们其实指向不同的东西。</p>
+
+<div class="concept-card">
+<h4>📌 需求（Needs）</h4>
+<p>用户想要达到的<strong>目标或状态</strong>。它是正向的、未来的——"我想要……"</p>
+<p>比如："我想更健康""我想省钱""我想更快到达目的地"。</p>
+</div>
+
+<div class="concept-card">
+<h4>📌 痛点（Pain Points）</h4>
+<p>用户在追求目标过程中遇到的<strong>阻碍和痛苦</strong>。它是负向的、当下的——"我现在被……困扰"。</p>
+<p>比如："我找不到靠谱的健身教练""我的工资扣完房租所剩无几""早高峰地铁挤不上去"。</p>
+</div>
+
+<div class="key-point">
+<strong>核心关系：</strong>痛点是未被满足的需求。每一个强烈的痛点背后，都藏着一个用户真正在乎的需求。<br><br>
+<strong>一句话公式：</strong>痛点 = 需求 − 当前可用方案
+</div>
+
+<div class="case-box">
+<strong>☕ 生活案例：</strong><br>
+你的需求是"喝到一杯好咖啡"。痛点是什么？<br>
+• 咖啡店排队太长（时间痛点）<br>
+• 手冲技术太复杂（技能痛点）<br>
+• 速溶咖啡太难喝（品质痛点）<br>
+• 外卖送到已经凉了（体验痛点）<br>
+<br>
+每个痛点都是一个产品机会。瑞幸解决的是"排队长+价格贵"，胶囊咖啡机解决的是"手冲难"，智能保温杯解决的是"送凉了"。
+</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、需求的四个层次</h2>
+
+<p>用户嘴上说的和需求不是一回事。要理解真正的用户需要，得剥洋葱。</p>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 第一层：表面需求（Surface Need）— 用户"说"出来的
+</button>
+<div class="toggle-content">
+<p>这是用户直接表达的需求，通常是一个具体的功能或物品。</p>
+<p>🗣️ 用户说："我想要一个更快的马。"<br>
+（经典福特故事——用户说的是表面需求，他真正要的是"更快地到达目的地"）</p>
+<p>⚠️ 陷阱：如果你只满足表面需求，你可能做出一个没人用的"更好的锤子"。</p>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 第二层：实际行为需求（Behavioral Need）— 用户"做"出来的
+</button>
+<div class="toggle-content">
+<p>观察用户的实际行为，而不是听他们怎么说。行为往往比语言更诚实。</p>
+<p>🔍 研究发现：用户说自己"想学编程"，但实际行为是每周打开教程3次，每次看5分钟就关掉。</p>
+<p>💡 洞察：他的真实需求不是"学编程"，而是"获得成就感"。也许一个5分钟的编程小游戏更能满足他。</p>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 第三层：情感需求（Emotional Need）— 用户"感受"到的
+</button>
+<div class="toggle-content">
+<p>用户在使用产品时的心理感受。这些往往决定了用户会不会<strong>留下来</strong>。</p>
+<p>❤️ 常见的情感需求：<br>
+• 安全感（"我不会被骗吧？"）<br>
+• 掌控感（"我能自己决定一切"）<br>
+• 归属感（"这里有人懂我"）<br>
+• 成就感（"我做到了！"）</p>
+<p>🎯 案例：得到App的"知识焦虑"——用户买的不是课程，是"我在进步"的安全感。</p>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 第四层：深层需求（Deep Need）— 用户自己都"没意识到"的
+</button>
+<div class="toggle-content">
+<p>这是最底层的需求，用户自己可能说不出来，但你的产品可以帮到他。</p>
+<p>🧠 经典案例：抖音（TikTok）满足了什么深层需求？<br>
+表面上是"打发时间"，实际上可能是：<br>
+• 对无聊的恐惧（FOMO）<br>
+• 渴望被认可（点赞和评论）<br>
+• 寻找身份认同（关注同类创作者）</p>
+<p>✨ 最好的产品，是帮用户发现了他们自己都没意识到的需求。</p>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、痛点的分类：找到你的战场</h2>
+
+<p>不是所有痛点都值得解决。有些是伪痛点，有些是痒点，有些才是真正的痛点。区分它们，决定产品的生死。</p>
+
+<div class="pain-grid">
+<div class="pain-card">
+<span class="pain-tag">真痛点</span>
+<h4>必须解决的问题</h4>
+<p>用户愿意为此付费、愿意改变现有行为的痛点。</p>
+<p><em>例：微信解决"短信太贵"的痛点，用户大规模迁移。</em></p>
+</div>
+<div class="pain-card">
+<span class="pain-tag latend">伪痛点</span>
+<h4>你以为的问题</h4>
+<p>只有你在意，用户并不在意的问题。</p>
+<p><em>例：给老年人做"超大字体版淘宝"——他们根本不用淘宝。</em></p>
+</div>
+<div class="pain-card">
+<span class="pain-tag latent">痒点</span>
+<h4>锦上添花的问题</h4>
+<p>解决了用户会更开心，但不解决也不会怎样。</p>
+<p><em>例：外卖包装更好看——用户在乎，但不会因为这个选择平台。</em></p>
+</div>
+<div class="pain-card">
+<span class="pain-tag">高频痛点</span>
+<h4>反复出现的问题</h4>
+<p>用户每天都会遇到，频率越高，解决它的价值越大。</p>
+<p><em>例：通勤——每天两次，所以地铁App和打车软件如此重要。</em></p>
+</div>
+</div>
+
+<div class="case-box">
+<strong>🏋️ 生活案例：健身房的痛点分析</strong><br>
+你办了健身卡，但去了三次就放弃了。为什么？<br>
+• 痛点1：不知道练什么 → 需要"个性化训练计划"<br>
+• 痛点2：一个人练很尴尬 → 需要"社群感/陪伴感"<br>
+• 痛点3：去健身房太远 → 需要"在家也能练的方案"<br>
+• 痛点4：练了看不到效果 → 需要"数据反馈"<br>
+<br>
+Keep App 同时解决了这四个痛点，所以它赢了。
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、如何挖掘用户需求与痛点</h2>
+
+<p>产品经理不是算命先生，不能靠猜。有一套系统的方法论。</p>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 方法1：5 Whys（五个为什么）
+</button>
+<div class="toggle-content">
+<p>对一个表面问题连续追问"为什么"，直到挖出根本原因。</p>
+<p><strong>场景：</strong>用户抱怨"你们的APP太卡了"<br>
+• 为什么？因为加载图片很慢。<br>
+• 为什么慢？因为图片没有压缩。<br>
+• 为什么没压缩？因为上传时没有自动压缩流程。<br>
+• 为什么没有？因为团队认为用户不会在意图片质量。<br>
+• 为什么不在意？因为没有做过用户调研！</p>
+<p>🎯 根因：不是技术卡，而是<strong>缺少用户调研流程</strong>。</p>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 方法2：Jobs To Be Done（待办任务理论）
+</button>
+<div class="toggle-content">
+<p>哈佛教授 Clayton Christensen 提出的框架：用户"雇佣"产品来完成某个任务。</p>
+<p><strong>经典案例：</strong>牛奶昔（Milkshake）研究<br>
+麦当劳想知道"为什么牛奶昔早上卖得少"。传统做法是问用户"你想要什么改进"，结果用户说"更甜一点"。但真正的原因是：<br>
+• 早上买牛奶昔的人，是为了"通勤路上打发时间+抗饿"<br>
+• 他们需要一个"粘稠到能用一根吸管吸30分钟"的东西<br>
+• 酸奶太快喝完，面包屑掉一身<br>
+• 牛奶昔完美匹配了这个"任务"<br>
+<br>
+🎯 关键转变：从"用户是谁"转向"用户想完成什么任务"。</p>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 方法3：用户访谈（但不问问题）
+</button>
+<div class="toggle-content">
+<p>好的用户访谈，不是问"你想要什么"，而是让用户讲故事。</p>
+<p><strong>正确做法：</strong><br>
+• "描述一下你上次遇到这个问题的经历"<br>
+• "当时你做了什么？为什么这么做？"<br>
+• "这件事让你感觉怎么样？"<br>
+• "如果有一个魔法按钮能解决这个问题，你觉得它会是什么样？"<br>
+<br>
+<strong>错误做法：</strong><br>
+• "你喜欢这个功能吗？"（用户会说谎让你舒服）<br>
+• "你会为这个功能付费吗？"（用户会假装理性）</p>
+<p>💡 记住：用户不是骗子，他们是好人——只是善意地说了你想听的话。</p>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 方法4：行为数据分析
+</button>
+<div class="toggle-content">
+<p>用户的行为数据比任何访谈都诚实。</p>
+<p><strong>你可以看什么：</strong><br>
+• 用户在哪个页面停留最久？（感兴趣 or 困惑？）<br>
+• 用户在哪个步骤流失最多？（痛点所在）<br>
+• 哪些功能被反复使用？（核心价值）<br>
+• 哪些功能几乎没人碰？（伪需求）</p>
+<p>📊 案例：知乎发现用户平均在搜索结果页停留仅2秒，说明搜索体验有严重痛点——后来推出了"搜索即答案"的功能。</p>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、需求优先级：不可能三角</h2>
+
+<p>你不可能满足所有用户的需求。所以必须做取舍。这里有一个经典框架：</p>
+
+<div class="key-point">
+<strong>需求优先级矩阵（RICE 简化版）：</strong><br>
+每个需求从三个维度打分（1-5分）：<br><br>
+<strong>Impact（影响力）</strong> — 解决这个需求能帮到多少人？<br>
+<strong>Frequency（频率）</strong> — 这个问题出现的频率有多高？<br>
+<strong>Effort（成本）</strong> — 实现这个方案需要多少资源？<br><br>
+<strong>优先级分数 = (Impact × Frequency) ÷ Effort</strong>
+</div>
+
+<div class="case-box">
+<strong>📱 生活案例：你的社交APP应该先做哪个功能？</strong><br>
+假设有三个需求排在你面前：<br>
+<br>
+<strong>A. 增加"朋友圈"功能</strong><br>
+• Impact: 5（几乎所有用户都需要社交分享）<br>
+• Frequency: 5（每天多次使用）<br>
+• Effort: 4（开发量大）<br>
+• 分数 = (5×5)/4 = 6.25<br>
+<br>
+<strong>B. 增加"深色模式"</strong><br>
+• Impact: 3（部分用户喜欢）<br>
+• Frequency: 1（设置一次就不动了）<br>
+• Effort: 2（相对简单）<br>
+• 分数 = (3×1)/2 = 1.5<br>
+<br>
+<strong>C. 修复"消息发送失败"的Bug</strong><br>
+• Impact: 5（影响所有发消息的用户）<br>
+• Frequency: 5（每次发消息都可能遇到）<br>
+• Effort: 1（修个Bug）<br>
+• 分数 = (5×5)/1 = 25<br>
+<br>
+🏆 结论：先修Bug！再上线朋友圈。深色模式？等有空再说。
+</div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="section">
+<h2>六、随堂测验 🧠</h2>
+<p>检验一下你对"用户需求与痛点"的理解。每题选出一个答案，看看你能答对几道。</p>
+
+<!-- Quiz 1 -->
+<div class="quiz-container" id="q1">
+<div class="quiz-question">1. 用户说"我想要一个更好的电梯"，但实际他的需求是"不想等太久"。这体现了哪种需求层次？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q1', this, false)">A. 深层需求</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q1', this, true)">B. 表面需求 vs 实际需求</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q1', this, false)">C. 情感需求</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q1', this, false)">D. 行为需求</button></li>
+</ul>
+<div class="quiz-feedback" id="q1-feedback"></div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz-container" id="q2">
+<div class="quiz-question">2. 你发现用户在使用你的APP时，总是在"支付页面"跳出。这属于哪种类型的痛点？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q2', this, false)">A. 痒点 — 用户只是觉得烦</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q2', this, false)">B. 伪痛点 — 其实用户不在乎支付</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q2', this, true)">C. 真痛点 — 用户愿意为此改变行为</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q2', this, false)">D. 情感需求 — 用户缺乏安全感</button></li>
+</ul>
+<div class="quiz-feedback" id="q2-feedback"></div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz-container" id="q3">
+<div class="quiz-question">3. 根据"Jobs To Be Done"理论，用户买钻头不是为了"拥有钻头"，而是为了什么？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q3', this, false)">A. 展示自己有工具</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q3', this, false)">B. 享受拧螺丝的过程</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q3', this, true)">C. 在墙上打个洞（完成任务）</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q3', this, false)">D. 支持制造业经济</button></li>
+</ul>
+<div class="quiz-feedback" id="q3-feedback"></div>
+</div>
+
+<!-- Quiz 4 -->
+<div class="quiz-container" id="q4">
+<div class="quiz-question">4. 以下哪个需求应该优先处理？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q4', this, false)">A. Impact=4, Frequency=3, Effort=5 → 分数=2.4</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q4', this, true)">B. Impact=5, Frequency=5, Effort=1 → 分数=25</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q4', this, false)">C. Impact=3, Frequency=2, Effort=2 → 分数=3</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q4', this, false)">D. Impact=5, Frequency=1, Effort=1 → 分数=5</button></li>
+</ul>
+<div class="quiz-feedback" id="q4-feedback"></div>
+</div>
+
+<!-- Quiz 5 -->
+<div class="quiz-container" id="q5">
+<div class="quiz-question">5. 5 Whys 方法的目的是什么？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q5', this, false)">A. 让用户感到被重视</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q5', this, false)">B. 收集更多用户反馈</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q5', this, true)">C. 找到问题的根本原因</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q5', this, false)">D. 证明用户是错的</button></li>
+</ul>
+<div class="quiz-feedback" id="q5-feedback"></div>
+</div>
+
+<!-- Quiz 6 -->
+<div class="quiz-container" id="q6">
+<div class="quiz-question">6. 填空：用户说"我想要一个更快的马"，但福特发明了汽车。这说明产品设计师不应该只听用户的___需求，而要挖掘用户的___需求。</div>
+<input type="text" class="fill-input" id="q6-input" placeholder="填两个词，用/分隔，如：表面/深层">
+<button class="fill-check" onclick="checkFill('q6')">检查</button>
+<div class="fill-feedback" id="q6-feedback"></div>
+</div>
+
+<!-- Quiz 7 -->
+<div class="quiz-container" id="q7">
+<div class="quiz-question">7. 你为一个"背单词APP"做用户调研。以下哪种访谈方式最能挖出真实需求？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q7', this, false)">A. "你觉得背单词最难的是什么？"</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q7', this, false)">B. "你会为更好的背单词功能付费吗？"</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q7', this, true)">C. "描述一下你上次背单词的经历，当时发生了什么？"</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q7', this, false)">D. "你喜欢竞争对手的APP吗？"</button></li>
+</ul>
+<div class="quiz-feedback" id="q7-feedback"></div>
+</div>
+
+<!-- Quiz 8 -->
+<div class="quiz-container" id="q8">
+<div class="quiz-question">8. 一个APP的用户留存率很低，但应用商店评分很高。最可能的原因是？</div>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkQuiz('q8', this, false)">A. 用户说谎——评分是假的</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q8', this, true)">B. 评分反映的是"第一次使用的惊喜"，留存反映的是"持续价值"——两者衡量的是不同阶段的需求</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q8', this, false)">C. 应用商店的评分机制有问题</button></li>
+<li><button class="quiz-opt" onclick="checkQuiz('q8', this, false)">D. 留存率和评分没有关系</button></li>
+</ul>
+<div class="quiz-feedback" id="q8-feedback"></div>
+</div>
+
+</div>
+
+<!-- ACTION LIST -->
+<div class="action-list">
+<h3>🎯 今天就能做的行动清单</h3>
+<ol>
+<li><strong>观察身边的人</strong>（1分钟）：找一个你正在用手机的朋友，看他遇到了什么困难。不要说话，只看。</li>
+<li><strong>写下一个痛点</strong>（1分钟）：今天你遇到的最烦的一件事是什么？试着用"当____的时候，我希望____，但是____"的句式写下来。</li>
+<li><strong>做一次5 Whys</strong>（3分钟）：选一个你最近的小烦恼，连续问5次"为什么"，看看根因是什么。</li>
+</ol>
+</div>
+
+<footer>
+<p>TeachHub · 产品设计 · Lesson 02/12 · 用户需求与痛点</p>
+<p>继续下一课：用户旅程地图 →</p>
+</footer>
+
+<script>
+function toggleSection(btn) {
+btn.classList.toggle('open');
+var content = btn.nextElementSibling;
+content.classList.toggle('show');
+}
+
+function checkQuiz(qId, clickedBtn, isCorrect) {
+var container = document.getElementById(qId);
+var buttons = container.querySelectorAll('.quiz-opt');
+var feedback = document.getElementById(qId + '-feedback');
+
+// Disable all buttons
+buttons.forEach(function(btn) {
+btn.disabled = true;
+btn.style.pointerEvents = 'none';
+});
+
+if (isCorrect) {
+clickedBtn.classList.add('correct');
+feedback.className = 'quiz-feedback show ok';
+feedback.innerHTML = '<strong>✅ 正确！</strong>' + getExplanation(qId);
+} else {
+clickedBtn.classList.add('wrong');
+// Highlight correct answer
+buttons.forEach(function(btn) {
+if (btn.onclick.toString().includes('true')) {
+btn.classList.add('correct');
+}
+});
+feedback.className = 'quiz-feedback show no';
+feedback.innerHTML = '<strong>❌ 不对哦。</strong>正确答案已标绿。' + getExplanation(qId);
+}
+feedback.style.display = 'block';
+}
+
+function getExplanation(qId) {
+var explanations = {
+q1: ' 用户说的"更好的电梯"是表面需求（他以为自己要的是电梯），实际行为需求是"减少等待时间"。产品设计师的任务是穿透表面需求，找到真正的目标。',
+q2: ' 用户在支付页面跳出，意味着这个痛点直接影响收入——用户愿意尝试但不愿完成。这是典型的真痛点，必须优先解决。',
+q3: ' Jobs To Be Done 的核心观点：用户"雇佣"产品来完成一个任务。买钻头是为了打洞，不是拥有钻头。同理，买牛奶昔是为了"打发通勤时间"，不是喝牛奶昔。',
+q4: ' 优先级分数 = (Impact × Frequency) ÷ Effort。B选项分数最高(25)，因为影响大、频率高、成本低——这是典型的"先做这个"需求。',
+q5: ' 5 Whys 不是为了让用户满意，而是像考古一样一层层挖下去，找到表面的"症状"背后的"病因"。',
+q7: ' C选项让用户讲故事，而不是直接回答问题。行为数据告诉我们：用户说"最难的是坚持"，但实际行为显示他们最常放弃的是"记不住上次的进度"。这才是真需求。',
+q8: ' 第一次使用的惊喜（Onboarding）和持续价值（Retention）是两个不同的东西。很多产品"初见惊艳，久用厌倦"——这就是需求洞察不到位的表现。'
+};
+return explanations[qId] || '';
+}
+
+function checkFill(qId) {
+var input = document.getElementById(qId + '-input');
+var feedback = document.getElementById(qId + '-feedback');
+var val = input.value.trim().toLowerCase().replace(/\s/g, '');
+
+var acceptable = ['表面/实际','表面/深层','表层/深层','表面/本质','浅层/深层','surface/deep'];
+var isCorrect = acceptable.some(function(a) { return val === a; });
+
+feedback.className = 'fill-feedback show';
+if (isCorrect) {
+feedback.style.background = '#e8f5e9';
+feedback.style.color = '#2e7d32';
+feedback.innerHTML = '<strong>✅ 正确！</strong>答案可以是"表面/实际"、"表面/深层"等多种表述。核心是：用户说的≠用户要的。';
+input.disabled = true;
+} else {
+feedback.style.background = '#ffebee';
+feedback.style.color = '#c62828';
+feedback.innerHTML = '<strong>❌ 不太对。</strong>提示：第一个词是用户"说"出来的层面，第二个词是你要"挖"到的层面。试试"表面/实际"或"表面/深层"。';
+}
+feedback.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

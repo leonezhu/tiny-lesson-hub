@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0012 · AI Agent产品设计 | TeachHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather','Noto Serif SC',serif;color:#1a1a1a}
+.container{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+.lesson-badge{display:inline-block;background:#e3f2fd;color:#1565c0;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.lesson-title{font-size:28px;font-weight:900;margin-bottom:6px;line-height:1.35}
+.lesson-subtitle{font-size:16px;color:#666;margin-bottom:32px;font-weight:400}
+.section{margin:36px 0}
+.section h2{font-size:22px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e0e0e0}
+.section h3{font-size:18px;margin:20px 0 10px}
+p{margin-bottom:14px}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#f57f17;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.case-box p{margin:0;font-size:15px}
+.concept-card{background:#f5f5f5;border-radius:12px;padding:20px 24px;margin:20px 0}
+.concept-card .term{font-family:'Merriweather',serif;font-weight:700;color:#1565c0;font-size:16px}
+.concept-card .cn{color:#333;font-size:15px}
+.collapse-btn{cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;color:#1565c0;font-size:16px;margin:16px 0;padding:10px 16px;background:#e3f2fd;border-radius:8px;border:none;width:100%;text-align:left;transition:background .2s}
+.collapse-btn:hover{background:#bbdefb}
+.collapse-btn::before{content:'▸';transition:transform .2s;display:inline-block}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-content{display:none;padding:12px 16px 16px;color:#444;font-size:15px;line-height:1.7}
+.collapse-content.open{display:block}
+.quiz-section{background:#fafafa;border-radius:16px;padding:28px 28px;margin:36px 0;border:1px solid #e8e8e8}
+.quiz-section h2{border-bottom:none;margin-bottom:20px;font-size:22px}
+.quiz-item{margin:24px 0;padding:20px;background:#fff;border-radius:10px;border:1px solid #eee;transition:box-shadow .2s}
+.quiz-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.quiz-question{font-weight:600;font-size:16px;margin-bottom:14px;color:#1a1a1a}
+.quiz-question .q-num{color:#1565c0;font-weight:700}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:8px 0}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;border:2px solid transparent;font-size:15px}
+.quiz-option:hover{background:#f0f4ff}
+.quiz-option.selected{border-color:#1565c0;background:#e3f2fd}
+.quiz-option.correct{border-color:#2e7d32;background:#e8f5e9}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee}
+.quiz-option .radio{width:18px;height:18px;border:2px solid #bbb;border-radius:50%;flex-shrink:0;margin-top:2px;transition:all .15s}
+.quiz-option.selected .radio{border-color:#1565c0;background:#1565c0}
+.quiz-option.correct .radio{border-color:#2e7d32;background:#2e7d32}
+.quiz-option.wrong .radio{border-color:#c62828;background:#c62828}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:14px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.quiz-feedback.wrong-fb{background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+.fill-blank-input{border:none;border-bottom:2px solid #bbb;padding:4px 8px;font-size:15px;font-family:inherit;width:160px;outline:none;transition:border-color .2s}
+.fill-blank-input:focus{border-color:#1565c0}
+.fill-blank-input.correct{border-color:#2e7d32;background:#e8f5e9}
+.fill-blank-input.wrong{border-color:#c62828;background:#ffebee}
+.check-btn{background:#1565c0;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;margin-top:10px;transition:background .2s}
+.check-btn:hover{background:#0d47a1}
+.action-list{background:#e8f5e9;border-radius:12px;padding:20px 24px;margin:36px 0}
+.action-list h3{color:#2e7d32;margin-bottom:12px;font-size:17px}
+.action-list ol{padding-left:20px}
+.action-list li{margin:8px 0;font-size:15px}
+.action-list .tag{display:inline-block;background:#2e7d32;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.diagram{background:#fff;border:2px dashed #ccc;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.end-badge{text-align:center;margin:40px 0 10px;font-size:20px;font-weight:700;color:#2e7d32}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid #e0e0e0;text-align:center;color:#999;font-size:13px}
+.key-insight{background:#e3f2fd;border-left:4px solid #1565c0;padding:14px 18px;margin:20px 0;border-radius:0 8px 8px 0}
+.key-insight strong{color:#1565c0}
+.warning-box{background:#fff3e0;border-left:4px solid #ff9800;padding:14px 18px;margin:20px 0;border-radius:0 8px 8px 0}
+.warning-box strong{color:#e65100}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.metric-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;text-align:center}
+.metric-card .metric-val{font-size:28px;font-weight:900;color:#1565c0;font-family:'Merriweather',serif}
+.metric-card .metric-label{font-size:13px;color:#666;margin-top:4px}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid #e0e0e0}
+th{background:#f5f5f5;font-weight:600;color:#333}
+tr:hover td{background:#fafafa}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:#2e7d32;flex-shrink:0;margin-top:3px}
+.flow-step{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+.flow-num{width:32px;height:32px;background:#1565c0;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.flow-text{flex:1;font-size:15px}
+.flow-text strong{color:#1565c0}
+.score-bar{height:8px;background:#e0e0e0;border-radius:4px;margin-top:6px;overflow:hidden}
+.score-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.score-fill.high{background:#2e7d32}
+.score-fill.mid{background:#ff9800}
+.score-fill.low{background:#c62828}
+.progress-tracker{text-align:center;margin:16px 0;padding:12px;background:#f0f4ff;border-radius:10px}
+.progress-tracker .score{font-size:32px;font-weight:900;color:#1565c0;font-family:'Merriweather',serif}
+.progress-tracker .label{font-size:13px;color:#666}
+</style>
+</head>
+<body>
+<div class="container">
+
+<span class="lesson-badge">Lesson 12 of 12 · 产品设计</span>
+<h1 class="lesson-title">AI Agent 产品设计</h1>
+<p class="lesson-subtitle">当产品从"人操作工具"变成"人指挥智能体"——设计师需要掌握的新范式。</p>
+
+<!-- Section 1: 什么是 AI Agent -->
+<div class="section">
+<h2>一、从 Chatbot 到 Agent：范式的转变</h2>
+
+<p>你可能用过 ChatGPT —— 你问，它答。这叫 <strong>Chatbot（聊天机器人）</strong>。但 <strong>AI Agent（智能体）</strong> 不一样：它能<strong>自主规划、调用工具、执行任务</strong>。</p>
+
+<div class="concept-card">
+<div class="term">AI Agent <span class="cn">（智能体）</span></div>
+<p style="margin-top:8px">一个能感知环境、做出决策、采取行动并反思结果的系统。核心能力：<strong>感知 → 规划 → 行动 → 反思</strong> 的闭环。</p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">🤔 Chatbot vs Agent：到底差在哪？</button>
+<div class="collapse-content">
+<p><strong>Chatbot</strong> 像餐厅的服务员：你点菜，他传话给厨房，然后把菜端上来。他不做决定。</p>
+<p><strong>Agent</strong> 像一位私人管家：你说"帮我安排下周去上海的行程"，他会自己查航班、看酒店、排会议、发提醒。他做的是<strong>一整件事</strong>，而不是一句话的回答。</p>
+<div class="case-box">
+<div class="label">生活案例</div>
+<p>Chatbot：你说"明天天气怎样？"，它告诉你"28°C，小雨"。<br>
+Agent：你说"明天有雨，我有个户外团建"，它说"已帮你改签到室内场地 B，重新发送了邀请邮件，原场地已取消预订。"</p>
+</div>
+</div>
+
+<p>这种转变对产品设计意味着什么？意味着你的用户不再是在"使用产品"，而是在"委托任务"。</p>
+
+<div class="key-insight">
+<strong>💡 关键洞察：</strong>传统产品的交互是「人找功能」，Agent 产品的交互是「人给目标」。设计师的工作从设计按钮和流程，变成了设计<strong>目标表达</strong>和<strong>结果评估</strong>。
+</div>
+</div>
+
+<!-- Section 2: Agent 的核心架构 -->
+<div class="section">
+<h2>二、Agent 的四层架构</h2>
+
+<p>理解 Agent 怎么工作，才能设计好 Agent 产品。几乎所有 Agent 都包含这四个层次：</p>
+
+<div class="diagram">
+<p style="font-weight:700;margin-bottom:16px;font-size:18px">Agent 四层架构</p>
+<div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>感知层（Perception）</strong><br>Agent 如何获取信息？通过文本输入、截图、API 数据、传感器……<br><em style="color:#666;font-size:14px">设计要点：告诉用户 Agent 能看到什么、不能看到什么。</em></div></div>
+<div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>规划层（Planning）</strong><br>把大目标拆解为小步骤。比如"写一份周报" → 收集数据 → 分析趋势 → 生成草稿 → 润色。<br><em style="color:#666;font-size:14px">设计要点：让用户能看到 Agent 的计划，必要时可以修改。</em></div></div>
+<div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>执行层（Action）</strong><br>调用工具完成任务：搜索、发邮件、操作软件、调用 API。<br><em style="color:#666;font-size:14px">设计要点：每次执行前是否需要确认？高风险操作必须二次确认。</em></div></div>
+<div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>反思层（Reflection）</strong><br>检查结果是否达标，不达标则调整策略。这是 Agent 和脚本的核心区别。<br><em style="color:#666;font-size:14px">设计要点：让用户了解 Agent 是否"思考过"，增加信任感。</em></div></div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">🧩 以"帮我准备客户提案"为例</button>
+<div class="collapse-content">
+<p>假设你有一个 AI Agent 产品叫 <strong>PitchBot</strong>，帮销售准备客户提案：</p>
+<ul style="margin:12px 0 12px 20px">
+<li><strong>感知：</strong>读取客户的行业、公司规模、过往合作记录（从 CRM 拉取数据）</li>
+<li><strong>规划：</strong>分析客户痛点 → 选择成功案例 → 生成 PPT 大纲 → 起草讲稿</li>
+<li><strong>执行：</strong>调用模板引擎生成 PPT，从素材库选配图，自动排版</li>
+<li><strong>反思：</strong>检查提案是否覆盖了客户关心的三个 KPI，如果没有就补充</li>
+</ul>
+<p>作为设计师，你要设计的是：<strong>用户如何描述客户需求？Agent 展示计划的方式？执行过程中的进度反馈？反思后的结果呈现？</strong></p>
+</div>
+</div>
+
+<!-- Section 3: 设计原则 -->
+<div class="section">
+<h2>三、Agent 产品的五大设计原则</h2>
+
+<p>Agent 产品不是简单地把 Chatbot 包装一下。它有全新的设计挑战。以下是经过实践验证的五条原则：</p>
+
+<h3>1. 透明性（Transparency）—— 让 Agent 的"思考过程"可见</h3>
+<p>用户最怕黑箱。当 Agent 说"我在帮你处理"，用户想知道它在做什么、为什么这么做。</p>
+
+<div class="case-box">
+<div class="label">反面案例</div>
+<p>你让 Agent 整理一份竞品分析报告，它沉默了 30 秒然后给了你一个 PDF。你不知道它查了几个来源、有没有遗漏、是不是随便拼凑的。</p>
+</div>
+
+<div class="case-box">
+<div class="label">正面设计</div>
+<p>Agent 实时显示："正在搜索 3 个竞品官网 → 已抓取 12 页内容 → 对比功能矩阵 → 生成摘要"。用户可以随时暂停、调整方向。</p>
+</div>
+
+<h3>2. 可控性（Controllability）—— 用户始终在驾驶座</h3>
+<p>Agent 应该像一个优秀的副驾驶，而不是自动驾驶到失控。关键设计模式：</p>
+
+<div class="concept-card">
+<p><strong>渐进式自主（Progressive Autonomy）：</strong>新用户先让 Agent 给建议，用户确认后执行；老用户可以直接让 Agent 全权处理。</p>
+<p style="margin-top:8px"><strong>干预点设计（Intervention Points）：</strong>在关键决策节点暂停，让用户确认或修改。比如 Agent 发现数据不一致时停下来问你。</p>
+<p style="margin-top:8px"><strong>撤销能力（Undo）：</strong>Agent 做了任何操作，用户必须能一键撤回。这是信任的底线。</p>
+</div>
+
+<h3>3. 可预测性（Predictability）—— 用户能预判 Agent 会怎么做</h3>
+<p>如果 Agent 每次的表现都不一样，用户就不会用它。一致性比聪明更重要。</p>
+
+<div class="warning-box">
+<strong>⚠️ 常见陷阱：</strong>很多团队追求 Agent 的"创造力"，但产品设计师应该追求"可靠性"。一个稳定输出 80 分结果的 Agent，远比一个偶尔 100 分但经常 30 分的 Agent 更有价值。
+</div>
+
+<h3>4. 容错性（Fault Tolerance）—— 接受 Agent 会犯错</h3>
+<p>Agent 不是万能的。好的设计不是假装它不会出错，而是让错误容易发现和纠正。</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">🛡️ 容错设计的四种模式</button>
+<div class="collapse-content">
+<div class="metric-grid">
+<div class="metric-card">
+<div class="metric-val">A</div>
+<div class="metric-label">前置确认<br>高风险操作前弹窗确认</div>
+</div>
+<div class="metric-card">
+<div class="metric-val">B</div>
+<div class="metric-label">置信度提示<br>"我对这个回答只有 60% 把握"</div>
+</div>
+<div class="metric-card">
+<div class="metric-val">C</div>
+<div class="metric-label">人工审核流<br>Agent 初稿 → 人工确认 → 发布</div>
+</div>
+<div class="metric-card">
+<div class="metric-val">D</div>
+<div class="metric-label">降级策略<br>Agent 失败时自动切换备选方案</div>
+</div>
+</div>
+</div>
+
+<h3>5. 关系设计（Relationship Design）—— 用户和 Agent 是合作伙伴</h3>
+<p>Agent 产品本质上是在设计一种<strong>人机关系</strong>。这种关系应该是：</p>
+<ul style="margin:12px 0 12px 20px">
+<li><strong>有边界感的亲密：</strong>Agent 了解你的偏好，但不会越界</li>
+<li><strong>有能力的谦逊：</strong>Agent 知道自己能做什麼、不能做什麼</li>
+<li><strong>可教育的伙伴：</strong>用户可以说"上次那样不对，这次换成……"，Agent 能学习和调整</li>
+</ul>
+</div>
+
+<!-- Section 4: 关键交互模式 -->
+<div class="section">
+<h2>四、Agent 产品的关键交互模式</h2>
+
+<p>以下是 Agent 产品中最高频的五种交互模式，每种都有具体的设计要点：</p>
+
+<h3>模式 1：对话式任务委托（Conversational Delegation）</h3>
+<p>用户用自然语言描述目标，Agent 理解并执行。</p>
+
+<div class="concept-card">
+<p><strong>设计要点：</strong></p>
+<ul style="margin:8px 0 0 20px">
+<li>提供<strong>示例指令模板</strong>，帮助用户学会"正确提问"</li>
+<li>支持<strong>多轮澄清</strong>——当用户说的不够清楚时，Agent 应该追问而非猜测</li>
+<li>显示<strong>理解确认</strong>——"你希望我帮你做 X，对吗？"</li>
+</ul>
+</div>
+
+<div class="case-box">
+<div class="label">生活案例</div>
+<p>你说："帮我安排下周的出差。"<br>
+❌ 差的 Agent：直接订了机票酒店，结果日期错了。<br>
+✅ 好的 Agent："好的！请问是去哪个城市？大概几天？有偏好的酒店吗？预算范围？"<br>
+→ 用户回答后 → "我找到了这些方案，你看看哪个合适？"</p>
+</div>
+
+<h3>模式 2：工具编排（Tool Orchestration）</h3>
+<p>Agent 需要调用多个外部工具来完成复杂任务。</p>
+
+<div class="concept-card">
+<p><strong>设计要点：</strong></p>
+<ul style="margin:8px 0 0 20px">
+<li>展示 Agent 正在使用的<strong>工具列表</strong>和<strong>执行进度</strong></li>
+<li>允许用户<strong>替换/禁用</strong>某个工具</li>
+<li>工具调用失败时，给出明确的错误原因和替代方案</li>
+</ul>
+</div>
+
+<h3>模式 3：结果审查与编辑（Review & Edit）</h3>
+<p>Agent 产出结果后，用户需要审查和修改。</p>
+
+<div class="concept-card">
+<p><strong>设计要点：</strong></p>
+<ul style="margin:8px 0 0 20px">
+<li>提供<strong>差异对比视图</strong>（diff view），突出 Agent 做了什么改动</li>
+<li>支持<strong>逐条批准/拒绝</strong>，不必全盘接受或拒绝</li>
+<li>修改后能<strong>反向教 Agent</strong>——"下次不要这样做"</li>
+</ul>
+</div>
+
+<h3>模式 4：主动提醒与建议（Proactive Assistance）</h3>
+<p>Agent 不只是被动响应，还能主动发现问题并提出建议。</p>
+
+<div class="case-box">
+<div class="label">生活案例</div>
+<p>你的投资 Agent 发现某只股票连续三天异常下跌，主动推送通知："注意到 XX 股票异常波动，建议查看。原因是昨晚发布了财报，营收低于预期 15%。需要我生成详细分析报告吗？"</p>
+<p>注意：主动提醒的关键是<strong>克制</strong>。太多打扰会让用户关闭通知，太少又失去了 Agent 的价值。</p>
+</div>
+
+<h3>模式 5：协作式探索（Collaborative Exploration）</h3>
+<p>用户和 Agent 一起探索未知领域，Agent 提供信息、用户做判断。</p>
+
+<div class="concept-card">
+<p><strong>设计要点：</strong></p>
+<ul style="margin:8px 0 0 20px">
+<li>提供<strong>可视化探索界面</strong>——知识图谱、思维导图、时间线等</li>
+<li>Agent 的每一次推荐都要附带<strong>信息来源</strong></li>
+<li>支持用户在探索路径上<strong>随时转弯</strong></li>
+</ul>
+</div>
+</div>
+
+<!-- Section 5: 衡量 Agent 产品成功 -->
+<div class="section">
+<h2>五、如何衡量 Agent 产品的成功？</h2>
+
+<p>Agent 产品的指标体系和传统产品不同。以下是三个维度的关键指标：</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>维度</th><th>指标</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>任务完成度</strong></td><td>Task Success Rate</td><td>Agent 成功完成用户目标的比例。这是最核心的指标。</td></tr>
+<tr><td></td><td>Mean Tasks to Completion</td><td>平均需要多少轮交互才能完成任务？越少越好。</td></tr>
+<tr><td><strong>用户信任度</strong></td><td>Acceptance Rate</td><td>用户接受 Agent 建议的比例。过低说明信任不足，过高可能说明用户没仔细看。</td></tr>
+<tr><td></td><td>Interruption Rate</td><td>用户中途打断/纠正 Agent 的频率。</td></tr>
+<tr><td><strong>效率提升</strong></td><td>Time Saved</td><td>相比手动完成，节省了多少时间？</td></tr>
+<tr><td></td><td>Autonomy Level</td><td>用户选择让 Agent 自主执行的比例（从低到高）。</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="key-insight">
+<strong>💡 反直觉的发现：</strong>很多 Agent 产品在 Task Success Rate 很高时，用户满意度反而低。原因是用户觉得"虽然成功了，但过程太不可控"。所以<strong>过程体验</strong>和<strong>结果体验</strong>同样重要。
+</div>
+</div>
+
+<!-- Section 6: 设计 Checklist -->
+<div class="section">
+<h2>六、Agent 产品设计 Checklist</h2>
+
+<p>在设计每一个 Agent 功能之前，过一遍这份清单：</p>
+
+<div class="concept-card">
+<div class="check-item"><input type="checkbox"> <span><strong>透明度：</strong>用户能否看到 Agent 正在做什么？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>可控性：</strong>用户能否在过程中干预、修改、暂停？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>可撤销：</strong>Agent 做的每个操作都能撤回吗？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>置信度：</strong>Agent 知道自己有多确定吗？会告诉用户吗？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>失败优雅：</strong>Agent 失败时，用户知道下一步该怎么办吗？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>边界清晰：</strong>用户明确知道 Agent 能做什么、不能做什么吗？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>可教育：</strong>用户能否告诉 Agent"上次那样不好"？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>渐进自主：</strong>新手和老手是否有不同的自主级别？</span></div>
+<div class="check-item"><input type="checkbox"> <span><strong>一致体验：</strong>同样的输入，Agent 的输出是可预测的吗？</span></div>
+</div>
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+<h2>📝 互动测验</h2>
+<p style="color:#666;margin-bottom:20px">检验一下你对 Agent 产品设计的理解。每题选择后点击"提交答案"查看解析。</p>
+
+<div class="progress-tracker">
+<div class="label">当前得分</div>
+<div class="score" id="score-display">0 / 8</div>
+<div class="score-bar"><div class="score-fill mid" id="score-fill" style="width:0%"></div></div>
+</div>
+
+<!-- Q1 -->
+<div class="quiz-item" id="q1">
+<div class="quiz-question"><span class="q-num">Q1.</span> 以下哪个场景最能体现 Agent 和 Chatbot 的区别？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q1" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. 用户问"北京今天天气怎样"，Agent 回答"晴，25°C"</li>
+<li class="quiz-option" data-q="q1" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>B. 用户说"帮我规划一次北京三日游"，Agent 查询天气、推荐景点、排好路线并生成日程表</li>
+<li class="quiz-option" data-q="q1" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>C. 用户问"什么是神经网络"，Agent 给出一个定义</li>
+<li class="quiz-option" data-q="q1" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 用户输入"翻译这段文字"，Agent 完成翻译</li>
+</ul>
+<div class="quiz-feedback" id="q1-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q1')">提交答案</button>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-item" id="q2">
+<div class="quiz-question"><span class="q-num">Q2.</span> 你正在设计一个 AI 写作 Agent。用户说"帮我写一篇产品发布会的新闻稿"。以下哪种设计最符合 Agent 设计原则？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q2" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. 直接开始写，写完给用户看</li>
+<li class="quiz-option" data-q="q2" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>B. 先问用户一个问题："请问目标受众是谁？"然后直接生成全文</li>
+<li class="quiz-option" data-q="q2" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>C. 先列出理解："你需要一篇产品发布会新闻稿。我需要确认几个细节：① 产品名？② 目标受众？③ 语气风格？④ 字数要求？"——等用户回复后再开始写</li>
+<li class="quiz-option" data-q="q2" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 让用户从 10 个模板中选一个，然后自动填充</li>
+</ul>
+<div class="quiz-feedback" id="q2-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q2')">提交答案</button>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" id="q3">
+<div class="quiz-question"><span class="q-num">Q3.</span> 以下关于"渐进式自主"的描述，哪项是正确的？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q3" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. 所有用户都应该从一开始就拥有最高自主权，这样效率最高</li>
+<li class="quiz-option" data-q="q3" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>B. 新用户只能看结果，老用户可以修改 Agent 的代码</li>
+<li class="quiz-option" data-q="q3" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>C. 新用户阶段 Agent 只给建议、用户确认后执行；随着信任建立，逐步允许用户设置更高自主级别</li>
+<li class="quiz-option" data-q="q3" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 自主级别由用户的付费等级决定</li>
+</ul>
+<div class="quiz-feedback" id="q3-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q3')">提交答案</button>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" id="q4">
+<div class="quiz-question"><span class="q-num">Q4.</span> 填空：一个优秀的 Agent 产品，在任务成功率高但用户满意度低的情况下，最可能的原因是 ______。</div>
+<input type="text" class="fill-blank-input" id="q4-input" placeholder="请输入关键词">
+<button class="check-btn" onclick="checkFillBlank('q4')">提交答案</button>
+<div class="quiz-feedback" id="q4-fb"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" id="q5">
+<div class="quiz-question"><span class="q-num">Q5.</span> 你设计的邮件分类 Agent 误将一封重要邮件标记为垃圾邮件并删除了。以下哪种处理方式最合理？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q5" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. 在界面上显示一条灰色小字："可能误删了一封邮件"，让用户自己去翻</li>
+<li class="quiz-option" data-q="q5" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>B. 主动推送通知告知用户，提供"恢复邮件"和"教会 Agent 不再犯"两个选项，并标记该邮件为"低置信度判断"</li>
+<li class="quiz-option" data-q="q5" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>C. 不告诉用户，因为用户可能根本没注意到</li>
+<li class="quiz-option" data-q="q5" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 自动恢复邮件，但不做任何提示</li>
+</ul>
+<div class="quiz-feedback" id="q5-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q5')">提交答案</button>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" id="q6">
+<div class="quiz-question"><span class="q-num">Q6.</span> 以下哪个指标最能反映"用户信任 Agent"的程度？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q6" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. DAU（日活跃用户数）</li>
+<li class="quiz-option" data-q="q6" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>B. 页面停留时长</li>
+<li class="quiz-option" data-q="q6" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>C. Acceptance Rate（用户接受 Agent 建议的比例）和 Interruption Rate（用户中途打断/纠正的频率）</li>
+<li class="quiz-option" data-q="q6" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 用户注册时的年龄分布</li>
+</ul>
+<div class="quiz-feedback" id="q6-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q6')">提交答案</button>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" id="q7">
+<div class="quiz-question"><span class="q-num">Q7.</span> 你在设计一个健身 Agent。以下哪种"主动提醒"的设计最恰当？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q7" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. 每天推送 10 条提醒："该喝水了""该运动了""该拉伸了"……越多越关心用户</li>
+<li class="quiz-option" data-q="q7" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>B. 只在检测到异常时提醒："你这周运动量下降了 40%，要不要调整计划？"——平时不打扰</li>
+<li class="quiz-option" data-q="q7" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>C. 只在用户主动打开 App 时才显示信息，从不主动推送</li>
+<li class="quiz-option" data-q="q7" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 根据用户心情随机推送鼓励消息</li>
+</ul>
+<div class="quiz-feedback" id="q7-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q7')">提交答案</button>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" id="q8">
+<div class="quiz-question"><span class="q-num">Q8.</span> 以下哪项<strong>不是</strong> Agent 产品设计中"反思层"的作用？</div>
+<ul class="quiz-options">
+<li class="quiz-option" data-q="q8" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>A. 检查结果是否达到用户期望的目标</li>
+<li class="quiz-option" data-q="q8" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>B. 在不达标时自动调整策略重试</li>
+<li class="quiz-option" data-q="q8" data-answer="true" onclick="selectOption(this)"><span class="radio"></span>C. 直接向用户展示 Agent 的内部代码实现</li>
+<li class="quiz-option" data-q="q8" data-answer="false" onclick="selectOption(this)"><span class="radio"></span>D. 将反思结果用于改进未来的执行策略</li>
+</ul>
+<div class="quiz-feedback" id="q8-fb"></div>
+<button class="check-btn" onclick="checkAnswer('q8')">提交答案</button>
+</div>
+
+</div><!-- end quiz-section -->
+
+<!-- Action List -->
+<div class="action-list">
+<h3>🎯 今天就能做：Agent 设计行动清单</h3>
+<p style="color:#555;margin-bottom:16px;font-size:15px">选一件 1 分钟内能完成的事，现在就做：</p>
+<div class="check-item"><input type="checkbox"> <span>打开你常用的一个 AI 产品（如 ChatGPT），用"帮我规划一次旅行"这样的任务测试它——看看它是 Chatbot 还是真正的 Agent。（30 秒）</span> <span class="tag">观察</span></div>
+<div class="check-item"><input type="checkbox"> <span>在你当前的项目中，列出一个可以用 Agent 替代的重复性任务，写下"感知→规划→执行→反思"四步分别是什么。（2 分钟）</span> <span class="tag">分析</span></div>
+<div class="check-item"><input type="checkbox"> <span>找一个你觉得"Agent 做得不好"的产品，用今天的 Checklist 过一遍，写下三条改进建议。（3 分钟）</span> <span class="tag">批判</span></div>
+<div class="check-item"><input type="checkbox"> <span>和你的团队分享"可控性"原则：下次设计 Agent 功能时，确保每个操作都有撤销按钮。（1 分钟）</span> <span class="tag">行动</span></div>
+</div>
+
+<div class="end-badge">🎉 恭喜！你完成了「产品设计」系列的全部 12 课！</div>
+<p style="text-align:center;color:#666;margin-top:12px">从产品思维到 AI Agent 设计，你已经掌握了从用户需求到技术实现的全链路视角。</p>
+
+<footer>
+<p>TeachHub · 自我科学与行为改变</p>
+<p>由 Agnes-2.0-Flash 生成 · 2026</p>
+</footer>
+
+</div><!-- end container -->
+
+<script>
+let score = 0;
+let answered = {};
+
+function toggleCollapse(btn) {
+    const content = btn.nextElementSibling;
+    btn.classList.toggle('open');
+    content.classList.toggle('open');
+}
+
+function selectOption(el) {
+    const quizId = el.dataset.q;
+    if (answered[quizId]) return;
+    // Deselect siblings
+    document.querySelectorAll(`.quiz-option[data-q="${quizId}"]`).forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    el.classList.add('selected');
+}
+
+function checkAnswer(quizId) {
+    if (answered[quizId]) return;
+    const selected = document.querySelector(`.quiz-option[data-q="${quizId}"].selected`);
+    const fb = document.getElementById(quizId + '-fb');
+    
+    if (!selected) {
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '请先选择一个答案。';
+        return;
+    }
+    
+    answered[quizId] = true;
+    const isCorrect = selected.dataset.answer === 'true';
+    
+    // Style the selected option
+    if (isCorrect) {
+        selected.classList.add('correct');
+        fb.className = 'quiz-feedback show correct-fb';
+        score++;
+    } else {
+        selected.classList.add('wrong');
+        fb.className = 'quiz-feedback show wrong-fb';
+        // Highlight correct answer
+        document.querySelectorAll(`.quiz-option[data-q="${quizId}"]`).forEach(opt => {
+            if (opt.dataset.answer === 'true') opt.classList.add('correct');
+        });
+    }
+    
+    // Disable further interaction
+    document.querySelectorAll(`.quiz-option[data-q="${quizId}"]`).forEach(opt => {
+        opt.style.cursor = 'default';
+        opt.onclick = null;
+    });
+    
+    // Show explanation
+    const explanations = {
+        'q1': 'Agent 的核心特征是自主规划和执行完整任务（B），而 Chatbot 只是单次问答（A/C/D）。Agent 能做"一整件事"，不是"回答一个问题"。',
+        'q2': '好的 Agent 会在执行前进行多轮澄清（C），确保理解准确。直接生成（A）风险太高，单问题（B）不够全面，模板（D）限制了灵活性。',
+        'q3': '渐进式自主（C）是让信任自然建立的过程。新手需要更多控制感，老手可以逐步放权。这不是付费墙的问题（D），也不是让所有人一开始就全权委托（A）。',
+        'q4': '',
+        'q5': 'Agent 犯错时，主动通知+提供补救+让用户教 Agent（B）是最佳实践。隐藏问题（C）破坏信任，不提示（D）让用户困惑，弱提示（A）不够负责。',
+        'q6': 'Acceptance Rate 和 Interruption Rate（C）直接反映用户是否信任和依赖 Agent。DAU 和停留时长（A/B）是通用指标，不能衡量信任度。',
+        'q7': '克制是主动提醒的核心原则（B）。只在异常时提醒，既表达了关心又不会造成打扰。过度推送（A）会导致用户关闭通知，完全不推（C）失去了 Agent 的价值。',
+        'q8': '反思层关注的是"结果评估和策略调整"（A/B/D），而不是展示内部代码（C）。向用户展示代码既不必要也不安全，用户需要的是"Agent 想明白了"的信号，不是源代码。'
+    };
+    
+    if (quizId === 'q4') {
+        fb.textContent = '过程体验不可控（或"过程缺乏透明度/可控性"）。';
+    } else {
+        fb.textContent = explanations[quizId];
+    }
+    
+    // Update score display
+    document.getElementById('score-display').textContent = score + ' / 8';
+    const fillPercent = (score / 8) * 100;
+    const fill = document.getElementById('score-fill');
+    fill.style.width = fillPercent + '%';
+    fill.className = 'score-fill ' + (fillPercent >= 75 ? 'high' : fillPercent >= 40 ? 'mid' : 'low');
+}
+
+function checkFillBlank(quizId) {
+    if (answered[quizId]) return;
+    const input = document.getElementById(quizId + '-input');
+    const fb = document.getElementById(quizId + '-fb');
+    const val = input.value.trim().toLowerCase();
+    
+    if (!val) {
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '请先填写答案。';
+        return;
+    }
+    
+    answered[quizId] = true;
+    const keywords = ['过程体验', '过程', '可控性', '透明度', '过程不可控', '过程体验不可控', '过程体验差', '过程'];
+    const isCorrect = keywords.some(kw => val.includes(kw));
+    
+    if (isCorrect) {
+        input.classList.add('correct');
+        fb.className = 'quiz-feedback show correct-fb';
+        fb.textContent = '✓ 正确！当任务成功了但用户不满意，通常是因为过程不可控或不透明。用户需要"看得见的思考"。';
+        score++;
+    } else {
+        input.classList.add('wrong');
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.textContent = '✗ 参考答案：过程体验不可控 / 过程缺乏透明度。即使结果对了，如果用户不知道 Agent 做了什么、为什么这么做，他们也不会感到安心。';
+    }
+    
+    input.disabled = true;
+    document.getElementById('score-display').textContent = score + ' / 8';
+    const fillPercent = (score / 8) * 100;
+    const fill = document.getElementById('score-fill');
+    fill.style.width = fillPercent + '%';
+    fill.className = 'score-fill ' + (fillPercent >= 75 ? 'high' : fillPercent >= 40 ? 'mid' : 'low');
+}
+</script>
+</body>
+</html>

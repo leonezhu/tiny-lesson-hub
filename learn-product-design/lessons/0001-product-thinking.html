@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0001 - 产品思维概论 (Product Thinking)</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#1a1a2e;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3,h4{font-family:'Merriweather',serif;font-weight:700}
+h1{font-size:2.1rem;text-align:center;margin-bottom:.3rem;color:#16213e}
+.subtitle{text-align:center;color:#666;font-size:1.05rem;margin-bottom:2.5rem}
+.badge{display:inline-block;background:#e8f0fe;color:#1a73e8;font-size:.78rem;padding:.15rem .6rem;border-radius:12px;font-weight:600;vertical-align:middle}
+.section{margin:2.5rem 0}
+.section h2{font-size:1.5rem;border-left:4px solid #1a73e8;padding-left:.8rem;margin-bottom:1rem}
+.section h3{font-size:1.15rem;margin-top:1.5rem;margin-bottom:.5rem;color:#16213e}
+p{margin-bottom:1rem}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:1rem 1.2rem;margin:1.2rem 0;border-radius:0 8px 8px 0;font-size:.97rem}
+.case-box strong{color:#e65100}
+.toggle-btn{display:block;width:100%;text-align:left;background:#f0f4ff;border:1px solid #d0d9f2;border-radius:8px;padding:.85rem 1rem;margin:.6rem 0;cursor:pointer;font-size:1rem;font-family:'Source Sans 3',sans-serif;color:#16213e;transition:all .2s}
+.toggle-btn:hover{background:#e3eaff}
+.toggle-btn .arrow{display:inline-block;margin-right:.5rem;transition:transform .2s;font-size:.85rem}
+.toggle-btn.open .arrow{transform:rotate(90deg)}
+.toggle-content{display:none;padding:.8rem 1.2rem;background:#fafbff;border-radius:0 0 8px 8px;margin-top:-.4rem}
+.toggle-content.show{display:block}
+.quiz-container{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.5rem;margin:1.5rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-question{font-weight:700;font-size:1.05rem;margin-bottom:1rem;color:#16213e}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:.4rem 0}
+.quiz-opt{display:block;width:100%;text-align:left;padding:.7rem 1rem;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;cursor:pointer;font-size:.95rem;font-family:'Source Sans 3',sans-serif;transition:all .15s}
+.quiz-opt:hover{background:#eef2ff;border-color:#1a73e8}
+.quiz-opt.correct{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+.quiz-opt.wrong{background:#ffebee;border-color:#f44336;color:#c62828}
+.quiz-feedback{margin-top:.8rem;padding:.8rem 1rem;border-radius:6px;font-size:.93rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:#e8f5e9;color:#2e7d32}
+.quiz-feedback.no{background:#ffebee;color:#c62828}
+.fill-input{border:2px solid #ccc;border-radius:6px;padding:.5rem .8rem;font-size:1rem;font-family:'Source Sans 3',sans-serif;width:200px;transition:border-color .2s}
+.fill-input:focus{outline:none;border-color:#1a73e8}
+.fill-check{margin-left:.5rem;padding:.5rem 1rem;background:#1a73e8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:.95rem}
+.fill-feedback{margin-top:.6rem;font-size:.93rem;display:none}
+.fill-feedback.show{display:block}
+.key-point{background:#e3f2fd;border-left:4px solid #1a73e8;padding:.8rem 1rem;margin:1rem 0;border-radius:0 8px 8px 0}
+.key-point strong{color:#0d47a1}
+.action-list{background:#f1f8e9;border:1px solid #c5e1a5;border-radius:12px;padding:1.2rem 1.5rem;margin:2rem 0}
+.action-list h3{color:#33691e;margin-bottom:.8rem}
+.action-list ol{padding-left:1.5rem}
+.action-list li{margin:.4rem 0;font-size:.95rem}
+footer{text-align:center;color:#999;font-size:.85rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #eee}
+.progress-bar{height:6px;background:#e0e0e0;border-radius:3px;margin:1.5rem 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1a73e8,#4fc3f7);border-radius:3px;transition:width .5s}
+.concept-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:1.2rem;margin:1rem 0;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.concept-card h4{color:#1a73e8;margin-bottom:.5rem}
+</style>
+</head>
+<body>
+
+<h1>产品思维概论 <span class="badge">Lesson 01/12</span></h1>
+<p class="subtitle">Product Thinking — 从"做什么"到"为什么做"</p>
+<div class="progress-bar"><div class="progress-fill" style="width:8%"></div></div>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、什么是产品思维？</h2>
+<p>产品思维（<strong>Product Thinking</strong>）是一种以<strong>用户价值</strong>为核心、以<strong>解决问题</strong>为导向的思考方式。它回答的不是"我们能不能做"，而是"用户需不需要"。</p>
+
+<div class="key-point">
+<strong>核心公式：</strong>产品 = 用户 + 问题 + 解决方案<br>
+没有用户，就没有产品。
+</div>
+
+<p>很多人误以为"产品"就是APP、网站或者硬件。其实不然——产品是<strong>任何为用户创造价值的东西</strong>。你做的早餐、你设计的旅行路线、甚至你今天整理好的桌面，都可以是一个"产品"。</p>
+
+<div class="case-box">
+<strong>🍳 生活案例：</strong><br>
+你每天早晨煮咖啡，这不叫"产品"。但如果你发现室友总嫌咖啡太苦，于是你调整了研磨度和水温，还贴了一张"推荐冲泡指南"——这时候，你的咖啡就成了一个<strong>为特定用户解决特定问题的产品</strong>。
+</div>
+
+<p>产品思维的本质，是从<strong>执行者视角</strong>（"老板让我做个功能"）切换到<strong>所有者视角</strong>（"这个功能为谁解决了什么问题"）。</p>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、产品思维 vs. 项目思维</h2>
+<p>理解产品思维最好的方式，是把它和项目思维（<strong>Project Thinking</strong>）对比来看：</p>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 📋 项目思维的特征
+</button>
+<div class="toggle-content">
+<ul style="padding-left:1.5rem">
+<li>有明确的开始和结束日期</li>
+<li>关注交付物（deliverable）</li>
+<li>成功标准是"按时按预算完成"</li>
+<li>做完就结束，不管后续效果</li>
+</ul>
+<div class="case-box">
+<strong>🏗️ 生活案例：</strong><br>
+公司让你建一个内部排班系统，你花了两个月做好上线——项目完成了。但如果没人用，或者用起来很痛苦，项目思维到此就结束了。
+</div>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 🎯 产品思维的特征
+</button>
+<div class="toggle-content">
+<ul style="padding-left:1.5rem">
+<li>没有终点，持续迭代</li>
+<li>关注结果（outcome），而非输出（output）</li>
+<li>成功标准是"用户是否受益"</li>
+<li>上线只是开始</li>
+</ul>
+<div class="case-box">
+<strong>🔄 生活案例：</strong><br>
+你用产品思维做排班系统——上线后发现大家不用，于是你访谈了五个同事，发现真正痛点不是"排班麻烦"而是"临时调班没人接"。于是你加了一个"一键代班"功能，使用率从12%涨到了78%。
+</div>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> ⚡ 一句话区分
+</button>
+<div class="toggle-content">
+<p><strong>项目思维</strong>问："我什么时候能交差？"<br>
+<strong>产品思维</strong>问："用户现在过得更好了吗？"</p>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、产品思维的三个层次</h2>
+
+<div class="concept-card">
+<h4>① 表面层：功能（Features）</h4>
+<p>"这个产品有什么功能？" —— 这是最浅层的思考。比如"微信可以发语音""抖音可以刷短视频"。</p>
+<div class="case-box">
+<strong>⚠️ 陷阱：</strong>很多产品经理的工作就是堆功能。用户说"我想要一匹更快的马"，功能思维就给你造一匹更快的马；产品思维会问你"你到底想更快到达哪里？"——然后给你一辆汽车。
+</div>
+</div>
+
+<div class="concept-card">
+<h4>② 中间层：需求（Needs）</h4>
+<p>"用户真正需要什么？" —— 这一层开始关注动机。用户说要"更快的马"，实际需求是"更快地到达目的地"。</p>
+<div class="case-box">
+<strong>🛒 生活案例：</strong><br>
+你去超市买钻头。你以为你需要的是钻头吗？不，你真正需要的是墙上的那个洞。甚至你需要的不是洞，是想把全家福挂在墙上——你需要的其实是"家的感觉"。<br><br>这就是经典的<strong>"drill hole"比喻</strong>：人们买的不是产品本身，而是产品能帮他们完成的"任务"（Jobs To Be Done）。
+</div>
+</div>
+
+<div class="concept-card">
+<h4>③ 深层：人性（Human Nature）</h4>
+<p>"为什么人类会有这种需求？" —— 这是最深层的思考。涉及心理学、社会学、进化论。</p>
+<div class="case-box">
+<strong>📱 生活案例：</strong><br>
+为什么短视频让人停不下来？不是因为"短视频好玩"，而是因为短视频利用了人类的<strong>可变奖励机制</strong>（variable reward）——就像老虎机一样，你不知道下一条视频好不好看，所以忍不住继续刷。理解了这一点，你就能做出更好的内容产品，也能更好地保护自己不被这类产品设计操控。
+</div>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、产品思维的核心原则</h2>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 原则一：以用户为中心（User-Centric）
+</button>
+<div class="toggle-content">
+<p>不是"我觉得用户喜欢什么"，而是"我如何验证用户真的喜欢什么"。</p>
+<div class="case-box">
+<strong>🧪 生活案例：</strong><br>
+你朋友过生日，你觉得他一定想要一个机械键盘。但如果你直接问他"你想要什么礼物"，他说"其实我想要一本你手写的信"。——你的假设错了。产品思维要求你<strong>验证假设</strong>，而不是依赖直觉。
+</div>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 原则二：最小可行产品（MVP）
+</button>
+<div class="toggle-content">
+<p>不要等完美了再推出。用最少的投入做一个<strong>最小可行产品</strong>（Minimum Viable Product），先拿到反馈，再迭代。</p>
+<div class="case-box">
+<strong>🥞 生活案例：</strong><br>
+你想开一家煎饼摊。产品思维的做法是：先用最简单的面糊+鸡蛋+葱花做一款煎饼卖出去。如果有人愿意付钱，再考虑要不要加芝士、要不要做小程序点单、要不要装修店面。而不是先在租店面上花三个月。
+</div>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 原则三：数据说话（Data-Driven）
+</button>
+<div class="toggle-content">
+<p>直觉很重要，但数据更可靠。好的产品思维 = 直觉提出假设 + 数据验证假设。</p>
+<div class="case-box">
+<strong>📊 生活案例：</strong><br>
+你觉得"红色按钮比蓝色按钮更醒目"——这是直觉。但如果你做了A/B测试，发现蓝色按钮的点击率高出23%，那数据就推翻了你的直觉。产品思维不是不要直觉，而是不迷信直觉。
+</div>
+</div>
+
+<button class="toggle-btn" onclick="toggleSection(this)">
+<span class="arrow">▶</span> 原则四：持续迭代（Iterative）
+</button>
+<div class="toggle-content">
+<p>产品永远没有"完成"的那一天。每一次用户反馈都是一个改进的机会。</p>
+<div class="case-box">
+<strong>📝 生活案例：</strong><br>
+你写了一份报告，第一版可能逻辑混乱。但你给同事看了，他指出了三个问题。你改了第二版，又给另一个人看，他又提了两条建议。第三版就好了。——这就是迭代。好的产品不是一次写出来的，是一次次改出来的。
+</div>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、产品思维的常见误区</h2>
+
+<div class="concept-card">
+<h4>❌ 误区一："用户告诉我他们想要什么"</h4>
+<p>"用户告诉我他们想要什么" —— 用户说的是<strong>表面需求</strong>。产品思维要挖掘<strong>深层动机</strong>。</p>
+</div>
+
+<div class="concept-card">
+<h4>❌ 误区二："竞品有的功能我也要有"</h4>
+<p>竞品有 ≠ 你需要有。每个产品的<strong>用户群体</strong>和<strong>核心价值</strong>不同，盲目跟风只会让产品失去焦点。</p>
+</div>
+
+<div class="concept-card">
+<h4>❌ 误区三："功能越多越好"</h4>
+<p>功能越多，用户越困惑。<strong>少即是多</strong>（Less is More）。苹果只有一个Home键，却改变了整个行业。</p>
+</div>
+
+<div class="concept-card">
+<h4>❌ 误区四："上线即成功"</h4>
+<p>上线只是开始。真正的成功是用户<strong>持续使用</strong>并从中获得价值。</p>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div class="section">
+<h2>六、互动练习 <span class="badge">Quiz</span></h2>
+<p>检验一下你对产品思维的理解。每题选一个答案，点击后立即反馈。</p>
+</div>
+
+<div class="quiz-container" id="q1">
+<p class="quiz-question">1. 小明想做一个健身APP，他首先应该做什么？</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q1',false)">A. 画出完整的UI界面</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q1',true)">B. 找10个目标用户聊聊他们的健身痛点</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q1',false)">C. 找一个程序员开发</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q1',false)">D. 研究竞争对手的APP有什么功能</button></li>
+</ul>
+<div class="quiz-feedback" id="q1-fb"></div>
+</div>
+
+<div class="quiz-container" id="q2">
+<p class="quiz-question">2. "用户说要更快的马"这个故事说明了什么？</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q2',false)">A. 用户不懂技术</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q2',true)">B. 用户表达的是表面需求，产品思维要挖掘深层动机</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q2',false)">C. 产品经理应该直接听用户的</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q2',false)">D. 马比汽车好</button></li>
+</ul>
+<div class="quiz-feedback" id="q2-fb"></div>
+</div>
+
+<div class="quiz-container" id="q3">
+<p class="quiz-question">3. 以下哪个是MVP（最小可行产品）的例子？</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q3',false)">A. 开发一个功能完整的电商平台</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q3',false)">B. 先写一份商业计划书给投资人</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q3',true)">C. 在微信群里手动接单卖手工饼干，验证有没有人愿意买</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q3',false)">D. 租一个实体店再卖饼干</button></li>
+</ul>
+<div class="quiz-feedback" id="q3-fb"></div>
+</div>
+
+<div class="quiz-container" id="q4">
+<p class="quiz-question">4. 产品思维与项目思维最大的区别是什么？</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q4',false)">A. 产品思维更花钱</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q4',true)">B. 产品思维关注持续的用户价值，项目思维关注按时交付</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q4',false)">C. 产品思维只需要一个人做</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q4',false)">D. 没有区别</button></li>
+</ul>
+<div class="quiz-feedback" id="q4-fb"></div>
+</div>
+
+<div class="quiz-container" id="q5">
+<p class="quiz-question">5. 你发现同事总在下午三点犯困。如果要用产品思维解决这个问题，第一步应该是：</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q5',false)">A. 给他买一罐红牛</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q5',false)">B. 在公司群里发一个提神小妙招</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q5',true)">C. 先观察和了解他为什么会在三点犯困——是午饭吃太饱？睡眠不足？还是工作无聊？</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q5',false)">D. 建议他早点下班</button></li>
+</ul>
+<div class="quiz-feedback" id="q5-fb"></div>
+</div>
+
+<div class="quiz-container" id="q6">
+<p class="quiz-question">6. 以下关于"功能越多越好"的说法，正确的是：</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q6',false)">A. 功能多说明产品强大</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q6',false)">B. 用户永远不会嫌功能多</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q6',true)">C. 功能过多会导致用户认知负担，降低使用意愿</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q6',false)">D. 竞品有多少功能，我们就应该做多少</button></li>
+</ul>
+<div class="quiz-feedback" id="q6-fb"></div>
+</div>
+
+<div class="quiz-container" id="q7">
+<p class="quiz-question">7. 填空题：产品思维的核心公式是 —— 产品 = 用户 + <input type="text" class="fill-input" id="fill1" placeholder="____"> + 解决方案。</p>
+<button class="fill-check" onclick="checkFill('fill1','问题')">查看答案</button>
+<div class="fill-feedback" id="fill1-fb"></div>
+</div>
+
+<div class="quiz-container" id="q8">
+<p class="quiz-question">8. 你去超市买钻头，真正的需求是什么？</p>
+<ul class="quiz-options">
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q8',false)">A. 钻头本身</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q8',true)">B. 墙上的一个洞（甚至是为了挂上全家福获得"家的感觉"）</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q8',false)">C. 省钱</button></li>
+<li><button class="quiz-opt" onclick="checkAnswer(this,'q8',false)">D. 让商家多赚钱</button></li>
+</ul>
+<div class="quiz-feedback" id="q8-fb"></div>
+</div>
+
+<footer>
+<p>TeachHub · 产品设计 · Lesson 01/12 · 产品思维概论</p>
+<p>© 2026 — Built for learning</p>
+</footer>
+
+<script>
+function toggleSection(btn){
+  const content=btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('show');
+}
+
+const feedbacks={
+  q1:{ok:"✅ 正确！产品思维的第一步永远是理解用户。在动手之前，先搞清楚你在为谁解决什么问题。",no:"❌ 不对。产品思维的第一步是理解用户需求和痛点，而不是画界面或找程序员。"},
+  q2:{ok:"✅ 正确！Henry Ford的名言说明：用户表达的是方案层面的需求，而产品思维要挖掘背后的真实动机。",no:"❌ 不对。这个故事的核心是：用户说的只是表面需求，真正的需求藏在下面。"},
+  q3:{ok:"✅ 正确！MVP就是用最小的成本验证核心价值主张。微信群卖饼干就是一个完美的MVP。",no:"❌ 不对。MVP强调的是'最小可行'——用最少资源快速验证假设。"},
+  q4:{ok:"✅ 正确！项目思维关注'做完'，产品思维关注'做好'。前者有终点，后者是持续的。",no:"❌ 不对。两者的本质区别在于关注点：交付 vs. 价值。"},
+  q5:{ok:"✅ 正确！产品思维要求你先理解问题，再设计方案。直接给红牛是解决方案，但你还没确认问题是什么。",no:"❌ 不对。产品思维的第一步是理解问题本身，而不是急于给方案。"},
+  q6:{ok:"✅ 正确！功能越多，用户越不知道从哪里开始。好的产品设计是'少而精'。",no:"❌ 不对。功能过多会造成认知过载，反而降低用户体验。"},
+  q8:{ok:"✅ 正确！这就是著名的Jobs To Be Done理论：人们不是购买产品，而是'雇佣'产品来完成一项任务。",no:"❌ 不对。用户买的不是钻头，而是钻头上的那个洞。"}
+};
+
+function checkAnswer(btn,quizId,correct){
+  const container=document.getElementById(quizId);
+  const opts=container.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>{o.style.pointerEvents='none';o.style.opacity='.7'});
+  btn.style.opacity='1';
+  if(correct){
+    btn.classList.add('correct');
+  }else{
+    btn.classList.add('wrong');
+    opts.forEach(o=>{if(o.onclick&&o.onclick.toString().includes('true'))o.classList.add('correct')});
+  }
+  const fb=document.getElementById(quizId+'-fb');
+  const key=quizId;
+  fb.className='quiz-feedback show '+(correct?'ok':'no');
+  fb.textContent=feedbacks[key][correct?'ok':'no'];
+}
+
+function checkFill(inputId,answer){
+  const input=document.getElementById(inputId);
+  const fb=document.getElementById(inputId+'-fb');
+  const val=input.value.trim();
+  fb.classList.add('show');
+  if(val===answer||val==='需求'||val==='problems'){
+    fb.className='fill-feedback show ok';
+    fb.textContent='✅ 正确！产品 = 用户 + 问题 + 解决方案';
+  }else{
+    fb.className='fill-feedback show no';
+    fb.textContent='💡 参考答案：问题（Problem）。产品 = 用户 + 问题 + 解决方案';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0009 · 产品增长AARRR | TeachHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather','Noto Serif SC',serif;color:#1a1a1a}
+.container{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+.lesson-badge{display:inline-block;background:#e3f2fd;color:#1565c0;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.lesson-title{font-size:28px;font-weight:900;margin-bottom:6px;line-height:1.35}
+.lesson-subtitle{font-size:16px;color:#666;margin-bottom:32px;font-weight:400}
+.section{margin:36px 0}
+.section h2{font-size:22px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e0e0e0}
+.section h3{font-size:18px;margin:20px 0 10px}
+p{margin-bottom:14px}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#f57f17;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.case-box p{margin:0;font-size:15px}
+.concept-card{background:#f5f5f5;border-radius:12px;padding:20px 24px;margin:20px 0}
+.concept-card .term{font-family:'Merriweather',serif;font-weight:700;color:#1565c0;font-size:16px}
+.concept-card .cn{color:#333;font-size:15px}
+.collapse-btn{cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;color:#1565c0;font-size:16px;margin:16px 0;padding:10px 16px;background:#e3f2fd;border-radius:8px;border:none;width:100%;text-align:left;transition:background .2s}
+.collapse-btn:hover{background:#bbdefb}
+.collapse-btn::before{content:'▸';transition:transform .2s;display:inline-block}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-content{display:none;padding:12px 16px 16px;color:#444;font-size:15px;line-height:1.7}
+.collapse-content.open{display:block}
+.quiz-section{background:#fafafa;border-radius:16px;padding:28px 28px;margin:36px 0;border:1px solid #e8e8e8}
+.quiz-section h2{border-bottom:none;margin-bottom:20px;font-size:22px}
+.quiz-item{margin:24px 0;padding:20px;background:#fff;border-radius:10px;border:1px solid #eee;transition:box-shadow .2s}
+.quiz-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.quiz-question{font-weight:600;font-size:16px;margin-bottom:14px;color:#1a1a1a}
+.quiz-question .q-num{color:#1565c0;font-weight:700}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:8px 0}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;border:2px solid transparent;font-size:15px}
+.quiz-option:hover{background:#f0f4ff}
+.quiz-option.selected{border-color:#1565c0;background:#e3f2fd}
+.quiz-option.correct{border-color:#2e7d32;background:#e8f5e9}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee}
+.quiz-option .radio{width:18px;height:18px;border:2px solid #bbb;border-radius:50%;flex-shrink:0;margin-top:2px;transition:all .15s}
+.quiz-option.selected .radio{border-color:#1565c0;background:#1565c0}
+.quiz-option.correct .radio{border-color:#2e7d32;background:#2e7d32}
+.quiz-option.wrong .radio{border-color:#c62828;background:#c62828}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:14px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.quiz-feedback.wrong-fb{background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+.fill-blank-input{border:none;border-bottom:2px solid #bbb;padding:4px 8px;font-size:15px;font-family:inherit;width:160px;outline:none;transition:border-color .2s}
+.fill-blank-input:focus{border-color:#1565c0}
+.fill-blank-input.correct{border-color:#2e7d32;background:#e8f5e9}
+.fill-blank-input.wrong{border-color:#c62828;background:#ffebee}
+.check-btn{background:#1565c0;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;margin-top:10px;transition:background .2s}
+.check-btn:hover{background:#0d47a1}
+.action-list{background:#e8f5e9;border-radius:12px;padding:20px 24px;margin:36px 0}
+.action-list h3{color:#2e7d32;margin-bottom:12px;font-size:17px}
+.action-list ol{padding-left:20px}
+.action-list li{margin:8px 0;font-size:15px}
+.action-list .tag{display:inline-block;background:#2e7d32;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.diagram{background:#fff;border:2px dashed #ccc;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.diagram .funnel{font-size:15px;line-height:2.2}
+.diagram .funnel-step{display:inline-block;padding:10px 24px;border-radius:8px;margin:4px;font-weight:600}
+.funnel-acquire{background:#e3f2fd;color:#1565c0}
+.funnel-activate{background:#e8f5e9;color:#2e7d32}
+.funnel-retention{background:#fff3e0;color:#e65100}
+.funnel-revenue{background:#fce4ec;color:#c62828}
+.funnel-refer{background:#f3e5f5;color:#7b1fa2}
+.end-badge{text-align:center;margin:40px 0 10px;font-size:20px;font-weight:700;color:#2e7d32}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid #e0e0e0;text-align:center;color:#999;font-size:13px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.check-item input[type="checkbox"]{margin-top:4px;width:18px;height:18px;accent-color:#43a047;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:15px}
+table.spec-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+table.spec-table th{background:#e3f2fd;color:#1565c0;padding:10px 14px;text-align:left;font-weight:600}
+table.spec-table td{padding:10px 14px;border-bottom:1px solid #eee}
+table.spec-table tr:hover td{background:#f5f5f5}
+.metric-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:16px 20px;margin:12px 0;display:flex;align-items:center;gap:16px}
+.metric-letter{font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#1565c0;min-width:48px;text-align:center}
+.metric-info{flex:1}
+.metric-info strong{font-size:16px;color:#1a1a1a}
+.metric-info p{margin:4px 0 0;font-size:14px;color:#555}
+</style>
+</head>
+<body>
+<div class="container">
+
+<span class="lesson-badge">产品设计 · 第09课</span>
+<h1 class="lesson-title">产品增长 AARRR</h1>
+<p class="lesson-subtitle">Acquisition → Activation → Retention → Revenue → Referral — 一条船，五个舱，漏任何一个都会沉</p>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、为什么你的用户来了又走了？</h2>
+<p>你一定见过这样的产品：</p>
+<p>上线第一天，朋友圈刷屏，下载量暴涨。第三天，日活跌回零头。一个月后，创始人坐在办公室里盯着后台发呆——<strong>"为什么他们都走了？"</strong></p>
+<p>这不是个例。这是绝大多数创业公司和产品的宿命。而破解这个宿命的钥匙，就是一个简单的模型——<strong>AARRR 漏斗</strong>，也叫海盗指标（Pirate Metrics）。</p>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>想象你在菜市场卖煎饼。<br>
+<strong>获客：</strong>有多少人路过你的摊位？<br>
+<strong>激活：</strong>有多少人停下来看了你的菜单？<br>
+<strong>留存：</strong>有多少人明天还来？<br>
+<strong>收入：</strong>每个人平均花多少钱？<br>
+<strong>推荐：</strong>有多少人跟朋友说\"那家的煎饼特别好吃\"？<br><br>
+如果你只关注\"今天来多少人\"，却不管\"明天还来多少人\"——那你的生意永远做不大。产品也一样。</p>
+</div>
+
+<div class="concept-card">
+<div class="term">AARRR 模型（海盗指标 Pirate Metrics）</div>
+<div class="cn">由 Dave McClure 提出，将用户生命周期分为五个阶段：获客 Acquisition、激活 Activation、留存 Retention、收入 Revenue、推荐 Referral。它是一个漏斗模型——每一层都会流失一部分用户，产品经理的核心工作就是减少流失、扩大漏斗。</div>
+</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、拆解 AARRR：五个阶段，五种打法</h2>
+
+<h3>A — Acquisition（获客）：用户从哪里来？</h3>
+<p>获客是整个漏斗的入口。你的用户是怎么发现你的产品的？是搜索引擎？是朋友推荐？是刷到了广告？还是路过你公司的楼下看到了海报？</p>
+<p>关键问题：<strong>哪个渠道带来的用户最多？哪个渠道带来的用户质量最高？</strong></p>
+<p>这两个问题的答案通常不一样。比如：你投了 10 万元的信息流广告，带来了 5 万个下载——但其中 95% 的人注册后就没再打开过。而你花 500 块在知乎写了一篇干货文章，只带来了 200 个下载——但其中 60% 的人成了活跃用户。哪个渠道更好？显然是后者。</p>
+
+<h3>A — Activation（激活）：用户第一次体验好吗？</h3>
+<p>激活不是\"注册\"，而是<strong>用户第一次感受到产品价值</strong>的时刻。Facebook 有一个著名的内部指标："7 天内添加 10 个好友的人，留存率极高。"所以他们的激活目标不是\"注册成功\"，而是\"添加 10 个好友\"。</p>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>你下载了一个记账 App。注册花了 2 分钟，填了姓名、手机号、邮箱——但你还没记过一笔账。这时候如果你关掉 App，大概率不会再回来了。<br><br>
+<strong>激活时刻</strong>是你第一次输入\"早餐 8 元\"的那一刻。当你看到余额从 5000 变成 4992，你第一次感受到了这个 App 的价值——它在帮你管钱。<br><br>
+所以好的记账 App 会在注册后立刻引导你记第一笔账，而不是让你填一堆个人信息。</p>
+</div>
+
+<h3>R — Retention（留存）：用户还会回来吗？</h3>
+<p>留存是 AARRR 中最重要的一环。Mark Zuckerberg 说过一句话：<strong>"如果你没有留存问题，你就不需要获客。"</strong></p>
+<p>为什么？因为如果你的产品能让 100 个人中的 80 个人每天都回来用，那么即使你不做任何推广，靠口碑也能增长。反之，如果你的产品留不住人，获客越多，死得越快——因为你一直在往一个漏水的水桶里灌水。</p>
+
+<div class="metric-card">
+<div class="metric-letter">💡</div>
+<div class="metric-info">
+<strong>核心洞察</strong>
+<p>获客是花钱买用户，留存是让钱产生复利。没有留存的获客，本质上是在加速死亡。</p>
+</div>
+</div>
+
+<h3>R — Revenue（收入）：你怎么赚钱？</h3>
+<p>不是所有产品都需要立刻变现，但最终都要回答这个问题：<strong>谁在付钱？付多少？为什么付？</strong></p>
+<p>常见的变现模式：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：常见变现模式</button>
+<div class="collapse-content">
+<table class="spec-table">
+<tr><th>模式</th><th>说明</th><th>例子</th></tr>
+<tr><td>免费增值 Freemium</td><td>基础功能免费，高级功能收费</td><td>Notion、Spotify</td></tr>
+<tr><td>订阅制 Subscription</td><td>按月/年付费持续使用</td><td>iCloud、Netflix</td></tr>
+<tr><td>广告 Ads</td><td>免费使用，看广告赚钱</td><td>抖音、微博</td></tr>
+<tr><td>交易抽成 Marketplace</td><td>撮合交易，收取佣金</td><td>淘宝、滴滴</td></tr>
+<tr><td>一次性购买</td><td>买断制</td><td>传统软件、游戏买断</td></tr>
+</table>
+</div>
+
+<h3>R — Referral（推荐）：用户会告诉别人吗？</h3>
+<p>推荐是增长的终极加速器。Dropbox 靠\"邀请好友各得 1GB 空间\"实现了病毒式增长——他们的推荐转化率高达 60%，意味着每 10 个用户里有 6 个人愿意推荐这个产品。</p>
+<p>推荐的核心在于：<strong>你的产品值不值得用户拿自己的社交信用去推荐给别人？</strong></p>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>你用过\"拼多多\"的\"砍一刀\"吗？那是典型的推荐机制——但它有一个副作用：它消耗的是你的社交信用。你的朋友可能因此觉得烦。而\"得到\" App 的推荐奖励就温和得多——你推荐一本书给朋友，你们俩都能获得优惠券。这不是消耗社交资本，而是在分享价值。<br><br>
+<strong>好的推荐机制，让推荐变成一件自然的事，而不是一种打扰。</strong></p>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、AARRR 漏斗：可视化你的增长</h2>
+<p>把这五个阶段放在一起，就是一个漏斗——上面宽，下面窄。每一层都会有用户流失。你的工作不是让所有人都不流失（不可能），而是让每一层的流失率尽可能低。</p>
+
+<div class="diagram">
+<h3 style="margin-bottom:16px">AARRR 增长漏斗</h3>
+<div class="funnel">
+<span class="funnel-step funnel-acquire">A 获客<br><small>所有人</small></span><br>
+<span class="funnel-step funnel-activate">A 激活<br><small>体验了核心价值的人</small></span><br>
+<span class="funnel-step funnel-retention">R 留存<br><small>持续回来的人</small></span><br>
+<span class="funnel-step funnel-revenue">R 收入<br><small>付费的人</small></span><br>
+<span class="funnel-step funnel-refer">R 推荐<br><small>愿意推荐的人</small></span>
+</div>
+<p style="font-size:13px;color:#999;margin-top:12px">漏斗越来越窄是正常的——关键是每一层的转化率</p>
+</div>
+
+<p>一个典型的移动 App 各层转化率参考：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：各层典型转化率</button>
+<div class="collapse-content">
+<table class="spec-table">
+<tr><th>阶段</th><th>典型转化率</th><th>优秀转化率</th></tr>
+<tr><td>获客 → 激活</td><td>20% - 40%</td><td>60%+</td></tr>
+<tr><td>激活 → 留存（次日）</td><td>20% - 40%</td><td>50%+</td></tr>
+<tr><td>留存 → 收入</td><td>2% - 5%</td><td>10%+</td></tr>
+<tr><td>收入 → 推荐</td><td>5% - 15%</td><td>30%+</td></tr>
+</table>
+<p><strong>注意：</strong>这些数据因产品类型差异巨大。社交 App 的激活率可能高达 80%，而企业级 SaaS 可能只有 10%。关键是对比自己的历史数据和竞品基准。</p>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、优先级：你应该先优化哪一层？</h2>
+<p>AARRR 的五个阶段不是平权的。在不同的产品阶段，你需要关注的重点完全不同。</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：不同阶段的优先级策略</button>
+<div class="collapse-content">
+<table class="spec-table">
+<tr><th>产品阶段</th><th>首要指标</th><th>为什么</th></tr>
+<tr><td>早期验证</td><td>Activation（激活）</td><td>你需要确认产品真的有人觉得有价值</td></tr>
+<tr><td>PMF 后</td><td>Retention（留存）</td><td>确认用户愿意持续回来用</td></tr>
+<tr><td>增长期</td><td>Acquisition（获客）</td><td>有了留存基础，可以大规模拉新</td></tr>
+<tr><td>成熟期</td><td>Revenue（收入）</td><td>用户基数稳定，优化变现效率</td></tr>
+<tr><td>平台期</td><td>Referral（推荐）</td><td>靠老用户带来新用户，降低获客成本</td></tr>
+</table>
+<p><strong>最常见的错误：</strong>在产品还没验证留存之前，就开始疯狂投放广告获客。这就像一个还没修好屋顶的水桶——灌的水越多，漏得越快。</p>
+</div>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>你开了一家新开的奶茶店。开业前三天，你在抖音上投了 10 万块广告，门口排起了长队。但第四天开始，人流骤减。为什么？因为你的奶茶不好喝——或者太贵了——或者排队太久了。<br><br>
+正确的顺序应该是：先确保你的奶茶好喝（激活），再确保客人愿意回头（留存），然后再考虑投广告让更多人知道（获客）。<br><br>
+很多创业公司的问题恰恰相反——先投广告，再补产品。</p>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、AARRR 的常见陷阱</h2>
+
+<h3>陷阱 1：虚荣指标（Vanity Metrics）</h3>
+<p>"我们的 App 下载量突破了 100 万！"——这句话很爽，但它能告诉你什么？如果这 100 万人里只有 1% 打开了 App，那这个数字毫无意义。赵鹏（硅谷投资人）说得好：<strong>"下载量是虚荣指标，日活才是真实指标。"</strong></p>
+
+<h3>陷阱 2：过度优化单一环节</h3>
+<p>你把注册流程从 5 步优化到了 1 步，注册率提升了 300%。但新用户注册后没人用了——因为他们没体验到产品价值。优化注册流程只是把更多人送进了漏斗的入口，但如果漏斗中间有洞，这些人还是会流失。</p>
+
+<h3>陷阱 3：忽视留存，盲目追求增长</h3>
+<p>这是初创公司最常见的死法。增长太快，留存跟不上——结果就是烧钱拉来的用户像沙子一样从指缝间溜走。Sean Ellis 有一个经典判断标准：<strong>如果一个产品能让 40% 的用户表示\"如果不能再使用该产品会非常遗憾\"，那它就有了 PMF（产品市场匹配），可以开始大规模增长了。</strong></p>
+
+<div class="concept-card">
+<div class="term">40% 测试（Sean Ellis Test）</div>
+<div class="cn">定期询问用户：\"如果你不能再使用本产品，你会感觉如何？\"选项：①非常遗憾 ②有点遗憾 ③不遗憾。如果选择\"非常遗憾\"的比例 ≥ 40%，说明产品具备了 PMF 的基础，可以加大增长投入。</div>
+</div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+<h2>六、AARRR 之外的世界</h2>
+<p>AARRR 不是万能药。它诞生于 2010 年左右的硅谷 SaaS 圈，到今天已经有些局限：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：AARRR 的局限与演进</button>
+<div class="collapse-content">
+<ul style="padding-left:20px">
+<li><strong>不适用于所有商业模式：</strong>免费+广告的模型（如抖音）和订阅制模型（如 Notion）的增长逻辑完全不同。AARRR 更偏向付费转化型产品。</li>
+<li><strong>忽略了社区和网络效应：</strong>对于社交平台，用户之间的互动本身就是一种增长动力，AARRR 没有涵盖这一点。</li>
+<li><strong>新的变体：</strong>AARRR 之后出现了 AARRRD（加 Delivery）、Pirate Metrics 的扩展版等。更重要的是，增长黑客领域现在更强调\"实验文化\"——不断做 A/B 测试来优化每一层，而不是依赖一个固定的框架。</li>
+</ul>
+<p><strong>但即便如此，AARRR 仍然是产品经理最需要掌握的增长框架之一。</strong>它简洁、直观、覆盖全面，是理解用户生命周期的最佳起点。</p>
+</div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>🧠 随堂测验</h2>
+
+<!-- Q1 -->
+<div class="quiz-item" id="q1">
+<div class="quiz-question"><span class="q-num">Q1.</span> 你运营一个健身打卡 App。目前每天有 1000 人下载，但只有 50 人在一周后仍然打开 App。根据 AARRR 模型，你最应该优先解决的问题是哪一层？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>A. Acquisition（获客）— 下载量不够多，需要加大投放</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>B. Activation（激活）— 用户注册后没有体验到核心价值</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>C. Retention（留存）— 用户来了但不回来</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>D. Revenue（收入）— 还没有开始收费</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-item" id="q2">
+<div class="quiz-question"><span class="q-num">Q2.</span> Facebook 发现，\"7 天内添加 10 个好友\"的用户留存率远高于只注册但不加人的用户。\"添加 10 个好友\"属于 AARRR 中的哪一层？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>A. Acquisition（获客）</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>B. Activation（激活）</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>C. Retention（留存）</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>D. Referral（推荐）</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" id="q3">
+<div class="quiz-question"><span class="q-num">Q3.</span> 填空：Dropbox 通过\"邀请好友各得 1GB 空间\"实现了病毒式增长，这种机制属于 AARRR 模型中的 <input type="text" class="fill-blank-input" id="blank-q3" placeholder="请输入单层字母"> 阶段。</div>
+<button class="check-btn" onclick="checkBlank('q3','R')">检查答案</button>
+<div class="quiz-feedback" id="fb-q3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" id="q4">
+<div class="quiz-question"><span class="q-num">Q4.</span> 以下哪种情况最符合\"虚荣指标（Vanity Metrics）\"的问题？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>A. 日活跃用户数下降了 5%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>B. 月度付费用户数增长了 20%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>C. App Store 累计下载量突破 100 万，但次日留存率仅 8%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>D. 用户平均使用时长从 3 分钟提升到 8 分钟</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" id="q5">
+<div class="quiz-question"><span class="q-num">Q5.</span> 你正在为一个全新的知识付费 App 制定增长策略。产品刚上线两周，还在验证阶段。根据 AARRR 的优先级原则，你现在最应该关注哪一层？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>A. Acquisition（获客）— 先让更多人知道这个 App</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>B. Activation（激活）— 确保第一批用户体验到内容价值</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>C. Revenue（收入）— 尽快开始变现</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>D. Referral（推荐）— 让早期用户带来新用户</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" id="q6">
+<div class="quiz-question"><span class="q-num">Q6.</span> Sean Ellis 的 40% 测试中，\"非常遗憾\"的比例达到多少才说明产品具备了 PMF（产品市场匹配）的基础？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>A. 20%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>B. 30%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>C. 40%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>D. 50%</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" id="q7">
+<div class="quiz-question"><span class="q-num">Q7.</span> 一个外卖 App 发现，用户注册后从未搜索过附近的餐厅就直接卸载了。这说明产品在哪一层出了问题？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>A. Acquisition（获客）— 用户来源不对</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>B. Activation（激活）— 用户没有体验到\"找到附近美食\"的核心价值</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>C. Retention（留存）— 用户用完就走</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>D. Revenue（收入）— 没有产生订单</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" id="q8">
+<div class="quiz-question"><span class="q-num">Q8.</span> 以下哪个场景体现了\"过度优化单一环节\"的问题？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>A. 把注册流程从 5 步优化到 1 步，注册量暴增，但新用户第二天就全走了</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>B. 发现次日留存率低，于是优化了新手引导流程</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>C. 通过 A/B 测试发现，简化支付流程能让付费率提升 15%</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>D. 先做用户调研，再决定优先优化哪个漏斗环节</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q8"></div>
+</div>
+
+</div>
+
+<!-- ACTION CHECKLIST -->
+<div class="action-list">
+<h3>✅ 今天就能做的行动清单</h3>
+<div class="check-item">
+<input type="checkbox" id="a1"><label for="a1">打开你手机里最常用的一个 App，试着画出它的 AARRR 漏斗——每一层大概有多少人？（凭直觉估算即可）</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a2"><label for="a2">问自己一个问题：\"如果我的产品明天消失了，哪些用户会说'非常遗憾'？\"——这就是你的激活时刻</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a3"><label for="a3">找出一个你最近卸载的 App，用 AARRR 分析它在哪一层失去了你</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a4"><label for="a4">花 5 分钟浏览一次你常用 App 的推荐/邀请页面，看看它们是如何设计 Referral 机制的</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a5"><label for="a5">写下你当前最关注的一个产品（可以是自己的项目），判断它处于 AARRR 的哪个阶段，下一步该优先优化哪一层</label>
+</div>
+</div>
+
+<div class="end-badge">🎓 第 09 课 · 完</div>
+
+<footer>
+<p>TeachHub · 产品设计系列 · 第 9/12 课</p>
+<p>下一课：原型与迭代</p>
+</footer>
+
+</div>
+
+<script>
+function toggleCollapse(btn) {
+  btn.classList.toggle('open');
+  var content = btn.nextElementSibling;
+  content.classList.toggle('open');
+}
+
+function selectOption(el, qId) {
+  var item = document.getElementById(qId);
+  var options = item.querySelectorAll('.quiz-option');
+  options.forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function checkBlank(qId, answer) {
+  var input = document.getElementById('blank-' + qId);
+  var fb = document.getElementById('fb-' + qId);
+  var val = input.value.trim().toUpperCase();
+  if (val === answer) {
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.innerHTML = '<strong>✓ 正确！</strong> Referral（推荐）阶段。DropBox 的邀请机制让用户成为增长引擎，这是 Referral 的经典案例。';
+  } else {
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.innerHTML = '<strong>✗ 不对哦。</strong> 正确答案是「R」。Dropbox 的邀请奖励机制属于 Referral（推荐）阶段——它利用现有用户的人际关系网络来获取新用户。';
+  }
+}
+
+// Auto-grade on option click
+document.querySelectorAll('.quiz-option').forEach(function(opt) {
+  opt.addEventListener('click', function() {
+    var item = this.closest('.quiz-item');
+    var qId = item.id;
+    var idx = Array.from(item.querySelectorAll('.quiz-option')).indexOf(this);
+    var fb = document.getElementById('fb-' + qId);
+    var options = item.querySelectorAll('.quiz-option');
+
+    options.forEach(function(o) {
+      o.classList.remove('correct', 'wrong');
+    });
+
+    var answers = {
+      q1: 2,  // C - Retention
+      q2: 1,  // B - Activation
+      q3: null, // fill blank
+      q4: 2,  // C - Vanity metric
+      q5: 1,  // B - Activation
+      q6: 2,  // C - 40%
+      q7: 1,  // B - Activation
+      q8: 0   // A - Over-optimizing single step
+    };
+
+    if (answers[qId] !== null) {
+      var correctIdx = answers[qId];
+      options[correctIdx].classList.add('correct');
+      if (idx !== correctIdx) {
+        this.classList.add('wrong');
+      }
+      if (idx === correctIdx) {
+        fb.className = 'quiz-feedback show correct-fb';
+        fb.innerHTML = getExplanation(qId, true);
+      } else {
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.innerHTML = getExplanation(qId, false);
+      }
+    }
+  });
+});
+
+function getExplanation(qId, correct) {
+  var explanations = {
+    q1: correct
+      ? '<strong>正确！</strong> 留存率只有 5%（50/1000），这是严重的留存问题。Mark Zuckerberg 说得对——如果你没有留存问题，你就不需要获客。先修好水桶的洞，再往里灌水。'
+      : '<strong>不对哦。</strong> 1000 人下载只剩 50 人留存，留存率仅 5%。在留存问题解决之前，加大获客投入只会加速资源浪费。先让用户留下来，再想办法让更多人进来。',
+    q2: correct
+      ? '<strong>正确！</strong> 添加 10 个好友是用户在 Facebook 上第一次真正体验到\"社交网络价值\"的时刻——你不再是\"注册用户\"，你是一个\"有朋友的人\"。这就是激活。'
+      : '<strong>不对哦。</strong> 注册只是完成了 Acquisition，\"添加 10 个好友\"才是用户第一次感受到产品价值的时刻——这是 Activation（激活）的定义。',
+    q4: correct
+      ? '<strong>正确！</strong> 下载量 100 万听起来很厉害，但次日留存仅 8% 说明绝大多数用户根本没体验到产品价值。这就是典型的虚荣指标——数字好看，但掩盖了真实问题。'
+      : '<strong>不对哦。</strong> 虚荣指标的特点是\"看起来很美，但没什么实际意义\"。100 万下载量 + 8% 留存率就是经典案例——数字很大，但说明不了任何问题。',
+    q5: correct
+      ? '<strong>正确！</strong> 产品刚上线还在验证阶段，首要任务是确认\"第一批用户是否真的觉得这个产品有价值\"。这就是 Activation 的核心使命。没有激活验证，后续所有增长都是盲目的。'
+      : '<strong>不对哦。</strong> 早期验证阶段，获客和变现都为时过早。核心问题是：\"用户会不会回来？\"——这只能通过激活和留存的验证来回答。',
+    q6: correct
+      ? '<strong>正确！</strong> 40% 是 Sean Ellis 设定的经验阈值。当 40% 的用户表示\"如果不能再使用会非常遗憾\"时，说明产品已经找到了核心价值主张，可以开始大规模增长投入了。'
+      : '<strong>不对哦。</strong> Sean Ellis 提出的标准是 40%。低于这个比例说明产品还没有真正解决用户的核心需求，此时加大增长投入效果有限。',
+    q7: correct
+      ? '<strong>正确！</strong> 用户注册了但没有搜索过餐厅就直接卸载——说明他从来没有体验到\"找到附近美食\"这个核心价值。激活没做好，后面的一切都无从谈起。'
+      : '<strong>不对哦。</strong> 用户注册后直接卸载，核心问题是他在产品里没有找到价值。\"搜索附近餐厅\"就是外卖 App 的激活时刻——没做到这一步，就是激活环节出了问题。',
+    q8: correct
+      ? '<strong>正确！</strong> 注册流程优化只是漏斗入口，但如果用户进来后没有体验到价值（留存差），那优化注册就是在加速死亡。这是典型的\"优化了错误指标\"的案例。'
+      : '<strong>不对哦。</strong> A 是典型的过度优化单一环节——注册量暴增但留存崩盘，说明问题不在注册流程，而在用户进入后的体验。B、C、D 都是健康的优化方式。'
+  };
+  return explanations[qId];
+}
+</script>
+
+</body>
+</html>

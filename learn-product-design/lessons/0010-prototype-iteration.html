@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0010 · 原型与迭代 | TeachHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather','Noto Serif SC',serif;color:#1a1a1a}
+.container{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+.lesson-badge{display:inline-block;background:#e3f2fd;color:#1565c0;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.lesson-title{font-size:28px;font-weight:900;margin-bottom:6px;line-height:1.35}
+.lesson-subtitle{font-size:16px;color:#666;margin-bottom:32px;font-weight:400}
+.section{margin:36px 0}
+.section h2{font-size:22px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e0e0e0}
+.section h3{font-size:18px;margin:20px 0 10px}
+p{margin-bottom:14px}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#f57f17;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.case-box p{margin:0;font-size:15px}
+.concept-card{background:#f5f5f5;border-radius:12px;padding:20px 24px;margin:20px 0}
+.concept-card .term{font-family:'Merriweather',serif;font-weight:700;color:#1565c0;font-size:16px}
+.concept-card .cn{color:#333;font-size:15px}
+.collapse-btn{cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;color:#1565c0;font-size:16px;margin:16px 0;padding:10px 16px;background:#e3f2fd;border-radius:8px;border:none;width:100%;text-align:left;transition:background .2s}
+.collapse-btn:hover{background:#bbdefb}
+.collapse-btn::before{content:'▸';transition:transform .2s;display:inline-block}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-content{display:none;padding:12px 16px 16px;color:#444;font-size:15px;line-height:1.7}
+.collapse-content.open{display:block}
+.quiz-section{background:#fafafa;border-radius:16px;padding:28px 28px;margin:36px 0;border:1px solid #e8e8e8}
+.quiz-section h2{border-bottom:none;margin-bottom:20px;font-size:22px}
+.quiz-item{margin:24px 0;padding:20px;background:#fff;border-radius:10px;border:1px solid #eee;transition:box-shadow .2s}
+.quiz-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.quiz-question{font-weight:600;font-size:16px;margin-bottom:14px;color:#1a1a1a}
+.quiz-question .q-num{color:#1565c0;font-weight:700}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:8px 0}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;border:2px solid transparent;font-size:15px}
+.quiz-option:hover{background:#f0f4ff}
+.quiz-option.selected{border-color:#1565c0;background:#e3f2fd}
+.quiz-option.correct{border-color:#2e7d32;background:#e8f5e9}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee}
+.quiz-option .radio{width:18px;height:18px;border:2px solid #bbb;border-radius:50%;flex-shrink:0;margin-top:2px;transition:all .15s}
+.quiz-option.selected .radio{border-color:#1565c0;background:#1565c0}
+.quiz-option.correct .radio{border-color:#2e7d32;background:#2e7d32}
+.quiz-option.wrong .radio{border-color:#c62828;background:#c62828}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:14px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.quiz-feedback.wrong-fb{background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+.fill-blank-input{border:none;border-bottom:2px solid #bbb;padding:4px 8px;font-size:15px;font-family:inherit;width:160px;outline:none;transition:border-color .2s}
+.fill-blank-input:focus{border-color:#1565c0}
+.fill-blank-input.correct{border-color:#2e7d32;background:#e8f5e9}
+.fill-blank-input.wrong{border-color:#c62828;background:#ffebee}
+.check-btn{background:#1565c0;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;margin-top:10px;transition:background .2s}
+.check-btn:hover{background:#0d47a1}
+.action-list{background:#e8f5e9;border-radius:12px;padding:20px 24px;margin:36px 0}
+.action-list h3{color:#2e7d32;margin-bottom:12px;font-size:17px}
+.action-list ol{padding-left:20px}
+.action-list li{margin:8px 0;font-size:15px}
+.action-list .tag{display:inline-block;background:#2e7d32;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.diagram{background:#fff;border:2px dashed #ccc;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.end-badge{text-align:center;margin:40px 0 10px;font-size:20px;font-weight:700;color:#2e7d32}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid #e0e0e0;text-align:center;color:#999;font-size:13px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.check-item input[type="checkbox"]{margin-top:4px;width:18px;height:18px;accent-color:#43a047;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:15px}
+.key-insight{background:#e3f2fd;border-left:4px solid #1565c0;padding:14px 18px;margin:20px 0;border-radius:0 8px 8px 0}
+.key-insight strong{color:#1565c0}
+.warning-box{background:#fff3e0;border-left:4px solid #ff9800;padding:14px 18px;margin:20px 0;border-radius:0 8px 8px 0}
+.warning-box strong{color:#e65100}
+.iteration-diagram{display:flex;align-items:center;justify-content:center;gap:8px;margin:24px 0;flex-wrap:wrap}
+.iteration-diagram .step{background:#1565c0;color:#fff;padding:10px 18px;border-radius:8px;font-weight:600;font-size:15px}
+.iteration-diagram .arrow{font-size:22px;color:#999}
+.iteration-diagram .loop{background:#e3f2fd;color:#1565c0;padding:10px 18px;border-radius:8px;font-weight:600;font-size:13px;border:2px solid #1565c0}
+.fidelity-bar{display:flex;align-items:end;height:120px;gap:12px;margin:20px 0;justify-content:center}
+.fidelity-bar .bar{width:80px;border-radius:6px 6px 0 0;display:flex;align-items:end;justify-content:center;padding-bottom:8px;color:#fff;font-weight:600;font-size:12px;text-align:center}
+.fidelity-bar .bar.sketch{height:30px;background:#90a4ae}
+.fidelity-bar .bar.paper{height:50px;background:#607d8b}
+.fidelity-bar .bar.clickable{height:75px;background:#1565c0}
+.fidelity-bar .bar.code{height:100px;background:#2e7d32}
+.fidelity-bar .bar.full{height:120px;background:#6a1b9a}
+.fidelity-label{text-align:center;font-size:12px;color:#666;margin-top:4px}
+.interactive-area{margin:20px 0;padding:16px;background:#f8f9fa;border-radius:8px;border:1px solid #e0e0e0}
+.interactive-area label{font-weight:600;color:#1565c0;display:block;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<span class="lesson-badge">产品设计 · 第010课</span>
+<h1 class="lesson-title">原型与迭代</h1>
+<p class="lesson-subtitle">Prototype & Iteration — 别想完美，先做个烂的，再把它变好</p>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、"我想了三个月，结果没人用"——为什么？</h2>
+<p>你一定听过这个故事：一个创业者花了三个月时间，写了几百页的产品文档，画了精美的 UI 设计稿，找了一群工程师开发了半年。上线那天，他激动地发到朋友圈——然后，<strong>一个用户都没有</strong>。</p>
+<p>这不是段子。这是每年全球数以万计的产品项目正在上演的真实剧情。</p>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>想象你要开一家面馆。你会怎么做？<br><br>
+<strong>错误做法：</strong>花三个月研究中国所有面食的历史，写一本《面条学》专著，印一千本送人，然后才敢煮第一碗面。<br><br>
+<strong>正确做法：</strong>租个小铺子，买几斤面粉，煮一碗面给路过的邻居尝尝。他们说咸了——下次少放盐。他们说面太硬——下次多煮两分钟。三个月后，你家面馆成了整条街最好吃的那家。<br><br>
+产品也是一样。区别在于，<strong>面馆老板从小就知道要"先煮一碗"</strong>，而很多产品经理却不知道。</p>
+</div>
+
+<div class="key-insight">
+<strong>💡 核心观点：</strong> 产品不是想出来的，是"做"出来、"改"出来的。原型（Prototype）就是那碗面——它不需要好吃，它只需要让你知道该怎么改。
+</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、什么是原型（Prototype）？</h2>
+<p>原型，就是一个<strong>用来被批评的半成品</strong>。它不是最终产品，甚至不是接近最终的产品——它是一个工具，帮助你回答一个问题："这东西到底好不好？"</p>
+
+<div class="concept-card">
+<div class="term">原型（Prototype）</div>
+<div class="cn">一种快速构建的产品简化版本，目的是以最低成本验证某个假设或获取用户反馈。原型的核心价值不在于"像不像最终产品"，而在于"能不能快速暴露问题"。</div>
+</div>
+
+<h3>原型的三个层级</h3>
+<p>原型不是非黑即白的——它有一个从粗糙到精细的连续谱系：</p>
+
+<div class="diagram">
+<div class="fidelity-bar">
+<div>
+<div class="bar sketch">草图</div>
+<div class="fidelity-label">低保真<br>成本：5分钟</div>
+</div>
+<div>
+<div class="bar paper">纸质</div>
+<div class="fidelity-label">低保真<br>成本：30分钟</div>
+</div>
+<div>
+<div class="bar clickable">可点击</div>
+<div class="fidelity-label">中保真<br>成本：2小时</div>
+</div>
+<div>
+<div class="bar code">代码原型</div>
+<div class="fidelity-label">高保真<br>成本：半天</div>
+</div>
+<div>
+<div class="bar full">正式产品</div>
+<div class="fidelity-label">最高保真<br>成本：数周</div>
+</div>
+</div>
+</div>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p><strong>草图原型：</strong>你在餐巾纸上画了一个 APP 的界面草图，给朋友看——"你看，我想做这样一个东西"。<br>
+<strong>纸质原型：</strong>你用纸和笔把每个页面都画出来，像翻书一样给用户演示。<br>
+<strong>可点击原型：</strong>你用 Figma 做了一个可以点击跳转的界面，虽然没有后端功能。<br>
+<strong>代码原型：</strong>你写了一个简陋但能跑的 demo，用户真的能注册、登录、发帖。<br>
+<strong>正式产品：</strong>你搭好了服务器、做了数据库、上了 CDN——然后发现用户还是不来。</p>
+<p><strong>关键洞察：</strong>前面四种原型加起来的成本，可能不到最后一种的十分之一。但前四种能告诉你的东西，后一种也能告诉你——而且更快、更便宜。</p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">为什么大多数团队跳过低保真原型？</button>
+<div class="collapse-content">
+<p>因为<strong>羞耻感</strong>。设计师觉得草图拿不出手，产品经理觉得纸质原型不够专业，开发者觉得代码原型才叫"做产品"。但事实恰恰相反：<strong>越到后面改起来越贵</strong>。你在纸上改一行字只要三秒，在代码里改一个按钮的位置可能要半小时——因为你还要考虑样式、交互、兼容性……</p>
+<p>Jeff Bezos 在亚马逊有个著名的规矩：<strong>任何新想法，必须用"六页纸备忘录"来描述，开会时前30分钟所有人安静阅读，不许放 PPT。</strong>为什么？因为 PPT 可以美化，备忘录不行。原型也是同理——粗糙的东西才能暴露真实问题。</p>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、迭代（Iteration）：让产品变好的唯一路径</h2>
+<p>原型只是第一步。真正的魔法发生在<strong>原型 → 反馈 → 修改 → 再测试</strong>的循环中。这个过程叫迭代。</p>
+
+<div class="concept-card">
+<div class="term">迭代（Iteration）</div>
+<div class="cn">通过反复构建原型、收集反馈、改进产品的循环过程。每一次循环都是一次"学习"，而不是一次"交付"。迭代的核心不是做得更多，而是学得更快。</div>
+</div>
+
+<h3>迭代的正确姿势</h3>
+
+<div class="iteration-diagram">
+<div class="step">想法</div>
+<div class="arrow">→</div>
+<div class="step">原型</div>
+<div class="arrow">→</div>
+<div class="step">测试</div>
+<div class="arrow">→</div>
+<div class="step">反馈</div>
+<div class="arrow">→</div>
+<div class="step">修改</div>
+<div class="arrow">→</div>
+<div class="loop">↻ 再来一次</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：一个真实的迭代案例——Dropbox</button>
+<div class="collapse-content">
+<p>Dropbox 的创始人 Drew Houston 在 2007 年面临一个问题：<strong>大家根本不知道云存储是什么。</strong>他需要做一次用户教育，但他不想花几个月去拍一支昂贵的广告片。</p>
+<p>于是他做了一个<strong>3 分钟的演示视频</strong>——不是真实的产品，只是一个看起来像产品能用的视频。他把视频发到 Hacker News，结果：<strong>一夜之间，从 5,000 人涨到了 75,000 人。</strong></p>
+<p>这个视频就是一个原型——它验证了一个假设："人们对云存储感兴趣"。在写出第一行代码之前，Dropbox 就已经验证了市场需求。这就是迭代的力量：<strong>用最少的投入，获得最多的信息。</strong></p>
+</div>
+
+<div class="warning-box">
+<strong>⚠️ 常见误区：迭代 ≠ 无限修改</strong>
+<p style="margin-top:8px">很多人把迭代理解成"改到满意为止"。不对。迭代的目的是<strong>学习</strong>，不是完美。每次迭代都应该回答一个具体的问题，而不是无目的地"优化"。如果你改了十版，但说不清每一版验证了什么假设——那你不是在迭代，你是在拖延。</p>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、如何做出一个"有用的"原型？</h2>
+<p>原型不是随便画张图就叫原型。一个好的原型需要满足三个条件：</p>
+
+<h3>1. 足够粗糙——让所有人都知道这不是最终版</h3>
+<p>如果你的原型太精致，用户会开始挑剔颜色、字体、间距——而不是你说它应该回答的问题。粗糙的原型传递的信号是："来批评我吧，我不会当真。"</p>
+
+<h3>2. 足够聚焦——一次只验证一个假设</h3>
+<p>不要试图用一个原型验证十个问题。选一个最重要的假设，设计一个最简单的测试。比如："用户会不会愿意为'一键分享'这个功能付费？"——那就只做这一个功能的原型。</p>
+
+<h3>3. 足够快——如果原型花了超过一周，你可能做错了</h3>
+<p>原型的时间预算应该是：<strong>草图 ≤ 30分钟，纸质 ≤ 半天，可点击 ≤ 两天，代码原型 ≤ 一周。</strong>超过这个时间，说明你把精力花在了不该花的地方。</p>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>假设你想做一个"帮上班族找附近健身房"的 APP。<br><br>
+<strong>错误的原型：</strong>花两周设计完整的 UI，做了注册、登录、搜索、收藏、评价、支付……然后发现——<strong>根本没人想用手机找健身房</strong>。<br><br>
+<strong>正确的原型：</strong>在纸上画三个页面（首页、搜索结果页、详情页），打印出来，找个朋友说"假设你是用户，你想怎么找到健身房？"——他可能会说"我会直接问同事"或者"我已经在小区楼下办了卡"。<strong>这才是你真正需要的信息。</strong></p>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：原型 vs MVP —— 两者有什么区别？</button>
+<div class="collapse-content">
+<p>很多人混淆这两个概念。简单来说：<strong>原型是为了学习，MVP 是为了验证商业模式。</strong></p>
+<p>原型回答："用户会用这个东西吗？"——它是给内部团队或几个种子用户看的。<br>
+MVP 回答："有人愿意为此付钱吗？"——它是面向真实市场的。</p>
+<p>继续用面馆的例子：原型是你煮一碗面给邻居尝；MVP 是你摆个摊，收五块钱一碗，看有没有人排队。</p>
+<p>原型阶段做错没关系——因为你知道它还不完善。MVP 阶段做错就麻烦了——因为你已经投入了资源，用户也付出了真金白银。</p>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、迭代失败？你可能缺的不是方法，而是心态</h2>
+<p>原型和迭代听起来很简单，但执行起来最大的障碍不是技术——是<strong>心理障碍</strong>。</p>
+
+<h3>障碍一：完美主义</h3>
+<p>"我的设计还不够好，等完善了再给用户看。"——这句话你已经说过多少次了？完美主义是原型最大的敌人。记住：<strong>烂的原型比没有原型强一万倍。</strong></p>
+
+<h3>障碍二：对批评的恐惧</h3>
+<p>当你花了一个月做出的原型被用户说"这有什么用"时，那种刺痛感是真实的。但你要学会区分：<strong>他们批评的不是你，是他们不需要的功能。</strong>这不是对你个人的否定。</p>
+
+<h3>障碍三：沉没成本谬误</h3>
+<p>"我已经投入了两个星期，不能放弃。"——这正是迭代要帮你避免的陷阱。迭代的意义就在于：<strong>越早发现方向错了，成本越低。</strong>如果你花两周才发现用户不需要这个功能，恭喜你——你省下了两个月。</p>
+
+<div class="key-insight">
+<strong>💡 记住这句话：</strong> 最好的产品经理不是那些一开始就想出最完美方案的人，而是那些最快承认"我错了"并转向的人。
+</div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>🧪 互动测验</h2>
+<p style="color:#666;margin-bottom:24px">以下题目没有标准答案——只有更好的思考方式。选完再看解析。</p>
+
+<!-- Q1 -->
+<div class="quiz-item" id="q1">
+<div class="quiz-question"><span class="q-num">Q1.</span> 你为一个新 APP 做了完整的高保真设计稿，准备拿去给用户测试。同事说："要不要先做个纸质的看看？"你会怎么做？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. 不做纸质了，设计稿已经很详细，直接测试效率更高</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>B. 先花半天画个纸质原型，确认流程没问题再做设计稿</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>C. 两个都做，同时测试对比效果</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. 让同事自己去做纸质原型</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！纸质原型只需要半天，但如果它能帮你避免在错误流程上花一周做设计稿——那半天的投资回报率是 20 倍。先用低成本验证大假设，再投入精细设计。</div>
+<div class="quiz-feedback wrong-fb">❌ 不太对。高保真设计稿一旦做错，修改成本很高。纸质原型的优势在于"便宜到可以随意推翻"。建议先快速验证核心流程，再投入精细设计。</div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-item" id="q2">
+<div class="quiz-question"><span class="q-num">Q2.</span> 你做了一个可点击的 APP 原型给用户测试。测试者说："这个按钮的颜色不好看。"你该怎么办？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. 马上记下，回头改颜色</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>B. 忽略颜色反馈，关注他是否能顺利完成操作任务</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>C. 问他"你觉得什么颜色好看"，然后记录下来</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. 告诉他这只是原型，颜色不重要</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！原型阶段的反馈筛选很重要。颜色属于"执行细节"，在原型阶段不应该分散你的注意力。你应该关注的是：用户能否理解产品？能否完成核心任务？这些才是原型阶段该验证的问题。</div>
+<div class="quiz-feedback wrong-fb">❌ 原型阶段要区分"结构性问题"和"装饰性问题"。颜色是装饰性的——在验证了核心流程之前，不应该修改。先回答"用户能不能用"，再回答"好不好看"。</div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" id="q3">
+<div class="quiz-question"><span class="q-num">Q3.</span> 你花了一周做了一个代码原型，测试结果很差——用户完全搞不懂怎么用。你最应该做什么？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. 再花一周优化交互，然后重新测试</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>B. 增加更多功能帮助用户理解</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>C. 回到纸上手绘新的方案，重新验证核心假设</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. 找更多用户测试，可能是样本量不够</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！当代码原型测试失败时，最大的诱惑是"再改改试试"。但迭代的核心原则是：<strong>如果方向错了，跑得再快也没用。</strong>回到最低成本的形式（纸上手绘），重新审视你的核心假设，比在原代码上修修补补有价值得多。</div>
+<div class="quiz-feedback wrong-fb">❌ 测试失败不一定是样本量问题，更可能是核心假设出了问题。增加功能和优化交互都是在同一个错误方向上加速——这叫"在错误的路上狂奔"。应该停下来，回到纸面，重新思考。用户搞不懂，说明你的解决方案本身有问题，而不是功能不够多。</div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" id="q4">
+<div class="quiz-question"><span class="q-num">Q4.</span> 以下哪个场景最适合用"纸质原型"而非"代码原型"？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. 验证一个已有一定用户基础的 APP 的新功能</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>B. 一个全新的产品概念，不确定用户是否有需求</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>C. 向投资人展示产品愿景</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. 开发团队内部的技术方案讨论</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！全新产品概念的最大风险是"没人需要"。纸质原型成本极低，能让你在最短时间内验证这个最根本的假设。代码原型适合需求已经验证、需要测试具体交互的场景。</div>
+<div class="quiz-feedback wrong-fb">❌ 纸质原型的最大价值在于验证"有没有需求"这个根本问题，而不是"怎么做更好"。对于一个全新概念，先确定用户想要，再讨论用什么形式呈现——顺序不能颠倒。</div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" id="q5">
+<div class="quiz-question"><span class="q-num">Q5.</span> 你正在设计一个"智能闹钟"硬件产品。以下哪种原型策略最合理？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. 先找工厂开模生产 100 台，送给朋友试用</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>B. 先写完整的嵌入式代码，再做外壳</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>C. 先用 3D 打印一个外壳模型，配合树莓派模拟功能，找用户测试</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. 先做一个精美的宣传视频，看众筹有多少人支持</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！3D 打印外壳 + 树莓派模拟是最典型的"原型思维"——用最低成本模拟最终体验。工厂开模成本极高，写完整代码周期太长，宣传视频只能验证营销话术不能验证产品体验。C 选项让你在花一分钱开模具之前，就知道用户喜不喜欢这个产品。</div>
+<div class="quiz-feedback wrong-fb">❌ 硬件原型的关键是"先验证体验，再验证工程"。开模和写完整代码都是重投入——应该在验证了用户需求和体验之后再做。3D 打印 + 开发板模拟是性价比最高的方案。</div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" id="q6">
+<div class="quiz-question"><span class="q-num">Q6.</span> 填空：原型的核心目的不是______，而是______。</div>
+<p style="font-size:15px;color:#555;margin:8px 0">提示：第一个空填一个词（中文），第二个空填一个词（中文）</p>
+<input type="text" class="fill-blank-input" id="q6a" placeholder="第一个空" style="width:120px">
+<span style="color:#999;margin:0 8px">，</span>
+<input type="text" class="fill-blank-input" id="q6b" placeholder="第二个空" style="width:120px">
+<button class="check-btn" onclick="checkFillBlank()">检查</button>
+<div class="quiz-feedback" id="q6fb"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" id="q7">
+<div class="quiz-question"><span class="q-num">Q7.</span> 你迭代了五轮原型，每一轮用户反馈都说"还不错"，但没有人真正愿意使用你的产品。最可能的原因是什么？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. 你的原型质量不够好</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>B. 你一直在验证"好不好看"，而没有验证"需不需要"</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>C. 你需要找更多用户</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. 你的迭代速度太快了</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！这是最常见的原型陷阱——<strong>迭代了表面，没有迭代本质</strong>。用户说"还不错"是一种礼貌，不代表他们有真实需求。你需要问更尖锐的问题："如果现在没有这个产品，你会怎么解决这个问题？"如果答案是"我不需要解决"——那你应该换方向了。</div>
+<div class="quiz-feedback wrong-fb">❌ 迭代了五轮仍然没有人用，说明迭代的方向可能有问题。"还不错"不等于"我需要"。你可能一直在优化表面特征（UI、功能列表、交互细节），而没有验证核心假设——用户是否真的面临这个问题、是否愿意为此付出行动。</div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" id="q8">
+<div class="quiz-question"><span class="q-num">Q8.</span> 以下哪种说法最能体现"迭代思维"？</div>
+<ul class="quiz-options">
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>A. "我们先做一份详细的产品规划，确保每一步都正确"</div></li>
+<li><div class="quiz-option" data-correct="true" onclick="selectOption(this)"><span class="radio"></span>B. "我们先做一个最小版本，让用户用起来，然后根据反馈调整"</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>C. "我们等竞品出了再跟进，学习他们的经验"</div></li>
+<li><div class="quiz-option" data-correct="false" onclick="selectOption(this)"><span class="radio"></span>D. "我们把所有功能都做全，确保用户一次都不用离开"</div></li>
+</ul>
+<div class="quiz-feedback correct-fb">✅ 正确！这就是迭代思维的本质：最小版本 → 用户反馈 → 调整。不是"先规划再执行"，而是"边执行边学习"。A 选项是瀑布思维，C 选项是跟随思维，D 选项是堆料思维——都不是迭代思维。</div>
+<div class="quiz-feedback wrong-fb">❌ 迭代思维的核心是"做中学"，而不是"学中做"。B 选项体现了最小版本验证 + 反馈驱动调整的完整循环。其他选项要么是先规划再执行（A），要么是被动跟随（C），要么是功能堆砌（D）。</div>
+</div>
+
+</div><!-- end quiz-section -->
+
+<!-- ACTION LIST -->
+<div class="action-list">
+<h3>🚀 今天就能做的 3 件事</h3>
+<p style="color:#558b2f;font-size:14px;margin-bottom:16px">每项不超过 5 分钟，做完就去做下一件——不要犹豫。</p>
+<ul class="checklist">
+<li class="check-item"><input type="checkbox" id="a1"><label for="a1"><strong>画一张草图：</strong>拿出纸笔，把你最近在做（或想做）的产品用 3 个方框画出来。不要管细节，只要结构。</label></li>
+<li class="check-item"><input type="checkbox" id="a2"><label for="a2"><strong>找一个"陌生人"：</strong>不是你的家人、同事或朋友——找一个你不熟悉的人，给他看你的草图，问"你能猜出这个是干什么的吗？"</label></li>
+<li class="check-item"><input type="checkbox" id="a3"><label for="a3"><strong>记录一个"啊哈时刻"：</strong>对方如果说"我以为这个是用来……"——这就是你最重要的发现。记下来，然后回去改你的原型。</label></li>
+</ul>
+</div>
+
+<div class="end-badge">✦ 第 10 课 · 原型与迭代 · 结束 ✦</div>
+
+<footer>
+<p>TeachHub · 产品设计系列 · 共 12 课</p>
+<p>下一课：数据驱动决策</p>
+</footer>
+
+</div><!-- end container -->
+
+<script>
+function toggleCollapse(btn) {
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('show');
+}
+
+function selectOption(el) {
+  const item = el.closest('.quiz-item');
+  if (item.dataset.answered) return;
+  item.dataset.answered = 'true';
+
+  const options = item.querySelectorAll('.quiz-option');
+  options.forEach(opt => {
+    opt.classList.add('disabled');
+    if (opt.dataset.correct === 'true') {
+      opt.classList.add('correct');
+    }
+  });
+
+  if (el.dataset.correct === 'true') {
+    el.classList.add('correct');
+  } else {
+    el.classList.add('wrong');
+  }
+
+  const fb = item.querySelector('.quiz-feedback');
+  if (el.dataset.correct === 'true') {
+    fb.className = 'quiz-feedback show correct-fb';
+  } else {
+    fb.className = 'quiz-feedback show wrong-fb';
+  }
+}
+
+function checkFillBlank() {
+  const a = document.getElementById('q6a').value.trim();
+  const b = document.getElementById('q6b').value.trim();
+  const fb = document.getElementById('q6fb');
+
+  // Accept various reasonable answers
+  const validA = ['展示', '演示', '交付', '发布', '完成', '好看', '完美'];
+  const validB = ['学习', '验证', '探索', '测试', '发现', '试错'];
+
+  const aOk = validA.some(v => a.includes(v)) || a.length >= 1;
+  const bOk = validB.some(v => b.includes(v)) || b.length >= 1;
+
+  document.getElementById('q6a').classList.remove('correct', 'wrong');
+  document.getElementById('q6b').classList.remove('correct', 'wrong');
+
+  if (!a || !b) {
+    fb.textContent = '请填写两个空';
+    fb.className = 'quiz-feedback show wrong-fb';
+    return;
+  }
+
+  if (aOk && bOk) {
+    document.getElementById('q6a').classList.add('correct');
+    document.getElementById('q6b').classList.add('correct');
+    fb.innerHTML = '✅ 很好！参考答案：<strong>原型的核心目的不是"展示/演示"</strong>，而是<strong>"学习/验证"</strong>。原型是用来被批评的工具，不是用来展示的成品。';
+    fb.className = 'quiz-feedback show correct-fb';
+  } else if (aOk) {
+    document.getElementById('q6a').classList.add('correct');
+    document.getElementById('q6b').classList.add('wrong');
+    fb.innerHTML = '第一个空不错！第二个空想想：原型最重要的价值是什么？是"让人看到"还是"让人学到"？参考答案：<strong>"学习"或"验证"</strong>';
+    fb.className = 'quiz-feedback show wrong-fb';
+  } else {
+    document.getElementById('q6a').classList.add('wrong');
+    fb.innerHTML = '参考答案：<strong>原型的核心目的不是"展示/演示"</strong>，而是<strong>"学习/验证"</strong>。原型是用来被批评的工具，不是用来展示的成品。';
+    fb.className = 'quiz-feedback show wrong-fb';
+  }
+}
+</script>
+
+</body>
+</html>

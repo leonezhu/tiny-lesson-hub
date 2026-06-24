@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户旅程地图 (User Journey Map) — 产品设计 (Product Design)</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Helvetica Neue',Arial,sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather',Georgia,serif;font-weight:700;line-height:1.35}
+.container{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+header{text-align:center;padding:3rem 0 2.5rem;border-bottom:2px solid #eaeaea;margin-bottom:2.5rem}
+header h1{font-size:2.1rem;color:#1a1a2e;margin-bottom:.5rem}
+header .subtitle{font-size:1.05rem;color:#666;font-style:italic}
+header .meta{font-size:.85rem;color:#999;margin-top:.75rem}
+.section{margin:2.5rem 0}
+.section h2{font-size:1.5rem;color:#1a1a2e;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid #e8e8e8}
+.section h3{font-size:1.2rem;color:#333;margin:1.5rem 0 .75rem}
+p{margin-bottom:1rem}
+.case-box{background:linear-gradient(135deg,#f8f9ff,#f0f4ff);border-left:4px solid #4a6cf7;padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#4a6cf7;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem}
+.concept-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:1.5rem;margin:1.5rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.concept-card h4{color:#4a6cf7;margin-bottom:.5rem;font-size:1.05rem}
+.collapsible{margin:1rem 0}
+.collapsible summary{cursor:pointer;font-weight:600;color:#1a1a2e;padding:.75rem 1rem;background:#f4f6fc;border-radius:6px;list-style:none;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.collapsible summary::after{content:'+';font-size:1.3rem;font-weight:700;color:#4a6cf7;transition:transform .2s}
+.collapsible summary:hover::after{color:#2a4cc7}
+.collapsible summary:hover{background:#eef1fa}
+.collapsible[open] summary::after{content:'−'}
+.collapsible .content{padding:1rem 1.25rem;background:#fafbff;border-radius:0 0 8px 8px;border:1px solid #e8e8e8;border-top:none}
+.step-list{counter-reset:step;list-style:none;padding:0}
+.step-list li{counter-increment:step;padding:1rem 1rem 1rem 3.5rem;position:relative;margin:.75rem 0;background:#fff;border:1px solid #eee;border-radius:8px}
+.step-list li::before{content:counter(step);position:absolute;left:.75rem;top:50%;transform:translateY(-50%);width:28px;height:28px;background:#4a6cf7;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.quiz-section{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:2rem;margin:2.5rem 0}
+.quiz-section h2{border-bottom:none;margin-bottom:1.5rem;font-size:1.4rem}
+.quiz-item{margin:1.5rem 0;padding:1.25rem;background:#f9fafb;border-radius:8px;border:1px solid #eee}
+.quiz-item .qnum{font-weight:700;color:#4a6cf7;font-size:.85rem;margin-bottom:.5rem}
+.quiz-item .question{font-weight:600;margin-bottom:1rem;color:#1a1a2e}
+.quiz-option{display:block;padding:.6rem 1rem;margin:.35rem 0;background:#fff;border:2px solid #ddd;border-radius:6px;cursor:pointer;transition:all .2s;font-size:.95rem}
+.quiz-option:hover{border-color:#4a6cf7;background:#f4f6fc}
+.quiz-option.correct{border-color:#27ae60;background:#e8f8e8;color:#1a7a3a;font-weight:600}
+.quiz-option.incorrect{border-color:#e74c3c;background:#fde8e8;color:#c0392b}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:.75rem;padding:.75rem 1rem;border-radius:6px;font-size:.92rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f8e8;color:#1a7a3a;border:1px solid #a8e6a8}
+.quiz-feedback.incorrect-fb{background:#fde8e8;color:#c0392b;border:1px solid #f5b7b1}
+.quiz-score{text-align:center;padding:1.5rem;background:linear-gradient(135deg,#4a6cf7,#6a8cf7);color:#fff;border-radius:10px;margin-top:1.5rem;display:none}
+.quiz-score h3{font-size:1.5rem;margin-bottom:.5rem}
+.action-list{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:2px solid #f0c040;border-radius:10px;padding:1.5rem;margin:2rem 0}
+.action-list h3{color:#b8860b;margin-bottom:1rem}
+.action-list ul{list-style:none;padding:0}
+.action-list li{padding:.5rem 0 .5rem 1.8rem;position:relative;font-size:.95rem}
+.action-list li::before{content:'✓';position:absolute;left:0;color:#b8860b;font-weight:700}
+.diagram{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1.5rem;margin:1.5rem 0;overflow-x:auto}
+.journey-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.journey-table th{background:#4a6cf7;color:#fff;padding:.75rem;text-align:left;font-size:.85rem}
+.journey-table td{padding:.65rem .75rem;border-bottom:1px solid #eee;vertical-align:top}
+.journey-table tr:nth-child(even) td{background:#fafbff}
+.tag{display:inline-block;padding:.15rem .6rem;background:#eef1fa;color:#4a6cf7;border-radius:20px;font-size:.8rem;margin:.2rem .1rem}
+.highlight{background:#fff3cd;padding:.15rem .5rem;border-radius:4px;font-weight:600}
+footer{text-align:center;padding:2rem 0;border-top:2px solid #eaeaea;margin-top:3rem;color:#999;font-size:.85rem}
+@media(max-width:600px){body{font-size:16px}.container{padding:1.25rem 1rem 3rem}header h1{font-size:1.6rem}.journey-table{font-size:.8rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>🗺️ 用户旅程地图</h1>
+<div class="subtitle">User Journey Map — 从用户的视角看产品</div>
+<div class="meta">产品设计 · 第 3 课 · 约 15 分钟阅读 + 练习</div>
+</header>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、什么是用户旅程地图？</h2>
+<p>想象一下：你第一次去一家新开的咖啡店。从走进店门、看到菜单、排队点单、等咖啡、品尝、到离开——这一整段经历，就是你的<strong>"旅程"</strong>。<br>而<strong>用户旅程地图（User Journey Map）</strong>，就是把这段旅程画成一张图：谁在什么时候、做了什么、想了什么、感受如何。</p>
+
+<div class="case-box">
+<div class="label">💡 生活案例</div>
+<p>你去健身房办卡：第一天兴奋满满 → 第二周觉得累 → 一个月后卡躺在抽屉里积灰。如果你能提前把这段"旅程"画出来，你就能发现：<strong>是什么让他在第二周放弃了？</strong>——答案可能是：离公司太远、器械要排队、没人教他怎么练。</p>
+</div>
+
+<p>在产品设计中，用户旅程地图帮助我们跳出"开发者视角"，真正站在用户的角度理解他们的体验。它不只是流程图——它包含了<strong>情绪、想法、痛点</strong>。</p>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、为什么要画用户旅程地图？</h2>
+
+<div class="concept-card">
+<h4>🎯 核心价值</h4>
+<p><strong>对齐团队认知：</strong>产品经理、设计师、工程师对用户的理解往往不同。一张地图让大家"看到同一个人"。</p>
+<p><strong>发现隐藏痛点：</strong>用户不会主动说"我第三步就放弃了"，但旅程地图会把断裂处暴露出来。</p>
+<p><strong>指导优先级：</strong>哪个环节流失最多？哪个环节用户最沮丧？这些数据告诉我们应该先改什么。</p>
+</div>
+
+<div class="collapsible">
+<summary>为什么不能只用用户画像（Persona）？</summary>
+<div class="content">
+<p>用户画像回答的是"<strong>他是谁</strong>"——年龄、职业、收入、爱好。但它不回答"<strong>他怎么使用我们的产品</strong>"。</p>
+<p>旅程地图回答的是"<strong>他的体验过程</strong>"——时间维度上的每一步。两者互补：画像给你"人"，旅程地图给你"故事"。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<summary>旅程地图 vs. 用户流程图（User Flow），有什么区别？</summary>
+<div class="content">
+<p><strong>用户流程图</strong>关注的是"系统层面"的操作路径：点击 A → 跳转到 B → 提交表单。它是逻辑的、理性的。</p>
+<p><strong>旅程地图</strong>关注的是"人的层面"的感受：在这里我很困惑、在那里我觉得被尊重、这里我想放弃。它是感性的、有温度的。</p>
+<p>简单说：流程图是"系统怎么走"，旅程地图是"用户怎么感受"。</p>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、用户旅程地图的五个核心要素</h2>
+<p>一张完整的旅程地图通常包含以下五个层次，从表到里，像剥洋葱一样理解用户：</p>
+
+<ol class="step-list">
+<li><strong>阶段（Phases）</strong> — 用户旅程被划分为几个大的阶段。比如买手机：了解信息 → 比较选择 → 下单购买 → 收货开箱 → 日常使用 → 考虑换新。</li>
+<li><strong>行为（Actions）</strong> — 在每个阶段用户具体做了什么。比如"下单购买"阶段：浏览商品详情页、对比价格、加入购物车、填写地址。</li>
+<li><strong>想法（Thinking）</strong> — 用户在做什么时的内心独白。比如看到价格时想："这个真的值吗？有没有更便宜的？"</li>
+<li><strong>情绪（Emotions）</strong> — 用曲线表示用户在每个阶段的感受，从沮丧到兴奋。这是旅程地图的灵魂。</li>
+<li><strong>机会点（Opportunities）</strong> — 基于以上分析，我们能做什么来改善体验？</li>
+</ol>
+
+<div class="case-box">
+<div class="label">💡 生活案例：预约牙医</div>
+<p>你预约牙医的经历：</p>
+<ul style="margin:1rem 0 0 1.25rem">
+<li><strong>阶段：</strong>搜索诊所 → 打电话预约 → 到达前台 → 等待叫号 → 看牙医 → 付款离店</li>
+<li><strong>行为：</strong>在手机上搜"附近牙科"，打了电话，等了40分钟，医生检查了5分钟，付了300元</li>
+<li><strong>想法：</strong>"这家看起来好专业" → "怎么要等这么久？" → "医生好温柔" → "300块有点贵"</li>
+<li><strong>情绪：</strong>期待 😊 → 焦虑 😟 → 等待 😐 → 安心 😌 → 肉疼 💸</li>
+</ul>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、实战：画一张用户旅程地图</h2>
+<p>我们来一起为<strong>"一个上班族第一次使用健身 App"</strong>画旅程地图。这个人叫小李，30岁，程序员，长期久坐，最近体检发现腰间盘突出，医生建议他运动。</p>
+
+<div class="diagram">
+<table class="journey-table">
+<thead>
+<tr>
+<th>阶段</th>
+<th>行为 Actions</th>
+<th>想法 Thinking</th>
+<th>情绪 Emotion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. 发现问题</strong><br>体检报告</td>
+<td>拿到体检报告，看到"腰间盘突出"诊断</td>
+<td>"完了，是不是以后都不能坐办公室了？"</td>
+<td>😰 焦虑恐惧</td>
+</tr>
+<tr>
+<td><strong>2. 搜索方案</strong><br>手机搜索</td>
+<td>在微信搜"腰疼怎么锻炼"，刷到健身 App 广告</td>
+<td>"这个 App 看着挺专业的，下载试试"</td>
+<td>😐 半信半疑</td>
+</tr>
+<tr>
+<td><strong>3. 注册下载</strong><br>应用商店</td>
+<td>下载 App，注册账号，填写身体信息</td>
+<td>"填了好多问题……有点麻烦，但应该有用吧"</td>
+<td>😤 轻微烦躁</td>
+</tr>
+<tr>
+<td><strong>4. 首次体验</strong><br>App 内</td>
+<td>跟着视频做第一个训练，5 分钟</td>
+<td>"咦，这个动作好像真的不疼了！"</td>
+<td>😊 惊喜</td>
+</tr>
+<tr>
+<td><strong>5. 持续使用</strong><br>日常</td>
+<td>每天坚持 15 分钟训练</td>
+<td>"坚持一周了，感觉不错"</td>
+<td>🙂 稳定积极</td>
+</tr>
+<tr>
+<td><strong>6. 遇到瓶颈</strong><br>第 3 周</td>
+<td>某天加班到深夜，没练</td>
+<td>"算了，明天再练吧"</td>
+<td>😔 愧疚 + 放弃</td>
+</tr>
+<tr>
+<td><strong>7. 流失 or 回归</strong><br>第 4 周</td>
+<td>App 推送消息提醒，或者没有</td>
+<td>（如果有推送）"好吧，练一下吧" / （如果没有）"算了，不练了"</td>
+<td>😕 取决于产品</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>看到这张表了吗？关键发现：<strong>第 6 阶段"遇到瓶颈"就是流失风险点</strong>。如果产品在第 3 周没有任何干预措施（比如推送、社群激励、弹性训练计划），小李大概率就流失了。</p>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、情绪曲线的力量</h2>
+<p>旅程地图最有力的部分之一是<strong>情绪曲线（Emotional Curve）</strong>——把用户在每个阶段的情绪用一条线连起来。这条线会告诉你：</p>
+
+<div class="concept-card">
+<h4>📈 情绪曲线的三个关键位置</h4>
+<p><strong>峰值（Peak）：</strong>用户感受最好的时刻。比如小李第一次训练完觉得"不疼了"的那一刻——这就是<strong>高峰体验（Peak Experience）</strong>。</p>
+<p><strong>低谷（Valley）：</strong>用户感受最差、最想放弃的时刻。比如注册时填了太多信息、等待时间太长。</p>
+<p><strong>终值（End）：</strong>最后留下的印象。心理学中的<strong>峰终定律（Peak-End Rule）</strong>告诉我们：用户对一段体验的记忆，主要由<strong>最高点和结束时的感受</strong>决定。</p>
+</div>
+
+<div class="case-box">
+<div class="label">💡 峰终定律在生活中的体现</div>
+<p>你去餐厅吃饭，前菜很难吃（低谷），但主菜惊艳（高峰），最后服务员送了一份免费甜品（好的终值）——你会觉得这是一次不错的用餐体验，甚至愿意再来。</p>
+<p>反过来，前菜好吃（高峰），主菜一般，最后账单算错了多收了钱（差的终值）——你会觉得这顿饭很糟糕，即使中间大部分时间是正常的。</p>
+<p><strong>产品设计同理：</strong>你不需要每个环节都完美，但你必须确保<strong>高峰体验足够高</strong>，<strong>结束的体验足够好</strong>。</p>
+</div>
+
+<div class="collapsible">
+<summary>🧠 知识扩展：峰终定律（Peak-End Rule）是谁提出的？</summary>
+<div class="content">
+<p>由诺贝尔奖得主、心理学家 <strong>丹尼尔·卡尼曼（Daniel Kahneman）</strong>提出。他发现人们回忆一段体验时，不是计算所有时刻的平均感受，而是主要记住<strong>最强烈的那个瞬间（Peak）</strong>和<strong>结束时的感觉（End）</strong>。</p>
+<p>这个发现直接改变了产品设计思路：与其在所有环节平均用力，不如集中资源打造"峰值时刻"和"完美收尾"。</p>
+</div>
+</div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+<h2>六、绘制旅程地图的方法论</h2>
+
+<h3>方法一：二手研究法（Desk Research）</h3>
+<p>如果你没有时间做用户访谈，可以基于已有的数据和资料来推测旅程地图。参考：</p>
+<ul style="margin:1rem 0 0 1.25rem">
+<li>客服聊天记录和用户投诉（找痛点）</li>
+<li>应用商店评论（找情绪波动点）</li>
+<li>竞品分析（看别人是怎么做的）</li>
+<li>行业研究报告（找通用模式）</li>
+</ul>
+
+<h3>方法二：用户访谈法（User Interview）</h3>
+<p>找 5-8 个真实用户，让他们"回忆"并使用产品的全过程。关键问题：</p>
+<div class="collapsible">
+<summary>💬 访谈中应该问什么？</summary>
+<div class="content">
+<p>不要问："你喜欢我们的产品吗？"（太笼统）</p>
+<p>要问具体的场景还原：</p>
+<ul style="margin:.5rem 0 0 1.25rem">
+<li>"你第一次知道我们产品的时候，是怎么想的？"</li>
+<li>"你打开 App 的第一步做了什么？"</li>
+<li>"有没有哪个时刻让你觉得'啊，这个不太好'？"</li>
+<li>"你最后一次使用是什么时候？当时发生了什么？"</li>
+</ul>
+<p>这些问题帮你还原真实的旅程，而不是用户"以为"的旅程。</p>
+</div>
+</div>
+
+<h3>方法三：影子观察法（Shadowing）</h3>
+<p>直接坐在用户旁边看他使用你的产品。你会听到他们"自言自语"——这些吐槽是最宝贵的洞察。</p>
+
+<div class="case-box">
+<div class="label">💡 真实案例：Airbnb 的创始人亲自做房东</div>
+<p>2008 年，Airbnb 的创始人发现增长很慢。他们没有坐在办公室里分析数据，而是飞到纽约，<strong>亲自帮房东拍照、写房源描述、观察用户注册流程</strong>。结果发现：房源照片质量差是最大阻碍。他们推出专业摄影服务后，收入翻倍。</p>
+<p>这就是"走出办公室"的力量——你看到的不是数据，是人。</p>
+</div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section">
+<h2>七、常见陷阱与避坑指南</h2>
+
+<div class="collapsible">
+<summary>⚠️ 陷阱一：画的是"理想旅程"，不是"真实旅程"</summary>
+<div class="content">
+<p>很多团队的旅程地图是基于"我们希望用户怎么走"画的，而不是"用户实际怎么走"。这叫<strong>设计偏差（Design Bias）</strong>。</p>
+<p><strong>解决办法：</strong>用真实数据验证。Google Analytics 的漏斗分析、热力图、用户录屏工具（如 Hotjar）都能帮你看到用户的真实行为。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<summary>⚠️ 陷阱二：只有一张用户画像</summary>
+<div class="content">
+<p>如果你的产品面向多种用户（比如滴滴同时服务乘客和司机），只画一张旅程地图是不够的。</p>
+<p><strong>解决办法：</strong>为每种用户角色画各自的旅程地图。一张地图上可以有多个 Persona 的轨迹。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<summary>⚠️ 陷阱三：画完就锁进抽屉</summary>
+<div class="content">
+<p>旅程地图最大的浪费就是画完放在 PPT 里再也不看。它应该是<strong>活文档</strong>——每次产品评审、每次用户反馈复盘时拿出来对照。</p>
+<p><strong>解决办法：</strong>把旅程地图贴在团队办公区的墙上（或在线协作白板），让它成为日常讨论的共同参照物。</p>
+</div>
+</div>
+
+<div class="collapsible">
+<summary>⚠️ 陷阱四：把阶段划分得太细或太粗</summary>
+<div class="content">
+<p>阶段太少（只有 2-3 个）→ 失去细节价值；阶段太多（20+）→ 无法把握重点。</p>
+<p><strong>建议：</strong>大多数产品适合 5-8 个阶段。关键是每个阶段都要有明确的边界和不同的用户目标。</p>
+</div>
+</div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section">
+<h2>八、进阶：从旅程地图到服务蓝图</h2>
+<p>用户旅程地图关注的是<strong>用户能看到的一切</strong>——前台体验（Front Stage）。但每个用户行为背后，都有大量的后台工作（Back Stage）在支撑。</p>
+
+<div class="concept-card">
+<h4>🏗️ 服务蓝图（Service Blueprint）</h4>
+<p>服务蓝图 = 用户旅程地图 + 后台支撑系统。它增加了三条线：</p>
+<ul style="margin:.5rem 0 0 1.25rem">
+<li><strong>可视线（Line of Visibility）：</strong>用户能看到和看不到的分界线</li>
+<li><strong>互动线（Line of Interaction）：</strong>用户与员工/系统的交互点</li>
+<li><strong>后台线（Line of Internal Interaction）：</strong>内部团队之间的协作关系</li>
+</ul>
+<p>比如外卖平台：用户端看到的是"选餐厅 → 下单 → 等配送 → 收货"，但后台有骑手调度算法、商家出餐流程、平台客服体系等大量工作。</p>
+</div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>🧪 互动练习：检验你的理解</h2>
+<p>以下 8 道题，每题选择一个答案。答完立即反馈，最后一题会显示总分。</p>
+
+<!-- Q1 -->
+<div class="quiz-item" data-correct="b">
+<div class="qnum">第 1 题</div>
+<div class="question">小李第一次用健身 App 时，注册过程让他觉得"填了好多问题，有点麻烦"。这在旅程地图中属于哪个要素？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 行为（Actions）</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 想法（Thinking）</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 情绪（Emotions）</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 机会点（Opportunities）</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-item" data-correct="c">
+<div class="qnum">第 2 题</div>
+<div class="question">根据"峰终定律"，用户对一次体验的记忆主要由什么决定？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 整个体验的平均感受</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 开始时的感受</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 最高点和结束时的感受</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 最低点和结束时的感受</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" data-correct="b">
+<div class="qnum">第 3 题</div>
+<div class="question">用户旅程地图和用户流程图（User Flow）的最大区别是什么？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 旅程地图更复杂</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 旅程地图关注感受，流程图关注操作路径</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 流程图是新的，旅程地图是旧的</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 没有区别，只是叫法不同</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" data-correct="a">
+<div class="qnum">第 4 题</div>
+<div class="question">如果一个餐厅前菜很难吃、主菜惊艳、最后送了免费甜品，客人会如何评价这次用餐？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 整体评价不错，因为高峰体验和好的终值</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 整体评价很差，因为前菜难吃</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 整体评价一般，因为好坏抵消</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 只记得前菜难吃</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" data-correct="d">
+<div class="qnum">第 5 题</div>
+<div class="question">Airbnb 创始人在 2008 年增长停滞时，采取了什么行动？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 加大广告投放</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 降低佣金比例</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 开发新功能</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 飞到纽约帮房东拍照、观察用户</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" data-correct="c">
+<div class="qnum">第 6 题</div>
+<div class="question">以下哪种访谈问题最能帮助你获得真实的用户旅程洞察？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. "你觉得我们的产品好吗？"</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. "你喜欢我们的哪些功能？"</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. "你第一次打开我们的 App 时，第一步做了什么？"</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. "你推荐朋友用我们的产品吗？"</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" data-correct="b">
+<div class="qnum">第 7 题</div>
+<div class="question">小李在第 3 周因为加班没训练，App 没有推送任何提醒。这说明了旅程地图中的什么？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 小李不够自律</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 产品在"流失风险点"缺少干预机制</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 健身 App 不需要推送</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 这是正常现象，不用管</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" data-correct="a">
+<div class="qnum">第 8 题（综合题）</div>
+<div class="question">你正在设计一款"在线问诊"产品。以下哪个做法最能体现用户旅程地图的价值？</div>
+<label class="quiz-option" onclick="checkAnswer(this)">A. 发现用户在"等待医生回复"阶段焦虑感最强，于是增加"医生已收到"的即时通知和预计等待时间</label>
+<label class="quiz-option" onclick="checkAnswer(this)">B. 把所有可能的症状列成一张很长的清单</label>
+<label class="quiz-option" onclick="checkAnswer(this)">C. 让医生端的功能比患者端更强大</label>
+<label class="quiz-option" onclick="checkAnswer(this)">D. 在首页放最多的广告位</label>
+<div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-score" id="quizScore">
+<h3 id="scoreText"></h3>
+<p id="scoreMsg"></p>
+</div>
+</div>
+
+<!-- ACTION LIST -->
+<div class="action-list">
+<h3>🚀 今天就能做的 3 件事</h3>
+<ul>
+<li><strong>选一个你常用的 App，在纸上画出它的用户旅程地图</strong>（5 分钟）— 从打开 App 到关闭，每个阶段写下你的行为和感受</li>
+<li><strong>找一个你觉得"体验很差"的产品，标出它的低谷时刻</strong>（3 分钟）— 想想你在哪里感到烦躁、困惑或想放弃</li>
+<li><strong>用"峰终定律"重新审视一次最近的服务体验</strong>（2 分钟）— 比如外卖、快递、餐厅，看看高峰和终值是否匹配你的整体评价</li>
+</ul>
+</div>
+
+<footer>
+<p>产品设计 · 第 3 课 · 用户旅程地图 (User Journey Map)</p>
+<p>下一课：MVP 与精益验证</p>
+</footer>
+</div>
+
+<script>
+let answered=0,total=8;
+const explanations={
+1:{correct:"B",text:"'填了好多问题，有点麻烦'是用户内心的独白，属于<strong>想法（Thinking）</strong>要素。行为是'注册账号、填写信息'，情绪是'烦躁'。"},
+2:{correct:"C",text:"峰终定律（Peak-End Rule）指出：人们对体验的记忆主要由<strong>最高点和结束时的感受</strong>决定，而非平均值。"},
+3:{correct:"B",text:"旅程地图关注用户的<strong>感受和体验</strong>（情绪、想法），流程图关注<strong>操作路径</strong>（点击 A→跳转到 B）。"},
+4:{correct:"A",text:"根据峰终定律，虽然前菜难吃（低谷），但主菜惊艳（高峰）+免费甜品（好的终值）会让客人整体评价不错。"},
+5:{correct:"D",text:"Airbnb 创始人飞到纽约<strong>亲自帮房东拍照、观察用户</strong>，发现了照片质量差是增长瓶颈。这就是'走出办公室'的力量。"},
+6:{correct:"C",text:"具体场景还原的问题（'第一步做了什么'）比笼统评价问题更能获得真实洞察。'},
+7:{correct:"B",text:"第 3 周是<strong>流失风险点</strong>。产品应该在此时有干预机制（推送提醒、弹性计划、社群激励），而不是放任不管。"},
+8:{correct:"A",text:"A 选项体现了旅程地图的核心价值：<strong>发现痛点 → 定位情绪低谷 → 设计干预措施</strong>。其他选项都没有从用户旅程的角度思考。"}
+};
+
+function checkAnswer(el){
+const item=el.closest('.quiz-item');
+if(item.classList.contains('answered'))return;
+item.classList.add('answered');
+const correct=item.dataset.correct;
+const options=item.querySelectorAll('.quiz-option');
+const feedback=item.querySelector('.quiz-feedback');
+const letters=['a','b','c','d'];
+const idx=Array.from(options).indexOf(el);
+const selected=letters[idx];
+
+options.forEach((opt,i)=>{
+opt.classList.add('disabled');
+if(letters[i]===correct)opt.classList.add('correct');
+});
+
+if(selected===correct){
+feedback.className='quiz-feedback show correct-fb';
+feedback.innerHTML='✅ 正确！'+explanations[idx+1].text;
+}else{
+el.classList.add('incorrect');
+feedback.className='quiz-feedback show incorrect-fb';
+feedback.innerHTML='❌ 不对哦。正确答案是 '+correct.toUpperCase()+'。'+explanations[idx+1].text;
+}
+
+answered++;
+if(answered===total){
+const scoreEl=document.getElementById('quizScore');
+const scoreText=document.getElementById('scoreText');
+const scoreMsg=document.getElementById('scoreMsg');
+let correctCount=0;
+document.querySelectorAll('.quiz-item').forEach(q=>{
+if(q.classList.contains('answered')){
+const selectedOpt=q.querySelector('.quiz-option.incorrect');
+const correctOpt=q.querySelector('.quiz-option.correct');
+if(!selectedOpt)correctCount++;
+else if(selectedOpt&&correctOpt)correctCount++;
+}
+});
+// Recalculate properly
+correctCount=0;
+document.querySelectorAll('.quiz-item').forEach(q=>{
+const correct=q.dataset.correct;
+const selectedIdx=Array.from(q.querySelectorAll('.quiz-option')).findIndex(o=>o.classList.contains('correct')&&!o.classList.contains('incorrect'));
+const userSelected=Array.from(q.querySelectorAll('.quiz-option')).findIndex(o=>o.classList.contains('correct'));
+});
+// Simpler: count items without incorrect class
+correctCount=0;
+document.querySelectorAll('.quiz-item').forEach(q=>{
+if(!q.querySelector('.quiz-option.incorrect'))correctCount++;
+});
+scoreEl.style.display='block';
+scoreText.textContent=correctCount+' / '+total+' 正确';
+let msg='';
+if(correctCount===total)msg='🎉 满分！你对用户旅程地图的理解非常扎实！';
+else if(correctCount>=6)msg='👏 很棒！你已经掌握了核心概念，个别地方再巩固一下。';
+else if(correctCount>=4)msg='💪 不错！建议回顾一下错题对应的章节。';
+else msg='📖 建议重新阅读上面的内容，特别是每个案例部分。';
+scoreMsg.textContent=msg;
+scoreEl.scrollIntoView({behavior:'smooth',block:'center'});
+}
+}
+</script>
+</body>
+</html>

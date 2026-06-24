@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MVP与精益验证 — 产品设计 (Product Design)</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Helvetica Neue',Arial,sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather',Georgia,serif;font-weight:700;line-height:1.35}
+.container{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+header{text-align:center;padding:3rem 0 2.5rem;border-bottom:2px solid #eaeaea;margin-bottom:2.5rem}
+header h1{font-size:2.1rem;color:#1a1a2e;margin-bottom:.5rem}
+header .subtitle{font-size:1.05rem;color:#666;font-style:italic}
+header .meta{font-size:.85rem;color:#999;margin-top:.75rem}
+.section{margin:2.5rem 0}
+.section h2{font-size:1.5rem;color:#1a1a2e;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid #e8e8e8}
+.section h3{font-size:1.2rem;color:#333;margin:1.5rem 0 .75rem}
+p{margin-bottom:1rem}
+.case-box{background:linear-gradient(135deg,#f8f9ff,#f0f4ff);border-left:4px solid #4a6cf7;padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#4a6cf7;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem}
+.concept-card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:1.5rem;margin:1.5rem 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.concept-card h4{color:#4a6cf7;margin-bottom:.5rem;font-size:1.05rem}
+.collapsible{margin:1rem 0}
+.collapsible summary{cursor:pointer;font-weight:600;color:#1a1a2e;padding:.75rem 1rem;background:#f4f6fc;border-radius:6px;list-style:none;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.collapsible summary::after{content:'+';font-size:1.3rem;font-weight:700;color:#4a6cf7;transition:transform .2s}
+.collapsible summary:hover::after{color:#2a4cc7}
+.collapsible summary:hover{background:#eef1fa}
+.collapsible[open] summary::after{content:'−'}
+.collapsible .content{padding:1rem 1.25rem;background:#fafbff;border-radius:0 0 8px 8px;border:1px solid #e8e8e8;border-top:none}
+.step-list{counter-reset:step;list-style:none;padding:0}
+.step-list li{counter-increment:step;padding:1rem 1rem 1rem 3.5rem;position:relative;margin:.75rem 0;background:#fff;border:1px solid #eee;border-radius:8px}
+.step-list li::before{content:counter(step);position:absolute;left:.75rem;top:50%;transform:translateY(-50%);width:28px;height:28px;background:#4a6cf7;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.quiz-section{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:2rem;margin:2.5rem 0}
+.quiz-section h2{border-bottom:none;margin-bottom:1.5rem;font-size:1.4rem}
+.quiz-item{margin:1.5rem 0;padding:1.25rem;background:#f9fafb;border-radius:8px;border:1px solid #eee}
+.quiz-item .qnum{font-weight:700;color:#4a6cf7;font-size:.85rem;margin-bottom:.5rem}
+.quiz-item .question{font-weight:600;margin-bottom:1rem;color:#1a1a2e}
+.quiz-option{display:block;padding:.6rem 1rem;margin:.35rem 0;background:#fff;border:2px solid #ddd;border-radius:6px;cursor:pointer;transition:all .2s;font-size:.95rem}
+.quiz-option:hover{border-color:#4a6cf7;background:#f4f6fc}
+.quiz-option.correct{border-color:#27ae60;background:#e8f8e8;color:#1a7a3a;font-weight:600}
+.quiz-option.incorrect{border-color:#e74c3c;background:#fde8e8;color:#c0392b}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:.75rem;padding:.75rem 1rem;border-radius:6px;font-size:.92rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f8e8;color:#1a7a3a;border:1px solid #a8e6a8}
+.quiz-feedback.incorrect-fb{background:#fde8e8;color:#c0392b;border:1px solid #f5b7b1}
+.quiz-score{text-align:center;padding:1.5rem;background:linear-gradient(135deg,#4a6cf7,#6a8cf7);color:#fff;border-radius:10px;margin-top:1.5rem;display:none}
+.quiz-score h3{font-size:1.5rem;margin-bottom:.5rem}
+.action-list{background:linear-gradient(135deg,#fff9e6,#fff3cc);border:2px solid #f0c040;border-radius:10px;padding:1.5rem;margin:2rem 0}
+.action-list h3{color:#b8860b;margin-bottom:1rem}
+.action-list ul{list-style:none;padding:0}
+.action-list li{padding:.5rem 0 .5rem 1.8rem;position:relative;font-size:.95rem}
+.action-list li::before{content:'✓';position:absolute;left:0;color:#b8860b;font-weight:700}
+.diagram{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1.5rem;margin:1.5rem 0;overflow-x:auto}
+.tag{display:inline-block;padding:.15rem .6rem;background:#eef1fa;color:#4a6cf7;border-radius:20px;font-size:.8rem;margin:.2rem .1rem}
+.highlight{background:#fff3cd;padding:.15rem .5rem;border-radius:4px;font-weight:600}
+.fill-blank-input{border:2px solid #ccc;border-radius:4px;padding:.3rem .6rem;font-size:.95rem;width:180px;font-family:inherit;transition:border-color .2s}
+.fill-blank-input:focus{outline:none;border-color:#4a6cf7}
+.fill-blank-input.correct-input{border-color:#27ae60;background:#e8f8e8}
+.fill-blank-input.incorrect-input{border-color:#e74c3c;background:#fde8e8}
+.nav-links{display:flex;justify-content:space-between;margin-top:3rem;padding-top:2rem;border-top:2px solid #eaeaea}
+.nav-links a{color:#4a6cf7;text-decoration:none;font-weight:600;padding:.5rem 1rem;border:1px solid #4a6cf7;border-radius:6px;transition:all .2s}
+.nav-links a:hover{background:#4a6cf7;color:#fff}
+footer{text-align:center;padding:2rem 0;border-top:2px solid #eaeaea;margin-top:3rem;color:#999;font-size:.85rem}
+@media(max-width:600px){body{font-size:16px}.container{padding:1.25rem 1rem 3rem}header h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>🚀 MVP与精益验证</h1>
+<div class="subtitle">MVP & Lean Validation — 用最小的成本验证最大的假设</div>
+<div class="meta">产品设计 · 第 4 课 · 约 15 分钟阅读 + 练习</div>
+</header>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、为什么你不需要做一个完整的产品？</h2>
+<p>想象一下：你花三个月做了一款健身App，上线后只有12个人下载——而且其中一半是你妈和你朋友。这就是<strong>\"建了没人来\"（Build Trap）</strong>，硅谷创业圈最经典的悲剧。</p>
+<p>问题不在你的代码质量不够好，而在于：<strong>你在没验证需求之前就投入了全部资源。</strong></p>
+
+<div class="case-box">
+<div class="label">💡 生活案例</div>
+<p>你想开一家面馆。你会先租店面、装修、买设备、雇厨师，然后才去街上问\"有人想吃你做的面吗\"吗？<br><br>聪明的做法是：先在小区群里发一条消息——\"周末我在楼下试做番茄鸡蛋面，想吃的扣1\"。如果50个人扣1，你再考虑下一步；如果只有3个人扣1……你省下了三十万。</p>
+</div>
+
+<p><strong>MVP（Minimum Viable Product，最小可行产品）</strong>就是那个\"楼下试做\"——用最少的功能、最快的速度，去验证你是否在做一件有人需要的事。它不是\"半成品\"，而是一个<strong>学习工具</strong>。</p>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、MVP 到底是什么？</h2>
+<p>MVP 的核心公式很简单：</p>
+
+<div class="concept-card">
+<h4>🎯 MVP = 最小成本 + 核心假设验证</h4>
+<p>MVP 不是功能最少的那个版本。MVP 是<strong>能用最快速度回答\"我们猜的对不对\"</strong>的那个东西。</p>
+</div>
+
+<p>MVP 有四个关键特征：</p>
+<ul style="padding-left:1.5rem;margin:1rem 0">
+<li><strong>最小（Minimum）</strong>：只保留验证假设所必需的功能</li>
+<li><strong>可行（Viable）</strong>：对用户来说必须是有价值的——不能是一个bug满天的垃圾</li>
+<li><strong>产品（Product）</strong>：必须是用户能实际使用的东西，不是PPT或概念文档</li>
+<li><strong>验证（Validation）</strong>：必须有明确的指标来判断\"验证成功\"还是\"验证失败\"</li>
+</ul>
+
+<div class="case-box">
+<div class="label">💡 经典案例：Zappos 的 MVP</div>
+<p>Zappos（亚马逊旗下鞋类电商）的创始人 Nick Swinmurn 在 1999 年想验证\"人们愿意在网上买鞋\"这个假设。他的 MVP 是什么？<br><br>他去了当地一家鞋店，拍照上传到自己的网站上。有人下单后，他再去店里买一双寄过去。<br><br>他没有开发电商平台，没有建仓库，没有谈供应链——他验证了一个假设：<strong>第一周就收到了 50 双鞋的订单</strong>。这个 MVP 花了不到 1000 美元。</p>
+</div>
+
+<h3>MVP ≠ 简陋的产品</h3>
+<p>很多人误解 MVP 就是\"随便做个烂版本丢出去\"。这是错的。MVP 的关键不在于功能多少，而在于<strong>学习效率</strong>——你能在多短时间内、以多低的成本得到一个关于用户需求的可靠答案。</p>
+
+<div class="collapsible">
+<summary>❓ MVP 常见误区：哪些东西不是 MVP？</summary>
+<div class="content">
+<p><strong>❌ 不是 MVP 的东西：</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>PPT 演示文稿（那是 pitch deck，不是产品）</li>
+<li>一个满是 bug 的半成品（用户不会给你第二次机会）</li>
+<li>市场调研问卷（那是研究，不是产品）</li>
+<li>一个只给你自己看的内部工具（没有外部用户就不是 MVP）</li>
+</ul>
+<p><strong>✅ 可以是 MVP 的东西：</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>一个 Landing Page（落地页）+ \"即将上线\"表单</li>
+<li>一个手动操作的后台（用户以为有自动化，其实你在手动处理）</li>
+<li>一个微信群 + 人工服务</li>
+<li>一段演示视频（如 Dollar Shave Club 的 viral video）</li>
+<li>一个微信小程序的最低可用版本</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、精益验证循环：Build-Measure-Learn</h2>
+<p>精益创业（Lean Startup）的核心方法论是 <strong>Build-Measure-Learn（构建-测量-学习）</strong> 循环。这不是一个线性流程，而是一个<strong>螺旋上升</strong>的过程。</p>
+
+<div class="diagram">
+<h3 style="text-align:center;margin-bottom:1rem;color:#1a1a2e">精益验证循环</h3>
+<table style="width:100%;border-collapse:collapse;text-align:center">
+<tr>
+<td style="padding:1.5rem;background:#4a6cf7;color:#fff;border-radius:10px 0 0 10px;font-weight:700;font-size:1.1rem">
+🔨 Build<br><span style="font-weight:400;font-size:.9rem">构建 MVP</span>
+</td>
+<td style="padding:1.5rem;background:#6a8cf7;color:#fff;font-size:1.5rem">→</td>
+<td style="padding:1.5rem;background:#8aa8f7;color:#fff;font-weight:700;font-size:1.1rem">
+📊 Measure<br><span style="font-weight:400;font-size:.9rem">测量数据</span>
+</td>
+<td style="padding:1.5rem;background:#4a6cf7;color:#fff;border-radius:0 10px 10px 0;font-weight:700;font-size:1.1rem">
+🧠 Learn<br><span style="font-weight:400;font-size:.9rem">学习并调整</span>
+</td>
+</tr>
+</table>
+<p style="text-align:center;margin-top:1rem;color:#666;font-size:.9rem">每一次循环都比上一次更接近真相</p>
+</div>
+
+<h3>Step 1：识别你最危险的假设</h3>
+<p>在产品开始之前，你需要列出所有你觉得\"应该是对的\"的事情。然后问自己：<strong>哪一个错了，整个项目就完了？</strong></p>
+
+<div class="step-list">
+<li><strong>价值假设（Value Hypothesis）</strong>：用户真的需要这个解决方案吗？</li>
+<li><strong>增长假设（Growth Hypothesis）</strong>：用户会自发传播吗？获客成本可控吗？</li>
+<li><strong>技术假设（Feasibility Hypothesis）</strong>：我们能做出来吗？</li>
+</div>
+
+<p>通常，<strong>价值假设是最危险的</strong>。大多数创业失败不是因为做不出来，而是因为没有人需要。</p>
+
+<h3>Step 2：构建最小验证物</h3>
+<p>针对你最危险的假设，设计一个能以最低成本验证它的实验。记住：你的目标不是做出一个\"好产品\"，而是获得一个\"好答案\"。</p>
+
+<h3>Step 3：设定可衡量的指标</h3>
+<p>在实验开始前，先定义清楚：<strong>什么结果算成功？什么结果算失败？</strong></p>
+
+<div class="case-box">
+<div class="label">💡 生活案例</div>
+<p>你想做一个\"帮人整理衣柜\"的服务。你的假设是\"很多人愿意花钱请人整理衣柜\"。<br><br><strong>错误的指标：</strong>「有多少人来咨询？」——咨询不等于购买。<br><strong>正确的指标：</strong>「有多少人实际下单付费？」——这才是验证假设的证据。<br><br>你可以先在闲鱼上挂一个服务链接：\"专业衣柜整理，首次体验价99元\"。如果有5个人下单，你的假设被验证了；如果0个人下单，你也获得了重要信息——而且你只花了写一条帖子的时间。</p>
+</div>
+
+<h3>Step 4：学习并决定——坚持还是转型？</h3>
+<p>数据出来后，你有两个选择：</p>
+<ul style="padding-left:1.5rem;margin:1rem 0">
+<li><strong>Pivot（转型）</strong>：核心假设不成立，改变方向但保留学到的经验</li>
+<li><strong>Persevere（坚持）</strong>：数据支持假设，继续优化当前方向</li>
+</ul>
+
+<p><strong>转型（Pivot）不是失败</strong>——它是精益验证中最有价值的产出之一。Intel 从存储器转型做 CPU 就是一个经典的 pivot 案例。</p>
+
+<div class="collapsible">
+<summary>🔄 常见的转型类型</summary>
+<div class="content">
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li><strong>Zoom-in Pivot</strong>：把某个功能变成完整产品（Dropbox 最初只是一个视频演示中的文件同步功能）</li>
+<li><strong>Customer Segment Pivot</strong>：同样的产品，面向不同的用户群（Slack 最初是一个游戏的聊天功能）</li>
+<li><strong>Problem Solver Pivot</strong>：用户的问题是对的，但你解决的方式不对</li>
+<li><strong>Platform Pivot</strong>：从应用变成平台（Twitter 从一个播客平台变成了微博）</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、如何判断 MVP 是否有效？</h2>
+<p>一个好的 MVP 应该满足以下标准：</p>
+
+<div class="concept-card">
+<h4>✅ MVP 有效性检查清单</h4>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li><strong>速度</strong>：能否在 2 周内构建并上线？（如果能花 3 个月，说明你做多了）</li>
+<li><strong>单一假设</strong>：每次只验证一个核心假设（不要同时验证 10 个）</li>
+<li><strong>真实用户</strong>：必须有真实用户在用，不能只是内部团队测试</li>
+<li><strong>可量化</strong>：有明确的 success/fail 标准，不是\"感觉还行\"</li>
+<li><strong>可放弃</strong>：如果验证失败了，你付出的代价是可以接受的</li>
+</ul>
+</div>
+
+<div class="case-box">
+<div class="label">💡 生活案例：你的\"减肥计划\"就是一个 MVP</div>
+<p>很多人一上来就办年卡健身 + 买全套装备 + 制定完美饮食计划——然后两周后就放弃了。为什么？因为他们没有用 MVP 思维。<br><br><strong>MVP 式的减肥计划：</strong><br>
+1️⃣ 本周只做一件事：每天晚饭后散步 20 分钟（最小行动）<br>
+2️⃣ 用日历打勾记录（可衡量）<br>
+3️⃣ 一周后看：我坚持了吗？（可量化结果）<br>
+4️⃣ 如果坚持了 → 下周增加跳绳 5 分钟；如果没坚持 → 换更小的行动<br><br>这不叫\"意志力差\"，这叫<strong>用迭代代替完美</strong>。</p>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、从 MVP 到产品：何时该投入更多资源？</h2>
+<p>MVP 不是终点，而是起点。当你的 MVP 验证了核心价值主张后，就需要逐步投入资源。但投入的节奏也很关键。</p>
+
+<div class="collapsible">
+<summary>📈 产品成熟度阶梯</summary>
+<div class="content">
+<div class="step-list">
+<li><strong>Level 0 — 假设阶段</strong>：还没有产品，只是在猜测用户需求</li>
+<li><strong>Level 1 — 概念验证（PoC）</strong>：一个粗糙的原型，验证技术可行性</li>
+<li><strong>Level 2 — MVP</strong>：有真实用户在用，验证核心价值假设</li>
+<li><strong>Level 3 — PMF（Product-Market Fit）</strong>：用户主动留存、推荐，找到产品市场匹配</li>
+<li><strong>Level 4 — 规模化</strong>：验证了 PMF 后，才开始大规模投入增长</li>
+</div>
+<p style="margin-top:1rem"><strong>最常见的错误：跳过 Level 2 直接到 Level 4。</strong>没有验证就烧钱，是创业失败的第一大原因。</p>
+</div>
+</div>
+
+<div class="concept-card">
+<h4>⚠️ 红旗信号：你的 MVP 可能有问题</h4>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>你在 MVP 里做了超过 3 个核心功能</li>
+<li>你没有提前定义\"成功\"的标准</li>
+<li>你的\"用户\"都是你的朋友和家人</li>
+<li>你在担心\"MVP 太丑了会不会吓跑用户\"——那就对了，它本来就会</li>
+<li>你用\"我觉得\"代替了数据</li>
+</ul>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-section">
+<h2>📝 随堂测验</h2>
+<p style="color:#666;margin-bottom:1.5rem">检验你对 MVP 和精益验证的理解。每题选择后查看即时反馈。</p>
+
+<!-- Q1 -->
+<div class="quiz-item" data-correct="b">
+<div class="qnum">题目 1 / 8</div>
+<div class="question">你打算做一个\"帮上班族做午餐便当\"的配送服务。以下哪个最适合作为你的 MVP？</div>
+<div class="quiz-option" data-value="a">租一个厨房，买齐所有设备，招聘厨师，开发小程序</div>
+<div class="quiz-option" data-value="b">在办公楼下摆一个小摊，试卖三天，观察有多少人买</div>
+<div class="quiz-option" data-value="c">做一个精美的 PPT，找投资人要 50 万启动资金</div>
+<div class="quiz-option" data-value="d">在朋友圈发一条\"有没有人想订午餐便当\"的投票</div>
+<div class="quiz-feedback correct-fb">✅ 正确！摆小摊是真正的 MVP——它有真实交易、真实用户反馈，而且成本极低。PPT 和朋友圈投票不是产品，租厨房则是典型的\"还没验证就重投入\"。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。MVP 应该是能用最低成本验证核心假设的东西。摆小摊有真实交易和用户反馈，成本又极低。PPT 不是产品，朋友圈投票没有真实交易行为，租厨房则是过早重投入。</div>
+</div>
+
+<!-- Q2 -->
+<!-- Q2 -->
+<div class="quiz-item" data-correct="c">
+<div class="qnum">题目 2 / 8</div>
+<div class="question">Zappos（网上卖鞋）创始人的 MVP 是什么？</div>
+<div class="quiz-option" data-value="a">开发了一个完整的电商平台</div>
+<div class="quiz-option" data-value="b">在鞋店门口发问卷调查</div>
+<div class="quiz-option" data-value="c">去鞋店拍照上传到网站，有人下单后他去店里买再寄出</div>
+<div class="quiz-option" data-value="d">先囤了一批鞋在仓库里</div>
+<div class="quiz-feedback correct-fb">✅ 正确！Zappos 的 MVP 经典之处在于：它验证了\"人们愿意在网上买鞋\"这个核心假设，而没有花一分钱开发平台或建仓库。手动操作（自己去店里买）恰恰是 MVP 精神的体现。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。Zappos 的做法是：去线下鞋店拍照上传到网站，有人下单后他再去店里买一双寄过去。这是 MVP 的经典案例——手动验证假设，零技术开发成本。</div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" data-correct="a">
+<div class="qnum">题目 3 / 8</div>
+<div class="question">精益验证循环（Build-Measure-Learn）中，\"Learn\"这一步最关键的动作是什么？</div>
+<div class="quiz-option" data-value="a">根据数据决定是坚持（persevere）还是转型（pivot）</div>
+<div class="quiz-option" data-value="b">写一份详细的实验报告</div>
+<div class="quiz-option" data-value="c">向投资人汇报进展</div>
+<div class="quiz-option" data-value="d">庆祝实验完成</div>
+<div class="quiz-feedback correct-fb">✅ 正确！\"Learn\"的核心是做出一个基于数据的决策：继续当前方向还是改变方向。写报告、汇报、庆祝都不是这个步骤的目的。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。Learn 的关键是根据数据做出决策——坚持还是转型。其他选项都不是这个步骤的核心目的。</div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" data-correct="b">
+<div class="qnum">题目 4 / 8</div>
+<div class="question">以下哪个指标最能验证\"用户需要你的产品\"这个假设？</div>
+<div class="quiz-option" data-value="a">有多少人点击了你的广告</div>
+<div class="quiz-option" data-value="b">有多少人实际付费购买了你的产品或服务</div>
+<div class="quiz-option" data-value="c">有多少人浏览了你的网站</div>
+<div class="quiz-option" data-value="d">有多少人注册了账号</div>
+<div class="quiz-feedback correct-fb">✅ 正确！付费行为是最强的需求信号。点击、浏览、注册都是\"虚荣指标\"——它们看起来不错，但不能证明用户真的需要你的产品。愿意掏钱才是真需求。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。付费行为是最强的需求信号。点击广告、浏览网站、注册账号都可以是\"虚荣指标\"——它们好看但不能证明真实需求。愿意掏钱才是。</div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" data-correct="d">
+<div class="qnum">题目 5 / 8</div>
+<div class="question">你的 MVP 验证结果显示：100 个试用用户中只有 2 个人持续使用。你应该怎么做？</div>
+<div class="quiz-option" data-value="a">加大营销力度，让更多人来试试</div>
+<div class="quiz-option" data-value="b">再花三个月优化产品功能</div>
+<div class="quiz-option" data-value="c">增加更多功能让用户有更多选择</div>
+<div class="quiz-option" data-value="d">认真分析原因，考虑是否需要转型（pivot）</div>
+<div class="quiz-feedback correct-fb">✅ 正确！低留存率说明核心价值假设可能不成立。此时应该分析原因并考虑转型，而不是盲目加大投入。增加功能或加大营销只会加速浪费资源。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。低留存率是强烈的信号，说明核心价值假设可能不成立。此时应该分析原因并考虑转型。加大营销和优化功能都是在假设方向正确的前提下做的事，但数据已经告诉你方向可能错了。</div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" data-correct="c">
+<div class="qnum">题目 6 / 8</div>
+<div class="question">以下哪项最符合 MVP 的原则？</div>
+<div class="quiz-option" data-value="a">做一个功能完整的产品，确保没有 bug 再上线</div>
+<div class="quiz-option" data-value="b">先做市场调研，确定 100% 有需求后再动手</div>
+<div class="quiz-option" data-value="c">用最低成本构建一个能回答核心假设的东西，快速测试</div>
+<div class="quiz-option" data-value="d">先做出一个漂亮的 demo 给投资人看</div>
+<div class="quiz-feedback correct-fb">✅ 正确！MVP 的本质就是用最低成本快速回答\"核心假设对不对\"。追求完美功能和 100% 确定性都会让你陷入 Build Trap。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。MVP 的核心是用最低成本快速验证核心假设。追求完美、等待 100% 确定性、做漂亮 demo 给投资人看，都违背了 MVP 的精神。</div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" data-correct="b">
+<div class="qnum">题目 7 / 8</div>
+<div class="question">填空题：你想验证\"大学生愿意为二手教材付费\"这个假设。你的 MVP 是一个微信群，你在群里发布教材信息，有人想要你就手动拉群对接。这个 MVP 花了你 2 小时搭建，第一天就有 15 笔交易。这说明了什么？</div>
+<input type="text" class="fill-blank-input" placeholder="请输入你的判断（坚持/转型）" id="q7-input">
+<button onclick="checkFillBlank('q7-input','坚持')" style="margin-left:.5rem;padding:.4rem 1rem;background:#4a6cf7;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:.9rem">提交</button>
+<div class="quiz-feedback correct-fb" id="q7-fb">✅ 正确！15 笔真实交易是强有力的证据，说明核心价值假设成立。你应该坚持当前方向，考虑下一步如何规模化。</div>
+<div class="quiz-feedback incorrect-fb" id="q7-fb-inc">❌ 不对。15 笔真实交易是强有力的需求信号，说明\"大学生愿意为二手教材付费\"这个假设很可能是对的。你应该选择<strong>坚持</strong>（persevere），继续优化并扩大验证范围。</div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" data-correct="a">
+<div class="qnum">题目 8 / 8</div>
+<div class="question">以下哪种情况最适合被称为\"转型（Pivot）\"？</div>
+<div class="quiz-option" data-value="a">Slack 发现他们的游戏没人玩，但游戏里的聊天功能很受欢迎，于是把整个公司转向聊天工具</div>
+<div class="quiz-option" data-value="b">你的健身 App 日活从 100 提升到 200，你很高兴</div>
+<div class="quiz-option" data-value="c">你在 MVP 测试中发现用户更喜欢深色模式，于是改了 UI</div>
+<div class="quiz-option" data-value="d">你决定下个月开始做市场推广</div>
+<div class="quiz-feedback correct-fb">✅ 正确！Slack 的案例是经典的 Pivot——保留了学到的经验（聊天功能有价值），但改变了核心业务方向（从游戏到企业通讯）。改 UI 和优化日活都是 Persevere（坚持）时的正常迭代。</div>
+<div class="quiz-feedback incorrect-fb">❌ 不对。Pivot 是指核心方向发生根本性改变但保留学到的经验。Slack 从游戏转向通讯工具是经典案例。日活提升和改 UI 都是正常迭代（Persevere），不是转型。</div>
+</div>
+
+<div class="quiz-score" id="quiz-score">
+<h3 id="score-text"></h3>
+<p id="score-detail"></p>
+</div>
+</div>
+
+<!-- ACTION LIST -->
+<div class="action-list">
+<h3>🎯 今天就能做的行动清单</h3>
+<ul>
+<li><strong>写下你正在做的一个产品/项目，找出你最害怕被证伪的一个假设</strong>——花 2 分钟写下来</li>
+<li><strong>问自己：如果这个假设错了，我的项目还能活吗？</strong>——诚实回答</li>
+<li><strong>设计一个 2 小时内能完成的 MVP 实验</strong>——越小越好，能在群里发消息验证的就别建网站</li>
+<li><strong>给你的 MVP 设一个\"成功标准\"</strong>——比如\"10 个人付费\"或\"5 个人每周用 3 次以上\"</li>
+<li><strong>今天就启动</strong>——不要等\"准备好了\"，MVP 的意义就在于你现在就可以开始</li>
+</ul>
+</div>
+
+<!-- NAV -->
+<div class="nav-links">
+<a href="0003-user-journey-map.html">← 第 3 课：用户旅程地图</a>
+<a href="0005-product-market-fit.html">第 5 课：产品市场匹配 →</a>
+</div>
+
+<footer>
+<p>TeachHub · 产品设计 · 第 4 课 · MVP与精益验证</p>
+<p>Built with ❤️ by TeachHub Course Generator</p>
+</footer>
+</div>
+
+<script>
+// Quiz logic
+let score = 0;
+let answered = 0;
+const totalQuestions = 8;
+
+document.querySelectorAll('.quiz-item').forEach((item, idx) => {
+  const correct = item.dataset.correct;
+  const options = item.querySelectorAll('.quiz-option');
+  
+  options.forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (opt.classList.contains('disabled')) return;
+      
+      // Disable all options
+      options.forEach(o => {
+        o.classList.add('disabled');
+        if (o.dataset.value === correct) {
+          o.classList.add('correct');
+        }
+      });
+      
+      if (opt.dataset.value !== correct) {
+        opt.classList.add('incorrect');
+      }
+      
+      // Show feedback
+      const fbCorrect = item.querySelector('.correct-fb');
+      const fbIncorrect = item.querySelector('.incorrect-fb');
+      if (opt.dataset.value === correct) {
+        fbCorrect.classList.add('show');
+        score++;
+      } else {
+        fbIncorrect.classList.add('show');
+      }
+      
+      answered++;
+      
+      // Show score if all answered
+      if (answered === totalQuestions) {
+        showScore();
+      }
+    });
+  });
+});
+
+function showScore() {
+  const scoreDiv = document.getElementById('quiz-score');
+  const scoreText = document.getElementById('score-text');
+  const scoreDetail = document.getElementById('score-detail');
+  
+  scoreText.textContent = `得分：${score} / ${totalQuestions}`;
+  
+  let msg = '';
+  if (score === totalQuestions) msg = '🎉 满分！你对 MVP 和精益验证的理解非常扎实！';
+  else if (score >= 6) msg = '👍 很不错！你已经掌握了 MVP 的核心思想。';
+  else if (score >= 4) msg = '💪 还行！建议回顾一下错题对应的知识点。';
+  else msg = '📖 继续加油！MVP 思维需要反复练习才能内化。';
+  
+  scoreDetail.textContent = msg;
+  scoreDiv.style.display = 'block';
+  scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Fill blank question
+function checkFillBlank(inputId, correctAnswer) {
+  const input = document.getElementById(inputId);
+  const fbCorrect = document.getElementById(inputId.replace('input', 'fb'));
+  const fbIncorrect = document.getElementById(inputId.replace('input', 'fb') + '-inc');
+  const val = input.value.trim();
+  
+  if (val.includes(correctAnswer)) {
+    input.classList.add('correct-input');
+    input.classList.remove('incorrect-input');
+    fbCorrect.classList.add('show');
+    fbIncorrect.classList.remove('show');
+  } else {
+    input.classList.add('incorrect-input');
+    input.classList.remove('correct-input');
+    fbIncorrect.classList.add('show');
+    fbCorrect.classList.remove('show');
+  }
+  
+  input.disabled = true;
+  
+  // Check if this is the last unanswered question
+  setTimeout(() => {
+    if (answered === totalQuestions) {
+      showScore();
+    }
+  }, 100);
+}
+</script>
+</body>
+</html>

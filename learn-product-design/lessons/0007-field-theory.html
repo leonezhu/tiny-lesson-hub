@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>场域理论 — 产品设计（第07课）</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#2d2d2d;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather',serif;font-weight:700;color:#1a1a1a}
+.container{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+header{text-align:center;padding:48px 0 40px;border-bottom:2px solid #eee;margin-bottom:40px}
+header .badge{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:16px}
+header h1{font-size:2rem;margin-bottom:8px}
+header .subtitle{color:#666;font-size:1.05rem}
+.lesson-num{color:#888;font-size:.9rem;margin-bottom:4px}
+section{margin-bottom:48px}
+section h2{font-size:1.5rem;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #eee}
+section h3{font-size:1.2rem;margin:24px 0 12px;color:#333}
+p{margin-bottom:14px}
+.term{font-weight:600;color:#1565c0}
+.term-en{font-weight:400;color:#888;font-size:.88em}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#f57f17;font-size:.85rem;text-transform:uppercase;margin-bottom:6px}
+case-box p{margin:0;font-size:.95rem}
+.concept-card{background:#f5f5f5;border-radius:12px;padding:24px;margin:20px 0}
+.concept-card h4{margin-bottom:10px;font-size:1.05rem}
+.interactive-area{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:24px;margin:24px 0}
+.interactive-area h3{margin-top:0}
+.expand-btn{background:#1976d2;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.95rem;font-family:inherit;display:inline-flex;align-items:center;gap:8px;margin:8px 0}
+.expand-btn:hover{background:#1565c0}
+.expand-content{display:none;padding:16px;background:#f9fbe7;border-radius:8px;margin-top:12px;line-height:1.7}
+.expand-content.show{display:block}
+.expand-btn.active{background:#388e3c}
+/* Quiz styles */
+.quiz{margin:24px 0}
+.quiz-question{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:20px;margin-bottom:16px}
+.quiz-question h4{margin-bottom:12px;font-size:1rem}
+.quiz-question .q-number{color:#1976d2;font-weight:700}
+.quiz-option{display:block;padding:10px 14px;margin:6px 0;border:2px solid #e0e0e0;border-radius:8px;cursor:pointer;transition:all .2s;font-size:.95rem}
+.quiz-option:hover{border-color:#90caf9;background:#e3f2fd}
+.quiz-option.selected{border-color:#1976d2;background:#e3f2fd;font-weight:600}
+.quiz-option.correct{border-color:#43a047;background:#e8f5e9;font-weight:600}
+.quiz-option.incorrect{border-color:#e53935;background:#ffebee;font-weight:600}
+.quiz-feedback{margin-top:10px;padding:12px;border-radius:8px;font-size:.93rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+.quiz-feedback.incorrect-fb{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
+.quiz-submit{background:#1976d2;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:.95rem;font-family:inherit;margin-top:10px}
+.quiz-submit:hover{background:#1565c0}
+.quiz-submit:disabled{background:#ccc;cursor:not-allowed}
+/* Fill blank */
+.fill-blank-input{border:2px solid #bbb;border-radius:6px;padding:6px 12px;font-size:.95rem;font-family:inherit;width:180px}
+.fill-blank-input:focus{outline:none;border-color:#1976d2}
+/* Action checklist */
+.action-list{background:#e8f5e9;border-radius:12px;padding:24px;margin:24px 0}
+.action-list h3{color:#2e7d32;margin-bottom:12px}
+.action-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.action-item input[type="checkbox"]{margin-top:4px;width:18px;height:18px;accent-color:#43a047;flex-shrink:0}
+.action-item label{cursor:pointer;font-size:.95rem}
+/* Progress bar */
+.progress-bar{height:8px;background:#e0e0e0;border-radius:4px;margin:12px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#43a047,#66bb6a);border-radius:4px;transition:width .5s}
+/* Footer */
+footer{text-align:center;padding:40px 0 20px;color:#999;font-size:.85rem;border-top:1px solid #eee;margin-top:48px}
+code{background:#f0f0f0;padding:2px 6px;border-radius:4px;font-size:.9em}
+ul,ol{margin:12px 0 12px 24px}
+li{margin-bottom:6px}
+.tag{display:inline-block;background:#e3f2fd;color:#1565c0;padding:2px 10px;border-radius:12px;font-size:.82rem;margin:2px}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div class="lesson-num">第 07 课 · 共 12 课</div>
+<h1>场域理论（Field Theory）</h1>
+<div class="subtitle">为什么同样的你，在不同的地方做出完全不同的决定？</div>
+</header>
+
+<!-- ===== 引入 ===== -->
+<section>
+<h2>🧲 开场：你有没有遇到过这种情况？</h2>
+<p>周一早上，你坐在书桌前打开文档，写了三行就忍不住拿起手机刷起了短视频。但到了周末，你去了一个安静的共享办公空间，周围全是专注工作的人——你竟然一口气写了两个小时。</p>
+<p>是你意志力变强了？还是……有什么看不见的东西在推着你走？</p>
+<p>这就是我们要讲的<strong>场域理论（Field Theory）</strong>——由德国心理学家库尔特·勒温（Kurt Lewin）在1930年代提出的核心理论。它的核心公式极其简洁：</p>
+<div class="concept-card">
+<h4>📐 勒温的终极公式</h4>
+<p style="font-size:1.3rem;text-align:center;padding:12px 0;font-weight:700">B = f(P, E)</p>
+<p style="text-align:center;color:#666">行为（Behavior）是人与环境（Person × Environment）的函数</p>
+</div>
+<p>这不是说"人"和"环境"各自独立地影响你。勒温的意思是：<strong>人和环境是不可分割的整体</strong>，他称之为<strong>"心理场域"（Psychological Field）</strong>。你做出的每一个行为，都是你在当前这个"场"里的必然选择。</p>
+</section>
+
+<!-- ===== 什么是场域 ===== -->
+<section>
+<h2>一、什么是"场域"？</h2>
+<p>想象你站在一块磁铁旁边。你感到的"磁力"看不见摸不着，但它确实在推你、拉你。场域就是这种"看不见的力量场"——它由你感知到的<strong>所有事实和心理意义</strong>共同构成。</p>
+
+<button class="expand-btn" onclick="toggleExpand(this)">🔍 展开：勒温的"生活空间"（Life Space）概念</button>
+<div class="expand-content">
+<p>勒温把一个人当下感知到的<strong>全部现实</strong>称为<strong>"生活空间"</strong>——包括：</p>
+<ul>
+<li><strong>心理事实</strong>：你觉得老板生气了（不管老板是否真的生气）</li>
+<li><strong>物理环境</strong>：你此刻坐在会议室里</li>
+<li><strong>社会关系</strong>：其他同事都在沉默地看着你</li>
+<li><strong>目标和威胁</strong>：你要完成汇报 / 你可能被批评</li>
+</ul>
+<p>这些要素组合在一起，形成了一个<strong>"力场"</strong>——有些力推着你往前走，有些力把你往回拉。你的行为，就是这些力的合力方向。</p>
+</div>
+
+<div class="case-box">
+<div class="label">💡 生活案例</div>
+<p>你本来计划晚上去跑步（目标力），但外面下着雨（阻碍力），而且你刚吃完火锅（舒适力）。这三个力在你心里形成了一个"场"。最终你没去跑步——不是因为你不自律，而是<strong>在这个场的合力方向上，躺着是最自然的选择</strong>。</p>
+</div>
+</section>
+
+<!-- ===== 力场分析 ===== -->
+<section>
+<h2>二、力场分析（Force Field Analysis）</h2>
+<p>勒温发明的另一个工具叫<strong>力场分析</strong>——把影响行为的"驱动力"和"约束力"画出来，一目了然。</p>
+
+<div class="interactive-area">
+<h3>🎯 互动练习：分析一下你的"健身场域"</h3>
+<p>假设你想养成每周健身的习惯。下面列出了可能存在于你"场域"中的力，点击按钮查看分类：</p>
+<button class="expand-btn" onclick="toggleExpand(this)">查看驱动力（Driving Forces）→</button>
+<div class="expand-content">
+<p><strong>驱动力</strong>——推着你向目标前进的力量：</p>
+<ul>
+<li>看到体检报告上的异常指标（恐惧驱动）</li>
+<li>朋友约你去健身房（社交驱动）</li>
+<li>想穿好看的衣服（形象驱动）</li>
+<li>运动后内啡肽带来的愉悦感（生理驱动）</li>
+</ul>
+</div>
+<button class="expand-btn" onclick="toggleExpand(this)">← 查看约束力（Restraining Forces）</button>
+<div class="expand-content">
+<p><strong>约束力</strong>——把你拉回现状的力量：</p>
+<ul>
+<li>下班太累不想动（体力限制）</li>
+<li>健身房太远（空间限制）</li>
+<li>不知道器械怎么使用（知识限制）</li>
+<li>办了卡觉得浪费钱（沉没成本焦虑）</li>
+</ul>
+</div>
+</div>
+
+<p>关键洞察：<strong>大多数人的做法是"加大油门"——给自己打鸡血、买更多健身卡、看励志视频。</strong>但勒温说，这往往没用。因为约束力不动，驱动力再大也只是在原地空转。</p>
+
+<div class="case-box">
+<div class="label">💡 生活案例</div>
+<p>你想写一本书（驱动力很强），但你手机上有27个APP推送（约束力极强）。你每天给自己打鸡血"我要成为作家"，但约束力纹丝不动——结果就是持续拖延。勒温的方案是：<strong>先拆掉约束力</strong>，比如把手机放到另一个房间。</p>
+</div>
+</section>
+
+<!-- ===== 场域的动态变化 ===== -->
+<section>
+<h2>三、场域是动态变化的</h2>
+<p>场域不是静态的背景板，它时刻在变。勒温提出了几个关键概念来描述这种变化：</p>
+
+<h3>1. 边界（Boundaries）与渗透性</h3>
+<p>每个场域都有"边界"——哪些因素在场内，哪些在场外。边界可以是<strong>渗透的</strong>（允许外界影响进入）或<strong>刚性的</strong>（隔绝外界影响）。</p>
+<button class="expand-btn" onclick="toggleExpand(this)">📖 展开：边界渗透性的产品案例</button>
+<div class="expand-content">
+<p>想想你刷抖音时的"场域"：</p>
+<ul>
+<li><strong>高渗透边界</strong>：全屏播放、自动连播、没有退出按钮——抖音刻意让边界变得极度渗透，让你不断接收到新的刺激</li>
+<li><strong>低渗透边界</strong>：微信读书的"专注模式"——关掉通知、隐藏时间、只有一本书——刻意降低边界渗透性，减少干扰进入</li>
+</ul>
+<p>好的产品设计会<strong>主动管理边界的渗透性</strong>。</p>
+</div>
+
+<h3>2. 张力（Tension）与需求</h3>
+<p>当你在场域中有一个<strong>未完成的目标</strong>，就会产生"张力"。张力是一种心理上的紧张状态，它会推动你去行动以消除张力。</p>
+<div class="case-box">
+<div class="label">💡 生活案例</div>
+<p>你打开了一个未保存的Word文档，看到那个星号标记 <code>*</code>，心里就有种"怪怪的"感觉——这就是张力。你关掉它，张力消失，你感到轻松。很多APP利用了这个机制：未读消息的红点、购物车里的商品、待办事项列表上的勾——它们都在<strong>制造可控的张力</strong>，驱动你回到APP里。</p>
+</div>
+
+<h3>3. 准物理动机（Quasi-needs）</h3>
+<p>勒温发现，人有时候追求的并不是真正的生理需求，而是<strong>心理上"需要"的东西</strong>。比如你并不饿，但就是想吃零食——这是一种"准需求"。</p>
+</section>
+
+<!-- ===== 场域理论与产品设计 ===== -->
+<section>
+<h2>四、场域理论在产品中的运用</h2>
+<p>勒温的理论诞生于1930年代，但它在产品设计领域的影响力至今无人能及。几乎所有你每天使用的产品，都在暗中操纵着用户的"场域"。</p>
+
+<h3>1. 重新定义"用户体验"</h3>
+<p>传统的产品设计关注"功能好不好用"。场域理论说：<strong>功能只是场域中的一个要素</strong>。更重要的是——整个场域的设计是否引导用户走向你想要的行为。</p>
+
+<div class="interactive-area">
+<h3>🏗️ 对比：两种设计思路</h3>
+<p><strong>传统思路：</strong>做一个更好的跑步APP → 添加更多功能 → 用户还是不跑</p>
+<button class="expand-btn" onclick="toggleExpand(this)">场域思路：→ 查看完整分析</button>
+<div class="expand-content">
+<p><strong>场域思路：</strong>分析用户不跑的场域力 → 发现最大约束力是"没人一起" → 设计社交跑步功能 → 加入"好友约跑"按钮 → 约束力下降，驱动力上升 → 用户开始跑了</p>
+<p>区别在于：传统思路在<strong>产品内部</strong>找答案，场域思路在<strong>用户的生活空间</strong>里找答案。</p>
+</div>
+</div>
+
+<h3>2. 场域设计三原则</h3>
+
+<div class="concept-card">
+<h4>原则一：减少摩擦（降低约束力）</h4>
+<p>每一次点击、每一页跳转、每一个等待加载的画面，都是约束力。Netflix 的"自动播放下一集"、淘宝的"一键下单"，都是在拼命降低约束力，让用户的行为像滑滑梯一样自然发生。</p>
+</div>
+
+<div class="concept-card">
+<h4>原则二：制造张力（激活驱动力）</h4>
+<p>知乎的"待回答"推荐、Duolingo 的连胜火焰、Notion 的空白页面——它们都在<strong>温和地制造张力</strong>。张力太强会让你焦虑逃离，张力太弱你不会行动。好的设计找到那个微妙的平衡点。</p>
+</div>
+
+<div class="concept-card">
+<h4>原则三：重构场域（改变边界）</h4>
+<p>最厉害的产品不只是优化现有场域，而是<strong>创造全新的场域</strong>。比如：</p>
+<ul>
+<li>Airbnb 把"订酒店"的场域重构为"住进本地人的生活"</li>
+<li>Spotify 把"买唱片"的场域重构为"无限音乐流"</li>
+<li>ChatGPT 把"搜索信息"的场域重构为"对话获取答案"</li>
+</ul>
+</div>
+</section>
+
+<!-- ===== 实战案例 ===== -->
+<section>
+<h2>五、深度案例分析：共享办公空间的场域设计</h2>
+<p>我们回到开头的例子——为什么你在共享办公空间比在家效率高十倍？</p>
+<p>让我们用场域理论拆解一下这两个"场"：</p>
+
+<div class="interactive-area">
+<h3>📊 你的书桌 vs. 共享办公空间</h3>
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:.93rem">
+<thead>
+<tr style="background:#f5f5f5">
+<th style="padding:10px;text-align:left;border-bottom:2px solid #ddd">力类型</th>
+<th style="padding:10px;text-align:left;border-bottom:2px solid #ddd">书桌（家）</th>
+<th style="padding:10px;text-align:left;border-bottom:2px solid #ddd">共享办公</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding:8px 10px;border-bottom:1px solid #eee"><strong>驱动力</strong></td>
+<td style="padding:8px 10px;border-bottom:1px solid #eee">想完成任务</td>
+<td style="padding:8px 10px;border-bottom:1px solid #eee">想完成任务 + 被他人激励</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border-bottom:1px solid #eee"><strong>约束力</strong></td>
+<td style="padding:8px 10px;border-bottom:1px solid #eee">床、冰箱、冰箱旁的零食、沙发、电视</td>
+<td style="padding:8px 10px;border-bottom:1px solid #eee">只有电脑和咖啡机</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border-bottom:1px solid #eee"><strong>社会压力</strong></td>
+<td style="padding:8px 10px;border-bottom:1px solid #eee">无</td>
+<td style="padding:8px 10px;border-bottom:1px solid #eee">有人在认真工作（镜像神经元触发模仿）</td>
+</tr>
+<tr>
+<td style="padding:8px 10px"><strong>边界渗透性</strong></td>
+<td style="padding:8px 10px">极高——手机通知随时进来</td>
+<td style="padding:8px 10px">较低——公共空间默认安静</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>这个分析揭示了一个反直觉的结论：<strong>提升效率的关键不是增强意志力，而是选择一个不同的场域。</strong></p>
+<p>这也是为什么"环境设计"（Environment Design）会成为行为科学中最实用的策略之一——你不需要变成一个自律的人，你只需要<strong>进入一个让自律成为默认选项的场域</strong>。</p>
+</section>
+
+<!-- ===== Quiz ===== -->
+<section>
+<h2>六、互动测验 🧠</h2>
+<p>检验一下你对场域理论的理解。每道题选一个答案，提交后立即反馈。</p>
+
+<div class="quiz" id="quiz1">
+<div class="quiz-question">
+<h4><span class="q-number">Q1.</span> 勒温的公式 B = f(P, E) 告诉我们什么？</h4>
+<label class="quiz-option" data-quiz="quiz1" data-answer="a">A. 行为主要由个人性格决定，环境只是辅助因素</label>
+<label class="quiz-option" data-quiz="quiz1" data-answer="b">B. 行为是个人和环境相互作用的结果，两者不可分割</label>
+<label class="quiz-option" data-quiz="quiz1" data-answer="c">C. 环境对人行为的影响远大于个人因素</label>
+<label class="quiz-option" data-quiz="quiz1" data-answer="d">D. 只要改变环境，行为就一定会改变</label>
+<input type="hidden" id="quiz1-answer" value="b">
+<div class="quiz-feedback" id="quiz1-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz1')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz2">
+<div class="quiz-question">
+<h4><span class="q-number">Q2.</span> 小明想戒烟（驱动力），但他工作压力大（需要抽烟放松）、朋友都抽烟（社交压力）、戒断反应难受（生理约束）。根据力场分析，最有效的策略是什么？</h4>
+<label class="quiz-option" data-quiz="quiz2" data-answer="a">A. 不断告诉自己吸烟有害健康，增强驱动力</label>
+<label class="quiz-option" data-quiz="quiz2" data-answer="b">B. 找一份压力更小的工作</label>
+<label class="quiz-option" data-quiz="quiz2" data-answer="c">C. 同时减少约束力（应对压力、远离吸烟朋友圈）并适度增强驱动力</label>
+<label class="quiz-option" data-quiz="quiz2" data-answer="d">D. 直接扔掉所有香烟，靠意志力硬扛</label>
+<input type="hidden" id="quiz2-answer" value="c">
+<div class="quiz-feedback" id="quiz2-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz2')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz3">
+<div class="quiz-question">
+<h4><span class="q-number">Q3.</span> 知乎的"待回答"推送通知，主要利用了勒温理论中的哪个概念？</h4>
+<label class="quiz-option" data-quiz="quiz3" data-answer="a">A. 准物理动机</label>
+<label class="quiz-option" data-quiz="quiz3" data-answer="b">B. 张力（Tension）</label>
+<label class="quiz-option" data-quiz="quiz3" data-answer="c">C. 边界渗透性</label>
+<label class="quiz-option" data-quiz="quiz3" data-answer="d">D. 生活空间</label>
+<input type="hidden" id="quiz3-answer" value="b">
+<div class="quiz-feedback" id="quiz3-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz3')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz4">
+<div class="quiz-question">
+<h4><span class="q-number">Q4.</span> 以下哪个产品的场域设计策略与其他三个不同？</h4>
+<label class="quiz-option" data-quiz="quiz4" data-answer="a">A. Netflix 自动播放下一集 —— 降低约束力</label>
+<label class="quiz-option" data-quiz="quiz4" data-answer="b">B. Duolingo 连胜火焰 —— 制造张力</label>
+<label class="quiz-option" data-quiz="quiz4" data-answer="c">C. ChatGPT 用对话替代搜索 —— 重构场域</label>
+<label class="quiz-option" data-quiz="quiz4" data-answer="d">D. 微信读书的番茄钟模式 —— 减少约束力</label>
+<input type="hidden" id="quiz4-answer" value="c">
+<div class="quiz-feedback" id="quiz4-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz4')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz5">
+<div class="quiz-question">
+<h4><span class="q-number">Q5.</span> 你打算周末去爬山，但周五晚上刷到一部评分9.5的新剧，一口气看了八集。根据场域理论，以下哪个解释最准确？</h4>
+<label class="quiz-option" data-quiz="quiz5" data-answer="a">A. 你缺乏意志力，应该更早睡觉</label>
+<label class="quiz-option" data-quiz="quiz5" data-answer="b">B. 你的"生活空间"在周五晚上的场域中，追剧的驱动力远远超过了爬山的驱动力，而约束力（沙发很舒服、剧很精彩）则把相反方向</label>
+<label class="quiz-option" data-quiz="quiz5" data-answer="c">C. 爬山这个目标本身不够吸引人</label>
+<label class="quiz-option" data-quiz="quiz5" data-answer="d">D. 你应该把爬山改到工作日，周末用来追剧</label>
+<input type="hidden" id="quiz5-answer" value="b">
+<div class="quiz-feedback" id="quiz5-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz5')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz6">
+<div class="quiz-question">
+<h4><span class="q-number">Q6.</span> 勒温说"准物理动机"（quasi-needs）是什么？</h4>
+<label class="quiz-option" data-quiz="quiz6" data-answer="a">A. 人为了生存而产生的真正生理需求，如饥饿、口渴</label>
+<label class="quiz-option" data-quiz="quiz6" data-answer="b">B. 人在心理层面"需要"某种状态来消除张力，但这种需要并非生理必需的</label>
+<label class="quiz-option" data-quiz="quiz6" data-answer="c">C. 物理环境对人的行为产生的直接影响</label>
+<label class="quiz-option" data-quiz="quiz6" data-answer="d">D. 人在群体中受到的从众压力</label>
+<input type="hidden" id="quiz6-answer" value="b">
+<div class="quiz-feedback" id="quiz6-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz6')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz7">
+<div class="quiz-question">
+<h4><span class="q-number">Q7.</span> 一个APP设计师想让新用户完成注册。他用场域理论分析后发现，最大的约束力是"注册流程太长"。以下哪种方案最符合勒温的思路？</h4>
+<label class="quiz-option" data-quiz="quiz7" data-answer="a">A. 在登录页面放一个大标语："注册只需30秒！"</label>
+<label class="quiz-option" data-quiz="quiz7" data-answer="b">B. 给注册成功的用户发红包奖励</label>
+<label class="quiz-option" data-quiz="quiz7" data-answer="c">C. 把注册流程从12步减少到3步，并支持一键手机号登录</label>
+<label class="quiz-option" data-quiz="quiz7" data-answer="d">D. 在用户犹豫时弹出一个客服聊窗口</label>
+<input type="hidden" id="quiz7-answer" value="c">
+<div class="quiz-feedback" id="quiz7-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz7')">提交答案</button>
+</div>
+</div>
+
+<div class="quiz" id="quiz8">
+<div class="quiz-question">
+<h4><span class="q-number">Q8.</span> 以下关于"场域边界渗透性"的说法，哪一个是正确的？</h4>
+<label class="quiz-option" data-quiz="quiz8" data-answer="a">A. 渗透性越高越好，这样用户可以接触到更多信息</label>
+<label class="quiz-option" data-quiz="quiz8" data-answer="b">B. 渗透性越低越好，这样可以完全隔绝干扰</label>
+<label class="quiz-option" data-quiz="quiz8" data-answer="c">C. 好的设计会根据目标行为主动调节渗透性——需要专注时降低渗透性，需要激发灵感时提高渗透性</label>
+<label class="quiz-option" data-quiz="quiz8" data-answer="d">D. 边界渗透性与产品设计无关，只与环境心理学有关</label>
+<input type="hidden" id="quiz8-answer" value="c">
+<div class="quiz-feedback" id="quiz8-feedback"></div>
+<button class="quiz-submit" onclick="checkQuiz('quiz8')">提交答案</button>
+</div>
+</div>
+</section>
+
+<!-- ===== 行动清单 ===== -->
+<section>
+<h2>七、今天就能做的 ✅</h2>
+<div class="action-list">
+<h3>🚀 今日行动清单（1分钟内完成）</h3>
+<div class="action-item">
+<input type="checkbox" id="a1">
+<label for="a1"><strong>识别一个约束力：</strong>现在环顾四周，找出一个正在阻碍你做重要事情的因素（手机通知？杂乱的桌面？），然后立刻处理它。</label>
+</div>
+<div class="action-item">
+<input type="checkbox" id="a2">
+<label for="a2"><strong>做一次微型力场分析：</strong>拿出一张纸，画出你当前最想改变的一个习惯的驱动力和约束力。只看，不改。</label>
+</div>
+<div class="action-item">
+<input type="checkbox" id="a3">
+<label for="a3"><strong>设计你的"场域切换"：</strong>找到一个你效率最高的地方（咖啡馆？图书馆？），记住它的位置，明天就去那里工作一小时。</label>
+</div>
+<div class="action-item">
+<input type="checkbox" id="a4">
+<label for="a4"><strong>降低一个约束力：</strong>选择一件你一直拖延的事，问自己"什么让我最难开始？"——然后把它减少一步。比如想跑步，就把跑鞋放在床边。</label>
+</div>
+</div>
+</section>
+
+<!-- ===== 总结 ===== -->
+<section>
+<h2>八、本课小结 📝</h2>
+<div class="concept-card">
+<h4>🔑 核心要点</h4>
+<ul>
+<li><strong>B = f(P, E)</strong>：行为是人与环境的函数，二者不可分割</li>
+<li><strong>生活空间</strong>：你感知到的全部现实构成了你的"场域"</li>
+<li><strong>力场分析</strong>：驱动力 vs 约束力，改变行为要先拆约束力</li>
+<li><strong>张力</strong>：未完成的目标产生心理张力，驱动行为</li>
+<li><strong>边界渗透性</strong>：好的产品设计主动管理信息的流入流出</li>
+<li><strong>重构场域</strong>：最强大的产品创新是创造全新的场域</li>
+</ul>
+</div>
+
+<p>下一课我们将学习<strong>用户体验设计（UX Design）</strong>——这是场域理论的直接延伸。当你理解了用户的生活空间，你才能设计出真正好的体验。</p>
+</section>
+
+<footer>
+<p>TeachHub · 产品设计 · 第07课 · 场域理论</p>
+<p>© 2026 自我科学与行为改变系列</p>
+</footer>
+</div>
+
+<script>
+function toggleExpand(btn) {
+  const content = btn.nextElementSibling;
+  if (content.classList.contains('show')) {
+    content.classList.remove('show');
+    btn.classList.remove('active');
+    btn.textContent = btn.textContent.replace('✓ ', '');
+  } else {
+    content.classList.add('show');
+    btn.classList.add('active');
+    btn.textContent = btn.textContent.replace(/→$/,'').replace(/←$/,'').trim() + ' ✓';
+  }
+}
+
+function checkQuiz(quizId) {
+  const quiz = document.getElementById(quizId);
+  const correctAnswer = quiz.querySelector('input[type="hidden"]').value;
+  const selected = quiz.querySelector('.quiz-option.selected');
+  const feedback = document.getElementById(quizId + '-feedback');
+  const submitBtn = quiz.querySelector('.quiz-submit');
+
+  if (!selected) {
+    feedback.className = 'quiz-feedback show incorrect-fb';
+    feedback.textContent = '请先选择一个答案！';
+    return;
+  }
+
+  const userAnswer = selected.dataset.answer;
+  const allOptions = quiz.querySelectorAll('.quiz-option');
+
+  // Disable further clicks
+  allOptions.forEach(opt => {
+    opt.style.pointerEvents = 'none';
+  });
+  submitBtn.disabled = true;
+  submitBtn.textContent = '已作答';
+
+  // Highlight correct and wrong
+  allOptions.forEach(opt => {
+    if (opt.dataset.answer === correctAnswer) {
+      opt.classList.add('correct');
+    } else if (opt.classList.contains('selected') && opt.dataset.answer !== correctAnswer) {
+      opt.classList.add('incorrect');
+    }
+  });
+
+  // Show feedback
+  const explanations = {
+    'quiz1': '正确答案是 B。勒温的核心观点是：行为和人格不能脱离环境来理解。你不是"一个有缺点的人"，你是"一个身处某个场域的人"。',
+    'quiz2': '正确答案是 C。勒温强调，改变行为需要同时降低约束力和增强驱动力。单纯靠意志力（D）效果最差，单纯打鸡血（A）也往往无效。',
+    'quiz3': '正确答案是 B。"待回答"推送在你的生活空间中制造了一种"未完成感"（张力），驱使你打开APP去消除这种张力。这和未读消息红点的原理一样。',
+    'quiz4': '正确答案是 C。ChatGPT 是在重构整个场域（从搜索到对话），而其他三个都是在现有场域内降低约束力或制造张力。',
+    'quiz5': '正确答案是 B。场域理论认为，行为是当时当地所有力的合力的结果。不是你"不行"，而是那个时刻的场域中，追剧的力远大于爬山的力。',
+    'quiz6': '正确答案是 B。准物理动机是指心理层面的"需要"，比如你其实不饿但就是想吃东西、你其实不需要新手机但就是想买东西。',
+    'quiz7': '正确答案是 C。既然约束力是"流程太长"，最直接有效的办法就是缩短流程。其他选项要么增加驱动力（A、B），要么增加干预（D），但没有解决根本约束力。',
+    'quiz8': '正确答案是 C。边界渗透性是设计工具——不是越高越好或越低越好，而是要服务于目标行为。专注时降低渗透性，探索时提高渗透性。'
+  };
+
+  if (userAnswer === correctAnswer) {
+    feedback.className = 'quiz-feedback show correct-fb';
+    feedback.textContent = '✅ 正确！' + explanations[quizId];
+  } else {
+    feedback.className = 'quiz-feedback show incorrect-fb';
+    feedback.textContent = '❌ 不太对。' + explanations[quizId];
+  }
+}
+
+// Add click handlers to quiz options
+document.querySelectorAll('.quiz-option').forEach(option => {
+  option.addEventListener('click', function() {
+    const quizId = this.dataset.quiz;
+    // Remove selected from siblings
+    document.querySelectorAll(`.quiz-option[data-quiz="${quizId}"]`).forEach(opt => {
+      opt.classList.remove('selected');
+    });
+    this.classList.add('selected');
+  });
+});
+</script>
+</body>
+</html>

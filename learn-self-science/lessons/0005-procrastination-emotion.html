@@ -55,18 +55,14 @@ blockquote{border-left:4px solid #ddd;margin:1.5rem 0;padding:.8rem 1.2rem;backg
 .collapse-btn.open::before{transform:rotate(90deg)}
 .collapse-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .collapse-body.open{max-height:2000px}
-.emotion-wheel{background:#f7f9fc;border:2px solid #4a6fa5;border-radius:12px;padding:2rem;margin:1.8rem 0;text-align:center}
-.emotion-wheel h3{margin-top:0}
-.emotion-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1rem 0}
-.emotion-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:1rem;text-align:left}
-.emotion-card .emotion-label{font-weight:700;color:#4a6fa5;font-size:.95rem}
-.emotion-card .emotion-desc{font-size:.88rem;color:#555;margin-top:.3rem}
-.diagram-box{background:#fafafa;border:2px dashed #ccc;border-radius:12px;padding:1.5rem;margin:1.5rem 0;text-align:center}
-.diagram-box .cycle{font-size:1.1rem;line-height:2}
-.diagram-box .arrow{color:#4a6fa5;font-size:1.3rem}
-.warning-box{background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;padding:1.2rem 1.4rem;margin:1.8rem 0}
-.warning-box strong{color:#e65100}
-@media(max-width:600px){body{padding:1rem 1rem 3rem}h1{font-size:1.5rem}h2{font-size:1.2rem}.emotion-grid{grid-template-columns:1fr}}
+.emotion-wheel{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
+.emotion-tag{padding:.3rem .8rem;border-radius:20px;font-size:.88rem;border:1px solid #ddd}
+.emotion-tag.red{background:#fdecea;color:#c62828;border-color:#ef9a9a}
+.emotion-tag.orange{background:#fff3e0;color:#e65100;border-color:#ffcc80}
+.emotion-tag.blue{background:#e3f2fd;color:#1565c0;border-color:#90caf9}
+.emotion-tag.purple{background:#f3e5f5;color:#6a1b9a;border-color:#ce93d8}
+.emotion-tag.green{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7}
+@media(max-width:600px){body{padding:1rem 1rem 3rem}h1{font-size:1.5rem}h2{font-size:1.2rem}}
 </style>
 </head>
 <body>
@@ -74,449 +70,448 @@ blockquote{border-left:4px solid #ddd;margin:1.5rem 0;padding:.8rem 1.2rem;backg
 
 <h1>第五课：拖延的本质：情绪调节失败</h1>
 <p class="subtitle">自我科学与行为改变 · Lesson 5 of 12</p>
-<p class="lead">你拖延的时候，真的只是在"偷懒"吗？<strong>不。</strong>最新的心理学研究揭示了一个反直觉的事实：拖延不是时间管理问题，而是<strong>情绪调节问题</strong>（Emotion Regulation Problem）。你不去做那件事，不是因为懒，而是因为那件事让你感到不舒服，而你的大脑选择了"逃避痛苦"这条最近的路。</p>
-
-<div class="example-box">
-<strong>🛋️ 生活场景</strong><br>
-现在是周日下午三点。你有一个明天要交的 PPT。你知道该做了。但你拿起手机——刷了二十分钟短视频。又打开外卖软件——看了十分钟餐厅。然后你告诉自己："等吃完晚饭再做吧。"<br><br>
-你是在拖延吗？是的。但你在逃避什么？不是"PPT"，而是"PPT 带来的那种焦虑感、不确定感、怕做不好的恐惧"。你的大脑在帮你"调节情绪"——用刷视频来缓解焦虑。代价是，明天你会更焦虑。
-</div>
-
-<p>这节课我们将揭开拖延的情绪本质，理解为什么"自律"不是答案，而"情绪调节"才是。</p>
+<p class="lead">你是不是也有过这样的经历：明明有个重要的报告明天就要交，你却花了整个晚上刷短视频、整理桌面、甚至研究怎么泡一杯完美的咖啡？你不是不知道后果，你就是<strong>不想动</strong>。大多数人把这叫做"拖延"，但科学研究发现了一个更准确的词：<strong>情绪调节失败</strong>。</p>
 
 <!-- ==================== SECTION 1 ==================== -->
-<h2>一、你以为的拖延 vs 真实的拖延</h2>
+<h2>一、你不是懒，你是怕</h2>
 
-<p>大多数人这样描述自己的拖延：</p>
-
-<div class="diagram-box">
-<div class="cycle">
-<span>我拖延</span><br>
-<span class="arrow">↓</span><br>
-<span>因为我没有足够的意志力</span><br>
-<span class="arrow">↓</span><br>
-<span>解决方案：给自己定更多规矩</span>
-</div>
-</div>
-
-<p>但这个叙事有一个致命的问题：<strong>它把情绪问题当成了意志力问题。</strong>就像告诉一个感冒的人"你要更有毅力地呼吸"一样荒谬。</p>
-
-<p>心理学家<strong>Tim Pychyl</strong>和<strong>Fuschia Sirois</strong>的研究表明，拖延的核心不是时间管理失误，而是<strong>情绪修复</strong>（Mood Repair）：</p>
+<p>先做一个小练习。回想一下你最近一次拖延的事情——可能是一份工作报告、一封邮件、一次健身。然后问自己一个问题：</p>
 
 <div class="tip-box">
-<strong>💡 核心发现</strong><br>
-拖延者选择即时的情绪修复——通过做其他事情来暂时摆脱对任务的不适感。这是一种短期的情绪应对策略，但长期来看会制造更多的负面情绪。
+<strong>💡 停下来想一想</strong><br>
+当你想到那件事的时候，你的身体是什么感觉？<br>
+是"好烦啊"？"好难啊"？"我不知道从哪开始"？还是"做了也没用"？
 </div>
 
-<p>让我们看看真实的拖延循环：</p>
+<p>不管你的答案是什么，你感受到的都不是"懒"。懒是一种轻松的状态——懒得动的人根本不觉得有问题。但你感到的是<strong>焦虑</strong>、<strong>压力</strong>、<strong>不安</strong>。</p>
 
-<div class="diagram-box">
-<div class="cycle">
-<span>面对任务 → 产生负面情绪（焦虑/无聊/恐惧）</span><br>
-<span class="arrow">↓</span><br>
-<span>大脑寻求情绪修复 → 转向更舒适的活动</span><br>
-<span class="arrow">↓</span><br>
-<span>短期：感觉好了一点（负强化）</span><br>
-<span class="arrow">↓</span><br>
-<span>长期：任务压力更大 → 负面情绪更强 → 更想逃避</span><br>
-<span class="arrow">↓</span><br>
-<span>自责 → 更低的自我效能感 → 下一次更难开始</span>
-</div>
-</div>
+<p>这就是关键发现：<strong>拖延不是时间管理问题，而是情绪管理问题。</strong></p>
 
-<p>注意到那个关键点了吗？<strong>"短期：感觉好了一点（负强化）"</strong>。这就是为什么拖延如此顽固——它在当下"有用"。它确实缓解了不适感。问题是，这种缓解是借来的，而且利息极高。</p>
+<p>2015年，多伦多大学的心理学家 <span class="english">Dr. Tim Pychyl</span> 做了一个颠覆性的研究发现：<strong>人们拖延，是因为他们想要立刻逃避与任务相关的负面情绪。</strong></p>
 
-<!-- ==================== SECTION 2 ==================== -->
-<h2>二、拖延背后的四种情绪</h2>
+<p>那些负面情绪包括：</p>
 
-<p>每次你拖延的时候，背后都有一种或多种情绪在驱动。识别这些情绪，是改变的第一步。</p>
-
-<div class="emotion-grid">
-<div class="emotion-card">
-<div class="emotion-label">😰 焦虑（Anxiety）</div>
-<div class="emotion-desc">"我怕做不好""我不知道从哪开始""万一搞砸了怎么办？"</div>
-</div>
-<div class="emotion-card">
-<div class="emotion-label">😑 无聊（Boredom）</div>
-<div class="emotion-desc">"这件事太没意思了""为什么要做这种重复性的东西？"</div>
-</div>
-<div class="emotion-card">
-<div class="emotion-label">😤 挫败（Frustration）</div>
-<div class="emotion-desc">"我之前试过但没效果""这个东西太难了我搞不懂"</div>
-</div>
-<div class="emotion-card">
-<div class="emotion-label">😔 羞耻（Shame）</div>
-<div class="emotion-desc">"别人都能做到我怎么不行""我又在浪费时间了"</div>
-</div>
+<div class="emotion-wheel">
+<span class="emotion-tag red">焦虑</span>
+<span class="emotion-tag orange">无聊</span>
+<span class="emotion-tag blue">挫败感</span>
+<span class="emotion-tag purple">自我怀疑</span>
+<span class="emotion-tag orange">压力</span>
+<span class="emotion-tag red">恐惧失败</span>
+<span class="emotion-tag blue">迷茫</span>
+<span class="emotion-tag purple">孤独感</span>
 </div>
 
-<p>每种情绪对应不同的拖延模式：</p>
+<p>当你想到"我要写那份报告"时，你的大脑并不是在计算"这需要3小时"，而是在感受"这会让我焦虑"。而你的 System 1（自动脑）只有一个目标：<strong>立刻消除这种不舒服的感觉</strong>。</p>
 
-<div class="collapse-btn" onclick="toggleCollapse(this)">点击展开：每种情绪的拖延特征</div>
-<div class="collapse-body">
-<table class="summary-table">
-<thead>
-<tr><th>情绪</th><th>典型场景</th><th>逃避行为</th><th>内在对话</th></tr>
-</thead>
-<tbody>
-<tr><td>焦虑</td><td>写报告、做演讲、面对评价</td><td>刷社交媒体、整理桌面、"先做点别的"</td><td>"等我准备好了再开始"</td></tr>
-<tr><td>无聊</td><td>填表格、重复性工作、会议</td><td>打游戏、看剧、吃零食</td><td>"这种小事不值得我现在做"</td></tr>
-<tr><td>挫败</td><td>学新技能、复杂项目</td><td>放弃、转去容易的事</td><td>"反正我也做不好，算了"</td></tr>
-<tr><td>羞耻</td><td>反思过去失败、面对批评</td><td>否认、合理化、攻击他人</td><td>"我不是这种人，我只是……"</td></tr>
-</tbody>
-</table>
-</div>
+<h3>生活案例：周五下午的邮件</h3>
 
 <div class="example-box">
-<strong>🏋️ 生活场景</strong><br>
-你去健身房办了卡，去了三次。第四次到了门口，突然觉得"今天好累，下次吧"。然后回家刷了两个小时健身博主的视频。<br><br>
-你拖延的是什么？不是"健身"，而是<strong>面对自己体能不足时的挫败感</strong>。看着那些身材完美的博主，你的大脑在说："如果你去了健身房却发现跑不动两圈，那就太丢人了。不如在家看视频——至少在那里你不会失败。"<br><br>
-这不是懒惰。这是<strong>情绪保护机制</strong>。
+<strong>📧 生活场景</strong><br>
+你收到一封同事发来的邮件，需要你回复一个方案。你打开邮件，看到标题的瞬间，胸口就有点闷——因为这个方案你其实还没想好。<br><br>
+System 1 的感受："好烦，不想看这个。"<br>
+于是你打开了微信……然后打开了抖音……然后一看时间，五点了。<br><br>
+<strong>你不是没有时间，你是被"不想看邮件时的不舒服感"拖走了。</strong>
+</div>
+
+<p>所以，下次不要再对自己说"我太懒了"。你要说的是：<strong>"我现在在逃避一种不舒服的感觉。"</strong></p>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2>二、拖延的真相：短期情绪修复</h2>
+
+<p>拖延有一个非常狡猾的特点：<strong>它真的能让你感觉好一点。</strong></p>
+
+<p>当你刷完半小时短视频之后，那种"不想写报告"的焦虑确实消失了。你的大脑在说："看吧，刷视频是个好主意，至少我现在不烦了。"</p>
+
+<p>这在心理学上叫 <span class="english">short-term mood repair</span>（短期情绪修复）。拖延是大脑用来保护自己不受负面情绪伤害的一种策略——只是这种策略长期来看非常糟糕。</p>
+
+<div class="tip-box">
+<strong>📐 拖延的循环模型：</strong><br><br>
+<strong>触发</strong> → 想到任务 → 产生负面情绪（焦虑/无聊/自我怀疑）<br>
+<strong>逃避</strong> → System 1 寻求即时舒适 → 刷手机/吃东西/做无关的事<br>
+<strong>缓解</strong> → 负面情绪暂时消失 → 大脑记住了"逃避是好用的"<br>
+<strong>恶化</strong> → 截止日期逼近 → 焦虑翻倍 → 更严重的拖延<br>
+<strong>自责</strong> → "我怎么又拖延了" → 负面情绪增加 → 更难开始<br>
+</div>
+
+<p>注意最后一步：<strong>自责</strong>。自责本身也是一种负面情绪。所以你越自责，你就越需要逃避，于是越拖延——这是一个真正的恶性循环。</p>
+
+<h3>折叠探索：拖延的两种类型</h3>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">点击展开：拖延者的分类</button>
+<div class="collapse-body">
+<div class="example-box" style="margin-top:1rem">
+<p><span class="english">Dr. Fuschia Sirois</span> 将拖延者分为两大类：</p>
+<p><strong>1. 完美主义者型拖延（Perfectionist Procrastination）</strong></p>
+<p>"如果我做不好，干脆就不做。" 这类人害怕失败，害怕别人的评价。他们不是不想做，而是<strong>太想做好</strong>，导致被"必须完美"的压力压垮了。</p>
+<p><strong>2. 冲动型拖延（Impulsive Procrastination）</strong></p>
+<p>"反正明天再做也行。" 这类人更容易被即时奖励吸引。他们不是怕做不好，而是<strong>根本管不住自己</strong>，总是选择眼前的小快乐。</p>
+<p>你的拖延属于哪一种？或者两者都有？</p>
+</div>
 </div>
 
 <!-- ==================== SECTION 3 ==================== -->
-<h2>三、为什么"自律"救不了你</h2>
+<h2>三、为什么"明天再开始"是个陷阱</h2>
 
-<p>我们从小被教育：拖延是因为不自律。所以我们的第一反应是——"我要更自律"。于是我们：</p>
+<p>你有没有听过这个词：<span class="english">affective forecasting</span>（情感预测）？这是指我们预测自己未来感受的能力。研究发现，<strong>我们的情感预测几乎总是错的</strong>。</p>
 
-<ul style="margin:1rem 0 1rem 2rem">
-<li>下载番茄钟 App，设了 25 分钟专注</li>
-<li>把手机扔到另一个房间</li>
-<li>给自己列了超详细的待办清单</li>
-<li>在朋友圈发"今天必须写完"</li>
-</ul>
+<p>当你决定"明天再开始"时，你的大脑在做两个错误的预测：</p>
 
-<p>然后呢？过了两天，又回到了原来的样子。</p>
-
-<p>原因很简单：<strong>你用意志力去对抗情绪，但意志力是有限资源。</strong></p>
-
-<div class="warning-box">
-<strong>⚠️ 关键洞察</strong><br>
-当你处于高情绪负荷状态（焦虑、挫败、羞耻）时，你的前额叶皮层（负责理性决策的大脑区域）功能会被抑制。你不是"不想"做，而是"不能"做——至少在那个时刻不能。这就像要求一个发烧的人"更有毅力地跑步"。
-</div>
-
-<p>心理学家<strong>Dr. fuschia Sirois</strong>的研究指出：</p>
-
-<div class="tip-box">
-<strong>📌 拖延的悖论</strong><br>
-越是自责拖延的人，下一次越容易拖延。因为自责本身就是一种负面情绪——而为了逃避这种负面感受，大脑又会选择拖延作为"情绪修复"的手段。<br><br>
-<strong>自责 → 更难受 → 更想逃避 → 继续拖延 → 更自责</strong><br>
-这是一个闭环。打破它的钥匙不是"更狠地逼自己"，而是<strong>先处理情绪</strong>。
-</div>
-
-<!-- ==================== SECTION 4 ==================== -->
-<h2>四、情绪调节：真正的解药</h2>
-
-<p>如果拖延的本质是情绪调节失败，那么解法就不是"逼自己去做"，而是<strong>"让自己不那么难受地去做"</strong>。这听起来像是文字游戏，但背后的机制完全不同。</p>
-
-<h3>4.1 自我关怀（Self-Compassion）</h3>
-
-<p>2016 年，多伦多大学的<strong>Kristen Neff</strong>和<strong>Timothy Pychyl</strong>做了一个实验：让大学生回顾上一次拖延的经历，然后随机分成两组——一组写一封<strong>自我关怀的信</strong>（对自己温柔、理解），另一组写一封<strong>自我批评的信</strong>（指责自己为什么这么懒）。</p>
-
-<p>结果：<strong>写了自我关怀信的学生，下一次完成任务的速度更快。</strong></p>
-
-<div class="example-box">
-<strong>📝 对比两种内心对话</strong><br><br>
-<strong>自我批评：</strong>"你怎么又拖到这个时候？你总是这样！你根本管不住自己！明天就要交了你还在这刷手机！"<br>
-→ 结果：焦虑升级 → 更想逃避 → 继续刷手机<br><br>
-<strong>自我关怀：</strong>"好吧，我确实在拖延。这很正常，很多人都会这样。我拖延是因为这个任务让我感到有压力。没关系，我现在可以做一件最小的事——打开文档，写一行字。"<br>
-→ 结果：焦虑降低 → 情绪恢复 → 更容易开始行动
-</div>
-
-<h3>4.2 情绪命名（Affect Labeling）</h3>
-
-<p>神经科学研究发现，仅仅<strong>给情绪命名</strong>（"我现在感到焦虑"），就能显著降低杏仁核（情绪中心）的活跃度。这就是为什么写日记、跟朋友吐槽有时候比直接解决问题更有效——它首先处理了情绪。</p>
-
-<div class="tip-box">
-<strong>🧠 生活化案例</strong><br>
-你坐在电脑前，PPT 一片空白。你感到胸口发紧、手心出汗。与其硬扛着写，不如花 30 秒对自己说："我现在感到很焦虑，因为这个 PPT 很重要，我怕做不好。"<br><br>
-就这 30 秒。然后你会发现，那股"必须立刻完美"的压力减轻了，你可以开始写第一页了。
-</div>
-
-<h3>4.3 降低启动门槛</h3>
-
-<p>既然拖延是因为任务引发的负面情绪，那么减少这种情绪最直接的方法就是<strong>让任务的开头变得毫无威胁</strong>。</p>
-
-<div class="diagram-box">
-<div style="font-size:1rem;color:#555">
-<strong>传统方法：</strong>"我要完成这个 PPT" → 大脑评估为"高风险、高痛苦" → 逃避<br><br>
-<strong>情绪调节方法：</strong>"我只打开 PowerPoint" → 大脑评估为"零风险" → 执行<br>
-<span class="arrow">↓</span><br>
-<strong>接着：</strong>"我只写标题" → 仍然轻松 → 执行<br>
-<span class="arrow">↓</span><br>
-<strong>惯性开始了：</strong>"既然打开了……那就写个要点吧" → 进入工作状态
-</div>
-</div>
-
-<p>这和第三课的<strong>微习惯</strong>（Tiny Habits）概念一脉相承，但加入了情绪视角：<strong>不是因为你"不会坚持"才需要微习惯，而是因为你"害怕开始"才需要。</strong></p>
-
-<!-- ==================== SECTION 5 ==================== -->
-<h2>五、拖延的诊断：你现在属于哪一种？</h2>
-
-<p>下面是一个快速自我诊断。看看下面的场景，哪个最贴近你最近的状态？</p>
-
-<div class="collapse-btn" onclick="toggleCollapse(this)">点击展开：五种拖延类型及应对策略</div>
-<div class="collapse-body">
-<table class="summary-table">
-<thead>
-<tr><th>类型</th><th>触发情绪</th><th>典型表现</th><th>应对策略</th></tr>
-</thead>
-<tbody>
-<tr><td>完美主义型</td><td>恐惧（怕做不好）</td><td>迟迟不开始，总想"准备得更充分"</td><td>接受"粗糙的初稿"，设定"完成比完美重要"</td></tr>
-<tr><td>逃避型</td><td>焦虑/无聊</td><td>用轻松活动填补时间，越补越焦虑</td><td>先处理情绪再处理任务，5 分钟法则</td></tr>
-<tr><td>冲动型</td><td>即时满足需求</td><td>频繁切换任务，什么都做了但什么都没做完</td><td>环境设计+外部承诺（告诉别人你在做什么）</td></tr>
-<tr><td>决策困难型</td><td> overwhelm（不知所措）</td><td>任务太大不知从何下手</td><td>分解任务，写下第一步只需 2 分钟做的事</td></tr>
-<tr><td>自我惩罚型</td><td>羞耻/低自尊</td><td>"反正我也做不好，干脆不做"</td><td>自我关怀练习，重建自我效能感</td></tr>
-</tbody>
+<div class="summary-table" style="margin:1.5rem 0">
+<table>
+<tr><th>你以为的</th><th>实际的</th></tr>
+<tr><td>明天我会更有精力</td><td>明天你会更焦虑，因为截止日期近了</td></tr>
+<tr><td>明天我会更想做这件事</td><td>明天你会有更多理由不做</td></tr>
+<tr><td>明天我会感觉更好</td><td>明天的你在承受今天未完成任务的压力</td></tr>
+<tr><td>拖延让我轻松了</td><td>拖延让你带着"未完成"的负担度过每一天</td></tr>
 </table>
 </div>
 
+<p>最讽刺的是：<strong>开始做事本身就会减轻焦虑。</strong> 你不需要"感觉好了再开始"，你需要的是"开始了才会感觉好"。</p>
+
+<h3>生活案例：健身房的谎言</h3>
+
 <div class="example-box">
-<strong>🌙 深夜场景</strong><br>
-凌晨一点，你终于关掉了手机，打开了文档。明天上午要交的论文，你一个字还没写。你感到胸口堵得慌，脑子里有个声音说："完了，你又在浪费时间。你就是这样，永远做不好重要的事。"<br><br>
-现在，试着换一种说法："好吧，我现在很焦虑。这很正常。我已经意识到这个问题了，这就是改变的第一步。接下来我只需要写 15 分钟——不完美也没关系，写完再改。"<br><br>
-差别在哪？第一种说法让你更焦虑 → 更想逃避。第二种说法降低了情绪负担 → 你有能力开始行动。
+<strong>🏋️ 生活场景</strong><br>
+周一早上，你站在健身房门口，心里想："今天太累了，明天再来吧。"<br><br>
+你觉得"明天"会有不同的能量、不同的心情、不同的状态。但事实上，"明天"的你和"今天"的你几乎一模一样——同样的疲惫，同样的借口，同样的犹豫。<br><br>
+<span class="english"><strong>Affective forecasting</strong></span> 告诉你：明天你会感觉更好。但现实是：<strong>只有你今天去了，明天才会感觉更好。</strong> 不去，明天只会多一层"我又没去"的自责。
+</div>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2>四、应对策略：从情绪入手</h2>
+
+<p>既然拖延的本质是情绪调节失败，那么解决方案也必须从情绪入手。以下是经过实证研究的四种策略：</p>
+
+<h3>策略 1：给情绪命名（Name It to Tame It）</h3>
+
+<p>当你意识到自己在拖延时，不要急着逼自己"快去干活"。先停下来，问自己：</p>
+
+<div class="tip-box">
+<strong>🎯 三步法：</strong><br>
+1. 我现在感受到的情绪是什么？（焦虑？无聊？害怕？）<br>
+2. 这种情绪是从哪里来的？（这个任务让我想起了什么？）<br>
+3. 我能不能允许自己有这种感觉，同时只做一小步？<br><br>
+<span class="english">Research shows that simply naming your emotion reduces its intensity by up to 50%.</span>
+</div>
+
+<p>这听起来很"鸡汤"，但有神经科学支撑。当你给情绪命名时，你激活的是前额叶皮层（理性脑），这会<strong>抑制</strong>杏仁核（情绪脑）的活动。简单说：<strong>说出你的感受，感受就没那么可怕了。</strong></p>
+
+<h3>策略 2：降低启动门槛</h3>
+
+<p>拖延往往是因为任务的"情绪成本"太高。想想看，"写一篇报告"和"打开文档写一行字"，哪一个让你感觉更轻松？</p>
+
+<p>关键是：<strong>把任务缩小到连"不舒服"都感觉不到的程度。</strong></p>
+
+<div class="example-box">
+<strong>💻 生活场景</strong><br>
+你不想写周报。但你可以告诉自己："我只打开 Word，写一行标题。"<br>
+"我只列三个要点。"<br>
+"我只写五分钟，五分钟后可以停。"<br><br>
+一旦你开始了，继续下去的难度会大幅降低。这是因为大脑有一个叫 <span class="english">Zeigarnik effect</span>（蔡格尼克效应）的现象：<strong>已经开始的事情，大脑会一直惦记着要完成它。</strong>
+</div>
+
+<h3>策略 3：自我同情（Self-Compassion）</h3>
+
+<p>这是本课最重要的发现之一。2016年，研究者 <span class="english">Nathaniel M. Webb</span> 发现：<strong>对自己之前拖延的行为表示理解和宽容的人，下一次反而更少拖延。</strong></p>
+
+<p>这完全反直觉。我们从小被教育"自责才能进步"——"你之所以拖延，就是因为不够狠"。但科学说：<strong>自责让你更拖延。</strong></p>
+
+<div class="tip-box">
+<strong>🫂 自我同情的做法：</strong><br>
+当你发现自己又在拖延时，试着这样对自己说：<br><br>
+"好吧，我又拖延了。这很正常，很多人都会这样。"<br>
+"我不是懒，我只是在逃避一种不舒服的感觉。"<br>
+"没关系，我现在可以做一件很小的事来重新开始。"<br><br>
+<span class="english">Self-compassion ≠ 自我放纵。它是"对自己温柔但不停止行动"。</span>
+</div>
+
+<h3>策略 4：原谅自己的拖延</h3>
+
+<p>2013年，阿姆斯特丹大学的研究者 <span class="english">Dr. Sirois</span> 做了一个实验：一组学生在考试前被要求原谅自己之前的拖延行为，另一组则没有。结果：</p>
+
+<div class="summary-table" style="margin:1.5rem 0">
+<table>
+<tr><th>没有原谅的学生</th><th>原谅了自己的学生</th></tr>
+<tr><td>考试前继续拖延</td><td>减少了约 40% 的拖延时间</td></tr>
+<tr><td>带着自责备考</td><td>带着轻松感备考</td></tr>
+<tr><td>成绩较差</td><td>成绩明显更好</td></tr>
+</table>
+</div>
+
+<p>原因很简单：原谅自己消除了"自责 → 负面情绪 → 继续拖延"的恶性循环。</p>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2>五、识别你的拖延触发器</h2>
+
+<p>每个人拖延的原因不同。要真正解决这个问题，你需要先搞清楚：<strong>是什么让你拖延？</strong></p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">点击展开：常见拖延触发器清单</button>
+<div class="collapse-body">
+<div class="example-box" style="margin-top:1rem">
+<p>对照以下清单，看看哪些戳中了你：</p>
+<p><strong>🔴 高难度触发</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>任务太难，不知道从哪里开始</li>
+<li>缺乏相关技能或知识</li>
+<li>不确定标准是什么（"到底要做到什么程度？"）</li>
+</ul>
+
+<p><strong>🟠 低意义触发</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>觉得这件事没意义、没价值</li>
+<li>不知道做完有什么好处</li>
+<li>纯粹是别人安排的，不是自己想做的</li>
+</ul>
+
+<p><strong>🔵 高模糊触发</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>任务描述模糊（"优化用户体验"——怎么优化？</li>
+<li>没有明确的截止日期</li>
+<li>不知道第一步是什么</li>
+</ul>
+
+<p><strong>🟣 高情绪触发</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>害怕被批评</li>
+<li>担心做得不够好</li>
+<li>对某个人或某个环境有负面情绪</li>
+</ul>
+
+<p><strong>🟢 高诱惑触发</strong></p>
+<ul style="padding-left:1.5rem;margin:.5rem 0">
+<li>手机就在手边</li>
+<li>周围有太多可以分心的东西</li>
+<li>即时奖励比远期回报诱人得多</li>
+</ul>
+</div>
+</div>
+
+<p>找到你的主要触发器后，就可以有针对性地设计解决方案。比如：</p>
+
+<div class="summary-table" style="margin:1.5rem 0">
+<table>
+<tr><th>触发器类型</th><th>应对策略</th></tr>
+<tr><td>太难</td><td>把任务拆到"不可能失败"的小步骤</td></tr>
+<tr><td>没意义</td><td>找到这件事和你的个人目标的联系</td></tr>
+<tr><td>模糊</td><td>写下"第一步"，只写第一步</td></tr>
+<tr><td>害怕批评</td><td>先做"垃圾版"，之后再改</td></tr>
+<tr><td>诱惑太多</td><td>物理隔离：手机放另一个房间</td></tr>
+</table>
 </div>
 
 <!-- ==================== SECTION 6 ==================== -->
-<h2>六、今天就能做的：情绪调节行动清单</h2>
+<h2>六、拖延不是敌人，是信使</h2>
 
+<p>最后一课，我想给你一个完全不同的视角：</p>
+
+<div class="tip-box">
+<strong>🔑 核心洞察</strong><br>
+拖延不是你的敌人。它是你内心深处的一个信使，在告诉你：<strong>"这件事对你来说不容易。"</strong><br><br>
+当你拖延的时候，不要急着骂自己。试着听听它在说什么：<br><br>
+"我在逃避什么？"<br>
+"我在害怕什么？"<br>
+"我需要什么样的支持？"
+</div>
+
+<p>拖延就像身体的疼痛一样——疼痛不是敌人，它是身体在告诉你"这里出了问题"。同样，拖延也不是敌人，它是你的内心在告诉你"这件事触发了某种情绪，我需要关注它"。</p>
+
+<p>理解了这一点，你就从"对抗拖延"变成了"理解自己"。而这，正是自我科学的核心。</p>
+
+<!-- ==================== ACTION LIST ==================== -->
 <div class="action-list">
-<h4>🎯 今天就能做的行动（每项 ≤ 1 分钟）</h4>
+<h4>🎯 今天就能做的事（1 分钟行动清单）</h4>
 <ol>
-<li><strong>情绪命名：</strong>现在，花 30 秒说出你正在逃避的那件事让你有什么感觉。（"我感到______，因为______。"）</li>
-<li><strong>两分钟起步：</strong>选一个你正在拖延的任务，只做两分钟。两分钟后你可以停下——但大概率你不会。</li>
-<li><strong>自我关怀一句话：</strong>对自己说："拖延不是我的错，但我有能力改变它。"</li>
-<li><strong>写下最小的一步：</strong>在你最不想做的那件事旁边，写下"我能做的最小一步是什么？"（比如不是"写完报告"，而是"打开 Word"）</li>
-<li><strong>设置"焦虑时间"：</strong>每天固定 10 分钟专门用来焦虑。当焦虑来袭时，告诉自己："我会在焦虑时间处理你。"</li>
-<li><strong>完成一次"情绪复盘"：</strong>睡前花 1 分钟回想：今天我在什么时候拖延了？当时我感受到了什么情绪？</li>
+<li><strong>给情绪命名</strong>：下次想拖延时，花 10 秒钟说："我现在感到______。"（填空即可）</li>
+<li><strong>写一行字</strong>：打开那个你一直在回避的文档，只写一行。然后你可以关掉它。</li>
+<li><strong>原谅自己</strong>：对着镜子说一句："我之前拖延了，这没关系。"</li>
+<li><strong>识别触发器</strong>：在纸上写下你最近一次拖延的原因，对照上面的清单选一个类别。</li>
 </ol>
 </div>
 
 <!-- ==================== SUMMARY ==================== -->
-<h2>总结</h2>
+<h2>七、本课总结</h2>
 
-<p>拖延不是道德缺陷，不是意志力薄弱，不是性格问题。它是一种<strong>情绪调节策略</strong>——只是这种策略长期来看是失败的。</p>
-
-<p>关键 takeaway：</p>
-
-<ul style="margin:1rem 0 1rem 2rem">
-<li>拖延 = 情绪调节失败，不是时间管理失败</li>
-<li>自责会让拖延更严重——它制造了更多需要逃避的负面情绪</li>
-<li>自我关怀不是"纵容自己"，而是创造安全的心理空间让你能够开始行动</li>
-<li>降低启动门槛 + 处理情绪 = 比"逼自己"有效得多的方案</li>
-</ul>
-
-<div class="tip-box">
-<strong>🔮 下一课预告</strong><br>
-第六课将深入探讨<strong>自我关怀</strong>（Self-Compassion）——这个听起来"太温柔"的概念，其实是行为改变最快的加速器。你会看到研究数据证明：对自己温柔的人，比对自己苛刻的人，更能坚持好习惯。
+<div class="summary-table" style="margin:1.5rem 0">
+<table>
+<tr><th>概念</th><th>一句话理解</th></tr>
+<tr><td><span class="english">Short-term mood repair</span></td><td>拖延是大脑的"止痛药"，但副作用很大</td></tr>
+<tr><td><span class="english">Affective forecasting</span></td><td>我们预测未来感受的能力很差，"明天会更好"通常是错的</td></tr>
+<tr><td><span class="english">Zeigarnik effect</span></td><td>已经开始的事，大脑会一直惦记着完成它</td></tr>
+<tr><td>自我同情</td><td>对自己温柔不是放纵，而是减少自责带来的二次拖延</td></tr>
+<tr><td>情绪命名</td><td>说出感受，感受就减半</td></tr>
+</table>
 </div>
 
 <!-- ==================== QUIZ ==================== -->
-<h2>课堂练习</h2>
+<h2>八、课堂练习</h2>
 
-<!-- Quiz 1 -->
-<div class="quiz-container" id="q1">
+<!-- Q1 -->
+<div class="quiz-container">
 <h4>第 1 题</h4>
-<p><strong>小明明天要交一份工作报告，但他今晚却在刷短视频。根据本课内容，他最可能是在逃避哪种情绪？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q1', this, false)">A. 对短视频的渴望</div>
-<div class="quiz-option" onclick="checkQuiz('q1', this, true)">B. 对工作报告的焦虑和不安</div>
-<div class="quiz-option" onclick="checkQuiz('q1', this, false)">C. 时间不够用的恐慌</div>
-<div class="quiz-option" onclick="checkQuiz('q1', this, false)">D. 对手机的生理依赖</div>
-<div class="quiz-feedback" id="q1-fb"></div>
+<p><strong>你正在赶一份报告，但你现在打开了社交媒体刷了 20 分钟。根据本课内容，你最可能的情况是：</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 我太懒了，缺乏自律</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">B. 我在逃避与报告相关的负面情绪</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">C. 我需要更好的时间管理技巧</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 社交媒体太好用了</div>
+<div class="quiz-feedback" id="feedback1"></div>
 </div>
 
-<!-- Quiz 2 -->
-<div class="quiz-container" id="q2">
+<!-- Q2 -->
+<div class="quiz-container">
 <h4>第 2 题</h4>
-<p><strong>根据 Sirois 和 Pychyl 的研究，拖延的核心机制是什么？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q2', this, false)">A. 缺乏时间管理能力</div>
-<div class="quiz-option" onclick="checkQuiz('q2', this, false)">B. 目标设定过高</div>
-<div class="quiz-option" onclick="checkQuiz('q2', this, true)">C. 通过即时活动进行情绪修复（Mood Repair）</div>
-<div class="quiz-option" onclick="checkQuiz('q2', this, false)">D. 性格上的懒惰倾向</div>
-<div class="quiz-feedback" id="q2-fb"></div>
+<p><strong>"Short-term mood repair"（短期情绪修复）指的是什么？</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 通过锻炼来改善心情</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">B. 制定奖励机制来提高积极性</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">C. 通过逃避压力源来立即获得情绪上的轻松</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 在截止日期前突击完成任务的快感</div>
+<div class="quiz-feedback" id="feedback2"></div>
 </div>
 
-<!-- Quiz 3 -->
-<div class="quiz-container" id="q3">
-<h4>第 3 题（填空）</h4>
-<p><strong>当你自责自己拖延的时候，你实际上在制造另一种______，这会让你更想逃避。</strong></p>
-<input type="text" class="fill-input" id="q3-input" placeholder="填写一个词">
-<button onclick="checkFill('q3')" style="padding:.4rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:4px;cursor:pointer;font-family:inherit;margin-left:.5rem">检查</button>
-<div class="quiz-feedback" id="q3-fb"></div>
+<!-- Q3 -->
+<div class="quiz-container">
+<h4>第 3 题</h4>
+<p><strong>小明每次想到要写论文就特别烦躁，于是他决定"明天再开始"。明天到了之后，他依然不想写。这说明他在情感预测（affective forecasting）上犯了什么错误？</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 他预测明天会更累</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">B. 他以为明天会有不同的状态，但实际不会</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">C. 他低估了论文的字数要求</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 他高估了自己明天的记忆力</div>
+<div class="quiz-feedback" id="feedback3"></div>
 </div>
 
-<!-- Quiz 4 -->
-<div class="quiz-container" id="q4">
+<!-- Q4 -->
+<div class="quiz-container">
 <h4>第 4 题</h4>
-<p><strong>多伦多大学的实验中，哪一组学生在下一次任务中表现得更好？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q4', this, false)">A. 写自我批评信的那组</div>
-<div class="quiz-option" onclick="checkQuiz('q4', this, true)">B. 写自我关怀信的那组</div>
-<div class="quiz-option" onclick="checkQuiz('q4', this, false)">C. 两组没有显著差异</div>
-<div class="quiz-option" onclick="checkQuiz('q4', this, false)">D. 没有完成任务的那组</div>
-<div class="quiz-feedback" id="q4-fb"></div>
+<p><strong>根据 Webb 等人的研究，以下哪种做法最能减少未来的拖延？</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 严厉地责备自己刚才的拖延行为</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">B. 把任务分解成更小的步骤</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">C. 原谅自己之前的拖延并对自己表示理解</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 找一个朋友监督你</div>
+<div class="quiz-feedback" id="feedback4"></div>
 </div>
 
-<!-- Quiz 5 -->
-<div class="quiz-container" id="q5">
+<!-- Q5 -->
+<div class="quiz-container">
 <h4>第 5 题</h4>
-<p><strong>"我现在感到很焦虑，因为这份 PPT 很重要，我怕做不好。"——这种自我对话属于哪种情绪调节策略？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q5', this, false)">A. 自我批评（Self-Criticism）</div>
-<div class="quiz-option" onclick="checkQuiz('q5', this, false)">B. 情绪压抑（Emotional Suppression）</div>
-<div class="quiz-option" onclick="checkQuiz('q5', this, true)">C. 情绪命名（Affect Labeling）+ 自我关怀</div>
-<div class="quiz-option" onclick="checkQuiz('q5', this, false)">D. 逃避应对（Avoidance Coping）</div>
-<div class="quiz-feedback" id="q5-fb"></div>
+<p><strong>蔡格尼克效应（Zeigarnik effect）告诉我们什么？</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 未完成的任务会被人遗忘</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">B. 已经开始但未完成的任务会让人持续惦记</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">C. 任务越多，效率越高</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 截止日期前效率最高</div>
+<div class="quiz-feedback" id="feedback5"></div>
 </div>
 
-<!-- Quiz 6 -->
-<div class="quiz-container" id="q6">
+<!-- Q6 -->
+<div class="quiz-container">
 <h4>第 6 题</h4>
-<p><strong>你站在健身房门口，突然觉得"今天太累了，改天吧"。根据本课，你最可能在逃避哪种情绪？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q6', this, false)">A. 对健身的热爱</div>
-<div class="quiz-option" onclick="checkQuiz('q6', this, false)">B. 对健康知识的匮乏</div>
-<div class="quiz-option" onclick="checkQuiz('q6', this, true)">C. 面对自己体能不足时的挫败感</div>
-<div class="quiz-option" onclick="checkQuiz('q6', this, false)">D. 对健身房会员制度的不满</div>
-<div class="quiz-feedback" id="q6-fb"></div>
+<p><strong>小红觉得自己写的代码不够好，所以迟迟不肯提交代码审查。她属于哪种类型的拖延者？</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, true)">A. 完美主义者型拖延（Perfectionist Procrastination）</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">B. 冲动型拖延（Impulsive Procrastination）</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">C. 懒惰型拖延（Lazy Procrastination）</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 焦虑型拖延（Anxious Procrastination）</div>
+<div class="quiz-feedback" id="feedback6"></div>
 </div>
 
-<!-- Quiz 7 -->
-<div class="quiz-container" id="q7">
-<h4>第 7 题</h4>
-<p><strong>为什么"逼自己更有毅力"通常无效？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q7', this, false)">A. 因为毅力是天生固定的，无法改变</div>
-<div class="quiz-option" onclick="checkQuiz('q7', this, true)">B. 因为在高情绪负荷状态下，前额叶皮层功能被抑制，意志力资源有限</div>
-<div class="quiz-option" onclick="checkQuiz('q7', this, false)">C. 因为人们本质上就是懒惰的</div>
-<div class="quiz-option" onclick="checkQuiz('q7', this, false)">D. 因为外部环境总是充满诱惑</div>
-<div class="quiz-feedback" id="q7-fb"></div>
+<!-- Q7 -->
+<div class="quiz-container">
+<h4>第 7 题（填空题）</h4>
+<p><strong>拖延的循环中，"______"这一步是最关键的恶性循环放大器——因为自责本身就是一种负面情绪，会让你更需要逃避。</strong></p>
+<input type="text" class="fill-input" id="q7-fill" placeholder="输入一个词">
+<button onclick="checkFillAnswer()" style="margin-left:.5rem;padding:.3rem .8rem;background:#4a6fa5;color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:inherit">检查</button>
+<div class="quiz-feedback" id="feedback7"></div>
 </div>
 
-<!-- Quiz 8 -->
-<div class="quiz-container" id="q8">
-<h4>第 8 题（情景判断）</h4>
-<p><strong>小红写了一份报告初稿，但觉得不够好就删掉了，想着"等我状态更好的时候重写"。这属于哪种拖延类型？</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q8', this, true)">A. 完美主义型——恐惧做不好</div>
-<div class="quiz-option" onclick="checkQuiz('q8', this, false)">B. 冲动型——追求即时满足</div>
-<div class="quiz-option" onclick="checkQuiz('q8', this, false)">C. 决策困难型——不知所措</div>
-<div class="quiz-option" onclick="checkQuiz('q8', this, false)">D. 逃避型——用轻松活动填补时间</div>
-<div class="quiz-feedback" id="q8-fb"></div>
+<!-- Q8 -->
+<div class="quiz-container">
+<h4>第 8 题</h4>
+<p><strong>当你发现自己正在拖延时，最推荐的第一个动作是：</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 立刻强迫自己开始工作</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">B. 给自己设定一个严格的惩罚机制</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">C. 停下来，识别并命名当前的情绪</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 喝一杯咖啡提神</div>
+<div class="quiz-feedback" id="feedback8"></div>
 </div>
 
-<!-- Quiz 9 -->
-<div class="quiz-container" id="q9">
+<!-- Q9 -->
+<div class="quiz-container">
 <h4>第 9 题</h4>
-<p><strong>"5 分钟法则"（只做 5 分钟就可以停）之所以有效，主要是因为它：</strong></p>
-<div class="quiz-option" onclick="checkQuiz('q9', this, false)">A. 保证了每天至少有 5 分钟的产出</div>
-<div class="quiz-option" onclick="checkQuiz('q9', this, false)">B. 减少了任务的整体工作量</div>
-<div class="quiz-option" onclick="checkQuiz('q9', this, true)">C. 大幅降低了启动时的心理阻力和情绪负担</div>
-<div class="quiz-option" onclick="checkQuiz('q9', this, false)">D. 训练了大脑的专注力</div>
-<div class="quiz-feedback" id="q9-fb"></div>
+<p><strong>阿姆斯特丹大学的研究发现，考试前"原谅自己之前拖延"的学生，相比没有原谅的学生，拖延时间减少了多少？</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 约 10%</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">B. 约 20%</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">C. 约 40%</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 约 60%</div>
+<div class="quiz-feedback" id="feedback9"></div>
 </div>
 
-<!-- Quiz 10 -->
-<div class="quiz-container" id="q10">
-<h4>第 10 题（填空）</h4>
-<p><strong>拖延的闭环是：拖延 → 自责 → 更难受 → 更想______ → 继续拖延。</strong></p>
-<input type="text" class="fill-input" id="q10-input" placeholder="填写一个词">
-<button onclick="checkFill('q10')" style="padding:.4rem 1rem;border:1px solid #4a6fa5;background:#4a6fa5;color:#fff;border-radius:4px;cursor:pointer;font-family:inherit;margin-left:.5rem">检查</button>
-<div class="quiz-feedback" id="q10-fb"></div>
+<!-- Q10 -->
+<div class="quiz-container">
+<h4>第 10 题（情景题）</h4>
+<p><strong>你有一个"优化用户体验"的任务，但你完全不知道从哪里开始，所以一直没动手。根据你的拖延触发器类型，这属于：</strong></p>
+<div class="quiz-option" onclick="checkQuiz(this, false)">A. 高难度触发</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">B. 高诱惑触发</div>
+<div class="quiz-option" onclick="checkQuiz(this, true)">C. 高模糊触发</div>
+<div class="quiz-option" onclick="checkQuiz(this, false)">D. 高情绪触发</div>
+<div class="quiz-feedback" id="feedback10"></div>
 </div>
 
 <script>
 // Progress bar
-window.addEventListener('scroll', function() {
-  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  var progress = (scrollTop / scrollHeight) * 100;
+window.addEventListener('scroll', function(){
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
   document.getElementById('progressBar').style.width = progress + '%';
 });
 
 // Collapse toggle
-function toggleCollapse(btn) {
+function toggleCollapse(btn){
   btn.classList.toggle('open');
   var body = btn.nextElementSibling;
   body.classList.toggle('open');
 }
 
-// Multiple choice quiz
-function checkQuiz(id, option, isCorrect) {
-  var container = document.getElementById(id);
+// Quiz checking
+function checkQuiz(el, isCorrect){
+  var container = el.parentElement;
   var options = container.querySelectorAll('.quiz-option');
-  var feedback = document.getElementById(id + '-fb');
+  var feedbackId = container.querySelector('.quiz-feedback').id;
+  var feedback = document.getElementById(feedbackId);
 
   // Disable all options
-  options.forEach(function(opt) {
+  options.forEach(function(opt){
     opt.classList.add('disabled');
     opt.style.pointerEvents = 'none';
   });
 
-  // Mark selected
-  option.classList.add(isCorrect ? 'correct' : 'wrong');
-
-  // Show feedback
-  feedback.classList.add('show');
-  feedback.classList.add(isCorrect ? 'correct' : 'wrong');
-
-  if (isCorrect) {
-    feedback.innerHTML = '<strong>✅ 正确！</strong>' + getExplanation(id);
+  if(isCorrect){
+    el.classList.add('correct');
+    feedback.className = 'quiz-feedback show correct';
+    feedback.innerHTML = '✅ 正确！你对拖延的情绪本质理解得很到位。';
   } else {
-    option.classList.add('wrong');
-    // Highlight correct answer
-    options.forEach(function(opt) {
-      if (opt.getAttribute('onclick').includes('true')) {
+    el.classList.add('wrong');
+    // Highlight correct
+    options.forEach(function(opt){
+      if(opt.onclick.toString().includes('true')){
         opt.classList.add('correct');
       }
     });
-    feedback.innerHTML = '<strong>❌ 不太对。</strong>' + getExplanation(id);
+    feedback.className = 'quiz-feedback show wrong';
+    feedback.innerHTML = '❌ 不对哦。正确答案是 B。记住：拖延的核心是情绪调节失败，不是懒惰或时间管理问题。';
   }
 }
 
-function getExplanation(id) {
-  var explanations = {
-    'q1': '拖延的直接诱因不是任务本身，而是任务引发的情绪不适。刷短视频是一种情绪修复行为。',
-    'q2': 'Sirois & Pychyl 的研究发现，拖延是一种短期的情绪修复策略——通过做其他事情来暂时摆脱不适感。',
-    'q3': '自责本身就是一种负面情绪。它会增加焦虑和羞耻感，让你更想逃避，从而形成"自责→更难受→继续拖延"的闭环。',
-    'q4': '写自我关怀信的学生在后续任务中表现更好。自我关怀降低了负面情绪，创造了安全的心理空间来开始行动。',
-    'q5': '这种对话同时包含了情绪命名（承认焦虑）和自我关怀（接纳恐惧），两者都被证明能有效降低情绪负荷。',
-    'q6': '面对健身房时的"今天太累了"往往是对挫败感的逃避——害怕面对自己体能不足的尴尬。',
-    'q7': '在高情绪负荷下，前额叶皮层（理性决策区）的功能被抑制。此时单纯依靠意志力是无效的。',
-    'q8': '完美主义型拖延的核心是"恐惧做不好"。删掉初稿重写的行为正是对不完美的无法容忍。',
-    'q9': '5 分钟法则的关键在于"可以停"这个选项。它消除了"一旦开始就必须坚持很久"的心理压力。',
-    'q10': '逃避。自责制造了新的负面情绪，大脑为了逃避这种不舒服，会选择再次拖延。这就是拖延的恶性循环。'
-  };
-  return explanations[id] || '';
-}
-
-// Fill-in-blank quiz
-function checkFill(id) {
-  var input = document.getElementById(id + '-input');
-  var feedback = document.getElementById(id + '-fb');
-  var value = input.value.trim();
-
-  var answers = {
-    'q3': ['情绪', '负面情绪', '负情绪', '焦虑', '压力', '痛苦'],
-    'q10': ['逃避', '逃', '躲避', '躲']
-  };
-
-  var correct = answers[id].some(function(a) {
-    return value === a || value.includes(a);
-  });
-
-  feedback.classList.add('show');
-  if (correct) {
+// Fill answer check
+function checkFillAnswer(){
+  var val = document.getElementById('q7-fill').value.trim();
+  var feedback = document.getElementById('feedback7');
+  if(val === '自责' || val === '自责' || val === 'guilt' || val === '内疚'){
     feedback.className = 'quiz-feedback show correct';
-    feedback.innerHTML = '<strong>✅ 正确！</strong>' + getFillExplanation(id);
+    feedback.innerHTML = '✅ 正确！自责是拖延循环中最危险的环节——它制造了新的负面情绪，让你更想逃避。';
   } else {
     feedback.className = 'quiz-feedback show wrong';
-    feedback.innerHTML = '<strong>❌ 不对哦。</strong>参考答案：<strong>逃避</strong>（第 3 题填"情绪/负面情绪/焦虑/压力"也可）。';
+    feedback.innerHTML = '⚠️ 不太对。答案是"自责"。自责本身就是一种负面情绪，它会让你更需要逃避，从而形成恶性循环。';
   }
 }
-
-function getFillExplanation(id) {
-  if (id === 'q3') return '识别并命名自己的情绪，是情绪调节的第一步。';
-  if (id === 'q10') return '自责→更难受→更想逃避→继续拖延→更自责，这就是拖延的闭环。';
-  return '';
-}
 </script>
-
 </body>
 </html>

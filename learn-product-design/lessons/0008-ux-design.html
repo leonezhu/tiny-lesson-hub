@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0008 · 用户体验设计 | TeachHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather','Noto Serif SC',serif;color:#1a1a1a}
+.container{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+.lesson-badge{display:inline-block;background:#e3f2fd;color:#1565c0;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.lesson-title{font-size:28px;font-weight:900;margin-bottom:6px;line-height:1.35}
+.lesson-subtitle{font-size:16px;color:#666;margin-bottom:32px;font-weight:400}
+.section{margin:36px 0}
+.section h2{font-size:22px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e0e0e0}
+.section h3{font-size:18px;margin:20px 0 10px}
+p{margin-bottom:14px}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#f57f17;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.case-box p{margin:0;font-size:15px}
+.concept-card{background:#f5f5f5;border-radius:12px;padding:20px 24px;margin:20px 0}
+.concept-card .term{font-family:'Merriweather',serif;font-weight:700;color:#1565c0;font-size:16px}
+.concept-card .cn{color:#333;font-size:15px}
+.collapse-btn{cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;color:#1565c0;font-size:16px;margin:16px 0;padding:10px 16px;background:#e3f2fd;border-radius:8px;border:none;width:100%;text-align:left;transition:background .2s}
+.collapse-btn:hover{background:#bbdefb}
+.collapse-btn::before{content:'▸';transition:transform .2s;display:inline-block}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-content{display:none;padding:12px 16px 16px;color:#444;font-size:15px;line-height:1.7}
+.collapse-content.open{display:block}
+.quiz-section{background:#fafafa;border-radius:16px;padding:28px 28px;margin:36px 0;border:1px solid #e8e8e8}
+.quiz-section h2{border-bottom:none;margin-bottom:20px;font-size:22px}
+.quiz-item{margin:24px 0;padding:20px;background:#fff;border-radius:10px;border:1px solid #eee;transition:box-shadow .2s}
+.quiz-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.quiz-question{font-weight:600;font-size:16px;margin-bottom:14px;color:#1a1a1a}
+.quiz-question .q-num{color:#1565c0;font-weight:700}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:8px 0}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;border:2px solid transparent;font-size:15px}
+.quiz-option:hover{background:#f0f4ff}
+.quiz-option.selected{border-color:#1565c0;background:#e3f2fd}
+.quiz-option.correct{border-color:#2e7d32;background:#e8f5e9}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee}
+.quiz-option .radio{width:18px;height:18px;border:2px solid #bbb;border-radius:50%;flex-shrink:0;margin-top:2px;transition:all .15s}
+.quiz-option.selected .radio{border-color:#1565c0;background:#1565c0}
+.quiz-option.correct .radio{border-color:#2e7d32;background:#2e7d32}
+.quiz-option.wrong .radio{border-color:#c62828;background:#c62828}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:14px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.quiz-feedback.wrong-fb{background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+.fill-blank-input{border:none;border-bottom:2px solid #bbb;padding:4px 8px;font-size:15px;font-family:inherit;width:160px;outline:none;transition:border-color .2s}
+.fill-blank-input:focus{border-color:#1565c0}
+.fill-blank-input.correct{border-color:#2e7d32;background:#e8f5e9}
+.fill-blank-input.wrong{border-color:#c62828;background:#ffebee}
+.check-btn{background:#1565c0;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;margin-top:10px;transition:background .2s}
+.check-btn:hover{background:#0d47a1}
+.action-list{background:#e8f5e9;border-radius:12px;padding:20px 24px;margin:36px 0}
+.action-list h3{color:#2e7d32;margin-bottom:12px;font-size:17px}
+.action-list ol{padding-left:20px}
+.action-list li{margin:8px 0;font-size:15px}
+.action-list .tag{display:inline-block;background:#2e7d32;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.diagram{background:#fff;border:2px dashed #ccc;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.diagram .layers{font-size:15px;line-height:2.2}
+.diagram .layer{display:inline-block;padding:8px 20px;border-radius:8px;margin:4px;font-weight:600}
+.layer-vis{background:#e3f2fd;color:#1565c0}
+.layer-use{background:#fff3e0;color:#e65100}
+.layer-desire{background:#fce4ec;color:#c62828}
+.layer-meaning{background:#e8f5e9;color:#2e7d32}
+.end-badge{text-align:center;margin:40px 0 10px;font-size:20px;font-weight:700;color:#2e7d32}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid #e0e0e0;text-align:center;color:#999;font-size:13px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.check-item input[type="checkbox"]{margin-top:4px;width:18px;height:18px;accent-color:#43a047;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:15px}
+table.spec-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+table.spec-table th{background:#e3f2fd;color:#1565c0;padding:10px 14px;text-align:left;font-weight:600}
+table.spec-table td{padding:10px 14px;border-bottom:1px solid #eee}
+table.spec-table tr:hover td{background:#f5f5f5}
+</style>
+</head>
+<body>
+<div class="container">
+
+<span class="lesson-badge">产品设计 · 第08课</span>
+<h1 class="lesson-title">用户体验设计</h1>
+<p class="lesson-subtitle">User Experience Design — 让产品不只是能用，而是让人想用、爱用</p>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、你被"坑"过多少次？</h2>
+<p>你有没有遇到过这种情况：</p>
+<p>你想给手机充个电，结果插头插了三次才插进去。第四次你终于插进去了，但充电线松松垮垮，手机稍微动一下就断开了。</p>
+<p>那一刻你是不是在心里骂了一句："这什么破东西？"</p>
+<p>这就是用户体验（User Experience，简称 UX）在说话。它不是你"觉得好不好看"那么简单——它是你和这个世界上的每一个产品、服务、界面互动时的全部感受。好的 UX 让你意识不到它的存在；差的 UX 让你每一步都想骂人。</p>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>对比两个场景：<br>
+<strong>A：</strong>你打开一个 App，三下之内找到了你要的功能，按钮位置合理，加载速度快，文案看得懂。<br>
+<strong>B：</strong>你打开同一个 App，找了五分钟才找到退出登录的入口，弹窗广告遮住了一半屏幕，点了三个"关闭"才关掉。<br>
+你更可能继续用哪个？你更可能向朋友推荐哪个？答案很明显。</p>
+</div>
+
+<div class="concept-card">
+<div class="term">用户体验 User Experience（UX）</div>
+<div class="cn">用户在与产品或服务交互过程中的全部感受和反应。包括：有用吗？好用吗？好看吗？让人愉悦吗？它不仅仅是界面设计（UI），而是从用户发现产品、使用产品到离开产品的全链路体验。</div>
+</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、用户体验的五个层次</h2>
+<p>Jesse James Garrett 在《用户体验要素》中提出了一个经典框架——UX 设计不是一团模糊的感觉，它有五个从抽象到具体的层次。理解这五个层次，你就理解了 UX 设计的底层逻辑。</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：五个层次详解</button>
+<div class="collapse-content">
+<table class="spec-table">
+<tr><th>层次</th><th>英文</th><th>回答的问题</th><th>生活类比</th></tr>
+<tr><td>① 战略层</td><td>Strategy</td><td>我们要满足谁的什么需求？</td><td>开餐厅前想清楚：是做快餐还是做正餐？</td></tr>
+<tr><td>② 范围层</td><td>Scope</td><td>产品要有哪些功能？</td><td>菜单上放哪些菜？</td></tr>
+<tr><td>③ 结构层</td><td>Structure</td><td>用户怎么找到这些功能？</td><td>客人进门后怎么走才能点到菜、吃到饭、付钱走人？</td></tr>
+<tr><td>④ 框架层</td><td>Skeleton</td><td>页面长什么样？按钮放哪？</td><td>餐桌怎么摆？筷子放在哪里？</td></tr>
+<tr><td>⑤ 表现层</td><td>Surface</td><td>颜色、字体、动效如何？</td><td>餐厅的灯光、装修、服务员穿什么衣服</td></tr>
+</table>
+<p><strong>关键洞察：</strong>如果你在第五层（颜色好不好看）纠结了半天，但其实第一层（你到底在解决谁的问题）都没想清楚——那你就是在装修一间没人想进的餐厅。</p>
+</div>
+
+<div class="diagram">
+<h3 style="margin-bottom:12px">从抽象到具体</h3>
+<div class="layers">
+<span class="layer layer-meaning">① 战略层 Strategy</span><br>
+<span class="layer layer-desire">② 范围层 Scope</span><br>
+<span class="layer layer-use">③ 结构层 Structure</span><br>
+<span class="layer layer-vis">④ 框架层 Skeleton</span><br>
+<span style="font-size:13px;color:#999;margin-top:8px;display:block">↓ 越来越具体，越来越靠近用户的眼睛</span>
+</div>
+</div>
+
+<p>这五个层次有一个重要的原则：<strong>自顶向下设计，自底向上验证。</strong>先想清楚战略，再一层一层往下落实；但在验证的时候，要从你最靠近用户的那一层开始——因为用户看到的只有最表层，他们不会关心你的战略有多伟大。</p>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、可用性 vs 可用性启发式</h2>
+<p>很多人以为 UX = 好看。不是的。UX 的第一要义是<strong>可用</strong>（Usability），然后才谈得上好用、爱用。</p>
+
+<p>Jakob Nielsen 提出了可用性五大要素，这是 UX 行业的"圣经"之一：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：Nielsen 可用性五大要素</button>
+<div class="collapse-content">
+<ol style="padding-left:20px">
+<li><strong>可学习性 Learnability</strong> — 新用户能不能很快学会使用？</li>
+<li><strong>效率 Efficiency</strong> — 熟练用户能不能快速完成任务？</li>
+<li><strong>易记忆性 Memorability</strong> — 一段时间不用后，回来还能不能用？</li>
+<li><strong>错误率 Errors</strong> — 用户会不会经常犯错？犯了错能不能恢复？</li>
+<li><strong>满意度 Satisfaction</strong> — 用户用起来爽不爽？</li>
+</ol>
+</div>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>想象你去一家新开的火锅店。<br>
+<strong>可学习性：</strong>菜单上有没有图片？服务员会不会主动介绍怎么涮肉？<br>
+<strong>效率：</strong>你能不能快速点到自己想吃的东西，还是需要翻来翻去？<br>
+<strong>易记忆性：</strong>下次再来，你还记得怎么点单吗？<br>
+<strong>错误率：</strong>如果你不小心选了太多，能退菜吗？<br>
+<strong>满意度：</strong>整体体验让你觉得值这个价吗？</p>
+<p>这五个维度，完全可以平移到一个 App 上。UX 设计师的工作，就是确保这五个维度都不拖后腿。</p>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、用户同理心：站在别人的鞋子里走路</h2>
+<p>UX 设计的核心能力不是画画原型，也不是调颜色——而是<strong>同理心</strong>（Empathy）。你能不能真正站在使用者的角度，感受他们的困惑、焦虑和喜悦？</p>
+
+<p>这里有一个经典的反例：</p>
+
+<div class="case-box">
+<div class="label">💡 反面教材</div>
+<p>某个政府网站把"忘记密码"的入口藏在了四级菜单里。设计这个流程的团队都是年轻人，他们每天都用电脑，觉得"找回密码"当然要点进设置→安全→密码管理。但他们忘了，这个网站的主要用户是六七十岁的老年人——他们对"菜单层级"的概念几乎是零。</p>
+<p>这不是技术问题，是同理心问题。</p>
+</div>
+
+<p>培养同理心的方法之一是做<strong>用户画像</strong>（Persona）——不是虚构的角色，而是基于真实用户研究提炼出来的典型用户模型。一个好的用户画像应该包含：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：用户画像的关键要素</button>
+<div class="collapse-content">
+<ul style="padding-left:20px">
+<li>基本信息：年龄、职业、生活环境</li>
+<li>目标：他想通过产品达成什么？</li>
+<li>痛点：他在现有解决方案中遇到了什么困难？</li>
+<li>场景：他通常在什么时间、什么地点、什么心情下使用产品？</li>
+<li>技术熟练度：他对新技术的接受程度如何？</li>
+</ul>
+<p><strong>例子：</strong>你的外卖 App 的用户画像之一可能是"李阿姨，58岁，退休教师，住在老城区，智能手机用的是儿子淘汰下来的旧款，主要需求是想吃清淡点的饭菜，最大的困扰是找不到'少油少盐'的选项。"</p>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、可用性测试：别猜，去测</h2>
+<p>很多团队花三个月讨论一个按钮的颜色，却从来不做一件事——找一个真正的用户，看他能不能完成核心任务。</p>
+<p>这就是为什么<strong>可用性测试</strong>（Usability Testing）是 UX 领域最重要的实践之一。它的核心逻辑很简单：观察真实用户在使用产品时的行为，记录他们在哪里卡住了、在哪里笑了、在哪里骂人了。</p>
+
+<p>一个典型的可用性测试流程：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：可用性测试五步法</button>
+<div class="collapse-content">
+<ol style="padding-left:20px">
+<li><strong>确定目标：</strong>这次测试要回答什么问题？（比如：新用户能不能在五分钟内完成注册？）</li>
+<li><strong>招募用户：</strong>找 5 个代表目标用户的真实人（研究表明，5 个人就能发现 85% 的可用性问题）。</li>
+<li><strong>设计任务：</strong>给出真实的场景和任务。（"你现在想买一本送给朋友的生日礼物，预算 200 元以内。"）</li>
+<li><strong>观察并记录：</strong>让用户边做边说（Think Aloud Protocol），你只观察不引导。记录他们在哪里犹豫、哪里出错、哪里满意。</li>
+<li><strong>分析和改进：</strong>把发现的问题按严重程度排序，优先解决那些阻碍核心任务的 bug。</li>
+</ol>
+</div>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>假设你在做一个健身打卡 App。你做了一个精美的首页，有排行榜、有勋章墙、有连续打卡天数。<br><br>
+但你做了一个可用性测试，发现第一个进来的用户根本不知道"我要点哪里开始打卡"。那个绿色的大按钮太小了，而且被一个"查看排名"的广告挡住了。<br><br>
+你花三个月争论排行榜的配色方案有什么意义？用户连打卡都打不了。<br><br>
+<strong>先让核心路径通畅，再谈锦上添花。</strong></p>
+</div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+<h2>六、设计原则：让直觉替你工作</h2>
+<p>好的 UX 设计不需要说明书。用户在看到界面的那一瞬间，就应该知道该怎么操作。这背后有一些经过验证的设计原则：</p>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：6 条核心 UX 设计原则</button>
+<div class="collapse-content">
+<ol style="padding-left:20px">
+<li><strong>可见性（Visibility）：</strong>重要的功能应该一眼就能看到。就像开关灯——你不会去翻说明书才知道按哪个是开灯。</li>
+<li><strong>反馈（Feedback）：</strong>用户每次操作都应该得到回应。你按下发送键，应该有"已发送"的提示；你点击收藏，图标应该有个动画变化。</li>
+<li><strong>约束（Constraints）：</strong>限制用户的选择，反而让他们更轻松。下拉菜单比自由输入框好，因为下拉菜单告诉用户"只有这些选项"。</li>
+<li><strong>一致性（Consistency）：</strong>同样的操作在同样的位置出现。如果"返回"按钮在首页在左上角，在详情页也应该在左上角。</li>
+<li><strong>映射（Mapping）：</strong>控件和效果之间的关系应该是直观的。音量旋钮往上拧声音变大——这个映射是天然的。</li>
+<li><strong>容错（Error Tolerance）：</strong>允许用户犯错，并且容易恢复。删除文件前问一句"确定吗？"，回收站保留 30 天而不是立即永久删除。</li>
+</ol>
+</div>
+
+<div class="case-box">
+<div class="label">🎯 生活案例</div>
+<p>你正在写一封很重要的邮件，写了一半手滑点到了"丢弃草稿"。如果你的邮箱弹出一个对话框："确定要丢弃这封邮件吗？已写了 800 字。"——这是容错设计。<br><br>
+如果你的邮箱默默删掉了，你只能从头重写——这是糟糕的 UX。<br><br>
+你每天用的微信，发消息后 5 秒内可以撤回——这也是容错设计。而且它没有让你经历"确定要撤回吗？"这个确认步骤，因为它预判了你撤回消息时大概率是慌张的，不会想多一步操作。</p>
+</div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>🧠 随堂测验</h2>
+
+<!-- Q1 -->
+<div class="quiz-item" id="q1">
+<div class="quiz-question"><span class="q-num">Q1.</span> 你在设计一个新功能的界面，但你还不清楚这个功能到底要解决用户的什么问题。根据 UX 的五个层次，你现在应该从哪一层开始？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>A. 表现层（Surface）— 先确定配色和字体</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>B. 框架层（Skeleton）— 先把布局画出来</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>C. 战略层（Strategy）— 先明确用户需求和产品目标</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q1')">
+<span class="radio"></span>
+<span>D. 范围层（Scope）— 先列出所有可能的功能</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-item" id="q2">
+<div class="quiz-question"><span class="q-num">Q2.</span> 一个老年用户使用你的 App，找不到"客服"入口。你作为 UX 设计师，以下哪种做法最能体现同理心？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>A. 在首页加一个显眼的"联系客服"按钮</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>B. 做用户画像，了解老年用户的认知习惯和操作模式</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>C. 增加语音助手功能，用户直接说话就能找到客服</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q2')">
+<span class="radio"></span>
+<span>D. 以上都是好做法，但 B 是最根本的第一步</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" id="q3">
+<div class="quiz-question"><span class="q-num">Q3.</span> 填空：Nielsen 可用性五大要素中，"用户一段时间不用产品后，重新回来是否还记得怎么用"对应的是 <input type="text" class="fill-blank-input" id="blank-q3" placeholder="请输入中文">。</div>
+<button class="check-btn" onclick="checkBlank('q3','易记忆性')">检查答案</button>
+<div class="quiz-feedback" id="fb-q3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" id="q4">
+<div class="quiz-question"><span class="q-num">Q4.</span> 你做了一次可用性测试，发现 5 个测试用户中有 3 个在"注册"环节卡住了。以下哪种处理方式最符合 UX 最佳实践？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>A. 这说明 60% 的人有问题，必须优先解决</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>B. 5 个人的样本太小了，再做一轮 20 人的测试再说</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>C. 直接问这 3 个人为什么卡住，记录原因并修复</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q4')">
+<span class="radio"></span>
+<span>D. A 和 C 都是正确的</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" id="q5">
+<div class="quiz-question"><span class="q-num">Q5.</span> 你正在设计一个购物 App 的"加入购物车"按钮。以下哪种设计最符合"反馈（Feedback）"原则？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>A. 按钮用醒目的橙色，放在商品图片下方</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>B. 用户点击后，按钮变成绿色并显示"已加入"，右上角购物车图标数字+1</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>C. 按钮旁边加一行小字："加入购物车后可随时结算"</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q5')">
+<span class="radio"></span>
+<span>D. 按钮支持长按加速加入购物车</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" id="q6">
+<div class="quiz-question"><span class="q-num">Q6.</span> 以下哪个场景体现了"容错设计（Error Tolerance）"？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>A. 输入密码错误时，提示"密码错误，请重试（剩余 3 次机会）"</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>B. 删除文件前弹出确认对话框</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>C. 表单填写错误时，高亮显示具体哪一项填错了，而不是只说"提交失败"</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q6')">
+<span class="radio"></span>
+<span>D. 以上全部都是</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" id="q7">
+<div class="quiz-question"><span class="q-num">Q7.</span> 你正在为一个面向大学生的笔记 App 做设计。以下哪个用户画像最有价值？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>A. 王明，21岁，计算机专业大三学生，常用 iPad 记笔记，主要痛点是课堂笔记整理效率低，希望在考试前能快速检索和复习</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>B. 用户，25岁左右，需要一款好用的笔记软件</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>C. 喜欢学习的人，想要一个记录灵感的工具</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q7')">
+<span class="radio"></span>
+<span>D. 所有大学生</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" id="q8">
+<div class="quiz-question"><span class="q-num">Q8.</span> 关于"自顶向下设计，自底向上验证"的原则，以下理解正确的是？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>A. 设计时要从战略层开始逐层细化，验证时要从用户实际接触的表现层开始测试</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>B. 设计和验证都要从战略层开始</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>C. 设计时可以跳到任何一层，只要最后验证时从表现层开始就行</span>
+</li>
+<li class="quiz-option" onclick="selectOption(this,'q8')">
+<span class="radio"></span>
+<span>D. 这条原则是错误的，应该自底向上设计和验证</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q8"></div>
+</div>
+
+</div>
+
+<!-- ACTION CHECKLIST -->
+<div class="action-list">
+<h3>✅ 今天就能做的行动清单</h3>
+<div class="check-item">
+<input type="checkbox" id="a1"><label for="a1">找出你手机里最常用的 3 个 App，在每个 App 里故意找一个你觉得难用的地方，记录下来</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a2"><label for="a2">找一个不太懂科技的朋友或家人，观察他用你常用的 App 时的反应——不要说话，只看</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a3"><label for="a3">用"战略层 → 范围层 → 结构层 → 框架层 → 表现层"的顺序，重新审视你手头正在做的任何一个小项目</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a4"><label for="a4">在 Nielsennorman.com 上读一篇关于可用性测试的文章（10 分钟就能读完）</label>
+</div>
+<div class="check-item">
+<input type="checkbox" id="a5"><label for="a5">写下你今天遇到的最差 UX 体验，用 Nielsen 五大要素分析它差在哪</label>
+</div>
+</div>
+
+<div class="end-badge">🎓 第 08 课 · 完</div>
+
+<footer>
+<p>TeachHub · 产品设计系列 · 第 8/12 课</p>
+<p>下一课：产品增长 AARRR</p>
+</footer>
+
+</div>
+
+<script>
+function toggleCollapse(btn) {
+  btn.classList.toggle('open');
+  var content = btn.nextElementSibling;
+  content.classList.toggle('open');
+}
+
+function selectOption(el, qId) {
+  var item = document.getElementById(qId);
+  var options = item.querySelectorAll('.quiz-option');
+  options.forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function checkBlank(qId, answer) {
+  var input = document.getElementById('blank-' + qId);
+  var fb = document.getElementById('fb-' + qId);
+  var val = input.value.trim();
+  if (val === answer) {
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.innerHTML = '<strong>✓ 正确！</strong> 易记忆性（Memorability）指的是用户一段时间不使用后，重新回来是否还能轻松上手。';
+  } else {
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.innerHTML = '<strong>✗ 不对哦。</strong> 正确答案是「易记忆性」（Memorability）。再想想——用户很久没用，回来之后还能不能想起来怎么用？';
+  }
+}
+
+// Auto-grade on option click (after brief delay for visual feedback)
+document.querySelectorAll('.quiz-option').forEach(function(opt) {
+  opt.addEventListener('click', function() {
+    var item = this.closest('.quiz-item');
+    var qId = item.id;
+    var idx = Array.from(item.querySelectorAll('.quiz-option')).indexOf(this);
+    var fb = document.getElementById('fb-' + qId);
+    var options = item.querySelectorAll('.quiz-option');
+
+    // Clear previous state
+    options.forEach(function(o) {
+      o.classList.remove('correct', 'wrong');
+    });
+
+    var answers = {
+      q1: 2,  // C
+      q2: 3,  // D
+      q3: null, // fill blank
+      q4: 3,  // D
+      q5: 1,  // B
+      q6: 3,  // D
+      q7: 0,  // A
+      q8: 0   // A
+    };
+
+    if (answers[qId] !== null) {
+      var correctIdx = answers[qId];
+      options[correctIdx].classList.add('correct');
+      if (idx !== correctIdx) {
+        this.classList.add('wrong');
+      }
+      if (idx === correctIdx) {
+        fb.className = 'quiz-feedback show correct-fb';
+        fb.innerHTML = getExplanation(qId, true);
+      } else {
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.innerHTML = getExplanation(qId, false);
+      }
+    }
+  });
+});
+
+function getExplanation(qId, correct) {
+  var explanations = {
+    q1: correct
+      ? '<strong>正确！</strong> 战略层（Strategy）是最基础的一层。如果你不知道产品在解决谁的问题，后面的所有设计都是空中楼阁。先想清楚"为什么"，再考虑"怎么做"。'
+      : '<strong>不对哦。</strong> 虽然其他层也很重要，但在不清楚用户需求的情况下，先去调颜色或画布局是本末倒置。先回到战略层：这个功能为谁解决什么问题？',
+    q2: correct
+      ? '<strong>正确！</strong> A、B、C 都是好方案，但 B 是根本。没有对用户群体的深入理解，你可能设计出一个"看起来解决了问题"但实际上没解决真问题的方案。同理心是一切 UX 设计的起点。'
+      : '<strong>不对哦。</strong> A、C 都是具体措施，但它们的前提是你真正理解用户。B（做用户画像）是理解用户的第一步，有了这个基础，A 和 C 的设计才会有的放矢。',
+    q4: correct
+      ? '<strong>正确！</strong> 5 个人中发现 60% 的人在同一个环节卡住，这是一个非常强烈的信号，必须优先解决。同时，深入分析这 3 个人的具体情况，找到根因——两者结合才是正确的做法。'
+      : '<strong>不对哦。</strong> Nielsen 的研究表明，5 个用户就能发现约 85% 的可用性问题。3/5 = 60% 的人在注册环节卡住，这是一个严重的可用性问题，必须立即处理。',
+    q5: correct
+      ? '<strong>正确！</strong> 反馈（Feedback）的核心是：用户的每次操作都应该得到明确回应。绿色变化 + "已加入"文字 + 购物车数字变化，三重反馈让用户确信操作成功了。'
+      : '<strong>不对哦。</strong> A 是可见性原则，C 是帮助文档，D 是快捷操作。B 才是反馈——用户做了操作，系统立刻给出了明确的确认信号。',
+    q6: correct
+      ? '<strong>正确！</strong> 这三者都是容错设计：A 告诉用户出了什么错、还有多少机会；B 防止误删；C 帮助用户快速定位和修正错误。好的容错设计不是不让用户犯错，而是让犯错变得容易纠正。'
+      : '<strong>不对哦。</strong> A、B、C 三种方式都在降低犯错的风险或在犯错后提供补救措施，它们都是容错设计的典型实践。',
+    q7: correct
+      ? '<strong>正确！</strong> A 是最有价值的用户画像——具体、可操作、包含目标、痛点和场景。B 太泛，C 太模糊，D 不是一个画像而是一个群体。好的用户画像应该是"一个人"，不是"一群人"。'
+      : '<strong>不对哦。</strong> A 是唯一一个具体、有细节、可指导设计的用户画像。B、C、D 都太泛，无法指导具体的设计决策。记住：画像越具体，设计越精准。',
+    q8: correct
+      ? '<strong>正确！</strong> 设计时从抽象的战略层开始逐层细化，确保每一步都有方向；验证时从具体的表现层开始，因为用户只能看到和接触到最表层。两条路径，一个从上到下，一个从下到上。'
+      : '<strong>不对哦。</strong> 这条原则是 UX 设计的核心方法论之一。设计需要战略性（从上到下），验证需要实证性（从下到上）。'
+  };
+  return explanations[qId];
+}
+</script>
+
+</body>
+</html>

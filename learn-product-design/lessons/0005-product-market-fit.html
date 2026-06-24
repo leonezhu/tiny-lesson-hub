@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5课 — 产品市场匹配</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@0,400;0,600;0,700;1,400&display=swap');
+  :root { --bg: #fdfdfd; --text: #1a1a1a; --accent: #2a6496; --accent-light: #e8f0fa; --muted: #666; --border: #e0e0e0; --correct: #2e7d32; --correct-bg: #e8f5e9; --wrong: #c62828; --wrong-bg: #ffebee; --warn-bg: #fff8e1; --warn-border: #f9a825; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, sans-serif; font-size: 16px; line-height: 1.7; color: var(--text); background: var(--bg); max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1 { font-family: 'Merriweather', Georgia, serif; font-size: 1.8rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .lesson-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .goal-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; border-radius: 0 4px 4px 0; }
+  .goal-box strong { color: var(--accent); }
+  h2 { font-family: 'Merriweather', Georgia, serif; font-size: 1.2rem; margin-top: 2.5rem; margin-bottom: 0.75rem; color: var(--accent); }
+  h3 { font-family: 'Merriweather', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--accent); }
+  p { margin-bottom: 0.75rem; }
+  .vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; background: #fafafa; }
+  .vocab-card .term { font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .example-box { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  .example-box strong { color: #e65100; }
+  .key-idea { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 4px 4px 0; font-style: italic; }
+  .takeaway { background: #e8f5e9; border: 1px solid var(--correct); border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .takeaway strong { color: var(--correct); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.5rem; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--accent-light); }
+  ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+  ul li { margin-bottom: 0.25rem; }
+  .quiz-section { border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; background: #fafafa; }
+  .quiz-section h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .quiz-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .quiz-question:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .quiz-question p { font-weight: 600; margin-bottom: 0.75rem; }
+  .quiz-question .q-num { color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .quiz-options label { display: block; padding: 0.5rem 0.75rem; margin: 0.25rem 0; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+  .quiz-options label:hover { background: var(--accent-light); }
+  .quiz-options input[type="radio"] { margin-right: 0.5rem; }
+  .feedback { display: none; padding: 0.75rem 1rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.9rem; }
+  .feedback.correct { display: block; background: var(--correct-bg); color: var(--correct); border: 1px solid var(--correct); }
+  .feedback.wrong { display: block; background: var(--wrong-bg); color: var(--wrong); border: 1px solid var(--wrong); }
+  .score-box { text-align: center; padding: 1.5rem; margin: 2rem 0; border-radius: 8px; background: var(--accent-light); display: none; }
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-family: 'Merriweather', Georgia, serif; font-weight: 700; color: var(--accent); }
+  .score-box p { margin-top: 0.5rem; }
+  button.submit-btn { background: var(--accent); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: 'Source Sans 3', sans-serif; font-weight: 600; margin-top: 1rem; }
+  button.submit-btn:hover { opacity: 0.9; }
+  .nav-links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.9rem; }
+  .nav-links a { color: var(--accent); text-decoration: none; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav-links .disabled { color: var(--muted); text-decoration: line-through; opacity: 0.5; }
+  details.vocab-card { border: 1px solid var(--border); border-radius: 6px; padding: 0; margin: 1rem 0; background: #fafafa; }
+  details.vocab-card summary { padding: 1rem 1.25rem; cursor: pointer; font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; list-style: none; display: flex; align-items: center; }
+  details.vocab-card summary::before { content: '▸'; margin-right: 0.5rem; transition: transform 0.2s; }
+  details.vocab-card[open] summary::before { content: '▾'; }
+  details.vocab-card .card-body { padding: 0 1.25rem 1rem; }
+  .action-list { background: #f1f8e9; border: 1px solid #8bc34a; border-radius: 6px; padding: 1rem 1.25rem; margin: 2rem 0; }
+  .action-list strong { color: #33691e; }
+  .action-list ol { margin: 0.5rem 0 0 1.5rem; }
+  .action-list ol li { margin-bottom: 0.35rem; }
+</style>
+</head>
+<body>
+
+<h1>产品市场匹配</h1>
+<p class="lesson-meta">TeachHub · 产品设计 · 第5课 / 共12课 · 约18分钟阅读</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解产品市场匹配（Product-Market Fit, PMF）的本质与衡量方式、掌握判断PMF是否达成的关键信号、学会从"没有PMF"到"有PMF"的演进路径、认识PMF不是一次性的而是需要持续维护的动态过程。
+</div>
+
+<!-- Section 1 -->
+<h2>一、什么是产品市场匹配？</h2>
+
+<p><strong>产品市场匹配（Product-Market Fit, PMF）</strong>是创业和产品领域被提及最多的概念之一。但它真正是什么意思？</p>
+
+<p>1977年，风险投资人 <strong>唐·瓦伦丁（Don Valentine）</strong>首次提出这个概念。后来硅谷著名投资人 <strong>马克·安德森（Marc Andreessen）</strong>在2007年将其推广为经典定义：</p>
+
+<div class="key-idea">
+  产品市场匹配 = 在一个良好的市场中，提供一个能够满足这个市场需求的产品。
+</div>
+
+<p>这句话听起来简单，但"良好"和"满足"这两个词背后藏着巨大的复杂性。我们拆开来看：</p>
+
+<div class="vocab-card">
+  <p><span class="term">"良好的市场"（Good Market）</span>：意味着市场本身有足够的规模、增长速度和健康度。你的产品再好，如果市场在萎缩，或者市场太小，那也不是"良好的市场"。</p>
+</div>
+
+<div class="vocab-card">
+  <p><span class="term">"满足需求"（Satisfy）</span>：不是"部分满足"，而是"充分满足"。用户不仅用了你的产品，而且觉得"没有它不行"——这才是真正的满足。</p>
+</div>
+
+<div class="example-box">
+  <strong>生活化案例：</strong>想象你在做一个"办公室绿植租赁"的App。如果你的目标市场是写字楼里的行政人员——他们确实在租绿植，但预算有限、决策周期长、替换频率低——这是一个"不良好"的市场。但如果你的目标市场是新兴科技公司的办公空间设计师——他们经常需要布置新办公室、预算充足、需求高频——这就是一个"良好"的市场。同一个产品，在不同市场中，PMF的状态完全不同。
+</div>
+
+<!-- Section 2 -->
+<h2>二、PMF 来了是什么感觉？</h2>
+
+<p>很多创业者描述PMF时的感受出奇地一致：<strong>"用户自己在推着你走。"</strong></p>
+
+<p>以下是PMF达成后的典型信号：</p>
+
+<details class="vocab-card">
+  <summary>信号 1：用户主动推荐</summary>
+  <div class="card-body">
+    <p>用户不再需要你"说服"他们使用产品，而是主动向同事、朋友推荐。你收到的是"你能用这个吗？""我朋友也需要"这样的消息——而不是"你觉得这个怎么样？"</p>
+    <div class="example-box"><strong>真实场景：</strong>Slack在早期发现，一旦一个团队里有3个人开始用，整个团队几乎都会加入。用户自发地在公司内部推广产品，而不是销售团队去推销。</div>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>信号 2：留存率自然走高</summary>
+  <div class="card-body">
+    <p>用户用完第一次后，还会回来。而且回来的频率越来越高。留存曲线不再是一条直线掉到底，而是出现了一个"平台期"——有一部分用户长期留下来。</p>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>信号 3：增长不需要烧钱</summary>
+  <div class="card-body">
+    <p>有机增长（Organic Growth）开始占主导。用户通过口碑、搜索、自然流量进来，而不是全靠广告投放。获客成本（CAC）低于用户生命周期价值（LTV）。</p>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>信号 4：服务器撑不住</summary>
+  <div class="card-body">
+    <p>这不是比喻。当PMF真正到来时，基础设施往往会成为瓶颈。用户增长速度超过你的预期，服务器宕机、客服响应不过来——这是一种"幸福的烦恼"。</p>
+  </div>
+</details>
+
+<div class="key-idea">
+  核心判断标准：如果PMF到了，你会很难"关掉"你的产品——不是因为合同约束，而是因为用户真的离不开它。
+</div>
+
+<!-- Section 3 -->
+<h2>三、如何衡量 PMF？</h2>
+
+<p>PMF不是"有"或"没有"的二元状态，而是一个连续的光谱。但我们需要一些可操作的测量方法来定位自己在这个光谱上的位置。</p>
+
+<h3>3.1 苏珊·王公式（The Susan Wang Test）</h3>
+
+<p>前Y Combinator产品经理苏珊·王提出了一个简单而有力的方法：</p>
+
+<div class="vocab-card">
+  <p><span class="term">调查法</span>：问你的用户一个问题——<strong>"如果你在未来一个月不能再使用本产品，你会感到如何？"</strong></p>
+  <ul>
+    <li>选项A：非常失望（Very Disappointed）</li>
+    <li>选项B：有点失望（Somewhat Disappointed）</li>
+    <li>选项C：不失望（Not Disappointed）</li>
+  </ul>
+  <p><strong>判定标准：如果超过40%的用户选择"非常失望"，你就接近PMF了。</strong></p>
+</div>
+
+<div class="example-box">
+  <strong>为什么这个方法有效？</strong>因为它直接测量"依赖感"——而不是满意度。满意是"我觉得不错"，依赖是"我觉得缺了它不行"。PMF的关键指标是后者。
+</div>
+
+<h3>3.2 关键指标矩阵</h3>
+
+<table>
+  <tr><th>指标</th><th>PMF前</th><th>PMF后</th></tr>
+  <tr><td>日活/月活比（DAU/MAU）</td><td>&lt; 10%</td><td>&gt; 20%</td></tr>
+  <tr><td>30天留存率</td><td>快速下降</td><td>稳定在平台期</td></tr>
+  <tr><td>NPS（净推荐值）</td><td>&lt; 10</td><td>&gt; 30</td></tr>
+  <tr><td>用户获取方式</td><td>主要靠付费广告</td><td>有机增长为主</td></tr>
+  <tr><td>用户反馈</td><td>"有什么新功能？"</td><td>"能不能加一个X功能？"</td></tr>
+</table>
+
+<h3>3.3 定性 vs 定量</h3>
+
+<p>不要只看数字。PMF的完整画像需要定性和定量结合：</p>
+
+<ul>
+  <li><strong>定量信号：</strong>留存曲线、NPS、DAU/MAU、流失率</li>
+  <li><strong>定性信号：</strong>用户访谈中的自发推荐、客服工单的类型变化（从"怎么用"变成"能不能加X"）、社交媒体上的自发讨论</li>
+</ul>
+
+<div class="key-idea">
+  最好的PMF测量方式是混合的：先用量化的"苏珊·王调查"给你一个基准线，再用定性访谈去理解"为什么"。
+</div>
+
+<!-- Section 4 -->
+<h2>四、PMF 的演进路径</h2>
+
+<p>大多数成功的产品都不是一开始就找到PMF的。它们经历了一条曲折的演进路径。</p>
+
+<h3>4.1 典型的四阶段模型</h3>
+
+<details class="vocab-card">
+  <summary>阶段1：问题探索（Problem Exploration）</summary>
+  <div class="card-body">
+    <p>你有一个想法，但不确定它是不是真问题。你在找"有痛点的人"。这个阶段的产品通常很粗糙，甚至只是一个手动流程（比如用Google表单代替App）。</p>
+    <div class="example-box"><strong>案例：</strong>Dropbox最早不是一个产品，而是一个演示视频。创始人Drew Houston发现很多人对"云存储"没有概念，于是他做了一个3分钟的演示视频放在Hacker News上，一夜之间注册列表从5,000人涨到75,000人。视频本身就是他的"产品"——用来验证需求是否存在。</div>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>阶段2：假设验证（Hypothesis Validation）</summary>
+  <div class="card-body">
+    <p>你找到了一个细分用户群体，并做出了最小可行产品（MVP）。你在验证：这个群体是否真的需要这个解决方案？注意——MVP阶段不等于PMF，MVP只是通往PMF的第一步。</p>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>阶段3：PMF达成（Fit Achieved）</summary>
+  <div class="card-body">
+    <p>你发现某个用户群体对你的产品产生了依赖。留存曲线出现平台期，用户开始自发传播。这时你应该全力服务这个群体，而不是急着扩展。</p>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>阶段4：规模化与再匹配（Scale & Re-Fit）</summary>
+  <div class="card-body">
+    <p>当你开始向更大的用户群扩展时，原来的PMF可能不再适用。你需要重新寻找与新群体的匹配——这叫"二次PMF"。Facebook从哈佛扩展到常春藤，再到全美大学，最后到全社会，每一次扩展都是一次新的PMF挑战。</p>
+  </div>
+</details>
+
+<h3>4.2 常见误区</h3>
+
+<table>
+  <tr><th>误区</th><th>真相</th></tr>
+  <tr><td>"我有100个用户了，应该有PMF了吧"</td><td>用户数量不是PMF的标志。100个忠实用户比10,000个偶然用户更有价值。</td></tr>
+  <tr><td>"我的留存率在涨，PMF快到了"</td><td>留存率需要稳定在"平台期"才算。短期波动不代表趋势。</td></tr>
+  <tr><td>"PMF是一次性的，达成了就一劳永逸"</td><td>PMF需要持续维护。市场会变、竞品会变、用户期望也会变。</td></tr>
+  <tr><td>"我应该先做大再做PMF"</td><td>顺序反了。应该在小规模中找到PMF，然后再扩大规模。先放大没有PMF的产品 = 加速死亡。</td></tr>
+</table>
+
+<!-- Section 5 -->
+<h2>五、找不到 PMF 怎么办？</h2>
+
+<p>现实中，大多数创业公司和内部产品在很长一段时间内都处于"没有PMF"的状态。关键在于识别"为什么没有"，然后对症下药。</p>
+
+<h3>5.1 诊断框架</h3>
+
+<p>当PMF迟迟不来时，通常有以下三种原因：</p>
+
+<details class="vocab-card">
+  <summary>原因A：市场不对（Wrong Market）</summary>
+  <div class="card-body">
+    <p>你的产品本身没问题，但你找错了用户群。比如你做了一款高端设计工具，却在找预算有限的小型企业。</p>
+    <p><strong>对策：</strong>回到用户调研，换一批用户测试。有时候换一个细分市场，PMF就会突然出现。</p>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>原因B：产品不对（Wrong Product）</summary>
+  <div class="card-body">
+    <p>你的用户群是对的，但解决方案不够好。用户愿意用，但不会留下来，或者不会推荐给别人。</p>
+    <p><strong>对策：</strong>深度访谈流失用户，找出"为什么不用了"的核心原因。然后迭代产品——不是加功能，而是解决那个最根本的痛点。</p>
+  </div>
+</details>
+
+<details class="vocab-card">
+  <summary>原因C：市场不存在（No Market）</summary>
+  <div class="card-body">
+    <p>最残酷的一种情况：这个问题根本不值得解决，或者市场规模太小，不足以支撑一个产品。</p>
+    <p><strong>对策：</strong>承认失败，快速转向（Pivot）。这不是耻辱——这是创业过程中最正常的部分。Instagram最早是一个签到应用（Burbn），后来发现其中的照片分享功能最受欢迎，于是砍掉一切，只做拍照和分享。</p>
+  </div>
+</details>
+
+<div class="key-idea">
+  判断"市场不存在"的最好方法是：你能不能在一个月内找到一个用户群，让他们对你的产品说"没有它我真的不行"？如果找不到，要么换市场，要么换产品，要么换方向。
+</div>
+
+<!-- Section 6 -->
+<h2>六、PMF 与之前课程的关联</h2>
+
+<p>这门课的之前内容，全部服务于PMF的寻找过程：</p>
+
+<ul>
+  <li><strong>第1课 产品思维：</strong>帮你建立"以用户为中心"的思维框架，这是PMF的前提。</li>
+  <li><strong>第2课 用户需求与痛点：</strong>帮你识别真正的痛点，避免在伪需求上浪费时间。</li>
+  <li><strong>第3课 用户旅程地图：</strong>帮你理解用户在每个触点的体验，找出流失的关键节点。</li>
+  <li><strong>第4课 MVP与精益验证：</strong>教你用最小的成本验证假设，快速迭代到PMF。</li>
+</ul>
+
+<p>现在你有了完整的工具链：从理解用户 → 绘制旅程 → 做出MVP → 验证PMF。接下来的课程将教你：找到PMF之后该怎么办（北极星指标、增长、AARRR等）。</p>
+
+<div class="takeaway">
+  <strong>🎯 核心要点回顾：</strong>
+  <ul>
+    <li>PMF = 在良好的市场中，提供充分满足需求的方案</li>
+    <li>PMF的核心信号是用户的"依赖感"，不是"满意度"</li>
+    <li>苏珊·王调查：超过40%用户说"非常失望" = 接近PMF</li>
+    <li>PMF是动态的，需要持续维护和二次匹配</li>
+    <li>找不到PMF时，先诊断：是市场不对、产品不对，还是市场不存在</li>
+  </ul>
+</div>
+
+<!-- Action List -->
+<div class="action-list">
+  <strong>🚀 今天就能做的行动清单（1分钟内完成）</strong>
+  <ol>
+    <li>打开你的产品（或你正在关注的某个产品），问自己：如果明天它消失了，我会"非常失望"吗？诚实回答。</li>
+    <li>找一个最近用过你产品的人，发一条微信："如果以后不能用了，你会失望吗？为什么？"</li>
+    <li>在你的产品后台，看一眼最近一周的留存数据——有没有出现"平台期"的迹象？</li>
+  </ol>
+</div>
+
+<!-- Quiz Section -->
+<div class="quiz-section">
+  <h2>🧠 互动测验</h2>
+  <p style="margin-bottom: 1.5rem; color: var(--muted);">检验你对产品市场匹配的理解。每题选出答案后点击"提交"查看反馈。</p>
+
+  <!-- Q1 -->
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q1.</span> 以下哪种情况最能说明你的产品已经达成了PMF？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q1" value="a"> A. 你的月活跃用户数突破了一百万</label>
+      <label><input type="radio" name="q1" value="b"> B. 超过40%的用户表示如果产品消失会"非常失望"</label>
+      <label><input type="radio" name="q1" value="c"> C. 你的产品获得了A轮融资</label>
+      <label><input type="radio" name="q1" value="d"> D. 你的应用商店评分达到了4.8星</label>
+    </div>
+    <div class="feedback correct">✅ 正确！苏珊·王调查中的"非常失望"比例是PMF最直接、最可靠的信号。用户数量和融资额都不代表PMF。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是B。月活用户数、融资额、应用评分都可能掩盖PMF缺失的事实。真正的PMF信号是用户的"依赖感"——苏珊·王调查中超过40%的用户说"非常失望"。</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q2.</span> 你的App上线三个月，日活跃用户稳定在500人左右，但新用户增长几乎为零，也没有人主动推荐。你最可能的诊断是什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q2" value="a"> A. 恭喜，你已经达成PMF了，只需要等待增长</label>
+      <label><input type="radio" name="q2" value="b"> B. 你需要加大广告投放力度</label>
+      <label><input type="radio" name="q2" value="c"> C. 你可能还没有达成PMF，需要先确认用户是否真的依赖你的产品</label>
+      <label><input type="radio" name="q2" value="d"> D. 你需要开发更多功能来吸引用户</label>
+    </div>
+    <div class="feedback correct">✅ 正确！没有推荐、没有有机增长，说明用户还没有产生足够的依赖感。在PMF未达成前加大投放或堆功能，都是浪费资源。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是C。没有推荐和有机增长是PMF缺失的典型信号。此时应该先做用户访谈和留存分析，确认产品是否真正解决了用户的问题，而不是盲目加功能或砸广告。</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q3.</span> Instagram的前身Burbn是一个签到+社交+照片分享的综合应用，用户活跃度一般。后来创始人做了什么决定？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q3" value="a"> A. 砍掉了签到和社交功能，只做照片分享</label>
+      <label><input type="radio" name="q3" value="b"> B. 增加了更多的游戏功能来提高活跃度</label>
+      <label><input type="radio" name="q3" value="c"> C. 引入了付费订阅模式</label>
+      <label><input type="radio" name="q3" value="d"> D. 把产品开源让社区来改进</label>
+    </div>
+    <div class="feedback correct">✅ 正确！Burbn的数据分析显示，照片分享功能是用户最活跃使用的部分。创始人Kevin Systrom决定砍掉一切其他功能，专注于照片分享——这就是从"没有PMF"到"找到PMF"的经典Pivot。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是A。Burbn的用户数据显示照片分享是最受欢迎的功能，创始人据此砍掉了签到和社交功能，专注于照片分享，最终诞生了Instagram。这是"聚焦PMF"的经典案例。</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q4.</span> 以下关于PMF的说法，哪一个是正确的？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q4" value="a"> A. PMF是一次性的，一旦达成就不会失去</label>
+      <label><input type="radio" name="q4" value="b"> B. PMF只适用于初创公司，大公司不需要关心</label>
+      <label><input type="radio" name="q4" value="c"> C. 用户越多，PMF就越容易达成</label>
+      <label><input type="radio" name="q4" value="d"> D. PMF需要持续维护，市场变化时可能需要"二次匹配"</label>
+    </div>
+    <div class="feedback correct">✅ 正确！PMF是动态的。Facebook从校园扩展到全社会、Amazon从书籍扩展到全品类，每次扩展都是一次新的PMF挑战。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是D。PMF不是终点而是起点——市场会变、用户会变、竞争格局会变，都需要重新寻找匹配。</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="quiz-question" data-correct="b">
+    <p><span class="q-num">Q5.</span> 你在做一个面向自由职业者的项目管理工具。用户反馈说"功能挺好的，但我偶尔才用一个"。这个反馈暗示了什么？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q5" value="a"> A. 用户很满意，说明产品做得不错</label>
+      <label><input type="radio" name="q5" value="b"> B. 自由职业者可能不是你的目标市场——他们的需求频率太低</label>
+      <label><input type="radio" name="q5" value="c"> C. 你需要增加更多功能来让用户更频繁地使用</label>
+      <label><input type="radio" name="q5" value="d"> D. 这是正常的，等产品成熟后用户自然会多用</label>
+    </div>
+    <div class="feedback correct">✅ 正确！低频使用是PMF缺失的重要信号。"偶尔才用"说明产品没有嵌入用户的核心工作流。这时候应该考虑：换一个使用频率更高的用户群（比如小型团队的负责人），或者重新设计产品使其成为日常必需。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是B。"偶尔才用"说明产品没有融入用户的核心需求。低频使用往往意味着市场选择不当——自由职业者的项目管理需求可能太零散，不如转向小团队或工作室这类更高频的场景。</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="quiz-question" data-correct="c">
+    <p><span class="q-num">Q6.</span> 你做了一个健身App，用户调查显示：35%的人说"非常失望"，45%的人说"有点失望"，20%的人说"不失望"。根据苏珊·王的PMF测试标准，你的产品处于什么状态？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q6" value="a"> A. 已经达成PMF，可以放心扩规模</label>
+      <label><input type="radio" name="q6" value="b"> B. 完全不需要PMF，健身App天然有需求</label>
+      <label><input type="radio" name="q6" value="c"> C. 接近PMF但未完全达成——40%的阈值还没到，但45%的"有点失望"说明有很大改进空间</label>
+      <label><input type="radio" name="q6" value="d"> D. PMF测试不适用健身类App</label>
+    </div>
+    <div class="feedback correct">✅ 正确！35%接近但不到40%的阈值。好消息是45%的人"有点失望"——说明大部分用户确实感受到了价值，只是还没到"离不开"的程度。这时候应该深挖"有点失望"的用户，找出阻碍他们升级的关键因素。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是C。35%接近40%阈值但未达标，而45%的"有点失望"是一个积极信号——说明大部分用户认可产品价值。你应该聚焦于把那45%转化为"非常失望"，而不是认为已经达成或不需要PMF。</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="quiz-question" data-correct="a">
+    <p><span class="q-num">Q7.</span> 以下哪个是PMF达成前的典型特征？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q7" value="a"> A. 用户主要靠付费广告获客，有机增长占比很低</label>
+      <label><input type="radio" name="q7" value="b"> B. 用户自发在社交媒体上讨论你的产品</label>
+      <label><input type="radio" name="q7" value="c"> C. 客服收到的工单从"怎么用"变成了"能不能加X功能"</label>
+      <label><input type="radio" name="q7" value="d"> D. DAU/MAU比率稳定在30%以上</label>
+    </div>
+    <div class="feedback correct">✅ 正确！付费广告获客占比高、有机增长低，是PMF缺失的典型信号。当PMF达成后，用户会自发传播，有机增长会超过付费增长。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是A。B、C、D都是PMF达成后的特征。PMF前最明显的标志是：你必须花钱才能买到用户，用户不会自己找来。</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="quiz-question" data-correct="d">
+    <p><span class="q-num">Q8.</span> 你的产品目前处于"问题探索"阶段。以下哪项行动最符合这个阶段的特点？</p>
+    <div class="quiz-options">
+      <label><input type="radio" name="q8" value="a"> A. 大规模投放广告，获取尽可能多的用户</label>
+      <label><input type="radio" name="q8" value="b"> B. 做一个精美的官方网站和品牌Logo</label>
+      <label><input type="radio" name="q8" value="c"> C. 招募10个全职员工来开发完整功能</label>
+      <label><input type="radio" name="q8" value="d"> D. 找10个潜在用户聊天，了解他们的痛点和现有解决方案</label>
+    </div>
+    <div class="feedback correct">✅ 正确！问题探索阶段的核心任务是理解用户——不是开发产品，不是建网站，不是招人。找用户聊天是最直接、成本最低的方式。Dropbox的视频演示、Zappos的"手动拍鞋照"，都是问题探索阶段的经典做法。</div>
+    <div class="feedback wrong">❌ 不对。正确答案是D。在问题探索阶段，你应该花时间和用户在一起，了解他们的真实痛点。A、B、C都是在假设"问题已经被理解"之后的动作，为时过早。</div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">提交答案</button>
+  <div class="score-box" id="scoreBox">
+    <div class="score-num" id="scoreNum"></div>
+    <p id="scoreMsg"></p>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-links">
+  <a href="../lessons/0004-mvp-lean-validation.html">← 第4课：MVP与精益验证</a>
+  <a href="../lessons/0006-north-star-metric.html">第6课：北极星指标 →</a>
+</div>
+
+<script>
+function submitQuiz() {
+  const questions = document.querySelectorAll('.quiz-question');
+  let score = 0;
+  let total = questions.length;
+
+  questions.forEach(q => {
+    const correct = q.getAttribute('data-correct');
+    const selected = q.querySelector('input[type="radio"]:checked');
+    const correctFeedback = q.querySelector('.feedback.correct');
+    const wrongFeedback = q.querySelector('.feedback.wrong');
+
+    // Reset styles
+    q.querySelectorAll('.feedback').forEach(f => { f.style.display = 'none'; });
+    q.querySelectorAll('.quiz-options label').forEach(l => { l.style.background = ''; });
+
+    if (selected) {
+      if (selected.value === correct) {
+        score++;
+        correctFeedback.style.display = 'block';
+        correctFeedback.className = 'feedback correct';
+      } else {
+        wrongFeedback.style.display = 'block';
+        wrongFeedback.className = 'feedback wrong';
+      }
+    } else {
+      wrongFeedback.style.display = 'block';
+      wrongFeedback.className = 'feedback wrong';
+      wrongFeedback.innerHTML = '⚠️ 未作答。正确答案是 ' + correct.toUpperCase() + '。';
+    }
+  });
+
+  const pct = Math.round((score / total) * 100);
+  const scoreBox = document.getElementById('scoreBox');
+  const scoreNum = document.getElementById('scoreNum');
+  const scoreMsg = document.getElementById('scoreMsg');
+
+  scoreNum.textContent = score + ' / ' + total;
+
+  if (pct >= 80) {
+    scoreMsg.textContent = '太棒了！你对PMF的理解非常扎实 🎉';
+    scoreBox.style.background = '#e8f5e9';
+    scoreBox.style.border = '2px solid #2e7d32';
+  } else if (pct >= 50) {
+    scoreMsg.textContent = '不错！再回顾一下没答对的题目，加深理解 💪';
+    scoreBox.style.background = '#fff8e1';
+    scoreBox.style.border = '2px solid #f9a825';
+  } else {
+    scoreMsg.textContent = '建议重新阅读课程内容，重点看衡量标准和诊断框架部分 📖';
+    scoreBox.style.background = '#ffebee';
+    scoreBox.style.border = '2px solid #c62828';
+  }
+
+  scoreBox.classList.add('show');
+  scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+
+</body>
+</html>

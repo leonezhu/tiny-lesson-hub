@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0011 · 数据驱动决策 | TeachHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3','Noto Sans SC',sans-serif;background:#fdfdfd;color:#2c2c2c;line-height:1.75;font-size:17px}
+h1,h2,h3,h4{font-family:'Merriweather','Noto Serif SC',serif;color:#1a1a1a}
+.container{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+.lesson-badge{display:inline-block;background:#e3f2fd;color:#1565c0;font-size:13px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.lesson-title{font-size:28px;font-weight:900;margin-bottom:6px;line-height:1.35}
+.lesson-subtitle{font-size:16px;color:#666;margin-bottom:32px;font-weight:400}
+.section{margin:36px 0}
+.section h2{font-size:22px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #e0e0e0}
+.section h3{font-size:18px;margin:20px 0 10px}
+p{margin-bottom:14px}
+.case-box{background:#fff8e1;border-left:4px solid #ffc107;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.case-box .label{font-weight:700;color:#f57f17;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.case-box p{margin:0;font-size:15px}
+.concept-card{background:#f5f5f5;border-radius:12px;padding:20px 24px;margin:20px 0}
+.concept-card .term{font-family:'Merriweather',serif;font-weight:700;color:#1565c0;font-size:16px}
+.concept-card .cn{color:#333;font-size:15px}
+.collapse-btn{cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;color:#1565c0;font-size:16px;margin:16px 0;padding:10px 16px;background:#e3f2fd;border-radius:8px;border:none;width:100%;text-align:left;transition:background .2s}
+.collapse-btn:hover{background:#bbdefb}
+.collapse-btn::before{content:'▸';transition:transform .2s;display:inline-block}
+.collapse-btn.open::before{transform:rotate(90deg)}
+.collapse-content{display:none;padding:12px 16px 16px;color:#444;font-size:15px;line-height:1.7}
+.collapse-content.open{display:block}
+.quiz-section{background:#fafafa;border-radius:16px;padding:28px 28px;margin:36px 0;border:1px solid #e8e8e8}
+.quiz-section h2{border-bottom:none;margin-bottom:20px;font-size:22px}
+.quiz-item{margin:24px 0;padding:20px;background:#fff;border-radius:10px;border:1px solid #eee;transition:box-shadow .2s}
+.quiz-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.quiz-question{font-weight:600;font-size:16px;margin-bottom:14px;color:#1a1a1a}
+.quiz-question .q-num{color:#1565c0;font-weight:700}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:8px 0}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;border:2px solid transparent;font-size:15px}
+.quiz-option:hover{background:#f0f4ff}
+.quiz-option.selected{border-color:#1565c0;background:#e3f2fd}
+.quiz-option.correct{border-color:#2e7d32;background:#e8f5e9}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee}
+.quiz-option .radio{width:18px;height:18px;border:2px solid #bbb;border-radius:50%;flex-shrink:0;margin-top:2px;transition:all .15s}
+.quiz-option.selected .radio{border-color:#1565c0;background:#1565c0}
+.quiz-option.correct .radio{border-color:#2e7d32;background:#2e7d32}
+.quiz-option.wrong .radio{border-color:#c62828;background:#c62828}
+.quiz-feedback{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:14px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.quiz-feedback.wrong-fb{background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+.fill-blank-input{border:none;border-bottom:2px solid #bbb;padding:4px 8px;font-size:15px;font-family:inherit;width:160px;outline:none;transition:border-color .2s}
+.fill-blank-input:focus{border-color:#1565c0}
+.fill-blank-input.correct{border-color:#2e7d32;background:#e8f5e9}
+.fill-blank-input.wrong{border-color:#c62828;background:#ffebee}
+.check-btn{background:#1565c0;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;margin-top:10px;transition:background .2s}
+.check-btn:hover{background:#0d47a1}
+.action-list{background:#e8f5e9;border-radius:12px;padding:20px 24px;margin:36px 0}
+.action-list h3{color:#2e7d32;margin-bottom:12px;font-size:17px}
+.action-list ol{padding-left:20px}
+.action-list li{margin:8px 0;font-size:15px}
+.action-list .tag{display:inline-block;background:#2e7d32;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.diagram{background:#fff;border:2px dashed #ccc;border-radius:12px;padding:24px;margin:20px 0;text-align:center}
+.end-badge{text-align:center;margin:40px 0 10px;font-size:20px;font-weight:700;color:#2e7d32}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid #e0e0e0;text-align:center;color:#999;font-size:13px}
+.key-insight{background:#e3f2fd;border-left:4px solid #1565c0;padding:14px 18px;margin:20px 0;border-radius:0 8px 8px 0}
+.key-insight strong{color:#1565c0}
+.warning-box{background:#fff3e0;border-left:4px solid #ff9800;padding:14px 18px;margin:20px 0;border-radius:0 8px 8px 0}
+.warning-box strong{color:#e65100}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.metric-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;text-align:center}
+.metric-card .metric-val{font-size:28px;font-weight:900;color:#1565c0;font-family:'Merriweather',serif}
+.metric-card .metric-label{font-size:13px;color:#666;margin-top:4px}
+.table-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid #e0e0e0}
+th{background:#f5f5f5;font-weight:600;color:#333}
+tr:hover td{background:#fafafa}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.check-item input[type="checkbox"]{margin-top:4px;width:18px;height:18px;accent-color:#43a047;flex-shrink:0}
+.check-item label{cursor:pointer;font-size:15px}
+.score-display{text-align:center;font-size:22px;font-weight:700;color:#1565c0;margin:20px 0;padding:16px;background:#e3f2fd;border-radius:12px;display:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<span class="lesson-badge">课程 11 / 12 · 产品设计</span>
+<h1 class="lesson-title">数据驱动决策</h1>
+<p class="lesson-subtitle">Data-Driven Decision Making — 让数据替你说话，而不是让直觉替你犯错</p>
+
+<!-- SECTION 1 -->
+<div class="section">
+<h2>一、为什么直觉会骗你？</h2>
+<p>你有没有过这种经历：</p>
+<p>产品经理说："我觉得用户更喜欢红色按钮。"<br>
+设计师说："我觉得导航栏放在左边更好。"<br>
+运营说："我觉得这个文案转化率会更高。"</p>
+<p>然后你们吵了一下午，最后谁也没说服谁。因为大家靠的都是<strong>"我觉得"</strong>。</p>
+
+<div class="case-box">
+<div class="label">💡 真实场景</div>
+<p>2010年，某知名视频网站做了A/B测试：把播放按钮从蓝色改成红色。结果<strong>点击率提升了30%</strong>。那个改按钮的产品经理后来回忆说："我当时也猜可能是红色，但我没想到差距这么大。"——直觉能猜对方向，但猜不准幅度。</p>
+</div>
+
+<p>数据驱动决策（Data-Driven Decision Making）的核心思想很简单：</p>
+
+<div class="key-insight">
+<strong>核心原则：</strong>不要问"你觉得"，要问"数据说"。在做出任何产品决策之前，先用数据验证你的假设。
+</div>
+
+<p>但这不是说你要变成数据科学家。作为产品经理，你需要做的是：</p>
+<ol style="padding-left:20px;margin:14px 0">
+<li><strong>知道该看什么数据</strong>（选对指标）</li>
+<li><strong>知道怎么正确解读数据</strong>（不被数据骗）</li>
+<li><strong>知道什么时候该听数据的，什么时候该信直觉</strong>（平衡判断）</li>
+</ol>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<h2>二、指标体系：从混乱到清晰</h2>
+<p>很多团队的问题不是"没数据"，而是<strong>"数据太多，不知道看哪个"</strong>。这就好比你有100个仪表盘，却不知道该踩油门还是踩刹车。</p>
+
+<h3>2.1 虚荣指标 vs 可行动指标</h3>
+
+<div class="concept-card">
+<div class="term">虚荣指标（Vanity Metric）</div>
+<div class="cn">看起来好看、但不能指导行动的数字。比如：累计注册用户数、总页面浏览量。</div>
+</div>
+
+<div class="concept-card">
+<div class="term">可行动指标（Actionable Metric）</div>
+<div class="cn">能告诉你"现在该做什么"的数字。比如：新用户注册转化率、某个功能的使用频率。</div>
+</div>
+
+<div class="case-box">
+<div class="label">🔍 案例对比</div>
+<p>你的APP日活（DAU）是100万。听起来很棒对吧？但如果你不知道这100万人里有多少是新用户、多少是老用户、留存率是多少、他们在哪个环节流失了……那这个数字对你改进产品<strong>几乎没用</strong>。</p>
+<p>而如果说"新用户注册转化率从12%降到了8%，主要流失在第三步"——你就能立刻知道要去查第三步出了什么问题。</p>
+</div>
+
+<h3>2.2 AARRR 模型回顾</h3>
+<p>你在第9课学过 AARRR 模型，这里快速复习一下每个阶段的典型指标：</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>阶段</th><th>核心问题</th><th>关键指标</th></tr>
+<tr><td><strong>A</strong>cquisition</td><td>用户从哪里来？</td><td>渠道来源、CAC（获客成本）</td></tr>
+<tr><td><strong>A</strong>ctivation</td><td>用户首次体验好吗？</td><td>激活率、首屏加载时间</td></tr>
+<tr><td><strong>R</strong>etention</td><td>用户会回来吗？</td><td>次日/7日/30日留存率</td></tr>
+<tr><td><strong>R</strong>evenue</td><td>用户付费了吗？</td><td>ARPU、转化率、LTV</td></tr>
+<tr><td><strong>R</strong>efer</td><td>用户会推荐吗？</td><td>NPS、分享率、病毒系数</td></tr>
+</table>
+</div>
+
+<h3>2.3 OMTM：只有一个最重要的数字</h3>
+
+<div class="key-insight">
+<strong>OMTM（One Metric That Matters）：</strong>在任何特定阶段，只关注一个最重要的指标。不是五个，不是十个，就一个。<br><br>
+比如你现在最关心的是新用户留存——那就把所有精力放在提升次日留存上，不要同时盯着转化率、分享率、付费率。人的注意力是有限的资源。
+</h3>
+
+<div class="case-box">
+<div class="label">💡 真实场景</div>
+<p>Dropbox 在早期只做了一件事：优化邀请机制。他们发现"通过邀请注册的用户留存率是普通用户的3倍"。于是整个团队只盯这一个指标——最终邀请机制带来的用户占总用户的60%以上。</p>
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h2>三、A/B 测试：科学实验的产品版</h2>
+<p>A/B 测试（A/B Testing）是数据驱动决策中最常用的工具。它的原理其实和你初中生物课做的对照实验一样：</p>
+
+<div class="concept-card">
+<div class="term">A/B 测试的基本逻辑</div>
+<div class="cn">把用户随机分成两组：A组看到原版，B组看到新版。比较两组的指标差异。如果B组明显好于A组，且差异不是偶然造成的，那就说明新版更好。</div>
+</div>
+
+<div class="case-box">
+<div class="label">🏪 生活案例</div>
+<p>想象你在学校门口卖奶茶。你犹豫要不要把珍珠换成椰果。怎么办？别拍脑袋——明天上午用珍珠卖，下午用椰果卖。看看哪个卖得多。这就是最简单的A/B测试！当然实际产品中不能按时间段分（因为早晚用户不一样），所以要<strong>随机分配用户</strong>。</p>
+</div>
+
+<h3>3.1 如何做一次靠谱的 A/B 测试</h3>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：A/B 测试的六个步骤</button>
+<div class="collapse-content">
+<ol style="padding-left:20px">
+<li><strong>提出假设</strong>：比如"把注册按钮从绿色改成橙色，注册量会提升"。</li>
+<li><strong>确定指标</strong>：主要指标是注册转化率，次要指标是页面停留时间。</li>
+<li><strong>计算样本量</strong>：需要多少用户才能看出差异？（通常几千到几万）</li>
+<li><strong>随机分组</strong>：确保两组用户在统计上尽可能相似。</li>
+<li><strong>运行测试</strong>：让测试跑够时间（至少一周，覆盖完整周期）。</li>
+<li><strong>分析结果</strong>：看统计显著性（p-value < 0.05），再看实际业务意义。</li>
+</ol>
+</div>
+
+<h3>3.2 统计显著性：别被运气骗了</h3>
+
+<div class="warning-box">
+<strong>⚠️ 常见陷阱：</strong>测试跑了3天，B组转化率高了2%，你就宣布"成功了"。但如果测试只跑了3天，可能只是这3天恰好有某种波动。科学的做法是让测试跑够时间，然后用统计学方法判断差异是否显著。
+</div>
+
+<p>简单来说：<strong>统计显著性（Statistical Significance）</strong>回答的问题是——"这个差异有多大可能是偶然发生的？"如果概率低于5%（p < 0.05），我们就认为这个差异很可能是真实的。</p>
+
+<div class="case-box">
+<div class="label">🎰 经典案例</div>
+<p>亚马逊做过一个著名测试：把"加入购物车"按钮的颜色从橙色改成黑色。结果转化率下降了<strong>3.1%</strong>。亚马逊立刻恢复了橙色。为什么？因为3.1%对于电商来说意味着巨大的收入差异——即使按钮颜色看起来"差不多"。</p>
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<h2>四、数据陷阱：当数据说谎的时候</h2>
+<p>数据不会说谎，但<strong>解读数据的人会</strong>。以下是产品经理最常踩的三个坑：</p>
+
+<h3>4.1 辛普森悖论（Simpson's Paradox）</h3>
+
+<div class="case-box">
+<div class="label">📊 案例</div>
+<p>某APP整体数据显示：新版本的用户留存率比旧版本低（45% vs 50%）。于是产品团队准备回滚新版本。但进一步拆分后发现：<br>
+• iOS用户：新版本55% > 旧版本50%<br>
+• Android用户：新版本42% > 旧版本38%<br>
+<strong>两个平台上新版本都比旧版本好，但合在一起反而差了！</strong><br><br>
+原因：iOS用户本来留存就高，而新版本上线后更多iOS用户进来，拉高了整体基线。这就是辛普森悖论—— aggregate 数据和 subgroup 数据给出了相反的结论。</div>
+</div>
+
+<button class="collapse-btn" onclick="toggleCollapse(this)">展开：怎么避免辛普森悖论？</button>
+<div class="collapse-content">
+<p>记住一句话：<strong>"拆分一切"</strong>。看到整体数据有结论时，试着按平台、地区、用户类型、时间等维度拆分来看。如果拆分后的趋势和整体一致，那结论更可靠；如果不一致，就要深入分析原因。</p>
+</div>
+
+<h3>4.2 相关 ≠ 因果</h3>
+
+<div class="key-insight">
+<strong>黄金法则：</strong>两个东西一起变化，不代表一个导致另一个。<br><br>
+冰淇淋销量高的时候，溺水事故也多。但这不意味着"吃冰淇淋会导致溺水"——真正的原因是<strong>夏天到了</strong>，大家都去游泳，也都在吃冰淇淋。夏天是第三个变量（confounding variable）。
+</div>
+
+<div class="case-box">
+<div class="label">📱 产品场景</div>
+<p>你发现"使用深色模式的用户付费率更高"。于是你想："那就强制所有用户用深色模式！"但等等——也许本来就是喜欢深色的人更愿意付费，而不是深色模式导致了付费。这就是相关≠因果的典型。</p>
+</div>
+
+<h3>4.3 幸存者偏差（Survivorship Bias）</h3>
+
+<div class="case-box">
+<div class="label">🎯 案例</div>
+<p>有人说："某某公司没有写文档也成功了，所以文档不重要。"这是幸存者偏差——你看到了成功的公司没写文档，但你没看到那些<strong>写了文档也失败了</strong>的公司，以及<strong>没写文档也失败了</strong>的更多公司。<br><br>
+二战时，军方想给飞机加装甲。他们检查返航的飞机，发现机翼弹孔最多，就决定加固机翼。但统计学家沃德指出：应该加固<strong>引擎</strong>——因为中引擎的飞机根本没飞回来。这就是经典的幸存者偏差。</div>
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<h2>五、数据与直觉的平衡</h2>
+<p>数据很重要，但数据不是万能的。好的产品经理懂得在数据和直觉之间找到平衡。</p>
+
+<div class="concept-card">
+<div class="term">何时信数据？</div>
+<div class="cn">✓ 有明确假设需要验证<br>✓ 有大量用户数据支撑<br>✓ 测试周期足够长<br>✓ 统计显著性达标<br>✓ 指标与业务目标直接相关</div>
+</div>
+
+<div class="concept-card">
+<div class="term">何时信直觉？</div>
+<div class="cn">✓ 数据不足或质量差<br>✓ 面对全新问题（没有历史数据）<br>✓ 需要在多个数据都支持的方案中选择<br>✓ 涉及价值观和伦理判断<br>✓ 数据指向不明确或有矛盾</div>
+</div>
+
+<div class="key-insight">
+<strong>最好的策略：</strong>用直觉提出假设，用数据验证假设。直觉帮你"猜方向"，数据帮你"确认力度"。两者不是对手，是搭档。
+</div>
+
+<div class="case-box">
+<div class="label">💡 真实场景</div>
+<p>Netflix 有一个经典案例：他们发现用户喜欢看"强剧情、快节奏"的内容（数据），但制作人觉得"慢节奏、人物驱动"的故事更好（直觉）。最终他们用数据做了一个A/B测试：同一部剧的两个剪辑版本。结果证明<strong>快节奏版本的用户留存率高出20%</strong>。但Netflix并没有完全抛弃直觉——他们让数据告诉制作人"什么样的节奏有效"，而不是简单地否决创作者的判断。</p>
+</div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+<h2>六、今天就能做的行动清单</h2>
+</div>
+
+<div class="action-list">
+<h3>✅ 今日行动清单</h3>
+<div class="check-item"><input type="checkbox" id="a1"><label for="a1"><strong>找出你产品的 OMTM</strong>（One Metric That Matters）——写下"现阶段最重要的一个指标"，贴在工位上。</label><span class="tag">5分钟</span></div>
+<div class="check-item"><input type="checkbox" id="a2"><label for="a2"><strong>检查一个正在跑的指标看板</strong>——问问自己：这个指标是虚荣指标还是可行动指标？</label><span class="tag">3分钟</span></div>
+<div class="check-item"><input type="checkbox" id="a3"><label for="a3"><strong>列出一个你想验证的产品假设</strong>——比如"如果把注册流程从5步减到3步，转化率会提升"。下一步就是设计A/B测试。</label><span class="tag">10分钟</span></div>
+<div class="check-item"><input type="checkbox" id="a4"><label for="a4"><strong>回顾最近一次产品决策</strong>——你是基于数据还是直觉？下次能不能先用小测试验证一下？</label><span class="tag">5分钟</span></div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div class="quiz-section">
+<h2>🧠 互动测验</h2>
+<p style="color:#666;margin-bottom:20px">检验一下你对"数据驱动决策"的理解。每题都有解析，认真看！</p>
+<div class="score-display" id="scoreDisplay"></div>
+
+<!-- Q1 -->
+<div class="quiz-item" id="q1">
+<div class="quiz-question"><span class="q-num">Q1.</span> 你负责一款教育APP，老板问你"昨天注册了多少人？"你说"5000人"。这是一个什么类型的指标？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q1', this, 'B')">
+<span class="radio"></span>
+<span>A. 可行动指标</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q1', this, 'B')">
+<span class="radio"></span>
+<span>B. 虚荣指标</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q1', this, 'B')">
+<span class="radio"></span>
+<span>C. OMTM</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q1', this, 'B')">
+<span class="radio"></span>
+<span>D. 北极星指标</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-item" id="q2">
+<div class="quiz-question"><span class="q-num">Q2.</span> 你发现"使用我们APP的用户中，每天打开超过5次的人付费率更高"。于是你决定"强制所有用户每天打开5次"。这个推理最大的问题是什么？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q2', this, 'A')">
+<span class="radio"></span>
+<span>A. 混淆了相关性和因果关系</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q2', this, 'A')">
+<span class="radio"></span>
+<span>B. 样本量不够大</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q2', this, 'A')">
+<span class="radio"></span>
+<span>C. 没有做A/B测试</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q2', this, 'A')">
+<span class="radio"></span>
+<span>D. 付费率的数据可能有误差</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-item" id="q3">
+<div class="quiz-question"><span class="q-num">Q3.</span> 你在做一个A/B测试，测试新登录页面。跑了3天后，B组的注册转化率比A组高了5%，p-value = 0.03。以下说法正确的是？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q3', this, 'D')">
+<span class="radio"></span>
+<span>A. 可以立即宣布B组获胜并全量上线</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q3', this, 'D')">
+<span class="radio"></span>
+<span>B. p-value = 0.03说明差异很大，应该加大推广</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q3', this, 'D')">
+<span class="radio"></span>
+<span>C. 测试只跑了3天，结果不可信，应该废弃</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q3', this, 'D')">
+<span class="radio"></span>
+<span>D. 统计上有显著差异，但还需要确认测试时长足够、样本量充足，再结合业务意义做最终判断</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-item" id="q4">
+<div class="quiz-question"><span class="q-num">Q4.</span> 填空：你的APP整体数据显示新版本留存率更低，但拆分成iOS和Android后，两个平台上新版本都比旧版本好。这种现象叫做______悖论。</div>
+<input type="text" class="fill-blank-input" id="blank-q4" placeholder="输入答案...">
+<button class="check-btn" onclick="checkBlank('q4', '辛普森')">检查</button>
+<div class="quiz-feedback" id="fb-q4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-item" id="q5">
+<div class="quiz-question"><span class="q-num">Q5.</span> OMTM 是什么意思？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q5', this, 'C')">
+<span class="radio"></span>
+<span>A. Old Metric Tracking Method（旧指标追踪方法）</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q5', this, 'C')">
+<span class="radio"></span>
+<span>B. Overall Monthly Revenue（月度总收入）</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q5', this, 'C')">
+<span class="radio"></span>
+<span>C. One Metric That Matters（唯一最重要的指标）</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q5', this, 'C')">
+<span class="radio"></span>
+<span>D. Original Marketing Message（原始营销信息）</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-item" id="q6">
+<div class="quiz-question"><span class="q-num">Q6.</span> 以下哪种情况最适合用直觉而非数据来做决策？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q6', this, 'B')">
+<span class="radio"></span>
+<span>A. 已有3个月的用户行为数据，但结论相互矛盾</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q6', this, 'B')">
+<span class="radio"></span>
+<span>B. 你要为一个全新的产品形态做方向选择，没有任何历史数据可以参考</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q6', this, 'B')">
+<span class="radio"></span>
+<span>C. A/B测试显示新方案转化率提升了0.5%，p-value = 0.04</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q6', this, 'B')">
+<span class="radio"></span>
+<span>D. 你想知道用户更喜欢深色模式还是浅色模式，已经有足够的测试数据</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-item" id="q7">
+<div class="quiz-question"><span class="q-num">Q7.</span> 二战期间，统计学家沃德建议加固返航飞机的引擎而不是机翼，这是因为他在避免哪种偏差？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q7', this, 'A')">
+<span class="radio"></span>
+<span>A. 幸存者偏差（Survivorship Bias）</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q7', this, 'A')">
+<span class="radio"></span>
+<span>B. 确认偏误（Confirmation Bias）</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q7', this, 'A')">
+<span class="radio"></span>
+<span>C. 锚定效应（Anchoring Effect）</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q7', this, 'A')">
+<span class="radio"></span>
+<span>D. 选择性偏差（Selection Bias）</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-item" id="q8">
+<div class="quiz-question"><span class="q-num">Q8.</span> 填空：A/B测试中，判断差异是否由偶然因素引起的统计学标准是 p-value 小于 ____。</div>
+<input type="text" class="fill-blank-input" id="blank-q8" placeholder="输入数字...">
+<button class="check-btn" onclick="checkBlank('q8', '0.05')">检查</button>
+<div class="quiz-feedback" id="fb-q8"></div>
+</div>
+
+<!-- Q9 -->
+<div class="quiz-item" id="q9">
+<div class="quiz-question"><span class="q-num">Q9.</span> 你发现"周末使用APP的用户平均使用时长更长"。于是你决定"只在周末推送通知"。这个决策最大的风险是什么？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q9', this, 'D')">
+<span class="radio"></span>
+<span>A. 周末推送通知的成本更高</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q9', this, 'D')">
+<span class="radio"></span>
+<span>B. 用户可能会觉得通知太少</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q9', this, 'D')">
+<span class="radio"></span>
+<span>C. 工作日也应该推送通知</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q9', this, 'D')">
+<span class="radio"></span>
+<span>D. 可能是周末用户本身就更活跃（比如学生放假），而不是"周末"这个因素导致使用时长更长。直接只在周末推送可能会错失工作日的活跃机会</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q9"></div>
+</div>
+
+<!-- Q10 -->
+<div class="quiz-item" id="q10">
+<div class="quiz-question"><span class="q-num">Q10.</span> 以下关于"数据与直觉的关系"的说法，哪个最准确？</div>
+<ul class="quiz-options">
+<li class="quiz-option" onclick="selectOption('q10', this, 'C')">
+<span class="radio"></span>
+<span>A. 数据永远比直觉可靠，应该完全依赖数据</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q10', this, 'C')">
+<span class="radio"></span>
+<span>B. 直觉在经验丰富的产品经理面前比数据更有价值</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q10', this, 'C')">
+<span class="radio"></span>
+<span>C. 用直觉提出假设，用数据验证假设——两者是搭档关系</span>
+</li>
+<li class="quiz-option" onclick="selectOption('q10', this, 'C')">
+<span class="radio"></span>
+<span>D. 数据驱动意味着在产品团队中不再需要设计师和创意人员</span>
+</li>
+</ul>
+<div class="quiz-feedback" id="fb-q10"></div>
+</div>
+
+<button class="check-btn" style="margin-top:24px;width:100%;padding:14px;font-size:16px" onclick="showScore()">查看总分</button>
+</div>
+
+<footer>
+<p>TeachHub · 课程 11/12 · 产品设计 | 数据驱动决策</p>
+<p>下一课：<strong>AI Agent 产品设计</strong></p>
+</footer>
+
+</div>
+
+<script>
+const answers = {
+  q1: {correct:'B', explanation:'"5000人注册"是一个累计数字，告诉你"过去一共多少人来了"，但不告诉你"现在该做什么"。它是虚荣指标。可行动指标会说"注册转化率从12%降到了8%"，这样你才知道要去优化注册流程。'},
+  q2: {correct:'A', explanation:'这是典型的"相关≠因果"错误。每天打开5次的人付费率高，可能是因为他们是重度用户（本来就愿意花钱），而不是因为"打开5次"导致了付费。你可能付费率高的人本身就爱打开APP。要验证因果关系，需要做受控实验。'},
+  q3: {correct:'D', explanation:'p-value = 0.03 < 0.05，说明统计上有显著差异。但3天的测试可能不够（没有覆盖完整的用户行为周期），而且5%的提升是否有业务意义也需要判断。好的数据驱动不是只看p值，而是综合评估。'},
+  q4: {correct:'辛普森', explanation:'辛普森悖论（Simpson\'s Paradox）指的是：整体数据呈现的趋势，在分组数据中可能完全相反。原因是分组之间存在结构性差异（比如iOS和Android用户比例不同）。解决方法是"拆分一切"，从多维度审视数据。'},
+  q5: {correct:'C', explanation:'OMTM = One Metric That Matters（唯一最重要的指标）。核心理念是：在任何特定阶段，只关注一个最能推动你前进的指标。不是五个，不是十个，就一个。这样可以集中团队的注意力和资源。'},
+  q6: {correct:'B', explanation:'面对全新问题、没有历史数据时，直觉是唯一可用的工具。但直觉提出的假设需要用数据来验证。选项A中数据质量差但方向矛盾，应该先改善数据采集；选项C和D都有充分数据支持，应该优先相信数据。'},
+  q7: {correct:'A', explanation:'幸存者偏差：你只能看到"幸存下来"的样本（返航的飞机），而忽略了"没有幸存"的样本（坠毁的飞机）。机翼中弹但能飞回来，引擎中弹就飞不回来了。所以应该加固引擎。在产品中也要警惕——只看活跃用户的数据，会忽略流失用户的声音。'},
+  q8: {correct:'0.05', explanation:'p-value < 0.05 是统计学中常用的显著性阈值，意味着"如果实际上没有差异，出现当前结果的概率不到5%"。这是一个约定俗成的标准，不是绝对真理。有些领域用0.01更严格，有些探索性研究用0.1更宽松。关键是保持一致。'},
+  q9: {correct:'D', explanation:'周末用户时长更长，很可能是因为周末用户群体不同（学生、有空的人），而不是"周末"这个时间点本身。如果只在周末推送，你可能会错过工作日同样活跃但类型不同的用户。正确的做法是分析"哪些用户特征与高时长相关"，而不是简单归因于时间。'},
+  q10: {correct:'C', explanation:'这是数据驱动决策的黄金法则。直觉擅长发现问题和提出假设（"我觉得用户可能需要这个功能"），数据擅长验证假设（"数据表明这个功能确实提升了留存"）。两者结合，才能既创新又靠谱。'}
+};
+
+let score = 0;
+let answered = {};
+
+function toggleCollapse(btn) {
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('open');
+}
+
+function selectOption(qId, el, letter) {
+  if (answered[qId]) return;
+  answered[qId] = true;
+
+  const item = document.getElementById(qId);
+  const options = item.querySelectorAll('.quiz-option');
+  const fb = document.getElementById('fb-' + qId);
+  const correctLetter = answers[qId].correct;
+  const selectedIndex = Array.from(options).indexOf(el);
+  const correctIndex = correctLetter.charCodeAt(0) - 65;
+
+  options.forEach((opt, i) => {
+    opt.style.pointerEvents = 'none';
+    if (i === correctIndex) {
+      opt.classList.add('correct');
+    }
+    if (i === selectedIndex && i !== correctIndex) {
+      opt.classList.add('wrong');
+    }
+  });
+
+  if (selectedIndex === correctIndex) {
+    score++;
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.innerHTML = '<strong>✓ 正确！</strong> ' + answers[qId].explanation;
+  } else {
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.innerHTML = '<strong>✗ 不对哦。</strong> 正确答案是 ' + correctLetter + '。' + answers[qId].explanation;
+  }
+}
+
+function checkBlank(qId, correctAnswer) {
+  if (answered[qId]) return;
+  const input = document.getElementById('blank-' + qId);
+  const fb = document.getElementById('fb-' + qId);
+  const userAnswer = input.value.trim();
+
+  if (!userAnswer) {
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.innerHTML = '请输入答案后再检查。';
+    return;
+  }
+
+  answered[qId] = true;
+  input.disabled = true;
+
+  // Accept variations
+  let isCorrect = false;
+  if (qId === 'q4') {
+    isCorrect = userAnswer.includes('辛普森') || userAnswer === "Simpson";
+  } else if (qId === 'q8') {
+    isCorrect = userAnswer === '0.05' || userAnswer === '.05' || userAnswer === '5%';
+  }
+
+  if (isCorrect) {
+    score++;
+    input.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.innerHTML = '<strong>✓ 正确！</strong> ' + answers[qId].explanation;
+  } else {
+    input.classList.add('wrong');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.innerHTML = '<strong>✗ 不完全是。</strong> 正确答案是 "' + correctAnswer + '。' + answers[qId].explanation;
+  }
+}
+
+function showScore() {
+  const total = Object.keys(answers).length;
+  const display = document.getElementById('scoreDisplay');
+  const pct = Math.round(score / total * 100);
+  let emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '💪';
+  display.style.display = 'block';
+  display.innerHTML = emoji + ' 你的得分：' + score + ' / ' + total + ' (' + pct + '%)';
+  display.scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+</body>
+</html>
