@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第10课 — 去殖民化：新兴国家的崛起</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .timeline-card .event {
+    padding: 0.35rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card .event::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .timeline-card .event .year {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .concept-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: #f9fafb;
+  }
+
+  .concept-box h3 {
+    margin-top: 0;
+  }
+
+  .concept-box ul {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .concept-box ul li {
+    margin-bottom: 0.35rem;
+  }
+
+  .chinese-note {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .chinese-note strong { color: #e65100; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-section h2 {
+    margin-top: 0;
+  }
+
+  .quiz-question {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .quiz-question .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+  }
+
+  .quiz-question .context {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .quiz-question .sentence {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-question .sentence .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px dashed var(--accent);
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .feedback.wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .score-box .score-label { color: var(--muted); font-size: 0.9rem; }
+
+  .followup {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .followup strong { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .resource-link:hover { opacity: 0.9; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  .nav-disabled {
+    color: var(--muted);
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  @media print {
+    body { padding: 1.5cm; max-width: none; }
+    .option-btn, .feedback, .score-box { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第10课：去殖民化——新兴国家的崛起</h1>
+<p class="lesson-meta">第10课 · ~10 分钟 · 20世纪最大的地缘政治变革</p>
+
+<div class="goal-box">
+  <strong>学完本课之后</strong>，你将能够解释去殖民化的起因、过程和影响，理解新兴独立国家面临的挑战，以及为什么"独立"只是斗争的开始而不是终点。
+</div>
+
+<h2>什么是去殖民化</h2>
+<p>去殖民化（Decolonization）是指20世纪中叶，殖民地人民通过政治谈判或武装斗争摆脱殖民统治、建立独立国家的过程。它不仅仅是"殖民地独立"——它还涉及文化认同的重建、经济结构的转型，以及在国际秩序中寻找新位置。</p>
+
+<div class="concept-box">
+  <h3>去殖民化的两种路径</h3>
+  <ul>
+    <li><strong>和平过渡</strong>：印度、加拿大、澳大利亚等——通过谈判和政治协商实现独立</li>
+    <li><strong>武装斗争</strong>：阿尔及利亚、越南、安哥拉等——通过长期的军事冲突赢得独立</li>
+  </ul>
+  <p>选择哪种路径取决于殖民者的意愿、民族主义运动的组织程度，以及国际环境的制约。</p>
+</div>
+
+<h2>为什么去殖民化发生在二战之后</h2>
+<p>去殖民化不是偶然的。它有深刻的结构性原因：</p>
+
+<div class="timeline-card">
+  <h3>去殖民化的催化剂</h3>
+  <div class="event"><span class="year">二战削弱了殖民帝国</span>：英国、法国、荷兰在战争中元气大伤，无力维持庞大的海外帝国</div>
+  <div class="event"><span class="year">美苏反殖民立场</span>：两个超级大国都反对旧式殖民主义——美国为了打开市场，苏联为了输出革命</div>
+  <div class="event"><span class="year">民族主义觉醒</span>：受过西方教育的本地精英回到祖国，用殖民者的理念（自由、平等、自决）来反对殖民统治</div>
+  <div class="event"><span class="year">联合国宪章</span>：1945年联合国成立，将"民族自决"写入宪章，为独立运动提供了国际法依据</div>
+  <div class="event"><span class="year">万隆会议（1955年）</span>：29个亚非国家在印尼万隆召开会议，成立了"不结盟运动"，标志着第三世界的崛起</div>
+</div>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>去殖民化最讽刺的一点是——殖民者教给本地人的"自由"和"自决"理念，最终成为了推翻殖民统治最有力的武器。甘地说："英国人在印度的统治之所以能持续，是因为我们允许它存在。"
+</div>
+
+<h2>非洲的去殖民化浪潮</h2>
+<p>非洲是去殖民化最激烈、最复杂的战场。1960年被称作"非洲年"——这一年有17个非洲国家获得独立。</p>
+
+<h3>撒哈拉以南非洲：人为边界的问题</h3>
+<p>1884年的柏林会议上，欧洲列强在没有非洲人参与的情况下，用尺子和直线在地图上划分了非洲。这些边界完全无视了种族、语言和文化分布。</p>
+
+<div class="concept-box">
+  <h3>"柏林会议"的后果</h3>
+  <p>欧洲列强将同一个族群分割到不同殖民地，或将多个敌对族群强行纳入同一殖民地。独立后，这些人为边界成为无数冲突的根源：</p>
+  <ul>
+    <li><strong>卢旺达</strong>：比利时殖民者将胡图族和图西族制度化对立，埋下了1994年种族灭绝的种子</li>
+    <li><strong>尼日利亚内战（1967–1970）</strong>：比亚法拉分离运动源于殖民时期北部和南部的结构性不平等</li>
+    <li><strong>索马里</strong>：英、意、法殖民边界将索马里族人分割在五个不同殖民地</li>
+  </ul>
+</div>
+
+<h3>阿尔及利亚：法国最血腥的殖民战争</h3>
+<p>阿尔及利亚独立战争（1954–1962）是20世纪最残酷的去殖民化战争之一。法国视阿尔及利亚为"法国领土的一部分"而非殖民地，因此拒绝谈判。民族解放阵线（FLN）进行了长达8年的游击战，造成约30万人死亡。最终戴高乐政府被迫承认阿尔及利亚独立，但留下了深重的创伤。</p>
+
+<div class="chinese-note">
+  <strong>记住：</strong>阿尔及利亚战争迫使法国重新思考自己的殖民政策。此后，法国转向"法非共同体"模式——名义上给予独立，但通过经济和文化纽带保持影响力。这种"新殖民主义"关系至今仍在影响非洲法语区。
+</strong>
+</div>
+
+<h2>亚洲的去殖民化</h2>
+
+<h3>印度：非暴力抵抗的胜利</h3>
+<p>甘地领导的印度独立运动是去殖民化中最具标志性的案例。其核心策略是"非暴力不合作"——拒绝服从殖民政府的法律、税收和商业活动，同时坚持不诉诸暴力。</p>
+
+<div class="concept-box">
+  <h3>非暴力抵抗的三个要素</h3>
+  <ul>
+    <li><strong>道德高地</strong>：面对殖民者的暴力镇压，保持非暴力赢得了国际同情</li>
+    <li><strong>经济破坏</strong>：抵制英国商品、自行纺纱，打击了殖民经济的基础</li>
+    <li><strong>合法性侵蚀</strong>：当数百万人拒绝承认殖民统治的合法性时，统治成本变得不可承受</li>
+  </ul>
+</div>
+
+<p>但印度独立也伴随着巨大的代价——1947年印巴分治导致了约1500万人流离失所、超过100万人死于宗教冲突。去殖民化不是简单的"换一面旗帜"，它往往撕裂社会结构。</p>
+
+<h3>越南：从反殖民到冷战前线</h3>
+<p>胡志明领导的越南独立运动最初是针对法国殖民统治的，但很快被卷入冷战框架。1954年奠边府战役击败法国后，越南被临时分为南北两部分。美国随后介入，导致了一场持续20年的战争。</p>
+
+<div class="chinese-note">
+  <strong>关键转折：</strong>奠边府战役（1954年）是去殖民化的里程碑——这是亚洲国家首次在正面战场上击败欧洲殖民强国。它证明了殖民统治并非不可战胜，鼓舞了全球的反殖民运动。
+</div>
+
+<h2>去殖民化后的挑战：独立只是开始</h2>
+<p>获得独立并不意味着问题解决。事实上，对许多新兴国家来说，最难的部分才开始：</p>
+
+<div class="timeline-card">
+  <h3>新兴国家的五大困境</h3>
+  <div class="event"><strong>经济依赖</strong>：殖民时期建立的单一经济结构（如只种棉花或只采矿）难以在短时间内转型</div>
+  <div class="event"><strong>政治制度</strong>：照搬西方民主制度往往水土不服，许多国家陷入军人政变或一党专政</div>
+  <div class="event"><strong>边界争端</strong>：人为划定的边界引发持续的领土冲突</div>
+  <div class="event"><strong>族群分裂</strong>：殖民者"分而治之"的策略留下的族群矛盾在独立后爆发</div>
+  <div class="event"><strong>新殖民主义</strong>：前殖民强国和国际企业通过经济手段继续保持影响力</div>
+</div>
+
+<h3>第一世界、第二世界与第三世界</h3>
+<p>去殖民化催生了"第三世界"的概念——那些既不隶属于美国为首的西方阵营，也不隶属于苏联为首的东方阵营的国家。1961年成立的"不结盟运动"有120个成员国，代表了全球三分之二的人口。</p>
+
+<div class="concept-box">
+  <h3>不结盟运动的遗产</h3>
+  <p>不结盟运动试图在冷战的夹缝中为新兴国家争取自主空间。虽然它在经济上的成就有限，但它做了一件重要的事：<strong>改变了国际话语</strong>——让殖民主义从"理所当然"变成了"不道德"。这种话语的转变本身就是巨大的胜利。</p>
+</div>
+
+<h2>去殖民化与当代世界</h2>
+
+<h3>1. 新殖民主义</h3>
+<p>虽然形式上的殖民帝国已经消失，但经济不平等依然存在。法国在非洲的"法郎区"、中国在中非的资源投资、美国在拉门的干预——都是新殖民主义的例子。独立不等于自主。</p>
+
+<h3>2. 文化去殖民化</h3>
+<p>去殖民化不仅是政治和经济过程，也是文化和心理过程。后殖民思想家如法农（Frantz Fanon）、萨义德（Edward Said）和斯皮瓦克（Gayatri Spivak）探讨了殖民主义如何塑造被殖民者的思维方式，以及如何进行"去殖民化"的心理重建。</p>
+
+<div class="chinese-note">
+  <strong>法农的洞见：</strong>在《黑皮肤，白面具》中，法农指出殖民主义最深的伤害不是物质上的剥夺，而是让被殖民者内化"白人优越"的观念。真正的独立需要同时解放身体和心灵。
+</div>
+
+<h3>3.  reparations（赔偿）之争</h3>
+<p>近年来，前殖民国家是否应该为历史上的殖民剥削向曾经被殖民的国家赔偿，成为全球热议的话题。英国是否应该为印度独立时的掠夺进行赔偿？法国是否应该归还贝宁青铜器？这些问题没有简单的答案，但反映了去殖民化尚未完成的事实。</p>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>去殖民化不是一个事件，而是一个过程。政治独立可能在几十年前就完成了，但经济自主、文化重建和历史正义的追求仍在继续。理解这一点，就能理解当今全球南方国家的外交立场。
+</div>
+
+<div class="quiz-section">
+  <h2>练习：理解去殖民化</h2>
+  <p>选择正确答案，每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解去殖民化的起因</div>
+    <div class="sentence">去殖民化浪潮在二战后爆发的最关键结构性原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">殖民地人民突然觉醒，要求独立</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">二战削弱了殖民帝国，美苏都反对旧式殖民主义</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解非洲去殖民化的特殊问题</div>
+    <div class="sentence">1884年柏林会议对非洲的影响是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">欧洲列强在非洲人参与的情况下用直线划分了殖民地</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">欧洲列强在没有非洲人参与的情况下用直线划分了殖民地，留下了人为边界问题</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解非暴力抵抗的机制</div>
+    <div class="sentence">甘地的非暴力不合作运动之所以有效，核心原因是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">英国人突然良心发现，同意印度独立</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">当数百万人拒绝承认殖民统治的合法性时，统治成本变得不可承受</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解"第三世界"概念</div>
+    <div class="sentence">"第三世界"指的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">世界上最贫穷的国家</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">不隶属于美国或苏联阵营的独立国家，主要是去殖民化后的新兴国家</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解去殖民化后的挑战</div>
+    <div class="sentence">阿尔及利亚独立战争最突出的特点是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">法国主动放弃阿尔及利亚，和平移交权力</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">法国视阿尔及利亚为"法国领土"而非殖民地，战争异常残酷</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解文化去殖民化</div>
+    <div class="sentence">法农认为殖民主义最深的伤害是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">物质上的贫困和资源掠夺</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">让被殖民者内化"白人优越"的观念，伤害了心灵</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解去殖民化的时间线</div>
+    <div class="sentence">1960年被称为"非洲年"是因为：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">这一年有17个非洲国家获得独立</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">非洲统一组织在这一年成立</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解去殖民化的当代意义</div>
+    <div class="sentence">"新殖民主义"指的是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">前殖民国家重新派军队占领曾经的殖民地</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">前殖民强国和国际企业通过经济手段继续保持对被独立国家的影响力</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的历史导师。不理解法农所说的"去殖民化心灵"是什么意思？不确定新殖民主义和旧殖民主义的区别？直接问，我来解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://www.penguinrandomhouse.com/books/283238/the-wretched-of-the-earth-by-frantz-fanon/" target="_blank">《地球上不幸的人》</a>——弗朗茨·法农。理解殖民主义如何摧毁人的尊严，以及被压迫者如何通过斗争找回人性。
+  <br><br>
+  <a href="../reference/去殖民化.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0009-the-cold-war.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0011-digital-age.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '去殖民化是结构性变化的结果。二战让英法等殖民帝国元气大伤——它们既没有财力也没有意愿维持庞大的海外帝国。同时，美苏两个超级大国出于各自的利益都反对旧式殖民主义。',
+      wrong: '殖民地人民的觉醒当然是必要的，但如果没有二战的结构性变化——殖民帝国衰落、美苏反殖民、联合国宪章——民族主义运动很难在短期内取得如此大规模的胜利。'
+    },
+    q2: {
+      correct: '柏林会议的关键问题是"没有非洲人参与"。欧洲列强用直尺在地图上画线，完全无视了种族、语言和文化的现实。这些人为边界独立后成为无数冲突的根源。',
+      wrong: '恰恰相反——非洲人被完全排除在会议之外。柏林会议是纯粹的欧洲人游戏，他们像分割蛋糕一样分割非洲大陆，留下了深远的人为边界问题。'
+    },
+    q3: {
+      correct: '非暴力不合作的核心逻辑是：统治需要被统治者的配合。当数百万人拒绝配合时，殖民统治的成本远远超过了收益。英国不是"良心发现"，而是算了一笔经济账——继续统治印度已经不划算了。',
+      wrong: '英国确实考虑了国际舆论和道德因素，但决定性因素是经济和政治成本。当非暴力不合作运动让印度无法治理时，英国意识到维持殖民统治的代价已经不可承受。'
+    },
+    q4: {
+      correct: '"第三世界"不是指"最贫穷的世界"，而是指在冷战中不选边的国家。这些国家大多数是去殖民化后的新兴国家，它们希望通过不结盟运动在国际舞台上发出自己的声音。',
+      wrong: '"第三世界"的定义不是经济意义上的"贫穷"，而是政治意义上的"不选边"。许多第三世界国家并不穷——比如1970年代的石油富国。关键在于它们不属于美国或苏联阵营。'
+    },
+    q5: {
+      correct: '法国是唯一一个将部分殖民地视为"本国领土"的殖民国家。阿尔及利亚被法国划分为四个省，与法国本土无异。因此当独立运动兴起时，法国反应特别激烈，导致了长达8年的血腥战争。',
+      wrong: '法国绝不是主动放弃阿尔及利亚的。它视阿尔及利亚为法国的一部分，拒绝谈判，进行了残酷的军事镇压。直到1962年，在战争造成巨大伤亡和国际压力下，戴高乐才被迫承认独立。'
+    },
+    q6: {
+      correct: '法农是精神科医生，他观察到殖民主义最深的伤害不是物质上的——而是心理上的。被殖民者内化了殖民者的价值观，认为自己低人一等。这种"黑皮肤，白面具"的状态才是真正的殖民牢笼。',
+      wrong: '物质贫困当然是殖民主义的后果，但法农作为精神科医生的独特贡献在于揭示了心理层面的伤害。他认为，即使获得了政治独立，如果心灵没有被"去殖民化"，真正的解放就不会到来。'
+    },
+    q7: {
+      correct: '1960年有17个非洲国家获得独立——包括喀麦隆、多哥、马达加斯加、刚果（利奥波德维尔）、索马里、尼日尔、布基纳法索（上沃尔特）、贝宁（达荷美）、尼日利亚等。这一年标志着非洲去殖民化的高潮。',
+      wrong: '非洲统一组织成立于1963年，不是1960年。1960年被称为"非洲年"是因为这一年创纪录地有17个非洲国家获得独立，而不是因为某个组织的成立。'
+    },
+    q8: {
+      correct: '新殖民主义的核心特征是：名义上独立，但实际上通过经济手段（债务、资源控制、跨国公司）保持影响力。法国在非洲的"法郎区"、前殖民公司在原殖民地的资源开采权，都是典型例子。',
+      wrong: '新殖民主义不是派军队重新占领——那是旧殖民主义的延续。新殖民主义的特点是"看不见的手"：通过经济依赖、债务陷阱和文化影响力来控制前殖民地，而不是直接的军事占领。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对去殖民化的理解很扎实。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>
