@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第11课 — 数字时代：信息革命</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+
+  .timeline-card h3 {
+    font-size: 1.05rem;
+    margin-top: 0;
+    color: var(--accent);
+  }
+
+  .timeline-card .event {
+    padding: 0.35rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-card .event::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+
+  .stat-box {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Merriweather', Georgia, serif;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .key-term {
+    background: #f5f5f5;
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .key-term strong { color: var(--accent); }
+
+  .chinese-note {
+    background: #fff8e1;
+    border-left: 3px solid var(--warn-border);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .comparison-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: #f9f9f9;
+  }
+
+  .quiz-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-question {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .q-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .context {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .sentence {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .option-btn {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+
+  .option-btn:hover:not([disabled]) {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+
+  .option-btn.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+  }
+
+  .option-btn.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+  }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .correct-fb { background: var(--correct-bg); color: var(--correct); }
+  .wrong-fb { background: var(--wrong-bg); color: var(--wrong); }
+
+  .score-box {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 2rem;
+    display: none;
+  }
+
+  .score-box.show { display: block; }
+  .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); font-family: 'Merriweather', Georgia, serif; }
+  .score-label { font-size: 0.95rem; color: var(--muted); margin-top: 0.5rem; }
+
+  .followup {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .followup a { color: var(--accent); }
+
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .resource-link:hover { background: var(--accent); color: white; }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+
+  .footer a:hover { text-decoration: underline; }
+
+  .quote-block {
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+  }
+
+  .quote-block cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-style: normal;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 1.5rem 1rem; font-size: 15px; }
+    h1 { font-size: 1.5rem; }
+    .stat-box { grid-template-columns: 1fr; }
+    .comparison-table { font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>第11课：数字时代——信息革命</h1>
+<div class="lesson-meta">自我科学与行为改变 · 第11课 · 约12分钟阅读</div>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>理解信息革命的起源、进程和深远影响。你将学会区分工业时代与数字时代的根本差异，认识互联网如何重塑了人类社会结构、经济模式和文化形态，并思考我们在算法和平台社会中面临的自由与隐私问题。
+</div>
+
+<h2>引言：我们是谁？</h2>
+
+<p>想象一下：你出生在一个没有智能手机、没有社交媒体、没有搜索引擎的世界里。你的父母通过报纸获取新闻，朋友之间用信件联系，购物要去实体店，知识藏在图书馆的书架上。现在，把这个画面翻转过来——你就生活在21世纪的数字时代。</p>
+
+<p>这场转变只用了大约三十年。从1990年代万维网诞生至今，人类社会的运行方式发生了比过去三百年工业革命还要深刻的变化。理解这个转变，就是理解我们今天所处的世界。</p>
+
+<h2>一、从工业到数字：范式转换</h2>
+
+<p>要理解数字时代的独特性，首先要明白它取代了什么。工业时代的逻辑很简单：<strong>物理世界的生产和分配</strong>。工厂生产商品，铁路运送物资，广播传递信息。而数字时代的逻辑是：<strong>信息的生成、处理和流动</strong>本身成为了核心价值。</p>
+
+<div class="comparison-table">
+  <table>
+    <thead>
+      <tr><th>维度</th><th>工业时代</th><th>数字时代</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>核心资源</td><td>煤炭、钢铁、石油</td><td>数据、注意力、算法</td></tr>
+      <tr><td>生产方式</td><td>大规模标准化</td><td>个性化、按需定制</td></tr>
+      <tr><td>信息传播</td><td>单向广播（电视台、报社）</td><td>多向网络（每个人都是节点）</td></tr>
+      <tr><td>权力中心</td><td>政府、大型企业</td><td>平台公司、社区共识</td></tr>
+      <tr><td>时间节奏</td><td>线性、可预测</td><td>即时、迭代、病毒式</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="key-term">
+  <strong>关键概念：梅特卡夫定律（Metcalfe's Law）</strong>——网络的价值与用户数量的平方成正比。这意味着互联网不是简单地"增加了一个渠道"，而是从根本上改变了社会系统的运作逻辑。每多一个用户，整个网络的潜在连接数就呈指数级增长。
+</div>
+
+<h2>二、信息革命的三个阶段</h2>
+
+<h3>1. 互联网的诞生（1960s–1990s）</h3>
+
+<p>互联网的前身是ARPANET——美国国防部高级研究计划局在1969年建立的一个实验性网络。最初的目的很简单：<strong>确保即使在核战争摧毁部分基础设施的情况下，通信网络仍然能运转</strong>。这催生了"分组交换"技术——信息被切成小块，通过不同路径传输，在目的地重新组装。</p>
+
+<div class="timeline-card">
+  <h3>里程碑时间线</h3>
+  <div class="event">1969 — ARPANET首次连接四所大学</div>
+  <div class="event">1971 — 雷·汤姆林森发明了电子邮件</div>
+  <div class="event">1983 — TCP/IP协议成为标准，现代互联网诞生</div>
+  <div class="event">1989 — 蒂姆·伯纳斯-李提出万维网构想</div>
+  <div class="event">1991 — 万维网向公众开放</div>
+  <div class="event">1993 — Mosaic浏览器发布，互联网开始普及</div>
+</div>
+
+<p>有趣的是，互联网的设计哲学从一开始就体现了<strong>去中心化</strong>的理念。没有中央服务器控制整个网络，每个节点都是平等的。这种设计不仅让网络具有极强的韧性，也无意中为后来的信息自由流通奠定了技术基础。</p>
+
+<h3>2. Web 2.0：人人都是创作者（2004–2010s）</h3>
+
+<p>如果说Web 1.0是"只读"的互联网（你只能浏览静态页面），那么Web 2.0就是"读写"的时代。博客、维基百科、YouTube、Facebook——这些平台让普通人从信息的消费者变成了生产者。</p>
+
+<p>这一转变的意义怎么强调都不为过。在历史上，信息的生产一直是少数精英的特权——记者、编辑、出版商控制着知识的闸门。Web 2.0打破了这道闸门。任何人只要有网络连接，就可以向世界发表观点、分享知识、创作艺术。</p>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>Web 2.0不仅是技术的进步，更是社会权力的重新分配。它让"每个人都可以是媒体"，但也带来了虚假信息、回声室效应和信息过载等新问题。理解这一点，你就能理解今天的大多数网络争议。
+</div>
+
+<h3>3. 移动互联与AI时代（2010s–至今）</h3>
+
+<p>2007年iPhone的发布和2008年App Store的上线，标志着互联网从"桌面设备"走向了"口袋设备"。从此，互联网不再是一个你需要"访问"的东西，而成了你随身携带的环境——就像空气一样无处不在。</p>
+
+<p>与此同时，算法和人工智能开始深度介入我们的日常生活。从Netflix的电影推荐到TikTok的内容推送，从Google搜索排序到Facebook的信息流，算法决定了我们看到什么、读到什么、买到什么。我们正在从"人找信息"的时代进入"信息找人"的时代。</p>
+
+<div class="quote-block">
+  "在信息丰富的地方，缺乏的却是信息的选择。"
+  <cite>—— 赫伯特·西蒙（Herbert Simon），1971年，早在互联网普及之前</cite>
+</div>
+
+<h2>三、数字时代如何改变了世界</h2>
+
+<h3>1. 经济：从制造业到平台经济</h3>
+
+<p>数字时代最深刻的经济变革是<strong>平台经济</strong>的崛起。亚马逊、阿里巴巴、Uber、Airbnb——这些公司自己不生产任何产品，但它们构建了连接买家和卖家的基础设施。它们的价值不在于拥有多少工厂或仓库，而在于拥有多少用户和多少数据。</p>
+
+<div class="stat-box">
+  <div class="stat-item">
+    <div class="stat-number">54亿</div>
+    <div class="stat-label">全球互联网用户（2023年）</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">5.3小时</div>
+    <div class="stat-label">日均上网时间</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">60%+</div>
+    <div class="stat-label">全球电商交易占比</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">$19万亿</div>
+    <div class="stat-label">数字经济占全球GDP比重</div>
+  </div>
+</div>
+
+<p>这种转变带来了前所未有的便利，也引发了关于<strong>垄断、劳动权益和数据隐私</strong>的深刻讨论。平台公司的员工（如外卖骑手、网约车司机）是否应该享有传统雇员的福利？平台收集的用户数据归谁所有？这些问题至今没有全球统一的解决方案。</p>
+
+<h3>2. 政治：从威权控制到数字民主</h3>
+
+<p>互联网对政治的影响是双刃剑。一方面，它降低了公民参与政治的门槛——社交媒体成为组织抗议、传播信息和监督政府的工具。2011年的"阿拉伯之春"就被称为第一场"推特革命"。</p>
+
+<p>另一方面，数字技术也被用于大规模监控和选举干预。剑桥分析公司利用Facebook数据影响2016年美国大选的事件震惊了世界。更广泛地说，算法推荐造成的"信息茧房"让人们越来越难看到彼此的观点，加剧了社会的极化。</p>
+
+<div class="key-term">
+  <strong>关键概念：信息茧房（Information Cocoons）</strong>——由学者凯斯·桑斯坦提出。当算法只推荐我们喜欢和认同的内容时，我们就被困在了一个由自己偏见构成的"茧"中，失去了接触多元观点的机会。这不仅影响个人判断，也威胁民主社会的根基。
+</div>
+
+<h3>3. 文化：从大众文化到分众文化</h3>
+
+<p>在工业时代，文化生产是"大众"的——少数几个电视台决定全国人民看什么节目，几家唱片公司决定年轻人听什么音乐。数字时代则让文化彻底"分众"——你可以找到任何亚文化的小圈子，可以在B站学编程，在小红书学做饭，在GitHub上协作开发软件。</p>
+
+<p>这种转变的自由度令人兴奋，但也带来了一个新的问题：<strong>当一切都变得触手可及时，注意力成了最稀缺的资源</strong>。平台经济的商业模式就是争夺你的注意力——你的每一次点击、停留和滑动都在为平台创造价值。</p>
+
+<h2>四、数字时代的历史意义</h2>
+
+<p>如果我们站在未来的角度回望今天，数字时代很可能被看作是人类历史上继农业革命和工业革命之后的<strong>第三次伟大范式转换</strong>。</p>
+
+<p>农业革命让人类从狩猎采集转向定居生活，创造了城市和文明。工业革命让人类从手工劳动转向机器生产，创造了现代经济和阶级社会。而信息革命正在做的事情更加深远：<strong>它重新定义了什么是"真实"、什么是"知识"、什么是"关系"</strong>。</p>
+
+<div class="chinese-note">
+  <strong>核心洞察：</strong>理解信息革命不是要记住一堆日期和事件，而是要理解一个基本事实——我们正生活在一个被代码和算法塑造的社会里。这不是说代码控制了所有人，而是说代码定义了社会系统的规则和约束。了解这些规则，你就能更好地在这个系统中行动。
+</div>
+
+<h2>五、反思：数字时代的自由与困境</h2>
+
+<p>信息革命许诺了一个自由的世界——每个人都能获取知识、表达观点、连接彼此。但这个许诺有一个阴影面：</p>
+
+<ul style="margin: 1rem 0 1rem 1.5rem;">
+  <li><strong>隐私的消亡：</strong>我们每天产生的数据量相当于图书馆里所有书籍的总和，而这些数据被谁掌握、用来做什么，往往不在我们的控制之中。</li>
+  <li><strong>自由的悖论：</strong>理论上，互联网给了每个人发声的机会；但实际上，算法决定了谁的声音被听到。我们以为自己在自由选择，但选择本身已经被精心设计和引导。</li>
+  <li><strong>真实的危机：</strong>当任何人都可以创建内容、任何图像都可以被合成、任何信息都可以被修改时，"真相"本身变成了一个需要论证的命题，而不是一种理所当然的状态。</li>
+</ul>
+
+<p>这些问题没有简单的答案。但了解它们，至少让我们在面对屏幕时多一分清醒。</p>
+
+<div class="quiz-section">
+  <h2>练习：理解数字时代</h2>
+  <p>选择正确答案，每题都有详细解释。</p>
+
+  <div class="quiz-question" id="q1">
+    <span class="q-num">Q1</span>
+    <div class="context">理解互联网的技术起源</div>
+    <div class="sentence">ARPANET最初设计的核心目的是什么？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">让大学之间共享学术论文</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">确保在核战争等灾难情况下通信网络仍能运转</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q2">
+    <span class="q-num">Q2</span>
+    <div class="context">理解梅特卡夫定律</div>
+    <div class="sentence">梅特卡夫定律指出网络的价值与什么成正比？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">与用户数量成正比</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">与用户数量的平方成正比</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q3">
+    <span class="q-num">Q3</span>
+    <div class="context">理解Web 2.0的本质</div>
+    <div class="sentence">Web 2.0相对于Web 1.0最重要的转变是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">从"只读"变为"读写"，用户从消费者变成创作者</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">从慢速网络变为高速网络</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q4">
+    <span class="q-num">Q4</span>
+    <div class="context">理解平台经济的特征</div>
+    <div class="sentence">平台公司（如Uber、Airbnb）与传统公司的本质区别在于：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">平台公司规模更大、市值更高</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">平台不拥有生产资料，而是构建连接供需的基础设施</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q5">
+    <span class="q-num">Q5</span>
+    <div class="context">理解信息茧房</div>
+    <div class="sentence">"信息茧房"问题的根源是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">人们天生喜欢看与自己观点一致的内容</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">算法推荐系统根据用户偏好筛选内容，减少了接触多元观点的机会</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q6">
+    <span class="q-num">Q6</span>
+    <div class="context">理解数字时代的经济规模</div>
+    <div class="sentence">截至2023年，数字经济约占全球GDP的：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">10%左右</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">约20%（近19万亿美元）</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q7">
+    <span class="q-num">Q7</span>
+    <div class="context">理解互联网的设计哲学</div>
+    <div class="sentence">互联网早期设计中体现的去中心化理念，其最大优势是：</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="check(this)">网络具有极强的韧性和抗毁能力，没有单点故障</button>
+      <button class="option-btn" data-correct="false" onclick="check(this)">网络运行速度更快</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="quiz-question" id="q8">
+    <span class="q-num">Q8</span>
+    <div class="context">理解数字时代的三重挑战</div>
+    <div class="sentence">以下哪一项不是数字时代带来的核心挑战？</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false" onclick="check(this)">隐私的消亡——数据被大规模收集和使用</button>
+      <button class="option-btn" data-correct="true" onclick="check(this)">互联网速度不够快，影响了用户体验</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-label" id="score-label"></div>
+  </div>
+</div>
+
+<div class="followup">
+  <strong>有疑问？</strong>随时问我——我是你的历史导师。不理解梅特卡夫定律为什么重要？不确定信息茧房和回声室效应的区别？直接问，我来解释。
+  <br><br>
+  <strong>推荐阅读：</strong><a href="https://en.wikipedia.org/wiki/The_Culture_of_Panic" target="_blank">《恐慌文化》</a>——雪莉·特克尔。理解技术如何改变了我们对自我、关系和社交生活的认知。
+  <br><br>
+  <a href="../reference/数字时代.html" class="resource-link">查看速查参考卡</a>
+</div>
+
+<div class="footer">
+  <a href="0010-decolonization.html">上一课</a> | <a href="../index.html">目录</a> | <a href="0012-future-history.html">下一课</a>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: 'ARPANET是美国国防部高级研究计划局在冷战时期建立的实验性网络。核心设计理念是"分组交换"——即使部分节点被摧毁，网络仍能通过其他路径传输信息。这种去中心化的设计不仅是为了应对核战争，也为后来互联网的韧性奠定了基础。',
+      wrong: '学术共享确实是ARPANET后来的一个重要用途，但不是最初的设计目的。1969年的ARPANET主要解决的是军事通信的可靠性和抗毁性问题。'
+    },
+    q2: {
+      correct: '梅特卡夫定律指出网络价值与用户数的平方成正比。这意味着每增加一个用户，整个网络的价值不是线性增长，而是指数级增长。这就是为什么互联网、电话网络和社交平台的价值会随着用户增多而爆炸性增长。',
+      wrong: '如果是与用户数量成正比（线性关系），那网络的价值增长会慢得多。平方关系意味着网络效应的威力——这就是为什么互联网巨头能在短时间内积累巨大的价值和影响力。'
+    },
+    q3: {
+      correct: 'Web 1.0是"只读"的——网站提供内容，用户被动浏览。Web 2.0是"读写"的——用户可以评论、上传视频、写博客、创建内容。Facebook、YouTube、Wikipedia都是Web 2.0的典型代表，它们的核心创新不是技术，而是让用户成为内容的创造者。',
+      wrong: '网速的提升当然重要，但它不是Web 2.0的本质特征。Web 2.0的革命性在于社会关系的转变：从少数人生产内容给多数人消费，变成了每个人既是消费者也是生产者。'
+    },
+    q4: {
+      correct: '平台公司的核心竞争力不在于拥有资产，而在于拥有连接。Uber不拥有汽车，Airbnb不拥有酒店，但它们连接了供给方和需求方，从中抽取佣金。这种轻资产模式让它们能够以极快的速度扩张到全球市场。',
+      wrong: '规模大小是结果而非本质。很多传统制造业公司（如丰田、沃尔玛）的市值和规模远超平台公司。平台公司的本质特征是：不拥有生产资料，而是搭建连接供需双方的基础设施和规则体系。'
+    },
+    q5: {
+      correct: '信息茧房的根源在于算法推荐。当平台根据你的点击和停留时间来推荐内容时，它们实际上是在不断强化你已有的观点和偏好。久而久之，你就看不到不同角度的声音了。这不是因为你"天生喜欢"一致的信息——而是因为系统设计让你难以接触到不一致的信息。',
+      wrong: '人们确实倾向于寻找确认自己观点的信息（确认偏误），但这只是问题的一半。另一半——也是更重要的一半——是算法系统主动过滤掉了你不认同的内容，让你"看不见"不同的观点。理解这一点很重要，因为它意味着我们可以主动采取措施打破茧房。'
+    },
+    q6: {
+      correct: '根据世界经济论坛和多家研究机构的数据，截至2023年，数字经济约占全球GDP的20%左右（约19万亿美元）。这个数字还在快速增长，预计到2030年将超过30%。',
+      wrong: '10%低估了数字经济的规模。到2023年，数字经济已经占据了全球GDP的近五分之一。这个比例在发达国家甚至更高——美国的数字经济占比已超过30%。'
+    },
+    q7: {
+      correct: '互联网的去中心化设计意味着没有单一的控制中心。即使部分节点被破坏，信息仍然可以通过其他路径传输。这种设计让互联网具有极强的抗毁能力——这也是为什么ARPANET的设计能够在冷战时期幸存下来，并在和平时期发展为全球性的基础设施。',
+      wrong: '去中心化设计对运行速度没有直接影响。它的核心优势是韧性和可靠性——没有单点故障，网络不会因为某个节点失效而整体瘫痪。这正是它在军事应用中被看重的原因。'
+    },
+    q8: {
+      correct: '互联网速度不是数字时代的核心挑战——事实上，网速一直在提升。真正的挑战是隐私消亡、自由的悖论（看似自由选择实则被算法引导）和真实性的危机（虚假信息、深度伪造等）。网速快反而加剧了这些问题——更快的传播意味着虚假信息扩散得更快。',
+      wrong: '网速确实是数字时代的一个方面，但它不是"挑战"——它是进步。真正的挑战在于技术带来的社会、伦理和政治后果，而不是技术性能本身。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对数字时代的理解很全面。';
+      else if (score >= 6) label.textContent = '做得好！回顾你做错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>
