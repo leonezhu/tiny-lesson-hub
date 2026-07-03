@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第12课 — 未来史：人类文明走向何方</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #fdfdfd;
+    --text: #1a1a1a;
+    --accent: #2a6496;
+    --accent-light: #e8f0fa;
+    --muted: #666;
+    --border: #e0e0e0;
+    --correct: #2e7d32;
+    --correct-bg: #e8f5e9;
+    --wrong: #c62828;
+    --wrong-bg: #ffebee;
+    --warn-bg: #fff8e1;
+    --warn-border: #f9a825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+
+  .lesson-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .goal-box {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .goal-box strong { color: var(--accent); }
+
+  h2 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.05rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .timeline-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+    background: #fafafa;
+  }
+
+  .timeline-card .era {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.95rem;
+  }
+
+  .timeline-card p { margin-top: 0.5rem; }
+
+  .key-insight {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn-border);
+    padding: 0.75rem 1rem;
+    margin: 1.25rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .key-insight strong { color: #e65100; }
+
+  ul, ol {
+    margin: 0.75rem 0 0.75rem 1.5rem;
+  }
+
+  li { margin-bottom: 0.35rem; }
+
+  .quiz-section {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #fafafa;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .quiz-question p.q-title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .option-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.65rem 1rem;
+    margin: 0.4rem 0;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    line-height: 1.5;
+    transition: border-color 0.2s;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+
+  .option-btn.reveal-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+
+  .correct-fb {
+    background: var(--correct-bg);
+    border: 1px solid var(--correct);
+    color: var(--correct);
+  }
+
+  .wrong-fb {
+    background: var(--wrong-bg);
+    border: 1px solid var(--wrong);
+    color: var(--wrong);
+  }
+
+  #score-box {
+    text-align: center;
+    padding: 1.25rem;
+    background: var(--accent-light);
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    display: none;
+  }
+
+  #score-box.show { display: block; }
+
+  #score-num {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  #score-label {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+
+  .nav-links {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .nav-links a:hover { text-decoration: underline; }
+
+  blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 1.25rem 0;
+    background: var(--accent-light);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    background: var(--accent-light);
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) { background: #fafafa; }
+</style>
+</head>
+<body>
+
+<h1>未来史：人类文明走向何方</h1>
+<p class="lesson-meta">自我科学与行为改变 · 第10课 · 世界史通识系列最终课</p>
+
+<div class="goal-box">
+  <strong>本课目标：</strong>站在历史的终点回望，我们才能真正理解历史的意义。本课将带我们从21世纪的视角出发，眺望未来几个世纪人类文明可能的发展方向——技术、社会、环境和文明形态将如何演变？我们将运用前9课所学的历史思维工具，尝试理解"正在成为历史"的当下。
+</div>
+
+<!-- ========== 第一节 ========== -->
+<h2>一、历史学的终极问题</h2>
+
+<p>在前9课中，我们走过了罗马的兴衰、秦汉的大一统、伊斯兰的黄金时代、中世纪的封建制度、文艺复兴、工业革命、两次世界大战、去殖民化和数字时代。每一课都在回答一个问题：<strong>过去的人类是如何生活的？他们做了什么决定？这些决定如何塑造了今天的世界？</strong></p>
+
+<p>但历史学还有一个更深层次的问题，它贯穿所有课程，却很少被直接讨论：<strong>历史会走向哪里？</strong></p>
+
+<p>这个问题很难回答，因为<strong>未来还没有发生</strong>。但历史学家有一个独特的优势——他们知道，人类的历史不是直线前进的，而是充满了转折、意外和不可预测的变化。罗马帝国不会想到自己会在千年之后被重新审视；秦始皇不可能预见他的统一文字政策会影响两千年后的中国人；工业革命的先驱们也无法想象机器会将人类送入太空。</p>
+
+<div class="key-insight">
+  <strong>关键洞察：</strong>预测未来的最好方式，不是猜测它会变成什么样子，而是理解推动变化的深层力量——技术、环境、制度和思想的互动——并思考这些力量将把我们带向何处。
+</div>
+
+<h3>历史学家如何看待未来？</h3>
+
+<p>历史上，有几位思想者尝试过回答这个问题：</p>
+
+<ul>
+<li><strong>奥威尔（George Orwell）</strong>在《1984》中警告：极权技术可能让人类失去自由。</li>
+<li><strong>赫胥黎（Aldous Huxley）</strong>在《美丽新世界》中提出另一种恐惧：人类不是被压迫奴役，而是被娱乐和舒适所驯化。</li>
+<li><strong>汤因比（Arnold Toynbee）</strong>认为文明的兴衰取决于它们是否能回应挑战——未来文明面临的挑战将更加复杂。</li>
+<li><strong>尤瓦尔·赫拉利（Yuval Noah Harari）</strong>在《未来简史》中指出：人类正从"饥荒、瘟疫、战争"三大旧问题转向"永生、幸福、神力"三大新问题。</li>
+</ul>
+
+<p>这些预测的共同点是：<strong>它们都根植于过去的经验</strong>。奥威尔看到了20世纪极权主义的兴起，赫胥黎看到了消费社会和大众传媒的膨胀。理解他们，就能理解我们对未来的担忧从何而来。</p>
+
+<!-- ========== 第二节 ========== -->
+<h2>二、技术奇点与后人类时代</h2>
+
+<p>如果我们回顾前9课，会发现一个反复出现的主题：<strong>技术变革是历史最重要的转折点之一</strong>。农业革命让人类从狩猎采集走向定居；印刷术让知识传播变得容易；工业革命改变了生产方式；数字革命重塑了信息社会。</p>
+
+<p>那么，下一个转折点是什么？</p>
+
+<h3>人工智能的加速发展</h3>
+
+<p>如果说工业革命是人类体力劳动的延伸，那么人工智能就是人类<strong>脑力劳动的延伸</strong>。这不是一个比喻——AI已经在医疗诊断、科学研究、艺术创作等领域展现出超越人类的能力。</p>
+
+<p>让我们看看一些关键趋势：</p>
+
+<table>
+  <tr>
+    <th>领域</th>
+    <th>当前状态（2020年代）</th>
+    <th>可能的未来方向</th>
+  </tr>
+  <tr>
+    <td>计算能力</td>
+    <td>云计算、边缘计算普及</td>
+    <td>量子计算可能突破经典计算极限</td>
+  </tr>
+  <tr>
+    <td>人工智能</td>
+    <td>专用AI超越人类（围棋、医疗等）</td>
+    <td>通用人工智能（AGI）是否可能？</td>
+  </tr>
+  <tr>
+    <td>生物技术</td>
+    <td>基因编辑（CRISPR）临床应用</td>
+    <td>人类基因改造、寿命延长</td>
+  </tr>
+  <tr>
+    <td>能源</td>
+    <td>可再生能源占比上升</td>
+    <td>核聚变商业化？能源几乎无限？</td>
+  </tr>
+  <tr>
+    <td>空间探索</td>
+    <td>火星探测、商业航天</td>
+    <td>星际殖民？多行星文明？</td>
+  </tr>
+</table>
+
+<h3>"奇点"概念</h3>
+
+<p>雷·库兹韦尔（Ray Kurzweil）在1990年代提出了"技术奇点"的概念：<strong>当人工智能超越人类智能时，技术发展将加速到人类无法预测的程度</strong>。就像大爆炸之前的宇宙奇点一样，一旦越过这个临界点，"未来"将不再是我们熟悉的样子。</p>
+
+<p>这个概念有几个争议点：</p>
+
+<ol>
+<li><strong>时间线不确定：</strong>有人预测2045年到达奇点，有人认为还要几百年，也有人认为永远不会。</li>
+<li><strong>定义模糊：</strong>"超越人类智能"是什么意思？是计算速度？创造力？情感理解？不同维度的"超越"可能发生在不同时间。</li>
+<li><strong>历史教训：</strong>历史上每一次技术革命都曾被认为"将改变一切"，但大多数变革是渐进的，而非颠覆性的。</li>
+</ol>
+
+<div class="key-insight">
+  <strong>历史学家的提醒：</strong>技术从来不是自主发展的。它受到社会、经济、政治和文化力量的塑造。同样，技术的后果也取决于人类如何使用它。技术奇点不是注定的命运——它是一个需要被理解和引导的过程。
+</div>
+
+<!-- ========== 第三节 ========== -->
+<h2>三、环境与文明的边界</h2>
+
+<p>在前面的课程中，我们多次看到环境因素对文明的影响：</p>
+
+<ul>
+<li>罗马帝国的扩张受到地中海气候和农业条件的限制。</li>
+<li>秦汉的统一部分源于治水和大面积农业管理的需要。</li>
+<li>小冰河期（14-19世纪）引发了欧洲的气候难民潮和社会动荡。</li>
+<li>玛雅文明的衰落可能与长期干旱有关。</li>
+</ul>
+
+<p>现在，人类自身正在成为最大的环境变量。</p>
+
+<h3>人类世的到来</h3>
+
+<p>"人类世"（Anthropocene）是一个地质学概念，指<strong>人类活动已经成为地球系统主要驱动力的地质时代</strong>。这个概念之所以重要，是因为它标志着人类历史与自然历史的一次根本性交汇——以前，人类是自然的一部分；现在，人类成为塑造自然的力量。</p>
+
+<p>关键数据：</p>
+
+<ul>
+<li>全球平均气温已比工业化前水平升高约1.2°C。</li>
+<li>过去50年，物种灭绝速度比自然背景速率快了100-1000倍。</li>
+<li>人类活动每年改变约25-40%的陆地表面。</li>
+<li>海洋塑料污染已经遍布全球深海。</li>
+</ul>
+
+<h3>文明的可持续性</h3>
+
+<p>这里有一个深刻的历史学问题：<strong>文明能否无限增长？</strong></p>
+
+<p>在人类历史的绝大部分时间里，文明的增长受限于资源——土地、水、能源、食物。工业革命打破了这些限制（至少暂时地），通过化石能源和机械化实现了前所未有的增长。但增长的代价是环境的退化。</p>
+
+<p>未来可能有几种情景：</p>
+
+<ol>
+<li><strong>绿色转型成功：</strong>可再生能源、循环经济和可持续农业让人类在保护环境的同时维持繁荣。</li>
+<li><strong>选择性退化：</strong>部分地区和环境率先崩溃，人类被迫适应新的现实，文明形态发生转变。</li>
+<li><strong>技术拯救：</strong>碳捕获、地球工程等大规模技术手段逆转环境损害。</li>
+<li><strong>文明崩溃：</strong>多重环境危机叠加导致全球文明体系的部分或全面崩溃——这在历史上并非没有先例（参考青铜时代晚期崩溃、玛雅文明衰落）。</li>
+</ol>
+
+<blockquote>
+"我们不是继承了地球从祖先那里，而是从子孙那里借来了它。" ——非洲谚语
+</blockquote>
+
+<p>这句话虽然古老，但在人类世的背景下有了全新的意义。<strong>历史从来不只是关于过去——它是关于我们如何对待尚未出生的人。</strong></p>
+
+<!-- ========== 第四节 ========== -->
+<h2>四、全球秩序的重构</h2>
+
+<p>从罗马到秦汉，从工业革命到去殖民化，我们反复看到一个主题：<strong>全球秩序总是在变化</strong>。没有一个秩序是永恒的。罗马帝国衰落了，中华帝国终结了，欧洲列强失去了殖民地，冷战的两极格局瓦解了。</p>
+
+<h3>多极世界的可能性</h3>
+
+<p>21世纪的国际秩序正在经历深刻变化：</p>
+
+<ul>
+<li><strong>美国的相对衰落：</strong>二战后美国主导的自由主义国际秩序正在面临挑战。</li>
+<li><strong>中国的崛起：</strong>中国已成为世界第二大经济体，在科技、军事和外交上发挥越来越重要的作用。</li>
+<li><strong>新兴力量的多元化：</strong>印度、巴西、印尼、尼日利亚等人口大国正在崛起。</li>
+<li><strong>非国家行为体的影响力上升：</strong>跨国公司、国际组织、NGO甚至个人（通过社交媒体）都在影响全球事务。</li>
+</ul>
+
+<h3>全球治理的挑战</h3>
+
+<p>历史告诉我们，应对全球性挑战需要一个有效的全球治理体系。但全球治理一直有一个根本矛盾：<strong>问题是全球性的，但权力是地方性的</strong>。</p>
+
+<p>气候变化、大流行病、网络安全、太空资源分配——这些问题没有一个国家能单独解决。但现有的国际机构（联合国、WTO、IMF等）大多是在二战后建立的，反映的是当时的权力格局，而非今天的现实。</p>
+
+<p>未来的全球治理可能需要全新的制度设计——类似于罗马法如何从城邦法律发展为跨帝国法律体系，或者威斯特伐利亚体系如何从欧洲宗教战争中诞生。</p>
+
+<div class="key-insight">
+  <strong>历史的类比：</strong>17世纪欧洲的威斯特伐利亚体系解决了宗教战争的混乱，建立了主权国家体系。21世纪人类可能需要一个新的"威斯特伐利亚时刻"——建立一个能够应对全球性挑战的新秩序。但这一次，挑战的范围是全球的，而非区域的。
+</div>
+
+<!-- ========== 第五节 ========== -->
+<h2>五、文明的多样性与统一性</h2>
+
+<p>在前9课中，我们学习了不同文明的兴衰——罗马的、中国的、伊斯兰的、欧洲的。每一套文明都有自己独特的价值观、制度和技术。但我们也看到了一个反复出现的模式：<strong>文明之间从未真正孤立</strong>。</p>
+
+<p>丝绸之路连接了中国和罗马；伊斯兰学者保存并发展了希腊哲学，后来又传回欧洲；大航海时代将全世界连接在一起；数字时代让信息瞬间跨越国界。</p>
+
+<h3>文化融合的趋势</h3>
+
+<p>未来，文明之间的融合可能进一步深化：</p>
+
+<ul>
+<li><strong>语言的趋同：</strong>英语已成为全球通用语，同时中文、西班牙语、阿拉伯语的影响力也在上升。</li>
+<li><strong>文化的混合：</strong>全球流行文化（音乐、电影、美食）正在创造一种新的混合文化。</li>
+<li><strong>价值观的对话：</strong>人权、民主、环保等理念在全球范围内传播，同时不同文明对这些理念的诠释也在丰富它们的内涵。</li>
+</ul>
+
+<h3>文明的韧性</h3>
+
+<p>但融合不等于同质化。历史告诉我们，文明具有惊人的韧性：</p>
+
+<ul>
+<li>尽管罗马帝国灭亡了，罗马法、拉丁语和基督教深刻影响了欧洲文明。</li>
+<li>尽管清朝覆灭了，中华文明的文化和制度传统依然延续。</li>
+<li>尽管阿拉伯帝国的版图缩小了，伊斯兰文明依然是世界重要的文化和精神力量。</li>
+</ul>
+
+<p>未来，我们可能会看到一个<strong>"多元一体"</strong>的世界——全球性的技术和制度框架下，各种文明传统继续繁荣和发展。</p>
+
+<!-- ========== 第六节 ========== -->
+<h2>六、历史的启示：我们该如何面对未来？</h2>
+
+<p>作为这门世界史通识课程的最后一课，我想回到一个最基本的问题：<strong>学习历史对我们理解未来有什么帮助？</strong></p>
+
+<h3>三个历史学思维工具</h3>
+
+<p>经过前9课的学习，你现在应该掌握了几个核心的历史学思维工具：</p>
+
+<ol>
+<li><strong>长时段思维：</strong>不要只看眼前的事件，要看长期的趋势。法国大革命不是一夜之间发生的——它有几个世纪的思想积累、制度演化和经济变化作为铺垫。</li>
+    
+<li><strong>多元因果思维：</strong>历史事件很少有单一的原因。罗马的衰落不是某一个人的错，也不是某一个政策的后果——它是军事、经济、政治、社会和环境的综合作用。</li>
+    
+<li><strong>反事实思维：</strong>学会问"如果不是这样会怎样？"这帮助我们理解哪些因素是关键的、哪些是偶然的。如果没有秦始皇的统一文字，中国是否会像欧洲一样分裂成多个民族国家？</li>
+</ol>
+
+<h3>对未来的态度</h3>
+
+<p>历史不会给我们确定的答案——未来永远是不确定的。但历史能给我们一种<strong>审慎的乐观</strong>：</p>
+
+<ul>
+<li>人类经历过黑死病、两次世界大战、核威胁——但我们还在。</li>
+<li>奴隶制、殖民主义、种姓制度——这些曾经被认为是"永恒"的制度都被推翻了。</li>
+<li>贫困率、暴力死亡率、儿童死亡率——全球范围内的这些指标在过去两个世纪大幅下降。</li>
+</ul>
+
+<p>同时，历史也提醒我们保持警惕：</p>
+
+<ul>
+<li>民主制度不是自动运行的——它需要公民的参与和维护。</li>
+<li>技术进步不一定带来道德进步——核武器的发明就是一个例子。</li>
+<li>繁荣不是理所当然的——历史上许多最发达的文明最终都衰落了。</li>
+</ul>
+
+<div class="key-insight">
+  <strong>最后的思考：</strong>未来不是被预测出来的，而是被创造出来的。每一个当下的选择——个人的、集体的、全球的——都在书写未来的历史。学习历史不是为了知道未来会发生什么，而是为了明白我们有能力影响未来会怎样。
+</div>
+
+<p class="lesson-meta" style="margin-top: 2rem; font-style: italic;">🎓 恭喜你完成了世界史通识系列的最后一课！你已经走过了从罗马到数字时代、从秦汉到冷战的人类文明之旅。记住：历史不是过去的事——它是你理解现在、塑造未来的最强大的工具。</p>
+
+<!-- ========== 测验 ========== -->
+<div class="quiz-section">
+  <h2>🧠 综合测验</h2>
+  <p style="color: var(--muted); margin-bottom: 1.5rem;">用你学到的历史思维来思考未来。回答以下问题，检验你对整门课程的理解。</p>
+
+  <!-- Q1 -->
+  <div class="quiz-question" id="q1">
+    <p class="q-title">1. 以下哪项最能概括"人类世"（Anthropocene）这一概念的核心含义？</p>
+    <button class="option-btn" onclick="check(this, 'q1')">A. 人类开始使用工具的地质时代</button>
+    <button class="option-btn" onclick="check(this, 'q1')">B. 人类活动成为地球系统主要驱动力的地质时代</button>
+    <button class="option-btn" onclick="check(this, 'q1')">C. 人类首次登上月球的地质时代</button>
+    <button class="option-btn" onclick="check(this, 'q1')">D. 互联网发明之后的信息时代</button>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="quiz-question" id="q2">
+    <p class="q-title">2. 关于"技术奇点"，以下哪种说法最符合历史学家的视角？</p>
+    <button class="option-btn" onclick="check(this, 'q2')">A. 技术奇点一定会在2045年到来</button>
+    <button class="option-btn" onclick="check(this, 'q2')">B. 技术奇点是一个纯粹的科幻概念，与历史无关</button>
+    <button class="option-btn" onclick="check(this, 'q2')">C. 技术变革的速度和影响是历史研究的主题，但技术从来不是自主发展的</button>
+    <button class="option-btn" onclick="check(this, 'q2')">D. 技术奇点意味着历史将结束，不再有重大变化</button>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="quiz-question" id="q3">
+    <p class="q-title">3. 威斯特伐利亚体系的建立给21世纪全球治理的启示是什么？</p>
+    <button class="option-btn" onclick="check(this, 'q3')">A. 区域冲突总是通过战争来解决</button>
+    <button class="option-btn" onclick="check(this, 'q3')">B. 新的全球性挑战可能需要全新的制度设计，就像当年主权国家体系取代宗教权威一样</button>
+    <button class="option-btn" onclick="check(this, 'q3')">C. 联合国已经足够完善，不需要任何改革</button>
+    <button class="option-btn" onclick="check(this, 'q3')">D. 全球治理是不可能的，因为各国利益永远冲突</button>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="quiz-question" id="q4">
+    <p class="q-title">4. 以下哪个趋势最能体现"文明的韧性"？</p>
+    <button class="option-btn" onclick="check(this, 'q4')">A. 罗马帝国灭亡后，罗马法、拉丁语和基督教继续影响欧洲文明</button>
+    <button class="option-btn" onclick="check(this, 'q4')">B. 互联网让所有人都使用相同的技术</button>
+    <button class="option-btn" onclick="check(this, 'q4')">C. 所有国家的政府形式最终都会变成民主制</button>
+    <button class="option-btn" onclick="check(this, 'q4')">D. 语言正在变得越来越简单</button>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="quiz-question" id="q5">
+    <p class="q-title">5. 赫拉利提出的"人类从三大旧问题转向三大新问题"，以下哪组是正确的？</p>
+    <button class="option-btn" onclick="check(this, 'q5')">A. 从战争、饥荒、瘟疫转向永生、幸福、神力</button>
+    <button class="option-btn" onclick="check(this, 'q5')">B. 从农业、工业、信息时代转向太空时代</button>
+    <button class="option-btn" onclick="check(this, 'q5')">C. 从贫穷、疾病、文盲转向富裕、健康、知识</button>
+    <button class="option-btn" onclick="check(this, 'q5')">D. 从个人主义、集体主义转向全球主义</button>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="quiz-question" id="q6">
+    <p class="q-title">6. 关于全球秩序的未来，以下哪种观点最有历史依据？</p>
+    <button class="option-btn" onclick="check(this, 'q6')">A. 美国将永远是世界唯一的超级大国</button>
+    <button class="option-btn" onclick="check(this, 'q6')">B. 全球秩序不会变化，因为现有的国际机构足够强大</button>
+    <button class="option-btn" onclick="check(this, 'q6')">C. 历史表明没有任何秩序是永恒的，多极化趋势正在加强</button>
+    <button class="option-btn" onclick="check(this, 'q6')">D. 只有中国会成为未来的主导力量</button>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="quiz-question" id="q7">
+    <p class="q-title">7. "长时段思维"要求我们在分析问题时关注什么？</p>
+    <button class="option-btn" onclick="check(this, 'q7')">A. 当天新闻头条</button>
+    <button class="option-btn" onclick="check(this, 'q7')">B. 长期趋势和结构性变化，而非短期事件</button>
+    <button class="option-btn" onclick="check(this, 'q7')">C. 个别领导人的决策</button>
+    <button class="option-btn" onclick="check(this, 'q7')">D. 经济数据的月度波动</button>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="quiz-question" id="q8">
+    <p class="q-title">8. 关于学习历史对理解未来的意义，以下哪项最准确？</p>
+    <button class="option-btn" onclick="check(this, 'q8')">A. 历史告诉我们未来一定会重复过去的模式</button>
+    <button class="option-btn" onclick="check(this, 'q8')">B. 历史没有用，因为未来完全不同于过去</button>
+    <button class="option-btn" onclick="check(this, 'q8')">C. 历史不能预测未来，但帮助我们理解变化的力量和我们的能动性</button>
+    <button class="option-btn" onclick="check(this, 'q8')">D. 历史只适用于研究古代文明，与现代问题无关</button>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <div id="score-box">
+    <div id="score-num"></div>
+    <div id="score-label"></div>
+  </div>
+</div>
+
+<script>
+  const explanations = {
+    q1: {
+      correct: '人类世是指人类活动已经成为地球系统主要驱动力的地质时代。这包括气候变化、物种灭绝、土地利用变化等。这个概念的重要性在于它标志着人类从"自然的一部分"转变为"塑造自然的力量"——这是人类历史上前所未有的角色转换。',
+      wrong: '人类使用工具（A）要追溯到数百万年前；登月（C）只是20世纪的一个事件；互联网（D）是数字时代的一部分，但不是人类世的核心含义。人类世的关键在于人类对地球系统的整体影响。'
+    },
+    q2:
+      correct: '历史学家的视角是：技术变革确实是历史研究的重要主题，但技术从来不是"自主"发展的——它受到社会、经济、政治和文化力量的塑造。库兹韦尔的预测提供了有趣的思考框架，但历史告诉我们，技术变革的影响通常是渐进的、复杂的，且充满不确定性。',
+      wrong: '技术奇点的确切时间（A）是无法预测的；它与历史密切相关（B错误），因为每次技术革命都是历史转折点；奇点并不意味着历史"结束"（D），而是意味着变化方式可能不同。'
+    },
+    q3: {
+      correct: '威斯特伐利亚体系是在宗教战争的混乱中诞生的，它用主权国家体系取代了宗教权威。类似地，21世纪面对的是全球性挑战（气候变化、大流行病、网络安全），现有的国际机构可能不足以应对，因此可能需要类似的全新制度设计。',
+      wrong: '战争并非总是解决冲突的方式（A）；现有机构确实需要改革（C错误）；全球治理虽然困难，但历史上多次成功合作表明它是可能的（D过于悲观）。'
+    },
+    q4: {
+      correct: '文明的韧性体现在：即使政治实体灭亡了，其文化、制度和思想传统仍然持续影响后世。罗马的例子特别典型——帝国消失了，但罗马法、拉丁语和基督教塑造了欧洲文明数百年。类似的例子还有中华文明、伊斯兰文明等。',
+      wrong: '相同技术（B）、相同政体（C）或简化语言（D）都指向文化同质化，这与"韧性"——即文明在变化中保持自身特色的能力——恰恰相反。'
+    },
+    q5: {
+      correct: '赫拉利在《未来简史》中指出，人类在21世纪正从"饥荒、瘟疫、战争"三大传统问题转向"永生、幸福、神力"三大新问题。这意味着随着基本生存问题的逐步解决，人类将面临更深层的存在性问题——如何活得更好、更久、更有能力。',
+      wrong: '其他选项都不是赫拉利的原始表述。他关注的是人类需求和关注点的转变，而非技术时代划分（B）、一般发展指标（C）或意识形态趋势（D）。'
+    },
+    q6: {
+      correct: '历史反复证明：没有任何秩序是永恒的。罗马帝国、中华帝国、阿拉伯帝国、大英帝国……都曾被认为是"永恒"的，但最终都发生了变化。当前的多极化趋势（美国相对衰落、中国等新兴力量崛起）符合历史规律——权力分布总是动态变化的。',
+      wrong: '没有任何证据支持任何一个国家将"永远"主导（A、D过于绝对）；历史表明国际秩序总是在变化，现有的机构也需要适应新的现实（B错误）。'
+    },
+    q7: {
+      correct: '长时段思维（由法国年鉴学派历史学家布罗代尔提出）要求我们关注深层的、长期的结构性变化——地理环境、经济结构、社会制度、文化传统——而非短期的事件和人物。就像法国大革命不是某天突然发生的，而是几个世纪积累的结果。',
+      wrong: '新闻头条（A）、领导人决策（C）和经济月度数据（D）都属于"短时段"关注的范畴。长时段思维恰恰是要超越这些表层现象，去看更深层的历史力量。'
+    },
+    q8: {
+      correct: '这是本课程的核心主旨。历史不能告诉你明天会发生什么，但它揭示了变化的模式和力量——技术如何改变社会、制度如何兴衰、思想如何推动变革。更重要的是，历史告诉我们：未来不是注定的，人类的能动性（agency）始终存在——我们做出的选择会影响历史的走向。',
+      wrong: '历史不会简单地重复（A错误）；历史对理解现代问题至关重要（D错误）；历史的价值不在于提供确定答案，而在于提供思考框架和理解能力（B忽视了这一点）。'
+    }
+  };
+
+  let answered = {};
+  let score = 0;
+  const total = 8;
+
+  function check(btn) {
+    const question = btn.closest('.quiz-question');
+    const qid = question.id;
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+    const allBtns = question.querySelectorAll('.option-btn');
+    const feedback = question.querySelector('.feedback');
+
+    allBtns.forEach(b => {
+      b.style.pointerEvents = 'none';
+      if (b.dataset.correct === 'true') b.classList.add('reveal-correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.className = 'feedback show correct-fb';
+      feedback.textContent = explanations[qid].correct;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'feedback show wrong-fb';
+      feedback.textContent = explanations[qid].wrong;
+    }
+
+    if (Object.keys(answered).length === total) {
+      const box = document.getElementById('score-box');
+      const num = document.getElementById('score-num');
+      const label = document.getElementById('score-label');
+      num.textContent = score + ' / ' + total;
+      if (score === total) label.textContent = '完美！你对未来史的理解非常深入。';
+      else if (score >= 6) label.textContent = '做得很好！回顾你做错的题目——解释告诉了你为什么。';
+      else label.textContent = '继续加油！重新阅读上面的内容，再试一次。';
+      box.classList.add('show');
+    }
+  }
+</script>
+
+<div class="nav-links">
+  <a href="../lessons/0011-digital-age.html">← 上一课：数字时代</a>
+  <span style="color: var(--muted); align-self: center;">🎓 世界史通识 · 完结</span>
+</div>
+
+</body>
+</html>
