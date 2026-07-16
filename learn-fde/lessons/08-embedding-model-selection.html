@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 08 课 — Embedding Model 选择</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#1a1a2e;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+h1,h2,h3{font-family:'Merriweather',serif;font-weight:900}
+.course-header{border-bottom:3px solid #4361ee;padding-bottom:1.5rem;margin-bottom:2rem}
+.course-badge{display:inline-block;background:#4361ee;color:#fff;font-size:.8rem;font-weight:700;padding:.25rem .75rem;border-radius:999px;margin-bottom:.75rem}
+.module-name{color:#6c757d;font-size:.95rem;font-weight:600;margin-bottom:.25rem}
+h1{font-size:1.85rem;margin:.5rem 0}
+.one-liner{background:#eef1ff;border-left:4px solid #4361ee;padding:1rem 1.25rem;margin:1.5rem 0;border-radius:0 8px 8px 0;font-size:1.05rem;font-weight:600}
+.section{margin:2.5rem 0}
+h2{font-size:1.45rem;margin-bottom:1rem;color:#2b2d42;border-bottom:2px solid #e9ecef;padding-bottom:.4rem}
+h3{font-size:1.15rem;margin:1.25rem 0 .5rem;color:#3a3c5e}
+p{margin-bottom:1rem}
+.key-point{background:#f8f9fa;border-radius:8px;padding:1rem 1.25rem;margin:1rem 0;border-left:4px solid #4cc9f0}
+.key-point strong{color:#4361ee}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.95rem}
+th,td{padding:.65rem .85rem;text-align:left;border:1px solid #dee2e6}
+th{background:#4361ee;color:#fff;font-weight:700}
+tr:nth-child(even){background:#f8f9fa}
+code{background:#eef1ff;padding:.15rem .45rem;border-radius:4px;font-size:.9em}
+.arch-flow{background:#1a1a2e;color:#e0e0e0;padding:1.25rem;border-radius:8px;font-family:monospace;font-size:.95rem;margin:1rem 0;white-space:pre;overflow-x:auto}
+.insight{background:#fff3cd;border-left:4px solid #ffc107;padding:.85rem 1.1rem;margin:1.25rem 0;border-radius:0 8px 8px 0;font-style:italic}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:.4rem 0;padding-left:1.75rem;position:relative}
+.checklist li::before{content:"✓";color:#4361ee;font-weight:700;position:absolute;left:0}
+/* Quiz styles */
+.quiz-block{background:#f0f4ff;border-radius:10px;padding:1.25rem;margin:1.5rem 0;border:1px solid #d0d9f7}
+.quiz-block h3{margin-top:0;color:#4361ee;font-size:1.05rem}
+.quiz-options{list-style:none;padding:0;margin:.75rem 0}
+.quiz-options li{margin:.4rem 0}
+.quiz-btn{display:block;width:100%;text-align:left;padding:.65rem 1rem;margin:.35rem 0;border:2px solid #dee2e6;border-radius:8px;background:#fff;cursor:pointer;font-size:.95rem;font-family:'Source Sans 3',sans-serif;transition:all .2s}
+.quiz-btn:hover{border-color:#4361ee;background:#eef1ff}
+.quiz-btn.correct{border-color:#2ec4b6;background:#e6faf8;color:#0a7c72;font-weight:700}
+.quiz-btn.wrong{border-color:#ef476f;background:#fde8ed;color:#b52040;font-weight:700}
+.quiz-feedback{margin-top:.6rem;padding:.5rem .75rem;border-radius:6px;font-weight:600;font-size:.95rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:#e6faf8;color:#0a7c72}
+.quiz-feedback.wrong{background:#fde8ed;color:#b52040}
+.nav-footer{display:flex;justify-content:space-between;margin:3rem 0 1rem;border-top:2px solid #e9ecef;padding-top:1.5rem}
+.nav-link{display:inline-flex;align-items:center;text-decoration:none;color:#4361ee;font-weight:600;padding:.65rem 1.25rem;border:2px solid #4361ee;border-radius:8px;transition:all .2s}
+.nav-link:hover{background:#4361ee;color:#fff}
+.nav-link.disabled{opacity:.4;pointer-events:none}
+.nav-spacer{flex:1}
+.reading-links{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e9ecef}
+.reading-links a{color:#4361ee;text-decoration:none;font-weight:600}
+.reading-links a:hover{text-decoration:underline}
+.score-bar{background:#e9ecef;border-radius:999px;height:8px;margin:1rem 0;overflow:hidden}
+.score-fill{height:100%;background:linear-gradient(90deg,#4361ee,#4cc9f0);border-radius:999px;transition:width .4s ease;width:0}
+</style>
+</head>
+<body>
+
+<div class="course-header">
+  <div class="module-name">模块二：AI 应用工程</div>
+  <span class="course-badge">第 8 / 45 课</span>
+  <h1>Embedding Model 选择</h1>
+</div>
+
+<div class="one-liner">
+  🧠 Embedding Model 是 RAG 系统的"翻译层"——它决定了用户查询和文档能否在同一个语义空间中被匹配。选错模型等于在起跑线上输了召回率。
+</div>
+
+<!-- Section 1 -->
+<div class="section">
+<h2>一、没有"最好"，只有"最适合"</h2>
+<p>MTEB（Massive Text Embedding Benchmark）是目前最权威的 Embedding 评估基准，覆盖 100+ 任务、110+ 语言。选型时最关键的三个维度：</p>
+
+<div class="key-point">
+  <strong>短文本 vs 长文本</strong><br>
+  text-embedding-3-small 在短文本检索上表现优异；但 C-Pack（BAAI）的 long-context 模型在 8K+ token 文档检索上显著领先。
+</div>
+
+<div class="key-point">
+  <strong>多语言需求</strong><br>
+  bge-m3 同时支持多语言、多粒度（段落/句子/关键词）嵌入，是全球化产品的首选开源方案。
+</div>
+
+<div class="key-point">
+  <strong>领域适配</strong><br>
+  通用模型在垂直领域（法律、医疗、金融）往往不如微调后的专用模型。例如 bge-large-zh-v1.5 在中文任务上远超通用模型。
+</div>
+
+<p><strong>FDE 洞察：</strong>在 Discovery 阶段必须明确客户数据的语言构成和领域分布，不能直接套用通用模型。</p>
+
+<!-- Quiz 1 -->
+<div class="quiz-block" data-quiz="1">
+  <h3>📝 测验 1：以下哪种场景最适合选用 BGE-M3 而非 text-embedding-3-small？</h3>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" data-correct="false">A. 英文短文本搜索——仅需要最高精度召回</button></li>
+    <li><button class="quiz-btn" data-correct="true">B. 面向全球用户的客服系统，需同时处理中、英、日等 10 种语言的查询</button></li>
+    <li><button class="quiz-btn" data-correct="false">C. 预算极低，只需快速搭建原型</button></li>
+  </ul>
+  <div class="quiz-feedback"></div>
+</div>
+</div>
+
+<!-- Section 2 -->
+<div class="section">
+<h2>二、维度选择：精度、成本、速度的三角博弈</h2>
+<p>Embedding 模型的维度直接决定了存储成本、检索速度和最终精度。决策框架如下：</p>
+
+<table>
+  <thead>
+    <tr><th>维度范围</th><th>典型模型</th><th>适用场景</th><th>成本影响</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>256–512</td><td>text-embedding-3-small, bge-base</td><td>快速原型、低预算项目</td><td>最低</td></tr>
+    <tr><td>768–1024</td><td>bge-large, jina-embeddings-v3</td><td>生产级 RAG 平衡点</td><td>中等</td></tr>
+    <tr><td>3072+</td><td>text-embedding-3-large, Cohere embed-multilingual-v3</td><td>高精度要求、复杂检索</td><td>最高</td></tr>
+  </tbody>
+</table>
+
+<div class="key-point">
+  <strong>四步决策法：</strong><br>
+  ① 用低成本模型做 baseline → ② 建立 golden set 后对比 2–3 个候选 → ③ 若召回率差距 &gt; 5%，考虑升级或引入 reranking → ④ 若超预算，考虑量化（FP16→INT8）或蒸馏。
+</div>
+
+<p><strong>FDE 洞察：</strong>FDE 不应只做"模型选择"，而应建立"模型选择→评估→部署→监控"的完整流程。</p>
+
+<!-- Quiz 2 -->
+<div class="quiz-block" data-quiz="2">
+  <h3>📝 测验 2：你为一家律所搭建 RAG 系统，baseline 模型 Recall@10 = 0.62，候选模型 Recall@10 = 0.68。下一步最佳做法是？</h3>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" data-correct="false">A. 差距不到 10%，直接用 baseline 省钱</button></li>
+    <li><button class="quiz-btn" data-correct="true">B. 差距超过 5%，考虑升级模型或引入 reranking 进一步提升</button></li>
+    <li><button class="quiz-btn" data-correct="false">C. 立刻换用维度更高的模型，追求 90%+ 召回率</button></li>
+  </ul>
+  <div class="quiz-feedback"></div>
+</div>
+</div>
+
+<!-- Section 3 -->
+<div class="section">
+<h2>三、Open Source vs Proprietary：FDE 的实际考量</h2>
+<p>在客户现场，合规约束往往比模型性能差异更重要。</p>
+
+<table>
+  <thead>
+    <tr><th>维度</th><th>Open Source（BGE, Jina, Cohere API）</th><th>Proprietary（OpenAI, Google）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>部署灵活性</td><td>可 self-host，满足数据不出域</td><td>必须调用 API，受限于供应商</td></tr>
+    <tr><td>成本控制</td><td>无 per-token 费用，GPU 成本固定</td><td>按 token 计费，大规模时成本高</td></tr>
+    <tr><td>安全合规</td><td>完全可控，适合政府/金融</td><td>需确认供应商合规认证</td></tr>
+    <tr><td>性能天花板</td><td>顶级模型接近专有模型</td><td>通常有轻微领先</td></tr>
+  </tbody>
+</table>
+
+<div class="insight">
+  💡 Palantir 的经验：在政府和高安全场景中，self-hosted embedding 是刚需。OpenAI Gov FDE 岗位明确要求处理"数据不出域"约束。FDE 必须在早期就做出部署架构决策。
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz-block" data-quiz="3">
+  <h3>📝 测验 3：某省级政务部门要求所有公民数据不得离开本地数据中心。以下哪种方案最合理？</h3>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" data-correct="false">A. 使用 OpenAI text-embedding-3-small API，因为精度最高</button></li>
+    <li><button class="quiz-btn" data-correct="false">B. 用免费版的 Google Embedding API，成本低且够用</button></li>
+    <li><button class="quiz-btn" data-correct="true">C. 部署 BGE-M3 或 Jina Embeddings v3 的 self-hosted 版本，满足数据不出域要求</button></li>
+  </ul>
+  <div class="quiz-feedback"></div>
+</div>
+</div>
+
+<!-- Section 4 -->
+<div class="section">
+<h2>四、双阶段架构：Embedding + Reranking 生产标配</h2>
+<p>单一 embedding 模型无法同时优化召回率和排序精度。行业标准架构：</p>
+
+<div class="arch-flow">Query → Embedding Model → Vector DB (Top-K=100) → Reranker (Top-K=10) → LLM</div>
+
+<p>主流 reranker 模型对比：</p>
+<ul style="margin:1rem 0;padding-left:1.5rem">
+  <li><strong>Cohere Rerank</strong>：多语言支持好，API 简单，延迟 ~50ms</li>
+  <li><strong>BGE-Reranker</strong>：开源，可 self-host，中文效果好</li>
+  <li><strong>Jina Reranker v2</strong>：支持长上下文，多语言</li>
+  <li><strong>E5-Reranker</strong>：微软出品，与 E5 embedding 生态一致</li>
+</ul>
+
+<div class="key-point">
+  <strong>ROI 分析：</strong>reranking 通常在 2–5% 的召回率提升上投入 10–20% 的计算成本，性价比极高。FDE 应将其作为默认选项而非可选组件。
+</div>
+
+<!-- Quiz 4 -->
+<div class="quiz-block" data-quiz="4">
+  <h3>📝 测验 4：在生产 RAG 系统中引入 reranking 的主要目的是什么？</h3>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" data-correct="false">A. 替代 embedding 模型，减少整体计算量</button></li>
+    <li><button class="quiz-btn" data-correct="true">B. 在保持高召回的同时提升排序精度，以较小成本获得 2–5% 的召回率提升</button></li>
+    <li><button class="quiz-btn" data-correct="false">C. 让 LLM 接收到更多无关文档以增加回答的全面性</button></li>
+  </ul>
+  <div class="quiz-feedback"></div>
+</div>
+</div>
+
+<!-- Section 5 -->
+<div class="section">
+<h2>五、Embedding 选型是持续迭代，不是一次决定</h2>
+<p>MTEB 基准每季度更新，新模型不断涌现。FDE 需要建立的体系化能力：</p>
+
+<ul class="checklist">
+  <li><strong>定期评估机制</strong>：每季度用最新模型跑一遍 golden set</li>
+  <li><strong>A/B 测试框架</strong>：在生产环境中并行运行多个 embedding 模型</li>
+  <li><strong>监控仪表板</strong>：跟踪平均相似度分布、冷启动查询的召回率变化</li>
+  <li><strong>降级预案</strong>：当新模型效果不稳定时，能快速回滚到已知稳定版本</li>
+</ul>
+
+<div class="insight">
+  💡 Embedding 选型是 FDE 产品化思维的重要体现——从"选择一个模型"升级为"构建一个模型治理体系"。
+</div>
+
+<!-- Quiz 5 -->
+<div class="quiz-block" data-quiz="5">
+  <h3>📝 测验 5：以下哪项不属于"模型治理体系"的核心要素？</h3>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" data-correct="false">A. 定期用最新模型跑 golden set 评估</button></li>
+    <li><button class="quiz-btn" data-correct="false">B. 建立 A/B 测试框架并行对比不同模型</button></li>
+    <li><button class="quiz-btn" data-correct="true">C. 每次从零开始手动测试 20 个新模型</button></li>
+    <li><button class="quiz-btn" data-correct="false">D. 设置监控仪表板和降级回滚预案</button></li>
+  </ul>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Quiz 6 -->
+<div class="quiz-block" data-quiz="6">
+  <h3>📝 测验 6：你在为客户做 Embedding 选型检查清单。以下哪个步骤应该在"选定候选模型"之后执行？</h3>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" data-correct="false">A. 明确约束条件（语言、领域、敏感度等）</button></li>
+    <li><button class="quiz-btn" data-correct="true">B. 构建 golden set（至少 50–100 个真实查询-文档对）</button></li>
+    <li><button class="quiz-btn" data-correct="false">C. 监控上线并跟踪质量指标</button></li>
+  </ul>
+  <div class="quiz-feedback"></div>
+</div>
+</div>
+
+<!-- Section 6: Summary -->
+<div class="section">
+<h2>六、实战检查清单</h2>
+<p>在客户现场选择 Embedding Model 时的标准流程：</p>
+
+<ol style="margin:1rem 0;padding-left:1.5rem">
+  <li><strong>明确约束</strong>：语言、领域、数据敏感度、预算、延迟要求</li>
+  <li><strong>选定候选</strong>：2–3 个模型（1 个开源 + 1 个专有 + 1 个备选）</li>
+  <li><strong>构建 golden set</strong>：至少 50–100 个真实查询-文档对</li>
+  <li><strong>批量评估</strong>：计算 Recall@K、NDCG、MRR</li>
+  <li><strong>成本测算</strong>：按预计日请求量计算月度成本</li>
+  <li><strong>PoC 验证</strong>：在客户环境中跑 1 周真实流量</li>
+  <li><strong>监控上线</strong>：部署后持续跟踪质量指标</li>
+</ol>
+</div>
+
+<!-- Score tracking -->
+<div id="score-area" style="margin:2rem 0;padding:1rem 1.25rem;background:#f8f9fa;border-radius:10px;text-align:center">
+  <strong>🎯 你的得分</strong>
+  <div class="score-bar"><div class="score-fill" id="score-fill"></div></div>
+  <span id="score-text">已答 0 / 6 题</span>
+</div>
+
+<!-- Navigation -->
+<div class="nav-footer">
+  <a href="../lessons/01-foundations/fde-definition-and-four-meanings.html" class="nav-link disabled">← 第 07 课</a>
+  <div class="nav-spacer"></div>
+  <a href="../lessons/02-ai-engineering/chunking-strategy.html" class="nav-link">第 09 课 — Chunking Strategy →</a>
+</div>
+
+<script>
+document.querySelectorAll('.quiz-block').forEach(block => {
+  const qId = block.dataset.quiz;
+  const buttons = block.querySelectorAll('.quiz-btn');
+  const feedback = block.querySelector('.quiz-feedback');
+  let answered = false;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+
+      const isCorrect = btn.dataset.correct === 'true';
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+      if (!isCorrect) {
+        buttons.forEach(b => {
+          if (b.dataset.correct === 'true') b.classList.add('correct');
+        });
+      }
+
+      feedback.textContent = isCorrect ? '✅ 正确！' : '❌ 不正确，已标出正确答案。';
+      feedback.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'wrong');
+
+      updateScore();
+    });
+  });
+});
+
+let totalAnswered = 0;
+const totalQuizzes = document.querySelectorAll('.quiz-block').length;
+
+function updateScore() {
+  let correct = 0;
+  document.querySelectorAll('.quiz-block').forEach(block => {
+    const btn = block.querySelector('.quiz-btn.correct');
+    const clickedBtn = block.querySelector('.quiz-btn[data-correct="true"]');
+    if (btn && btn.style.opacity !== '0') {
+      // Check if the user's correct click was registered
+    }
+  });
+  // Count answered blocks
+  const answeredBlocks = document.querySelectorAll('.quiz-block[style*="opacity"]');
+  totalAnswered = document.querySelectorAll('.quiz-btn.correct, .quiz-btn.wrong').length;
+  // Recalculate: count unique quiz blocks that have been answered
+  let answeredCount = 0;
+  document.querySelectorAll('.quiz-block').forEach(block => {
+    if (block.querySelector('.quiz-btn.correct') || block.querySelector('.quiz-btn.wrong')) {
+      answeredCount++;
+    }
+  });
+  document.getElementById('score-text').textContent = '已答 ' + answeredCount + ' / ' + totalQuizzes + ' 题';
+  const pct = Math.round((answeredCount / totalQuizzes) * 100);
+  document.getElementById('score-fill').style.width = pct + '%';
+}
+</script>
+
+</body>
+</html>
