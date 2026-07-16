@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 10 课 — Hybrid Search 与 Reranking</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#2d2d2d;line-height:1.75}
+h1,h2,h3{font-family:'Merriweather',serif;font-weight:700}
+.container{max-width:800px;margin:0 auto;padding:0 24px}
+header{background:linear-gradient(135deg,#2b6cb0 0%,#2c7a7b 100%);color:#fff;padding:48px 0 40px;text-align:center}
+header .module-badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 16px;font-size:.85rem;letter-spacing:.5px;margin-bottom:12px}
+header h1{font-size:1.9rem;margin-bottom:8px}
+header .subtitle{opacity:.85;font-size:1.05rem}
+.lesson-header{padding:24px 0;border-bottom:1px solid #e2e8f0;margin-bottom:32px}
+.lesson-header h2{font-size:1.4rem;color:#2b6cb0;margin-bottom:4px}
+.lesson-header p{color:#718096;font-size:.95rem}
+section{margin-bottom:48px}
+section h2{font-size:1.5rem;color:#2d3748;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #2b6cb0;display:inline-block}
+section h3{font-size:1.15rem;color:#4a5568;margin:20px 0 10px}
+section p,section li{font-size:1.05rem;color:#4a5568}
+section ul,section ol{padding-left:24px;margin:12px 0}
+section li{margin-bottom:6px}
+.callout{background:#ebf8ff;border-left:4px solid #2b6cb0;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0}
+.callout strong{color:#2b6cb0}
+.code-block{background:#1a202c;color:#e2e8f0;padding:16px 20px;border-radius:8px;font-family:'Source Code Pro',monospace;font-size:.9rem;margin:16px 0;overflow-x:auto}
+.quiz-section{background:#fafafa;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin:24px 0}
+.quiz-section h3{color:#2b6cb0;margin-bottom:16px;font-size:1.1rem}
+.quiz-option{display:block;width:100%;text-align:left;padding:12px 16px;margin:8px 0;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:1rem;font-family:'Source Sans 3',sans-serif;color:#4a5568;transition:all .2s}
+.quiz-option:hover{border-color:#2b6cb0;background:#ebf8ff}
+.quiz-option.correct{border-color:#38a169;background:#f0fff4;color:#276749}
+.quiz-option.incorrect{border-color:#e53e3e;background:#fff5f5;color:#9b2c2c}
+.quiz-feedback{margin-top:12px;padding:10px 14px;border-radius:6px;font-size:.95rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#f0fff4;color:#276749;border:1px solid #c6f6d5}
+.quiz-feedback.incorrect-fb{background:#fff5f5;color:#9b2c2c;border:1px solid #fed7d7}
+.nav-bar{display:flex;justify-content:space-between;padding:32px 0;border-top:2px solid #e2e8f0;margin-top:48px}
+.nav-btn{display:inline-flex;align-items:center;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem;transition:all .2s}
+.nav-btn.prev{background:#edf2f7;color:#4a5568}
+.nav-btn.next{background:#2b6cb0;color:#fff}
+.nav-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.nav-btn.disabled{opacity:.4;pointer-events:none}
+footer{text-align:center;padding:32px 0;color:#a0aec0;font-size:.85rem;border-top:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{padding:10px 14px;border:1px solid #e2e8f0;text-align:left;font-size:.95rem}
+th{background:#edf2f7;font-weight:700;color:#2d3748}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.8rem;font-weight:600;margin-right:6px}
+.badge-green{background:#c6f6d5;color:#276749}
+.badge-blue{background:#bee3f8;color:#2a4365}
+.badge-orange{background:#feebc8;color:#9c4221}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <span class="module-badge">模块二：AI 应用工程</span>
+    <h1>第 10 课 — Hybrid Search 与 Reranking</h1>
+    <p class="subtitle">BM25 与向量检索的融合策略、Cross-Encoder 重排序架构及生产级实践</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="lesson-header">
+    <h2>Hybrid Search + Reranking 深度研究</h2>
+    <p>关键词匹配与语义理解的融合之道</p>
+  </div>
+
+  <!-- Section 1 -->
+  <section>
+    <h2>一、为什么需要 Hybrid Search？</h2>
+    <p>纯向量检索（Dense Retrieval）在语义相似性上表现优异，但它有一个固有缺陷：<strong>对精确关键词不敏感</strong>。当用户查询某个产品型号、代码函数名或具体数值时，向量嵌入可能无法准确捕捉这些细节。</p>
+    <p>反过来，纯 BM25 擅长关键词精确匹配，却无法理解语义相关性——比如用户搜索"银行开户流程"，BM25 可能找不到文档中写"金融机构注册步骤"的相关内容。</p>
+    <div class="callout">
+      <strong>核心洞察：</strong>Hybrid Search 的目标不是选一个更好的单一模型，而是将 BM25 和向量检索的优势结合，在召回阶段兼顾语义和关键词。
+    </div>
+    <p>具体而言，BM25 的核心优势包括：</p>
+    <ul>
+      <li>对精确关键词匹配天然敏感（产品型号、函数名、数值）</li>
+      <li>不需要向量索引，存储开销极低</li>
+      <li>可解释性强——词频（TF）和逆文档频率（IDF）都有明确含义</li>
+      <li>在多语言场景下表现稳定</li>
+    </ul>
+  </section>
+
+  <!-- Quiz 1 -->
+  <div class="quiz-section">
+    <h3>🧠 理解检查</h3>
+    <p><strong>问题 1：</strong>以下哪种查询场景，BM25 相比向量检索有明显优势？</p>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">A. 查询"如何调试 React 组件渲染性能问题"</button>
+    <button class="quiz-option" onclick="checkAnswer(this, true)">B. 查询"k8s pod 状态为 ImagePullBackOff 的排查方法"</button>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">C. 查询"机器学习模型过拟合的原因"</button>
+    <div class="quiz-feedback" id="fb1"></div>
+  </div>
+
+  <!-- Section 2 -->
+  <section>
+    <h2>二、两阶段检索架构：生产级 RAG 的标准范式</h2>
+    <p>现代检索系统普遍采用 <strong>Retriever → Reranker</strong> 的两阶段架构：</p>
+    <ol>
+      <li><strong>召回阶段（Retrieval）</strong>：用轻量级模型（dense embedding 或 sparse BM25）从百万级文档中快速召回 Top-K（通常 50–200 篇）。追求<strong>速度</strong>。</li>
+      <li><strong>排序阶段（Reranking）</strong>：用计算成本更高的 Cross-Encoder 对候选集进行精细排序，最终输出 Top-N（通常 3–10 篇）。追求<strong>精度</strong>。</li>
+    </ol>
+    <p>这种分层设计直接决定了系统的延迟预算和成本结构——召回阶段可以并行处理大量文档，而排序阶段虽然慢，但只需要处理少量候选。</p>
+    <div class="code-block">
+检索流程：Dataset → Embedding → Indexing → Retrieval → Reranking → Evaluation
+    </div>
+    <p>BGE 官方教程将检索流程明确分为这 6 步，每一层都可以独立优化。对于 FDE 来说，理解这种架构分离至关重要，因为它意味着你可以在不同阶段投入不同的计算资源。</p>
+  </section>
+
+  <!-- Quiz 2 -->
+  <div class="quiz-section">
+    <h3>🧠 理解检查</h3>
+    <p><strong>问题 2：</strong>在两阶段检索架构中，为什么召回阶段用轻量模型而排序阶段用重型模型？</p>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">A. 因为重型模型训练时间更长</button>
+    <button class="quiz-option" onclick="checkAnswer(this, true)">B. 召回需遍历海量文档追求速度，排序只处理少量候选追求精度</button>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">C. 因为召回阶段不支持向量索引</button>
+    <div class="quiz-feedback" id="fb2"></div>
+  </div>
+
+  <!-- Section 3 -->
+  <section>
+    <h2>三、Cross-Encoder Reranker：精度与成本的权衡</h2>
+    <p>Cross-Encoder 需要对 query 和每篇文档做联合编码，时间复杂度为 <strong>O(K × N)</strong>——K 是候选数，N 是文档长度。相比 Bi-Encoder（单次编码 query 和所有文档），Cross-Encoder 慢 10 到 100 倍。</p>
+    <p>但代价换来的是显著的质量提升：</p>
+    <table>
+      <thead>
+        <tr><th>指标</th><th>Bi-Encoder</th><th>Cross-Encoder</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>推理速度</td><td>快（一次编码）</td><td>慢（逐对计算）</td></tr>
+        <tr><td>nDCG@10 提升</td><td>基准</td><td>+10% ~ +30%</td></tr>
+        <tr><td>存储开销</td><td>低</td><td>中（需候选集）</td></tr>
+      </tbody>
+    </table>
+    <p>BGE 提供了完整的 reranker 产品线，体现了业界的一个共识：<strong>reranker 质量与参数量正相关，但推理成本也急剧上升</strong>。</p>
+    <ul>
+      <li><span class="badge badge-green">轻量</span> bge-reranker-v2-m3（568M 参数）— 适合低延迟场景</li>
+      <li><span class="badge badge-blue">中等</span> bge-reranker-v2-minicpm-layerwise — Layer-wise 设计允许选择中间层加速推理</li>
+      <li><span class="badge badge-orange">高精度</span> bge-reranker-v2.5-gemma2-lightweight（9.24B 参数）— 适合高精度场景</li>
+    </ul>
+  </section>
+
+  <!-- Quiz 3 -->
+  <div class="quiz-section">
+    <h3>🧠 理解检查</h3>
+    <p><strong>问题 3：</strong>如果一个企业客户对检索延迟极其敏感（要求 &lt;200ms），你会选择哪种策略？</p>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">A. 使用 9B 参数的 Cross-Encoder 做全量排序</button>
+    <button class="quiz-option" onclick="checkAnswer(this, true)">B. 先用 dense embedding 做召回，再用轻量级 reranker（如 v2-m3）做排序</button>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">C. 只用 BM25，完全跳过向量检索</button>
+    <div class="quiz-feedback" id="fb3"></div>
+  </div>
+
+  <!-- Section 4 -->
+  <section>
+    <h2>四、Query Rewriting：检索的前置关键步骤</h2>
+    <p>在检索之前对 query 进行改写，可以显著提升后续检索效果。这不是可选功能，而是生产级 RAG 系统的标准配置。</p>
+    <h3>三种核心改写策略</h3>
+    <ul>
+      <li><strong>Query Expansion（扩展）</strong>：用同义词扩展查询。例如 "bank" → "bank financial institution river"，覆盖更多语义维度。</li>
+      <li><strong>Query Decomposition（分解）</strong>：将复杂查询拆分为子查询。例如 "比较 GPT-4 和 Claude 的上下文窗口大小" → ["GPT-4 上下文窗口", "Claude 上下文窗口"]，分别检索后再合并结果。</li>
+      <li><strong>Step-back Prompting（后退）</strong>：先生成一个更泛化的查询来获取背景知识，再基于背景知识做细粒度检索。</li>
+    </ul>
+    <div class="callout">
+      <strong>FDE 注意：</strong>LangChain 和 LlamaIndex 都内置了 query rewriting 组件。在设计 RAG 系统时，应将其作为标准配置而非可选功能。
+    </div>
+  </section>
+
+  <!-- Quiz 4 -->
+  <div class="quiz-section">
+    <h3>🧠 理解检查</h3>
+    <p><strong>问题 4：</strong>"Step-back Prompting" 的核心思想是什么？</p>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">A. 将查询翻译为英文以获得更好的检索效果</button>
+    <button class="quiz-option" onclick="checkAnswer(this, true)">B. 先生成更泛化的查询获取背景知识，再进行细粒度检索</button>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">C. 删除查询中的关键词以扩大匹配范围</button>
+    <div class="quiz-feedback" id="fb4"></div>
+  </div>
+
+  <!-- Section 5 -->
+  <section>
+    <h2>五、BGE-M3：一个模型覆盖多种检索策略</h2>
+    <p>BAAI 的 bge-m3 是一个里程碑式的作品——它在一个模型中实现了五种能力：</p>
+    <ul>
+      <li><strong>Dense Retrieval</strong>：传统的双编码器向量搜索</li>
+      <li><strong>Sparse Retrieval</strong>：BM25-like 的词级匹配</li>
+      <li><strong>Multi-Vector (ColBERT)</strong>：token-level 的细粒度匹配</li>
+      <li><strong>Multi-Linguality</strong>：支持 100+ 语言</li>
+      <li><strong>Multi-Granularity</strong>：支持最高 8192 tokens 的文档</li>
+    </ul>
+    <p>这种统一架构的优势在于：</p>
+    <ul>
+      <li>单一模型管理，降低运维复杂度</li>
+      <li>可以针对不同查询类型动态选择检索策略</li>
+      <li>训练数据共享，各模式互相增强</li>
+    </ul>
+    <div class="callout">
+      <strong>FDE 实战启示：</strong>在大多数企业场景中，一个 bge-m3 可能就足够了——不需要单独维护 BM25 索引 + 向量索引 + reranker 三个独立系统。
+    </div>
+  </section>
+
+  <!-- Quiz 5 -->
+  <div class="quiz-section">
+    <h3>🧠 理解检查</h3>
+    <p><strong>问题 5：</strong>bge-m3 的 Multi-Functionality 对 FDE 部署 RAG 系统的主要价值是什么？</p>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">A. 它可以完全替代 LLM，不需要再做生成任务</button>
+    <button class="quiz-option" onclick="checkAnswer(this, true)">B. 单一模型覆盖多种检索策略，降低运维复杂度并支持动态切换</button>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">C. 它使检索速度比纯 BM25 快 10 倍以上</button>
+    <div class="quiz-feedback" id="fb5"></div>
+  </div>
+
+  <!-- Section 6 -->
+  <section>
+    <h2>六、FDE 实战建议：渐进式部署路径</h2>
+    <p>在生产环境中部署 Hybrid Search + Reranking 时，建议遵循以下原则：</p>
+    <ol>
+      <li><strong>召回阶段</strong>：优先使用 bge-m3 的多功能检索能力，根据查询类型自动选择 dense/sparse/multi-vector 策略</li>
+      <li><strong>排序阶段</strong>：根据延迟预算选择 reranker 模型——低延迟场景用 v2-m3（568M），高精度场景用 v2-gemma（2.51B）</li>
+      <li><strong>评估闭环</strong>：始终维护 golden dataset，定期评估 reranking 前后的 Recall/MRR/nDCG 变化</li>
+      <li><strong>成本监控</strong>：记录每次请求的 tokens/cost/latency，特别是 reranker 阶段的额外开销</li>
+      <li><strong>渐进式部署</strong>：先上线 dense-only 检索，验证效果后再加入 BM25 hybrid 和 reranker</li>
+    </ol>
+    <div class="callout">
+      <strong>关键提醒：</strong>不要一开始就堆砌所有组件。先从 dense-only 开始，建立基线，然后逐步加入 BM25 hybrid 和 reranker，每一步都通过 eval harness 量化验证效果。
+    </div>
+  </section>
+
+  <!-- Quiz 6 -->
+  <div class="quiz-section">
+    <h3>🧠 理解检查</h3>
+    <p><strong>问题 6：</strong>渐进式部署 Hybrid Search 的正确顺序是什么？</p>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">A. 先上 reranker，再上 BM25，最后上 dense embedding</button>
+    <button class="quiz-option" onclick="checkAnswer(this, true)">B. 先上 dense-only，验证效果后再加入 BM25 hybrid 和 reranker</button>
+    <button class="quiz-option" onclick="checkAnswer(this, false)">C. 同时上线所有组件，通过 A/B 测试决定哪些保留</button>
+    <div class="quiz-feedback" id="fb6"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <a href="07-rag-full-chain.html" class="nav-btn prev">&larr; 第 7 课：RAG 全链路</a>
+    <a href="11-permission-aware-retrieval.html" class="nav-btn next">第 11 课：权限感知检索 &rarr;</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    FDE 课程 · 第 10 课 · Forward Deployed Engineer 培训体系
+  </div>
+</footer>
+
+<script>
+function checkAnswer(btn, isCorrect) {
+  var section = btn.closest('.quiz-section');
+  var options = section.querySelectorAll('.quiz-option');
+  var feedback = section.querySelector('.quiz-feedback');
+  
+  // Disable all buttons in this quiz
+  for (var i = 0; i < options.length; i++) {
+    options[i].disabled = true;
+    options[i].style.cursor = 'default';
+    if (options[i] === btn) {
+      if (isCorrect) {
+        options[i].classList.add('correct');
+      } else {
+        options[i].classList.add('incorrect');
+      }
+    }
+  }
+  
+  // Highlight correct answer
+  for (var j = 0; j < options.length; j++) {
+    if (options[j].getAttribute('onclick').includes('true')) {
+      options[j].classList.add('correct');
+    }
+  }
+  
+  // Show feedback
+  if (isCorrect) {
+    feedback.className = 'quiz-feedback show correct-fb';
+    feedback.innerHTML = '<strong>✓ 正确！</strong>' + getExplanation(section);
+  } else {
+    feedback.className = 'quiz-feedback show incorrect-fb';
+    feedback.innerHTML = '<strong>✗ 不太对。</strong>' + getExplanation(section);
+  }
+}
+
+function getExplanation(section) {
+  var qNum = section.querySelector('h3').textContent.match(/(\d+)/);
+  if (!qNum) return '';
+  var n = qNum[1];
+  var explanations = {
+    '1': 'BM25 对精确关键词（如"k8s"、"ImagePullBackOff"）天然敏感，而向量嵌入可能无法准确捕捉这类技术术语的精确匹配。',
+    '2': '召回阶段需要遍历海量文档，必须追求速度；排序阶段只需处理少量候选（50-200 篇中的 Top-N），可以承受更高计算成本来追求精度。',
+    '3': '延迟敏感场景应优先保证速度：先用轻量模型召回，再用轻量 reranker 排序。9B 参数模型会带来过高延迟，而纯 BM25 会丢失语义能力。',
+    '4': 'Step-back Prompting 的核心是先退一步，用更宽泛的查询获取背景知识，然后再回到具体问题做细粒度检索，从而获得更好的上下文。',
+    '5': 'bge-m3 的统一架构让 FDE 可以用一个模型覆盖 dense、sparse、multi-vector 等多种检索策略，大幅降低运维复杂度。',
+    '6': '渐进式部署是降低风险的关键：先建立 dense-only 基线，验证效果后再逐步加入 BM25 和 reranker，每一步都可量化评估。'
+  };
+  return explanations[n] || '';
+}
+</script>
+
+</body>
+</html>
