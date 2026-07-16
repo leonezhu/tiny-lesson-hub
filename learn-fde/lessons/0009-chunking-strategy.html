@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 9 课 — Chunking Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',system-ui,sans-serif;background:#fdfdfd;color:#1a1a2e;line-height:1.75;font-size:17px}
+h1,h2,h3{font-family:'Merriweather',Georgia,serif;color:#0f3460}
+.container{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+header{border-bottom:3px solid #e94560;padding-bottom:1.5rem;margin-bottom:2.5rem}
+.module-badge{display:inline-block;background:#e94560;color:#fff;font-size:.82rem;font-weight:700;padding:.25rem .85rem;border-radius:20px;margin-bottom:.6rem;letter-spacing:.03em}
+h1{font-size:1.9rem;margin-bottom:.3rem;line-height:1.3}
+.subtitle{color:#666;font-size:1rem}
+section{margin-bottom:2.5rem}
+h2{font-size:1.45rem;margin-bottom:1rem;padding-left:.75rem;border-left:4px solid #e94560}
+p{margin-bottom:1rem}
+strong{color:#0f3460}
+.highlight-box{background:#fff3f5;border-left:4px solid #e94560;padding:1rem 1.25rem;margin:1.25rem 0;border-radius:0 8px 8px 0;font-size:.95rem}
+.code-block{background:#1a1a2e;color:#eee;padding:1rem 1.25rem;border-radius:8px;font-family:'Source Code Pro',monospace;font-size:.88rem;margin:1rem 0;overflow-x:auto;line-height:1.6}
+.quiz-section{background:#f0f4ff;border-radius:12px;padding:1.25rem 1.5rem;margin:1.25rem 0}
+.quiz-question{font-weight:600;margin-bottom:.75rem;color:#0f3460;font-size:1.05rem}
+.quiz-options{list-style:none;padding:0}
+.quiz-options li{margin:.4rem 0}
+.quiz-btn{display:block;width:100%;text-align:left;padding:.65rem 1rem;margin:.35rem 0;border:2px solid #c4d4f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.95rem;font-family:'Source Sans 3',sans-serif;transition:all .2s}
+.quiz-btn:hover{border-color:#e94560;background:#fff8f9}
+.quiz-btn.correct{border-color:#2ecc71;background:#e8faf0;color:#1a7a42;font-weight:600}
+.quiz-btn.wrong{border-color:#e94560;background:#fff0f3;color:#c0392b}
+.quiz-feedback{margin-top:.5rem;padding:.5rem .75rem;border-radius:6px;font-size:.9rem;display:none;font-weight:500}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8faf0;color:#1a7a42}
+.quiz-feedback.wrong-fb{background:#fff0f3;color:#c0392b}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.92rem}
+th,td{padding:.6rem .75rem;border:1px solid #ddd;text-align:left}
+th{background:#0f3460;color:#fff;font-weight:600}
+tr:nth-child(even){background:#f8f9ff}
+nav{border-top:2px solid #eee;padding-top:1.5rem;margin-top:3rem;display:flex;justify-content:space-between}
+nav a{text-decoration:none;padding:.6rem 1.2rem;border-radius:8px;font-weight:600;font-size:.95rem;transition:all .2s}
+.nav-prev{color:#e94560;border:2px solid #e94560}
+.nav-prev:hover{background:#e94560;color:#fff}
+.nav-next{background:#0f3460;color:#fff;border:2px solid #0f3460}
+.nav-next:hover{background:#0a2647;border-color:#0a2647}
+.nav-empty{color:#bbb;font-style:italic}
+footer{text-align:center;color:#aaa;font-size:.82rem;margin-top:2rem;padding-top:1rem;border-top:1px solid #eee}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<span class="module-badge">模块二：AI 应用工程</span>
+<h1>第 9 课 — Chunking Strategy</h1>
+<p class="subtitle">RAG 全链路的第一步：如何切分文档，决定了召回率的上限</p>
+</header>
+
+<!-- Section 1 -->
+<section>
+<h2>一、Chunking 是什么——为什么它如此重要</h2>
+<p>RAG（检索增强生成）系统的第一步是 <strong>Chunking</strong>：将大文档拆分成小片段（chunks），以便后续做 embedding 和存入向量数据库。</p>
+<p>很多人以为 chunking 只是"把长文本切碎"，但事实远比这复杂——</p>
+<div class="highlight-box">
+<strong>核心原则：</strong>chunk 要足够大，以包含有意义的信息；又要足够小，以保证检索性能和低延迟。这个平衡点没有标准答案，取决于数据性质和查询复杂度。
+</div>
+<p>Chunking 的质量直接决定了 RAG 系统的<strong>召回率上限</strong>。一个糟糕的 chunking 策略会让后续所有环节（embedding、检索、reranking）都事倍功半。</p>
+</section>
+
+<!-- Quiz 1 -->
+<div class="quiz-section">
+<p class="quiz-question">❓ 测验 1：如果一个 chunk 切得太小（比如只有 50 tokens），最可能出现什么问题？</p>
+<ul class="quiz-options">
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">A. 检索延迟会非常高</button><div class="quiz-feedback wrong-fb">✗ 不对。chunk 越小，数量越多，存储和检索反而可能更快。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,true)">B. chunk 丢失语义上下文，embedding 质量差</button><div class="quiz-feedback correct-fb">✓ 正确！太小的 chunk 无法承载完整语义，embedding 向量无法准确表达原文含义。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">C. LLM 生成速度会变慢</button><div class="quiz-feedback wrong-fb">✗ 不相关。chunk 大小主要影响召回阶段，不直接影响 LLM 推理速度。</div></li>
+</ul>
+</div>
+
+<!-- Section 2 -->
+<section>
+<h2>二、Fixed-size Chunking：最佳起点</h2>
+<p>Pinecone 在 2025 年的最新指南中明确指出：<strong>fixed-size chunking 在大多数场景下是最好的起点</strong>，应该先从这里开始，只在证明不足时才迭代到更复杂的策略。</p>
+<p><strong>关键参数：</strong></p>
+<table>
+<tr><th>参数</th><th>推荐值</th><th>说明</th></tr>
+<tr><td>Chunk size</td><td>128 ~ 1024 tokens</td><td>细粒度语义用 128/256；保留上下文用 512/1024</td></tr>
+<tr><td>Overlap</td><td>10% ~ 20%</td><td>防止边界处信息丢失——这是最容易忽略的细节</td></tr>
+<tr><td>Token 估算</td><td>按 embedding model 实际 tokenizer</td><td>不同模型的 token 化方式不同，不能简单按字符计数</td></tr>
+</table>
+<p><strong>为什么 overlap 必不可少？</strong>想象一个关键词恰好出现在两个 chunk 的边界上——如果没有重叠，这个关键词在一次嵌入时会被截断，导致检索失败。</p>
+</section>
+
+<!-- Quiz 2 -->
+<div class="quiz-section">
+<p class="quiz-question">❓ 测验 2：设置 chunk overlap 的主要目的是什么？</p>
+<ul class="quiz-options">
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">A. 增加每个 chunk 的信息量</button><div class="quiz-feedback wrong-fb">✗ 重叠部分确实是重复的，不是新增信息。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,true)">B. 防止边界处的语义断裂和信息丢失</button><div class="quiz-feedback correct-fb">✓ 正确！重叠确保跨边界的语义片段在至少一个 chunk 中被完整包含。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">C. 提高 embedding 模型的计算效率</button><div class="quiz-feedback wrong-fb">✗ 恰恰相反，overlap 会增加总 token 数和计算量。</div></li>
+</ul>
+</div>
+
+<!-- Section 3 -->
+<section>
+<h2>三、Semantic Chunking：让边界跟随语义</h2>
+<p>Fold-size chunking 的缺陷在于：它不管内容是什么，一刀切。而 <strong>semantic chunking</strong> 通过计算相邻句段之间的语义距离来动态确定 chunk 边界。</p>
+<p><strong>工作流程：</strong></p>
+<ol style="margin-left:1.5rem;margin-bottom:1rem">
+<li>将文档拆分为句子</li>
+<li>将句子分组（每组 N 个相邻句子）</li>
+<li>为每组生成 embedding</li>
+<li>计算相邻组 embedding 之间的余弦距离</li>
+<li>当距离超过阈值时，划分 chunk 边界</li>
+</ol>
+<p><strong>优势：</strong>每个 chunk 内的句子讨论同一主题，语义一致性高，特别适合知识密集型文档（技术手册、法律文件等）。</p>
+<p><strong>代价：</strong>需要额外的 embedding 调用成本，且阈值选择需要调参。</p>
+</section>
+
+<!-- Quiz 3 -->
+<div class="quiz-section">
+<p class="quiz-question">❓ 测验 3：以下哪种文档最适合使用 semantic chunking 而非 fixed-size？</p>
+<ul class="quiz-options">
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">A. 一段 200 字的简短新闻</button><div class="quiz-feedback wrong-fb">✗ 短文本语义结构简单，fixed-size 完全够用。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,true)">B. 一份 500 页的法律合同</button><div class="quiz-feedback correct-fb">✓ 正确！法律合同包含大量独立条款，语义切换频繁，semantic chunking 能更好地保持每条款完整性。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">C. 一组独立的代码注释</button><div class="quiz-feedback wrong-fb">✗ 独立注释之间无依赖关系，不需要语义分析。</div></li>
+</ul>
+</div>
+
+<!-- Section 4 -->
+<section>
+<h2>四、Contextual Retrieval：Anthropic 的革命性方案</h2>
+<p>Anthropic 在 2024 年 9 月提出了 <strong>Contextual Retrieval</strong>，这是目前最前沿的 chunking 增强方法。核心创新非常简单却极其有效：</p>
+<div class="code-block">original_chunk = "The company's revenue grew by 3% over the previous quarter."
+
+contextualized_chunk = "This chunk is from an SEC filing on ACME corp's Q2 2023 performance; \
+previous quarter's revenue was $314M. The company's revenue grew by 3% over the previous quarter."</div>
+<p>做法：<strong>在 embedding 之前，用 LLM 为每个 chunk 生成一段 50-100 token 的上下文描述，前置到 chunk 前面</strong>。这样即使 chunk 本身缺少上下文，embedding 也能捕捉到全局语义。</p>
+<p><strong>实验结果（跨多个领域）：</strong></p>
+<ul style="margin-left:1.5rem;margin-bottom:1rem">
+<li>仅 Contextual Embeddings：检索失败率从 5.7% → 3.7%（降低 35%）</li>
+<li>+ Contextual BM25：失败率降至 2.9%（降低 49%）</li>
+<li>+ Reranking：失败率降至 1.9%（降低 67%）</li>
+</ul>
+<p>而且，利用 Claude 的 prompt caching，百万文档 token 的上下文生成成本仅约 <strong>$1.02</strong>。</p>
+</section>
+
+<!-- Quiz 4 -->
+<div class="quiz-section">
+<p class="quiz-question">❓ 测验 4：Contextual Retrieval 的核心思想是什么？</p>
+<ul class="quiz-options">
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">A. 增大 chunk size 以容纳更多上下文</button><div class="quiz-feedback wrong-fb">✗ 不是增大 chunk，而是在 chunk 前加一段 LLM 生成的上下文描述。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,true)">B. 用 LLM 为每个 chunk 生成前置上下文描述后再做 embedding</button><div class="quiz-feedback correct-fb">✓ 正确！这是 Contextual Retrieval 的核心创新——让 embedding 模型看到全局语境。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">C. 对每个 chunk 做多次 embedding 然后取平均</button><div class="quiz-feedback wrong-fb">✗ 不涉及多次 embedding，是一次 embedding + 一次 LLM 生成。</div></li>
+</ul>
+</div>
+
+<!-- Section 5 -->
+<section>
+<h2>五、Hybrid Search：BM25 + Semantic 是生产标配</h2>
+<p>传统 RAG 只用 embedding 做语义搜索，但 Anthropic 的实验证明 <strong>BM25 在精确术语匹配上远优于 embedding</strong>。</p>
+<p>典型场景：用户查询 <code>"Error code TS-999"</code>——embedding 模型可能返回关于 error codes 的一般性内容，但 BM25 能精确匹配 "TS-999" 这个字符串。</p>
+<p>生产级方案应同时维护两种索引：</p>
+<ul style="margin-left:1.5rem;margin-bottom:1rem">
+<li><strong>Embedding index</strong>：捕捉语义相似性</li>
+<li><strong>BM25 index</strong>：基于 TF-IDF 的精确实体/术语匹配</li>
+<li><strong>Rank fusion</strong>：合并两种结果并去重</li>
+</ul>
+</section>
+
+<!-- Quiz 5 -->
+<div class="quiz-section">
+<p class="quiz-question">❓ 测验 5：为什么 Hybrid Search 需要同时使用 embedding 和 BM25？</p>
+<ul class="quiz-options">
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">A. 因为 BM25 比 embedding 更快</button><div class="quiz-feedback wrong-fb">✗ 速度不是主要原因，两者速度差异不大。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,true)">B. 因为 embedding 擅长语义匹配，BM25 擅长精确术语匹配，二者互补</button><div class="quiz-feedback correct-fb">✓ 正确！语义搜索找"意思相近的"，BM25 找"字面匹配的"，合在一起覆盖更全面。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">C. 因为 BM25 可以替代 reranking 步骤</button><div class="quiz-feedback wrong-fb">✗ BM25 和 reranking 是两个不同的阶段，BM25 不能替代 reranking。</div></li>
+</ul>
+</div>
+
+<!-- Section 6 -->
+<section>
+<h2>六、Chunk Expansion：检索时的后处理技巧</h2>
+<p>即使选择了最优的 chunking 策略，检索到的 top-K chunks 可能仍缺少足够的上下文供 LLM 理解。</p>
+<p><strong>Chunk expansion</strong> 策略：在检索到目标 chunk 后，按原始顺序检索其相邻的 N 个 chunk（一个滑动窗口）。</p>
+<div class="highlight-box">
+<strong>最佳实践：</strong>chunking 阶段追求精确定位，retrieval 阶段追求充分上下文。两者分工明确，互不干扰。
+</div>
+<p><strong>权衡：</strong>expanded chunks 消耗更多 context window，增加成本和延迟。需要根据具体场景调整扩展窗口的大小。</p>
+</section>
+
+<!-- Quiz 6 -->
+<div class="quiz-section">
+<p class="quiz-question">❓ 测验 6：什么时候最适合使用 chunk expansion？</p>
+<ul class="quiz-options">
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">A. 当 chunk 切得太碎、LLM 需要更多上下文才能准确判断时</button><div class="quiz-feedback correct-fb">✓ 正确！chunk expansion 就是在检索阶段补充 chunking 阶段丢失的上下文。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,true)">B. 当 chunk 本身被切得太碎、LLM 需要更多上下文才能做出准确判断的场景</button><div class="quiz-feedback correct-fb">✓ 正确！这就是 chunk expansion 的设计初衷——不改 chunking 策略的前提下，靠检索时扩展窗口改善 LLM 理解。</div></li>
+<li><button class="quiz-btn" onclick="checkQuiz(this,false)">C. 当 embedding 模型效果不好时</button><div class="quiz-feedback wrong-fb">✗ chunk expansion 解决的是上下文缺失问题，不是 embedding 质量问题。</div></li>
+</ul>
+</div>
+
+<!-- Section 7 -->
+<section>
+<h2>七、FDE 视角：不要过度工程化</h2>
+<p>作为 FDE，你面对的是一个真实世界的工程决策。记住以下五条原则：</p>
+<div class="highlight-box">
+<ol style="margin-left:1.25rem">
+<li><strong>从 fixed-size 开始</strong>——Pinecone 明确建议先从这里起步，只在证明不足时才升级</li>
+<li><strong>Chunking 不是独立问题</strong>——必须与 embedding model 选择、query 类型、下游场景联合优化</li>
+<li><strong>Eval 驱动调优</strong>——用代表性数据集测试多种 chunk size 和策略，比较 recall@K 和生成质量</li>
+<li><strong>Contextual Retrieval 是当前 SOTA</strong>——知识库规模 > 200K tokens 且检索质量是关键瓶颈时优先尝试</li>
+<li><strong>Chunk expansion 是低成本提升</strong>——不改 chunking 策略就能显著改善 LLM 理解</li>
+</ol>
+</div>
+</section>
+
+<nav>
+<a href="0007-rag-full-pipeline.html" class="nav-prev">← 第 8 课</a>
+<a href="0010-hybrid-search-reranking.html" class="nav-next">第 10 课 →</a>
+</nav>
+
+<footer>
+Forward Deployed Engineer 课程 · 第 9 课 · Chunking Strategy<br>
+© 2026 — 由 FDE 笔记自动生成
+</footer>
+</div>
+
+<script>
+function checkQuiz(btn,isCorrect){
+const quizSection=btn.closest('.quiz-section');
+const buttons=quizSection.querySelectorAll('.quiz-btn');
+buttons.forEach(b=>{b.disabled=true;b.style.cursor='default';
+if(b===btn){b.classList.add(isCorrect?'correct':'wrong')}
+else{b.style.opacity='0.5'}
+});
+const feedback=btn.nextElementSibling;
+feedback.classList.add('show',isCorrect?'correct-fb':'wrong-fb');
+}
+</script>
+</body>
+</html>
