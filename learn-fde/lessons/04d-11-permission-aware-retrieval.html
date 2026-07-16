@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 11 课：Permission-aware Retrieval — 权限感知检索</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Source Sans 3', sans-serif; background: #fdfdfd; color: #1a1a1a; line-height: 1.75; padding: 0; }
+.container { max-width: 800px; margin: 0 auto; padding: 40px 24px 80px; }
+h1 { font-family: 'Merriweather', serif; font-size: 1.85rem; font-weight: 900; color: #111; margin-bottom: 8px; line-height: 1.35; }
+h2 { font-family: 'Merriweather', serif; font-size: 1.35rem; font-weight: 700; color: #222; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e8e8e8; }
+h3 { font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 700; color: #333; margin-top: 28px; margin-bottom: 10px; }
+p { margin-bottom: 14px; font-size: 1.05rem; }
+.module-badge { display: inline-block; background: #2563eb; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; letter-spacing: 0.02em; }
+.lesson-header { margin-bottom: 36px; }
+.lesson-header .meta { color: #666; font-size: 0.92rem; margin-top: 6px; }
+code, pre { font-family: 'SF Mono', 'Fira Code', monospace; }
+pre { background: #f4f4f4; border-left: 4px solid #2563eb; padding: 16px 20px; border-radius: 0 8px 8px 0; overflow-x: auto; margin: 16px 0; font-size: 0.9rem; line-height: 1.6; }
+pre code { background: none; padding: 0; }
+.highlight-box { background: #eff6ff; border-left: 4px solid #2563eb; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+.highlight-box p { margin-bottom: 0; }
+.insight-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.insight-card h3 { margin-top: 0; color: #2563eb; }
+.quiz-section { background: #fafbfc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; margin: 28px 0; }
+.quiz-section h3 { color: #1a1a1a; margin-bottom: 16px; font-size: 1rem; }
+.quiz-question { margin-bottom: 18px; }
+.quiz-question p { font-weight: 600; margin-bottom: 10px; }
+.quiz-options { list-style: none; padding: 0; }
+.quiz-options li { margin-bottom: 6px; }
+.quiz-options button { width: 100%; text-align: left; padding: 10px 16px; border: 1.5px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; font-size: 0.95rem; font-family: 'Source Sans 3', sans-serif; transition: all 0.15s; }
+.quiz-options button:hover { border-color: #2563eb; background: #f0f5ff; }
+.quiz-options button.correct { border-color: #16a34a; background: #f0fdf4; color: #166534; }
+.quiz-options button.wrong { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+.quiz-feedback { margin-top: 8px; padding: 10px 14px; border-radius: 6px; font-size: 0.92rem; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: #dcfce7; color: #166534; }
+.quiz-feedback.wrong { background: #fee2e2; color: #991b1b; }
+.pattern-grid { display: grid; gap: 16px; margin: 20px 0; }
+.pattern-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; }
+.pattern-card .pattern-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #2563eb; margin-bottom: 8px; }
+.pattern-card h4 { margin: 0 0 8px; font-size: 1rem; }
+.nav-bar { display: flex; justify-content: space-between; margin-top: 60px; padding-top: 24px; border-top: 2px solid #e8e8e8; }
+.nav-bar a { text-decoration: none; padding: 12px 20px; border: 1.5px solid #d1d5db; border-radius: 8px; font-weight: 600; font-size: 0.92rem; transition: all 0.15s; color: #2563eb; display: inline-flex; align-items: center; gap: 6px; }
+.nav-bar a:hover { border-color: #2563eb; background: #eff6ff; }
+.nav-bar a.disabled { opacity: 0.4; pointer-events: none; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.tag { font-size: 0.78rem; background: #f3f4f6; padding: 3px 10px; border-radius: 12px; color: #555; }
+ul.checklist { list-style: none; padding: 0; }
+ul.checklist li { padding: 6px 0 6px 28px; position: relative; font-size: 1rem; }
+ul.checklist li::before { content: '☐'; position: absolute; left: 0; top: 6px; font-size: 1.1rem; color: #2563eb; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="lesson-header">
+  <span class="module-badge">模块二：AI 应用工程</span>
+  <h1>第 11 课：Permission-aware Retrieval — 权限感知检索</h1>
+  <div class="meta">在向量检索中嵌入 RBAC/ABAC 权限模型，确保用户只能访问其有权获取的内容</div>
+  <div class="tag-list">
+    <span class="tag">RAG</span>
+    <span class="tag">RBAC</span>
+    <span class="tag">ABAC</span>
+    <span class="tag">向量数据库</span>
+    <span class="tag">数据安全</span>
+  </div>
+</div>
+
+<!-- Section 1 -->
+<h2>一、为什么权限感知检索是企业的红线</h2>
+<p>想象一下：你在一家金融公司部署了一个 RAG 系统，员工可以用自然语言查询内部文档。某天，一个初级分析师竟然通过系统检索到了 CEO 的薪酬方案——那份标注为「仅限高管」的文档。</p>
+<p>这就是<strong>数据越权泄露</strong>。它不是理论风险，而是企业客户拒绝 AI 系统上线的头号安全顾虑。权限感知检索的核心目标很简单：<strong>在向量检索的每一层嵌入权限控制，确保用户只能看到自己有权访问的内容。</strong></p>
+
+<div class="highlight-box">
+  <p><strong>核心原则：</strong>权限过滤不是事后补丁，而是从第一天就嵌入到索引和查询两个阶段的基础设施。</p>
+</div>
+
+<div class="quiz-section">
+  <h3>🧠 快速测验</h3>
+  <div class="quiz-question" id="q1">
+    <p>1. 以下哪种场景最需要权限感知检索？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q1','a',this)">A. 公开的知识库问答系统</button></li>
+      <li><button onclick="checkAnswer('q1','b',this)">B. 企业内部含多密级文档的智能搜索</button></li>
+      <li><button onclick="checkAnswer('q1','c',this)">C. 个人笔记的本地搜索引擎</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q1-fb"></div>
+  </div>
+  <div class="quiz-question" id="q2">
+    <p>2. 如果 RAG 系统不做权限过滤，最直接的风险是什么？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q2','a',this)">A. 检索速度变慢</button></li>
+      <li><button onclick="checkAnswer('q2','b',this)">B. 向量维度降低</button></li>
+      <li><button onclick="checkAnswer('q2','c',this)">C. 数据越权泄露</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q2-fb"></div>
+  </div>
+</div>
+
+<!-- Section 2 -->
+<h2>二、两大过滤时机：索引时 vs 查询时</h2>
+<p>权限过滤在 RAG 中有两个关键切入点，各有优劣：</p>
+
+<div class="insight-card">
+  <h3>索引时过滤（Index-time Filtering）</h3>
+  <p>在文档入库时，为每个 chunk 打上权限标签（如 <code>allowed_roles: ["engineering"]</code>），存入向量数据库的 metadata 字段。</p>
+  <p><strong>优点：</strong>实现简单，查询时无需额外处理。<br>
+  <strong>缺点：</strong>权限动态变化（如用户角色变更）时需要重新索引所有文档，成本极高。</p>
+</div>
+
+<div class="insight-card">
+  <h3>查询时过滤（Query-time Filtering）</h3>
+  <p>在检索时将用户权限作为 metadata filter 实时传递给向量数据库。</p>
+  <p><strong>优点：</strong>权限变更即时生效，无需重新索引。<br>
+  <strong>缺点：</strong>每个查询都带 filter，可能影响检索性能。</p>
+</div>
+
+<div class="highlight-box">
+  <p><strong>最佳实践：</strong>两者结合使用——静态权限（如部门归属）用索引时过滤，动态权限（如临时项目授权）用查询时过滤。</p>
+</div>
+
+<div class="quiz-section">
+  <h3>🧠 快速测验</h3>
+  <div class="quiz-question" id="q3">
+    <p>3. 某员工的权限从「只读」升级为「编辑」，哪种过滤方式能立即生效？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q3','a',this)">A. 索引时过滤</button></li>
+      <li><button onclick="checkAnswer('q3','b',this)">B. 查询时过滤</button></li>
+      <li><button onclick="checkAnswer('q3','c',this)">C. 两种都一样</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q3-fb"></div>
+  </div>
+  <div class="quiz-question" id="q4">
+    <p>4. 索引时过滤的主要缺陷是什么？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q4','a',this)">A. 查询速度慢</button></li>
+      <li><button onclick="checkAnswer('q4','b',this)">B. 权限变更需要重新索引</button></li>
+      <li><button onclick="checkAnswer('q4','c',this)">C. 不支持向量搜索</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q4-fb"></div>
+  </div>
+</div>
+
+<!-- Section 3 -->
+<h2>三、RBAC vs ABAC：两种权限模型</h2>
+<p>企业环境中最常见的两种权限模型——RBAC 和 ABAC——在 RAG 中有不同的实现路径：</p>
+
+<div class="pattern-grid">
+  <div class="pattern-card">
+    <div class="pattern-label">RBAC</div>
+    <h4>基于角色的访问控制</h4>
+    <p>将权限抽象为角色（如 "manager"、"engineer"），文档标注允许的角色列表。</p>
+    <p><strong>适用场景：</strong>大多数企业，结构简单，易于管理。</p>
+    <p><strong>示例：</strong><code>allowed_roles: ["engineer", "manager"]</code></p>
+  </div>
+  <div class="pattern-card">
+    <div class="pattern-label">ABAC</div>
+    <h4>基于属性的访问控制</h4>
+    <p>基于属性组合判断：<code>department == "finance" AND clearance_level >= 3 AND location == "US"</code></p>
+    <p><strong>适用场景：</strong>政府、金融等高合规要求场景，需要细粒度控制。</p>
+  </div>
+</div>
+
+<div class="highlight-box">
+  <p><strong>FDE 实战要点：</strong>Google Cloud 的 FDE 岗位要求理解 RBAC 和 ABAC 的应用场景，并能根据客户需求选择合适的模型。不要盲目追求 ABAC 的精细度——简单场景用 RBAC 就够了。</p>
+</div>
+
+<div class="quiz-section">
+  <h3>🧠 快速测验</h3>
+  <div class="quiz-question" id="q5">
+    <p>5. 一家小型创业公司只有「管理员」和「普通员工」两类用户，应该选择哪种权限模型？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q5','a',this)">A. RBAC</button></li>
+      <li><button onclick="checkAnswer('q5','b',this)">B. ABAC</button></li>
+      <li><button onclick="checkAnswer('q5','c',this)">C. 不需要权限模型</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q5-fb"></div>
+  </div>
+  <div class="quiz-question" id="q6">
+    <p>6. ABAC 相比 RBAC 的主要优势是什么？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q6','a',this)">A. 实现更简单</button></li>
+      <li><button onclick="checkAnswer('q6','b',this)">B. 支持更细粒度的条件组合判断</button></li>
+      <li><button onclick="checkAnswer('q6','c',this)">C. 不需要向量数据库</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q6-fb"></div>
+  </div>
+</div>
+
+<!-- Section 4 -->
+<h2>四、三大架构设计模式</h2>
+
+<div class="pattern-grid">
+  <div class="pattern-card">
+    <div class="pattern-label">模式 A：推荐起步</div>
+    <h4>Metadata Filter 模式</h4>
+    <p>查询时构建 metadata filter 并传给向量数据库。这是最简单、最通用的方案，适合大多数起步场景。</p>
+    <pre>{
+  "$and": [
+    {"$or": [{"allowed_roles": {"$in": ["engineer", "manager"]}}]},
+    {"department": {"$eq": "engineering"}}
+  ]
+}</pre>
+  </div>
+  <div class="pattern-card">
+    <div class="pattern-label">模式 B：简单但不可靠</div>
+    <h4>权限感知的 Embedding 模式</h4>
+    <p>将用户权限注入 prompt："你是 engineering 部门的工程师，仅使用你有权限访问的文档回答问题。"</p>
+    <p><strong>注意：</strong>LLM 不保证遵守权限约束，仅适用于低风险场景。</p>
+  </div>
+  <div class="pattern-card">
+    <div class="pattern-label">模式 C：高性能方案</div>
+    <h4>权限预计算 + 缓存模式</h4>
+    <p>为每个用户预计算可访问的文档 ID 集合，存储在 Redis 等缓存层。检索时先查缓存再执行向量搜索。</p>
+    <p><strong>适用场景：</strong>高并发、权限稳定的企业环境。</p>
+  </div>
+</div>
+
+<div class="quiz-section">
+  <h3>🧠 快速测验</h3>
+  <div class="quiz-question" id="q7">
+    <p>7. 为什么「权限感知的 Embedding 模式」被认为不可靠？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q7','a',this)">A. 向量数据库不支持</button></li>
+      <li><button onclick="checkAnswer('q7','b',this)">B. LLM 不保证遵守 prompt 中的权限约束</button></li>
+      <li><button onclick="checkAnswer('q7','c',this)">C. 无法注入用户信息</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q7-fb"></div>
+  </div>
+  <div class="quiz-question" id="q8">
+    <p>8. 以下哪种模式最适合高并发、权限稳定的企业环境？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q8','a',this)">A. Metadata Filter 模式</button></li>
+      <li><button onclick="checkAnswer('q8','b',this)">B. 权限感知的 Embedding 模式</button></li>
+      <li><button onclick="checkAnswer('q8','c',this)">C. 权限预计算 + 缓存模式</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q8-fb"></div>
+  </div>
+</div>
+
+<!-- Section 5 -->
+<h2>五、向量数据库的性能挑战</h2>
+<p>metadata filtering 在不同向量数据库上的表现差异很大。作为 FDE，你需要了解这些权衡：</p>
+
+<ul style="margin: 16px 0; padding-left: 24px;">
+  <li><strong>Pinecone：</strong>支持 indexed metadata filtering，但 filter 数量有上限（通常每索引 50 个 unique values）。</li>
+  <li><strong>Weaviate：</strong>原生支持 hybrid search + filter，性能较好。</li>
+  <li><strong>Qdrant：</strong>支持 pre-filtering 和 post-filtering 两种模式，pre-filtering 性能更优。</li>
+  <li><strong>Milvus：</strong>支持 scalar + vector 联合查询，适合大规模权限过滤。</li>
+</ul>
+
+<div class="highlight-box">
+  <p><strong>关键权衡：</strong>filter 的 cardinality（基数）越高，性能下降越明显。当权限维度超过 50 个 unique values 时，需考虑分层索引或预计算权限矩阵。</p>
+</div>
+
+<div class="quiz-section">
+  <h3>🧠 快速测验</h3>
+  <div class="quiz-question" id="q9">
+    <p>9. 当权限维度的 unique values 超过 50 个时，应该怎么办？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q9','a',this)">A. 换另一个向量数据库</button></li>
+      <li><button onclick="checkAnswer('q9','b',this)">B. 考虑分层索引或预计算权限矩阵</button></li>
+      <li><button onclick="checkAnswer('q9','c',this)">C. 放弃权限过滤</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q9-fb"></div>
+  </div>
+  <div class="quiz-question" id="q10">
+    <p>10. Qdrant 的 pre-filtering 相比 post-filtering 有什么优势？</p>
+    <ul class="quiz-options">
+      <li><button onclick="checkAnswer('q10','a',this)">A. 性能更好</button></li>
+      <li><button onclick="checkAnswer('q10','b',this)">B. 支持更多向量类型</button></li>
+      <li><button onclick="checkAnswer('q10','c',this)">C. 不需要 metadata</button></li>
+    </ul>
+    <div class="quiz-feedback" id="q10-fb"></div>
+  </div>
+</div>
+
+<!-- Section 6 -->
+<h2>六、FDE 实战 Checklist</h2>
+<p>在实际项目中落地权限感知检索，按以下步骤推进：</p>
+<ul class="checklist">
+  <li>确定客户使用的权限模型（RBAC / ABAC / 混合）</li>
+  <li>选择向量数据库并验证其 metadata filter 性能</li>
+  <li>设计 chunk-level 权限标注方案</li>
+  <li>实现查询时的权限 filter 注入</li>
+  <li>编写 eval case 测试越权场景（用户 A 不应看到用户 B 的文档）</li>
+  <li>监控越权率指标</li>
+  <li>设计权限变更后的同步机制</li>
+</ul>
+
+<div class="highlight-box">
+  <p><strong>重要提醒：</strong>Chunking 策略需要考虑权限边界——一个 chunk 不应跨越不同的权限级别。否则即使做了权限过滤，也可能因为 chunk 粒度太粗而导致信息泄露。</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <a href="../lessons/04d-10-hybrid-search-and-reranking.html" class="arrow-left">← 第 10 课</a>
+  <a href="../lessons/04d-12-rag-eval-hallucination.html" class="arrow-right">第 12 课 →</a>
+</div>
+
+</div>
+
+<script>
+const answers = {
+  q1: { correct: 'b', explanation: '企业内部含多密级文档的智能搜索是权限感知检索的典型场景。公开知识库和个人笔记不涉及权限问题。' },
+  q2: { correct: 'c', explanation: '不做权限过滤的直接后果就是数据越权泄露——用户看到了不该看的文档。这是企业客户最担心的安全问题。' },
+  q3: { correct: 'b', explanation: '查询时过滤实时读取当前用户权限，权限变更即时生效。索引时过滤需要重新索引才能反映变更。' },
+  q4: { correct: 'b', explanation: '索引时过滤在入库时就固化了权限标签，之后权限变更不会自动更新，必须重新索引全部文档，成本极高。' },
+  q5: { correct: 'a', explanation: 'RBAC 简单直观，两三个角色就能覆盖需求。ABAC 适合复杂的多维度权限场景，对小公司来说是过度设计。' },
+  q6: { correct: 'b', explanation: 'ABAC 支持多维度属性的组合判断（部门+级别+地域），比 RBAC 的单一角色粒度更细、灵活性更高。' },
+  q7: { correct: 'b', explanation: 'LLM 本质上是概率模型，无法保证严格遵守 prompt 中的权限指令。安全上不能依赖 LLM 做权限控制。' },
+  q8: { correct: 'c', explanation: '权限预计算 + 缓存模式通过 Redis 等缓存层预先算好每个用户的可访问文档集，查询时直接命中，性能最优。' },
+  q9: { correct: 'b', explanation: '当 cardinality 过高时，应通过分层索引（如先按部门分区）或预计算权限矩阵来降低每次查询的 filter 复杂度。' },
+  q10: { correct: 'a', explanation: 'pre-filtering 在向量搜索之前先过滤掉不匹配的文档，减少了后续向量计算的量，因此性能优于 post-filtering。' }
+};
+
+function checkAnswer(qId, selected, btn) {
+  const question = document.getElementById(qId);
+  const buttons = question.querySelectorAll('.quiz-options button');
+  const feedback = document.getElementById(qId + '-fb');
+  const correct = answers[qId].correct;
+
+  // Disable all buttons for this question
+  buttons.forEach(b => {
+    b.disabled = true;
+    b.style.pointerEvents = 'none';
+    if (b.textContent.trim().startsWith(correct.toUpperCase() + '.')) {
+      b.classList.add('correct');
+    }
+  });
+
+  if (selected === correct) {
+    btn.classList.add('correct');
+    feedback.className = 'quiz-feedback show correct';
+    feedback.textContent = '✓ 正确！' + answers[qId].explanation;
+  } else {
+    btn.classList.add('wrong');
+    feedback.className = 'quiz-feedback show wrong';
+    feedback.textContent = '✗ 不正确。' + answers[qId].explanation;
+  }
+}
+</script>
+
+</body>
+</html>
