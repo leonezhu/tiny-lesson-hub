@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 — Palantir FDSE/Delta 起源与分工</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',system-ui,sans-serif;background:#fdfdfd;color:#1a1a2e;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3{font-family:'Merriweather',Georgia,serif}
+header{border-bottom:3px solid #2c6fbb;padding-bottom:1.5rem;margin-bottom:2rem}
+.module-badge{display:inline-block;background:#2c6fbb;color:#fff;font-size:.75rem;font-weight:700;padding:.3rem .8rem;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+lesson-num{color:#2c6fbb;font-weight:700;font-size:1rem;display:block;margin-bottom:.3rem}
+h1{font-size:1.85rem;color:#1a1a2e;margin-bottom:.3rem;line-height:1.3}
+.subtitle{color:#555;font-size:.95rem}
+section{margin-bottom:2.5rem}
+h2{font-size:1.4rem;color:#2c6fbb;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid #e0e0e0}
+p{margin-bottom:1rem}
+blockquote{border-left:4px solid #2c6fbb;padding:1rem 1.2rem;margin:1.2rem 0;background:#f0f4fa;border-radius:0 6px 6px 0;font-style:italic;color:#333}
+blockquote strong{color:#1a1a2e;font-style:normal}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.92rem}
+th{background:#2c6fbb;color:#fff;padding:.7rem .8rem;text-align:left}
+td{padding:.6rem .8rem;border-bottom:1px solid #e0e0e0}
+tr:nth-child(even){background:#f8f9fc}
+ol,.steps{margin:1rem 0 1rem 1.5rem}
+.steps{list-style:none;margin-left:0;counter-reset:step}
+.steps li{counter-increment:step;margin-bottom:.8rem;padding-left:2.5rem;position:relative}
+.steps li::before{content:counter(step);position:absolute;left:0;top:0;width:1.8rem;height:1.8rem;background:#2c6fbb;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.quiz-block{background:#fafbff;border:1px solid #dde3ee;border-radius:8px;padding:1.2rem 1.4rem;margin:1.5rem 0}
+.quiz-block h3{font-size:1.05rem;margin-bottom:.8rem;color:#1a1a2e}
+.quiz-option{display:block;padding:.55rem .8rem;margin:.35rem 0;border:1.5px solid #d0d8e4;border-radius:6px;cursor:pointer;transition:all .15s ease;font-size:.95rem}
+.quiz-option:hover{background:#eef2f8;border-color:#2c6fbb}
+.quiz-option.correct{background:#d4edda;border-color:#28a745;color:#155724;pointer-events:none}
+.quiz-option.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24;pointer-events:none}
+.quiz-feedback{margin-top:.6rem;font-size:.9rem;font-weight:600;min-height:1.4em}
+.nav-bar{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:2px solid #e0e0e0}
+.nav-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:600;font-size:.9rem;transition:all .15s}
+.nav-prev{background:#2c6fbb;color:#fff}
+.nav-next{background:#e0e0e0;color:#333}
+.nav-btn:hover{opacity:.88}
+.nav-btn.disabled{opacity:.35;pointer-events:none}
+.highlight{background:linear-gradient(120deg,#ffe066 0%,#ffe066 100%);padding:.1rem .3rem;border-radius:3px}
+footer{text-align:center;margin-top:3rem;color:#888;font-size:.82rem}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="module-badge">模块一 · 第 2 课</span>
+  <span style="color:#2c6fbb;font-weight:700;font-size:.85rem;display:block;margin-bottom:.2rem;">FDE 基础认知</span>
+  <h1>Palantir 的 FDSE / Delta 起源与分工</h1>
+  <div class="subtitle">从情报机构的认识论难题，到 OpenAI 和 Anthropic 的集体顿悟</div>
+</header>
+
+<!-- Section 1 -->
+<section>
+<h2>一、为什么 Palantir 发明了 FDE</h2>
+<p>2003 年，Palantir 成立时的客户是美国情报机构——CIA、DIA、NSA。这带来了一个根本性的<span class="highlight">认识论难题</span>：</p>
+<p>你无法向 CIA 做一次标准的"客户发现访谈"来问他们最大的痛点是什么。<strong>他们自己都无法明确表述需求</strong>，而且受限于保密级别，连描述自己的工作流都不可能。</p>
+<p>因此，唯一的路径是<span class="highlight">进入客户现场</span>。FDE 模式不是 go-to-market 策略，而是认识论上的必然选择。</p>
+
+<blockquote>
+<strong>核心洞察 1：</strong>Palantir 早期雇佣的 FDE（当时叫 "Deltas"）比软件开发工程师还多。传统智慧把部署职能视为需要最小化的成本负担；Palantir 将其倒置了：<strong>部署就是情报收集，情报收集驱动产品。</strong>
+</blockquote>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>如果一家 AI 公司的客户是高度保密的国防部门，无法通过常规访谈了解需求，最合理的产品开发路径是什么？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. 先开发一套通用平台，再找客户试用</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">B. 派遣工程师进入客户现场，在真实环境中观察并构建方案</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">C. 招聘更多产品经理来做需求调研</label>
+  <div class="quiz-feedback"></div>
+</div>
+</section>
+
+<!-- Section 2 -->
+<section>
+<h2>二、Dev vs Delta：Palantir 的内部分工</h2>
+<p>Palantir 对两类工程角色做了明确的区分，这种不对称性是其商业模式的核心：</p>
+
+<table>
+<thead><tr><th>维度</th><th>Dev（核心平台工程师）</th><th>Delta / FDSE（前部署工程师）</th></tr></thead>
+<tbody>
+<tr><td>工作方式</td><td>一项能力服务许多客户</td><td>一个客户需要许多能力</td></tr>
+<tr><td>产出</td><td>通用平台功能</td><td>针对特定客户的定制解决方案</td></tr>
+<tr><td>位置</td><td>总部</td><td>客户现场</td></tr>
+<tr><td>视角</td><td>抽象化、通用化</td><td>具体化、情境化</td></tr>
+</tbody>
+</table>
+
+<blockquote>
+<strong>核心洞察 2：</strong>Dev 构建的是最大公约数功能集；Delta 则对眼前这一个客户的独特现实进行极致优化。两者不是竞争关系，而是<strong>发现与产品化的互补循环</strong>。
+</blockquote>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>关于 Dev 和 Delta 的关系，以下哪种说法最准确？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. Delta 的工作是临时的，最终会被 Dev 自动化工具完全取代</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">B. Dev 和 Delta 构成互补循环：Delta 发现需求，Dev 将其产品化</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">C. Dev 的优先级高于 Delta，因为平台功能影响面更大</label>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>如果一个 Delta 工程师在客户现场反复遇到同一种数据处理问题，他应该怎么做？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. 每次都手动处理，这是 Delta 的职责范围</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">B. 拒绝为该客户工作，因为问题不够定制化</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">C. 记录该模式，反馈给 Dev 团队，推动将其泛化为平台能力</label>
+  <div class="quiz-feedback"></div>
+</div>
+</section>
+
+<!-- Section 3 -->
+<section>
+<h2>三、Echo：Delta 的非技术搭档</h2>
+<p>Palantir 的现场团队不是单人作战。每个 Delta 都有一个对应的 <span class="highlight">Echo（Deployment Strategist）</span>，这个角色不写代码，但负责：</p>
+
+<ol>
+<li>理解客户运营流程</li>
+<li>设计填补现有系统空白的工作流</li>
+<li>与用户迭代设计</li>
+<li>管理关键干系人关系</li>
+<li>推进项目交付</li>
+</ol>
+
+<blockquote>
+<strong>核心洞察 3：</strong>Bob McGrew（前 Palantir 高管、OpenAI CRO）将这种组合称为 <strong>"Productized Consulting"</strong>——像咨询一样深度嵌入客户，但产出是可复用的产品。Echo 负责找到"碎石路"（发现真实需求），Delta 负责把它铺成"高速公路"（工程实现）。
+</blockquote>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>为什么 Delta 需要 Echo 这样的非技术搭档？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. 因为工程师不擅长沟通，所以需要有人替他们说话</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">B. 因为理解客户运营流程和管理干系人是独立于工程技能的专业能力</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">C. 因为 Echo 负责写代码，Delta 负责和客户聊天</label>
+  <div class="quiz-feedback"></div>
+</div>
+</section>
+
+<!-- Section 4 -->
+<section>
+<h2>四、从定制到产品：反馈回路的设计</h2>
+<p>Palantir 模式的真正创新不在于"派人去客户现场"，而在于<strong>设计了从定制方案到核心产品的反馈回路</strong>：</p>
+
+<ol class="steps">
+<li>Deltas 在客户现场遇到反复出现的手动流程</li>
+<li>构建针对该客户的定制方案</li>
+<li>产品开发工程师观察到多个客户部署中的模式</li>
+<li>将方案泛化为平台能力</li>
+<li>该能力成为 Gotham / Foundry / AIP 的一部分</li>
+</ol>
+
+<p>Magritte（数据摄入）、Contour（可视化）、Workshop（Web 应用）——这些都是<strong>产品化的 FDE 发现</strong>。</p>
+
+<blockquote>
+<strong>核心洞察 4：</strong>Nabeel Qureshi（Palantir 八年 FDE）明确表示："FDE 去客户现场做手工工作，然后 PD 工程师构建工具自动化了那些工作……这最终驱动了公司 50%+ 的收入。" Palantir 2024 年约 80% 的毛利率正在逼近纯软件公司水平。
+</blockquote>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>Palantir 的 Magritte 和 Contour 工具是如何诞生的？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. 由总部工程师凭空构想出来的全新功能</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">B. 来自 FDE 在多个客户现场发现的共性需求，经过产品化后形成</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">C. 从竞争对手那里抄袭而来的</label>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>Palantir 的毛利率达到约 80%（接近纯软件公司），说明了什么？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">A. FDE 模式在经济上是可行的——它不是单纯的成本中心，而是收入驱动引擎</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">B. 说明 Palantir 不再需要 FDE 了，可以裁员了</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">C. 说明 Palantir 的产品定价过高</label>
+  <div class="quiz-feedback"></div>
+</div>
+</section>
+
+<!-- Section 5 -->
+<section>
+<h2>五、为什么 2026 年所有人都重新发现了 FDE</h2>
+<p>2026 年 5 月，OpenAI 和 Anthropic 几乎在同一周做出了相同的押注：</p>
+
+<ul style="margin:1rem 0 1rem 1.5rem">
+<li><strong>OpenAI</strong> 成立 The OpenAI Deployment Company，获得超过 40 亿美元初始投资，收购 Tomoro 获得约 150 名部署专家</li>
+<li><strong>Anthropic</strong> 与 Blackstone、H&amp;F、Goldman Sachs 成立企业 AI 服务公司</li>
+</ul>
+
+<blockquote>
+<strong>核心洞察 5：</strong>构建更聪明的模型已经不够了。真正的价值在于<strong>"交付到客户一线并将其转化为结果"</strong>。Palantir 二十年前面对情报机构时遇到的三个困难，如今在每个企业的 AI 采用中都重现了：
+</blockquote>
+
+<ol style="margin:1rem 0 1rem 2rem">
+<li>无法明确表述需求（AI 场景同理）</li>
+<li>无法共享数据（隐私/合规限制）</li>
+<li>工作流不断变化（AI 能力每月都在变）</li>
+</ol>
+
+<p>a16z 称之为 <span class="highlight">"The Palantirization of Everything"</span>。</p>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>为什么 OpenAI 和 Anthropic 在 2026 年几乎同时转向 FDE 模式？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. 因为 Palantir 起诉了他们，迫使他们模仿</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">B. 因为他们认识到：仅靠模型智能不足以解决企业落地的复杂现实问题</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">C. 因为他们的 CEO 都在 Palantir 工作过</label>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-block">
+  <h3>🧠 理解检查</h3>
+  <p>企业 AI 落地面临的三大困难中，哪一条是 Palantir 20 年前就解决的？</p>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">A. 只有"无法明确表述需求"</label>
+  <label class="quiz-option" onclick="checkQuiz(this,false)">B. 只有"无法共享数据"</label>
+  <label class="quiz-option" onclick="checkQuiz(this,true)">C. 三者都是——这正是 a16z 所说的"Palantirization of Everything"的原因</label>
+  <div class="quiz-feedback"></div>
+</div>
+</section>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+  <a href="../lessons/01-fde-definition.html" class="nav-btn nav-prev">← 第1课：FDE 定义与四层含义</a>
+  <a href="../lessons/03-ai-gap.html" class="nav-btn nav-next">第3课：AI 落地鸿沟 →</a>
+</nav>
+
+<footer>
+  Forward Deployed Engineer 完整课程 · 第 2 课<br>
+  来源：FDE 学习笔记 · 由 Palantir 博客、Nabeel Qureshi 回顾等整理
+</footer>
+
+<script>
+function checkQuiz(el, isCorrect) {
+  const block = el.closest('.quiz-block');
+  const options = block.querySelectorAll('.quiz-option');
+  const feedback = block.querySelector('.quiz-feedback');
+
+  // Prevent re-clicking
+  if (block.dataset.answered) return;
+  block.dataset.answered = 'true';
+
+  options.forEach(opt => {
+    opt.style.pointerEvents = 'none';
+    if (opt === block.querySelector('[onclick*="true"]')) {
+      opt.classList.add('correct');
+    }
+  });
+
+  if (isCorrect) {
+    el.classList.add('correct');
+    feedback.textContent = '✅ 正确！';
+    feedback.style.color = '#28a745';
+  } else {
+    el.classList.add('wrong');
+    feedback.textContent = '❌ 不对哦，正确答案已标绿。';
+    feedback.style.color = '#dc3545';
+  }
+}
+</script>
+</body>
+</html>
