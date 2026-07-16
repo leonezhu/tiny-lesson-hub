@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 003 课 — AI 落地鸿沟：从 Demo 到 Production</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', 'Segoe UI', sans-serif; background: #fdfdfd; color: #1a1a2e; line-height: 1.75; max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h1, h2, h3 { font-family: 'Merriweather', Georgia, serif; }
+  h1 { font-size: 1.85rem; color: #0f3460; margin-bottom: 0.3rem; }
+  h2 { font-size: 1.4rem; color: #16213e; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid #e8e8e8; }
+  h3 { font-size: 1.15rem; color: #0f3460; margin-top: 1.5rem; margin-bottom: 0.6rem; }
+  p { margin-bottom: 1rem; }
+  blockquote { border-left: 4px solid #e94560; background: #fef0f3; padding: 1rem 1.2rem; margin: 1.2rem 0; border-radius: 0 8px 8px 0; font-style: italic; }
+  .header-bar { background: linear-gradient(135deg, #0f3460 0%, #16213e 100%); color: #fff; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; }
+  .header-bar .module-tag { display: inline-block; background: rgba(255,255,255,0.18); padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.85rem; margin-bottom: 0.6rem; }
+  .header-bar h1 { color: #fff; }
+  .header-bar .subtitle { color: rgba(255,255,255,0.8); font-size: 1rem; margin-top: 0.3rem; }
+  .quiz-container { background: #f0f4ff; border-radius: 10px; padding: 1.3rem 1.5rem; margin: 1.2rem 0 1.5rem; border: 1px solid #d0d9f2; }
+  .quiz-container h3 { margin-top: 0; color: #0f3460; }
+  .quiz-question { font-weight: 600; margin-bottom: 0.8rem; }
+  .quiz-option { display: block; width: 100%; text-align: left; padding: 0.65rem 1rem; margin: 0.4rem 0; border: 2px solid #c5d0ea; border-radius: 8px; background: #fff; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; font-family: inherit; }
+  .quiz-option:hover { border-color: #0f3460; background: #eef2ff; }
+  .quiz-option.correct { border-color: #27ae60; background: #eafaf1; color: #1b7a3d; font-weight: 600; }
+  .quiz-option.incorrect { border-color: #e74c3c; background: #fdedec; color: #c0392b; }
+  .quiz-feedback { margin-top: 0.6rem; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.92rem; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: #d4edda; color: #155724; }
+  .quiz-feedback.incorrect-fb { background: #f8d7da; color: #721c24; }
+  .key-point { background: #fff9e6; border-left: 4px solid #f39c12; padding: 0.8rem 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0; }
+  .stat-box { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+  .stat-card { flex: 1; min-width: 180px; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1.2rem; text-align: center; }
+  .stat-card .number { font-size: 2rem; font-weight: 700; color: #e94560; font-family: 'Merriweather', serif; }
+  .stat-card .label { font-size: 0.85rem; color: #555; margin-top: 0.3rem; }
+  .nav-bar { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid #e8e8e8; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 1.2rem; background: #0f3460; color: #fff; text-decoration: none; border-radius: 8px; font-size: 0.9rem; transition: background 0.2s; }
+  .nav-btn:hover { background: #16213e; }
+  .nav-btn.disabled { background: #ccc; pointer-events: none; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+  code { background: #f0f0f0; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+  .footer-note { text-align: center; color: #888; font-size: 0.8rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <span class="module-tag">模块一：FDE 基础认知</span>
+  <h1>第 003 课 — AI 落地鸿沟：从 Demo 到 Production</h1>
+  <div class="subtitle">为什么大模型 API 能在几天内做出 demo，但企业生产环境却困难重重？</div>
+</div>
+
+<!-- Section 1 -->
+<h2>一、什么是"AI 落地鸿沟"？</h2>
+
+<p>2025 年，FDE（Forward Deployed Engineer）岗位同比增长超过 <strong>700%</strong>。这个现象的背后是一个结构性矛盾：</p>
+
+<blockquote>
+  大模型 API 和 Copilot 能在几天内做出 demo，但企业生产环境存在巨大的"落地鸿沟"。这个鸿沟不是模型能力问题，而是<strong>系统工程问题</strong>——数据、权限、流程、合规、评估、成本、延迟、用户采用，每一个环节都需要深度工程化。
+</blockquote>
+
+<p>传统 SaaS 部署主要是配置和流程适配，而 AI 应用必须做更多：</p>
+<ul>
+  <li><strong>接入数据库</strong>——让模型读取真实的业务数据</li>
+  <li><strong>对接 API</strong>——与现有系统双向通信</li>
+  <li><strong>嵌入工作流</strong>——融入员工日常操作习惯</li>
+  <li><strong>处理安全边界</strong>——权限控制、审计追踪</li>
+  <li><strong>持续评估优化</strong>——监控幻觉率、响应质量</li>
+</ul>
+
+<p><strong>核心结论：</strong>模型本身不是瓶颈，把模型嵌入企业现有系统是瓶颈。</p>
+
+<div class="key-point">💡 关键理解：AI 落地鸿沟在 2023 年之前并不突出，因为企业 AI 投入少、系统耦合度低。2024–2025 年模型能力跃升后，企业才开始把 AI 接入核心运营，才发现遗留系统的复杂度远超预期。</div>
+
+<!-- Quiz 1 -->
+<div class="quiz-container">
+  <h3>🧠 快速测验</h3>
+  <p class="quiz-question">1. AI 落地鸿沟的根本原因是什么？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 模型能力还不够强</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 系统工程复杂度——数据、权限、流程、合规等环节需要深度工程化</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 企业没有预算购买云服务</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！鸿沟的核心在于系统工程，而非模型本身的能力。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。模型能力已经足够，问题在于如何将其嵌入企业复杂的生产环境。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">2. 传统 SaaS 部署与 AI 应用部署的主要区别是？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. SaaS 更贵</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. AI 应用需要深度接入数据库、API、工作流和业务逻辑，而 SaaS 主要是配置</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. AI 应用不需要用户培训</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！AI 应用的 implementation depth 远超传统 SaaS，需要构建"连接组织"。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。两者的核心区别在于集成深度——AI 需要深度嵌入现有系统。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">3. 为什么 AI 落地鸿沟在 2025 年突然变大了？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 因为 AI 模型变得更复杂了</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 2024–2025 年模型能力跃升后，企业才真正开始把 AI 接入核心运营</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 政府出台了新的监管法规</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！模型能力跃升让企业敢于接入核心系统，同时也暴露了遗留系统的真实复杂度。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。根本原因是模型能力跃升与企业实际部署节奏之间的时间差。</div>
+</div>
+
+<!-- Section 2 -->
+<h2>二、FDE 爆火的量化信号</h2>
+
+<p>三个独立来源的数据方向高度一致，都指向同一个结论：FDE 正在成为 AI 时代最热门的岗位之一。</p>
+
+<div class="stat-box">
+  <div class="stat-card">
+    <div class="number">729%</div>
+    <div class="label">同比增长<br>(Business Insider)</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">800%+</div>
+    <div class="label">月度增长<br>(Financial Times)</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">10x</div>
+    <div class="label">两年翻倍<br>(WSJ)</div>
+  </div>
+</div>
+
+<p>但 WSJ 的报道揭示了一个重要细节——FDE 并非"坐在硅谷办公室写论文"的轻松角色，而是需要：<br>
+<strong>频繁出差 · 面对混乱客户现场 · 处理遗留系统 · 声望低于核心产品工程</strong></p>
+
+<p>这些数字之所以可信，是因为它们来自不同媒体、不同统计口径，但都指向同一个方向。</p>
+
+<div class="key-point">💡 现实提醒：FDE 的高需求背后是高强度的现场工程工作。这不是一个光鲜的职位，而是一个需要解决实际问题的角色。</div>
+
+<!-- Quiz 2 -->
+<div class="quiz-container">
+  <h3>🧠 快速测验</h3>
+  <p class="quiz-question">1. 关于 FDE 岗位增长的描述，以下哪项最准确？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 只有 Palantir 一家公司在大量招聘</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 不同来源数据口径不同，但方向一致——各公司都在大规模增长</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. FDE 岗位数量在下降，因为自动化替代了人工</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！多源数据的一致性恰恰证明了趋势的真实性和广泛性。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。多个独立来源一致显示 FDE 岗位在爆发式增长。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">2. WSJ 对 FDE 岗位的报道揭示了什么？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. FDE 是最轻松、最高薪的 AI 岗位</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. FDE 伴随客户现场、旅行、复杂环境和较低于核心产品工程的传统声望</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. FDE 岗位很快会被远程工具完全替代</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！FDE 的本质是现场工程，不是远程写代码。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。WSJ 强调了这个岗位的实际挑战——出差、混乱现场、声望不如核心工程。</div>
+</div>
+
+<!-- Section 3 -->
+<h2>三、AI 模型公司正在把 FDE 组织化</h2>
+
+<p>这是理解 FDE 爆火的最重要信号：</p>
+
+<blockquote>
+  <strong>AI 模型公司不再只卖 API 或 SaaS seat，而是在重新拥抱"深度部署 + 工程服务 + 产品反馈"的商业化模式。</strong>
+</blockquote>
+
+<p>三个标志性事件：</p>
+
+<h3>OpenAI 成立部署公司</h3>
+<ul>
+  <li>2026 年 5 月宣布成立 <strong>The OpenAI Deployment Company</strong></li>
+  <li>收购 Tomoro，获得约 <strong>150 名</strong>经验丰富的 FDE 和部署专家</li>
+  <li>获得超过 <strong>40 亿美元</strong>初始投资承诺</li>
+</ul>
+
+<h3>Anthropic 联合成立企业服务公司</h3>
+<ul>
+  <li>与 Blackstone、Hellman & Friedman、Goldman Sachs 等合作</li>
+  <li>帮助中型企业把 Claude 用到<strong>核心运营</strong>中</li>
+</ul>
+
+<h3>深层含义</h3>
+<p>当 OpenAI 和 Anthropic 这两个最激进的 "API-first" 公司都开始组建大规模部署团队时，说明 <strong>AI 产品的交付模式正在发生结构性转变</strong>。</p>
+
+<p>模型能力的快速迭代反而增加了对现场工程的支持需求——因为客户系统需要持续适应变化的模型能力。</p>
+
+<!-- Quiz 3 -->
+<div class="quiz-container">
+  <h3>🧠 快速测验</h3>
+  <p class="quiz-question">1. OpenAI 成立部署公司的核心意义是什么？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. OpenAI 决定转型为咨询公司</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 即使是"API-first"的公司也意识到深度部署能力是竞争壁垒</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. OpenAI 发现 API 收入不够多</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！这标志着 AI 产品交付模式的结构性转变——模型能力越快迭代，越需要现场工程支持。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。这不是简单的收入问题，而是 AI 产品交付模式的根本性转变。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">2. 为什么模型能力快速迭代反而增加了对 FDE 的需求？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 因为模型越快越好，不需要人工干预</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 客户系统需要持续适应变化的模型能力，形成持续演化的工程挑战</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 因为模型太复杂，普通工程师无法使用</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！模型按月甚至按周变化，客户系统也必须随之演化，这需要持续的工程协同。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。关键在于模型能力和客户系统之间的持续适配需求。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">3. Anthropic 联合 Blackstone 等企业成立服务公司的目标对象是谁？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 大型跨国企业</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 中型企业——帮助它们把 Claude 用到核心运营中</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 个人开发者</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！中型企业有核心运营需求但缺乏部署能力，正是 FDE 方法论的最佳服务对象。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。目标客户是中型企业——它们有需求但缺能力。</div>
+</div>
+
+<!-- Section 4 -->
+<h2>四、FDE 方法论核心循环：Build → Prove → Generalize</h2>
+
+<p>OpenAI 把 FDE 的核心工作循环概括为三个字：</p>
+
+<div class="stat-box">
+  <div class="stat-card">
+    <div class="number" style="color:#0f3460;">Build</div>
+    <div class="label">解决客户的具体高影响问题<br>快速构建端到端方案</div>
+  </div>
+  <div class="stat-card">
+    <div class="number" style="color:#e94560;">Prove</div>
+    <div class="label">验证业务影响<br>用数据证明价值</div>
+  </div>
+  <div class="stat-card">
+    <div class="number" style="color:#27ae60;">Generalize</div>
+    <div class="label">识别可规模化模式<br>沉淀为产品能力</div>
+  </div>
+</div>
+
+<p>a16z 的分析进一步指出，这个循环的关键在于 <strong>"compounding advantage"（复利优势）</strong>——如果 FDE 不能形成复利优势，就会沦为低毛利服务业务。</p>
+
+<div class="key-point">⚠️ 致命陷阱：大多数 AI 项目死于第三步——做了项目但没有产品化。FDE 组织的核心竞争力不在于第一次做得多好，而在于第 N 次做得多快。</div>
+
+<p>举例说明：</p>
+<ul>
+  <li><strong>不做 Generalize 的后果：</strong>每接一个新客户都要从零开始，人力成本无法摊薄</li>
+  <li><strong>做好 Generalize 的效果：</strong>第 10 个客户的部署速度可能是第 1 个的 10 倍</li>
+</ul>
+
+<!-- Quiz 4 -->
+<div class="quiz-container">
+  <h3>🧠 快速测验</h3>
+  <p class="quiz-question">1. Build-Prove-Generalize 循环中，哪一步是大多数 AI 项目的"死亡之谷"？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. Build——因为技术太难</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. Generalize——因为没有产品化，无法形成复利优势</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. Prove——因为客户不认可业务价值</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！做了项目但没有产品化，意味着每次都要从零开始，无法积累优势。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。Build 和 Prove 虽然重要，但 Generalize 才是区分"项目公司"和"产品公司"的关键。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">2. "Compounding advantage"（复利优势）在 FDE 方法论中指什么？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 每次部署赚更多的钱</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 随着经验积累，后续客户的部署速度和质量持续提升</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 模型性能随时间自动提升</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！复利优势意味着第 N 次部署比第 1 次快得多——知识在产品层面沉淀。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。这不是关于赚钱或模型性能，而是关于组织能力随时间的指数级增长。</div>
+</div>
+
+<!-- Section 5 -->
+<h2>五、FDE 的真正定位：产品发现引擎</h2>
+
+<p>FDE 是最容易被误解的角色。常见的认知误区：</p>
+
+<ul>
+  <li>❌ <strong>售前工程师</strong>——目标是成交，FDE 的目标是交付真实价值</li>
+  <li>❌ <strong>管理咨询</strong>——目标是建议，FDE 的目标是让系统跑起来</li>
+  <li>❌ <strong>系统集成商（SI）</strong>——目标是交付项目，FDE 的目标是发现产品机会</li>
+</ul>
+
+<p>FDE 有时会混合平台工程、软件工程、解决方案工程和客户支持的职责，但其核心价值在于：</p>
+
+<blockquote>
+  <strong>FDE 的真正价值不是交付项目，而是把客户现场变成产品和模型进化的高质量数据源。</strong>
+</blockquote>
+
+<p>嵌入客户运营的工程师可以：</p>
+<ul>
+  <li>加速产品采用</li>
+  <li>缩短销售周期</li>
+  <li>形成客户反馈闭环</li>
+  <li>确保方案与客户业务结果对齐</li>
+</ul>
+
+<div class="key-point">🎯 终极理解：FDE 是 AI 公司与真实世界之间的"翻译器"——把客户需求翻译成产品需求，把模型能力翻译成业务价值。</div>
+
+<!-- Quiz 5 -->
+<div class="quiz-container">
+  <h3>🧠 快速测验</h3>
+  <p class="quiz-question">1. FDE 与管理咨询的根本区别是什么？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. FDE 更贵</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 咨询的目标是给出建议，FDE 的目标是让系统真正运行并产生业务价值</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 咨询只做 PPT，FDE 只做代码</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！FDE 不只是提建议——它要让系统在实际业务环境中稳定运行并对结果负责。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。区别不在工具（PPT vs 代码），而在目标和责任——FDE 对业务结果负责。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">2. 为什么说 FDE 是"产品发现引擎"而不是"项目交付者"？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 因为 FDE 总是做新项目</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 因为客户现场是产品和模型进化的高质量数据源，每次部署都在为产品积累洞察</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 因为 FDE 负责市场调研</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！FDE 的核心产出不是项目本身，而是从客户现场提炼的产品洞察和数据。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。FDE 的价值不在于交付了多少个项目，而在于每个项目为产品进化贡献了什么。</div>
+</div>
+
+<div class="quiz-container">
+  <p class="quiz-question">3. 嵌入客户运营的工程师能带来哪些额外价值？</p>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">A. 只能加速部署速度</button>
+  <button class="quiz-option" onclick="checkQuiz(this, true)">B. 加速采用、缩短销售周期、形成客户反馈闭环</button>
+  <button class="quiz-option" onclick="checkQuiz(this, false)">C. 主要作用是替客户写文档</button>
+  <div class="quiz-feedback correct-fb">✅ 正确！FDE 的价值是多维的——产品、销售、客户成功形成正向循环。</div>
+  <div class="quiz-feedback incorrect-fb">❌ 不对。FDE 的作用远不止部署加速，它贯穿产品、销售和客户成功的整个链条。</div>
+</div>
+
+<!-- Summary -->
+<h2>六、本课总结</h2>
+
+<div class="key-point">
+  <strong>📋 核心要点回顾：</strong>
+  <ol>
+    <li>AI 落地鸿沟是系统工程问题，不是模型能力问题</li>
+    <li>FDE 岗位爆发式增长（700%+）反映了行业结构性转变</li>
+    <li>OpenAI、Anthropic 等公司正在将部署能力组织化、规模化</li>
+    <li>Build → Prove → Generalize 循环中，Generalize 是关键——没有产品化就没有复利</li>
+    <li>FDE 的真正价值是把客户现场变成产品和模型进化的数据源</li>
+  </ol>
+</div>
+
+<div class="nav-bar">
+  <a href="../lessons/002-palantir-fdse-delta-origin.html" class="nav-btn disabled">← 第 002 课</a>
+  <a href="../lessons/004-six-company-comparison.html" class="nav-btn">第 004 课 →</a>
+</div>
+
+<div class="footer-note">
+  Forward Deployed Engineer 课程 · 第 003 课 · 共 45 课
+</div>
+
+<script>
+function checkQuiz(btn, isCorrect) {
+  const container = btn.closest('.quiz-container');
+  if (container.dataset.answered) return;
+  container.dataset.answered = 'true';
+
+  const options = container.querySelectorAll('.quiz-option');
+  options.forEach(opt => {
+    opt.style.pointerEvents = 'none';
+    if (opt === btn) {
+      opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+    } else if (!isCorrect && opt.getAttribute('onclick') && opt.getAttribute('onclick').includes('true')) {
+      opt.classList.add('correct');
+    }
+  });
+
+  const feedback = container.querySelector(isCorrect ? '.correct-fb' : '.incorrect-fb');
+  if (feedback) feedback.classList.add('show');
+}
+</script>
+
+</body>
+</html>
