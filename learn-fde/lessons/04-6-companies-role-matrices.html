@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDE 课程 04 — 6 家公司岗位形态对比</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#1a1a1a;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3{font-family:'Merriweather',serif;font-weight:700}
+.course-header{border-bottom:3px solid #2563eb;padding-bottom:1.5rem;margin-bottom:2rem}
+.module-badge{display:inline-block;background:#dbeafe;color:#1e40af;font-size:.8rem;font-weight:700;padding:.25rem .75rem;border-radius:999px;margin-bottom:.75rem;letter-spacing:.03em;text-transform:uppercase}
+.course-header h1{font-size:1.85rem;line-height:1.3;color:#0f172a;margin-bottom:.4rem}
+.course-header .subtitle{color:#64748b;font-size:1.05rem}
+.section{margin:2.5rem 0}
+.section h2{font-size:1.4rem;color:#0f172a;border-left:4px solid #2563eb;padding-left:1rem;margin-bottom:1.25rem}
+.section p,.section li{font-size:1.05rem;color:#334155}
+.section ul,.section ol{padding-left:1.5rem;margin:.75rem 0}
+.section li{margin:.35rem 0}
+.key-insight{background:#eff6ff;border:1px solid #bfdbfe;border-radius:.75rem;padding:1.25rem 1.5rem;margin:1.25rem 0}
+.key-insight strong{color:#1e40af}
+.table-wrap{overflow-x:auto;margin:1.25rem 0}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th{background:#1e293b;color:#fff;padding:.65rem .85rem;text-align:left;font-weight:700}
+td{padding:.6rem .85rem;border-bottom:1px solid #e2e8f0}
+tr:nth-child(even){background:#f8fafc}
+.quiz-box{background:#fefce8;border:2px solid #fde047;border-radius:.75rem;padding:1.5rem;margin:1.5rem 0}
+.quiz-box h3{font-size:1.1rem;margin-bottom:1rem;color:#854d0e}
+.quiz-option{display:block;width:100%;text-align:left;padding:.7rem 1rem;margin:.35rem 0;border:2px solid #e2e8f0;border-radius:.5rem;background:#fff;cursor:pointer;font-size:1rem;font-family:inherit;transition:all .15s}
+.quiz-option:hover{border-color:#2563eb;background:#eff6ff}
+.quiz-option.correct{border-color:#16a34a;background:#dcfce7;color:#166534}
+.quiz-option.wrong{border-color:#dc2626;background:#fee2e2;color:#991b1b}
+.quiz-feedback{margin-top:.75rem;font-weight:600;font-size:.95rem;display:none}
+.quiz-feedback.show{display:block}
+.nav-bar{display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:2px solid #e2e8f0}
+.nav-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:.5rem;text-decoration:none;font-weight:600;font-size:.95rem;transition:all .15s}
+.nav-btn.prev{background:#f1f5f9;color:#334155}
+.nav-btn.next{background:#2563eb;color:#fff}
+.nav-btn:hover{opacity:.85}
+.nav-btn.disabled{opacity:.35;pointer-events:none}
+.tip{background:#f0fdf4;border-left:4px solid #22c55e;padding:.75rem 1rem;border-radius:0 .5rem .5rem 0;margin:1rem 0;font-size:.95rem}
+</style>
+</head>
+<body>
+
+<div class="course-header">
+  <span class="module-badge">模块一：FDE 基础认知</span>
+  <h1>第 4 课 — 6 家公司岗位形态对比</h1>
+  <p class="subtitle">OpenAI、Google Cloud、Palantir、Mistral、Scale AI、字节跳动的差异化实践</p>
+</div>
+
+<!-- Section 1 -->
+<div class="section">
+<h2>一、FDE 不是单一岗位，而是一个岗位族</h2>
+<p>FDE（Forward Deployed Engineer）并不是一个标准化的职位名称——它更像是一个<strong>岗位族</strong>。不同公司根据自身的<strong>产品特性</strong>、<strong>客户类型</strong>和<strong>商业模式</strong>，对 FDE 做了截然不同的变体。</p>
+<p>理解这些差异，是判断"某家公司到底在招什么"以及"自己适合哪条路"的前提。</p>
+<div class="key-insight">
+  <strong>核心洞察：</strong>FDE 岗位族正在从"一人多能"演化为"角色矩阵"。以 OpenAI 为例，其部署组织已拆分为四个子角色：FDE（端到端部署）、FDSWE（偏软件工程与平台化）、Technical Deployment Lead（偏商业对齐），以及通过收购 Tomoro 获得的 Deployment Company（规模化交付网络）。
+</div>
+<p>这意味着：FDE 不再意味着"一个人做所有事"，而是<strong>不同角色覆盖发现、工程、交付、产品化等不同环节</strong>的协作体系。</p>
+</div>
+
+<!-- Quiz 1 -->
+<div class="quiz-box" data-quiz="1">
+  <h3>🧠 测验 1</h3>
+  <p>OpenAI 将部署组织拆分为多个子角色，这说明了什么趋势？</p>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">A. FDE 岗位正在被 AI 替代</button>
+  <button class="quiz-option" onclick="checkAnswer(this,true)">B. FDE 正从"一人多能"演化为"角色矩阵"</button>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">C. OpenAI 正在裁员</button>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Section 2 -->
+<div class="section">
+<h2>二、Google Cloud：最"AI-native"的 FDE</h2>
+<p>Google Cloud 的 Generative AI FDE 代表了当前最前沿的 FDE 技术栈要求。这个岗位与传统云解决方案架构师有<strong>本质区别</strong>：</p>
+<ul>
+  <li><strong>RAG 全链路</strong>：必须精通 RAG、向量数据库的设计与调优</li>
+  <li><strong>Agent 架构</strong>：熟悉 ReAct、自反思、层级委派等设计模式</li>
+  <li><strong>多智能体框架</strong>：LangGraph、CrewAI、Google ADK 等工具链</li>
+  <li><strong>可观测性</strong>：构建 tokens/sec、cost-per-request、tracing 等指标体系</li>
+  <li><strong>"连接组织"代码</strong>：编写连接 AI 产品与客户遗留系统的胶水代码</li>
+</ul>
+<div class="tip">💡 Google 的 FDE 本质上是<strong>生产级 Agent/RAG/企业集成工程师</strong>——他们不只是做 PoC，而是要让 AI 系统在客户的真实生产环境中跑起来。</div>
+</div>
+
+<!-- Quiz 2 -->
+<div class="quiz-box" data-quiz="2">
+  <h3>🧠 测验 2</h3>
+  <p>Google Cloud 的 GenAI FDE 与传统云解决方案架构师的核心区别是什么？</p>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">A. Google FDE 不需要写代码</button>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">B. Google FDE 只做售前支持</button>
+  <button class="quiz-option" onclick="checkAnswer(this,true)">C. Google FDE 要编写连接 AI 产品与客户遗留系统的"连接组织"代码</button>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Section 3 -->
+<div class="section">
+<h2>三、Mistral vs Scale AI：两个不同的专精方向</h2>
+<p>两家公司的 FDE 岗位代表了 FDE 家族中两个有意思的分支：</p>
+
+<h3>Mistral — Forward Deployed ML Engineer</h3>
+<p>被描述为"<strong>像 startup CTO 一样拥有端到端执行能力</strong>"。职责包括复杂 fine-tuning、LLM 应用构建、RAG 系统、agentic use cases。相比 OpenAI 的通用 FDE，Mistral 更<strong>偏向 ML/LLM 应用工程</strong>。</p>
+
+<h3>Scale AI — GenAI FDE</h3>
+<p>面向顶级 AI research labs 和政府机构，强调<strong>数据基础设施</strong>、大规模数据和分布式系统经验。这个岗位更接近"AI 数据基础设施 + 全栈交付 + 客户工程"的混合形态。</p>
+<div class="key-insight">
+  <strong>对比思考：</strong>Mistral 的 FDE 偏"模型层"（fine-tuning、LLM 应用），Scale AI 的 FDE 偏"数据层"（数据基建、分布式系统）。同一个 FDE 标签下，技术重心可以完全不同。
+</div>
+</div>
+
+<!-- Quiz 3 -->
+<div class="quiz-box" data-quiz="3">
+  <h3>🧠 测验 3</h3>
+  <p>以下哪项最能概括 Mistral 和 Scale AI 的 FDE 之间的核心差异？</p>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">A. Mistral 更偏数据基建，Scale AI 更偏模型工程</button>
+  <button class="quiz-option" onclick="checkAnswer(this,true)">B. Mistral 更偏 ML/LLM 应用工程，Scale AI 更偏数据基础设施</button>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">C. 两家公司没有实质区别</button>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Section 4 -->
+<div class="section">
+<h2>四、国内信号：字节跳动与"去标题化"趋势</h2>
+<p>字节跳动在招聘中直接使用了"FDE"名称——"豆包 AI 大模型 FDE（火山方舟 MaaS）"，职责包括面向头部行业客户、深入理解业务、设计和实现复杂 Agent 架构与 Workflow。</p>
+<p>但更重要的是一个<strong>行业规律</strong>：国内更多公司不一定直接用 FDE 这个 title，而是使用"大模型解决方案工程师"、"AI 应用交付工程师"、"AI Agent 工程师"、"大模型应用架构师"等名称。</p>
+<div class="key-insight">
+  <strong>关键判断标准：</strong>判断一个岗位是不是 FDE，<strong>不看 title，而看是否同时满足四个条件</strong>：<br>① 客户现场 &nbsp;② 真实编码 &nbsp;③ 生产落地 &nbsp;④ 产品反馈闭环<br>只要同时满足这四点，不管叫什么名字，本质上就是 FDE。
+</div>
+</div>
+
+<!-- Quiz 4 -->
+<div class="quiz-box" data-quiz="4">
+  <h3>🧠 测验 4</h3>
+  <p>如何判断一个国内公司的"大模型解决方案工程师"是否等同于 FDE？</p>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">A. 看 job title 里有没有 FDE 三个字</button>
+  <button class="quiz-option" onclick="checkAnswer(this,true)">B. 看是否同时满足：客户现场 + 真实编码 + 生产落地 + 产品反馈闭环</button>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">C. 看薪资水平</button>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Section 5 -->
+<div class="section">
+<h2>五、六种形态的共性模式</h2>
+<p>尽管各公司 FDE 岗位差异巨大，但提炼出以下<strong>六大共性</strong>：</p>
+<table>
+  <thead>
+    <tr><th>维度</th><th>共性要求</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>技术深度</td><td>都必须能写生产代码（Python / Java / TypeScript）</td></tr>
+    <tr><td>客户接触</td><td>都必须深入客户现场 / 业务场景</td></tr>
+    <tr><td>端到端</td><td>都覆盖从 discovery 到 production rollout 的全链路</td></tr>
+    <tr><td>反馈闭环</td><td>都将客户洞察反馈给产品 / 模型团队</td></tr>
+    <tr><td>技术前沿</td><td>都涉及 RAG / Agent / LLM 系统架构设计</td></tr>
+    <tr><td>差异化</td><td>偏 ML 工程（Mistral）/ 偏数据基建（Scale）/ 偏平台集成（Google）/ 偏产品化（OpenAI）/ 偏咨询式（Palantir）/ 偏行业落地（字节）</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- Quiz 5 -->
+<div class="quiz-box" data-quiz="5">
+  <h3>🧠 测验 5</h3>
+  <p>以下哪项<strong>不是</strong>所有公司 FDE 岗位的共性要求？</p>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">A. 都能写生产代码</button>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">B. 都深入客户现场</button>
+  <button class="quiz-option" onclick="checkAnswer(this,true)">C. 都使用完全相同的技术栈</button>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Section 6 -->
+<div class="section">
+<h2>六、六家公司完整对比一览</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>公司</th><th>正式名称</th><th>偏重方向</th><th>技术栈重点</th><th>客户类型</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>OpenAI</strong></td><td>FDE / FDSWE / Technical Deployment Lead</td><td>端到端部署 + 抽象 + 商业化</td><td>Python, JS, eval, build-prove-generalize</td><td>战略大客户</td></tr>
+    <tr><td><strong>Google Cloud</strong></td><td>GenAI FDE / Conversational AI FDE</td><td>Agent/RAG 工程设计</td><td>LangGraph, CrewAI, RAG, vector DB, MCP</td><td>企业客户</td></tr>
+    <tr><td><strong>Palantir</strong></td><td>FDSE + Deployment Strategist</td><td>数据集成 + Ontology 建模</td><td>Python, Java, TypeScript, Ontology</td><td>政府 + 大型企业</td></tr>
+    <tr><td><strong>Mistral</strong></td><td>Forward Deployed ML Engineer</td><td>ML 工程 + fine-tuning</td><td>Fine-tuning, LLM app, agentic use cases</td><td>欧洲企业客户</td></tr>
+    <tr><td><strong>Scale AI</strong></td><td>GenAI FDE</td><td>数据基建 + 全栈交付</td><td>Distributed systems, cloud infra, data infra</td><td>AI labs + 政府</td></tr>
+    <tr><td><strong>字节跳动</strong></td><td>豆包 FDE / 火山方舟</td><td>Agent 架构 + 行业落地</td><td>Agent, Workflow, RAG, LangChain</td><td>头部行业客户</td></tr>
+  </tbody>
+</table>
+</div>
+<p>这张表展示了 FDE 岗位族的丰富多样性——同一个标签下，技术重心、客户类型、甚至日常工作方式都可能截然不同。</p>
+</div>
+
+<!-- Quiz 6 -->
+<div class="quiz-box" data-quiz="6">
+  <h3>🧠 测验 6</h3>
+  <p>如果某人想从事"偏数据基础设施方向"的 FDE 工作，以下哪家公司最合适？</p>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">A. OpenAI</button>
+  <button class="quiz-option" onclick="checkAnswer(this,true)">B. Scale AI</button>
+  <button class="quiz-option" onclick="checkAnswer(this,false)">C. Palantir</button>
+  <div class="quiz-feedback"></div>
+</div>
+
+<!-- Section 7 -->
+<div class="section">
+<h2>七、总结与思考</h2>
+<p>本课的核心 takeaway 是三个关键词：</p>
+<ol>
+  <li><strong>岗位族</strong>：FDE 不是一个固定岗位，而是一组共享核心特征的岗位集合</li>
+  <li><strong>角色矩阵</strong>：领先公司（如 OpenAI）已将 FDE 拆分为多个子角色，覆盖不同环节</li>
+  <li><strong>本质重于名称</strong>：判断是否为 FDE，看四个条件（客户现场、真实编码、生产落地、反馈闭环），而非 job title</li>
+</ol>
+<div class="key-insight">
+  <strong>下一步：</strong>在第 5 课中，我们将进一步展开 FDE 与相邻岗位（SA、PDE、ML Engineer、PM 等）的区别矩阵，帮助你更精确地定位自己在职业坐标系中的位置。
+</div>
+</div>
+
+<nav class="nav-bar">
+  <a href="#" class="nav-btn prev disabled">← 上一课</a>
+  <a href="05-05-position-matrix.html" class="nav-btn next">下一课 →</a>
+</nav>
+
+<script>
+function checkAnswer(btn, isCorrect) {
+  const quiz = btn.closest('.quiz-box');
+  const options = quiz.querySelectorAll('.quiz-option');
+  const feedback = quiz.querySelector('.quiz-feedback');
+
+  // Disable all buttons
+  options.forEach(opt => {
+    opt.style.pointerEvents = 'none';
+    if (opt.onclick.toString().includes('true')) {
+      opt.classList.add('correct');
+    }
+  });
+
+  if (!isCorrect) {
+    btn.classList.add('wrong');
+    feedback.textContent = '❌ 不对哦，再想想！正确答案已标绿。';
+    feedback.style.color = '#dc2626';
+  } else {
+    feedback.textContent = '✅ 正确！';
+    feedback.style.color = '#16a34a';
+  }
+  feedback.classList.add('show');
+}
+</script>
+
+</body>
+</html>
