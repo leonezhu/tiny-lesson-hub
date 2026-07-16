@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 05 课 — 岗位区别矩阵：FDE vs 相邻岗位</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:#fdfdfd;color:#2d2d2d;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1,h2,h3{font-family:'Merriweather',serif;color:#1a1a1a}
+h1{font-size:1.85rem;font-weight:900;border-bottom:3px solid #2563eb;padding-bottom:.6rem;margin-bottom:.3rem}
+.module-badge{display:inline-block;background:#2563eb;color:#fff;font-size:.78rem;font-weight:700;padding:.25rem .75rem;border-radius:4px;margin-bottom:.6rem;letter-spacing:.03em}
+.lesson-meta{color:#666;font-size:.92rem;margin-bottom:2rem}
+.lesson-meta strong{color:#2d2d2d}
+h2{font-size:1.4rem;margin:2.2rem 0 .8rem;padding-left:.8rem;border-left:4px solid #2563eb}
+h3{font-size:1.1rem;margin:1.5rem 0 .5rem;color:#333}
+p{margin-bottom:1rem}
+.key-insight{background:#f0f7ff;border-radius:8px;padding:1.2rem 1.4rem;margin:1.2rem 0;border-left:4px solid #2563eb}
+.key-insight .label{font-weight:700;color:#2563eb;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+.key-insight h3{margin-top:0;color:#1e40af}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.88rem}
+th,td{padding:.55rem .7rem;border:1px solid #ddd;text-align:left;vertical-align:top}
+th{background:#f3f6fa;font-weight:700;color:#1a1a1a}
+tr:nth-child(even){background:#fafbfc}
+.checklist{list-style:none;padding:0;margin:1rem 0}
+.checklist li{padding:.5rem 0 .5rem 1.8rem;position:relative;font-size:.95rem}
+.checklist li::before{content:"✓";position:absolute;left:0;color:#2563eb;font-weight:700}
+.quiz-section{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1.4rem;margin:1.8rem 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.quiz-section h3{margin-top:0;color:#2563eb;font-size:1.05rem}
+.quiz-question{font-weight:600;margin-bottom:.8rem;font-size:1rem}
+.quiz-options{display:flex;flex-direction:column;gap:.4rem}
+.quiz-option{padding:.6rem .9rem;border:1.5px solid #ddd;border-radius:6px;cursor:pointer;transition:all .2s;font-size:.93rem;user-select:none}
+.quiz-option:hover{border-color:#93b4f5;background:#f8faff}
+.quiz-option.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:600}
+.quiz-option.incorrect{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+.quiz-feedback{margin-top:.6rem;padding:.6rem .8rem;border-radius:6px;font-size:.9rem;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.quiz-feedback.incorrect{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:3rem;padding-top:1.5rem;border-top:2px solid #eee}
+.nav-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:6px;text-decoration:none;font-size:.9rem;font-weight:600;transition:all .2s}
+.nav-btn.prev{background:#2563eb;color:#fff}
+.nav-btn.prev:hover{background:#1d4ed8}
+.nav-btn.next{background:#f3f6fa;color:#2563eb;border:1.5px solid #2563eb}
+.nav-btn.next:hover{background:#e0ecff}
+.nav-btn.disabled{opacity:.35;pointer-events:none}
+.highlight{background:#fef3c7;padding:.1rem .3rem;border-radius:3px;font-weight:600}
+.tag{display:inline-block;background:#eef2ff;color:#4338ca;font-size:.75rem;padding:.15rem .5rem;border-radius:3px;margin-right:.3rem;font-weight:600}
+</style>
+</head>
+<body>
+
+<h1>第 05 课 — 岗位区别矩阵：FDE vs 相邻岗位</h1>
+<div class="module-badge">模块一：FDE 基础认知</div>
+<p class="lesson-meta">上一课：<a href="04-6-companies-role-matrices.html" class="nav-btn prev" style="text-decoration:none;font-size:.85rem;padding:.3rem .7rem">← 第 04 课</a> &nbsp;|&nbsp; 下一课：<a href="06-fde-capability-radar.html" class="nav-btn next" style="text-decoration:none;font-size:.85rem;padding:.3rem .7rem">第 06 课 →</a></p>
+
+<h2>核心定义：FDE 的四个唯一条件</h2>
+<p>FDE（Forward Deployed Engineer）不是某个现有岗位的变体，而是一个<strong>同时满足四个维度</strong>的独特角色：</p>
+<ul>
+<li><span class="highlight">高编码深度</span> — 日常写生产代码，不是画 PPT 做演示</li>
+<li><span class="highlight">高客户现场</span> — embedded 在客户环境中，不是远程支持</li>
+<li><span class="highlight">生产落地 Owner</span> — 端到端负责从 discovery 到 rollout</li>
+<li><span class="highlight">产品反馈闭环</span> — 把现场经验转化为可复用模式和产品需求</li>
+</ul>
+<p>任何缺少其中一个维度的角色都不是 FDE。这四个条件缺一不可，它们共同构成了 FDE 的核心护城河。</p>
+
+<div class="key-insight">
+<div class="label">关键洞察一</div>
+<h3>FDE 是「产品发现的工程化载体」</h3>
+<p>传统售前（Sales Engineer）解决「让客户相信」，售后（Customer Success）解决「让客户用上」，但中间有一个巨大的断层——<strong>「让客户跑起来」</strong>。FDE 填补了这个断层：它不是把方案卖出去然后移交，而是自己把方案从模糊需求推到生产可用。</p>
+<p>更重要的是，嵌入式 FDE 模式的核心价值是把客户现场变成<strong>产品和模型进化的高质量数据源</strong>，而非简单的交付能力。每一次部署都在为产品积累 know-how。</p>
+</div>
+
+<div class="quiz-section" data-quiz="1">
+<h3>🧠 理解检验</h3>
+<p class="quiz-question">如果一个团队做了 10 个项目，每个都是高度定制且无法复用，这个团队本质上是什么？</p>
+<div class="quiz-options">
+<div class="quiz-option" onclick="checkAnswer(this,false)">A. 高效的 FDE 团队，因为解决了大量客户需求</div>
+<div class="quiz-option" onclick="checkAnswer(this,true)">B. 外包团队，缺乏产品化思维</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">C. 优秀的 Solution Architect 团队</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">D. 成熟的 Customer Success 团队</div>
+</div>
+<div class="quiz-feedback correct">✅ 正确！真正的 FDE 组织会在第 2-3 次遇到类似问题时写 playbook，在第 5 次时进入产品路线图。否则就是外包。</div>
+<div class="quiz-feedback incorrect">❌ 不对。反复做高度定制、无法复用的项目，本质上是外包团队。FDE 的关键机制是在重复中发现可通用化的模式。</div>
+</div>
+
+<h2>与八个相邻岗位的全景对比</h2>
+<p>下表将 FDE 与八个常见岗位在七个关键维度上进行系统对比，帮助你一眼看清 FDE 的定位：</p>
+
+<table>
+<tr><th>维度</th><th>Core SWE</th><th>FDE</th><th>Solution Architect</th><th>Sales Engineer</th><th>Consultant / SI</th><th>Cust. Success Eng</th><th>ML Engineer</th><th>Tech PM</th></tr>
+<tr><td><strong>主要目标</strong></td><td>构建通用产品</td><td>客户场景生产落地 + 产品反馈</td><td>设计方案辅助成交</td><td>售前技术支持</td><td>项目实施 / 咨询</td><td>客户采用 / 续约</td><td>模型训练优化</td><td>定义需求 / 路线图</td></tr>
+<tr><td><strong>编码深度</strong></td><td>高（日常）</td><td>高（日常）</td><td>中（PoC）</td><td>中低</td><td>中</td><td>中</td><td>高</td><td>低中</td></tr>
+<tr><td><strong>客户现场</strong></td><td>低</td><td><strong>高</strong></td><td>中高</td><td>高</td><td>高</td><td>高</td><td>低中</td><td>中高</td></tr>
+<tr><td><strong>生产 Owner</strong></td><td>模块级</td><td><strong>端到端</strong></td><td>中</td><td>低中</td><td>中高</td><td>中</td><td>中高</td><td>中</td></tr>
+<tr><td><strong>产品反馈</strong></td><td>间接</td><td><strong>直接 + 制度化</strong></td><td>间接</td><td>间接</td><td>弱</td><td>间接</td><td>间接</td><td>直接</td></tr>
+<tr><td><strong>模糊容忍度</strong></td><td>低</td><td><strong>极高</strong></td><td>中</td><td>中</td><td>中</td><td>中</td><td>低</td><td>中</td></tr>
+<tr><td><strong>典型产出</strong></td><td>功能 / 平台</td><td>生产系统 + playbook</td><td>架构图 / 方案</td><td>Demo / POC</td><td>交付物 / 报告</td><td>健康分 / NPS</td><td>模型 / pipeline</td><td>PRD / 路线图</td></tr>
+<tr><td><strong>核心风险</strong></td><td>远离用户</td><td>沦为定制交付</td><td>方案不落地</td><td>过度承诺</td><td>项目制低毛利</td><td>被动救火</td><td>脱离业务</td><td>伪需求</td></tr>
+</table>
+
+<div class="key-insight">
+<div class="label">关键洞察二</div>
+<h3>SA 与 FDE 的分水岭：是否对生产代码负责</h3>
+<p>Solution Architect 的输出通常是架构图、技术选型建议和 PoC 演示；FDE 的输出是<strong>可运行的生产系统</strong>。SA 可以画出一个完美的 RAG 架构，但 FDE 需要处理 chunking 策略、权限过滤、reranking 调优、eval harness 搭建、延迟优化等 SA 通常不碰的细节。</p>
+<p>Google Cloud FDE 岗位描述特别强调 <em>"not an advisory role"</em>，要求 FDE <em>"embed with customers to code, debug, and ship production-grade AI systems"</em>，明确把 advisory 排除在外。</p>
+</div>
+
+<div class="quiz-section" data-quiz="2">
+<h3>🧠 理解检验</h3>
+<p class="quiz-question">一位 Solution Architect 为客户设计了一个完整的 RAG 架构方案，但从未编写过一行生产代码。以下哪个说法最准确？</p>
+<div class="quiz-options">
+<div class="quiz-option" onclick="checkAnswer(this,false)">A. 这就是 FDE，因为方案已经落地了</div>
+<div class="quiz-option" onclick="checkAnswer(this,true)">B. 这不是 FDE，因为缺少「对生产代码负责」这一维度</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">C. 这是 ML Engineer 的典型工作</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">D. 这是 Sales Engineer 的范畴</div>
+</div>
+<div class="quiz-feedback correct">✅ 正确！SA 和 FDE 的关键分水岭在于是否对生产代码负责。没有生产代码的交付，就不构成 FDE。</div>
+<div class="quiz-feedback incorrect">❌ 不对。Solution Architect 虽然设计了方案，但没有对生产代码负责，缺少 FDE 的四个条件之一。</div>
+</div>
+
+<div class="key-insight">
+<div class="label">关键洞察三</div>
+<h3>FDE 与 ML Engineer 的分野：问题定义权</h3>
+<p>ML Engineer 通常在<strong>明确的问题定义下</strong>优化模型——给定训练数据、评估指标和部署目标，让模型更好。FDE 则要在<strong>没有明确定义的情况下</strong>找到「什么问题值得用 AI 解决」。</p>
+<p>同一个客户说「想做 AI 客服」：</p>
+<ul>
+<li>ML Engineer 会问：<em>「你要优化哪个指标？」</em></li>
+<li>FDE 会问：<em>「你的客服团队每天处理多少 ticket？哪些问题最容易出错？知识库在哪？权限怎么管？」</em></li>
+</ul>
+<p>FDE 的核心能力之一是 <strong>translate ambiguous goals into concrete tasks</strong>——把模糊的商业目标转化为可执行的技术任务。</p>
+</div>
+
+<div class="quiz-section" data-quiz="3">
+<h3>🧠 理解检验</h3>
+<p class="quiz-question">客户说「我们想用 AI 提升运营效率」，以下哪种回应最能体现 FDE 的思维模式？</p>
+<div class="quiz-options">
+<div class="quiz-option" onclick="checkAnswer(this,false)">A. 「好的，我推荐用 GPT-4 做一个聊天机器人」</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">B. 「我会先训练一个 Fine-tuned 模型来优化你们的 KPI」</div>
+<div class="quiz-option" onclick="checkAnswer(this,true)">C. 「你们目前运营中哪些环节耗时最长？错误率最高？数据在哪？能给我看看实际工作流吗？」</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">D. 「我先写一份技术方案，下周给您 Demo」</div>
+</div>
+<div class="quiz-feedback correct">✅ 正确！FDE 从理解实际工作流和数据环境开始，而不是急于推荐技术或写方案。这是「问题定义权」的体现。</div>
+<div class="quiz-feedback incorrect">❌ 不对。A、B、D 都跳过了对客户实际场景的理解，直接跳到技术方案。FDE 的第一步是深入工作流，搞清楚真正的问题。</div>
+</div>
+
+<h2>判断「真 FDE」的 Checklist</h2>
+<p>看到一份 JD 时，逐条对照以下问题，判断它是否是真正的 FDE 岗位：</p>
+
+<ul class="checklist">
+<li>是否明确写 <strong>build、code、ship、production</strong>？（写生产代码）</li>
+<li>是否涵盖 <strong>discovery → scoping → architecture → rollout</strong> 全流程？（端到端 owner）</li>
+<li>是否要求 <strong>embedded、customer-facing、travel、onsite</strong>？（客户现场）</li>
+<li>是否涉及 <strong>RAG、Agent、eval、observability</strong> 等 AI-native 技术？（AI 原生）</li>
+<li>是否有 <strong>codify patterns、product requests、roadmap feedback</strong> 的要求？（产品反馈）</li>
+<li>是否绑定 <strong>adoption、workflow impact、ROI</strong> 等业务指标？（业务导向）</li>
+<li>是否有 <strong>reusable modules、playbook、blueprints</strong> 的扩展机制？（可扩展性）</li>
+</ul>
+
+<div class="key-insight">
+<div class="label">关键洞察四</div>
+<h3>薪酬溢价反映的是「组合能力稀缺性」</h3>
+<p>FDE 的薪资通常高于同等级的 Core SWE，不是因为 FDE 的代码写得更好，而是因为同时满足<strong>「强工程 + 客户沟通 + AI 应用 + 模糊环境执行」</strong>的组合极其稀缺。</p>
+<p>OpenAI FDE base $162K-$280K + equity，Google Cloud FDE base $174K-$253K + 15% bonus + equity。WSJ 报道指出 FDE 岗位 2024-2025 年增长超过 10 倍，但这种增长伴随着客户现场、旅行、复杂环境的现实——它并不「轻松体面」。</p>
+<p>这种薪酬溢价实际上是市场对<strong>「能搞定最难那部分」</strong>的工程师的定价。</p>
+</div>
+
+<div class="quiz-section" data-quiz="4">
+<h3>🧠 理解检验</h3>
+<p class="quiz-question">一家公司招聘一名 FDE，JD 写明「负责客户 PoC 演示和技术方案宣讲，偶尔协助调试」，但不要求写生产代码，也不涉及产品反馈。这份 JD 最接近哪个岗位？</p>
+<div class="quiz-options">
+<div class="quiz-option" onclick="checkAnswer(this,false)">A. 真正的 FDE，因为涉及客户接触</div>
+<div class="quiz-option" onclick="checkAnswer(this,true)">B. Sales Engineer，以售前支持和演示为主</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">C. Solution Architect，因为涉及方案设计</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">D. Customer Success Engineer，因为涉及客户跟进</div>
+</div>
+<div class="quiz-feedback correct">✅ 正确！这份 JD 缺少 FDE 的三个关键维度：生产代码、端到端 owner、产品反馈。它更符合 Sales Engineer 的特征。</div>
+<div class="quiz-feedback incorrect">❌ 不对。这份 JD 虽然有客户接触，但不写生产代码、不做端到端负责、没有产品反馈机制，不符合 FDE 的定义。更接近 Sales Engineer。</div>
+</div>
+
+<div class="key-insight">
+<div class="label">关键洞察五</div>
+<h3>FDE 的组织治理：防止滑向咨询/SI</h3>
+<p>FDE 有时会滑向咨询、系统集成（SI）或 hand-holding 的混合角色——即被客户当成高级外包工程师使用。这需要<strong>组织层面的治理机制</strong>来防止：</p>
+<ul>
+<li>设定明确的产品化阈值（第 2-3 次遇到同类问题必须写 playbook）</li>
+<li>建立从现场到产品路线图的制度化反馈通道</li>
+<li>考核指标不仅看交付数量，更要看复用率和产品贡献</li>
+</ul>
+<p>a16z 警告：FDE 模式如果不能形成 <strong>compounding advantage</strong>，就会沦为低毛利服务业务——关键是把现场交付转化为产品和平台能力。</p>
+</div>
+
+<div class="quiz-section" data-quiz="5">
+<h3>🧠 理解检验</h3>
+<p class="quiz-question">以下哪项措施最能有效防止 FDE 团队滑向「外包陷阱」？</p>
+<div class="quiz-options">
+<div class="quiz-option" onclick="checkAnswer(this,false)">A. 提高 FDE 的薪资水平</div>
+<div class="quiz-option" onclick="checkAnswer(this,true)">B. 要求每次部署后沉淀可复用模块，并将共性需求纳入产品路线图</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">C. 减少 FDE 的客户接触频率</div>
+<div class="quiz-option" onclick="checkAnswer(this,false)">D. 让 FDE 只负责 PoC 阶段，后续移交 SA 团队</div>
+</div>
+<div class="quiz-feedback correct">✅ 正确！沉淀可复用模块和推动产品化是防止 FDE 沦为外包的核心机制。这确保了每一次客户交付都在为产品积累资产。</div>
+<div class="quiz-feedback incorrect">❌ 不对。减少客户接触或只负责 PoC 恰恰违反了 FDE 的定义。核心机制是沉淀复用和产品化。</div>
+</div>
+
+<h2>本课总结</h2>
+<p>FDE 的独特性不在于某一项技能，而在于<strong>四个维度的同时满足</strong>：高编码深度 × 高客户现场 × 生产落地 owner × 产品反馈闭环。与相邻岗位相比：</p>
+<ul>
+<li>与 Core SWE 的区别：FDE 直面客户和模糊性，SWE 专注通用产品</li>
+<li>与 SA 的区别：FDE 对生产代码负责，SA 输出方案但不落地</li>
+<li>与 ML Engineer 的区别：FDE 拥有问题定义权，ML Engineer 在既定框架内优化</li>
+<li>与 SE / Consultant / CSE 的区别：FDE 是唯一同时覆盖售前、售中、售后的端到端角色</li>
+</ul>
+<p>理解这些边界，是成为合格 FDE 的第一步。</p>
+
+<div class="nav-bar">
+<a href="04-6-companies-role-matrices.html" class="nav-btn prev">← 第 04 课：6 家公司岗位形态对比</a>
+<a href="06-fde-capability-radar.html" class="nav-btn next">第 06 课：FDE 能力雷达图 →</a>
+</div>
+
+<script>
+function checkAnswer(el,isCorrect){
+var section=el.closest('.quiz-section');
+if(section.dataset.answered)return;
+section.dataset.answered='true';
+var options=section.querySelectorAll('.quiz-option');
+options.forEach(function(opt){
+opt.classList.add('disabled');
+});
+if(isCorrect){
+el.classList.add('correct');
+}else{
+el.classList.add('incorrect');
+options.forEach(function(opt){
+if(opt.getAttribute('onclick').includes('true')){
+opt.classList.add('correct');
+}
+});
+}
+var feedbacks=section.querySelectorAll('.quiz-feedback');
+feedbacks.forEach(function(fb){
+fb.classList.add('show');
+fb.classList.add(isCorrect?'correct':'incorrect');
+});
+}
+</script>
+</body>
+</html>
