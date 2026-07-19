@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 12 课 — RAG Eval 与幻觉分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',system-ui,sans-serif;background:#fdfdfd;color:#1a1a2e;line-height:1.75;max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem;font-size:17px}
+h1,h2,h3{font-family:'Merriweather',Georgia,serif;font-weight:700}
+header{border-bottom:2px solid #e0e0e0;padding-bottom:1.5rem;margin-bottom:2rem}
+.module-tag{display:inline-block;background:#4a90d9;color:#fff;font-size:.75rem;font-weight:700;padding:.25rem .75rem;border-radius:4px;text-transform:uppercase;letter-spacing:.5px}
+h1{font-size:1.8rem;margin:.75rem 0 .25rem;line-height:1.3}
+.subtitle{color:#666;font-size:.95rem}
+section{margin-bottom:2.5rem}
+h2{font-size:1.4rem;margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid #eee}
+h3{font-size:1.15rem;margin:1.5rem 0 .5rem}
+p{margin-bottom:1em}
+ul,ol{margin:.5rem 0 1em 1.5rem}
+li{margin-bottom:.35rem}
+blockquote{border-left:4px solid #4a90d9;background:#f0f4fa;padding:1rem 1.25rem;margin:1rem 0;border-radius:0 6px 6px 0;font-style:italic}
+table{width:100%;border-collapse:collapse;margin:1rem 0 1.5rem;font-size:.95rem}
+th{background:#4a90d9;color:#fff;padding:.6rem .8rem;text-align:left}
+td{padding:.5rem .8rem;border-bottom:1px solid #e0e0e0}
+tr:nth-child(even){background:#fafafa}
+.quiz-box{background:#f7f9fc;border:1px solid #dde;border-radius:8px;padding:1.25rem;margin:1.25rem 0}
+.quiz-q{font-weight:700;margin-bottom:.75rem;font-size:1.02rem}
+.quiz-options{list-style:none;margin-left:0}
+.quiz-options li{margin:.35rem 0}
+.quiz-btn{display:block;width:100%;text-align:left;padding:.55rem 1rem;margin:.3rem 0;border:1px solid #ccc;border-radius:5px;background:#fff;cursor:pointer;font-size:.95rem;font-family:inherit;transition:all .15s}
+.quiz-btn:hover{background:#eef}
+.quiz-btn.correct{background:#d4edda;border-color:#28a745;color:#155724}
+.quiz-btn.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.quiz-btn:disabled{cursor:default;opacity:.85}
+.feedback{margin-top:.5rem;font-size:.9rem;font-weight:600;display:none}
+.feedback.show{display:block}
+nav{border-top:2px solid #e0e0e0;padding-top:1.5rem;margin-top:3rem;display:flex;justify-content:space-between}
+nav a{display:inline-block;padding:.6rem 1.2rem;border:1px solid #4a90d9;color:#4a90d9;border-radius:6px;text-decoration:none;font-weight:600;transition:all .15s}
+nav a:hover{background:#4a90d9;color:#fff}
+nav a.disabled{opacity:.35;pointer-events:none}
+.highlight{background:#fff3cd;padding:.15rem .4rem;border-radius:3px;font-weight:600}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="module-tag">模块二：AI 应用工程</span>
+  <h1>第 12 课 — RAG Eval 与幻觉分析</h1>
+  <p class="subtitle">从指标设计到落地实践：如何判断你的 RAG 系统到底做得好不好</p>
+</header>
+
+<section>
+<h2>📌 核心问题：怎么知道 RAG 系统"做得好"？</h2>
+<p>RAG 系统的评估不是单一指标问题，而是需要<strong>分层度量</strong>。检索层、生成层、端到链路层各有一套指标，而幻觉检测则是贯穿全链路的诊断工具。</p>
+<p>FDE 在现场部署时，必须建立可量化的 <em>"what good looks like"</em> 框架，让 AI 系统持续可衡量、可改进。没有评估，就没有改进。</p>
+</section>
+
+<section>
+<h2>1. RAG 评估的三层架构</h2>
+
+<h3>第一层：检索质量（Retrieval Quality）</h3>
+<p>检索层回答的问题是：<em>"找对材料了吗？"</em></p>
+<ul>
+<li><strong>Context Precision（查准率）</strong>：检索到的文档中有多少是真正相关的？—— 少而精</li>
+<li><strong>Context Recall（查全率）</strong>：所有相关文档中有多少被检索到了？—— 精而全</li>
+</ul>
+<p>传统评估方法（基于查询-文档相关性标签）与 RAG 系统下游性能相关性极低。eRAG 方法提出用 LLM 逐个评估每篇文档对最终回答的贡献，通过下游任务的 ground truth 反向推导文档相关性，Kendall's τ 相关性比基线提升 0.168–0.494，同时 GPU 内存消耗降低 50 倍。</p>
+
+<h3>第二层：生成质量（Generation Quality）</h3>
+<p>生成层回答的问题是：<em>"答对了吗？答得靠谱吗？"</em></p>
+<ul>
+<li><strong>Faithfulness（忠实度）</strong>：生成的答案是否严格基于提供的上下文？这是检测幻觉的核心指标</li>
+<li><strong>Answer Relevancy（答案相关性）</strong>：答案是否直接回答了用户的问题？</li>
+</ul>
+
+<h3>第三层：端到端评估</h3>
+<p>当检索和生成各自表现良好但整体效果差时，问题通常出在 <strong>prompt 设计</strong>或<strong>系统编排</strong>上。</p>
+<p>关键方法：<em>ablation study</em>——分别关闭检索模块（纯 LLM 回答）和关闭生成模块（仅返回检索片段），才能定位瓶颈在哪一层。</p>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 1：某 RAG 系统检索查准率 92%、查全率 88%，生成忠实度 95%，但端到端评分很低。最可能的瓶颈在哪里？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 检索器效果差，需要换 embedding 模型</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. Prompt 设计或系统编排有问题</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 模型本身能力不够，需要换更大的 LLM</button><div class="feedback"></div></li>
+  </ul>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 2：做 ablation study 时，关闭检索模块后纯 LLM 的回答反而更好，这说明什么？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 检索器引入了噪声，拉低了生成质量</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. 检索器引入的噪声超过了它带来的信息增益，需要优化检索策略</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 说明 LLM 不需要 RAG，可以直接回答所有问题</button><div class="feedback"></div></li>
+  </ul>
+</div>
+</section>
+
+<section>
+<h2>2. 幻觉的四种类型与检测策略</h2>
+<p>幻觉不是单一现象，而是四种不同类型的组合。每种类型需要不同的检测策略：</p>
+
+<table>
+<tr><th>幻觉类型</th><th>描述</th><th>检测方式</th></tr>
+<tr>
+<td><strong>上下文无关幻觉</strong></td>
+<td>上下文中已有正确答案，模型仍基于预训练知识生成矛盾信息</td>
+<td>Faithfulness 指标 + 逐句比对</td>
+</tr>
+<tr>
+<td><strong>上下文缺失幻觉</strong></td>
+<td>检索器未召回关键文档，模型"被迫"编造答案</td>
+<td>Context Recall + 人工标注 golden set</td>
+</tr>
+<tr>
+<td><strong>跨文档冲突幻觉</strong></td>
+<td>多个检索文档存在矛盾，模型选了错误的一个</td>
+<td>Multi-hop 评估，检查权威来源识别</td>
+</tr>
+<tr>
+<td><strong>推理幻觉</strong></td>
+<td>上下文正确、引用正确，但逻辑推理链条出错</td>
+<td>Chain-of-Thought 级别评估</td>
+</tr>
+</table>
+
+<blockquote>
+<strong>FDE 最常遇到的问题</strong>：上下文缺失幻觉。客户数据质量差、权限过滤过度、chunking 策略不当都会导致召回率低，模型被迫编造答案。
+</blockquote>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 3：一个 RAG 系统在客户现场频繁生成看似合理但与事实不符的答案，经排查发现是因为权限过滤过于严格导致关键文档未被召回。这属于哪种幻觉？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 上下文无关幻觉</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. 上下文缺失幻觉</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 推理幻觉</button><div class="feedback"></div></li>
+  </ul>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 4：Reflexion 框架提出了一种启发式方法检测 agent 幻觉。它的核心思路是什么？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 比较两次输出的相似度，差异大则判定为幻觉</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. 当 agent 遇到连续相同动作产生相同观察结果时，定义为幻觉并触发反思</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 用一个独立模型对所有输出打分，低于阈值则判定为幻觉</button><div class="feedback"></div></li>
+  </ul>
+</div>
+</section>
+
+<section>
+<h2>3. Golden Set：评估的上限由它决定</h2>
+<p>几乎所有 RAG 评估框架都依赖 golden set（黄金测试集），但其构建质量被严重低估。</p>
+
+<h3>构建要点：</h3>
+<ul>
+<li><strong>规模</strong>：至少 100–200 条高质量样本。生产系统覆盖 5–10 个典型用户场景，每个场景 20+ 样本</li>
+<li><strong>多维标注</strong>：每条样本应包含 query、golden_answer、retrieved_contexts（实际检索结果，非理想结果）、ground_truth_documents</li>
+<li><strong>分布代表性</strong>：必须覆盖真实用户查询的分布——简单事实查询、多跳推理、模糊意图、对抗性提问等</li>
+</ul>
+
+<blockquote>
+<strong>常见错误</strong>：只用简单问题测试系统，导致上线后遇到复杂查询时性能断崖式下降。
+</blockquote>
+
+<p>最新趋势是用 LLM 自动生成 golden set，但需注意合成数据可能存在系统性偏差——用更强模型生成评估数据时，弱模型在评估中的得分会系统性偏低（评估器偏差问题）。</p>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 5：为什么 retrieved_contexts 必须是"实际检索结果"而不是"理想结果"？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,true)">A. 只有用实际检索结果才能真实反映系统性能，理想结果会高估系统能力</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">B. 因为实际检索结果更难获取，所以更有价值</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 两者没有区别，选哪个都可以</button><div class="feedback"></div></li>
+  </ul>
+</div>
+</section>
+
+<section>
+<h2>4. 线上 vs 线下评估：FDE 的关键挑战</h2>
+
+<p>离线评估（offline eval）和线上评估（online eval）之间存在巨大差距，这是 FDE 在客户现场最常遇到的工程挑战。</p>
+
+<table>
+<tr><th>维度</th><th>Offline Eval</th><th>Online Eval</th></tr>
+<tr>
+<td><strong>环境</strong></td>
+<td>隔离环境，固定测试集</td>
+<td>生产环境，真实用户交互</td>
+</tr>
+<tr>
+<td><strong>优点</strong></td>
+<td>快速、低成本、可复现</td>
+<td>捕捉真实交互模式、反馈循环</td>
+</tr>
+<tr>
+<td><strong>缺点</strong></td>
+<td>无法模拟真实用户行为</td>
+<td>成本高、不可控变量多</td>
+</tr>
+<tr>
+<td><strong>对齐指标</strong></td>
+<td>技术指标（Precision、Recall）</td>
+<td>业务指标（时间节省率、错误减少率）</td>
+</tr>
+</table>
+
+<h3>A/B Testing 的特殊陷阱</h3>
+<p>在 AI 系统中做 A/B testing 比传统软件更复杂。LLM 输出是非确定性的，同一 query 两次调用可能得到不同结果。解决方案：</p>
+<ul>
+<li>使用固定 seed 的确定性评估</li>
+<li>在统计显著性检验时增加样本量</li>
+</ul>
+
+<h3>反馈闭环</h3>
+<p>最有效的线上评估是将用户反馈自动转化为新的 golden set 样本，形成持续改进循环。OpenAI 的成功指标明确要求：<em>"eval-driven feedback must change product and model roadmap"</em>——评估不能只是报告，必须驱动产品决策。</p>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 6：为什么在 RAG 系统中做 A/B testing 比传统软件更困难？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 因为 RAG 系统太复杂</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. 因为 LLM 输出是非确定性的，同一 query 可能得到不同结果</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 因为用户反馈收集不到</button><div class="feedback"></div></li>
+  </ul>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 7：以下哪项最能体现"评估驱动产品决策"的理念？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 每月产出一份评估报告发给管理层</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. 将用户反馈自动转化为新 golden set 样本，持续改进系统</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 在汇报 PPT 里展示评估指标的上升趋势</button><div class="feedback"></div></li>
+  </ul>
+</div>
+</section>
+
+<section>
+<h2>5. 成本-精度权衡：FDE 的工程决策核心</h2>
+<p>评估体系本身有成本，FDE 需要在评估深度和部署速度之间做出权衡。</p>
+
+<table>
+<tr><th>评估级别</th><th>成本</th><th>精度</th><th>适用阶段</th></tr>
+<tr>
+<td>规则匹配（Exact Match / BLEU）</td>
+<td>极低</td>
+<td>低</td>
+<td>早期原型验证</td>
+</tr>
+<tr>
+<td>Embedding 相似度（Cosine / BERTScore）</td>
+<td>低</td>
+<td>中</td>
+<td>迭代开发期</td>
+</tr>
+<tr>
+<td>LLM-as-a-Judge</td>
+<td>中</td>
+<td>高</td>
+<td>上线前验收</td>
+</tr>
+<tr>
+<td>人工评审（Human Evaluation）</td>
+<td>极高</td>
+<td>最高</td>
+<td>关键业务场景</td>
+</tr>
+</table>
+
+<p><strong>推荐做法</strong>：开发阶段用 embedding 相似度做快速迭代 → 上线前用 LLM-as-a-Judge 做全面评估 → 关键业务场景抽样人工评审。</p>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 8：在一个 FDE 项目中，客户的关键业务场景要求最高精度评估，但预算有限。最优策略是什么？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,false)">A. 全部用 LLM-as-a-Judge，因为成本低</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,true)">B. 开发阶段用 embedding 相似度快速迭代，上线前 LLM-as-a-Judge 全面评估，关键场景抽样人工评审</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 全部用人工评审，因为精度最高</button><div class="feedback"></div></li>
+  </ul>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧠 测验 9：以下关于评估器偏差的说法，哪项是正确的？</div>
+  <ul class="quiz-options">
+    <li><button class="quiz-btn" onclick="check(this,true)">A. 用更强模型生成评估数据时，弱模型在评估中的得分会系统性偏低</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">B. 评估器偏差只发生在人工评审中，LLM 不存在这个问题</button><div class="feedback"></div></li>
+    <li><button class="quiz-btn" onclick="check(this,false)">C. 评估器偏差可以通过增加样本量完全消除</button><div class="feedback"></div></li>
+  </ul>
+</div>
+</section>
+
+<section>
+<h2>🎯 本课总结</h2>
+<ul>
+<li><strong>三层评估</strong>：检索层（Precision/Recall）、生成层（Faithfulness/Relevancy）、端到端（ablation study 定位瓶颈）</li>
+<li><strong>四类幻觉</strong>：上下文无关、上下文缺失、跨文档冲突、推理幻觉——每种需要不同检测策略</li>
+<li><strong>Golden Set 是关键</strong>：质量决定评估上限，必须覆盖真实查询分布，注意评估器偏差</li>
+<li><strong>线上+线下结合</strong>：离线做快速迭代，线上对齐业务指标，形成反馈闭环驱动产品决策</li>
+<li><strong>成本-精度权衡</strong>：按阶段选择合适评估级别，关键场景抽样人工评审</li>
+</ul>
+</section>
+
+<nav>
+  <a href="../lessons/11-permission-aware-retrieval.html" class="prev">← 第 11 课</a>
+  <a href="../lessons/13-agent-design-patterns.html" class="next">第 13 课 →</a>
+</nav>
+
+<script>
+function check(btn, isCorrect) {
+  const box = btn.closest('.quiz-box');
+  const buttons = box.querySelectorAll('.quiz-btn');
+  const feedback = box.querySelector('.feedback');
+  
+  // Disable all buttons
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b === btn) {
+      b.classList.add(isCorrect ? 'correct' : 'wrong');
+    }
+  });
+  
+  // Highlight correct answer
+  buttons.forEach(b => {
+    if (b.getAttribute('onclick').includes('true')) {
+      b.classList.add('correct');
+    }
+  });
+  
+  // Show feedback
+  if (isCorrect) {
+    feedback.textContent = '✅ 正确！';
+    feedback.style.color = '#155724';
+  } else {
+    feedback.textContent = '❌ 不对，正确答案已标绿。';
+    feedback.style.color = '#721c24';
+  }
+  feedback.classList.add('show');
+}
+</script>
+
+</body>
+</html>
